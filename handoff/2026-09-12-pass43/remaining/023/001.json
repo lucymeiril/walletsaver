@@ -1,0 +1,2798 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:9",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Bath-Tissue-35m-x-24roll-x-2/p/618582"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h35/415027616907294.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 9,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 38790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f67e358a59a98063b463b834a2677054acb9194b",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Bath-Tissue-35m-x-24roll-x-2/p/618582",
+        "category": "휴지",
+        "cocodalin_join_key": "618582",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Bath-Tissue-35m-x-24roll-x-2/p/618582",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h35/415027616907294.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "618582",
+        "match_key": "__no_brand__|크리넥스순수 3겹 화장지 35m x 24롤 x 2팩|2.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩",
+        "normalized_name": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩",
+        "pack_qty": 2,
+        "pack_unit": "팩",
+        "price": 38790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩",
+        "raw_promo_type": null,
+        "sale_price": 38790,
+        "source": "costco",
+        "source_record_key": "618582",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Bath-Tissue-35m-x-24roll-x-2/p/618582",
+        "unit_price": 231.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 231원",
+        "unit_price_displayed": 231,
+        "unit_price_text": "10미터당 231원"
+      },
+      "raw_payload_sha256": "b52ba310454e86c3c21ae5bc81ab1ed1c9357d4859ab64c17175935cb887df6a",
+      "raw_record_id": "ingestion:49:9",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "618582",
+      "source_title": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Bath-Tissue-35m-x-24roll-x-2/p/618582",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:49:9",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "618582",
+    "source_title": "크리넥스순수 3겹 화장지 35m x 24롤 x 2팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:10",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Soft-Mega-Rolls-Bath-Tissue-40m-x-60/p/718582"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h69/h42/400503730602014.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 10,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 49990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "57a63d6b0e2e3d14654ecd752599ceec008a1a4a",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Soft-Mega-Rolls-Bath-Tissue-40m-x-60/p/718582",
+        "category": "휴지",
+        "cocodalin_join_key": "718582",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Soft-Mega-Rolls-Bath-Tissue-40m-x-60/p/718582",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h69/h42/400503730602014.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "718582",
+        "match_key": "__no_brand__|크리넥스 순수소프트 메가롤 40m x 30롤 x 2||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2",
+        "normalized_name": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 49990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2",
+        "raw_promo_type": null,
+        "sale_price": 49990,
+        "source": "costco",
+        "source_record_key": "718582",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Soft-Mega-Rolls-Bath-Tissue-40m-x-60/p/718582",
+        "unit_price": 208.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 208원",
+        "unit_price_displayed": 208,
+        "unit_price_text": "10미터당 208원"
+      },
+      "raw_payload_sha256": "d3f654b7d8744f142fe36dc12e8c91cdbab7f36f2b7e957952bda5150202264a",
+      "raw_record_id": "ingestion:49:10",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "718582",
+      "source_title": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Pure-Soft-Mega-Rolls-Bath-Tissue-40m-x-60/p/718582",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:49:10",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "718582",
+    "source_title": "크리넥스 순수소프트 메가롤 40m x 30롤 x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:11",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Premium-Bath-Tissue-40m-x-30/p/701285"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5f/hf5/361046162964510.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 11,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 25990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f8be2c400fc4df455b1ebff89ede14196ba66012",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Premium-Bath-Tissue-40m-x-30/p/701285",
+        "category": "휴지",
+        "cocodalin_join_key": "701285",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Premium-Bath-Tissue-40m-x-30/p/701285",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5f/hf5/361046162964510.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "701285",
+        "match_key": "__no_brand__|커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤",
+        "normalized_name": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 25990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤",
+        "raw_promo_type": null,
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "701285",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Premium-Bath-Tissue-40m-x-30/p/701285",
+        "unit_price": 217.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 217원",
+        "unit_price_displayed": 217,
+        "unit_price_text": "10미터당 217원"
+      },
+      "raw_payload_sha256": "6ec88dad0b761f83f36a18c3814709fe270b0b4c2705c6fd872977bf0ddc8cf3",
+      "raw_record_id": "ingestion:49:11",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "701285",
+      "source_title": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Premium-Bath-Tissue-40m-x-30/p/701285",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:49:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "701285",
+    "source_title": "커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:12",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "바스틀리 3겹 화장지 33m x 12롤 x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vastly-Bath-Tissue-33m-x-12roll-x-2/p/654896"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8d/hc8/103047743504414.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 12,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 33790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "4550741166129d6cc97a8699cec4c855354ad2b6",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vastly-Bath-Tissue-33m-x-12roll-x-2/p/654896",
+        "category": "휴지",
+        "cocodalin_join_key": "654896",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vastly-Bath-Tissue-33m-x-12roll-x-2/p/654896",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8d/hc8/103047743504414.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "654896",
+        "match_key": "__no_brand__|바스틀리 3겹 화장지 33m x 12롤 x 2||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바스틀리 3겹 화장지 33m x 12롤 x 2",
+        "normalized_name": "바스틀리 3겹 화장지 33m x 12롤 x 2",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 33790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "바스틀리 3겹 화장지 33m x 12롤 x 2",
+        "raw_promo_type": null,
+        "sale_price": 33790,
+        "source": "costco",
+        "source_record_key": "654896",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vastly-Bath-Tissue-33m-x-12roll-x-2/p/654896",
+        "unit_price": 427.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 427원",
+        "unit_price_displayed": 427,
+        "unit_price_text": "10미터당 427원"
+      },
+      "raw_payload_sha256": "74f25f71f2c1f484d0038ab2deb4120dd11620b10ad80780140a267effc5f300",
+      "raw_record_id": "ingestion:49:12",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "654896",
+      "source_title": "바스틀리 3겹 화장지 33m x 12롤 x 2",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vastly-Bath-Tissue-33m-x-12roll-x-2/p/654896",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:49:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "654896",
+    "source_title": "바스틀리 3겹 화장지 33m x 12롤 x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:13",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Loving-Nature-Tissue-30m-x-30roll-x-3/p/627864"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/had/hea/327263294914590.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 13,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 46490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "26d98131cf76a1443c48b17a15cb396aff2100bb",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Loving-Nature-Tissue-30m-x-30roll-x-3/p/627864",
+        "category": "휴지",
+        "cocodalin_join_key": "627864",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Loving-Nature-Tissue-30m-x-30roll-x-3/p/627864",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/had/hea/327263294914590.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "627864",
+        "match_key": "__no_brand__|모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3",
+        "normalized_name": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 46490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3",
+        "raw_promo_type": null,
+        "sale_price": 46490,
+        "source": "costco",
+        "source_record_key": "627864",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Loving-Nature-Tissue-30m-x-30roll-x-3/p/627864",
+        "unit_price": 172.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 172원",
+        "unit_price_displayed": 172,
+        "unit_price_text": "10미터당 172원"
+      },
+      "raw_payload_sha256": "b0872b8a10dbbcf6578c875f99c920cb18ecda51909ca86df90a03efc84423fb",
+      "raw_record_id": "ingestion:49:13",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "627864",
+      "source_title": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Loving-Nature-Tissue-30m-x-30roll-x-3/p/627864",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:49:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "627864",
+    "source_title": "모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:14",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-80ct-x-5/p/675083"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha6/hda/419372872859678.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 14,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 32290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "88f2d70eca4e9049989f3646b17b38158b16e5e5",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-80ct-x-5/p/675083",
+        "category": "휴지",
+        "cocodalin_join_key": "675083",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-80ct-x-5/p/675083",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha6/hda/419372872859678.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "675083",
+        "match_key": "__no_brand__|메르슈 프리미엄 무표백 코튼티슈 80매 x 5|80.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5",
+        "normalized_name": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5",
+        "pack_qty": 80,
+        "pack_unit": "매",
+        "price": 32290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5",
+        "raw_promo_type": null,
+        "sale_price": 32290,
+        "source": "costco",
+        "source_record_key": "675083",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-80ct-x-5/p/675083",
+        "unit_price": 807.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 807원",
+        "unit_price_displayed": 807,
+        "unit_price_text": "10매당 807원"
+      },
+      "raw_payload_sha256": "55a79093384350d611d0c41dce59fb0177813d5e1bc01924565710e30af47473",
+      "raw_record_id": "ingestion:49:14",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "675083",
+      "source_title": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-80ct-x-5/p/675083",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "675083",
+    "source_title": "메르슈 프리미엄 무표백 코튼티슈 80매 x 5"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:49:15",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "슈퍼 쿨링 파우더 시트 15매 x 5",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathBodyOral-Care/HandFootcareDeodorant/Super-Cooling-Powder-Sheet-15ct-x-5/p/633140"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathbodyoral-care",
+        "handfootcaredeodorant"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h52/h72/30733103005726.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 15,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "",
+        "package_quantity": 15.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 11990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "82934946c6ddf9cdabca34621140802ee8c915c9",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathBodyOral-Care/HandFootcareDeodorant/Super-Cooling-Powder-Sheet-15ct-x-5/p/633140",
+        "category": "휴지",
+        "cocodalin_join_key": "633140",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathBodyOral-Care/HandFootcareDeodorant/Super-Cooling-Powder-Sheet-15ct-x-5/p/633140",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h52/h72/30733103005726.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "633140",
+        "match_key": "__no_brand__|슈퍼 쿨링 파우더 시트 15매 x 5|15.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "슈퍼 쿨링 파우더 시트 15매 x 5",
+        "normalized_name": "슈퍼 쿨링 파우더 시트 15매 x 5",
+        "pack_qty": 15,
+        "pack_unit": "매",
+        "price": 11990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "슈퍼 쿨링 파우더 시트 15매 x 5",
+        "raw_promo_type": null,
+        "sale_price": 11990,
+        "source": "costco",
+        "source_record_key": "633140",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathBodyOral-Care/HandFootcareDeodorant/Super-Cooling-Powder-Sheet-15ct-x-5/p/633140",
+        "unit_price": 160.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 160원",
+        "unit_price_displayed": 160,
+        "unit_price_text": "장당 160원"
+      },
+      "raw_payload_sha256": "4f8e394357c97a68be3fff93b58e1b93c69437ad12fd0299fec8fe6b8e03fb29",
+      "raw_record_id": "ingestion:49:15",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "633140",
+      "source_title": "슈퍼 쿨링 파우더 시트 15매 x 5",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathBodyOral-Care/HandFootcareDeodorant/Super-Cooling-Powder-Sheet-15ct-x-5/p/633140",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:15",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "633140",
+    "source_title": "슈퍼 쿨링 파우더 시트 15매 x 5"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:16",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "메르슈 프리미엄 코튼티슈 80매 x 6",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h39/h74/419372875481118.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 16,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 35790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "911a1dea666af6cc7db432d12895a3af18afaf72",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084",
+        "category": "휴지",
+        "cocodalin_join_key": "675084",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h39/h74/419372875481118.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "675084",
+        "match_key": "__no_brand__|메르슈 프리미엄 코튼티슈 80매 x 6|80.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메르슈 프리미엄 코튼티슈 80매 x 6",
+        "normalized_name": "메르슈 프리미엄 코튼티슈 80매 x 6",
+        "pack_qty": 80,
+        "pack_unit": "매",
+        "price": 35790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메르슈 프리미엄 코튼티슈 80매 x 6",
+        "raw_promo_type": null,
+        "sale_price": 35790,
+        "source": "costco",
+        "source_record_key": "675084",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084",
+        "unit_price": 746.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 746원",
+        "unit_price_displayed": 746,
+        "unit_price_text": "10매당 746원"
+      },
+      "raw_payload_sha256": "d2108f452ae1bb56a67cd2515e7c5e6a66bb7aab2147b7170368eb3415ddde2d",
+      "raw_record_id": "ingestion:49:16",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "675084",
+      "source_title": "메르슈 프리미엄 코튼티슈 80매 x 6",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:16",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "675084",
+    "source_title": "메르슈 프리미엄 코튼티슈 80매 x 6"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.facial"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "미용티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:17",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "모나리자 미용티슈 300매 x 6 x 4팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Facial-Tissue-300ct-x-6-x-4-Pack/p/616638"
+      ],
+      "unified_category_id": "household.hygiene.paper.facial",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8a/he7/27310612316190.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 17,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 4.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 35990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "baa92d6d8333bf81a9a1ab73c32e2785b0653ba7",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Facial-Tissue-300ct-x-6-x-4-Pack/p/616638",
+        "category": "휴지",
+        "cocodalin_join_key": "616638",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Facial-Tissue-300ct-x-6-x-4-Pack/p/616638",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8a/he7/27310612316190.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "616638",
+        "match_key": "__no_brand__|모나리자 미용티슈 300매 x 6 x 4팩|4.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모나리자 미용티슈 300매 x 6 x 4팩",
+        "normalized_name": "모나리자 미용티슈 300매 x 6 x 4팩",
+        "pack_qty": 4,
+        "pack_unit": "팩",
+        "price": 35990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "모나리자 미용티슈 300매 x 6 x 4팩",
+        "raw_promo_type": null,
+        "sale_price": 35990,
+        "source": "costco",
+        "source_record_key": "616638",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Facial-Tissue-300ct-x-6-x-4-Pack/p/616638",
+        "unit_price": 50.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 50원",
+        "unit_price_displayed": 50,
+        "unit_price_text": "10매당 50원"
+      },
+      "raw_payload_sha256": "0eb08462a0e0c9e347aebda2498f9f6ed1c7d60d194b8d3efebd77ee9abe3c4a",
+      "raw_record_id": "ingestion:49:17",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "616638",
+      "source_title": "모나리자 미용티슈 300매 x 6 x 4팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Facial-Tissue-300ct-x-6-x-4-Pack/p/616638",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:17",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "616638",
+    "source_title": "모나리자 미용티슈 300매 x 6 x 4팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.facial"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "미용티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:18",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Mini-Plus-Facial-Tissue-250ct-x-12-x-4pk/p/616640"
+      ],
+      "unified_category_id": "household.hygiene.paper.facial",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hca/hf4/17061446189086.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 18,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 12,
+        "display_unit": "",
+        "package_quantity": 4.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b7d4d6b59de0e4536d928f93237d6223326dad4c",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Mini-Plus-Facial-Tissue-250ct-x-12-x-4pk/p/616640",
+        "category": "휴지",
+        "cocodalin_join_key": "616640",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Mini-Plus-Facial-Tissue-250ct-x-12-x-4pk/p/616640",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hca/hf4/17061446189086.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "616640",
+        "match_key": "__no_brand__|모나리자 미니플러스 미용티슈 250매 x 12 x 4팩|4.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩",
+        "normalized_name": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩",
+        "pack_qty": 4,
+        "pack_unit": "팩",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "616640",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Mini-Plus-Facial-Tissue-250ct-x-12-x-4pk/p/616640",
+        "unit_price": 35.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 35원",
+        "unit_price_displayed": 35,
+        "unit_price_text": "10매당 35원"
+      },
+      "raw_payload_sha256": "0156fdb5c586a935c0507d37f88f074a29acb01bfbd886c0a6ef75751cf695c0",
+      "raw_record_id": "ingestion:49:18",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "616640",
+      "source_title": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Monalisa-Mini-Plus-Facial-Tissue-250ct-x-12-x-4pk/p/616640",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:18",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "616640",
+    "source_title": "모나리자 미니플러스 미용티슈 250매 x 12 x 4팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:19",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbb/h82/415027617759262.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 19,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 26290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "719787756c390230e9593375b6a743f25dac06e8",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039",
+        "category": "휴지",
+        "cocodalin_join_key": "623039",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbb/h82/415027617759262.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "623039",
+        "match_key": "__no_brand__|크리넥스 카카오 미니 티슈 230매 x 6 x 3팩|3.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+        "normalized_name": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+        "pack_qty": 3,
+        "pack_unit": "팩",
+        "price": 26290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+        "raw_promo_type": null,
+        "sale_price": 26290,
+        "source": "costco",
+        "source_record_key": "623039",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039",
+        "unit_price": 64.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 64원",
+        "unit_price_displayed": 64,
+        "unit_price_text": "10매당 64원"
+      },
+      "raw_payload_sha256": "afbba7b3f221b0ea259343295f86fe2decfa3ad3e6c4f72770ecefba5909bfea",
+      "raw_record_id": "ingestion:49:19",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "623039",
+      "source_title": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.facial",
+        "path": "/proposed_decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:49:19",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "623039",
+    "source_title": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:20",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 소프트터치 티슈 250매 x 8x 2팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Touch-Facial-Tissue-250ct-x-8-x-2/p/604827"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/hd6/85388616564766.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 20,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 40990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1b425b65be8b0e36002135aa335915683db5e545",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Touch-Facial-Tissue-250ct-x-8-x-2/p/604827",
+        "category": "휴지",
+        "cocodalin_join_key": "604827",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Touch-Facial-Tissue-250ct-x-8-x-2/p/604827",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/hd6/85388616564766.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "604827",
+        "match_key": "__no_brand__|크리넥스 소프트터치 티슈 250매 x 8x 2팩|2.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 소프트터치 티슈 250매 x 8x 2팩",
+        "normalized_name": "크리넥스 소프트터치 티슈 250매 x 8x 2팩",
+        "pack_qty": 2,
+        "pack_unit": "팩",
+        "price": 40990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 소프트터치 티슈 250매 x 8x 2팩",
+        "raw_promo_type": null,
+        "sale_price": 40990,
+        "source": "costco",
+        "source_record_key": "604827",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Touch-Facial-Tissue-250ct-x-8-x-2/p/604827",
+        "unit_price": 102.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 102원",
+        "unit_price_displayed": 102,
+        "unit_price_text": "10매당 102원"
+      },
+      "raw_payload_sha256": "3f418e3c6de7b288dbba4280eaef7214781c3a2b2a1c30d34fb2fd6c79f16f80",
+      "raw_record_id": "ingestion:49:20",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "604827",
+      "source_title": "크리넥스 소프트터치 티슈 250매 x 8x 2팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Touch-Facial-Tissue-250ct-x-8-x-2/p/604827",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.facial",
+        "path": "/proposed_decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:49:20",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "604827",
+    "source_title": "크리넥스 소프트터치 티슈 250매 x 8x 2팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:22",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 수프림 플러스 화장지 40m x 30롤",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Supreme-Plus-Bath-Tissue-40m-x-30roll/p/701306"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6e/hf4/418030387658782.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 22,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 33290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "516e216426f261886b71c193dd5d78104f2abcc1",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Supreme-Plus-Bath-Tissue-40m-x-30roll/p/701306",
+        "category": "휴지",
+        "cocodalin_join_key": "701306",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Supreme-Plus-Bath-Tissue-40m-x-30roll/p/701306",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6e/hf4/418030387658782.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "701306",
+        "match_key": "__no_brand__|크리넥스 수프림 플러스 화장지 40m x 30롤||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 수프림 플러스 화장지 40m x 30롤",
+        "normalized_name": "크리넥스 수프림 플러스 화장지 40m x 30롤",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 33290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 수프림 플러스 화장지 40m x 30롤",
+        "raw_promo_type": null,
+        "sale_price": 33290,
+        "source": "costco",
+        "source_record_key": "701306",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Supreme-Plus-Bath-Tissue-40m-x-30roll/p/701306",
+        "unit_price": 277.0,
+        "unit_price_basis": "10미터",
+        "unit_price_basis_raw": "10미터",
+        "unit_price_display": "10미터당 277원",
+        "unit_price_displayed": 277,
+        "unit_price_text": "10미터당 277원"
+      },
+      "raw_payload_sha256": "920801ff797fd889c7a156a483d5aaf741ac1de09c43b4a87e4a7c4ac730ecb0",
+      "raw_record_id": "ingestion:49:22",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "701306",
+      "source_title": "크리넥스 수프림 플러스 화장지 40m x 30롤",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Supreme-Plus-Bath-Tissue-40m-x-30roll/p/701306",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.toilet",
+        "path": "/proposed_decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:49:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "701306",
+    "source_title": "크리넥스 수프림 플러스 화장지 40m x 30롤"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.wipes"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "물티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:23",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Su-and-Su-Wipes-10ct-x-6-x-12/p/625708"
+      ],
+      "unified_category_id": "household.hygiene.paper.wipes",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h49/h09/15413845884958.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 23,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 12.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 37990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9830b03144b7d5cb0fce3a55e6ab8e638e3fc58a",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Su-and-Su-Wipes-10ct-x-6-x-12/p/625708",
+        "category": "휴지",
+        "cocodalin_join_key": "625708",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Su-and-Su-Wipes-10ct-x-6-x-12/p/625708",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h49/h09/15413845884958.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "625708",
+        "match_key": "__no_brand__|크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩|12.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩",
+        "normalized_name": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩",
+        "pack_qty": 12,
+        "pack_unit": "팩",
+        "price": 37990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩",
+        "raw_promo_type": null,
+        "sale_price": 37990,
+        "source": "costco",
+        "source_record_key": "625708",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Su-and-Su-Wipes-10ct-x-6-x-12/p/625708",
+        "unit_price": 53.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 53원",
+        "unit_price_displayed": 53,
+        "unit_price_text": "장당 53원"
+      },
+      "raw_payload_sha256": "bbfbcf32be4abf8406913554b1ca24a42053667445d17b258967a9d63732d705",
+      "raw_record_id": "ingestion:49:23",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "625708",
+      "source_title": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Su-and-Su-Wipes-10ct-x-6-x-12/p/625708",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:23",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "625708",
+    "source_title": "크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.wipes"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "물티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:24",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Antibacterial-Wipes-20ct-x-3-x-8/p/625714"
+      ],
+      "unified_category_id": "household.hygiene.paper.wipes",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd9/h2e/14638579449886.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 22490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f0245ed9d75c596cdcfe103a4ec2a649e216abcd",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Antibacterial-Wipes-20ct-x-3-x-8/p/625714",
+        "category": "휴지",
+        "cocodalin_join_key": "625714",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Antibacterial-Wipes-20ct-x-3-x-8/p/625714",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd9/h2e/14638579449886.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "625714",
+        "match_key": "__no_brand__|크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩|8.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩",
+        "normalized_name": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩",
+        "pack_qty": 8,
+        "pack_unit": "팩",
+        "price": 22490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩",
+        "raw_promo_type": null,
+        "sale_price": 22490,
+        "source": "costco",
+        "source_record_key": "625714",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Antibacterial-Wipes-20ct-x-3-x-8/p/625714",
+        "unit_price": 47.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 47원",
+        "unit_price_displayed": 47,
+        "unit_price_text": "장당 47원"
+      },
+      "raw_payload_sha256": "cd9d9e4b81af0a2c6fc9da85143e76892c5e87d0df747807e15532f437455ce7",
+      "raw_record_id": "ingestion:49:24",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "625714",
+      "source_title": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Antibacterial-Wipes-20ct-x-3-x-8/p/625714",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:24",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "625714",
+    "source_title": "크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_18.12",
+      "raw_record_id": "ingestion:49:25",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Table-Napkins-Min-order-qty-2/p/329281"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h54/h16/154838147006494.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "promotion_conditions_unresolved",
+        "unit_unresolved"
+      ],
+      "item_index": 25,
+      "mart_native_category_id": "cos_18.12",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 27790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {
+        "source_title_purchase_condition": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2"
+      },
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "21fdbf6463e60bfbac498a35d23bdf18c75f8596",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Table-Napkins-Min-order-qty-2/p/329281",
+        "category": "휴지",
+        "cocodalin_join_key": "329281",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Table-Napkins-Min-order-qty-2/p/329281",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h54/h16/154838147006494.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_18.12",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "329281",
+        "match_key": "__no_brand__|커클랜드 시그니춰 테이블 냅킨 최소구매 2||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2",
+        "normalized_name": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 27790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2",
+        "raw_promo_type": null,
+        "sale_price": 27790,
+        "source": "costco",
+        "source_record_key": "329281",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Table-Napkins-Min-order-qty-2/p/329281",
+        "unit_price": 21.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 21원",
+        "unit_price_displayed": 21,
+        "unit_price_text": "장당 21원"
+      },
+      "raw_payload_sha256": "392c2f1c7922b133988dce783ad3602cd06c2b7218f9b25524de573e9a915f7c",
+      "raw_record_id": "ingestion:49:25",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "329281",
+      "source_title": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kirkland-Signature-Table-Napkins-Min-order-qty-2/p/329281",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_conditions_unresolved",
+      "unit_unresolved"
+    ],
+    "source_record_key": "329281",
+    "source_title": "커클랜드 시그니춰 테이블 냅킨 / 최소구매 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:26",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "베지터블 코인 압축 티슈 300개",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vegetable-Coin-Tissue-300ea/p/615890"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h77/h9a/367690418552862.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 26,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 300.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 12990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ed8c2945cba26bb93b3401114fc211058e101eca",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vegetable-Coin-Tissue-300ea/p/615890",
+        "category": "휴지",
+        "cocodalin_join_key": "615890",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vegetable-Coin-Tissue-300ea/p/615890",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h77/h9a/367690418552862.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "615890",
+        "match_key": "__no_brand__|베지터블 코인 압축 티슈 300개|300.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "베지터블 코인 압축 티슈 300개",
+        "normalized_name": "베지터블 코인 압축 티슈 300개",
+        "pack_qty": 300,
+        "pack_unit": "개",
+        "price": 12990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "베지터블 코인 압축 티슈 300개",
+        "raw_promo_type": null,
+        "sale_price": 12990,
+        "source": "costco",
+        "source_record_key": "615890",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vegetable-Coin-Tissue-300ea/p/615890",
+        "unit_price": 43.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 43원",
+        "unit_price_displayed": 43,
+        "unit_price_text": "개　　　당 43원"
+      },
+      "raw_payload_sha256": "990de710a5d30e43a88554ce11a8d4dafedbeaf95b365607c2f1904566bcfd42",
+      "raw_record_id": "ingestion:49:26",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "615890",
+      "source_title": "베지터블 코인 압축 티슈 300개",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Vegetable-Coin-Tissue-300ea/p/615890",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "615890",
+    "source_title": "베지터블 코인 압축 티슈 300개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:27",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "메르슈 무표백 순면 건티슈 150매 x 5",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-150ct-x-5/p/675081"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h41/h2a/419372867616798.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 27,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "",
+        "package_quantity": 150.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 33990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "598c861df634044e588ede70e1d7db4c15907273",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-150ct-x-5/p/675081",
+        "category": "휴지",
+        "cocodalin_join_key": "675081",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-150ct-x-5/p/675081",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h41/h2a/419372867616798.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "675081",
+        "match_key": "__no_brand__|메르슈 무표백 순면 건티슈 150매 x 5|150.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메르슈 무표백 순면 건티슈 150매 x 5",
+        "normalized_name": "메르슈 무표백 순면 건티슈 150매 x 5",
+        "pack_qty": 150,
+        "pack_unit": "매",
+        "price": 33990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메르슈 무표백 순면 건티슈 150매 x 5",
+        "raw_promo_type": null,
+        "sale_price": 33990,
+        "source": "costco",
+        "source_record_key": "675081",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-150ct-x-5/p/675081",
+        "unit_price": 453.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 453원",
+        "unit_price_displayed": 453,
+        "unit_price_text": "10매당 453원"
+      },
+      "raw_payload_sha256": "040763078a5f3145642e710318be12988e31148464e4db7f2a795357dbc90b22",
+      "raw_record_id": "ingestion:49:27",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "675081",
+      "source_title": "메르슈 무표백 순면 건티슈 150매 x 5",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue-150ct-x-5/p/675081",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "675081",
+    "source_title": "메르슈 무표백 순면 건티슈 150매 x 5"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:28",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h1b/hed/415890385633310.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 28,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 14.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 27490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7370c6e6884130d1e80c2efa6f107d2b62b3a137",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720",
+        "category": "휴지",
+        "cocodalin_join_key": "625720",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h1b/hed/415890385633310.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "625720",
+        "match_key": "__no_brand__|크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩|14.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+        "normalized_name": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+        "pack_qty": 14,
+        "pack_unit": "팩",
+        "price": 27490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+        "raw_promo_type": null,
+        "sale_price": 27490,
+        "source": "costco",
+        "source_record_key": "625720",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720",
+        "unit_price": 94.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 94원",
+        "unit_price_displayed": 94,
+        "unit_price_text": "10매당 94원"
+      },
+      "raw_payload_sha256": "fd6ff62a5afd2fb37ae504fb218dd6be09d373963c87a802a668f88853da6fd8",
+      "raw_record_id": "ingestion:49:28",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "625720",
+      "source_title": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.facial",
+        "path": "/proposed_decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:49:28",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "625720",
+    "source_title": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:29",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue/p/675082"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3a/h20/419372870565918.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "mixed_package_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 29,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 34990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9dfdfffc47433115bbc5e68f5c5f5db61f85e26c",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue/p/675082",
+        "category": "휴지",
+        "cocodalin_join_key": "675082",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue/p/675082",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3a/h20/419372870565918.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "675082",
+        "match_key": "__no_brand__|메르슈 건티슈 150매 x 3팩 15매 x 10 x 2팩|2.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩",
+        "normalized_name": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩",
+        "pack_qty": 2,
+        "pack_unit": "팩",
+        "price": 34990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩",
+        "raw_promo_type": null,
+        "sale_price": 34990,
+        "source": "costco",
+        "source_record_key": "675082",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue/p/675082",
+        "unit_price": 467.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 467원",
+        "unit_price_displayed": 467,
+        "unit_price_text": "10매당 467원"
+      },
+      "raw_payload_sha256": "6b2db54deea7e3a15a99ab5d26dbb45de7a15960bf6ea67ab280f4a46befd39d",
+      "raw_record_id": "ingestion:49:29",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "675082",
+      "source_title": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Natural-Cotton-Dry-Tissue/p/675082",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:29",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "mixed_package_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "675082",
+    "source_title": "메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:30",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "메르슈 세트구성",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Set/p/675085"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hff/h58/419372900417566.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 30,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 36290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "02fcf1e9ca92583d1bc12b0f25c5b311b50f3cfc",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Set/p/675085",
+        "category": "휴지",
+        "cocodalin_join_key": "675085",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Set/p/675085",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hff/h58/419372900417566.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "675085",
+        "match_key": "__no_brand__|메르슈 세트구성||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메르슈 세트구성",
+        "normalized_name": "메르슈 세트구성",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 36290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메르슈 세트구성",
+        "raw_promo_type": null,
+        "sale_price": 36290,
+        "source": "costco",
+        "source_record_key": "675085",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Set/p/675085",
+        "unit_price": 907.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 907원",
+        "unit_price_displayed": 907,
+        "unit_price_text": "10매당 907원"
+      },
+      "raw_payload_sha256": "41bb628415ddcd7a938a5de575eef88aafca8fcf21b017a9ec32739b1ac34568",
+      "raw_record_id": "ingestion:49:30",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "675085",
+      "source_title": "메르슈 세트구성",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Set/p/675085",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:30",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "675085",
+    "source_title": "메르슈 세트구성"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:31",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 18팩",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-18/p/673367"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "cleaning-products",
+        "cleaning-chemicals"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd6/h0a/485602198880286.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": 39990,
+      "package": {
+        "bundle_count": 18,
+        "display_unit": "",
+        "package_quantity": 18.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 35990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "bffbcd2e8fa2de0bbea68bfef9aa15d3e040065c",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-18/p/673367",
+        "category": "휴지",
+        "cocodalin_join_key": "673367",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-18/p/673367",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd6/h0a/485602198880286.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "673367",
+        "match_key": "__no_brand__|스카트 잘 닦이는 청소 티슈 60매 x 18팩|18.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "스카트 잘 닦이는 청소 티슈 60매 x 18팩",
+        "normalized_name": "스카트 잘 닦이는 청소 티슈 60매 x 18팩",
+        "pack_qty": 18,
+        "pack_unit": "팩",
+        "price": 39990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "스카트 잘 닦이는 청소 티슈 60매 x 18팩",
+        "raw_promo_type": "discount",
+        "sale_price": 35990,
+        "source": "costco",
+        "source_record_key": "673367",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-18/p/673367",
+        "unit_price": 33.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 33원",
+        "unit_price_displayed": 33,
+        "unit_price_text": "장당 33원"
+      },
+      "raw_payload_sha256": "ab844e0e8c46906bc343c1a76ff4c57ad094f51558ae1638cb074734ea753349",
+      "raw_record_id": "ingestion:49:31",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "673367",
+      "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 18팩",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-18/p/673367",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "673367",
+    "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 18팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:32",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "스카트 유리 거울 세정청소티슈 30매 x 12팩",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Glass-Mirror-Cleaning-Wipes-30ct-x-12/p/673368"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "cleaning-products",
+        "cleaning-chemicals"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf0/h9b/227135119360030.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 32,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": 29990,
+      "package": {
+        "bundle_count": 12,
+        "display_unit": "",
+        "package_quantity": 12.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 25990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "5476c497515c417813bd1534554ec9fe4d7a17d5",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Glass-Mirror-Cleaning-Wipes-30ct-x-12/p/673368",
+        "category": "휴지",
+        "cocodalin_join_key": "673368",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Glass-Mirror-Cleaning-Wipes-30ct-x-12/p/673368",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf0/h9b/227135119360030.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "673368",
+        "match_key": "__no_brand__|스카트 유리 거울 세정청소티슈 30매 x 12팩|12.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "스카트 유리 거울 세정청소티슈 30매 x 12팩",
+        "normalized_name": "스카트 유리 거울 세정청소티슈 30매 x 12팩",
+        "pack_qty": 12,
+        "pack_unit": "팩",
+        "price": 29990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "스카트 유리 거울 세정청소티슈 30매 x 12팩",
+        "raw_promo_type": "discount",
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "673368",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Glass-Mirror-Cleaning-Wipes-30ct-x-12/p/673368",
+        "unit_price": 72.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 72원",
+        "unit_price_displayed": 72,
+        "unit_price_text": "장당 72원"
+      },
+      "raw_payload_sha256": "57b0f618d867b69b8ce7758c26d781125daafc370579364bd102105eae4e0233",
+      "raw_record_id": "ingestion:49:32",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "673368",
+      "source_title": "스카트 유리 거울 세정청소티슈 30매 x 12팩",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Glass-Mirror-Cleaning-Wipes-30ct-x-12/p/673368",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "673368",
+    "source_title": "스카트 유리 거울 세정청소티슈 30매 x 12팩"
+  }
+]

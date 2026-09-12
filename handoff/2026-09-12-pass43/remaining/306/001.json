@@ -1,0 +1,294 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.plant.soy.silken"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:13d86c8b2a77e080aac6074c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "식물성식품",
+        "콩가공품",
+        "순두부·연두부"
+      ],
+      "raw_native_category_id": "11",
+      "raw_record_id": "ingestion:15:38",
+      "review_status": "pending",
+      "source_path": "두부/김치/반찬 > 두부/나물 > 순두부/연두부",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "순두부/연두부"
+      ],
+      "source_title": "대상 고소한 국산콩 찌개용 두부 400G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "대상",
+      "crawled_at": "2026-08-31T01:46:15.212419Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 15,
+      "ingestion_received_at": "2026-08-31T01:47:35.721011Z",
+      "issues": [],
+      "item_index": 38,
+      "mart_native_category_id": "11",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "대상",
+          "canon_hash": "0f5121cd772ae90c1eeae5cbb5e3bacc2f8f55de",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "category_hint": "순두부/연두부",
+          "docId": "H112841891N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8C%80%EC%83%81-%EA%B3%A0%EC%86%8C%ED%95%9C-%EA%B5%AD%EC%82%B0%EC%BD%A9-%EC%B0%8C%EA%B0%9C%EC%9A%A9-%EB%91%90%EB%B6%80-400G/112841891",
+          "mart_native_category_id": "11",
+          "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 순두부/연두부 > 순두부/연두부",
+          "mart_native_code": "112841891",
+          "normalized_name": "대상 고소한 국산콩 찌개용 두부 400G",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "raw_name": "대상 고소한 국산콩 찌개용 두부 400G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "112841891",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1323.0
+        },
+        "brand": "__no_brand__",
+        "category": "순두부/연두부",
+        "crawled_at": "2026-08-31T10:46:15.212419",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "400g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|대상 고소한 국산콩 찌개용 두부 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "대상 고소한 국산콩 찌개용 두부 400G",
+        "normalized_name": "대상 고소한 국산콩 찌개용 두부 400G",
+        "original_price": null,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 1322.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5290,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3444628449e73c5931d39ef76b5b5fb6d4e9e91f3097be06947e20c2d3dec3b3",
+      "raw_record_id": "ingestion:15:38",
+      "source_category_path": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "순두부/연두부",
+        "순두부/연두부"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "112841891",
+      "source_title": "대상 고소한 국산콩 찌개용 두부 400G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-306-310.json",
+        "flags": [],
+        "leaf": "food.plant.soy.tofu",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:15:38",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "112841891",
+    "source_title": "대상 고소한 국산콩 찌개용 두부 400G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.plant.soy.silken"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:13d86c8b2a77e080aac6074c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "식물성식품",
+        "콩가공품",
+        "순두부·연두부"
+      ],
+      "raw_native_category_id": "11",
+      "raw_record_id": "ingestion:64:76",
+      "review_status": "pending",
+      "source_path": "두부/김치/반찬 > 두부/나물 > 순두부/연두부",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "순두부/연두부"
+      ],
+      "source_title": "대상 고소한 국산콩 찌개용 두부 400G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "대상",
+      "crawled_at": "2026-09-02T13:39:08.714849Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 64,
+      "ingestion_received_at": "2026-09-02T13:40:33.690216Z",
+      "issues": [],
+      "item_index": 76,
+      "mart_native_category_id": "11",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "대상",
+          "canon_hash": "0f5121cd772ae90c1eeae5cbb5e3bacc2f8f55de",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "category_hint": "순두부/연두부",
+          "docId": "H112841891N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8C%80%EC%83%81-%EA%B3%A0%EC%86%8C%ED%95%9C-%EA%B5%AD%EC%82%B0%EC%BD%A9-%EC%B0%8C%EA%B0%9C%EC%9A%A9-%EB%91%90%EB%B6%80-400G/112841891",
+          "mart_native_category_id": "11",
+          "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 순두부/연두부 > 순두부/연두부",
+          "mart_native_code": "112841891",
+          "normalized_name": "대상 고소한 국산콩 찌개용 두부 400G",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "raw_name": "대상 고소한 국산콩 찌개용 두부 400G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "112841891",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1323.0
+        },
+        "brand": "__no_brand__",
+        "category": "순두부/연두부",
+        "crawled_at": "2026-09-02T22:39:08.714849",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "400g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|대상 고소한 국산콩 찌개용 두부 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "대상 고소한 국산콩 찌개용 두부 400G",
+        "normalized_name": "대상 고소한 국산콩 찌개용 두부 400G",
+        "original_price": null,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 1322.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5290,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "969ff9dfed723a6b0d52cf464b30159255bc70ed90043f1d4bd553567804b238",
+      "raw_record_id": "ingestion:64:76",
+      "source_category_path": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "순두부/연두부",
+        "순두부/연두부"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "112841891",
+      "source_title": "대상 고소한 국산콩 찌개용 두부 400G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-306-310.json",
+        "flags": [],
+        "leaf": "food.plant.soy.tofu",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:64:76",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "112841891",
+    "source_title": "대상 고소한 국산콩 찌개용 두부 400G"
+  }
+]

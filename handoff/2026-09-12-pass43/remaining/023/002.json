@@ -1,0 +1,1958 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.wipes"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "물티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:33",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Kleenex/Kleenex-Soft-Embossing-Wipes-60ct-x-8-x-2/p/511066"
+      ],
+      "unified_category_id": "household.hygiene.paper.wipes",
+      "url_taxonomy_hints": [
+        "kleenex"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/hf1/17434906263582.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 33,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ebfc25119689f8a3908690d4cf43e216e1dcd51c",
+        "canonical_url": "https://www.costco.co.kr/Kleenex/Kleenex-Soft-Embossing-Wipes-60ct-x-8-x-2/p/511066",
+        "category": "휴지",
+        "cocodalin_join_key": "511066",
+        "detail_url": "https://www.costco.co.kr/Kleenex/Kleenex-Soft-Embossing-Wipes-60ct-x-8-x-2/p/511066",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/hf1/17434906263582.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "511066",
+        "match_key": "__no_brand__|크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩|2.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩",
+        "normalized_name": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩",
+        "pack_qty": 2,
+        "pack_unit": "팩",
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "511066",
+        "source_url": "https://www.costco.co.kr/Kleenex/Kleenex-Soft-Embossing-Wipes-60ct-x-8-x-2/p/511066",
+        "unit_price": 25.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 25원",
+        "unit_price_displayed": 25,
+        "unit_price_text": "장당 25원"
+      },
+      "raw_payload_sha256": "b50250f26a80e6c139b83403b2ee0fde12c08a092d9fe604b4417aebc74ee42e",
+      "raw_record_id": "ingestion:49:33",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "511066",
+      "source_title": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩",
+      "source_url": "https://www.costco.co.kr/Kleenex/Kleenex-Soft-Embossing-Wipes-60ct-x-8-x-2/p/511066",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:33",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "511066",
+    "source_title": "크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:34",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/hf4/137127989051422.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 34,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 9,
+        "display_unit": "",
+        "package_quantity": 9.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 28990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7f54017a8cd68de4e1af7e263379dc574666e3fb",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936",
+        "category": "휴지",
+        "cocodalin_join_key": "728936",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/hf4/137127989051422.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "728936",
+        "match_key": "__no_brand__|크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2|9.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+        "normalized_name": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+        "pack_qty": 9,
+        "pack_unit": "팩",
+        "price": 28990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+        "raw_promo_type": null,
+        "sale_price": 28990,
+        "source": "costco",
+        "source_record_key": "728936",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936",
+        "unit_price": 40.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 40원",
+        "unit_price_displayed": 40,
+        "unit_price_text": "장당 40원"
+      },
+      "raw_payload_sha256": "eb07cc10597824c0fbf95c24222a9f166458f6a1f0c6493ef161d248b1794bd6",
+      "raw_record_id": "ingestion:49:34",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "728936",
+      "source_title": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.wipes",
+        "path": "/proposed_decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:49:34",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "728936",
+    "source_title": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:35",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩",
+      "source_urls": [
+        "https://www.costco.co.kr/p/635011"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h87/hd4/82347023073310.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 35,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 14490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d4a59fcfdd3117b5f0a201549b638d89872f81f9",
+        "canonical_url": "https://www.costco.co.kr/p/635011",
+        "category": "휴지",
+        "cocodalin_join_key": "635011",
+        "detail_url": "https://www.costco.co.kr/p/635011",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h87/hd4/82347023073310.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "635011",
+        "match_key": "__no_brand__|모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩|10.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩",
+        "normalized_name": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩",
+        "pack_qty": 10,
+        "pack_unit": "팩",
+        "price": 14490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩",
+        "raw_promo_type": null,
+        "sale_price": 14490,
+        "source": "costco",
+        "source_record_key": "635011",
+        "source_url": "https://www.costco.co.kr/p/635011",
+        "unit_price": 21.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 21원",
+        "unit_price_displayed": 21,
+        "unit_price_text": "장당 21원"
+      },
+      "raw_payload_sha256": "a1bd93a639491613d29974cd0e54284d9c63ef40f7f3ed100f1c5edc39c26be4",
+      "raw_record_id": "ingestion:49:35",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "635011",
+      "source_title": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩",
+      "source_url": "https://www.costco.co.kr/p/635011",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.wipes",
+        "path": "/proposed_decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:49:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "635011",
+    "source_title": "모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:36",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h46/329184346603550.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 36,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 14,
+        "display_unit": "",
+        "package_quantity": 50.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 16990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "21800f38456d7d1499816549f2bdd852c575ca59",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272",
+        "category": "휴지",
+        "cocodalin_join_key": "682272",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h46/329184346603550.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "682272",
+        "match_key": "__no_brand__|크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14|50.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+        "normalized_name": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+        "pack_qty": 50,
+        "pack_unit": "매",
+        "price": 16990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+        "raw_promo_type": null,
+        "sale_price": 16990,
+        "source": "costco",
+        "source_record_key": "682272",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272",
+        "unit_price": 243.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 243원",
+        "unit_price_displayed": 243,
+        "unit_price_text": "10매당 243원"
+      },
+      "raw_payload_sha256": "97eb3d9e15f2a456588a977e1a8140409a349bb839917545b77ea2cf8fce0d9e",
+      "raw_record_id": "ingestion:49:36",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "682272",
+      "source_title": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.facial",
+        "path": "/proposed_decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:49:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "682272",
+    "source_title": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:37",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/he8/hb7/122029048430622.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 37,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 28990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0dc048356129a0d07826a2ea922e606279015465",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905",
+        "category": "휴지",
+        "cocodalin_join_key": "622905",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/he8/hb7/122029048430622.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "622905",
+        "match_key": "__no_brand__|크리넥스 마이비데 캡형60매x 6 x 2팩|2.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+        "normalized_name": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+        "pack_qty": 2,
+        "pack_unit": "팩",
+        "price": 28990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+        "raw_promo_type": null,
+        "sale_price": 28990,
+        "source": "costco",
+        "source_record_key": "622905",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905",
+        "unit_price": 40.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 40원",
+        "unit_price_displayed": 40,
+        "unit_price_text": "장당 40원"
+      },
+      "raw_payload_sha256": "e3f54e287b75c8647e9025be0ef714e5f9ecda1c2f515c52747cc3b0277ea42f",
+      "raw_record_id": "ingestion:49:37",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "622905",
+      "source_title": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-tissue-shelf-023.json",
+        "flags": [],
+        "leaf": "household.hygiene.paper.wipes",
+        "path": "/proposed_decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:49:37",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "622905",
+    "source_title": "크리넥스 마이비데 캡형60매x 6 x 2팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:38",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Guaranteed-by-Vastly-Kitchen-Towel-85ctx2rollx6/p/654902"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h82/h7f/102806783459358.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 38,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 85.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 33790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f3a6626226871453a8bc8919e490f7a7aefd9b8e",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Guaranteed-by-Vastly-Kitchen-Towel-85ctx2rollx6/p/654902",
+        "category": "휴지",
+        "cocodalin_join_key": "654902",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Guaranteed-by-Vastly-Kitchen-Towel-85ctx2rollx6/p/654902",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h82/h7f/102806783459358.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "654902",
+        "match_key": "__no_brand__|게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6|85.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6",
+        "normalized_name": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6",
+        "pack_qty": 85,
+        "pack_unit": "매",
+        "price": 33790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6",
+        "raw_promo_type": null,
+        "sale_price": 33790,
+        "source": "costco",
+        "source_record_key": "654902",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Guaranteed-by-Vastly-Kitchen-Towel-85ctx2rollx6/p/654902",
+        "unit_price": 154.0,
+        "unit_price_basis": "미터　　",
+        "unit_price_basis_raw": "미터　　",
+        "unit_price_display": "미터　　당 154원",
+        "unit_price_displayed": 154,
+        "unit_price_text": "미터　　당 154원"
+      },
+      "raw_payload_sha256": "46ab406b979a97abb00e20f864bc85977abee76bedc9f799f35acd7db68331e0",
+      "raw_record_id": "ingestion:49:38",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "654902",
+      "source_title": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Guaranteed-by-Vastly-Kitchen-Towel-85ctx2rollx6/p/654902",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:38",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "654902",
+    "source_title": "게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.wipes"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "물티슈"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:39",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Iris-Pocket-Wet-Tissue-8ct-x-6-x-6pk/p/683726"
+      ],
+      "unified_category_id": "household.hygiene.paper.wipes",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h16/hd6/470121950052382.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 39,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 6.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 12990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c1d6c0337735dcbc359a0824a254f48c09e4d492",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Iris-Pocket-Wet-Tissue-8ct-x-6-x-6pk/p/683726",
+        "category": "휴지",
+        "cocodalin_join_key": "683726",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Iris-Pocket-Wet-Tissue-8ct-x-6-x-6pk/p/683726",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h16/hd6/470121950052382.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "683726",
+        "match_key": "__no_brand__|아이리스 포켓형 물티슈 8매 x 6입 x 6팩|6.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩",
+        "normalized_name": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩",
+        "pack_qty": 6,
+        "pack_unit": "팩",
+        "price": 12990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩",
+        "raw_promo_type": null,
+        "sale_price": 12990,
+        "source": "costco",
+        "source_record_key": "683726",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Iris-Pocket-Wet-Tissue-8ct-x-6-x-6pk/p/683726",
+        "unit_price": 45.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 45원",
+        "unit_price_displayed": 45,
+        "unit_price_text": "장당 45원"
+      },
+      "raw_payload_sha256": "3437e47d5351d7b053612f40203ecc855efcbd448b43e34510fcb51de72a287f",
+      "raw_record_id": "ingestion:49:39",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "683726",
+      "source_title": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Iris-Pocket-Wet-Tissue-8ct-x-6-x-6pk/p/683726",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:39",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "683726",
+    "source_title": "아이리스 포켓형 물티슈 8매 x 6입 x 6팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:40",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 8팩",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-8/p/773367"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "cleaning-products",
+        "cleaning-chemicals"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h05/h69/502265722437662.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": 19490,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 15990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "677329470ad7dd1cc175371b15fe9ab02c165330",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-8/p/773367",
+        "category": "휴지",
+        "cocodalin_join_key": "773367",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-8/p/773367",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h05/h69/502265722437662.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "773367",
+        "match_key": "__no_brand__|스카트 잘 닦이는 청소 티슈 60매 x 8팩|8.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "스카트 잘 닦이는 청소 티슈 60매 x 8팩",
+        "normalized_name": "스카트 잘 닦이는 청소 티슈 60매 x 8팩",
+        "pack_qty": 8,
+        "pack_unit": "팩",
+        "price": 19490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "스카트 잘 닦이는 청소 티슈 60매 x 8팩",
+        "raw_promo_type": "discount",
+        "sale_price": 15990,
+        "source": "costco",
+        "source_record_key": "773367",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-8/p/773367",
+        "unit_price": 33.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 33원",
+        "unit_price_displayed": 33,
+        "unit_price_text": "장당 33원"
+      },
+      "raw_payload_sha256": "04b85a8e2533f2e481ed7c6ea327b3c71d2e0d61baf6856788f4c9ffd5ac9b80",
+      "raw_record_id": "ingestion:49:40",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "773367",
+      "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 8팩",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Cleaning-Chemicals/Scott-Cleaning-Wipes-60ct-x-8/p/773367",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:40",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "773367",
+    "source_title": "스카트 잘 닦이는 청소 티슈 60매 x 8팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:49:41",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Forti-Trash-Bin-24L/p/686345"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "storageorganization",
+        "household-storage"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h97/hd8/366897618452510.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 41,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 24000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 48990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a4ca758ca6620e92c755519474c1928c65be2a33",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Forti-Trash-Bin-24L/p/686345",
+        "category": "휴지",
+        "cocodalin_join_key": "686345",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Forti-Trash-Bin-24L/p/686345",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h97/hd8/366897618452510.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "686345",
+        "match_key": "__no_brand__|프로메이드 포르티냄새 차단 밀폐 휴지통 24l|24000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L",
+        "normalized_name": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L",
+        "pack_qty": 24,
+        "pack_unit": "L",
+        "price": 48990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L",
+        "raw_promo_type": null,
+        "sale_price": 48990,
+        "source": "costco",
+        "source_record_key": "686345",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Forti-Trash-Bin-24L/p/686345",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "49220b83cae1f138131860f25601f962e65ad76215d88f732aeef886413a4eb3",
+      "raw_record_id": "ingestion:49:41",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "686345",
+      "source_title": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Forti-Trash-Bin-24L/p/686345",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:41",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "686345",
+    "source_title": "프로메이드 포르티냄새 차단 밀폐 휴지통 24L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:49:42",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "프로메이드 푸쉬빈 압축 휴지통 10L",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-10L/p/686343"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "storageorganization",
+        "household-storage"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h91/h17/366897608949790.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 42,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 10000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "90d8636b7b64224186f5dc70f8b67f29cc68b5bb",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-10L/p/686343",
+        "category": "휴지",
+        "cocodalin_join_key": "686343",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-10L/p/686343",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h91/h17/366897608949790.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "686343",
+        "match_key": "__no_brand__|프로메이드 푸쉬빈 압축 휴지통 10l|10000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프로메이드 푸쉬빈 압축 휴지통 10L",
+        "normalized_name": "프로메이드 푸쉬빈 압축 휴지통 10L",
+        "pack_qty": 10,
+        "pack_unit": "L",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프로메이드 푸쉬빈 압축 휴지통 10L",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "686343",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-10L/p/686343",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "91ad2ae59d3fbd6c283dc4c9624ea3148e1acc4d2984c7aae9f1d89927cb5d15",
+      "raw_record_id": "ingestion:49:42",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "686343",
+      "source_title": "프로메이드 푸쉬빈 압축 휴지통 10L",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-10L/p/686343",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "686343",
+    "source_title": "프로메이드 푸쉬빈 압축 휴지통 10L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:49:43",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "프로메이드 푸쉬빈 압축 휴지통 20L",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-20L/p/686344"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "storageorganization",
+        "household-storage"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h76/366897612914718.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 43,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 20000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 22990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "36fbdf7bd31a0fbfd3c169791d2d90ec7394d85e",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-20L/p/686344",
+        "category": "휴지",
+        "cocodalin_join_key": "686344",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-20L/p/686344",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h76/366897612914718.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "686344",
+        "match_key": "__no_brand__|프로메이드 푸쉬빈 압축 휴지통 20l|20000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프로메이드 푸쉬빈 압축 휴지통 20L",
+        "normalized_name": "프로메이드 푸쉬빈 압축 휴지통 20L",
+        "pack_qty": 20,
+        "pack_unit": "L",
+        "price": 22990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프로메이드 푸쉬빈 압축 휴지통 20L",
+        "raw_promo_type": null,
+        "sale_price": 22990,
+        "source": "costco",
+        "source_record_key": "686344",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-20L/p/686344",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "f5883ca811fbcdcfe6601e3934d13fa119b8d736d03bff8703aa3cc56b190702",
+      "raw_record_id": "ingestion:49:43",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "686344",
+      "source_title": "프로메이드 푸쉬빈 압축 휴지통 20L",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Promade-Push-bin-Trash-Bin-20L/p/686344",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "686344",
+    "source_title": "프로메이드 푸쉬빈 압축 휴지통 20L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_9.5",
+      "raw_record_id": "ingestion:49:44",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "매직캔 히포 휴지통 21L + 리필 6개",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-21L-Refill-6P/p/686352"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "storageorganization",
+        "household-storage"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h50/h61/369382962167838.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "cos_9.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 6.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 53900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "98c3fc2b5cf7000d265a815c83538c1efd06fdcb",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-21L-Refill-6P/p/686352",
+        "category": "휴지",
+        "cocodalin_join_key": "686352",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-21L-Refill-6P/p/686352",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h50/h61/369382962167838.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_9.5",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "686352",
+        "match_key": "__no_brand__|매직캔 히포 휴지통 21l 리필 6개|6.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "매직캔 히포 휴지통 21L + 리필 6개",
+        "normalized_name": "매직캔 히포 휴지통 21L + 리필 6개",
+        "pack_qty": 6,
+        "pack_unit": "개",
+        "price": 53900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "매직캔 히포 휴지통 21L + 리필 6개",
+        "raw_promo_type": null,
+        "sale_price": 53900,
+        "source": "costco",
+        "source_record_key": "686352",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-21L-Refill-6P/p/686352",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "22a2495647cc6f8792099d865868bd5469c35fb047ac317ae9819d9f80e9c747",
+      "raw_record_id": "ingestion:49:44",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "686352",
+      "source_title": "매직캔 히포 휴지통 21L + 리필 6개",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-21L-Refill-6P/p/686352",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "686352",
+    "source_title": "매직캔 히포 휴지통 21L + 리필 6개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_5",
+      "raw_record_id": "ingestion:49:45",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "가데나 자동 감김 휴대용 호스릴 12.5m",
+      "source_urls": [
+        "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/HoseAccessories/Gardena-Auto-Rewinding-Portable-Hose-Reel-125m/p/697603"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "patiolawngarden",
+        "garden-toolsequipment",
+        "hoseaccessories"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc4/hf1/502230545170462.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 45,
+      "mart_native_category_id": "cos_5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 139900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d7c42c0fd7359a05574e0f22790ee358a8c3c28e",
+        "canonical_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/HoseAccessories/Gardena-Auto-Rewinding-Portable-Hose-Reel-125m/p/697603",
+        "category": "휴지",
+        "cocodalin_join_key": "697603",
+        "detail_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/HoseAccessories/Gardena-Auto-Rewinding-Portable-Hose-Reel-125m/p/697603",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc4/hf1/502230545170462.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_5",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "697603",
+        "match_key": "__no_brand__|가데나 자동 감김 휴대용 호스릴 12 5m||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "가데나 자동 감김 휴대용 호스릴 12.5m",
+        "normalized_name": "가데나 자동 감김 휴대용 호스릴 12.5m",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 139900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "가데나 자동 감김 휴대용 호스릴 12.5m",
+        "raw_promo_type": null,
+        "sale_price": 139900,
+        "source": "costco",
+        "source_record_key": "697603",
+        "source_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/HoseAccessories/Gardena-Auto-Rewinding-Portable-Hose-Reel-125m/p/697603",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "5c25363233232e2db11051a96f32570571011232f5659800c97dcea39fe1b28b",
+      "raw_record_id": "ingestion:49:45",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "697603",
+      "source_title": "가데나 자동 감김 휴대용 호스릴 12.5m",
+      "source_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/HoseAccessories/Gardena-Auto-Rewinding-Portable-Hose-Reel-125m/p/697603",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:45",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "697603",
+    "source_title": "가데나 자동 감김 휴대용 호스릴 12.5m"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.93,
+      "classification_reason": "supported_by_official_url_taxonomy",
+      "evidence_type": "official_url_taxonomy",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.2",
+      "raw_record_id": "ingestion:49:46",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/Paper-Towels/Monalisa-Kitchen-Towel-150ct-x-4-x-8/p/616641"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue",
+        "paper-towels"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h72/202758460604446.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 46,
+      "mart_native_category_id": "cos_2.6.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 40990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "070fb435d589dc38f3a2522519f6ef0fa9661b71",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/Paper-Towels/Monalisa-Kitchen-Towel-150ct-x-4-x-8/p/616641",
+        "category": "휴지",
+        "cocodalin_join_key": "616641",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/Paper-Towels/Monalisa-Kitchen-Towel-150ct-x-4-x-8/p/616641",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h72/202758460604446.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.2",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "616641",
+        "match_key": "__no_brand__|모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩|8.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩",
+        "normalized_name": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩",
+        "pack_qty": 8,
+        "pack_unit": "팩",
+        "price": 40990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩",
+        "raw_promo_type": null,
+        "sale_price": 40990,
+        "source": "costco",
+        "source_record_key": "616641",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/Paper-Towels/Monalisa-Kitchen-Towel-150ct-x-4-x-8/p/616641",
+        "unit_price": 85.0,
+        "unit_price_basis": "10매",
+        "unit_price_basis_raw": "10매",
+        "unit_price_display": "10매당 85원",
+        "unit_price_displayed": 85,
+        "unit_price_text": "10매당 85원"
+      },
+      "raw_payload_sha256": "c5c171cc5195c3b34b825b9bd788be151b4e331c63378872d5c76fd66858108c",
+      "raw_record_id": "ingestion:49:46",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "616641",
+      "source_title": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/Paper-Towels/Monalisa-Kitchen-Towel-150ct-x-4-x-8/p/616641",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:46",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "616641",
+    "source_title": "모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_2.6.1",
+      "raw_record_id": "ingestion:49:47",
+      "review_status": "classified",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleannara-TokTok-Bamboo-Kitchen-Towel-100ct-x-18/p/672911"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "bathfacial-tissue"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4b/h4a/225806753169438.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "cos_2.6.1",
+      "observed_time_precision": "batch",
+      "original_price": 27990,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 100.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 23990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a3db26116bd7133da97908d1459e20a851442745",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleannara-TokTok-Bamboo-Kitchen-Towel-100ct-x-18/p/672911",
+        "category": "휴지",
+        "cocodalin_join_key": "672911",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleannara-TokTok-Bamboo-Kitchen-Towel-100ct-x-18/p/672911",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4b/h4a/225806753169438.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.6.1",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "672911",
+        "match_key": "__no_brand__|깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3|100.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3",
+        "normalized_name": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3",
+        "pack_qty": 100,
+        "pack_unit": "매",
+        "price": 27990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3",
+        "raw_promo_type": "discount",
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "672911",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleannara-TokTok-Bamboo-Kitchen-Towel-100ct-x-18/p/672911",
+        "unit_price": 13.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 13원",
+        "unit_price_displayed": 13,
+        "unit_price_text": "장당 13원"
+      },
+      "raw_payload_sha256": "3709c9802af0fb493fb0837fdd1b6296085196d145ea8672cd70c8f10eb9b807",
+      "raw_record_id": "ingestion:49:47",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "672911",
+      "source_title": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleannara-TokTok-Bamboo-Kitchen-Towel-100ct-x-18/p/672911",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:47",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "672911",
+    "source_title": "깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1ff12049a1e5c2dbb17ac16c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "휴지"
+      ],
+      "raw_native_category_id": "cos_9.5",
+      "raw_record_id": "ingestion:49:48",
+      "review_status": "pending",
+      "source_path": "휴지",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "휴지"
+      ],
+      "source_title": "매직캔 히포 휴지통 27L + 리필 6개",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-27L-Refill-6P/p/686353"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "storageorganization",
+        "household-storage"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hcd/hed/369382963609630.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 48,
+      "mart_native_category_id": "cos_9.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 6.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 59900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "654d642acbcafdc3741dbf85d0de8866479e9a69",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-27L-Refill-6P/p/686353",
+        "category": "휴지",
+        "cocodalin_join_key": "686353",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-27L-Refill-6P/p/686353",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hcd/hed/369382963609630.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_9.5",
+        "mart_native_category_path": "휴지",
+        "mart_native_code": "686353",
+        "match_key": "__no_brand__|매직캔 히포 휴지통 27l 리필 6개|6.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "매직캔 히포 휴지통 27L + 리필 6개",
+        "normalized_name": "매직캔 히포 휴지통 27L + 리필 6개",
+        "pack_qty": 6,
+        "pack_unit": "개",
+        "price": 59900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "매직캔 히포 휴지통 27L + 리필 6개",
+        "raw_promo_type": null,
+        "sale_price": 59900,
+        "source": "costco",
+        "source_record_key": "686353",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-27L-Refill-6P/p/686353",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "e944be0a8008a80e5848c2280769c2b1b545b4009e6299743a6ace93553e0ad5",
+      "raw_record_id": "ingestion:49:48",
+      "source_category_path": [
+        "휴지"
+      ],
+      "source_name": "costco",
+      "source_record_key": "686353",
+      "source_title": "매직캔 히포 휴지통 27L + 리필 6개",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/StorageOrganization/Household-Storage/Magikan-Hippo-Trash-Bin-27L-Refill-6P/p/686353",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:48",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "686353",
+    "source_title": "매직캔 히포 휴지통 27L + 리필 6개"
+  }
+]

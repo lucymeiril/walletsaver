@@ -1,0 +1,1391 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.apple"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "사과"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:44",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "사과 선물세트 4kg (15입이내)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Apple-Gift-Set-4kg/p/526081"
+      ],
+      "unified_category_id": "food.produce.fruit.apple",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc7/h45/421874448924702.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 49990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 15.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 44390,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "18a2cf8c5c538b6c1b0eebad6007fbe050bac0a2",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Apple-Gift-Set-4kg/p/526081",
+        "category": "과일",
+        "cocodalin_join_key": "526081",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Apple-Gift-Set-4kg/p/526081",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc7/h45/421874448924702.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "526081",
+        "match_key": "__no_brand__|사과 선물세트 4kg 15입이내|15.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "사과 선물세트 4kg (15입이내)",
+        "normalized_name": "사과 선물세트 4kg (15입이내)",
+        "pack_qty": 15,
+        "pack_unit": "입",
+        "price": 49990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "사과 선물세트 4kg (15입이내)",
+        "raw_promo_type": "discount",
+        "sale_price": 44390,
+        "source": "costco",
+        "source_record_key": "526081",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Apple-Gift-Set-4kg/p/526081",
+        "unit_price": 1110.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,110원",
+        "unit_price_displayed": 1110,
+        "unit_price_text": "100G당 1,110원"
+      },
+      "raw_payload_sha256": "54e55e50154588270b8ad6c11fd18d3b2bfe5ec069b4e1dbf2b9b1b20de8ef73",
+      "raw_record_id": "ingestion:47:44",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "526081",
+      "source_title": "사과 선물세트 4kg (15입이내)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Apple-Gift-Set-4kg/p/526081",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:44",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "526081",
+    "source_title": "사과 선물세트 4kg (15입이내)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.avocado"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "아보카도"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:45",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "프리미엄아보카도 선물세트 4kg (15입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Avocado-Gift-Set-4kg-15ea/p/616607"
+      ],
+      "unified_category_id": "food.produce.fruit.avocado",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4f/h8e/79940818862110.webp",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 45,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 36990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 15.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 32490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c24f65e5a789e0a20792be6b9aed2d3841fd0302",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Avocado-Gift-Set-4kg-15ea/p/616607",
+        "category": "과일",
+        "cocodalin_join_key": "616607",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Avocado-Gift-Set-4kg-15ea/p/616607",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4f/h8e/79940818862110.webp",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "616607",
+        "match_key": "__no_brand__|프리미엄아보카도 선물세트 4kg 15입|15.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄아보카도 선물세트 4kg (15입)",
+        "normalized_name": "프리미엄아보카도 선물세트 4kg (15입)",
+        "pack_qty": 15,
+        "pack_unit": "입",
+        "price": 36990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "프리미엄아보카도 선물세트 4kg (15입)",
+        "raw_promo_type": "discount",
+        "sale_price": 32490,
+        "source": "costco",
+        "source_record_key": "616607",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Avocado-Gift-Set-4kg-15ea/p/616607",
+        "unit_price": 812.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 812원",
+        "unit_price_displayed": 812,
+        "unit_price_text": "100G당 812원"
+      },
+      "raw_payload_sha256": "f82d24d09a2749c7b81c12977d6d16787e89745acc976eb4241f73a401297ea1",
+      "raw_record_id": "ingestion:47:45",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "616607",
+      "source_title": "프리미엄아보카도 선물세트 4kg (15입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Avocado-Gift-Set-4kg-15ea/p/616607",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:45",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "616607",
+    "source_title": "프리미엄아보카도 선물세트 4kg (15입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:46",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "멜론&샤인머스캣세트4.5kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Melon-Shine-Muscat-Gift-Set-45kg/p/647352"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/h83/395947108073502.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 46,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 4500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 53900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a9ec2cae1acae63e95f92419726aea7062c92196",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Melon-Shine-Muscat-Gift-Set-45kg/p/647352",
+        "category": "과일",
+        "cocodalin_join_key": "647352",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Melon-Shine-Muscat-Gift-Set-45kg/p/647352",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/h83/395947108073502.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "647352",
+        "match_key": "__no_brand__|멜론 샤인머스캣세트4 5kg|4500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "멜론&샤인머스캣세트4.5kg",
+        "normalized_name": "멜론&샤인머스캣세트4.5kg",
+        "pack_qty": 4.5,
+        "pack_unit": "kg",
+        "price": 53900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "멜론&샤인머스캣세트4.5kg",
+        "raw_promo_type": null,
+        "sale_price": 53900,
+        "source": "costco",
+        "source_record_key": "647352",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Melon-Shine-Muscat-Gift-Set-45kg/p/647352",
+        "unit_price": 1198.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,198원",
+        "unit_price_displayed": 1198,
+        "unit_price_text": "100G당 1,198원"
+      },
+      "raw_payload_sha256": "58f18a4288b962e8c72894a3513a0763d1647e724c1cdfaa177829f6ecb79b7f",
+      "raw_record_id": "ingestion:47:46",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "647352",
+      "source_title": "멜론&샤인머스캣세트4.5kg",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Melon-Shine-Muscat-Gift-Set-45kg/p/647352",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "647352",
+    "source_title": "멜론&샤인머스캣세트4.5kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 명시 냉동과일 이름 또는 보존 공식 Foods/Frozen-Foods/Frozen-Fruit-Vegetables 경로와 실제 과일명으로 확인. 원재료 목록을 검증한 것은 아니며 중량/묶음은 추정하지 않고 기존 검수 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+        "promotion_surface": false,
+        "proposed_path": [
+          "과일"
+        ],
+        "raw_native_category_id": "cos_17",
+        "raw_record_id": "ingestion:47:47",
+        "review_status": "pending",
+        "source_path": "과일",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "과일"
+        ],
+        "source_title": "Tropical Maria 냉동아보카도1kg x 350개",
+        "source_urls": [
+          "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "food"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:47:47",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 명시 냉동과일 이름 또는 보존 공식 Foods/Frozen-Foods/Frozen-Fruit-Vegetables 경로와 실제 과일명으로 확인. 원재료 목록을 검증한 것은 아니며 중량/묶음은 추정하지 않고 기존 검수 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.processed_fruit.frozen"
+      },
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "Tropical Maria 냉동아보카도1kg x 350개",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814"
+      ],
+      "unified_category_id": "food.produce.processed_fruit.frozen",
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdf/h01/244280379441182.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 350,
+        "display_unit": "",
+        "package_quantity": 350.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 4199000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "2aee0c911001ddbfc6705065f8a2f5bf45f779fe",
+        "canonical_url": "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814",
+        "category": "과일",
+        "cocodalin_join_key": "642814",
+        "detail_url": "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdf/h01/244280379441182.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "642814",
+        "match_key": "__no_brand__|tropical maria 냉동아보카도1kg x 350개|350.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Tropical Maria 냉동아보카도1kg x 350개",
+        "normalized_name": "Tropical Maria 냉동아보카도1kg x 350개",
+        "pack_qty": 350,
+        "pack_unit": "개",
+        "price": 4199000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Tropical Maria 냉동아보카도1kg x 350개",
+        "raw_promo_type": null,
+        "sale_price": 4199000,
+        "source": "costco",
+        "source_record_key": "642814",
+        "source_url": "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814",
+        "unit_price": 1200.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,200원",
+        "unit_price_displayed": 1200,
+        "unit_price_text": "100G당 1,200원"
+      },
+      "raw_payload_sha256": "3ff8d9fe466101ea6796e0585c8cd41829859bc7dd4a446d7d92100e1b3e53b7",
+      "raw_record_id": "ingestion:47:47",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "642814",
+      "source_title": "Tropical Maria 냉동아보카도1kg x 350개",
+      "source_url": "https://www.costco.co.kr/Food/Tropical-Maria-Frozen-Avocado-Halves-1kg-x-350ea/p/642814",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:47",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "642814",
+    "source_title": "Tropical Maria 냉동아보카도1kg x 350개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.apple"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "사과"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:50",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "청송사과세트5kg(15입이내)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Cheongsong-Apple-Gift-Set-5kg-15ct/p/657526"
+      ],
+      "unified_category_id": "food.produce.fruit.apple",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h0d/262612805582878.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 50,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 81990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 15.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 73990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0f2dfc83ae8fa5abb6b18f42741af50746925ea1",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Cheongsong-Apple-Gift-Set-5kg-15ct/p/657526",
+        "category": "과일",
+        "cocodalin_join_key": "657526",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Cheongsong-Apple-Gift-Set-5kg-15ct/p/657526",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h0d/262612805582878.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "657526",
+        "match_key": "__no_brand__|청송사과세트5kg 15입이내|15.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "청송사과세트5kg(15입이내)",
+        "normalized_name": "청송사과세트5kg(15입이내)",
+        "pack_qty": 15,
+        "pack_unit": "입",
+        "price": 81990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "청송사과세트5kg(15입이내)",
+        "raw_promo_type": "discount",
+        "sale_price": 73990,
+        "source": "costco",
+        "source_record_key": "657526",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Cheongsong-Apple-Gift-Set-5kg-15ct/p/657526",
+        "unit_price": 1480.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,480원",
+        "unit_price_displayed": 1480,
+        "unit_price_text": "100G당 1,480원"
+      },
+      "raw_payload_sha256": "c64cb64331707da060953b28360d3534aaf7d67f5a3520049a11ea8b31338c3a",
+      "raw_record_id": "ingestion:47:50",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "657526",
+      "source_title": "청송사과세트5kg(15입이내)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Cheongsong-Apple-Gift-Set-5kg-15ct/p/657526",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:50",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "657526",
+    "source_title": "청송사과세트5kg(15입이내)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:52",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "명품 왕대봉 곶감세트 2.5kg (24입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Persimmon-Gift-Set-25kg-24ct/p/657527"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbb/hf6/135278329856030.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 52,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 24.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 66900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ba559345827af65c9d3d2be09a6bcfc2bc3a7822",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Persimmon-Gift-Set-25kg-24ct/p/657527",
+        "category": "과일",
+        "cocodalin_join_key": "657527",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Persimmon-Gift-Set-25kg-24ct/p/657527",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbb/hf6/135278329856030.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "657527",
+        "match_key": "__no_brand__|명품 왕대봉 곶감세트 2 5kg 24입|24.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "명품 왕대봉 곶감세트 2.5kg (24입)",
+        "normalized_name": "명품 왕대봉 곶감세트 2.5kg (24입)",
+        "pack_qty": 24,
+        "pack_unit": "입",
+        "price": 66900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "명품 왕대봉 곶감세트 2.5kg (24입)",
+        "raw_promo_type": null,
+        "sale_price": 66900,
+        "source": "costco",
+        "source_record_key": "657527",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Persimmon-Gift-Set-25kg-24ct/p/657527",
+        "unit_price": 2676.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,676원",
+        "unit_price_displayed": 2676,
+        "unit_price_text": "100G당 2,676원"
+      },
+      "raw_payload_sha256": "242fadcf43f6869791ff0b6b6797036ea9a492402ca1bfcbfb9d80a7c28655b1",
+      "raw_record_id": "ingestion:47:52",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "657527",
+      "source_title": "명품 왕대봉 곶감세트 2.5kg (24입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Persimmon-Gift-Set-25kg-24ct/p/657527",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:52",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "657527",
+    "source_title": "명품 왕대봉 곶감세트 2.5kg (24입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:53",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "배 & 사과 혼합 선물세트5.5kg(12입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Apple-Gift-Set-55-kg12ea/p/606656"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0e/hb3/80735568756766.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 53,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 55990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 12.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 49990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "af35e15f9aaa88a08b860fa490ecf6354155d105",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Apple-Gift-Set-55-kg12ea/p/606656",
+        "category": "과일",
+        "cocodalin_join_key": "606656",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Apple-Gift-Set-55-kg12ea/p/606656",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0e/hb3/80735568756766.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "606656",
+        "match_key": "__no_brand__|배 사과 혼합 선물세트5 5kg 12입|12.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "배 & 사과 혼합 선물세트5.5kg(12입)",
+        "normalized_name": "배 & 사과 혼합 선물세트5.5kg(12입)",
+        "pack_qty": 12,
+        "pack_unit": "입",
+        "price": 55990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "배 & 사과 혼합 선물세트5.5kg(12입)",
+        "raw_promo_type": "discount",
+        "sale_price": 49990,
+        "source": "costco",
+        "source_record_key": "606656",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Apple-Gift-Set-55-kg12ea/p/606656",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "7759dcc3a1a82d20e6aa7e39628f6f77e44e80779526bb098e60fd92c2889449",
+      "raw_record_id": "ingestion:47:53",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606656",
+      "source_title": "배 & 사과 혼합 선물세트5.5kg(12입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Apple-Gift-Set-55-kg12ea/p/606656",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:53",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "606656",
+    "source_title": "배 & 사과 혼합 선물세트5.5kg(12입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:47:55",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "Tropical Maria 망고청크2.27kg X 200개",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Tropical-Maria-Mango-Chunk-227kg-x-200ea/p/642813"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h95/h1b/102272103874590.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 55,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 200,
+        "display_unit": "",
+        "package_quantity": 200.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 2899000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "75c932eaa0d114839404a094f43a5d7b588bde45",
+        "canonical_url": "https://www.costco.co.kr/Food/Tropical-Maria-Mango-Chunk-227kg-x-200ea/p/642813",
+        "category": "과일",
+        "cocodalin_join_key": "642813",
+        "detail_url": "https://www.costco.co.kr/Food/Tropical-Maria-Mango-Chunk-227kg-x-200ea/p/642813",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h95/h1b/102272103874590.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "642813",
+        "match_key": "__no_brand__|tropical maria 망고청크2 27kg x 200개|200.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Tropical Maria 망고청크2.27kg X 200개",
+        "normalized_name": "Tropical Maria 망고청크2.27kg X 200개",
+        "pack_qty": 200,
+        "pack_unit": "개",
+        "price": 2899000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Tropical Maria 망고청크2.27kg X 200개",
+        "raw_promo_type": null,
+        "sale_price": 2899000,
+        "source": "costco",
+        "source_record_key": "642813",
+        "source_url": "https://www.costco.co.kr/Food/Tropical-Maria-Mango-Chunk-227kg-x-200ea/p/642813",
+        "unit_price": 639.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 639원",
+        "unit_price_displayed": 639,
+        "unit_price_text": "100G당 639원"
+      },
+      "raw_payload_sha256": "89bbb955afb5c300c2992f0ffd6615c61e1bc07c151e687b402919dd1ae2bfc8",
+      "raw_record_id": "ingestion:47:55",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "642813",
+      "source_title": "Tropical Maria 망고청크2.27kg X 200개",
+      "source_url": "https://www.costco.co.kr/Food/Tropical-Maria-Mango-Chunk-227kg-x-200ea/p/642813",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:55",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "642813",
+    "source_title": "Tropical Maria 망고청크2.27kg X 200개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 공식 Fresh-Foods/Fruit 경로와 애플망고 원물 제목을 확인. 애플은 사과가 아닌 망고 품종 표기. 냉동·혼합·선물세트는 제외. URL slug의 옛 중량을 가져오지 않음.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+        "promotion_surface": false,
+        "proposed_path": [
+          "과일"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:57",
+        "review_status": "pending",
+        "source_path": "과일",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "과일"
+        ],
+        "source_title": "브라질애플망고3.7kg(7~9입)",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "fruit"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:57",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 공식 Fresh-Foods/Fruit 경로와 애플망고 원물 제목을 확인. 애플은 사과가 아닌 망고 품종 표기. 냉동·혼합·선물세트는 제외. URL slug의 옛 중량을 가져오지 않음.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.fruit.mango"
+      },
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "브라질애플망고3.7kg(7~9입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770"
+      ],
+      "unified_category_id": "food.produce.fruit.mango",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4c/he7/171376460693534.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 57,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 9.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 66990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "149bce48d4a03dda60dc864df86869da9368f322",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770",
+        "category": "과일",
+        "cocodalin_join_key": "624770",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4c/he7/171376460693534.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "624770",
+        "match_key": "__no_brand__|브라질애플망고3 7kg 7 9입|9.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "브라질애플망고3.7kg(7~9입)",
+        "normalized_name": "브라질애플망고3.7kg(7~9입)",
+        "pack_qty": 9,
+        "pack_unit": "입",
+        "price": 66990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "브라질애플망고3.7kg(7~9입)",
+        "raw_promo_type": null,
+        "sale_price": 66990,
+        "source": "costco",
+        "source_record_key": "624770",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770",
+        "unit_price": 1811.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,811원",
+        "unit_price_displayed": 1811,
+        "unit_price_text": "100G당 1,811원"
+      },
+      "raw_payload_sha256": "caeded5524cf463fbb02db9a4c0e1a2130946141e6550ed8ffc0cf363467d8e3",
+      "raw_record_id": "ingestion:47:57",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "624770",
+      "source_title": "브라질애플망고3.7kg(7~9입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-4kg79/p/624770",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:57",
+    "reasons": [
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "624770",
+    "source_title": "브라질애플망고3.7kg(7~9입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:61",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "애플 & 태국망고 선물세트 2.8kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/2-Variety-Mango-Gift-Set-28kg/p/679666"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha5/hbc/450408783478814.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 61,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 2800.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 52790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f86b0f8eaea19bdd85fb957a8aae76d70734107a",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/2-Variety-Mango-Gift-Set-28kg/p/679666",
+        "category": "과일",
+        "cocodalin_join_key": "679666",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/2-Variety-Mango-Gift-Set-28kg/p/679666",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha5/hbc/450408783478814.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "679666",
+        "match_key": "__no_brand__|애플 태국망고 선물세트 2 8kg|2800.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "애플 & 태국망고 선물세트 2.8kg",
+        "normalized_name": "애플 & 태국망고 선물세트 2.8kg",
+        "pack_qty": 2.8,
+        "pack_unit": "kg",
+        "price": 52790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "애플 & 태국망고 선물세트 2.8kg",
+        "raw_promo_type": null,
+        "sale_price": 52790,
+        "source": "costco",
+        "source_record_key": "679666",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/2-Variety-Mango-Gift-Set-28kg/p/679666",
+        "unit_price": 1885.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,885원",
+        "unit_price_displayed": 1885,
+        "unit_price_text": "100G당 1,885원"
+      },
+      "raw_payload_sha256": "e460a061442f590b465e222634dca48c8cd03357c0a55d34c6bd431acd9be42d",
+      "raw_record_id": "ingestion:47:61",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679666",
+      "source_title": "애플 & 태국망고 선물세트 2.8kg",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/2-Variety-Mango-Gift-Set-28kg/p/679666",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:61",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "679666",
+    "source_title": "애플 & 태국망고 선물세트 2.8kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:62",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "망고 2종 혼합 선물세트3.7kg(7~9입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/2-Variety-Mango-Set-37kg79ct/p/626010"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hca/h81/432185950371870.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 62,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 75990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 9.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 68990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "e3525cac6f8f8160c48dbbf3f1c999a8b71c029d",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/2-Variety-Mango-Set-37kg79ct/p/626010",
+        "category": "과일",
+        "cocodalin_join_key": "626010",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/2-Variety-Mango-Set-37kg79ct/p/626010",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hca/h81/432185950371870.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "626010",
+        "match_key": "__no_brand__|망고 2종 혼합 선물세트3 7kg 7 9입|9.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "망고 2종 혼합 선물세트3.7kg(7~9입)",
+        "normalized_name": "망고 2종 혼합 선물세트3.7kg(7~9입)",
+        "pack_qty": 9,
+        "pack_unit": "입",
+        "price": 75990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "망고 2종 혼합 선물세트3.7kg(7~9입)",
+        "raw_promo_type": "discount",
+        "sale_price": 68990,
+        "source": "costco",
+        "source_record_key": "626010",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/2-Variety-Mango-Set-37kg79ct/p/626010",
+        "unit_price": 1865.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,865원",
+        "unit_price_displayed": 1865,
+        "unit_price_text": "100G당 1,865원"
+      },
+      "raw_payload_sha256": "36207b7cb08f57de2a191076264b345a1e11b6805eb0fe21504920bd2429a991",
+      "raw_record_id": "ingestion:47:62",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "626010",
+      "source_title": "망고 2종 혼합 선물세트3.7kg(7~9입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/2-Variety-Mango-Set-37kg79ct/p/626010",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:62",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "626010",
+    "source_title": "망고 2종 혼합 선물세트3.7kg(7~9입)"
+  }
+]

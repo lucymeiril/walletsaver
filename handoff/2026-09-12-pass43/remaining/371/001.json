@@ -1,0 +1,300 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:e618719b88c622facd9d1756",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:3:6",
+      "review_status": "pending",
+      "source_path": "채소 > 반찬채소(시금치/생나물) > 부추",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추"
+      ],
+      "source_title": "부추(봉)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "부추(봉)",
+      "crawled_at": "2026-08-31T01:45:36.833258Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 3,
+      "ingestion_received_at": "2026-08-31T01:46:52.731774Z",
+      "issues": [],
+      "item_index": 6,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1봉",
+        "package_quantity": 1.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "부추(봉)",
+          "canon_hash": "9138c0a159a154a01654c2b0b40ff394abe08bd6",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "category_hint": "부추",
+          "docId": "H069674496N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B6%80%EC%B6%94-%EB%B4%89/069674496",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "채소 > 반찬채소(시금치/생나물) > 부추 > 부추",
+          "mart_native_code": "069674496",
+          "normalized_name": "부추(봉)",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "raw_name": "부추(봉)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "069674496",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 3990.0
+        },
+        "brand": "__no_brand__",
+        "category": "부추",
+        "crawled_at": "2026-08-31T10:45:36.833258",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1봉",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|부추 봉||1봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "부추(봉)",
+        "normalized_name": "부추(봉)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "봉",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1봉",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "cec0c0644d6b6a1b3212a130668c6c4cc1d7ee5d7c30508240ce717bec71b653",
+      "raw_record_id": "ingestion:3:6",
+      "source_category_path": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추",
+        "부추"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "069674496",
+      "source_title": "부추(봉)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-kitchen-produce-367-372.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.chives",
+        "path": "/decisions/1"
+      },
+      {
+        "file": "vegetables-small-244-382.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.chives",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:3:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "069674496",
+    "source_title": "부추(봉)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:e618719b88c622facd9d1756",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:52:3",
+      "review_status": "pending",
+      "source_path": "채소 > 반찬채소(시금치/생나물) > 부추",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추"
+      ],
+      "source_title": "부추(봉)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "부추(봉)",
+      "crawled_at": "2026-09-02T13:38:28.506893Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 52,
+      "ingestion_received_at": "2026-09-02T13:39:51.672155Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1봉",
+        "package_quantity": 1.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "부추(봉)",
+          "canon_hash": "9138c0a159a154a01654c2b0b40ff394abe08bd6",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "category_hint": "부추",
+          "docId": "H069674496N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B6%80%EC%B6%94-%EB%B4%89/069674496",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "채소 > 반찬채소(시금치/생나물) > 부추 > 부추",
+          "mart_native_code": "069674496",
+          "normalized_name": "부추(봉)",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "raw_name": "부추(봉)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "069674496",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 3990.0
+        },
+        "brand": "__no_brand__",
+        "category": "부추",
+        "crawled_at": "2026-09-02T22:38:28.506893",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1봉",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|부추 봉||1봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "부추(봉)",
+        "normalized_name": "부추(봉)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "봉",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1봉",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "9af784c8987215d2777e28da56d09cdd2319785d53ef19dc30ba3303f2f38bcd",
+      "raw_record_id": "ingestion:52:3",
+      "source_category_path": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "부추",
+        "부추"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "069674496",
+      "source_title": "부추(봉)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069674496&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-kitchen-produce-367-372.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.chives",
+        "path": "/decisions/1"
+      },
+      {
+        "file": "vegetables-small-244-382.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.chives",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:52:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "069674496",
+    "source_title": "부추(봉)"
+  }
+]

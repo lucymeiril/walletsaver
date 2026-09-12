@@ -1,0 +1,3101 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:0",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[오설록] 티 에디션 허브 4종 (16입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=2097002297178&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.590122Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/78/71/29/item/2097002297178_i1_232.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 0,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": 32000,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "16입",
+        "package_quantity": 16.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 25600,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/78/71/29/item/2097002297178_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "2097002297178",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "2097002297178",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002297178&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 853원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.590122",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002297178&siteNo=7009&salestrNo=2551",
+        "discount_percent": 20.0,
+        "display_unit": "16입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/78/71/29/item/2097002297178_i1_232.jpg",
+        "match_key": "__no_brand__|오설록 티 에디션 허브 4종 16입||16입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[오설록] 티 에디션 허브 4종 (16입)",
+        "normalized_name": "",
+        "original_price": 32000,
+        "package_quantity": 16.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 25600,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "16입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f87a817d4ba8f7c49fc35dd9b52cb25abef06210e58245765f1ebca2167dfb62",
+      "raw_record_id": "ingestion:88:0",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "2097002297178",
+      "source_title": "[오설록] 티 에디션 허브 4종 (16입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002297178&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.herbal",
+        "path": "/proposed_decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:88:0",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "2097002297178",
+    "source_title": "[오설록] 티 에디션 허브 4종 (16입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:1",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "티 에디션 아일랜드 6종 (18입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=2097002086239&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.592065Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/39/62/08/item/2097002086239_i1_232.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 1,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": 36000,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "18입",
+        "package_quantity": 18.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 28800,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "오설록",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/39/62/08/item/2097002086239_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "2097002086239",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "2097002086239",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002086239&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 640원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.592065",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002086239&siteNo=7009&salestrNo=2551",
+        "discount_percent": 20.0,
+        "display_unit": "18입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/39/62/08/item/2097002086239_i1_232.jpg",
+        "match_key": "__no_brand__|티 에디션 아일랜드 6종 18입||18입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "티 에디션 아일랜드 6종 (18입)",
+        "normalized_name": "",
+        "original_price": 36000,
+        "package_quantity": 18.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 28800,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "18입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "43dac64d3dbe56bd1d132704116491a871b39b5743e3de4a74e6e85c3d23fcf3",
+      "raw_record_id": "ingestion:88:1",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "2097002086239",
+      "source_title": "티 에디션 아일랜드 6종 (18입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002086239&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "2097002086239",
+    "source_title": "티 에디션 아일랜드 6종 (18입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:2",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "러블리 티박스 4종 (12입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=2097002117421&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.615591Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.15,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/21/74/11/item/2097002117421_i1_232.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 2,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": 24000,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "12입",
+        "package_quantity": 12.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 20400,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "오설록",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/21/74/11/item/2097002117421_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "2097002117421",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "2097002117421",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002117421&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 680원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.615591",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002117421&siteNo=7009&salestrNo=2551",
+        "discount_percent": 15.0,
+        "display_unit": "12입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/21/74/11/item/2097002117421_i1_232.jpg",
+        "match_key": "__no_brand__|러블리 티박스 4종 12입||12입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "러블리 티박스 4종 (12입)",
+        "normalized_name": "",
+        "original_price": 24000,
+        "package_quantity": 12.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 20400,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "12입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "51c16abe0aa12e61c759a937004a69104496d1db885a8c8fb8a7c0877c29d471",
+      "raw_record_id": "ingestion:88:2",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "2097002117421",
+      "source_title": "러블리 티박스 4종 (12입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002117421&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "2097002117421",
+    "source_title": "러블리 티박스 4종 (12입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:4",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[매일유업] 마이 카페라떼 220ml*6입 기획",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000005191478&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.649237Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/78/14/19/item/1000005191478_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "220ml×6",
+        "package_quantity": 220.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 8180,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "매일",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/78/14/19/item/1000005191478_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000005191478",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000005191478",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005191478&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 620원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.649237",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005191478&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "220ml×6",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/78/14/19/item/1000005191478_i1_290.jpg",
+        "match_key": "__no_brand__|매일유업 마이 카페라떼 220ml 6입 기획||220ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[매일유업] 마이 카페라떼 220ml*6입 기획",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 220.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8180,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "220ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "72e08891ee7a6536c20b3b03a5e7c7143c0ec5cda904739bc2269cb4f7c6cb87",
+      "raw_record_id": "ingestion:88:4",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000005191478",
+      "source_title": "[매일유업] 마이 카페라떼 220ml*6입 기획",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005191478&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:88:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000005191478",
+    "source_title": "[매일유업] 마이 카페라떼 220ml*6입 기획"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:9",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[티젠] 카페 오르조 40입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000818857033&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.672999Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/33/70/85/item/1000818857033_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 9,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "40입",
+        "package_quantity": 40.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 10000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/33/70/85/item/1000818857033_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000818857033",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000818857033",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000818857033&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 1,000원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.672999",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000818857033&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "40입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/33/70/85/item/1000818857033_i1_290.jpg",
+        "match_key": "__no_brand__|티젠 카페 오르조 40입||40입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[티젠] 카페 오르조 40입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 40.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10000,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "40입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2f040f1fbafd17e622e8c4000706d1ac1f386c823cca8ecb6d8451b2a745cf65",
+      "raw_record_id": "ingestion:88:9",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000818857033",
+      "source_title": "[티젠] 카페 오르조 40입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000818857033&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.barley",
+        "path": "/proposed_decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:88:9",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000818857033",
+    "source_title": "[티젠] 카페 오르조 40입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.mix"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "커피믹스"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:10",
+      "review_status": "classified",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "화이트골드 커피믹스 180입 (+20입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398879&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.drinks.coffee.mix",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.676982Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/79/88/39/item/0000008398879_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [
+        "mixed_package_unresolved"
+      ],
+      "item_index": 10,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "20입",
+        "package_quantity": 20.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 35780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "맥심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/79/88/39/item/0000008398879_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "0000008398879",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008398879",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398879&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 168원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.676982",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398879&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "20입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/79/88/39/item/0000008398879_i1_290.jpg",
+        "match_key": "__no_brand__|화이트골드 커피믹스 180입 20입||20입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "화이트골드 커피믹스 180입 (+20입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 20.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 35780,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "296668b5216cdab885845329208f7126f0c8959b938b4930141c10e0e28b2ee4",
+      "raw_record_id": "ingestion:88:10",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008398879",
+      "source_title": "화이트골드 커피믹스 180입 (+20입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398879&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:10",
+    "reasons": [
+      "mixed_package_unresolved"
+    ],
+    "source_record_key": "0000008398879",
+    "source_title": "화이트골드 커피믹스 180입 (+20입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:11",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "모카밀크믹스커피250개입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000260524950&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.680860Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/50/49/52/item/1000260524950_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 11,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250개입",
+        "package_quantity": 250.0,
+        "package_unit": "개입",
+        "standard_unit": null
+      },
+      "price": 26800,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/50/49/52/item/1000260524950_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000260524950",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000260524950",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000260524950&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 94원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.680860",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000260524950&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "250개입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/50/49/52/item/1000260524950_i1_290.jpg",
+        "match_key": "__no_brand__|모카밀크믹스커피250개입||250개입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "모카밀크믹스커피250개입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "개입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 26800,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250개입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "17c0667eef9b457127d062865cf4cbae5de393f2789a21d5f27d6664a1f33a27",
+      "raw_record_id": "ingestion:88:11",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000260524950",
+      "source_title": "모카밀크믹스커피250개입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000260524950&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.mix",
+        "path": "/proposed_decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:88:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000260524950",
+    "source_title": "모카밀크믹스커피250개입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:12",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[백설]매실청 1.025kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000005623882&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.691516Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/82/38/62/item/1000005623882_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 12,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.025kg",
+        "package_quantity": 1025.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "CJ제일제당",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/82/38/62/item/1000005623882_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000005623882",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000005623882",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005623882&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 779원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.691516",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005623882&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1.025kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/82/38/62/item/1000005623882_i1_290.jpg",
+        "match_key": "__no_brand__|백설 매실청 1 025kg||1.025kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[백설]매실청 1.025kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.025,
+        "package_unit": "kg",
+        "price_per_100g": 778.54,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1.025kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "cd6d8d21523b1d3abf0ac165e6bd3ad0af68f0d7de5e9732a6e8c8e16f640d05",
+      "raw_record_id": "ingestion:88:12",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000005623882",
+      "source_title": "[백설]매실청 1.025kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000005623882&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000005623882",
+    "source_title": "[백설]매실청 1.025kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:13",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "스타벅스 카페 라떼 200ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000007051239&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.695770Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/39/12/05/item/0000007051239_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 13,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "200ml",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2250,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/39/12/05/item/0000007051239_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "0000007051239",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000007051239",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007051239&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 1,125원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.695770",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007051239&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "200ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/39/12/05/item/0000007051239_i1_290.jpg",
+        "match_key": "__no_brand__|스타벅스 카페 라떼 200ml||200ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "스타벅스 카페 라떼 200ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2250,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "200ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "59c6e5464f9e9505fb55ae9df9e7fb940ebb18941feec9e50b1ee1d7eff92173",
+      "raw_record_id": "ingestion:88:13",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000007051239",
+      "source_title": "스타벅스 카페 라떼 200ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007051239&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:88:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000007051239",
+    "source_title": "스타벅스 카페 라떼 200ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:15",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "강릉커피 라떼 250ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000047906471&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.713812Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/71/64/90/item/1000047906471_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 15,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250ml",
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2550,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/71/64/90/item/1000047906471_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000047906471",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000047906471",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000047906471&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 1,020원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.713812",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000047906471&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "250ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/71/64/90/item/1000047906471_i1_290.jpg",
+        "match_key": "__no_brand__|강릉커피 라떼 250ml||250ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "강릉커피 라떼 250ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2550,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6ed86bb3e75cf8a8ab95e22d761a43cc54b2292124f5d0af0fcc69364f0f72bf",
+      "raw_record_id": "ingestion:88:15",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000047906471",
+      "source_title": "강릉커피 라떼 250ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000047906471&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:88:15",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000047906471",
+    "source_title": "강릉커피 라떼 250ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.instant"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "인스턴트커피"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:16",
+      "review_status": "classified",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000579128334&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.drinks.coffee.instant",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.717081Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/34/83/12/item/1000579128334_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [
+        "mixed_package_unresolved"
+      ],
+      "item_index": 16,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "20입",
+        "package_quantity": 20.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 37980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/34/83/12/item/1000579128334_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000579128334",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000579128334",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000579128334&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 2,482원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.717081",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000579128334&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "20입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/34/83/12/item/1000579128334_i1_290.jpg",
+        "match_key": "__no_brand__|카누 마일드 로스트 아메리카노 미니 150입 20입||20입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 20.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 37980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "dca85bb5f98a5227e8ac47403e13fa8980e2b2a0aab4087dec72f43dcedc119f",
+      "raw_record_id": "ingestion:88:16",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000579128334",
+      "source_title": "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000579128334&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:16",
+    "reasons": [
+      "mixed_package_unresolved"
+    ],
+    "source_record_key": "1000579128334",
+    "source_title": "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:17",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295827&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.721263Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/27/58/29/item/1000696295827_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250ml",
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2680,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "동원",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/27/58/29/item/1000696295827_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000696295827",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000696295827",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295827&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 1,072원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.721263",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295827&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "250ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/27/58/29/item/1000696295827_i1_290.jpg",
+        "match_key": "__no_brand__|덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml||250ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b2e675d52879c5d34aaa2566eddcda35cd883a6fc4e581843ee80fa5f7afdfaf",
+      "raw_record_id": "ingestion:88:17",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000696295827",
+      "source_title": "덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295827&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:88:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000696295827",
+    "source_title": "덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:18",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295830&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.725199Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/30/58/29/item/1000696295830_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 18,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250ml",
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2680,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "동원",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/30/58/29/item/1000696295830_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000696295830",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000696295830",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295830&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 1,072원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.725199",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295830&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "250ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/30/58/29/item/1000696295830_i1_290.jpg",
+        "match_key": "__no_brand__|덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml||250ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ea5eac5ee8320c0b3d941b8c6632b5837756324f26d790f281a602eef77adf7f",
+      "raw_record_id": "ingestion:88:18",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000696295830",
+      "source_title": "덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295830&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:88:18",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000696295830",
+    "source_title": "덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:19",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "레쓰비마일드 175ml*12입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030573216&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.728949Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/16/32/57/item/1000030573216_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 19,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 12,
+        "display_unit": "175ml×12",
+        "package_quantity": 175.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "롯데칠성",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/16/32/57/item/1000030573216_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000030573216",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000030573216",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030573216&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 285원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.728949",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030573216&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "175ml×12",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/16/32/57/item/1000030573216_i1_290.jpg",
+        "match_key": "__no_brand__|레쓰비마일드 175ml 12입||175ml×12",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "레쓰비마일드 175ml*12입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 175.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "175ml×12",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ad62259fc208c1bf56670967dad8aedd221f9aabcb15f47babbbe67f3cf2627b",
+      "raw_record_id": "ingestion:88:19",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000030573216",
+      "source_title": "레쓰비마일드 175ml*12입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030573216&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:88:19",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000030573216",
+    "source_title": "레쓰비마일드 175ml*12입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:21",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "카페, 진정성 밀크티 350ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000812260723&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.740081Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/23/07/26/item/1000812260723_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 21,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/23/07/26/item/1000812260723_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000812260723",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000812260723",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000812260723&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100ml 당 566원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.740081",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000812260723&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/23/07/26/item/1000812260723_i1_290.jpg",
+        "match_key": "__no_brand__|카페 진정성 밀크티 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카페, 진정성 밀크티 350ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "21925bc531e54b092aecbed311dcb86c100cebc4ca7b00a2d415e15c4681b19a",
+      "raw_record_id": "ingestion:88:21",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000812260723",
+      "source_title": "카페, 진정성 밀크티 350ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000812260723&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:21",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000812260723",
+    "source_title": "카페, 진정성 밀크티 350ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:22",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "까페N헤이즐넛향1g*100입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000555175844&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.743769Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/44/58/17/item/1000555175844_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 22,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 100,
+        "display_unit": "1g×100",
+        "package_quantity": 1.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/44/58/17/item/1000555175844_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000555175844",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000555175844",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000555175844&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 978원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.743769",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000555175844&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1g×100",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/44/58/17/item/1000555175844_i1_290.jpg",
+        "match_key": "__no_brand__|까페n헤이즐넛향1g 100입||1g×100",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "까페N헤이즐넛향1g*100입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "g",
+        "price_per_100g": 9780.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9780,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1g×100",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c71cf58e05c8e0a0a50a3f8fd796514e732b3bee018c8e25f8bbcd37d2870743",
+      "raw_record_id": "ingestion:88:22",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000555175844",
+      "source_title": "까페N헤이즐넛향1g*100입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000555175844&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.instant",
+        "path": "/proposed_decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:88:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000555175844",
+    "source_title": "까페N헤이즐넛향1g*100입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:24",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "얼그레이 7입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000050290365&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.757065Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/65/03/29/item/1000050290365_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 24,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 2580,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "피코크",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/65/03/29/item/1000050290365_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000050290365",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000050290365",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000050290365&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 5,160원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.757065",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000050290365&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/65/03/29/item/1000050290365_i1_290.jpg",
+        "match_key": "__no_brand__|얼그레이 7입||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "얼그레이 7입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2580,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e6cc2f7faa052849bf4dcf5c5c0cd7ba6fb6525042033600779f9a041e1c8206",
+      "raw_record_id": "ingestion:88:24",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000050290365",
+      "source_title": "얼그레이 7입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000050290365&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.black",
+        "path": "/proposed_decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:88:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000050290365",
+    "source_title": "얼그레이 7입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:25",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "찬물 하동녹차1.2g*50티백",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000791615462&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.758940Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.1,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/62/54/61/item/1000791615462_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 25,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": 5980,
+      "package": {
+        "bundle_count": 50,
+        "display_unit": "1.2g×50",
+        "package_quantity": 1.2,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5382,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "피코크",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/62/54/61/item/1000791615462_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000791615462",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000791615462",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000791615462&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 897원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.758940",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000791615462&siteNo=6001&salestrNo=2037",
+        "discount_percent": 10.0,
+        "display_unit": "1.2g×50",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/62/54/61/item/1000791615462_i1_290.jpg",
+        "match_key": "__no_brand__|찬물 하동녹차1 2g 50티백||1.2g×50",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "찬물 하동녹차1.2g*50티백",
+        "normalized_name": "",
+        "original_price": 5980,
+        "package_quantity": 1.2,
+        "package_unit": "g",
+        "price_per_100g": 8970.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5382,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1.2g×50",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6f21a4ef5b5b1f99a0d8a768993056286c0e4ba8e8528cd0652644dd3f2702b3",
+      "raw_record_id": "ingestion:88:25",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000791615462",
+      "source_title": "찬물 하동녹차1.2g*50티백",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000791615462&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.green",
+        "path": "/proposed_decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:88:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000791615462",
+    "source_title": "찬물 하동녹차1.2g*50티백"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:26",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[립톤] 아이스티 복숭아 120X14G",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902740&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.762212Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/40/27/90/item/1000675902740_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 26,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "14g",
+        "package_quantity": 14.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 39900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/40/27/90/item/1000675902740_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000675902740",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000675902740",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902740&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 238원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.762212",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902740&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "14g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/40/27/90/item/1000675902740_i1_290.jpg",
+        "match_key": "__no_brand__|립톤 아이스티 복숭아 120x14g||14g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[립톤] 아이스티 복숭아 120X14G",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 14.0,
+        "package_unit": "g",
+        "price_per_100g": 285000.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 39900,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "14g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b9acb7f5a3df672a9f868f77995cd2cccb642c96b17f061a9533fc94818113ef",
+      "raw_record_id": "ingestion:88:26",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000675902740",
+      "source_title": "[립톤] 아이스티 복숭아 120X14G",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902740&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.black",
+        "path": "/proposed_decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:88:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000675902740",
+    "source_title": "[립톤] 아이스티 복숭아 120X14G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:29",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "리얼밀크 카페라떼 스위트 950ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000546795074&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.791890Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/74/50/79/item/1000546795074_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 29,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "950ml",
+        "package_quantity": 950.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/74/50/79/item/1000546795074_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000546795074",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000546795074",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000546795074&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.791890",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000546795074&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "950ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/74/50/79/item/1000546795074_i1_290.jpg",
+        "match_key": "__no_brand__|리얼밀크 카페라떼 스위트 950ml||950ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "리얼밀크 카페라떼 스위트 950ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 950.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "950ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ac097f013b0b7a47d92047721889c053eff71aa52935a59581ba22dd61cf5aa0",
+      "raw_record_id": "ingestion:88:29",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000546795074",
+      "source_title": "리얼밀크 카페라떼 스위트 950ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000546795074&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.coffee.ready",
+        "path": "/proposed_decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:88:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000546795074",
+    "source_title": "리얼밀크 카페라떼 스위트 950ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:30",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "유기농 광양매실액기스 570g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000706100721&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.796137Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/21/07/10/item/1000706100721_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 30,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "570g",
+        "package_quantity": 570.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 14980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "자연주의",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/21/07/10/item/1000706100721_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "1000706100721",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000706100721",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000706100721&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 2,628원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.796137",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000706100721&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "570g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/21/07/10/item/1000706100721_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 광양매실액기스 570g||570g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 광양매실액기스 570g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 570.0,
+        "package_unit": "g",
+        "price_per_100g": 2628.07,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 14980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "570g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "07dfb442468c8c0414321103bf157e3029e77bbcdfbed6333988373cae3b5164",
+      "raw_record_id": "ingestion:88:30",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000706100721",
+      "source_title": "유기농 광양매실액기스 570g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000706100721&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:30",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000706100721",
+    "source_title": "유기농 광양매실액기스 570g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:35",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "둥글레차 50티백",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006829368&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.821284Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/68/93/82/item/0000006829368_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 35,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "10g",
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5090,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection": "동서",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/68/93/82/item/0000006829368_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "0000006829368",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006829368",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006829368&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 848원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.821284",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006829368&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "10g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/68/93/82/item/0000006829368_i1_290.jpg",
+        "match_key": "__no_brand__|둥글레차 50티백||10g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "둥글레차 50티백",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "price_per_100g": 50900.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5090,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c543a1c9b34f34d0b0e1f67f7b91fcf5ab0fe7e30652b5202af829e546eb9802",
+      "raw_record_id": "ingestion:88:35",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006829368",
+      "source_title": "둥글레차 50티백",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006829368&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:88:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006829368",
+    "source_title": "둥글레차 50티백"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b1107565fa8005559b30a7c6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피/원두/차"
+      ],
+      "raw_native_category_id": "6000215245",
+      "raw_record_id": "ingestion:88:36",
+      "review_status": "pending",
+      "source_path": "커피/원두/차",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[대한] 알곡 옥수수차 1kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006611056&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:18:52.824244Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/56/10/61/item/0000006611056_i1_290.jpg",
+      "ingestion_id": 88,
+      "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+      "issues": [],
+      "item_index": 36,
+      "mart_native_category_id": "6000215245",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1kg",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 8280,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "커피/원두/차",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/56/10/61/item/0000006611056_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215245",
+          "mart_native_category_path": "커피/원두/차",
+          "mart_native_code": "0000006611056",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006611056",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006611056&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 83원"
+        },
+        "brand": "__no_brand__",
+        "category": "커피/원두/차",
+        "crawled_at": "2026-09-03T00:18:52.824244",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006611056&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/56/10/61/item/0000006611056_i1_290.jpg",
+        "match_key": "__no_brand__|대한 알곡 옥수수차 1kg||1kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[대한] 알곡 옥수수차 1kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "price_per_100g": 828.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8280,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "beee0d4a6e6cf21877af1b8546cad59ca63e4c7b16d6c936ff7a1d1c81f587c7",
+      "raw_record_id": "ingestion:88:36",
+      "source_category_path": [
+        "커피/원두/차"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006611056",
+      "source_title": "[대한] 알곡 옥수수차 1kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006611056&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-coffee-tea-024.json",
+        "flags": [],
+        "leaf": "food.drinks.tea.grain",
+        "path": "/proposed_decisions/14"
+      }
+    ],
+    "raw_record_id": "ingestion:88:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006611056",
+    "source_title": "[대한] 알곡 옥수수차 1kg"
+  }
+]

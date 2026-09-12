@@ -1,0 +1,275 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ddb3142f901c166ce3cbc0dc",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:42",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 기타양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "source_title": "오늘좋은 국물떡볶이소스 (150G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809201780108/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:02.661649Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f1eefef6-8ac3-4f9d-b366-5c50608211e4/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 42,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "cefd4d5e6119df1d3aced185080ea0059e2d3091",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809201780108/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "기타양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f1eefef6-8ac3-4f9d-b366-5c50608211e4/300x300.jpg",
+          "mart_native_code": "8809201780108",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809201780108",
+          "source_url": "https://lottemartzetta.com/products/OS8809201780108/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:02.661649",
+        "detail_url": "https://lottemartzetta.com/products/OS8809201780108/details",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f1eefef6-8ac3-4f9d-b366-5c50608211e4/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 국물떡볶이소스 150g||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 국물떡볶이소스 (150G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 860.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1290,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a58383a6f8251379e0897d057d45da9af6cb0ba60c7755b83740d650a672aa2a",
+      "raw_record_id": "ingestion:32:42",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "기타양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809201780108",
+      "source_title": "오늘좋은 국물떡볶이소스 (150G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809201780108/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-397-403.json",
+        "flags": [],
+        "leaf": "food.seasonings.sauces.tteokbokki",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:32:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809201780108",
+    "source_title": "오늘좋은 국물떡볶이소스 (150G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ddb3142f901c166ce3cbc0dc",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:50",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 기타양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "source_title": "오늘좋은 오징어볶음양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809201780092/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:08.142993Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc698e58-3af5-4a61-902e-7f8a831d6774/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 50,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "faa7ef7aeb9f34a88f9a0ec940199c564f9424f0",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809201780092/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "기타양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc698e58-3af5-4a61-902e-7f8a831d6774/300x300.jpg",
+          "mart_native_code": "8809201780092",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809201780092",
+          "source_url": "https://lottemartzetta.com/products/OS8809201780092/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.142993",
+        "detail_url": "https://lottemartzetta.com/products/OS8809201780092/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc698e58-3af5-4a61-902e-7f8a831d6774/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 오징어볶음양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 오징어볶음양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1064.29,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1490,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f837bacc1889ae2cc4f08fca603a00c8b972f328c2113e51e4870e878d118af4",
+      "raw_record_id": "ingestion:33:50",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "기타양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809201780092",
+      "source_title": "오늘좋은 오징어볶음양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809201780092/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:33:50",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809201780092",
+    "source_title": "오늘좋은 오징어볶음양념 (140G)"
+  }
+]

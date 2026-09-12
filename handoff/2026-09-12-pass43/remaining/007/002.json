@@ -1,0 +1,2947 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 명시 냉동과일 이름 또는 보존 공식 Foods/Frozen-Foods/Frozen-Fruit-Vegetables 경로와 실제 과일명으로 확인. 원재료 목록을 검증한 것은 아니며 중량/묶음은 추정하지 않고 기존 검수 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+        "promotion_surface": false,
+        "proposed_path": [
+          "과일"
+        ],
+        "raw_native_category_id": "cos_17",
+        "raw_record_id": "ingestion:46:94",
+        "review_status": "pending",
+        "source_path": "과일",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "과일"
+        ],
+        "source_title": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+        "source_urls": [
+          "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "food"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:46:94",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 명시 냉동과일 이름 또는 보존 공식 Foods/Frozen-Foods/Frozen-Fruit-Vegetables 경로와 실제 과일명으로 확인. 원재료 목록을 검증한 것은 아니며 중량/묶음은 추정하지 않고 기존 검수 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.processed_fruit.frozen"
+      },
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090"
+      ],
+      "unified_category_id": "food.produce.processed_fruit.frozen",
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h94/hd6/316049257594910.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 94,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 3099000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c10f3e583bbe5f350dd349d8f63879c6fb8f749e",
+        "canonical_url": "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090",
+        "category": "과일",
+        "cocodalin_join_key": "669090",
+        "detail_url": "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h94/hd6/316049257594910.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "669090",
+        "match_key": "__no_brand__|커클랜드 시그니춰 냉동 블루베리 미국산 수도권||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+        "normalized_name": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 3099000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+        "raw_promo_type": null,
+        "sale_price": 3099000,
+        "source": "costco",
+        "source_record_key": "669090",
+        "source_url": "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090",
+        "unit_price": 711.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 711원",
+        "unit_price_displayed": 711,
+        "unit_price_text": "100G당 711원"
+      },
+      "raw_payload_sha256": "d727baaa52f9d35f6f0acd4dbaff171d10f479bf8ca68a3506657f29e870e517",
+      "raw_record_id": "ingestion:46:94",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "669090",
+      "source_title": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권",
+      "source_url": "https://www.costco.co.kr/Food/KS-Whole-Blueberries-227kg-x-192-US/p/669090",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:94",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "669090",
+    "source_title": "커클랜드 시그니춰 냉동 블루베리 (미국산)- 수도권"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:46:95",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "닥터큐 후룻 젤리1,440g / 60g x 24",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Chocolates-Bars/DRQ-Fruit-Jelly-1440g-60g-x-24/p/651494"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "chocolates-bars"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h44/h3e/241424480469022.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 95,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 24,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "bd67a268d5e2a11e5f40d0ce01d42a0325531fe0",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/Chocolates-Bars/DRQ-Fruit-Jelly-1440g-60g-x-24/p/651494",
+        "category": "과일",
+        "cocodalin_join_key": "651494",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/Chocolates-Bars/DRQ-Fruit-Jelly-1440g-60g-x-24/p/651494",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h44/h3e/241424480469022.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "651494",
+        "match_key": "__no_brand__|닥터큐 후룻 젤리1 440g 60g x 24|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "닥터큐 후룻 젤리1,440g / 60g x 24",
+        "normalized_name": "닥터큐 후룻 젤리1,440g / 60g x 24",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 15890,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "닥터큐 후룻 젤리1,440g / 60g x 24",
+        "raw_promo_type": null,
+        "sale_price": 15890,
+        "source": "costco",
+        "source_record_key": "651494",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/Chocolates-Bars/DRQ-Fruit-Jelly-1440g-60g-x-24/p/651494",
+        "unit_price": 110.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 110원",
+        "unit_price_displayed": 110,
+        "unit_price_text": "10G당 110원"
+      },
+      "raw_payload_sha256": "bceaa62bb68af2eb7746f42a62ce1bde772e210c53a38d1a2772a9f50a98d7f3",
+      "raw_record_id": "ingestion:46:95",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "651494",
+      "source_title": "닥터큐 후룻 젤리1,440g / 60g x 24",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/Chocolates-Bars/DRQ-Fruit-Jelly-1440g-60g-x-24/p/651494",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:95",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "651494",
+    "source_title": "닥터큐 후룻 젤리1,440g / 60g x 24"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:46:96",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "씨없는 블랙포도 3.6kg 내외",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Black-Seedless-Grapes-36kg/p/627051"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc1/hcd/332760192155678.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 96,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 55990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "439d2e0c12d67ef3c003d2b5d54b0a19f95b2ff8",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Black-Seedless-Grapes-36kg/p/627051",
+        "category": "과일",
+        "cocodalin_join_key": "627051",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Black-Seedless-Grapes-36kg/p/627051",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc1/hcd/332760192155678.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "627051",
+        "match_key": "__no_brand__|씨없는 블랙포도 3 6kg 내외|3600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "씨없는 블랙포도 3.6kg 내외",
+        "normalized_name": "씨없는 블랙포도 3.6kg 내외",
+        "pack_qty": 3.6,
+        "pack_unit": "kg",
+        "price": 55990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "씨없는 블랙포도 3.6kg 내외",
+        "raw_promo_type": null,
+        "sale_price": 55990,
+        "source": "costco",
+        "source_record_key": "627051",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Black-Seedless-Grapes-36kg/p/627051",
+        "unit_price": 1555.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,555원",
+        "unit_price_displayed": 1555,
+        "unit_price_text": "100G당 1,555원"
+      },
+      "raw_payload_sha256": "0716706f7edef65aa564ef60aea148cc7951782d63099d881a2b9b2e28407006",
+      "raw_record_id": "ingestion:46:96",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "627051",
+      "source_title": "씨없는 블랙포도 3.6kg 내외",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Black-Seedless-Grapes-36kg/p/627051",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:96",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "627051",
+    "source_title": "씨없는 블랙포도 3.6kg 내외"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:2",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "수박２호 ( 6KG 미만 )",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Watermelon-under-6kg/p/574685"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h35/450817526136862.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 2,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 19490,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 6000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "6d40c846a49326448c3260444d21dfd9b483007b",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Watermelon-under-6kg/p/574685",
+        "category": "과일",
+        "cocodalin_join_key": "574685",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Watermelon-under-6kg/p/574685",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h35/450817526136862.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "574685",
+        "match_key": "__no_brand__|수박２호 6kg 미만|6000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "수박２호 ( 6KG 미만 )",
+        "normalized_name": "수박２호 ( 6KG 미만 )",
+        "pack_qty": 6,
+        "pack_unit": "KG",
+        "price": 19490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "수박２호 ( 6KG 미만 )",
+        "raw_promo_type": "discount",
+        "sale_price": 15490,
+        "source": "costco",
+        "source_record_key": "574685",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Watermelon-under-6kg/p/574685",
+        "unit_price": 310.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 310원",
+        "unit_price_displayed": 310,
+        "unit_price_text": "100G당 310원"
+      },
+      "raw_payload_sha256": "5761330b28b0ce2d7e6a0e0948760857f3ce4e1f5f8e076acedcb19fb0368d98",
+      "raw_record_id": "ingestion:47:2",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "574685",
+      "source_title": "수박2호 ( 6KG 미만 )",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Watermelon-under-6kg/p/574685",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "574685",
+    "source_title": "수박２호 ( 6KG 미만 )"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:3",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "프리미엄 대봉곶감 선물세트 1.3kg (16입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Daebong-Dried-Persimmon-Gift-Set-13kg/p/691420"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha9/h4c/418540498845726.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 16.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 65900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "188e516a866eabfce1b59254ea828d8a4a92f8ae",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Daebong-Dried-Persimmon-Gift-Set-13kg/p/691420",
+        "category": "과일",
+        "cocodalin_join_key": "691420",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Daebong-Dried-Persimmon-Gift-Set-13kg/p/691420",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha9/h4c/418540498845726.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "691420",
+        "match_key": "__no_brand__|프리미엄 대봉곶감 선물세트 1 3kg 16입|16.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄 대봉곶감 선물세트 1.3kg (16입)",
+        "normalized_name": "프리미엄 대봉곶감 선물세트 1.3kg (16입)",
+        "pack_qty": 16,
+        "pack_unit": "입",
+        "price": 65900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프리미엄 대봉곶감 선물세트 1.3kg (16입)",
+        "raw_promo_type": null,
+        "sale_price": 65900,
+        "source": "costco",
+        "source_record_key": "691420",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Daebong-Dried-Persimmon-Gift-Set-13kg/p/691420",
+        "unit_price": 5069.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 5,069원",
+        "unit_price_displayed": 5069,
+        "unit_price_text": "100G당 5,069원"
+      },
+      "raw_payload_sha256": "bdbe02c3458872e342c11178c1f068b4a329a80cbab43bdf8e8b1309751be82f",
+      "raw_record_id": "ingestion:47:3",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "691420",
+      "source_title": "프리미엄 대봉곶감 선물세트 1.3kg (16입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Daebong-Dried-Persimmon-Gift-Set-13kg/p/691420",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "691420",
+    "source_title": "프리미엄 대봉곶감 선물세트 1.3kg (16입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:4",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Musk-Melons-Set-4ea/p/697404"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9e/h5b/492569231294494.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 69900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "6e23c4af05b7fe4994e384d5ad41b54cb96fc756",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Musk-Melons-Set-4ea/p/697404",
+        "category": "과일",
+        "cocodalin_join_key": "697404",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Musk-Melons-Set-4ea/p/697404",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9e/h5b/492569231294494.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "697404",
+        "match_key": "__no_brand__|허니듀 머스크 멜론 세트 4입 각 2입|2.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+        "normalized_name": "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+        "pack_qty": 2,
+        "pack_unit": "입",
+        "price": 69900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+        "raw_promo_type": null,
+        "sale_price": 69900,
+        "source": "costco",
+        "source_record_key": "697404",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Musk-Melons-Set-4ea/p/697404",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "66d352e0a0ecc09acd5e5e7a726b23d305e77248a75bdb8a6f322b17bd4081e7",
+      "raw_record_id": "ingestion:47:4",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "697404",
+      "source_title": "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Musk-Melons-Set-4ea/p/697404",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "697404",
+    "source_title": "허니듀 & 머스크 멜론 세트 4입 (각 2입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:5",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Assorted-Dried-Persimmon-Gift-Set-14kg/p/691419"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h78/hb1/418235919695902.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 5,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 30.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 79900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c96e66fa77fb73a707b889b5ab18b7298811924e",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Assorted-Dried-Persimmon-Gift-Set-14kg/p/691419",
+        "category": "과일",
+        "cocodalin_join_key": "691419",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Assorted-Dried-Persimmon-Gift-Set-14kg/p/691419",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h78/hb1/418235919695902.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "691419",
+        "match_key": "__no_brand__|프리미엄 유명산지 모듬곶감 선물세트 1 4kg 30입|30.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)",
+        "normalized_name": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)",
+        "pack_qty": 30,
+        "pack_unit": "입",
+        "price": 79900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)",
+        "raw_promo_type": null,
+        "sale_price": 79900,
+        "source": "costco",
+        "source_record_key": "691419",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Assorted-Dried-Persimmon-Gift-Set-14kg/p/691419",
+        "unit_price": 5707.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 5,707원",
+        "unit_price_displayed": 5707,
+        "unit_price_text": "100G당 5,707원"
+      },
+      "raw_payload_sha256": "21fbe538d867df85a1d9074429a9566e8c11bcd09be7c45bb3359fc108b79842",
+      "raw_record_id": "ingestion:47:5",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "691419",
+      "source_title": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Assorted-Dried-Persimmon-Gift-Set-14kg/p/691419",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "691419",
+    "source_title": "프리미엄 유명산지 모듬곶감 선물세트 1.4kg (30입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:8",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "애플망고 골드키위세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Applemago-Goldkiwi-gift-set/p/697389"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7f/h67/492569257672734.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 8,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 64990,
+      "package": null,
+      "price": 58990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "900f6b26f06f5de29f96e9715f190515044e8ab9",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Applemago-Goldkiwi-gift-set/p/697389",
+        "category": "과일",
+        "cocodalin_join_key": "697389",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Applemago-Goldkiwi-gift-set/p/697389",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7f/h67/492569257672734.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "697389",
+        "match_key": "__no_brand__|애플망고 골드키위세트||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "애플망고 골드키위세트",
+        "normalized_name": "애플망고 골드키위세트",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 64990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "애플망고 골드키위세트",
+        "raw_promo_type": "discount",
+        "sale_price": 58990,
+        "source": "costco",
+        "source_record_key": "697389",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Applemago-Goldkiwi-gift-set/p/697389",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "2a0f09f7742717f7d3d453233688d1b5552d0d1dce5ee2bb8e07a31a8644878a",
+      "raw_record_id": "ingestion:47:8",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "697389",
+      "source_title": "애플망고 골드키위세트",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Applemago-Goldkiwi-gift-set/p/697389",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "697389",
+    "source_title": "애플망고 골드키위세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:11",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "상주곶감선물세트30입(1.4kg) X 50CT",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Sangju-Dried-Persimmons-Giftset-30EA-X-50CT/p/691808"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h80/h28/418540258459678.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 11,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3649000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "29bd9617d3913ebecd14094f356f8a10796b3cf6",
+        "canonical_url": "https://www.costco.co.kr/Food/Sangju-Dried-Persimmons-Giftset-30EA-X-50CT/p/691808",
+        "category": "과일",
+        "cocodalin_join_key": "691808",
+        "detail_url": "https://www.costco.co.kr/Food/Sangju-Dried-Persimmons-Giftset-30EA-X-50CT/p/691808",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h80/h28/418540258459678.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "691808",
+        "match_key": "__no_brand__|상주곶감선물세트30입 1 4kg x 50ct|1400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "상주곶감선물세트30입(1.4kg) X 50CT",
+        "normalized_name": "상주곶감선물세트30입(1.4kg) X 50CT",
+        "pack_qty": 1.4,
+        "pack_unit": "kg",
+        "price": 3649000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "상주곶감선물세트30입(1.4kg) X 50CT",
+        "raw_promo_type": null,
+        "sale_price": 3649000,
+        "source": "costco",
+        "source_record_key": "691808",
+        "source_url": "https://www.costco.co.kr/Food/Sangju-Dried-Persimmons-Giftset-30EA-X-50CT/p/691808",
+        "unit_price": 5213.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 5,213원",
+        "unit_price_displayed": 5213,
+        "unit_price_text": "100G당 5,213원"
+      },
+      "raw_payload_sha256": "ef7f67a314f7443a3f41ab96c1a6b6b01fa7e9b727113cf49de0ff5324ae7bba",
+      "raw_record_id": "ingestion:47:11",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "691808",
+      "source_title": "상주곶감선물세트30입(1.4kg) X 50CT",
+      "source_url": "https://www.costco.co.kr/Food/Sangju-Dried-Persimmons-Giftset-30EA-X-50CT/p/691808",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:11",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "691808",
+    "source_title": "상주곶감선물세트30입(1.4kg) X 50CT"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:13",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "샤인머스캣&애플망고세트3.5kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Shine-Muscat-Apple-Mango-Gift-Set-35kg/p/647353"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha9/h3b/432185952665630.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 13,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 72900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "66627bd53192b129b24eabc0c215f2c5e19dc3ed",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Shine-Muscat-Apple-Mango-Gift-Set-35kg/p/647353",
+        "category": "과일",
+        "cocodalin_join_key": "647353",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Shine-Muscat-Apple-Mango-Gift-Set-35kg/p/647353",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha9/h3b/432185952665630.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "647353",
+        "match_key": "__no_brand__|샤인머스캣 애플망고세트3 5kg|3500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "샤인머스캣&애플망고세트3.5kg",
+        "normalized_name": "샤인머스캣&애플망고세트3.5kg",
+        "pack_qty": 3.5,
+        "pack_unit": "kg",
+        "price": 72900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "샤인머스캣&애플망고세트3.5kg",
+        "raw_promo_type": null,
+        "sale_price": 72900,
+        "source": "costco",
+        "source_record_key": "647353",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Shine-Muscat-Apple-Mango-Gift-Set-35kg/p/647353",
+        "unit_price": 2083.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,083원",
+        "unit_price_displayed": 2083,
+        "unit_price_text": "100G당 2,083원"
+      },
+      "raw_payload_sha256": "ffedfbe1d5ff684066e2282a0df0144fbbfe08e8b4c242e8e143d2962ab43521",
+      "raw_record_id": "ingestion:47:13",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "647353",
+      "source_title": "샤인머스캣&애플망고세트3.5kg",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Shine-Muscat-Apple-Mango-Gift-Set-35kg/p/647353",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "647353",
+    "source_title": "샤인머스캣&애플망고세트3.5kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:47:17",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "퀸즈트리 블루베리 잼 1kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/HoneySyrupsJam/Queens-Tree-Blueberry-Jam-1kg/p/685976"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "honeysyrupsjam"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbe/ha0/421134164230174.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 13990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "80fda69ca00fc5348199016a144eaaa88b9314ae",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/HoneySyrupsJam/Queens-Tree-Blueberry-Jam-1kg/p/685976",
+        "category": "과일",
+        "cocodalin_join_key": "685976",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/HoneySyrupsJam/Queens-Tree-Blueberry-Jam-1kg/p/685976",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbe/ha0/421134164230174.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "685976",
+        "match_key": "__no_brand__|퀸즈트리 블루베리 잼 1kg|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "퀸즈트리 블루베리 잼 1kg",
+        "normalized_name": "퀸즈트리 블루베리 잼 1kg",
+        "pack_qty": 1,
+        "pack_unit": "kg",
+        "price": 13990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "퀸즈트리 블루베리 잼 1kg",
+        "raw_promo_type": null,
+        "sale_price": 13990,
+        "source": "costco",
+        "source_record_key": "685976",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/HoneySyrupsJam/Queens-Tree-Blueberry-Jam-1kg/p/685976",
+        "unit_price": 1399.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,399원",
+        "unit_price_displayed": 1399,
+        "unit_price_text": "100G당 1,399원"
+      },
+      "raw_payload_sha256": "b5b86d85639350362dff6be0c2c047ef21944b0ca9e71a884e181938261583a2",
+      "raw_record_id": "ingestion:47:17",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "685976",
+      "source_title": "퀸즈트리 블루베리 잼 1kg",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/HoneySyrupsJam/Queens-Tree-Blueberry-Jam-1kg/p/685976",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "685976",
+    "source_title": "퀸즈트리 블루베리 잼 1kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.kiwi"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "키위"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:18",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "제스프리유기농골드키위 5.7kg(31~37입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Organic-Gold-Kiwis-57kg3137ct/p/647031"
+      ],
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h32/h22/104135496269854.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 18,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 37.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 67900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "362f64e982bcd59667d03d8f9efcb1a7eb7c53cc",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Organic-Gold-Kiwis-57kg3137ct/p/647031",
+        "category": "과일",
+        "cocodalin_join_key": "647031",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Organic-Gold-Kiwis-57kg3137ct/p/647031",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h32/h22/104135496269854.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "647031",
+        "match_key": "__no_brand__|제스프리유기농골드키위 5 7kg 31 37입|37.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "제스프리유기농골드키위 5.7kg(31~37입)",
+        "normalized_name": "제스프리유기농골드키위 5.7kg(31~37입)",
+        "pack_qty": 37,
+        "pack_unit": "입",
+        "price": 67900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "제스프리유기농골드키위 5.7kg(31~37입)",
+        "raw_promo_type": null,
+        "sale_price": 67900,
+        "source": "costco",
+        "source_record_key": "647031",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Organic-Gold-Kiwis-57kg3137ct/p/647031",
+        "unit_price": 1191.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,191원",
+        "unit_price_displayed": 1191,
+        "unit_price_text": "100G당 1,191원"
+      },
+      "raw_payload_sha256": "dbd5459d80e2ed50f38eadb06f0635ebc163d48cbe8299f97469ed7a9580c55c",
+      "raw_record_id": "ingestion:47:18",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "647031",
+      "source_title": "제스프리유기농골드키위 5.7kg(31~37입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Organic-Gold-Kiwis-57kg3137ct/p/647031",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:18",
+    "reasons": [
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "647031",
+    "source_title": "제스프리유기농골드키위 5.7kg(31~37입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:19",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "제스프리 그린키위（점보）4.9kg (36~39입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-49kg-Jumbo/p/614432"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbc/h7d/104135434240030.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 19,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 39.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c76621c97a9446d780080de63b7a176dc2c9f0c4",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-49kg-Jumbo/p/614432",
+        "category": "과일",
+        "cocodalin_join_key": "614432",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-49kg-Jumbo/p/614432",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbc/h7d/104135434240030.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "614432",
+        "match_key": "__no_brand__|제스프리 그린키위 점보 4 9kg 36 39입|39.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "제스프리 그린키위（점보）4.9kg (36~39입)",
+        "normalized_name": "제스프리 그린키위（점보）4.9kg (36~39입)",
+        "pack_qty": 39,
+        "pack_unit": "입",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "제스프리 그린키위（점보）4.9kg (36~39입)",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "614432",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-49kg-Jumbo/p/614432",
+        "unit_price": 857.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 857원",
+        "unit_price_displayed": 857,
+        "unit_price_text": "100G당 857원"
+      },
+      "raw_payload_sha256": "864ba436d270d099d0eedd7354c016b22bfed36b57a5daa7471d71f9fd8d0286",
+      "raw_record_id": "ingestion:47:19",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "614432",
+      "source_title": "제스프리 그린키위(점보)4.9kg (36~39입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-49kg-Jumbo/p/614432",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:19",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "614432",
+    "source_title": "제스프리 그린키위（점보）4.9kg (36~39입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 멜론·참외 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+        "promotion_surface": false,
+        "proposed_path": [
+          "과일"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:20",
+        "review_status": "pending",
+        "source_path": "과일",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "과일"
+        ],
+        "source_title": "허니듀 멜론 5KG (3입)",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "fruit"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:20",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 멜론·참외 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.fruit.melon"
+      },
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "허니듀 멜론 5KG (3입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883"
+      ],
+      "unified_category_id": "food.produce.fruit.melon",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6f/h3c/473342685544478.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 20,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 34990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d928408c56dd6709b36e66b34cc6bbbc8064197f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883",
+        "category": "과일",
+        "cocodalin_join_key": "695883",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6f/h3c/473342685544478.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "695883",
+        "match_key": "__no_brand__|허니듀 멜론 5kg 3입|3.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "허니듀 멜론 5KG (3입)",
+        "normalized_name": "허니듀 멜론 5KG (3입)",
+        "pack_qty": 3,
+        "pack_unit": "입",
+        "price": 34990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "허니듀 멜론 5KG (3입)",
+        "raw_promo_type": null,
+        "sale_price": 34990,
+        "source": "costco",
+        "source_record_key": "695883",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883",
+        "unit_price": 11663.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 11,663원",
+        "unit_price_displayed": 11663,
+        "unit_price_text": "개　　　당 11,663원"
+      },
+      "raw_payload_sha256": "e383b2ef0bb8f9b980322319695789f9a1f5c1a8fa5b77c09b1a5660a2694531",
+      "raw_record_id": "ingestion:47:20",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695883",
+      "source_title": "허니듀 멜론 5KG (3입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Honeydew-Melons-5KG-3ct/p/695883",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:20",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "695883",
+    "source_title": "허니듀 멜론 5KG (3입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 공식 Fresh-Foods/Fruit 경로와 애플망고 원물 제목을 확인. 애플은 사과가 아닌 망고 품종 표기. 냉동·혼합·선물세트는 제외. URL slug의 옛 중량을 가져오지 않음.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+        "promotion_surface": false,
+        "proposed_path": [
+          "과일"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:24",
+        "review_status": "pending",
+        "source_path": "과일",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "과일"
+        ],
+        "source_title": "제주애플망고3kg (6~8입)",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "fruit"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:24",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 공식 Fresh-Foods/Fruit 경로와 애플망고 원물 제목을 확인. 애플은 사과가 아닌 망고 품종 표기. 냉동·혼합·선물세트는 제외. URL slug의 옛 중량을 가져오지 않음.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.fruit.mango"
+      },
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "제주애플망고3kg (6~8입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481"
+      ],
+      "unified_category_id": "food.produce.fruit.mango",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h90/h4f/486367923306526.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 123990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a4f4172972f6efee71160d9c5a84d4b1e6eb13ee",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481",
+        "category": "과일",
+        "cocodalin_join_key": "655481",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h90/h4f/486367923306526.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "655481",
+        "match_key": "__no_brand__|제주애플망고3kg 6 8입|8.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "제주애플망고3kg (6~8입)",
+        "normalized_name": "제주애플망고3kg (6~8입)",
+        "pack_qty": 8,
+        "pack_unit": "입",
+        "price": 123990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "제주애플망고3kg (6~8입)",
+        "raw_promo_type": null,
+        "sale_price": 123990,
+        "source": "costco",
+        "source_record_key": "655481",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481",
+        "unit_price": 4133.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,133원",
+        "unit_price_displayed": 4133,
+        "unit_price_text": "100G당 4,133원"
+      },
+      "raw_payload_sha256": "27bdae03106326b7b2f2cf7185e0f2c6ad39814a6814647920d93f2b879c4581",
+      "raw_record_id": "ingestion:47:24",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "655481",
+      "source_title": "제주애플망고3kg (6~8입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Apple-Mango-3kg-68ea/p/655481",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:24",
+    "reasons": [
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "655481",
+    "source_title": "제주애플망고3kg (6~8입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:47:25",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "마티넬리 사과주스 PET 296ml x 24 x 77",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h50/hd7/472320190054430.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "bulk_package_review_required"
+      ],
+      "item_index": 25,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1848,
+        "display_unit": "",
+        "package_quantity": 296.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3399000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "cd560b5797d4e6dcd1acd47355c089346b8bea02",
+        "canonical_url": "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651",
+        "category": "과일",
+        "cocodalin_join_key": "695651",
+        "detail_url": "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h50/hd7/472320190054430.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "695651",
+        "match_key": "__no_brand__|마티넬리 사과주스 pet 296ml x 24 x 77|296.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "마티넬리 사과주스 PET 296ml x 24 x 77",
+        "normalized_name": "마티넬리 사과주스 PET 296ml x 24 x 77",
+        "pack_qty": 296,
+        "pack_unit": "ml",
+        "price": 3399000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "마티넬리 사과주스 PET 296ml x 24 x 77",
+        "raw_promo_type": null,
+        "sale_price": 3399000,
+        "source": "costco",
+        "source_record_key": "695651",
+        "source_url": "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651",
+        "unit_price": 6214.0,
+        "unit_price_basis": "리터　　",
+        "unit_price_basis_raw": "리터　　",
+        "unit_price_display": "리터　　당 6,214원",
+        "unit_price_displayed": 6214,
+        "unit_price_text": "리터　　당 6,214원"
+      },
+      "raw_payload_sha256": "b65b210a469e6f1e7eed4e356e4ffb9e2fda2ce524e7f140fc614b2d88c2757f",
+      "raw_record_id": "ingestion:47:25",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695651",
+      "source_title": "마티넬리 사과주스 PET 296ml x 24 x 77",
+      "source_url": "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:25",
+    "reasons": [
+      "bulk_package_review_required",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "695651",
+    "source_title": "마티넬리 사과주스 PET 296ml x 24 x 77"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.kiwi"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "키위"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:32",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494"
+      ],
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hba/h30/103747798007838.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 32,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 31.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 68900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "4247f25259bde138e4e84d83ed1350cbadfffcab",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494",
+        "category": "과일",
+        "cocodalin_join_key": "644494",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hba/h30/103747798007838.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "644494",
+        "match_key": "__no_brand__|뉴질랜드 제스프리 골드키위 5 7kg 26 31입|31.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+        "normalized_name": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+        "pack_qty": 31,
+        "pack_unit": "입",
+        "price": 68900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+        "raw_promo_type": null,
+        "sale_price": 68900,
+        "source": "costco",
+        "source_record_key": "644494",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494",
+        "unit_price": 1209.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,209원",
+        "unit_price_displayed": 1209,
+        "unit_price_text": "100G당 1,209원"
+      },
+      "raw_payload_sha256": "0e1f6e2cb696bfdbe76e3879d4702c4e98fae26c32cec8112c624fbdac32dbfd",
+      "raw_record_id": "ingestion:47:32",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "644494",
+      "source_title": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:32",
+    "reasons": [
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "644494",
+    "source_title": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:34",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "캠벨 포도3kg 내외(6~9송이)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Campbell-Grapes-3kg/p/627656"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h71/h18/173374854168606.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 34,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 30990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ca4f0af8c8ffa235cc38b71262d4c101686afd29",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Campbell-Grapes-3kg/p/627656",
+        "category": "과일",
+        "cocodalin_join_key": "627656",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Campbell-Grapes-3kg/p/627656",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h71/h18/173374854168606.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "627656",
+        "match_key": "__no_brand__|캠벨 포도3kg 내외 6 9송이|3000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "캠벨 포도3kg 내외(6~9송이)",
+        "normalized_name": "캠벨 포도3kg 내외(6~9송이)",
+        "pack_qty": 3,
+        "pack_unit": "kg",
+        "price": 30990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "캠벨 포도3kg 내외(6~9송이)",
+        "raw_promo_type": null,
+        "sale_price": 30990,
+        "source": "costco",
+        "source_record_key": "627656",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Campbell-Grapes-3kg/p/627656",
+        "unit_price": 1033.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,033원",
+        "unit_price_displayed": 1033,
+        "unit_price_text": "100G당 1,033원"
+      },
+      "raw_payload_sha256": "4227a9d256cd8e20aed78eaed78aa165dbdad5a5bff03d56f11d4fd676cda367",
+      "raw_record_id": "ingestion:47:34",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "627656",
+      "source_title": "캠벨 포도3kg 내외(6~9송이)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Campbell-Grapes-3kg/p/627656",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:34",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "627656",
+    "source_title": "캠벨 포도3kg 내외(6~9송이)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:36",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "반건시곶감세트1.9kg (28입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-19kg-28ea/p/651588"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha5/h9c/86870769827870.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 36,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 28.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 67900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "42a714a89cbe22c47a3b5ce23491fc2b54ebf1be",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-19kg-28ea/p/651588",
+        "category": "과일",
+        "cocodalin_join_key": "651588",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-19kg-28ea/p/651588",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha5/h9c/86870769827870.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "651588",
+        "match_key": "__no_brand__|반건시곶감세트1 9kg 28입|28.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "반건시곶감세트1.9kg (28입)",
+        "normalized_name": "반건시곶감세트1.9kg (28입)",
+        "pack_qty": 28,
+        "pack_unit": "입",
+        "price": 67900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "반건시곶감세트1.9kg (28입)",
+        "raw_promo_type": null,
+        "sale_price": 67900,
+        "source": "costco",
+        "source_record_key": "651588",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-19kg-28ea/p/651588",
+        "unit_price": 3574.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 3,574원",
+        "unit_price_displayed": 3574,
+        "unit_price_text": "100G당 3,574원"
+      },
+      "raw_payload_sha256": "326c921a56440688725ef7047592071609632195f37f54ef1dc313ea1a56953c",
+      "raw_record_id": "ingestion:47:36",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "651588",
+      "source_title": "반건시곶감세트1.9kg (28입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-19kg-28ea/p/651588",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "651588",
+    "source_title": "반건시곶감세트1.9kg (28입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:39",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "곶감&감말랭이 세트 1.4kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-14kg/p/676329"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h89/hc4/258939317125150.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 39,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 46990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8dc4db0281a1162e05eceb0293fe3ee8e76fd8a9",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-14kg/p/676329",
+        "category": "과일",
+        "cocodalin_join_key": "676329",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-14kg/p/676329",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h89/hc4/258939317125150.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "676329",
+        "match_key": "__no_brand__|곶감 감말랭이 세트 1 4kg|1400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "곶감&감말랭이 세트 1.4kg",
+        "normalized_name": "곶감&감말랭이 세트 1.4kg",
+        "pack_qty": 1.4,
+        "pack_unit": "kg",
+        "price": 46990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "곶감&감말랭이 세트 1.4kg",
+        "raw_promo_type": null,
+        "sale_price": 46990,
+        "source": "costco",
+        "source_record_key": "676329",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-14kg/p/676329",
+        "unit_price": 3356.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 3,356원",
+        "unit_price_displayed": 3356,
+        "unit_price_text": "100G당 3,356원"
+      },
+      "raw_payload_sha256": "ba7fe779589e9844cb9b8bc560fab47335282c5c288f1fa79f3e17dc4ee49cde",
+      "raw_record_id": "ingestion:47:39",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676329",
+      "source_title": "곶감&감말랭이 세트 1.4kg",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Gift-Set-14kg/p/676329",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:39",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676329",
+    "source_title": "곶감&감말랭이 세트 1.4kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.pear"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "배"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:40",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "프리미엄 배 선물세트 7.5kg(11~12입)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Pears-Gift-Set-75kg11-12ea/p/606654"
+      ],
+      "unified_category_id": "food.produce.fruit.pear",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4a/hd6/80344056135710.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "count_range_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 57990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 12.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 51990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "e65c9b0b840ece92de33760e1dd040464be97414",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Pears-Gift-Set-75kg11-12ea/p/606654",
+        "category": "과일",
+        "cocodalin_join_key": "606654",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Pears-Gift-Set-75kg11-12ea/p/606654",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4a/hd6/80344056135710.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "606654",
+        "match_key": "__no_brand__|프리미엄 배 선물세트 7 5kg 11 12입|12.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄 배 선물세트 7.5kg(11~12입)",
+        "normalized_name": "프리미엄 배 선물세트 7.5kg(11~12입)",
+        "pack_qty": 12,
+        "pack_unit": "입",
+        "price": 57990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "프리미엄 배 선물세트 7.5kg(11~12입)",
+        "raw_promo_type": "discount",
+        "sale_price": 51990,
+        "source": "costco",
+        "source_record_key": "606654",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Pears-Gift-Set-75kg11-12ea/p/606654",
+        "unit_price": 693.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 693원",
+        "unit_price_displayed": 693,
+        "unit_price_text": "개　　　당 693원"
+      },
+      "raw_payload_sha256": "935b5b432cd645a2ac45c29924ed90438fa0ab10a1272e4560c4f8495eeafba6",
+      "raw_record_id": "ingestion:47:40",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606654",
+      "source_title": "프리미엄 배 선물세트 7.5kg(11~12입)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Pears-Gift-Set-75kg11-12ea/p/606654",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:40",
+    "reasons": [
+      "count_range_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "606654",
+    "source_title": "프리미엄 배 선물세트 7.5kg(11~12입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.pear"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "배"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_costco_fruit_title",
+      "evidence_type": "audited_costco_fruit_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:41",
+      "review_status": "classified",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "배 선물세트 5kg (9입이내)",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Gift-Set-5kg/p/528902"
+      ],
+      "unified_category_id": "food.produce.fruit.pear",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha7/hcb/395947092312094.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 41,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 41990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 9.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 37490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b0750558c77f0c408e3b49e8eef14e14f6e41bb2",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Gift-Set-5kg/p/528902",
+        "category": "과일",
+        "cocodalin_join_key": "528902",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Gift-Set-5kg/p/528902",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha7/hcb/395947092312094.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "528902",
+        "match_key": "__no_brand__|배 선물세트 5kg 9입이내|9.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "배 선물세트 5kg (9입이내)",
+        "normalized_name": "배 선물세트 5kg (9입이내)",
+        "pack_qty": 9,
+        "pack_unit": "입",
+        "price": 41990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "배 선물세트 5kg (9입이내)",
+        "raw_promo_type": "discount",
+        "sale_price": 37490,
+        "source": "costco",
+        "source_record_key": "528902",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Gift-Set-5kg/p/528902",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "e0743c647afc2dd37050e67d6e822caf8b58e6fc22ce4dc1e96f96271047a28c",
+      "raw_record_id": "ingestion:47:41",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "528902",
+      "source_title": "배 선물세트 5kg (9입이내)",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Pears-Gift-Set-5kg/p/528902",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:41",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "528902",
+    "source_title": "배 선물세트 5kg (9입이내)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:42",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "호주 카라카라 오렌지 72입(17kg내외)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/AU-Cara-Cara-Oranges-72EA-17kg/p/676541"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4a/hae/256665624051742.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 42,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 17000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 62990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c53fc520c844b83103dea04451ab7a5cd4a5cbf9",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/AU-Cara-Cara-Oranges-72EA-17kg/p/676541",
+        "category": "과일",
+        "cocodalin_join_key": "676541",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/AU-Cara-Cara-Oranges-72EA-17kg/p/676541",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4a/hae/256665624051742.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "676541",
+        "match_key": "__no_brand__|호주 카라카라 오렌지 72입 17kg내외|17000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "호주 카라카라 오렌지 72입(17kg내외)",
+        "normalized_name": "호주 카라카라 오렌지 72입(17kg내외)",
+        "pack_qty": 17,
+        "pack_unit": "kg",
+        "price": 62990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "호주 카라카라 오렌지 72입(17kg내외)",
+        "raw_promo_type": null,
+        "sale_price": 62990,
+        "source": "costco",
+        "source_record_key": "676541",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/AU-Cara-Cara-Oranges-72EA-17kg/p/676541",
+        "unit_price": 332.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 332원",
+        "unit_price_displayed": 332,
+        "unit_price_text": "100G당 332원"
+      },
+      "raw_payload_sha256": "26258318ada4a7aa028b9e4a6d89f2abb04989a958712845c8783a00ec5ab41b",
+      "raw_record_id": "ingestion:47:42",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676541",
+      "source_title": "호주 카라카라 오렌지 72입(17kg내외)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/AU-Cara-Cara-Oranges-72EA-17kg/p/676541",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676541",
+    "source_title": "호주 카라카라 오렌지 72입(17kg내외)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1e873fe0a1be885c26db850f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일"
+      ],
+      "raw_native_category_id": "cos_10.11",
+      "raw_record_id": "ingestion:47:43",
+      "review_status": "pending",
+      "source_path": "과일",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "4C 아이스티 복숭아맛 2.34kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "beverages",
+        "cocoadrink-mix"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfb/h09/29245843669022.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 43,
+      "mart_native_category_id": "cos_10.11",
+      "observed_time_precision": "batch",
+      "original_price": 15990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 2340.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 12490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "4312c65e19236a1d411cfffe167210e53e5d457f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619",
+        "category": "과일",
+        "cocodalin_join_key": "505619",
+        "detail_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfb/h09/29245843669022.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.11",
+        "mart_native_category_path": "과일",
+        "mart_native_code": "505619",
+        "match_key": "__no_brand__|4c 아이스티 복숭아맛 2 34kg|2340.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "4C 아이스티 복숭아맛 2.34kg",
+        "normalized_name": "4C 아이스티 복숭아맛 2.34kg",
+        "pack_qty": 2.34,
+        "pack_unit": "kg",
+        "price": 15990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "4C 아이스티 복숭아맛 2.34kg",
+        "raw_promo_type": "discount",
+        "sale_price": 12490,
+        "source": "costco",
+        "source_record_key": "505619",
+        "source_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619",
+        "unit_price": 53.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 53원",
+        "unit_price_displayed": 53,
+        "unit_price_text": "10G당 53원"
+      },
+      "raw_payload_sha256": "5f71af9d274fdfbdbef903c975d14bc91763f9ed9d0285db80806a8fcd4cc896",
+      "raw_record_id": "ingestion:47:43",
+      "source_category_path": [
+        "과일"
+      ],
+      "source_name": "costco",
+      "source_record_key": "505619",
+      "source_title": "4C 아이스티 복숭아맛 2.34kg",
+      "source_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "505619",
+    "source_title": "4C 아이스티 복숭아맛 2.34kg"
+  }
+]

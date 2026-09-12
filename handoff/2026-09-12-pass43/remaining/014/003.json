@@ -1,0 +1,265 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "emart",
+      "native_category_key": "emart:path:9da442c3c74208630da60662",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000214128",
+      "raw_record_id": "ingestion:100:50",
+      "review_status": "classified",
+      "source_path": "주방용품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "도톰한 3겹 키친타월 150매*4롤",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000052576286&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T17:42:12.977069Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/86/62/57/item/1000052576286_i1_290.jpg",
+      "ingestion_id": 100,
+      "ingestion_received_at": "2026-09-02T17:42:14.155584Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 50,
+      "mart_native_category_id": "6000214128",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "4롤",
+        "package_quantity": 4.0,
+        "package_unit": "롤",
+        "standard_unit": null
+      },
+      "price": 5980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "주방용품",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/86/62/57/item/1000052576286_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000214128",
+          "mart_native_category_path": "주방용품",
+          "mart_native_code": "1000052576286",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000052576286",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000052576286&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "1m 당 88원"
+        },
+        "brand": "__no_brand__",
+        "category": "주방용품",
+        "crawled_at": "2026-09-03T02:42:12.977069",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000052576286&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "4롤",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/86/62/57/item/1000052576286_i1_290.jpg",
+        "match_key": "__no_brand__|도톰한 3겹 키친타월 150매 4롤||4롤",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "도톰한 3겹 키친타월 150매*4롤",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 4.0,
+        "package_unit": "롤",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "4롤",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "135fdc2265fb118cdcba3c0edd2910a024f37dc7ecf50444f96b23f430f6383d",
+      "raw_record_id": "ingestion:100:50",
+      "source_category_path": [
+        "주방용품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000052576286",
+      "source_title": "도톰한 3겹 키친타월 150매*4롤",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000052576286&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:100:50",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "1000052576286",
+    "source_title": "도톰한 3겹 키친타월 150매*4롤"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:9da442c3c74208630da60662",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품"
+      ],
+      "raw_native_category_id": "6000214128",
+      "raw_record_id": "ingestion:100:51",
+      "review_status": "pending",
+      "source_path": "주방용품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "싱크대거름망 100매(대) 하수구망 배수구망",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030745798&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T17:42:12.982091Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/98/57/74/item/1000030745798_i1_290.jpg",
+      "ingestion_id": 100,
+      "ingestion_received_at": "2026-09-02T17:42:14.155584Z",
+      "issues": [],
+      "item_index": 51,
+      "mart_native_category_id": "6000214128",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "100매",
+        "package_quantity": 100.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 3680,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "주방용품",
+          "collection": "유하우스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/98/57/74/item/1000030745798_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000214128",
+          "mart_native_category_path": "주방용품",
+          "mart_native_code": "1000030745798",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000030745798",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030745798&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "주방용품",
+        "crawled_at": "2026-09-03T02:42:12.982091",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030745798&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100매",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/98/57/74/item/1000030745798_i1_290.jpg",
+        "match_key": "__no_brand__|싱크대거름망 100매 대 하수구망 배수구망||100매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "싱크대거름망 100매(대) 하수구망 배수구망",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "매",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100매",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d39f99816b04e42b0173d93d67c8e596f1722b969ce3d02ac3772ea494a1505b",
+      "raw_record_id": "ingestion:100:51",
+      "source_category_path": [
+        "주방용품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000030745798",
+      "source_title": "싱크대거름망 100매(대) 하수구망 배수구망",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030745798&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:100:51",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000030745798",
+    "source_title": "싱크대거름망 100매(대) 하수구망 배수구망"
+  }
+]
