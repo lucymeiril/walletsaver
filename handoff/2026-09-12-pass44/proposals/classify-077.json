@@ -1,0 +1,54 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "290bc7a8562eec19f8881189614bb649565f46c6",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:89", "ingestion:74:96"],
+      "source_name": "homeplus",
+      "source_record_key": "070861095",
+      "source_title": "simplus 다용도 락스 4L",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.chlorine",
+      "reason": "상품명이 다용도 락스를 직접 명시하며 현재 taxonomy의 염소계표백제 리프와 일치한다. 배수용품 진열은 제품형태보다 덜 직접적인 근거다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070861095&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:92", "ingestion:75:19"],
+      "source_name": "homeplus",
+      "source_record_key": "070861089",
+      "source_title": "simplus 다용도 락스 1L",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.chlorine",
+      "reason": "상품명이 다용도 락스를 직접 명시하며 현재 taxonomy의 염소계표백제 리프와 일치한다. 용량 차이는 분류 속성이 아니다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070861089&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:0", "ingestion:75:14"],
+      "source_name": "homeplus",
+      "source_record_key": "000380202",
+      "source_title": "유한양행 유한락스레귤러 3L",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.chlorine",
+      "reason": "유한락스 레귤러는 락스 제품형태가 명확하며 현재 taxonomy의 염소계표백제 리프와 직접 일치한다. 배수용품 진열로 배수관세정제로 바꾸지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=000380202&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "Reviewed all 6 current pass44 observations in remaining/077/001.json and grouped them into 3 exact source_record_key pairs with matching source_name and source_title.",
+    "Confirmed proposal_references is empty for all 6 observations and no pass44 proposals/classify-077.json existed before this write.",
+    "Exact-searched source_record_keys 070861095, 070861089, and 000380202 in current pass44 accepted.json with no matches.",
+    "Exact-searched the same three source_record_keys in the preserved 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy contains household.cleaning.general.chlorine with Korean name 염소계표백제; did not substitute bath.drain or laundry.oxygen_bleach.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
+}
