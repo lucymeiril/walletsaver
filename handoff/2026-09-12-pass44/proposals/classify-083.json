@@ -1,0 +1,93 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "0d391f448c6795d00b1fe0e0235ea1537a2946ee",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:45", "ingestion:59:36"],
+      "source_name": "homeplus",
+      "source_record_key": "140583801",
+      "source_title": "씨제이 햇반 김치치즈 주먹밥 500G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "상품명이 주먹밥 형태를 직접 명시하며 김치·치즈는 속재료 속성이다. 냉동밥 진열의 볶음밥 후보보다 현재 주먹밥 리프가 정확하다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=140583801&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:54", "ingestion:59:58"],
+      "source_name": "homeplus",
+      "source_record_key": "140583784",
+      "source_title": "씨제이 햇반 불고기 주먹밥 500G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "상품명이 주먹밥 형태를 직접 명시하며 불고기는 속재료 속성이다. 현재 rice_ball 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=140583784&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:78", "ingestion:59:45"],
+      "source_name": "homeplus",
+      "source_record_key": "058706690",
+      "source_title": "씨제이 햇반 치즈닭갈비 주먹밥 500G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "치즈닭갈비는 속재료 조합이고 제품형태는 제목에 명시된 주먹밥이다. 현재 rice_ball 리프와 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=058706690&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:30", "ingestion:60:68"],
+      "source_name": "homeplus",
+      "source_record_key": "148605655",
+      "source_title": "씨제이 햇반 버터장조림 주먹밥 500G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "버터장조림은 속재료·맛 속성이고 제품형태는 주먹밥으로 명확하다. 현재 rice_ball 리프를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=148605655&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:57"],
+      "source_name": "homeplus",
+      "source_record_key": "071275902",
+      "source_title": "올곧 소시지치즈 김밥 240G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.kimbap",
+      "reason": "상품명이 김밥 형태를 직접 명시하며 소시지·치즈는 속재료 속성이다. 냉동밥 진열보다 제품명이 더 직접적인 근거다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071275902&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:62", "ingestion:61:97"],
+      "source_name": "homeplus",
+      "source_record_key": "071243969",
+      "source_title": "올곧 명란마요 김밥 230G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.kimbap",
+      "reason": "상품명이 김밥 형태를 직접 명시하며 명란마요는 속재료 속성이다. 현재 kimbap 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071243969&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "Reviewed all 11 current pass44 observations in remaining/083/001.json and grouped them into 6 exact source_record_key products while preserving the single observation for 071275902.",
+    "Confirmed proposal_references is empty for all 11 observations and no pass44 proposals/classify-083.json existed before this write.",
+    "Exact-searched all 6 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 6 source_record_keys in the preserved 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy contains food.meals.rice.rice_ball and food.meals.prepared.kimbap; product-form titles were used instead of the broad frozen-rice shelf hint.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
+}
