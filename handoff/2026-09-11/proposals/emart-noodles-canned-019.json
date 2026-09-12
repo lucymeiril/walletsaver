@@ -1,0 +1,159 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["019"],
+  "scope_note": "Strict GitHub read/write review of pending group 019 (Emart 면류/통조림). Both pending fragments were read completely. Product form/title and exact product evidence were preferred over the broad shelf label. No DB import/rebuild, taxonomy code edit, repository test or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 42,
+    "source_listings_total": 25,
+    "paired_source_listings": 17,
+    "singleton_source_listings": 8,
+    "already_classification_complete_excluded": 19,
+    "already_classified_source_listings": 12,
+    "strict_classification_reviews": 23,
+    "distinct_classification_pending_source_listings": 13,
+    "existing_leaf_proposals": 10,
+    "holds": 3
+  },
+  "observation_structure": {
+    "paired_ingestions": [89, 90],
+    "note": "17 source_record_keys appear in both ingestion 89 and 90, while 8 source_record_keys appear once. Strict accounting keeps all 42 observations while classification decisions are made once per source listing."
+  },
+  "excluded_already_classified": [
+    {"raw_record_ids":["ingestion:89:1","ingestion:90:2"],"source_record_key":"0000008333648","source_title":"신라면 5입 600g (120gx5입)","current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:5","ingestion:90:8"],"source_record_key":"0000008549264","source_title":"불닭볶음면 140g*5개", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:10","ingestion:90:14"],"source_record_key":"1000042393832","source_title":"진비빔면 156g*4개", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:16","ingestion:90:21"],"source_record_key":"1000343332900","source_title":"짜슐랭 145g*5개", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:32","ingestion:90:37"],"source_record_key":"0000008783908","source_title":"컵누들 매콤한맛 37.8g*6입", "current_leaf":"food.meals.noodles.cup_ramen"},
+    {"raw_record_ids":["ingestion:89:34","ingestion:90:5"],"source_record_key":"0000006610869","source_title":"진라면 순한맛", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:53","ingestion:90:58"],"source_record_key":"1000631342420","source_title":"유기농 통밀 푸질리", "current_leaf":"food.meals.noodles.pasta"},
+    {"raw_record_ids":["ingestion:89:2"],"source_record_key":"0000008333613","source_title":"올리브 짜파게티 (140gx5입)","current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:3"],"source_record_key":"0000008333620","source_title":"얼큰한 너구리 (120gx5입)","current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:89:18"],"source_record_key":"0000008333658","source_title":"오징어 짬뽕", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:90:0"],"source_record_key":"1000016397446","source_title":"진라면 매운맛", "current_leaf":"food.meals.noodles.bag_ramen"},
+    {"raw_record_ids":["ingestion:90:51"],"source_record_key":"1000645074745","source_title":"우동사리 1,150g", "current_leaf":"food.meals.noodles.udon"}
+  ],
+  "proposed_decisions": [
+    {
+      "raw_record_ids":["ingestion:89:9","ingestion:90:13"],
+      "source_record_key":"1000872593403",
+      "source_title":"5K PRICE 간편잡채 89.5g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.prepared.japchae",
+      "reason":"잡채 is explicit and pass41 has an exact prepared-japchae leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:89:13","ingestion:90:18"],
+      "source_record_key":"1000852538693",
+      "source_title":"신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.kalguksu",
+      "reason":"칼국수 product form is explicit; chicken describes the soup/flavour, not a different product family."
+    },
+    {
+      "raw_record_ids":["ingestion:89:28","ingestion:90:33"],
+      "source_record_key":"0000010733416",
+      "source_title":"불닭볶음면 (70g*6개) 420g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.cup_ramen",
+      "reason":"Exact current SSG product information identifies this 70g form as 작은컵. Package/form evidence overrides the flavour name."
+    },
+    {
+      "raw_record_ids":["ingestion:89:33","ingestion:90:38"],
+      "source_record_key":"1000689799083",
+      "source_title":"크링클컷 슬라이스 피클 500g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.preserved.sides.pickled",
+      "reason":"The title identifies sliced pickle, and prior strict review maps cucumber pickle products to the existing pickled-side-dish leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:89:38","ingestion:90:42"],
+      "source_record_key":"1000846029343",
+      "source_title":"샘표 메밀쌀소면 400g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.naengmyeon",
+      "reason":"The pass41 leaf is displayed as 냉면·메밀면, and prior strict review already placed an explicit 메밀국수 listing on this existing axis. Current source code contains later noodle refinements not present in the frozen pass41 snapshot, so they are not treated as existing leaves here."
+    },
+    {
+      "raw_record_ids":["ingestion:89:47","ingestion:90:52"],
+      "source_record_key":"1000641362724",
+      "source_title":"짜장면사리 400g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.black_bean",
+      "reason":"짜장면사리 explicitly identifies the noodle type; analogous 우동사리 is already classified by its noodle family rather than as generic plain noodles."
+    },
+    {
+      "raw_record_ids":["ingestion:89:49","ingestion:90:54"],
+      "source_record_key":"1000007073669",
+      "source_title":"오이피클 300g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.preserved.sides.pickled",
+      "reason":"Exact cucumber-pickle product form; reuses established strict precedent."
+    },
+    {
+      "raw_record_ids":["ingestion:89:54"],
+      "source_record_key":"1000148468400",
+      "source_title":"완면각짬뽕105g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.cup_ramen",
+      "reason":"Exact current SSG product information identifies this 105g product as 보통/큰컵. Container form is more specific than the 짬뽕 flavour token."
+    },
+    {
+      "raw_record_ids":["ingestion:90:3"],
+      "source_record_key":"1000830220975",
+      "source_title":"삼양 1963 우지 파개장 115g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.cup_ramen",
+      "reason":"Current exact-product retail evidence identifies the 115g form as a large-cup ramen."
+    },
+    {
+      "raw_record_ids":["ingestion:90:6"],
+      "source_record_key":"0000008839959",
+      "source_title":"불닭볶음면 105g",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"food.meals.noodles.cup_ramen",
+      "reason":"The same 105g product form is sold as 불닭볶음면 큰컵; package/form evidence distinguishes it from the 140g bag-ramen listing already present in this group."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids":["ingestion:89:8","ingestion:90:11"],
+      "source_record_key":"1000737358661",
+      "source_title":"라면사리 110g*4입",
+      "status":"held_new_taxonomy_candidate",
+      "candidate_family":"plain ramen noodle / ramen sari",
+      "suggested_new_leaf":"food.meals.noodles.ramen_sari",
+      "reason":"pass41 has no dedicated plain ramen-sari leaf. Do not force seasoning-free soup noodles into bag_ramen merely because they share ramen noodles."
+    },
+    {
+      "raw_record_ids":["ingestion:89:31","ingestion:90:36"],
+      "source_record_key":"1000006070370",
+      "source_title":"아즈텍카 밀또띠아 320g",
+      "status":"held_new_taxonomy_candidate",
+      "candidate_family":"tortilla / flatbread",
+      "suggested_new_leaf":"food.bakery.bread.tortilla",
+      "reason":"pass41 has no tortilla/flatbread leaf. The broad noodle/canned shelf is not semantic evidence and tortilla should not be forced into an unrelated bread or noodle leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:89:45","ingestion:90:49"],
+      "source_record_key":"0000006610103",
+      "source_title":"썬큐 베이크드 빈스 420g",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"food.preserved.canned.beans",
+      "reason":"Reuse the existing strict canned-beans candidate established for canned kidney beans. pass41 canned leaves do not include beans, and canned beans should not be collapsed into dry/raw bean leaves."
+    }
+  ],
+  "prior_coverage_and_collision_screen": {
+    "source_record_keys_total":25,
+    "prior_proposal_exact_hits":0,
+    "review_decisions_input_exact_hits":0,
+    "classification_pending_source_keys_cross_group_pending_hits":0,
+    "cross_group_method":"All 13 classification-pending source_record_keys were individually searched across the repository. Hits were limited to pending/019 itself plus its raw/catalog-unresolved evidence; no other pending group surfaced.",
+    "note":"Raw and catalog-unresolved appearances are evidence, not prior proposal completion."
+  },
+  "external_identity_checks": {
+    "performed_for_source_keys":["0000010733416","1000148468400","1000830220975","0000008839959"],
+    "purpose":"Resolve cup-vs-bag/container form where the saved title omitted the word 컵. No pricing or quantity normalization was changed."
+  },
+  "executed_tests":[]
+}
