@@ -1,0 +1,185 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-112-116",
+  "baseline_pass": "pass43",
+  "baseline_commit": "ac3a5967d73ac4fa9ee4c651dd7e0e6a6761455b",
+  "scope": [
+    "handoff/2026-09-12-pass43/remaining/112/001.json",
+    "handoff/2026-09-12-pass43/remaining/113/001.json",
+    "handoff/2026-09-12-pass43/remaining/114/001.json",
+    "handoff/2026-09-12-pass43/remaining/115/001.json",
+    "handoff/2026-09-12-pass43/remaining/116/001.json"
+  ],
+  "historical_reference": "handoff/2026-09-11/proposals/bulk-pending-110-150.json",
+  "scope_note": "Classification-only revalidation of five current pass43 remaining bundles. Current remaining rows, current taxonomy, current accepted snapshot, and the 431 explicit review decisions were rechecked. Historical bulk decisions were reused only where they still match current product evidence. Group 114 was corrected because 왕족발 is not a soup/stew despite sharing the retail 국 shelf.",
+  "accounting": {
+    "groups_reviewed": 5,
+    "unique_products": 20,
+    "observations_reviewed": 40,
+    "clear_existing_products": 15,
+    "clear_existing_observations": 30,
+    "new_leaf_products": 5,
+    "new_leaf_observations": 10,
+    "classification_hold_observations": 0,
+    "accepted_matches": 0,
+    "explicit_review_decision_matches": 0
+  },
+  "taxonomy_checks": {
+    "existing_leaves_confirmed": [
+      "food.meals.prepared.rice_cake",
+      "food.meals.prepared.soup_stew",
+      "food.meals.prepared.sandwich",
+      "food.meals.prepared.kimbap"
+    ],
+    "missing_candidate_leaves": [
+      "food.snacks.sweets.gum",
+      "food.meals.prepared.jokbal"
+    ],
+    "note": "Missing candidate IDs are taxonomy-review suggestions only. They are not added to taxonomy and their final parent/ID remains subject to taxonomy review."
+  },
+  "groups": [
+    {
+      "group": "112",
+      "source_path": "과자/시리얼 > 초콜릿/캔디/젤리/껌 > 껌",
+      "products": 4,
+      "observations": 8,
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_id_suggestion": "food.snacks.sweets.gum",
+      "reason": "All current rows are explicit chewing-gum products and the retail path is also 껌, but the current taxonomy has no gum leaf. Do not collapse gum into candy or another sweet-snack leaf.",
+      "items": [
+        {"source_record_key": "145783551", "source_title": "롯데 졸음번쩍껌 리필 105G", "observation_count": 2},
+        {"source_record_key": "062788862", "source_title": "롯데 자일리톨 오리지날 트윈리필 115G", "observation_count": 2},
+        {"source_record_key": "105216220", "source_title": "롯데 자일리톨 알파 오리지날 용기형 86G", "observation_count": 2},
+        {"source_record_key": "005664683", "source_title": "롯데 자일리톨 오리지날 용기 87G", "observation_count": 2}
+      ]
+    },
+    {
+      "group": "113",
+      "source_path": "냉장/냉동/밀키트 > 떡볶이/면류 > 떡국떡/떡볶이떡 > 떡국떡",
+      "products": 4,
+      "observations": 8,
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.rice_cake",
+      "reason": "All titles explicitly identify 떡국떡; rice origin, brand, and package size are attributes rather than distinct product types.",
+      "items": [
+        {"source_record_key": "106864376", "source_title": "풀무원 우리쌀 떡국떡 700G", "observation_count": 2},
+        {"source_record_key": "128400674", "source_title": "풀무원 찰 떡국떡 1KG", "observation_count": 2},
+        {"source_record_key": "124501077", "source_title": "씨제이 참쌀 떡국떡 1KG", "observation_count": 2},
+        {"source_record_key": "121514199", "source_title": "씨제이 미정당 국산쌀 떡국떡 700G", "observation_count": 2}
+      ]
+    },
+    {
+      "group": "114",
+      "source_path": "냉장/냉동/밀키트 > 전/볶음/국탕 > 볶음/찜/국/탕 > 국",
+      "products": 4,
+      "observations": 8,
+      "decision": "mixed",
+      "historical_decision_overridden": true,
+      "historical_issue": "The historical bulk proposal mapped all eight rows to food.meals.prepared.soup_stew, but two current rows are 홈밀 왕족발 600G. Product title must override the broad/misplaced 국 shelf.",
+      "items": [
+        {
+          "source_record_key": "071030829",
+          "source_title": "하림산업 더미식 얼큰양지 육개장 700G",
+          "observation_count": 2,
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.soup_stew",
+          "promotion_review": "unresolved_preserved"
+        },
+        {
+          "source_record_key": "071030835",
+          "source_title": "하림산업 더미식 한우양지 미역국 700G",
+          "observation_count": 2,
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.soup_stew",
+          "promotion_review": "unresolved_preserved"
+        },
+        {
+          "source_record_key": "071030806",
+          "source_title": "하림산업 더미식 차돌박이 된장찌개 700G",
+          "observation_count": 2,
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.soup_stew",
+          "promotion_review": "unresolved_preserved"
+        },
+        {
+          "source_record_key": "148378698",
+          "source_title": "홈밀 왕족발 600G",
+          "observation_count": 2,
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_id_suggestion": "food.meals.prepared.jokbal",
+          "reason": "The title explicitly identifies ready-to-eat jokbal. Current taxonomy has no jokbal leaf; the retail 국 shelf is contradictory and must not determine classification."
+        }
+      ],
+      "promotion_unresolved_observations_preserved": 6
+    },
+    {
+      "group": "115",
+      "source_path": "델리/치킨/초밥 > 샌드위치/사이드메뉴 > 샌드위치",
+      "products": 4,
+      "observations": 8,
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.sandwich",
+      "reason": "All four current products explicitly identify sandwich form; filling/style differences do not change product type.",
+      "items": [
+        {"source_record_key": "070266713", "source_title": "든든 햄치즈 샌드위치", "observation_count": 2},
+        {"source_record_key": "070268066", "source_title": "든든 에그 샌드위치", "observation_count": 2},
+        {"source_record_key": "070266684", "source_title": "든든 대만식 햄치즈 샌드위치", "observation_count": 2},
+        {"source_record_key": "070268089", "source_title": "든든 아이돌 샌드위치", "observation_count": 2}
+      ]
+    },
+    {
+      "group": "116",
+      "source_path": "델리/치킨/초밥 > 초밥/김밥 > 김밥",
+      "products": 4,
+      "observations": 8,
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.kimbap",
+      "reason": "All current products explicitly identify 김밥, including triangle-gimbap variants. Shape, filling, and size are attributes and do not change the kimbap product form.",
+      "items": [
+        {"source_record_key": "070268106", "source_title": "홈플델리 참치마요 빅 삼각김밥", "observation_count": 2},
+        {"source_record_key": "070268095", "source_title": "홈플델리 소고기 고추장 빅 삼각김밥", "observation_count": 2},
+        {"source_record_key": "071068071", "source_title": "홈플델리 햄야채 김밥", "observation_count": 2},
+        {"source_record_key": "071174215", "source_title": "홈플델리 참치&치즈 김밥", "observation_count": 2}
+      ]
+    }
+  ],
+  "conflict_checks": {
+    "accepted_file": "handoff/2026-09-12-pass43/accepted.json",
+    "accepted_blob_sha": "626a9f03f975a98d513702c4535796b3e6c604d9",
+    "accepted_matches": 0,
+    "review_decisions_file": "handoff/2026-09-11/review-decisions-input.json",
+    "review_decisions_blob_sha": "e895d22b1310edbe2c4af23b8c730ec56742a8a0",
+    "explicit_review_decision_matches": 0,
+    "checked_source_record_keys": [
+      "145783551", "062788862", "105216220", "005664683",
+      "106864376", "128400674", "124501077", "121514199",
+      "071030829", "071030835", "071030806", "148378698",
+      "070266713", "070268066", "070266684", "070268089",
+      "070268106", "070268095", "071068071", "071174215"
+    ]
+  },
+  "preserved_contracts": {
+    "quantity_review": "unchanged",
+    "identity_merge": "not_requested",
+    "promotion_review": "unresolved issues preserved and not approved by classification review",
+    "taxonomy_mutation": "not_performed",
+    "accepted_mutation": "not_performed",
+    "database_integration": "not_performed"
+  },
+  "executed_tests": [
+    "Manual current remaining accounting: 5 groups / 20 unique products / 40 observations.",
+    "Current taxonomy leaf presence check for rice_cake, soup_stew, sandwich, and kimbap; gum and jokbal candidate leaves absent.",
+    "Current accepted.json search for all 20 source_record_key values: 0 matches.",
+    "Current 431 explicit review-decision search for all 20 source_record_key values: 0 matches.",
+    "Historical bulk 110-150 proposal cross-check; group 114 blanket soup_stew mapping corrected after current-title review.",
+    "No DB integration tests run because this artifact is proposal-only."
+  ]
+}
