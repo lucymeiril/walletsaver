@@ -1,0 +1,318 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-132-136",
+  "baseline_commit": "e3be37815bdc9cf3ccb547babe537b2a9160ecaa",
+  "reservation_commit": "c3a21382aa029b9fce07cce379787f0317e88e6b",
+  "scope": [
+    "remaining/132/001.json",
+    "remaining/133/001.json",
+    "remaining/134/001.json",
+    "remaining/135/001.json",
+    "remaining/136/001.json"
+  ],
+  "historical_reference": "../2026-09-11/proposals/bulk-pending-110-150.json",
+  "review_accounting": {
+    "bundles": 5,
+    "products": 24,
+    "observations": 36,
+    "existing_leaf_products": 19,
+    "existing_leaf_observations": 28,
+    "new_leaf_needed_products": 4,
+    "new_leaf_needed_observations": 7,
+    "hold_products": 1,
+    "hold_observations": 1,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.seasonings.sauces.stew",
+      "food.seasonings.sauces.mapo_tofu",
+      "food.meals.noodles.glass",
+      "food.seafood.fish.hairtail",
+      "food.meals.prepared.seasoned_meat"
+    ],
+    "missing_or_held_candidates": [
+      "food.seasonings.sauces.doenjang_bibim",
+      "household.kitchen.utensils.scissors"
+    ],
+    "note": "Missing ids are review candidates only and are not created or treated as final taxonomy choices by this proposal."
+  },
+  "conflict_checks": {
+    "accepted_source_key_matches": 0,
+    "current_explicit_review_decision_matches_for_mixed_or_new_candidates": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "Current accepted was rechecked for all 24 source keys using exact keys or non-overlapping prefixes. Current 431-decision data was rechecked for all group 132 keys and the group 136 071226 prefix with zero matches; the historical 110-150 bulk review recorded zero explicit-review conflicts across this range and CURRENT_STATUS still reports the 431 decisions preserved."
+  },
+  "decisions": [
+    {
+      "group": "132",
+      "source_record_key": "8801007013466",
+      "source_title": "(냉장) CJ 백설 다담 순두부찌개 양념 (140G)",
+      "raw_record_ids": ["ingestion:28:98"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Title explicitly identifies a sundubu-jjigae cooking sauce; the broad ready-meal shelf does not make the sauce a prepared meal.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007059624",
+      "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+      "raw_record_ids": ["ingestion:31:35"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.sauces.doenjang_bibim",
+      "reason": "The product is explicitly a ureong-gangdoenjang bibim seasoning, but current taxonomy has no exact leaf and its final boundary versus doenjang paste/bibim sauce needs taxonomy review.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007250397",
+      "source_title": "(냉장) CJ 백설 다담 정통된장찌개 양념 (140G)",
+      "raw_record_ids": ["ingestion:31:37"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Explicit doenjang-jjigae cooking seasoning matches the existing stew-sauce leaf.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007023373",
+      "source_title": "(냉장) CJ 백설 다담 부대찌개 양념 (140G)",
+      "raw_record_ids": ["ingestion:31:89"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Explicit budae-jjigae cooking seasoning matches the existing stew-sauce leaf.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007924717",
+      "source_title": "(냉장) CJ 백설 다담 차돌순두부찌개 양념 (130G)",
+      "raw_record_ids": ["ingestion:32:22"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Explicit chadol-sundubu-jjigae cooking seasoning matches the existing stew-sauce leaf.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007013473",
+      "source_title": "(냉장) CJ 백설 다담 냉이된장찌개 양념 (140G)",
+      "raw_record_ids": ["ingestion:32:43"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Explicit naengi-doenjang-jjigae cooking seasoning matches the existing stew-sauce leaf.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007924427",
+      "source_title": "(냉장) CJ 백설 다담 차돌된장찌개 양념 (145G)",
+      "raw_record_ids": ["ingestion:33:44"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "Explicit chadol-doenjang-jjigae cooking seasoning matches the existing stew-sauce leaf.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "132",
+      "source_record_key": "8801007617107",
+      "source_title": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+      "raw_record_ids": ["ingestion:34:30"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.mapo_tofu",
+      "reason": "Explicit mapo-tofu cooking sauce matches the existing mapo-tofu sauce leaf rather than a prepared tofu meal.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "133",
+      "source_record_key": "069003053",
+      "source_title": "동원 일품당면 500G",
+      "raw_record_ids": ["ingestion:20:59", "ingestion:69:97"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.glass",
+      "reason": "Explicit dried dangmyeon/glass-noodle product matches the current glass-noodle leaf."
+    },
+    {
+      "group": "133",
+      "source_record_key": "100494546",
+      "source_title": "오뚜기 옛날 자른 당면 300G",
+      "raw_record_ids": ["ingestion:20:75", "ingestion:70:2"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.glass",
+      "reason": "Cut dangmyeon remains the same glass-noodle product form."
+    },
+    {
+      "group": "133",
+      "source_record_key": "009666117",
+      "source_title": "오뚜기 옛날 자른 당면 500G",
+      "raw_record_ids": ["ingestion:21:39", "ingestion:71:17"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.glass",
+      "reason": "Cut dangmyeon remains the same glass-noodle product form; pack weight is an attribute."
+    },
+    {
+      "group": "133",
+      "source_record_key": "070410301",
+      "source_title": "오뚜기 옛날 자른 당면 (국산 전분100) 300G",
+      "raw_record_ids": ["ingestion:72:1"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.glass",
+      "reason": "Domestic-starch claim does not change the explicit dangmyeon/glass-noodle form."
+    },
+    {
+      "group": "134",
+      "source_record_key": "008591962",
+      "source_title": "제주 생물 갈치 마리(대)",
+      "raw_record_ids": ["ingestion:3:98"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.hairtail",
+      "reason": "Explicit fresh Jeju hairtail matches the existing hairtail leaf; size is an attribute."
+    },
+    {
+      "group": "134",
+      "source_record_key": "107545959",
+      "source_title": "제주 은갈치 마리(대/행사/해동)",
+      "raw_record_ids": ["ingestion:4:8", "ingestion:53:77"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.hairtail",
+      "reason": "Silver hairtail remains hairtail; thawed/promotion/size descriptors do not change product form."
+    },
+    {
+      "group": "134",
+      "source_record_key": "008591849",
+      "source_title": "제주 생물 갈치 마리(중)",
+      "raw_record_ids": ["ingestion:4:11", "ingestion:53:30"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.hairtail",
+      "reason": "Explicit fresh Jeju hairtail matches the existing hairtail leaf; size is an attribute."
+    },
+    {
+      "group": "134",
+      "source_record_key": "008592446",
+      "source_title": "물가안정 제주은갈치 마리(대/해동)",
+      "raw_record_ids": ["ingestion:5:5", "ingestion:53:50"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.hairtail",
+      "reason": "Price-stability and thawed labels are offer/handling attributes; product form is explicit hairtail."
+    },
+    {
+      "group": "135",
+      "source_record_key": "070590518",
+      "source_title": "생생 춘천식 닭갈비 600G",
+      "raw_record_ids": ["ingestion:5:37", "ingestion:54:70"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Explicit seasoned chicken meat for dakgalbi fits the current seasoned-meat leaf."
+    },
+    {
+      "group": "135",
+      "source_record_key": "070590576",
+      "source_title": "생생 안동식 순살찜닭 600G",
+      "raw_record_ids": ["ingestion:5:39", "ingestion:54:73"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Raw/chilled seasoned boneless chicken for jjimdak fits seasoned meat; cooking style is an attribute."
+    },
+    {
+      "group": "135",
+      "source_record_key": "071394790",
+      "source_title": "하림 동물복지 IFF 한입쏙 닭가슴살 청양고추 500G",
+      "raw_record_ids": ["ingestion:6:5", "ingestion:55:21"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Seasoned IFF chicken-breast product in the seasoned-chicken shelf; welfare/flavor/freezing descriptors remain attributes."
+    },
+    {
+      "group": "135",
+      "source_record_key": "071394749",
+      "source_title": "하림 동물복지 IFF 한입쏙 닭가슴살 오리지널 500G",
+      "raw_record_ids": ["ingestion:6:8"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Seasoned IFF chicken-breast product fits the current seasoned-meat leaf; original flavor is an attribute."
+    },
+    {
+      "group": "136",
+      "source_record_key": "071226155",
+      "source_title": "simplus 주방가위",
+      "raw_record_ids": ["ingestion:27:38", "ingestion:77:14"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.scissors",
+      "reason": "Explicit kitchen scissors product form, but current taxonomy has no exact kitchen-scissors leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "136",
+      "source_record_key": "071226149",
+      "source_title": "simplus 바베큐 가위",
+      "raw_record_ids": ["ingestion:27:48", "ingestion:76:83"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.scissors",
+      "reason": "Barbecue scissors remain a kitchen-scissors product form; use case does not justify a separate leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "136",
+      "source_record_key": "071226184",
+      "source_title": "simplus 양손 주방가위",
+      "raw_record_ids": ["ingestion:27:53"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.scissors",
+      "reason": "Ambidextrous design is an attribute; product form is explicit kitchen scissors and current taxonomy lacks the exact leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "136",
+      "source_record_key": "071226178",
+      "source_title": "simplus 삼겹살 주방가위",
+      "raw_record_ids": ["ingestion:27:71", "ingestion:76:98"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.scissors",
+      "reason": "Pork-belly usage is an attribute; product form is kitchen scissors and current taxonomy lacks the exact leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    }
+  ],
+  "preserved_contracts": {
+    "quantity": "unchanged",
+    "promotion": "unchanged",
+    "unit": "unchanged",
+    "identity_merge": "not_requested",
+    "raw_payloads": "unchanged",
+    "taxonomy": "not_mutated",
+    "accepted": "not_mutated"
+  },
+  "executed_tests": [
+    "manual current remaining accounting: 5 bundles / 24 source products / 36 raw observations",
+    "manual current taxonomy existence check for stew sauce, mapo-tofu sauce, glass noodles, hairtail, and seasoned meat",
+    "manual current missing-leaf check for doenjang-bibim seasoning candidate and kitchen scissors candidate",
+    "manual accepted source-key conflict check for all 24 current source keys: zero matches",
+    "manual current 431-decision exact recheck for group 132 and group 136 high-risk/missing-leaf source keys: zero matches",
+    "historical bulk-pending-110-150 explicit review conflict check reused after confirming CURRENT_STATUS still reports 431 preserved decisions"
+  ]
+}
