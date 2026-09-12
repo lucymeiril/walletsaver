@@ -1,0 +1,124 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "432c3c2f4fd426cfb35536b88fbbc2f1b65c0659",
+  "work_id": "2026-09-12-black-bean-ramen-108",
+  "remaining_group": "108",
+  "source_path": "handoff/2026-09-12-pass43/remaining/108/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-black-bean-ramen-108.json",
+  "scope_note": "Classification-only revalidation of the historical jjajang-ramen proposal against the current pass43 remaining bundle, taxonomy, accepted records, and 431 explicit review decisions. Quantity, price, promotion, and product identity are unchanged; promotion_unresolved observations remain unresolved and no DB integration is performed.",
+  "review_accounting": {
+    "observations_checked": 9,
+    "unique_products": 5,
+    "existing_leaf_assignments_proposed": 5,
+    "classification_held_observations": 0,
+    "promotion_unresolved_observations_preserved": 2
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "accepted_record_matches": 0,
+    "current_black_bean_noodle_leaf_exists": true,
+    "historical_proposal_revalidated": true,
+    "note": "All five current source_record_key values remain unintegrated and have no explicit review-decision conflict. Current taxonomy contains food.meals.noodles.black_bean, and each title or audited source shelf identifies packaged jjajang noodles. The two 짜슐랭 promotion_unresolved observations are not treated as promotion approval."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:20:24",
+        "ingestion:69:60"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071274385",
+      "source_title": "simplus 이춘삼 짜장 건면 111G*4입",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "제목에 짜장 건면이 명시되고 짜장라면 진열경로와 일치한다. 건면 가공법과 4입 수량은 분류를 바꾸지 않는다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071274385&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:20:25",
+        "ingestion:69:68"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "120108964",
+      "source_title": "농심 올리브 짜파게티 140G*5입",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "짜파게티는 명확한 포장 짜장라면 제품이며 올리브 표기와 5입 수량은 속성이다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=120108964&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:20:51",
+        "ingestion:70:73"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "068981243",
+      "source_title": "오뚜기 짜슐랭 145G*5입",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "현재 원본 진열경로가 짜장라면이고 과거 제안과 일치한다. 두 관측의 promotion_unresolved는 할인조건 문제로 별도 유지하며 분류 승인으로 간주하지 않는다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068981243&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested",
+      "promotion_review": "unresolved_preserved"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:21:37",
+        "ingestion:70:91"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "057467472",
+      "source_title": "농심 사천짜파게티 137g*4입",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "사천 스타일은 짜파게티라는 동일 짜장라면 제품형태의 맛 변형이며 별도 taxonomy 분기 근거가 아니다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=057467472&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:72:13"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "000045411",
+      "source_title": "삼양 짜짜로니 140G*5입",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "짜짜로니는 짜장라면 진열경로의 포장 짜장면 제품으로 기존 black_bean noodle 리프가 정확하다. 5입 수량은 속성이다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=000045411&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": [
+    "manual revalidation: 9/9 current remaining observations accounted for",
+    "manual taxonomy check: food.meals.noodles.black_bean exists in pass43 taxonomy",
+    "manual accepted-record check: 0/5 source_record_keys found in pass43 accepted.json",
+    "manual explicit-review check: 0/5 source_record_keys found in the 431 review decisions",
+    "manual promotion separation check: 2 promotion_unresolved observations preserved without promotion approval"
+  ]
+}
