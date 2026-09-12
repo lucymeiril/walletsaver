@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 2. 완성까지 남은 strict-audit 상한
 
-- 미완 strict 범위: `pending 001~023`
-- 해당 원본 관측: **1,295 observations**
-- pass41 전체 pending 3,916 대비 **약 33.1%**
-- 관측 범위 기준 `024~451`은 약 66.9%를 strict/ordered 방식으로 지나왔다. 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
-- `001~023`에도 과거 proposal과 cross-group duplicate가 있으므로 실제 새 판단량은 1,295보다 작을 수 있다.
+- 미완 strict 범위: `pending 001~022`
+- 해당 원본 관측: **1,256 observations**
+- pass41 전체 pending 3,916 대비 **약 32.1%**
+- 관측 범위 기준 `023~451`은 약 67.9%를 strict/ordered 방식으로 지나왔다. 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
+- `001~022`에도 과거 proposal과 cross-group duplicate가 있으므로 실제 새 판단량은 1,256보다 작을 수 있다.
 
 분류 sweep 뒤 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key dedupe
@@ -40,17 +40,18 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 3. strict reverse sweep 누계
 
-완료 범위: **pending 024~043**
+완료 범위: **pending 023~043**
 
-- observations opened: **588**
-- already-classified exclusions: **48**
-- strict/new classification reviews: **540**
-- distinct newly reviewed source listings: **512**
-- existing-leaf proposals: **232 listings**
-- taxonomy/product-form/promotion/manual-review holds: **280 listings**
+- observations opened: **627**
+- already-classified exclusions: **57**
+- strict/new classification reviews: **570**
+- distinct newly reviewed source listings: **542**
+- existing-leaf proposals: **245 listings**
+- taxonomy/product-form/promotion/manual-review holds: **297 listings**
 
 최근 그룹:
-- 024 `proposals/emart-coffee-tea-024.json` — 36 opened / 2 excluded / 34 new / existing 23 / hold 11
+- 023 `proposals/costco-tissue-shelf-023.json` — 39 opened / 9 excluded / 30 new / existing 13 / hold 17
+- 024 `proposals/emart-coffee-tea-024.json` — 36 / 2 / 34 / existing 23 / hold 11
 - 025 `proposals/emart-health-foods-025.json` — 35 / 0 / 35 / existing 0 / hold 35
 - 026 `proposals/emart-dairy-026.json` — 35 / 2 / 33 / existing 32 / hold 1
 - 027 `proposals/emart-best-027.json` — 33 / 0 / 33 / existing 31 / hold 2
@@ -64,6 +65,7 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 - 035~043: see latest checkpoints.
 
 Latest checkpoints:
+- `checkpoints/checkpoint-after-pending-023.md`
 - `checkpoints/checkpoint-after-pending-024.md`
 - `checkpoints/checkpoint-after-pending-025.md`
 - `checkpoints/checkpoint-after-pending-026.md`
@@ -78,33 +80,33 @@ Latest checkpoints:
 
 ## 4. 최근 중요 발견
 
+### pending 023 — Costco `휴지`
+- 39 observations / **9 classified exclusions** / 30 new; existing 13 / hold 17.
+- confirmed current paper leaves reused only for explicit toilet rolls, dry facial/portable tissues, and true wet/toilet wipes: `household.hygiene.paper.toilet`, `.facial`, `.wipes`.
+- shelf pollution is material: body cooling sheet, table napkin, dry cotton/coin tissues, cleaning wipes, five trash-bin listings, and a garden hose reel appeared under `휴지`.
+- cleaning wipes were not forced into personal `paper.wipes`; official Costco URLs place them under Cleaning Products/Cleaning Chemicals.
+- trash bins were not treated as tissue; official URLs place them under Household Storage. No confirmed current trash-bin leaf was found.
+- dry cotton/coin tissues were held because the current `paper.wipes` leaf is explicitly wet-wipe oriented and no exact dry-tissue leaf was confirmed.
+- table napkin held as candidate `household.hygiene.paper.napkin` because no confirmed current napkin leaf surfaced.
+- group-marker + 30 source-key searches found no prior group023 proposal coverage; explicit-decision collision 0.
+
 ### pending 024 — Emart `커피/원두/차`
-- 36 observations / **2 classified exclusions** / 34 new; existing 23 / hold 11.
-- exclusions: `ingestion:88:10` White Gold coffee mix and `ingestion:88:16` Kanu instant coffee; both classifications were already complete and only mixed-package reconciliation remains.
-- shallow status inspection initially surfaced one exclusion; direct per-record inspection found the second. Canonical exclusion count is **2**, never 1.
-- current leaves reused only where product form was clear: RTD coffee, coffee mix/instant, explicit black/green/herbal/grain/barley tea.
-- exact identity resolved opaque rows such as Osulloc herb edition, Tizen Cafe Orzo, CafeN hazelnut sticks, Real Milk Cafe Latte, and Maxim Original refill.
-- holds: two mixed Osulloc tea assortments; two plum cheong; plum extract; milk tea; dunggeulle tea; lemon juice; kombucha; cassia-seed tea; ginger cheong.
-- prior candidate families reused where established: `food.drinks.tea.fruit_preserve`, `food.drinks.tea.milk_tea`, `food.drinks.concentrates.fruit`, `food.drinks.tea.kombucha`, `food.drinks.tea.ginger`.
-- group-marker + 34 new source-key searches found no prior group024 proposal coverage; explicit-decision collision 0.
+- 36 observations / 2 classified exclusions / 34 new; existing 23 / hold 11.
+- shallow status inspection initially surfaced one exclusion; direct per-record inspection found the second. Canonical exclusion count is 2.
+- current leaves reused only where product form was clear; mixed tea, cheong/concentrate, milk tea, kombucha and unsupported specialty teas were held.
 
 ### pending 025 — Emart `건강식품`
 - 35 observations / exclusions 0 / existing 0 / holds 35.
-- `food.health.supplements.*` names from prior sweep are mostly held/new-taxonomy candidates, not confirmed pass41 leaves. Supplement products were not promoted to invented existing leaves.
-- group-marker + 35 source-key searches found no prior pending025 proposal coverage; explicit-decision collision 0.
+- supplement candidate names from prior sweeps were not treated as confirmed pass41 leaves.
 
 ### pending 026 — Emart `우유/유제품`
-- 35 observations / **2 classified exclusions** / 33 new; existing 32 / hold 1.
-- direct per-record status inspection corrected an earlier broad-search miss; exact form checks resolved opaque/form-sensitive items.
-- key `0000006615474` overlaps pending027; global dedupe later.
+- 35 observations / 2 classified exclusions / 33 new; existing 32 / hold 1.
+- direct per-record status inspection corrected an earlier broad-search miss.
 
 ### raw-coverage lesson confirmed twice
 - pending034: older proposal covered 19/29, missing 10.
 - pending028: older proposal covered 11/33, missing 22.
 - **old proposal에 group 이름이 있거나 proposal 파일이 존재하는 것만으로 완료 취급 금지. Exact raw/source-key coverage 필수.**
-
-### pending 030 — classified promotion anomaly
-- `ingestion:1:25`, key `1000601687276`, `석박지/맛김치 1+1`은 mixed deal page인데 이미 `food.preserved.kimchi.cabbage`로 classified. 최종 global reconciliation에서 재검토.
 
 ## 5. 이미 확인된 전역 reconciliation 사실
 
@@ -114,24 +116,24 @@ Latest checkpoints:
 - pending313 `농심 생생 우동 용기 276G`: older proposal `cup_ramen` vs final sweep `udon` conflict. 최종 승격 전 해결.
 - 과거 `2,165`, `+266 final sweep`, `840 classification reviews 044~109` 같은 숫자를 global unique completion으로 사용하지 않는다.
 
-## 6. 현재 재개점 — pending 023
+## 6. 현재 재개점 — pending 022
 
 **다음 AI는 여기서 이어간다.**
 
-- group: `pending/023`
-- mart/shelf: Costco `휴지`
-- index: **39 observations / 39 titles**
-- files: `pending/023/001.json`, `pending/023/002.json`
-- pending024 strict 완료:
-  - `proposals/emart-coffee-tea-024.json`
-  - `checkpoints/checkpoint-after-pending-024.md`
+- group: `pending/022`
+- mart/shelf: Emart `친환경/유기농`
+- index: **40 observations / 40 titles**
+- files: `pending/022/001.json`, `pending/022/002.json`
+- pending023 strict 완료:
+  - `proposals/costco-tissue-shelf-023.json`
+  - `checkpoints/checkpoint-after-pending-023.md`
 
-023 절차:
+022 절차:
 1. 두 pending 조각을 전부 fetch하고 record별 `review_status=classified` 제외 수를 직접 확정.
 2. 기존 proposal의 **exact raw/source-key coverage**를 계산. group/file 이름만 믿지 않는다.
-3. Costco `휴지` shelf가 paper products 외 상품으로 오염됐는지 title/product form을 우선해 검토한다.
+3. broad Emart `친환경/유기농` shelf보다 실제 title/product form을 우선한다.
 4. 431 explicit decision collision screen.
-5. 완료 즉시 이 파일을 `pending 022` 재개점으로 갱신.
+5. 완료 즉시 이 파일을 `pending 021` 재개점으로 갱신.
 
 ## 7. 새 AI 문서 신뢰 순서
 
