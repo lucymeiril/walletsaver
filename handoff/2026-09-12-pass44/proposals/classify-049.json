@@ -1,0 +1,56 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "24bf164435cb42220e6483a57635b67b2a2596f4",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:17", "ingestion:64:55"],
+      "source_name": "homeplus",
+      "source_record_key": "123568460",
+      "source_title": "씨제이 다담 우렁 강된장 양념 500G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "제목은 강된장 '양념'을 명시하지만 현재 근거만으로 일반 된장 페이스트인지 별도 조리용 소스인지 제품형태를 확정하기 어렵다. 냉장장류 진열만으로 food.seasonings.pastes.doenjang 또는 소스 리프로 밀어 넣지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=123568460&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:28", "ingestion:64:66"],
+      "source_name": "homeplus",
+      "source_record_key": "120523420",
+      "source_title": "옹심원 재래식 청국장 국산 400G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seasonings.pastes.cheonggukjang",
+      "reason": "제목이 청국장 제품형태를 직접 명시하지만 현재 장류 taxonomy에는 청국장 전용 리프가 없다. 원산지는 속성이며 일반 된장 리프로 임의 흡수하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=120523420&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:29", "ingestion:64:67"],
+      "source_name": "homeplus",
+      "source_record_key": "120523414",
+      "source_title": "옹심원 재래식 청국장 수입산 400G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seasonings.pastes.cheonggukjang",
+      "reason": "제목이 청국장 제품형태를 직접 명시하지만 현재 장류 taxonomy에는 청국장 전용 리프가 없다. 수입산 여부는 원산지 속성이며 일반 된장으로 대체하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=120523414&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "Reviewed all 6 current pass44 observations in remaining/049/001.json and grouped them into 3 exact source_record_key pairs with matching source_name and source_title.",
+    "Confirmed proposal_references is empty for all 6 observations.",
+    "Exact-searched source_record_keys 123568460, 120523420, and 120523414 in current pass44 accepted.json with no matches.",
+    "Exact-searched the same three source_record_keys in the preserved 431 review-decisions-input.json with no matches.",
+    "Checked the current pass44 seasoning paste taxonomy slice; no cheonggukjang leaf is present.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
+}
