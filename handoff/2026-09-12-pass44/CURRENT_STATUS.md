@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `classify-082 / 9e8b221561b72e39426cfbebf98cf5af6ba8628a / remaining/082/001.json / 진행 중 / proposals/classify-082.json / 건강식품 taxonomy 공백 보존해 6상품 hold 제안`
+- `classify-082 / 9e8b221561b72e39426cfbebf98cf5af6ba8628a / remaining/082/001.json / 제안 완료 / proposals/classify-082.json / remaining/083 기존제안 유무 확인`
 - `classify-077 / 290bc7a8562eec19f8881189614bb649565f46c6 / remaining/077/001.json / 제안 완료 / proposals/classify-077.json / remaining/081 기존제안 유무 확인`
 - `classify-049 / 24bf164435cb42220e6483a57635b67b2a2596f4 / remaining/049/001.json / 제안 완료 / proposals/classify-049.json / remaining/052 기존제안 유무 확인`
 - `fix-batch-112-116 / 4671ff88de88487e2dc17fd3bb7b70d4dc4c183c / 이전 제안 batch-112-116 ID 없는 결정 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-112-116.json / 기존 제안 없는 잔여 범위 선택`
