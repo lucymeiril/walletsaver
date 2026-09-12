@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `classify-077 / 290bc7a8562eec19f8881189614bb649565f46c6 / remaining/077/001.json / 진행 중 / proposals/classify-077.json / 락스 3상품 existing_leaf 제안 저장`
 - `classify-049 / 24bf164435cb42220e6483a57635b67b2a2596f4 / remaining/049/001.json / 제안 완료 / proposals/classify-049.json / remaining/052 기존제안 유무 확인`
 - `fix-batch-112-116 / 4671ff88de88487e2dc17fd3bb7b70d4dc4c183c / 이전 제안 batch-112-116 ID 없는 결정 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-112-116.json / 기존 제안 없는 잔여 범위 선택`
 - `fix-batch-172-176 / 32d158b1cd1d57883bd8e003f57e014ffd46385e / 이전 제안 batch-172-176 identity 오류 6결정 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-172-176.json / batch-112-116 ID 보완`
