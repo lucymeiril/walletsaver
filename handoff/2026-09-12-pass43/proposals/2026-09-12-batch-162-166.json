@@ -1,0 +1,242 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-162-166",
+  "baseline_commit": "28752f3f3d1a2429f3111f5f2cb627b9de8b1745",
+  "reservation_commit": "de967687ca6d5cd5f00f80f1db686960f4eb6c3a",
+  "scope": [
+    "remaining/162/001.json",
+    "remaining/163/001.json",
+    "remaining/164/001.json",
+    "remaining/165/001.json",
+    "remaining/166/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 16,
+    "observations": 30,
+    "existing_leaf_products": 4,
+    "existing_leaf_observations": 6,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 12,
+    "hold_observations": 24,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.seafood.fish.salmon"
+    ],
+    "missing_or_held_candidates": [
+      "food.seafood.processed.gulbi",
+      "food.seafood.cephalopod.squid",
+      "household.bath.shower_head",
+      "household.bath.shower_hose",
+      "household.bath.accessories.shower_ball"
+    ],
+    "note": "Current pass43 taxonomy contains food.seafood.fish.salmon. The gulbi, squid, shower-head, shower-hose, and shower-ball candidate ids are absent; historical reuse_held_leaf wording for groups 164 and 166 does not make those ids current taxonomy leaves. Missing ids remain review-only candidates and this proposal does not create taxonomy entries."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_groups_163_166": 0,
+    "explicit_review_decision_count": 431,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "All 30 current remaining raw ids were compared with current accepted new_included_ids and accepted_but_blocked_ids with zero overlaps. All 12 higher-risk source_record_keys in groups 163-166 were searched exactly in the current preserved 431 explicit review decisions with zero matches; the historical 151-208 bulk proposal also recorded zero explicit-review conflicts."
+  },
+  "decisions": [
+    {
+      "group": "162",
+      "source_record_key": "124697247",
+      "source_title": "휘라 노르웨이 횟감용 생연어 100G",
+      "raw_record_ids": ["ingestion:4:19", "ingestion:53:18"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.salmon",
+      "reason": "The title and authoritative shelf explicitly identify fresh salmon; sashimi use is preparation/use context and the current salmon leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "162",
+      "source_record_key": "054731135",
+      "source_title": "휘라 노르웨이 구이용 생연어 100G",
+      "raw_record_ids": ["ingestion:4:41", "ingestion:53:82"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.salmon",
+      "reason": "The product is raw fresh salmon sold for grilling; intended cooking method does not change the fish type.",
+      "issues_preserved": []
+    },
+    {
+      "group": "162",
+      "source_record_key": "137231883",
+      "source_title": "휘라 노르웨이 큐브 생연어 150G(팩)",
+      "raw_record_ids": ["ingestion:53:74"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.salmon",
+      "reason": "Cube cutting and pack size are presentation attributes; the title remains explicit fresh salmon.",
+      "issues_preserved": []
+    },
+    {
+      "group": "162",
+      "source_record_key": "125919872",
+      "source_title": "휘라 노르웨이 슬라이스 생연어 150G(팩)",
+      "raw_record_ids": ["ingestion:54:4"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.fish.salmon",
+      "reason": "Sliced presentation does not change the explicit fresh-salmon product identity, and the current salmon leaf is exact enough.",
+      "issues_preserved": []
+    },
+    {
+      "group": "163",
+      "source_record_key": "123382990",
+      "source_title": "영광 참굴비 행사(1.0kg내외/20마리)",
+      "raw_record_ids": ["ingestion:5:18", "ingestion:54:34"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.gulbi",
+      "reason": "The title explicitly identifies gulbi, a processed dried/salted croaker form. Current taxonomy has no gulbi leaf, so it is not collapsed into fresh croaker.",
+      "issues_preserved": []
+    },
+    {
+      "group": "163",
+      "source_record_key": "122921654",
+      "source_title": "영광 참굴비 2호 (20마리/1.4KG 내외)",
+      "raw_record_ids": ["ingestion:5:21", "ingestion:54:52"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.gulbi",
+      "reason": "Explicit gulbi product form differs from fresh croaker; count and weight are attributes and the exact processed leaf is absent.",
+      "issues_preserved": []
+    },
+    {
+      "group": "163",
+      "source_record_key": "121606350",
+      "source_title": "영광참굴비 4호 (1.2kg내외/20마리)",
+      "raw_record_ids": ["ingestion:5:22", "ingestion:54:53"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.gulbi",
+      "reason": "The title is explicit gulbi, while the current taxonomy has no exact processed-gulbi leaf; pack grade and count are attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "164",
+      "source_record_key": "123626017",
+      "source_title": "생물 오징어(국내산) 마리",
+      "raw_record_ids": ["ingestion:3:92", "ingestion:53:12"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.cephalopod.squid",
+      "reason": "The product is explicitly raw squid, but the historical squid candidate is still absent from the current taxonomy and therefore remains held.",
+      "issues_preserved": []
+    },
+    {
+      "group": "164",
+      "source_record_key": "059545814",
+      "source_title": "해동 손질오징어(원양산/행사) 마리",
+      "raw_record_ids": ["ingestion:4:0", "ingestion:53:25"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.cephalopod.squid",
+      "reason": "Trimmed/thawed presentation does not change squid identity, but the exact squid candidate is not a current taxonomy leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "164",
+      "source_record_key": "103530047",
+      "source_title": "해동 손질오징어(원양산/소) 마리",
+      "raw_record_ids": ["ingestion:4:52", "ingestion:53:46"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.cephalopod.squid",
+      "reason": "The title and shelf explicitly identify squid; size and origin are attributes, while the exact candidate leaf remains absent from current taxonomy.",
+      "issues_preserved": []
+    },
+    {
+      "group": "165",
+      "source_record_key": "070727756",
+      "source_title": "simplus 필터 샤워헤드&리필7입",
+      "raw_record_ids": ["ingestion:25:83", "ingestion:75:42"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.shower_head",
+      "reason": "The title explicitly identifies a filter shower head bundled with refills. Current taxonomy has no shower-head hardware leaf, so the broad shelf is not forced into another category.",
+      "issues_preserved": []
+    },
+    {
+      "group": "165",
+      "source_record_key": "071030864",
+      "source_title": "simplus 스테인리스 샤워호스 3m",
+      "raw_record_ids": ["ingestion:25:88", "ingestion:75:94"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.shower_hose",
+      "reason": "The product form is explicitly a shower hose, but no exact current bathroom-hardware leaf exists; length interpretation stays outside classification scope.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "165",
+      "source_record_key": "071030812",
+      "source_title": "simplus 스테인리스 샤워호스 1.5m",
+      "raw_record_ids": ["ingestion:26:47", "ingestion:75:15"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.shower_hose",
+      "reason": "The title explicitly identifies a shower hose; the candidate leaf is absent and the unresolved length/unit issue is preserved separately.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "166",
+      "source_record_key": "071183918",
+      "source_title": "simplus 롱샤워볼 1P 퍼플",
+      "raw_record_ids": ["ingestion:25:98", "ingestion:75:20"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.accessories.shower_ball",
+      "reason": "The product is explicitly a shower ball, but the historical held candidate is not present in current taxonomy; long style and color are variants.",
+      "issues_preserved": []
+    },
+    {
+      "group": "166",
+      "source_record_key": "071183930",
+      "source_title": "simplus 롱샤워볼 1P 화이트",
+      "raw_record_ids": ["ingestion:26:27", "ingestion:75:22"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.accessories.shower_ball",
+      "reason": "The title explicitly identifies a shower ball; color and long style do not alter product type, but no exact current leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "166",
+      "source_record_key": "071183884",
+      "source_title": "simplus 샤워볼 1P 화이트",
+      "raw_record_ids": ["ingestion:26:46", "ingestion:75:64"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.bath.accessories.shower_ball",
+      "reason": "The explicit shower-ball form matches the historical candidate, which remains absent from current taxonomy and therefore stays held.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Product-title form overrides broad retail shelf labels when they conflict.",
+    "Missing taxonomy ids are review candidates only and are not treated as approved taxonomy additions.",
+    "Historical reuse_held_leaf labels are not interpreted as current existing leaves when the candidate id is absent from pass43 taxonomy."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 162-166 and grouped repeated observations into 16 exact source_record_keys.",
+    "Confirmed food.seafood.fish.salmon exists in current pass43 taxonomy and confirmed the five held candidate ids are absent.",
+    "Compared all 30 raw_record_ids with current accepted.json new_included_ids and accepted_but_blocked_ids and found zero overlaps.",
+    "Searched all 12 higher-risk source_record_keys in groups 163-166 against the current preserved 431 explicit review decisions and found zero exact matches; the historical 151-208 bulk conflict record is also zero.",
+    "No repository test or DB import was run because this is proposal-only review and no executable or DB state was changed."
+  ]
+}
