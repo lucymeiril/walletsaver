@@ -1,0 +1,419 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.naengmyeon"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:979b91426c16ae644135d1a9",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "냉면·메밀면"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:27",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 간편면요리 > 냉면ㆍ쫄면 > 냉면ㆍ메밀면",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "CJ 동치미 냉면육수 (1인) (300G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007033686/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "씨제이제일제당",
+      "crawled_at": "2026-08-31T01:46:57.086114Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 2,000원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4814e8f3-42af-4a87-af17-6f986503862f/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 27,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1280,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이제일제당",
+          "canon_hash": "d1116faa1a74d99738a116110ce1005158fdd218",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007033686/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "간편면요리",
+            "냉면ㆍ쫄면",
+            "냉면ㆍ메밀면"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4814e8f3-42af-4a87-af17-6f986503862f/300x300.jpg",
+          "mart_native_code": "8801007033686",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007033686",
+          "source_url": "https://lottemartzetta.com/products/OS8801007033686/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.086114",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007033686/details",
+        "discount_percent": null,
+        "display_unit": "300g",
+        "event_name": "2개씩 골라 담으면, 2,000원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4814e8f3-42af-4a87-af17-6f986503862f/300x300.jpg",
+        "match_key": "__no_brand__|cj 동치미 냉면육수 1인 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 동치미 냉면육수 (1인) (300G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 426.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1280,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ada478d778c0060ed9ff0ecf9cc661dbb3ef11109f38f136145f78898c04f284",
+      "raw_record_id": "ingestion:28:27",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "간편면요리",
+        "냉면ᆞ쫄면",
+        "냉면ᆞ메밀면"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007033686",
+      "source_title": "CJ 동치미 냉면육수 (1인) (300G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007033686/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:28:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007033686",
+    "source_title": "CJ 동치미 냉면육수 (1인) (300G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.naengmyeon"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:979b91426c16ae644135d1a9",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "냉면·메밀면"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:13",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 간편면요리 > 냉면ㆍ쫄면 > 냉면ㆍ메밀면",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "풀무원 평양 물냉면육수 (1인) (290G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114303931/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "풀무원",
+      "crawled_at": "2026-08-31T01:46:57.101799Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 2,000원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/52ed8ade-c92d-4f25-889d-fdbd5499d0a4/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 13,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "290g",
+        "package_quantity": 290.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1380,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "풀무원",
+          "canon_hash": "1bd0c503a32a3c4477e4ec9c2b23a98cb05c0fce",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801114303931/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "간편면요리",
+            "냉면ㆍ쫄면",
+            "냉면ㆍ메밀면"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/52ed8ade-c92d-4f25-889d-fdbd5499d0a4/300x300.jpg",
+          "mart_native_code": "8801114303931",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801114303931",
+          "source_url": "https://lottemartzetta.com/products/OS8801114303931/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.101799",
+        "detail_url": "https://lottemartzetta.com/products/OS8801114303931/details",
+        "discount_percent": null,
+        "display_unit": "290g",
+        "event_name": "2개씩 골라 담으면, 2,000원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/52ed8ade-c92d-4f25-889d-fdbd5499d0a4/300x300.jpg",
+        "match_key": "__no_brand__|풀무원 평양 물냉면육수 1인 290g||290g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 평양 물냉면육수 (1인) (290G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 290.0,
+        "package_unit": "g",
+        "price_per_100g": 475.86,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1380,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "290g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4ed31dab5a28edec77f952fd374a6c7811d1c8fb8c44c9c955ee6b173c3e7dbb",
+      "raw_record_id": "ingestion:30:13",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "간편면요리",
+        "냉면ᆞ쫄면",
+        "냉면ᆞ메밀면"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801114303931",
+      "source_title": "풀무원 평양 물냉면육수 (1인) (290G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801114303931/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:30:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801114303931",
+    "source_title": "풀무원 평양 물냉면육수 (1인) (290G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.naengmyeon"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:979b91426c16ae644135d1a9",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "냉면·메밀면"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:24",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 간편면요리 > 냉면ㆍ쫄면 > 냉면ㆍ메밀면",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "CJ 함흥 비빔냉면 소스 (1인) (85G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007853444/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "씨제이제일제당",
+      "crawled_at": "2026-08-31T01:47:02.660092Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 2,000원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2145f7d2-6e58-4c0d-8b47-395feb55a911/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "85g",
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1280,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이제일제당",
+          "canon_hash": "95467cdc13ca4e9a01ac590f6812c5f62bb705e9",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007853444/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "간편면요리",
+            "냉면ㆍ쫄면",
+            "냉면ㆍ메밀면"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2145f7d2-6e58-4c0d-8b47-395feb55a911/300x300.jpg",
+          "mart_native_code": "8801007853444",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007853444",
+          "source_url": "https://lottemartzetta.com/products/OS8801007853444/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.660092",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007853444/details",
+        "discount_percent": null,
+        "display_unit": "85g",
+        "event_name": "2개씩 골라 담으면, 2,000원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2145f7d2-6e58-4c0d-8b47-395feb55a911/300x300.jpg",
+        "match_key": "__no_brand__|cj 함흥 비빔냉면 소스 1인 85g||85g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 함흥 비빔냉면 소스 (1인) (85G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "price_per_100g": 1505.88,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1280,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "85g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ee58f8727a52c70902f213f9a16b91955e822df740fc5a90f0c0e330c123ae48",
+      "raw_record_id": "ingestion:32:24",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "간편면요리",
+        "냉면ᆞ쫄면",
+        "냉면ᆞ메밀면"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007853444",
+      "source_title": "CJ 함흥 비빔냉면 소스 (1인) (85G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007853444/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:32:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007853444",
+    "source_title": "CJ 함흥 비빔냉면 소스 (1인) (85G)"
+  }
+]

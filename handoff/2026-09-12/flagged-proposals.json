@@ -1,0 +1,136 @@
+[
+  {
+    "decision": {
+      "raw_record_id": "ingestion:44:73",
+      "source_record_key": "644167",
+      "source_title": "Euro Pomella 냉동부라타치즈 100g x 8 개",
+      "unified_category_id": "food.dairy.cheese.burrata"
+    },
+    "file": "costco-cheese-shelf-029.json",
+    "flags": [
+      "absent_from_snapshot"
+    ],
+    "ids": [
+      "ingestion:44:73"
+    ],
+    "leaf": "food.dairy.cheese.burrata",
+    "path": "/excluded_already_classified/2"
+  },
+  {
+    "decision": {
+      "identity_merge": "not_requested",
+      "proposed_leaf": "food.seafood.processed.anchovy",
+      "quantity_review": "unit_unresolved remains separate",
+      "raw_record_ids": [
+        "ingestion:46:55"
+      ],
+      "reason": "선물세트는 포장/구성 속성이고 핵심 상품은 참멸치다. 기존 건멸치 leaf를 재사용한다.",
+      "source_record_key": "609348",
+      "source_title": "바다소리 참멸치 2호 선물세트"
+    },
+    "file": "costco-fish-shelf-041.json",
+    "flags": [
+      "title_mismatch"
+    ],
+    "ids": [
+      "ingestion:46:55"
+    ],
+    "leaf": "food.seafood.processed.anchovy",
+    "path": "/decisions/12"
+  },
+  {
+    "decision": {
+      "decision": "propose_existing_leaf",
+      "raw_record_ids": [
+        "ingestion:95:68"
+      ],
+      "reason": "Fresh tomato assortment is explicit.",
+      "source_record_key": "1000631206422",
+      "source_title": "친환경 트리플 토마토 900g/팩",
+      "unified_category_id": "food.produce.vegetables.tomato"
+    },
+    "file": "emart-organic-022.json",
+    "flags": [
+      "absent_from_snapshot",
+      "unknown_current_leaf"
+    ],
+    "ids": [
+      "ingestion:95:68"
+    ],
+    "leaf": "food.produce.vegetables.tomato",
+    "path": "/proposed_decisions/27"
+  },
+  {
+    "decision": {
+      "identity_merge": "not_requested",
+      "proposed_unified_category_id": "food.seafood.fish.pollock",
+      "quantity_review": "unchanged; classification-only proposal",
+      "raw_record_ids": [
+        "ingestion:4:62",
+        "ingestion:53:94"
+      ],
+      "reason": "동태는 pass41 명태(pollock) leaf의 명시된 형태이며 손질 여부는 상품 속성이다.",
+      "source_name": "homeplus",
+      "source_record_key": "134897358",
+      "source_title": "손질 수제 동태살 500G(팩)",
+      "status": "proposed"
+    },
+    "file": "homeplus-frozen-seafood-055.json",
+    "flags": [
+      "absent_from_snapshot"
+    ],
+    "ids": [
+      "ingestion:4:62",
+      "ingestion:53:94"
+    ],
+    "leaf": "food.seafood.fish.pollock",
+    "path": "/decisions/5"
+  },
+  {
+    "decision": {
+      "identity_merge": "same_source_listing_observations_only",
+      "proposed_leaf": "food.drinks.tea.puer",
+      "quantity_review": "unchanged",
+      "raw_record_ids": [
+        "ingestion:16:49",
+        "ingestion:65:88"
+      ],
+      "reason": "제목과 원본 경로가 보이차를 직접 명시하고 현재 taxonomy에 정확한 puer/보이차 리프가 존재한다.",
+      "source_record_key": "069367595",
+      "source_title": "녹차원 보이차 40T(36G)"
+    },
+    "file": "homeplus-produce-tea-honey-385-390.json",
+    "flags": [
+      "absent_from_snapshot"
+    ],
+    "ids": [
+      "ingestion:16:49",
+      "ingestion:65:88"
+    ],
+    "leaf": "food.drinks.tea.puer",
+    "path": "/decisions/2"
+  },
+  {
+    "decision": {
+      "identity_merge": "same_source_listing_observations_only",
+      "proposed_leaf": "food.seasonings.spices.whole_chili",
+      "quantity_review": "unchanged; repeated observations share the same source_record_key and 20g package",
+      "raw_record_ids": [
+        "ingestion:24:63",
+        "ingestion:72:34"
+      ],
+      "reason": "마트 경로의 후추 표기와 달리 제목은 페페로치노 홀(통 건고추)을 명시하며 initial_audited_seasonings.py에 동일 정확 제목이 whole_chili로 이미 감사되어 있다.",
+      "source_title": "신영 페페로치노홀 20G"
+    },
+    "file": "small-food-344-354-404-449-450.json",
+    "flags": [
+      "absent_from_snapshot"
+    ],
+    "ids": [
+      "ingestion:24:63",
+      "ingestion:72:34"
+    ],
+    "leaf": "food.seasonings.spices.whole_chili",
+    "path": "/decisions/2"
+  }
+]

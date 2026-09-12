@@ -1,0 +1,146 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.apple"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "사과"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:c073e7e9133898a7e2d13465",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:15",
+      "review_status": "classified",
+      "source_path": "과일 > 사과ㆍ배 > 사과",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "사과ㆍ배",
+        "사과"
+      ],
+      "source_title": "유명산지 햇사과 (4-8입/봉)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801448110724/details"
+      ],
+      "unified_category_id": "food.produce.fruit.apple",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "브랜드없음(NB)",
+      "crawled_at": "2026-08-31T01:46:57.085085Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26f31d91-5a8a-4d67-ba7a-4591a9a2622b/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 15,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "8입",
+        "package_quantity": 8.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 11900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "브랜드없음(NB)",
+          "canon_hash": "27079a199b858b7d6ae0f201466c725a71bcca63",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801448110724/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "사과ㆍ배",
+            "사과"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26f31d91-5a8a-4d67-ba7a-4591a9a2622b/300x300.jpg",
+          "mart_native_code": "8801448110724",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801448110724",
+          "source_url": "https://lottemartzetta.com/products/OS8801448110724/details",
+          "storage_label": "상온",
+          "storage_type": "ambient"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.085085",
+        "detail_url": "https://lottemartzetta.com/products/OS8801448110724/details",
+        "discount_percent": null,
+        "display_unit": "8입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26f31d91-5a8a-4d67-ba7a-4591a9a2622b/300x300.jpg",
+        "match_key": "__no_brand__|유명산지 햇사과 4 8입 봉||8입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유명산지 햇사과 (4-8입/봉)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 8.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 11900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "8입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "35fb2a2773b70bb28e30044b5519c3d720eddae6f7a1070dd78562afc0ff9452",
+      "raw_record_id": "ingestion:28:15",
+      "source_category_path": [
+        "과일",
+        "사과ᆞ배",
+        "사과"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801448110724",
+      "source_title": "유명산지 햇사과 (4-8입/봉)",
+      "source_url": "https://lottemartzetta.com/products/OS8801448110724/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-429-436.json",
+        "flags": [],
+        "leaf": "food.produce.fruit.apple",
+        "path": "/already_classified_pending/1"
+      }
+    ],
+    "raw_record_id": "ingestion:28:15",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801448110724",
+    "source_title": "유명산지 햇사과 (4-8입/봉)"
+  }
+]

@@ -1,0 +1,141 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.tteokgalbi"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:3bb87dacfa6e2b9965d6d306",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "떡갈비"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:56",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 요리ㆍ안주 > 떡갈비ㆍ완자ㆍ전 > 떡갈비",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "요리ㆍ안주",
+        "떡갈비ㆍ완자ㆍ전",
+        "떡갈비"
+      ],
+      "source_title": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007772493/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "고메",
+      "crawled_at": "2026-08-31T01:46:57.088113Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8932be1-c461-4872-8c87-2bab00f9be6c/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 56,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "152g",
+        "package_quantity": 152.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "고메",
+          "canon_hash": "304f02058acfb9c2dd71244b5bad7dc0be78e67a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007772493/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "요리ㆍ안주",
+            "떡갈비ㆍ완자ㆍ전",
+            "떡갈비"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8932be1-c461-4872-8c87-2bab00f9be6c/300x300.jpg",
+          "mart_native_code": "8801007772493",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007772493",
+          "source_url": "https://lottemartzetta.com/products/OS8801007772493/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.088113",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007772493/details",
+        "discount_percent": null,
+        "display_unit": "152g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8932be1-c461-4872-8c87-2bab00f9be6c/300x300.jpg",
+        "match_key": "__no_brand__|cj 제일제당 고메 치즈함박 스테이크 152g||152g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 152.0,
+        "package_unit": "g",
+        "price_per_100g": 3276.32,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "152g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d569ee71ae35d7399e434401cd66ed043fccc770cd0a65011c57571c606ee687",
+      "raw_record_id": "ingestion:28:56",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "요리ᆞ안주",
+        "떡갈비ᆞ완자ᆞ전",
+        "떡갈비"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007772493",
+      "source_title": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007772493/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:28:56",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007772493",
+    "source_title": "CJ 제일제당 고메 치즈함박 스테이크 (152G)"
+  }
+]

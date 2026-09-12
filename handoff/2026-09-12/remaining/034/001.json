@@ -1,0 +1,3124 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:1",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 단일품종미 신동진쌀 10kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432739&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.719249Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2223,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/39/27/43/item/1000693432739_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 1,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 44980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "10kg",
+        "package_quantity": 10000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 34980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/39/27/43/item/1000693432739_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000693432739",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000693432739",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432739&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1kg 당 3,498원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.719249",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432739&siteNo=7009&salestrNo=2551",
+        "discount_percent": 22.2,
+        "display_unit": "10kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/39/27/43/item/1000693432739_i1_290.jpg",
+        "match_key": "__no_brand__|농할 3천원 할인쿠폰 다운로드 단일품종미 신동진쌀 10kg||10kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[농할 3천원 할인쿠폰 다운로드] 단일품종미 신동진쌀 10kg",
+        "normalized_name": "",
+        "original_price": 44980,
+        "package_quantity": 10.0,
+        "package_unit": "kg",
+        "price_per_100g": 349.8,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 34980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "769eba13004ed91b5557d189e32524d59ff9f1c7215f8af4f2ccc141305f6795",
+      "raw_record_id": "ingestion:80:1",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000693432739",
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 단일품종미 신동진쌀 10kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432739&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.white",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:80:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000693432739",
+    "source_title": "[농할 3천원 할인쿠폰 다운로드] 단일품종미 신동진쌀 10kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:2",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 한눈에 반한 쌀(특) 10kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184325&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.737782Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2038,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/25/43/18/item/1000646184325_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 2,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 53980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "10kg",
+        "package_quantity": 10000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 42980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/25/43/18/item/1000646184325_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000646184325",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000646184325",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184325&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1kg 당 4,298원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.737782",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184325&siteNo=7009&salestrNo=2551",
+        "discount_percent": 20.4,
+        "display_unit": "10kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/25/43/18/item/1000646184325_i1_290.jpg",
+        "match_key": "__no_brand__|농할 3천원 할인쿠폰 다운로드 한눈에 반한 쌀 특 10kg||10kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[농할 3천원 할인쿠폰 다운로드] 한눈에 반한 쌀(특) 10kg",
+        "normalized_name": "",
+        "original_price": 53980,
+        "package_quantity": 10.0,
+        "package_unit": "kg",
+        "price_per_100g": 429.8,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 42980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a0681c2db22715e671913e129bca16467a000d0ebb22599a1c9bd535ca27cc4e",
+      "raw_record_id": "ingestion:80:2",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000646184325",
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 한눈에 반한 쌀(특) 10kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184325&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.white",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:80:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000646184325",
+    "source_title": "[농할 3천원 할인쿠폰 다운로드] 한눈에 반한 쌀(특) 10kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:3",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 당진 해나루쌀 삼광(특) 10kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633806247&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.740890Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.0667,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/47/62/80/item/1000633806247_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 44980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "10kg",
+        "package_quantity": 10000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 41980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/47/62/80/item/1000633806247_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000633806247",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000633806247",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633806247&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1kg 당 4,198원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.740890",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633806247&siteNo=7009&salestrNo=2551",
+        "discount_percent": 6.7,
+        "display_unit": "10kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/47/62/80/item/1000633806247_i1_290.jpg",
+        "match_key": "__no_brand__|농할 3천원 할인쿠폰 다운로드 당진 해나루쌀 삼광 특 10kg||10kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[농할 3천원 할인쿠폰 다운로드] 당진 해나루쌀 삼광(특) 10kg",
+        "normalized_name": "",
+        "original_price": 44980,
+        "package_quantity": 10.0,
+        "package_unit": "kg",
+        "price_per_100g": 419.8,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 41980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4f84806923c42b11973c9a9782c18e4f200de1378a881ca233c00bbf8c6db0ef",
+      "raw_record_id": "ingestion:80:3",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000633806247",
+      "source_title": "[농할 3천원 할인쿠폰 다운로드] 당진 해나루쌀 삼광(특) 10kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633806247&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.white",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:80:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000633806247",
+    "source_title": "[농할 3천원 할인쿠폰 다운로드] 당진 해나루쌀 삼광(특) 10kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:4",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "[미국산] 점보사이즈 볶음아몬드 500g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432991&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.744501Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/91/29/43/item/1000693432991_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/91/29/43/item/1000693432991_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000693432991",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000693432991",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432991&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 2,196원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.744501",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432991&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/91/29/43/item/1000693432991_i1_290.jpg",
+        "match_key": "__no_brand__|미국산 점보사이즈 볶음아몬드 500g||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[미국산] 점보사이즈 볶음아몬드 500g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 2196.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ff0188899ed8e488e9c0fa34f9e3a67bf3e21c2db3fc1c10ef11033ebd56ef86",
+      "raw_record_id": "ingestion:80:4",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000693432991",
+      "source_title": "[미국산] 점보사이즈 볶음아몬드 500g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432991&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.almond",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:80:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000693432991",
+    "source_title": "[미국산] 점보사이즈 볶음아몬드 500g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:5",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "혼합 9곡 4kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000015615206&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.756381Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/06/52/61/item/1000015615206_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 5,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "4kg",
+        "package_quantity": 4000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/06/52/61/item/1000015615206_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000015615206",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000015615206",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015615206&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 275원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.756381",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015615206&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "4kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/06/52/61/item/1000015615206_i1_290.jpg",
+        "match_key": "__no_brand__|혼합 9곡 4kg||4kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "혼합 9곡 4kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 4.0,
+        "package_unit": "kg",
+        "price_per_100g": 274.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "4kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8b07170df16d514e80cf5bd333a0904c2360b20f7e5ae84c6ba3914e3a1b2e64",
+      "raw_record_id": "ingestion:80:5",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000015615206",
+      "source_title": "혼합 9곡 4kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015615206&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.mixed",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:80:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000015615206",
+    "source_title": "혼합 9곡 4kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:6",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "[농할 5천원 할인쿠폰 다운로드] SSG 이맛쌀 20kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000821271764&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.758395Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.0152,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/64/17/27/item/1000821271764_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 6,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 65980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "20kg",
+        "package_quantity": 20000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 64980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/64/17/27/item/1000821271764_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000821271764",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000821271764",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000821271764&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1kg 당 3,249원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.758395",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000821271764&siteNo=7009&salestrNo=2551",
+        "discount_percent": 1.5,
+        "display_unit": "20kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/64/17/27/item/1000821271764_i1_290.jpg",
+        "match_key": "__no_brand__|농할 5천원 할인쿠폰 다운로드 ssg 이맛쌀 20kg||20kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[농할 5천원 할인쿠폰 다운로드] SSG 이맛쌀 20kg",
+        "normalized_name": "",
+        "original_price": 65980,
+        "package_quantity": 20.0,
+        "package_unit": "kg",
+        "price_per_100g": 324.9,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 64980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "110da98fd9e8d7028f8a04d675750197c4ee794d58939f21766227a5df0178b1",
+      "raw_record_id": "ingestion:80:6",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000821271764",
+      "source_title": "[농할 5천원 할인쿠폰 다운로드] SSG 이맛쌀 20kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000821271764&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.white",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:80:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000821271764",
+    "source_title": "[농할 5천원 할인쿠폰 다운로드] SSG 이맛쌀 20kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:7",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "건강곡물혼합 15곡 2kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000582533529&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.763791Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.4008,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/29/35/53/item/1000582533529_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 9980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "2kg",
+        "package_quantity": 2000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/29/35/53/item/1000582533529_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000582533529",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000582533529",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000582533529&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 299원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.763791",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000582533529&siteNo=6001&salestrNo=2037",
+        "discount_percent": 40.1,
+        "display_unit": "2kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/29/35/53/item/1000582533529_i1_290.jpg",
+        "match_key": "__no_brand__|건강곡물혼합 15곡 2kg||2kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "건강곡물혼합 15곡 2kg",
+        "normalized_name": "",
+        "original_price": 9980,
+        "package_quantity": 2.0,
+        "package_unit": "kg",
+        "price_per_100g": 299.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "2kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c6bc1620dfc307f8f25a2e7502f4bf4cff41986aa948eba214fc9936d42b2006",
+      "raw_record_id": "ingestion:80:7",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000582533529",
+      "source_title": "건강곡물혼합 15곡 2kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000582533529&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.mixed",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:80:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000582533529",
+    "source_title": "건강곡물혼합 15곡 2kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:8",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "리얼 데일리너츠 400g (20g*20개입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000026633612&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.770593Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/12/36/63/item/1000026633612_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 8,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "20g×20",
+        "package_quantity": 20.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/12/36/63/item/1000026633612_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000026633612",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000026633612",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026633612&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 2,745원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.770593",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026633612&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "20g×20",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/12/36/63/item/1000026633612_i1_290.jpg",
+        "match_key": "__no_brand__|리얼 데일리너츠 400g 20g 20개입||20g×20",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "리얼 데일리너츠 400g (20g*20개입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 20.0,
+        "package_unit": "g",
+        "price_per_100g": 2745.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20g×20",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e32d71fdca99f9acddbcd6bd119ab87c73770e1e124546554825296ab9018bb8",
+      "raw_record_id": "ingestion:80:8",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000026633612",
+      "source_title": "리얼 데일리너츠 400g (20g*20개입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026633612&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.mixed",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:80:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000026633612",
+    "source_title": "리얼 데일리너츠 400g (20g*20개입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:10",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "조류혼합 맛있는 9곡 1kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000040356013&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.800025Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/13/60/35/item/1000040356013_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 10,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1kg",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/13/60/35/item/1000040356013_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000040356013",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000040356013",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000040356013&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,098원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.800025",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000040356013&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/13/60/35/item/1000040356013_i1_290.jpg",
+        "match_key": "__no_brand__|조류혼합 맛있는 9곡 1kg||1kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "조류혼합 맛있는 9곡 1kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "price_per_100g": 1098.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "21239941957818fd16e52c59836821685dd6fb51392f8a08a7b11f3441923218",
+      "raw_record_id": "ingestion:80:10",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000040356013",
+      "source_title": "조류혼합 맛있는 9곡 1kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000040356013&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.mixed",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:80:10",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000040356013",
+    "source_title": "조류혼합 맛있는 9곡 1kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:11",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "96시간숙성한 소화잘되는 잡곡1kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413348&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.808117Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/48/33/41/item/1000827413348_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 11,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1kg",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/48/33/41/item/1000827413348_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000827413348",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000827413348",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413348&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 798원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.808117",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413348&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/48/33/41/item/1000827413348_i1_290.jpg",
+        "match_key": "__no_brand__|96시간숙성한 소화잘되는 잡곡1kg||1kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "96시간숙성한 소화잘되는 잡곡1kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "price_per_100g": 798.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4689c9777df858b9a033e0964ead11a48b1708b0794d55e8a107067e83820f36",
+      "raw_record_id": "ingestion:80:11",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000827413348",
+      "source_title": "96시간숙성한 소화잘되는 잡곡1kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413348&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.mixed",
+        "path": "/decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:80:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000827413348",
+    "source_title": "96시간숙성한 소화잘되는 잡곡1kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:12",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "믹스넛점보 1kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008326612&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.812482Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/12/66/32/item/0000008326612_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 12,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1kg",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/12/66/32/item/0000008326612_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "0000008326612",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008326612",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008326612&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,598원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.812482",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008326612&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/12/66/32/item/0000008326612_i1_290.jpg",
+        "match_key": "__no_brand__|믹스넛점보 1kg||1kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "믹스넛점보 1kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "price_per_100g": 1598.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 15980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "30659836b971e7254d8f000f5f70e3b1a3b5b16304da93b99da31207f0ba102e",
+      "raw_record_id": "ingestion:80:12",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008326612",
+      "source_title": "믹스넛점보 1kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008326612&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.mixed",
+        "path": "/decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:80:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008326612",
+    "source_title": "믹스넛점보 1kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:14",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "영양 혼합12곡 2kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610502&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.821305Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/02/05/61/item/1000712610502_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 14,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "2kg",
+        "package_quantity": 2000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection": "5K프라이스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/02/05/61/item/1000712610502_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000712610502",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000712610502",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610502&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 249원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.821305",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610502&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "2kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/02/05/61/item/1000712610502_i1_290.jpg",
+        "match_key": "__no_brand__|영양 혼합12곡 2kg||2kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "영양 혼합12곡 2kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 2.0,
+        "package_unit": "kg",
+        "price_per_100g": 249.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "2kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8b6a42bb6f15e3938cc4045a820db905ffc2f0a19583ef77c038f19ab009358b",
+      "raw_record_id": "ingestion:80:14",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000712610502",
+      "source_title": "영양 혼합12곡 2kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610502&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.mixed",
+        "path": "/decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:80:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000712610502",
+    "source_title": "영양 혼합12곡 2kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:18",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "구수한 풍미 가득 미국산 호두 400g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000640948467&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.836387Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.4,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/67/84/94/item/1000640948467_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 18,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 10980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6588,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/67/84/94/item/1000640948467_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000640948467",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000640948467",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000640948467&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,647원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.836387",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000640948467&siteNo=7009&salestrNo=2551",
+        "discount_percent": 40.0,
+        "display_unit": "400g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/67/84/94/item/1000640948467_i1_290.jpg",
+        "match_key": "__no_brand__|구수한 풍미 가득 미국산 호두 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "구수한 풍미 가득 미국산 호두 400g",
+        "normalized_name": "",
+        "original_price": 10980,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 1647.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6588,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fa5e6095a1bba85372c6713a0e7afca7e0447d90f663c1b4e776ea8f1382d585",
+      "raw_record_id": "ingestion:80:18",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000640948467",
+      "source_title": "구수한 풍미 가득 미국산 호두 400g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000640948467&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.walnut",
+        "path": "/decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:80:18",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000640948467",
+    "source_title": "구수한 풍미 가득 미국산 호두 400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:20",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "30일 매일견과 20gx30입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000776381801&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.848894Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/01/18/38/item/1000776381801_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 20,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 30,
+        "display_unit": "30입",
+        "package_quantity": 30.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 17980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/01/18/38/item/1000776381801_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000776381801",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000776381801",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000776381801&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 2,997원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.848894",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000776381801&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "30입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/01/18/38/item/1000776381801_i1_290.jpg",
+        "match_key": "__no_brand__|30일 매일견과 20gx30입||30입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "30일 매일견과 20gx30입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 30.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 17980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "30입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "390a555b26ad6e414701ebb9feac0b30a2c7c1ac75a4f6020f0bd00fe1f8f292",
+      "raw_record_id": "ingestion:80:20",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000776381801",
+      "source_title": "30일 매일견과 20gx30입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000776381801&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.mixed",
+        "path": "/decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:80:20",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "1000776381801",
+    "source_title": "30일 매일견과 20gx30입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:24",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "점보사이즈 구운가염캐슈넛 350g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000694716014&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.865887Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/14/60/71/item/1000694716014_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 24,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350g",
+        "package_quantity": 350.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 12980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/14/60/71/item/1000694716014_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000694716014",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000694716014",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000694716014&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 3,709원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.865887",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000694716014&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "350g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/14/60/71/item/1000694716014_i1_290.jpg",
+        "match_key": "__no_brand__|점보사이즈 구운가염캐슈넛 350g||350g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "점보사이즈 구운가염캐슈넛 350g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "g",
+        "price_per_100g": 3708.57,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 12980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "350g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6b909084518f3d56eb0f569b764b9262a653ec3942ab8e0ac5d55b61a2b77afe",
+      "raw_record_id": "ingestion:80:24",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000694716014",
+      "source_title": "점보사이즈 구운가염캐슈넛 350g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000694716014&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.cashew",
+        "path": "/decisions/14"
+      }
+    ],
+    "raw_record_id": "ingestion:80:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000694716014",
+    "source_title": "점보사이즈 구운가염캐슈넛 350g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:25",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "맘모스사이즈 피칸 300g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000796967449&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.883381Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/49/74/96/item/1000796967449_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 25,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/49/74/96/item/1000796967449_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000796967449",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000796967449",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000796967449&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 3,660원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.883381",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000796967449&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "300g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/49/74/96/item/1000796967449_i1_290.jpg",
+        "match_key": "__no_brand__|맘모스사이즈 피칸 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "맘모스사이즈 피칸 300g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 3660.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f727713038062faf496ec3f021d72526443a9ebf37b62a467cb43cf93fe79540",
+      "raw_record_id": "ingestion:80:25",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000796967449",
+      "source_title": "맘모스사이즈 피칸 300g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000796967449&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:80:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000796967449",
+    "source_title": "맘모스사이즈 피칸 300g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:27",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "로스티드앤솔티드땅콩 120g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000822122093&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.893776Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/93/20/12/item/1000822122093_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 27,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "120g",
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1580,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection": "5K프라이스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/93/20/12/item/1000822122093_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000822122093",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000822122093",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000822122093&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,317원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.893776",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000822122093&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "120g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/93/20/12/item/1000822122093_i1_290.jpg",
+        "match_key": "__no_brand__|로스티드앤솔티드땅콩 120g||120g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "로스티드앤솔티드땅콩 120g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "price_per_100g": 1316.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1580,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "120g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "446b486e7b996246cc956d13a7a3e57e3fa2074d787eec6786f9acdc27fd5b79",
+      "raw_record_id": "ingestion:80:27",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000822122093",
+      "source_title": "로스티드앤솔티드땅콩 120g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000822122093&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.peanut",
+        "path": "/decisions/15"
+      }
+    ],
+    "raw_record_id": "ingestion:80:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000822122093",
+    "source_title": "로스티드앤솔티드땅콩 120g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:28",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "부드러운 추억의 강냉이 300g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633383357&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.906394Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.3,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/57/33/38/item/1000633383357_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 28,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 4980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3486,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/57/33/38/item/1000633383357_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000633383357",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000633383357",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633383357&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,162원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.906394",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633383357&siteNo=7009&salestrNo=2551",
+        "discount_percent": 30.0,
+        "display_unit": "300g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/57/33/38/item/1000633383357_i1_290.jpg",
+        "match_key": "__no_brand__|부드러운 추억의 강냉이 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "부드러운 추억의 강냉이 300g",
+        "normalized_name": "",
+        "original_price": 4980,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 1162.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3486,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6e7abe999cb867a21d8ec9ebed6cc2c7664d3235f3f776637ca23030d04737a4",
+      "raw_record_id": "ingestion:80:28",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000633383357",
+      "source_title": "부드러운 추억의 강냉이 300g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633383357&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "reconciliation-pending-034.json",
+        "flags": [],
+        "leaf": "food.snacks.savory.corn",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:80:28",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000633383357",
+    "source_title": "부드러운 추억의 강냉이 300g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:29",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "햇살드리 수향미 골든퀸3호 4kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633790394&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.909914Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/94/03/79/item/1000633790394_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 29,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "4kg",
+        "package_quantity": 4000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 26980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/94/03/79/item/1000633790394_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000633790394",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000633790394",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633790394&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1kg 당 6,745원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.909914",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633790394&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "4kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/94/03/79/item/1000633790394_i1_290.jpg",
+        "match_key": "__no_brand__|햇살드리 수향미 골든퀸3호 4kg||4kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "햇살드리 수향미 골든퀸3호 4kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 4.0,
+        "package_unit": "kg",
+        "price_per_100g": 674.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 26980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "4kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ecd671d3df63711e7623dc2c9672c54116c7873d84443602de174694a8e66293",
+      "raw_record_id": "ingestion:80:29",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000633790394",
+      "source_title": "햇살드리 수향미 골든퀸3호 4kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000633790394&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-028-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.white",
+        "path": "/decisions/16"
+      }
+    ],
+    "raw_record_id": "ingestion:80:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000633790394",
+    "source_title": "햇살드리 수향미 골든퀸3호 4kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:30",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "인도산 치아씨드 400g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000831630080&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.917881Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.3,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/80/00/63/item/1000831630080_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 30,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 5980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4186,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/80/00/63/item/1000831630080_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000831630080",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000831630080",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000831630080&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,009원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.917881",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000831630080&siteNo=7009&salestrNo=2551",
+        "discount_percent": 30.0,
+        "display_unit": "400g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/80/00/63/item/1000831630080_i1_290.jpg",
+        "match_key": "__no_brand__|인도산 치아씨드 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "인도산 치아씨드 400g",
+        "normalized_name": "",
+        "original_price": 5980,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 1046.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4186,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "841449a1324ea463737f6d6b8deeb2f4a4900931695adda00fc2a668af1f27a4",
+      "raw_record_id": "ingestion:80:30",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000831630080",
+      "source_title": "인도산 치아씨드 400g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000831630080&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:80:30",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000831630080",
+    "source_title": "인도산 치아씨드 400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:32",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "저당곡물 돼지감자 현미 2kg",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413366&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.928422Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/66/33/41/item/1000827413366_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 32,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "2kg",
+        "package_quantity": 2000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/66/33/41/item/1000827413366_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000827413366",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000827413366",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413366&siteNo=6001&salestrNo=2037",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "unit_price_display": "100g 당 499원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.928422",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413366&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "2kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/66/33/41/item/1000827413366_i1_290.jpg",
+        "match_key": "__no_brand__|저당곡물 돼지감자 현미 2kg||2kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "저당곡물 돼지감자 현미 2kg",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 2.0,
+        "package_unit": "kg",
+        "price_per_100g": 499.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "2kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f7f82d39390dca4c2aa3c3d804468c6095d023f302d87557ffad24d5468a71c3",
+      "raw_record_id": "ingestion:80:32",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000827413366",
+      "source_title": "저당곡물 돼지감자 현미 2kg",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413366&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "reconciliation-pending-034.json",
+        "flags": [],
+        "leaf": "food.grains.rice.brown",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:80:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000827413366",
+    "source_title": "저당곡물 돼지감자 현미 2kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:33",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "유기농 발아 미숫가루 700g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000541499114&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.932098Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/14/91/49/item/1000541499114_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [],
+      "item_index": 33,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "700g",
+        "package_quantity": 700.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 14980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection": "자연주의",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/14/91/49/item/1000541499114_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000541499114",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000541499114",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000541499114&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 2,140원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.932098",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000541499114&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "700g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/14/91/49/item/1000541499114_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 발아 미숫가루 700g||700g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 발아 미숫가루 700g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 700.0,
+        "package_unit": "g",
+        "price_per_100g": 2140.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 14980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "700g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fc0fb7739530e528e66db0a5775c1d64c699b4e2c80caf4575b804af03fae96c",
+      "raw_record_id": "ingestion:80:33",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000541499114",
+      "source_title": "유기농 발아 미숫가루 700g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000541499114&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:80:33",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000541499114",
+    "source_title": "유기농 발아 미숫가루 700g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:b423543021d07dab710404ee",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀/잡곡/견과"
+      ],
+      "raw_native_category_id": "6000215152",
+      "raw_record_id": "ingestion:80:34",
+      "review_status": "pending",
+      "source_path": "쌀/잡곡/견과",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "브라질넛과 사차인치가 들어간 슈퍼믹스 20 x 15입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902659&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:48:37.942812Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.4,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/59/26/90/item/1000675902659_i1_290.jpg",
+      "ingestion_id": 80,
+      "ingestion_received_at": "2026-09-02T14:48:38.890236Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 34,
+      "mart_native_category_id": "6000215152",
+      "observed_time_precision": "item",
+      "original_price": 17980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "15입",
+        "package_quantity": 15.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 10788,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "쌀/잡곡/견과",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/59/26/90/item/1000675902659_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000215152",
+          "mart_native_category_path": "쌀/잡곡/견과",
+          "mart_native_code": "1000675902659",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000675902659",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902659&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 3,596원"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀/잡곡/견과",
+        "crawled_at": "2026-09-02T23:48:37.942812",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902659&siteNo=7009&salestrNo=2551",
+        "discount_percent": 40.0,
+        "display_unit": "15입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/59/26/90/item/1000675902659_i1_290.jpg",
+        "match_key": "__no_brand__|브라질넛과 사차인치가 들어간 슈퍼믹스 20 x 15입||15입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "브라질넛과 사차인치가 들어간 슈퍼믹스 20 x 15입",
+        "normalized_name": "",
+        "original_price": 17980,
+        "package_quantity": 15.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10788,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "15입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "81641561efaeadf8895f2f7e81e142da5cf4a829ca41418864815ed0833a9537",
+      "raw_record_id": "ingestion:80:34",
+      "source_category_path": [
+        "쌀/잡곡/견과"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000675902659",
+      "source_title": "브라질넛과 사차인치가 들어간 슈퍼믹스 20 x 15입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000675902659&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "reconciliation-pending-034.json",
+        "flags": [],
+        "leaf": "food.grains.nuts.mixed",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:80:34",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000675902659",
+    "source_title": "브라질넛과 사차인치가 들어간 슈퍼믹스 20 x 15입"
+  }
+]

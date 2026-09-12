@@ -1,0 +1,151 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:378ad130f9e971411564add1",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경김장채소"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:52:16",
+      "review_status": "pending",
+      "source_path": "친환경/유기농 > 친환경 채소 > 친환경김장채소",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경김장채소"
+      ],
+      "source_title": "친환경 양파 800G(망)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "친환경",
+      "crawled_at": "2026-09-02T13:38:28.509552Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 52,
+      "ingestion_received_at": "2026-09-02T13:39:51.672155Z",
+      "issues": [],
+      "item_index": 16,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "800g",
+        "package_quantity": 800.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "친환경",
+          "canon_hash": "0ffba8b36c1c0cdc52b99e62ba0555e0645c4431",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER",
+          "category_hint": "친환경김장채소",
+          "docId": "H122215920N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%B9%9C%ED%99%98%EA%B2%BD-%EC%96%91%ED%8C%8C-800G-%EB%A7%9D/122215920",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "친환경/유기농 > 친환경 채소 > 친환경김장채소 > 친환경김장채소",
+          "mart_native_code": "122215920",
+          "normalized_name": "친환경 양파 800G(망)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER",
+          "raw_name": "친환경 양파 800G(망)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "122215920",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 311.0
+        },
+        "brand": "__no_brand__",
+        "category": "친환경김장채소",
+        "crawled_at": "2026-09-02T22:38:28.509552",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "800g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|친환경 양파 800g 망||800g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 양파 800G(망)",
+        "normalized_name": "친환경 양파 800G(망)",
+        "original_price": null,
+        "package_quantity": 800.0,
+        "package_unit": "g",
+        "price_per_100g": 311.25,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "800g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2aa602cae17dd569756e079e287bfd2af18f5d62eb405d2abc2b3d18d189489b",
+      "raw_record_id": "ingestion:52:16",
+      "source_category_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경김장채소",
+        "친환경김장채소"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "122215920",
+      "source_title": "친환경 양파 800G(망)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=122215920&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "mixed-small-421-428.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.onion",
+        "path": "/decisions/0"
+      },
+      {
+        "file": "organic-vegetables-385-422.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.onion",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:52:16",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "122215920",
+    "source_title": "친환경 양파 800G(망)"
+  }
+]

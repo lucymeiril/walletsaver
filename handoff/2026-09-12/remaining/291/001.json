@@ -1,0 +1,294 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:b1a23035933f9e4652bada2e",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도"
+      ],
+      "raw_native_category_id": "1",
+      "raw_record_id": "ingestion:2:24",
+      "review_status": "pending",
+      "source_path": "과일 > 키위/석류/아보카도 > 아보카도",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도"
+      ],
+      "source_title": "아보카도(페루) 3-4입(팩)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "아보카도(페루)",
+      "crawled_at": "2026-08-31T01:45:36.683188Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 2,
+      "ingestion_received_at": "2026-08-31T01:46:49.159187Z",
+      "issues": [
+        "count_range_unresolved"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "1",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1팩",
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 7990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "아보카도(페루)",
+          "canon_hash": "feeb57f74b7350891cbae4e2c05324885b31dfd6",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "category_hint": "아보카도",
+          "docId": "H071394381N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%95%84%EB%B3%B4%EC%B9%B4%EB%8F%84-%ED%8E%98%EB%A3%A8-3-4%EC%9E%85-%ED%8C%A9/071394381",
+          "mart_native_category_id": "1",
+          "mart_native_category_path": "과일 > 키위/석류/아보카도 > 아보카도  > 아보카도 ",
+          "mart_native_code": "071394381",
+          "normalized_name": "아보카도(페루) 3-4입(팩)",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "raw_name": "아보카도(페루) 3-4입(팩)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071394381",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 7990.0
+        },
+        "brand": "__no_brand__",
+        "category": "아보카도",
+        "crawled_at": "2026-08-31T10:45:36.683188",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1팩",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|아보카도 페루 3 4입 팩||1팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아보카도(페루) 3-4입(팩)",
+        "normalized_name": "아보카도(페루) 3-4입(팩)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1팩",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "e785e6b70633a5002b1981b33df32c408e54eb36a2539c5e5241184ee595accc",
+      "raw_record_id": "ingestion:2:24",
+      "source_category_path": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도",
+        "아보카도"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071394381",
+      "source_title": "아보카도(페루) 3-4입(팩)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "fruit-small-142-143-198-199-200-260-284-289-290-291-406-407.json",
+        "flags": [],
+        "leaf": "food.produce.fruit.avocado",
+        "path": "/decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:2:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "count_range_unresolved"
+    ],
+    "source_record_key": "071394381",
+    "source_title": "아보카도(페루) 3-4입(팩)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:b1a23035933f9e4652bada2e",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도"
+      ],
+      "raw_native_category_id": "1",
+      "raw_record_id": "ingestion:51:26",
+      "review_status": "pending",
+      "source_path": "과일 > 키위/석류/아보카도 > 아보카도",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도"
+      ],
+      "source_title": "아보카도(페루) 3-4입(팩)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "아보카도(페루)",
+      "crawled_at": "2026-09-02T13:38:28.339510Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 51,
+      "ingestion_received_at": "2026-09-02T13:39:48.136333Z",
+      "issues": [
+        "count_range_unresolved"
+      ],
+      "item_index": 26,
+      "mart_native_category_id": "1",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1팩",
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 7990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "아보카도(페루)",
+          "canon_hash": "feeb57f74b7350891cbae4e2c05324885b31dfd6",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "category_hint": "아보카도",
+          "docId": "H071394381N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%95%84%EB%B3%B4%EC%B9%B4%EB%8F%84-%ED%8E%98%EB%A3%A8-3-4%EC%9E%85-%ED%8C%A9/071394381",
+          "mart_native_category_id": "1",
+          "mart_native_category_path": "과일 > 키위/석류/아보카도 > 아보카도  > 아보카도 ",
+          "mart_native_code": "071394381",
+          "normalized_name": "아보카도(페루) 3-4입(팩)",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "raw_name": "아보카도(페루) 3-4입(팩)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071394381",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 7990.0
+        },
+        "brand": "__no_brand__",
+        "category": "아보카도",
+        "crawled_at": "2026-09-02T22:38:28.339510",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1팩",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|아보카도 페루 3 4입 팩||1팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아보카도(페루) 3-4입(팩)",
+        "normalized_name": "아보카도(페루) 3-4입(팩)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1팩",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "4ab8b3bb7773f7e030f196fcb872d6313fa845d1e505100a0687a6b0502c8372",
+      "raw_record_id": "ingestion:51:26",
+      "source_category_path": [
+        "과일",
+        "키위/석류/아보카도",
+        "아보카도",
+        "아보카도"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071394381",
+      "source_title": "아보카도(페루) 3-4입(팩)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071394381&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "fruit-small-142-143-198-199-200-260-284-289-290-291-406-407.json",
+        "flags": [],
+        "leaf": "food.produce.fruit.avocado",
+        "path": "/decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:51:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "count_range_unresolved"
+    ],
+    "source_record_key": "071394381",
+    "source_title": "아보카도(페루) 3-4입(팩)"
+  }
+]

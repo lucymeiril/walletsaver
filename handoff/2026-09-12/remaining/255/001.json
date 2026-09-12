@@ -1,0 +1,534 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4d91959f8b2239f62aefc47c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:82",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 김ㆍ미역ㆍ해조류 > 김스낵ㆍ기타김",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 오리지날 (50G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809041726816/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:46:57.090636Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e712cce-a9ff-4253-966a-6b9dd2802c6b/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 82,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "50g",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "e65f87f5d46bea3455f0110dd8207ef4f0e271f1",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809041726816/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "김ㆍ미역ㆍ해조류",
+            "김스낵ㆍ기타김"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e712cce-a9ff-4253-966a-6b9dd2802c6b/300x300.jpg",
+          "mart_native_code": "8809041726816",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809041726816",
+          "source_url": "https://lottemartzetta.com/products/OS8809041726816/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:46:57.090636",
+        "detail_url": "https://lottemartzetta.com/products/OS8809041726816/details",
+        "discount_percent": null,
+        "display_unit": "50g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e712cce-a9ff-4253-966a-6b9dd2802c6b/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 김부각 오리지날 50g||50g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 김부각 오리지날 (50G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "price_per_100g": 5980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "50g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "cbcdbba0ad43a5c46d63f406b77e2b7ecc5f0ecf230c1bd30f5d2e1cf59770f7",
+      "raw_record_id": "ingestion:28:82",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "김ᆞ미역ᆞ해조류",
+        "김스낵ᆞ기타김"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809041726816",
+      "source_title": "오늘좋은 김부각 오리지날 (50G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809041726816/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:28:82",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809041726816",
+    "source_title": "오늘좋은 김부각 오리지날 (50G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4d91959f8b2239f62aefc47c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:36",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 김ㆍ미역ㆍ해조류 > 김스낵ㆍ기타김",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 구운마늘&새우 (50G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809041726793/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:46:57.094678Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/886c1680-d8d0-45e1-a2cc-cd3a889f1ded/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 36,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "50g",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "eb696638d18d799f4a309a158fc3003dffecbb34",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809041726793/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "김ㆍ미역ㆍ해조류",
+            "김스낵ㆍ기타김"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/886c1680-d8d0-45e1-a2cc-cd3a889f1ded/300x300.jpg",
+          "mart_native_code": "8809041726793",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809041726793",
+          "source_url": "https://lottemartzetta.com/products/OS8809041726793/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:46:57.094678",
+        "detail_url": "https://lottemartzetta.com/products/OS8809041726793/details",
+        "discount_percent": null,
+        "display_unit": "50g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/886c1680-d8d0-45e1-a2cc-cd3a889f1ded/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 김부각 구운마늘 새우 50g||50g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 김부각 구운마늘&새우 (50G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "price_per_100g": 5980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "50g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "7e57fb9af848d8f77976771b36dc907f22d134f37b666015c4a239aff6e8edba",
+      "raw_record_id": "ingestion:29:36",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "김ᆞ미역ᆞ해조류",
+        "김스낵ᆞ기타김"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809041726793",
+      "source_title": "오늘좋은 김부각 구운마늘&새우 (50G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809041726793/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:29:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809041726793",
+    "source_title": "오늘좋은 김부각 구운마늘&새우 (50G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4d91959f8b2239f62aefc47c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:74",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 김ㆍ미역ㆍ해조류 > 김스낵ㆍ기타김",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 청양마요맛 (50G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809041726809/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:46:57.098312Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4447772f-757f-42ba-ad26-9325f23a073b/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 74,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "50g",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "ca4974319f3308a1441cb41f19e1a31f37abe06e",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809041726809/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "김ㆍ미역ㆍ해조류",
+            "김스낵ㆍ기타김"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4447772f-757f-42ba-ad26-9325f23a073b/300x300.jpg",
+          "mart_native_code": "8809041726809",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809041726809",
+          "source_url": "https://lottemartzetta.com/products/OS8809041726809/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:46:57.098312",
+        "detail_url": "https://lottemartzetta.com/products/OS8809041726809/details",
+        "discount_percent": null,
+        "display_unit": "50g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4447772f-757f-42ba-ad26-9325f23a073b/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 김부각 청양마요맛 50g||50g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 김부각 청양마요맛 (50G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "price_per_100g": 5980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "50g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "211054b0a2b6e6be48b52594ab60243036b2388fb02420984aa277934dcb4639",
+      "raw_record_id": "ingestion:29:74",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "김ᆞ미역ᆞ해조류",
+        "김스낵ᆞ기타김"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809041726809",
+      "source_title": "오늘좋은 김부각 청양마요맛 (50G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809041726809/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:29:74",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809041726809",
+    "source_title": "오늘좋은 김부각 청양마요맛 (50G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4d91959f8b2239f62aefc47c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:47",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 김ㆍ미역ㆍ해조류 > 김스낵ㆍ기타김",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "양반 김부각(오리지널) (50G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047228394/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "동원양반김",
+      "crawled_at": "2026-08-31T01:47:08.142766Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3c060a47-3fa4-43c2-babf-54951286ee7e/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "50g",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4470,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원양반김",
+          "canon_hash": "c3838566c778a6a3e0b45a3264793a518d163c08",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047228394/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "김ㆍ미역ㆍ해조류",
+            "김스낵ㆍ기타김"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3c060a47-3fa4-43c2-babf-54951286ee7e/300x300.jpg",
+          "mart_native_code": "8801047228394",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047228394",
+          "source_url": "https://lottemartzetta.com/products/OS8801047228394/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:08.142766",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047228394/details",
+        "discount_percent": null,
+        "display_unit": "50g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3c060a47-3fa4-43c2-babf-54951286ee7e/300x300.jpg",
+        "match_key": "__no_brand__|양반 김부각 오리지널 50g||50g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "양반 김부각(오리지널) (50G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "price_per_100g": 8940.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4470,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "50g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9149bdc1032f51327c702a9245a81db7f04e1f7b3ae63f7b299b19e5efafd86e",
+      "raw_record_id": "ingestion:33:47",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "김ᆞ미역ᆞ해조류",
+        "김스낵ᆞ기타김"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047228394",
+      "source_title": "양반 김부각(오리지널) (50G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047228394/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:33:47",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047228394",
+    "source_title": "양반 김부각(오리지널) (50G)"
+  }
+]

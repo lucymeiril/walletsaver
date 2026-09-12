@@ -18,6 +18,7 @@ from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
 from services.initial_audited_baking import reviewed_baking_leaf
 from services.initial_audited_seasonings import reviewed_seasoning_leaf
 from services.initial_audited_emart_produce import reviewed_emart_produce_leaf
+from services.initial_reviewed_chat import reviewed_chat_leaf
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
@@ -1565,6 +1566,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_pantry(evidence)
+    accepted_chat_leaf = reviewed_chat_leaf(record, evidence)
+    if accepted_chat_leaf:
+        homeplus_shelf_ids.add(accepted_chat_leaf)
     seasoning_leaf = reviewed_seasoning_leaf(evidence)
     if seasoning_leaf:
         homeplus_shelf_ids.add(seasoning_leaf)

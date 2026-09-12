@@ -1,0 +1,667 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2cc673a7c405913102b95c70",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:58",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 국ㆍ찌개양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114173060/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "풀무원",
+      "crawled_at": "2026-08-31T01:46:57.106359Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b7aeb239-ea87-46ad-b7ff-764c5be7c9e2/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 58,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "풀무원",
+          "canon_hash": "15581431b29abc7a5fa75dee76f546df50fb488e",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801114173060/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "국ㆍ찌개양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b7aeb239-ea87-46ad-b7ff-764c5be7c9e2/300x300.jpg",
+          "mart_native_code": "8801114173060",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801114173060",
+          "source_url": "https://lottemartzetta.com/products/OS8801114173060/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:46:57.106359",
+        "detail_url": "https://lottemartzetta.com/products/OS8801114173060/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b7aeb239-ea87-46ad-b7ff-764c5be7c9e2/300x300.jpg",
+        "match_key": "__no_brand__|풀무원 반듯한식 바지락순두부찌개 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 2128.57,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0a21cfac81d5cd050cb9e22bf7d568fd0bb7a5cb3ddc8b443c392650abdedaea",
+      "raw_record_id": "ingestion:30:58",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "국ᆞ찌개양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801114173060",
+      "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801114173060/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:30:58",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801114173060",
+    "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2cc673a7c405913102b95c70",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:66",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 국ㆍ찌개양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 두부두루치기 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114173411/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "풀무원",
+      "crawled_at": "2026-08-31T01:47:02.665248Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/694b19ed-8dad-4a2d-9996-2949bc937afd/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 66,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "풀무원",
+          "canon_hash": "c17ea7b4ca4f5178a818058a278bdb275663ee8d",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801114173411/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "국ㆍ찌개양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/694b19ed-8dad-4a2d-9996-2949bc937afd/300x300.jpg",
+          "mart_native_code": "8801114173411",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801114173411",
+          "source_url": "https://lottemartzetta.com/products/OS8801114173411/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:02.665248",
+        "detail_url": "https://lottemartzetta.com/products/OS8801114173411/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/694b19ed-8dad-4a2d-9996-2949bc937afd/300x300.jpg",
+        "match_key": "__no_brand__|풀무원 반듯한식 두부두루치기 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 반듯한식 두부두루치기 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 2128.57,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a4800d57ce7de3bb78c780acdfaa2d4c066c01a7975f5475b9571f41fa4f99f0",
+      "raw_record_id": "ingestion:32:66",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "국ᆞ찌개양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801114173411",
+      "source_title": "풀무원 반듯한식 두부두루치기 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801114173411/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:32:66",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801114173411",
+    "source_title": "풀무원 반듯한식 두부두루치기 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2cc673a7c405913102b95c70",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:81",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 국ㆍ찌개양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 직화제육볶음 양념 (150G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114173404/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "풀무원",
+      "crawled_at": "2026-08-31T01:47:08.148031Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c20222d-b056-40a9-bbb3-0cb9b7b4dfc4/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 81,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "풀무원",
+          "canon_hash": "2a618660b97724b504b8c7f1975a42b48de05b15",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801114173404/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "국ㆍ찌개양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c20222d-b056-40a9-bbb3-0cb9b7b4dfc4/300x300.jpg",
+          "mart_native_code": "8801114173404",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801114173404",
+          "source_url": "https://lottemartzetta.com/products/OS8801114173404/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.148031",
+        "detail_url": "https://lottemartzetta.com/products/OS8801114173404/details",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c20222d-b056-40a9-bbb3-0cb9b7b4dfc4/300x300.jpg",
+        "match_key": "__no_brand__|풀무원 반듯한식 직화제육볶음 양념 150g||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 반듯한식 직화제육볶음 양념 (150G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 1986.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4a60106c8616a5851774d71c5239606881e9c2b615d2bad6dce8428f44b4e82a",
+      "raw_record_id": "ingestion:33:81",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "국ᆞ찌개양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801114173404",
+      "source_title": "풀무원 반듯한식 직화제육볶음 양념 (150G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801114173404/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:33:81",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801114173404",
+    "source_title": "풀무원 반듯한식 직화제육볶음 양념 (150G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2cc673a7c405913102b95c70",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:14",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 국ㆍ찌개양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "오늘좋은 순두부찌개양념 (130G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809605520225/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:08.151142Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/25737dcd-25a6-467f-8385-9974c239a502/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 14,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "130g",
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "7806b3373cb115cba03895df203b72f429d9fd18",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809605520225/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "국ㆍ찌개양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/25737dcd-25a6-467f-8385-9974c239a502/300x300.jpg",
+          "mart_native_code": "8809605520225",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809605520225",
+          "source_url": "https://lottemartzetta.com/products/OS8809605520225/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.151142",
+        "detail_url": "https://lottemartzetta.com/products/OS8809605520225/details",
+        "discount_percent": null,
+        "display_unit": "130g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/25737dcd-25a6-467f-8385-9974c239a502/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 순두부찌개양념 130g||130g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 순두부찌개양념 (130G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "price_per_100g": 1146.15,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1490,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "130g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d59289953fa798953c29930c9316e4b2cbc6ba9ce4c304df706fb83b0382e230",
+      "raw_record_id": "ingestion:34:14",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "국ᆞ찌개양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809605520225",
+      "source_title": "오늘좋은 순두부찌개양념 (130G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809605520225/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:34:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809605520225",
+    "source_title": "오늘좋은 순두부찌개양념 (130G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2cc673a7c405913102b95c70",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:89",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 양념ㆍ장류 > 국ㆍ찌개양념",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114173381/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "풀무원",
+      "crawled_at": "2026-08-31T01:47:08.160050Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4830a7de-b872-46ab-a035-b5d0253e1c49/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 89,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "풀무원",
+          "canon_hash": "a045c568c54d8143bd3382c8802518f6df33ad85",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801114173381/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "양념ㆍ장류",
+            "국ㆍ찌개양념"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4830a7de-b872-46ab-a035-b5d0253e1c49/300x300.jpg",
+          "mart_native_code": "8801114173381",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801114173381",
+          "source_url": "https://lottemartzetta.com/products/OS8801114173381/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.160050",
+        "detail_url": "https://lottemartzetta.com/products/OS8801114173381/details",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4830a7de-b872-46ab-a035-b5d0253e1c49/300x300.jpg",
+        "match_key": "__no_brand__|풀무원 반듯한식 국물떡볶이 양념 150g||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 1986.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "42dae710b0222160f553e1e6501425e1f60f712354abd9830a4d0f5a77008a70",
+      "raw_record_id": "ingestion:34:89",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "양념ᆞ장류",
+        "국ᆞ찌개양념"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801114173381",
+      "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801114173381/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:34:89",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801114173381",
+    "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)"
+  }
+]

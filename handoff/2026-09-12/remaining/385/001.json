@@ -1,0 +1,298 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5decc160858157e12aceddb0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:52:17",
+      "review_status": "pending",
+      "source_path": "친환경/유기농 > 친환경 채소 > 친환경근채류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류"
+      ],
+      "source_title": "친환경 감자 500g(봉)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "친환경",
+      "crawled_at": "2026-09-02T13:38:28.509637Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 52,
+      "ingestion_received_at": "2026-09-02T13:39:51.672155Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "친환경",
+          "canon_hash": "b87d30bad6fe6e2c2421c1409fbbe9cf77fec209",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER",
+          "category_hint": "친환경근채류",
+          "docId": "H127973751N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%B9%9C%ED%99%98%EA%B2%BD-%EA%B0%90%EC%9E%90-500g-%EB%B4%89/127973751",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "친환경/유기농 > 친환경 채소 > 친환경근채류 > 친환경근채류",
+          "mart_native_code": "127973751",
+          "normalized_name": "친환경 감자 500g(봉)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER",
+          "raw_name": "친환경 감자 500g(봉)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "127973751",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 498.0
+        },
+        "brand": "__no_brand__",
+        "category": "친환경근채류",
+        "crawled_at": "2026-09-02T22:38:28.509637",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|친환경 감자 500g 봉||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 감자 500g(봉)",
+        "normalized_name": "친환경 감자 500g(봉)",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 498.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8cf461376742b6ac783b6fe87f434beb11352268699b6a6929859c8d8bb9b884",
+      "raw_record_id": "ingestion:52:17",
+      "source_category_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류",
+        "친환경근채류"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "127973751",
+      "source_title": "친환경 감자 500g(봉)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=127973751&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-produce-tea-honey-385-390.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.potato",
+        "path": "/decisions/0"
+      },
+      {
+        "file": "organic-vegetables-385-422.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.potato",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:52:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "127973751",
+    "source_title": "친환경 감자 500g(봉)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5decc160858157e12aceddb0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:52:75",
+      "review_status": "pending",
+      "source_path": "친환경/유기농 > 친환경 채소 > 친환경근채류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류"
+      ],
+      "source_title": "실속) 친환경당근 800G(봉)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "실속)",
+      "crawled_at": "2026-09-02T13:38:28.515464Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 52,
+      "ingestion_received_at": "2026-09-02T13:39:51.672155Z",
+      "issues": [],
+      "item_index": 75,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "800g",
+        "package_quantity": 800.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "실속)",
+          "canon_hash": "bff0e7a2b68a2584423dc7f409b087597619fe13",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER",
+          "category_hint": "친환경근채류",
+          "docId": "H071150595N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%8B%A4%EC%86%8D-%EC%B9%9C%ED%99%98%EA%B2%BD%EB%8B%B9%EA%B7%BC-800G-%EB%B4%89/071150595",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "친환경/유기농 > 친환경 채소 > 친환경근채류 > 친환경근채류",
+          "mart_native_code": "071150595",
+          "normalized_name": "실속) 친환경당근 800G(봉)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER",
+          "raw_name": "실속) 친환경당근 800G(봉)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071150595",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 499.0
+        },
+        "brand": "__no_brand__",
+        "category": "친환경근채류",
+        "crawled_at": "2026-09-02T22:38:28.515464",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "800g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|실속 친환경당근 800g 봉||800g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "실속) 친환경당근 800G(봉)",
+        "normalized_name": "실속) 친환경당근 800G(봉)",
+        "original_price": null,
+        "package_quantity": 800.0,
+        "package_unit": "g",
+        "price_per_100g": 498.75,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "800g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fdc1322c7f2a15db3ca65fab46adf3612f7047f736ae9ea158b15c1b13f5f0ff",
+      "raw_record_id": "ingestion:52:75",
+      "source_category_path": [
+        "친환경/유기농",
+        "친환경 채소",
+        "친환경근채류",
+        "친환경근채류"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071150595",
+      "source_title": "실속) 친환경당근 800G(봉)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071150595&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-produce-tea-honey-385-390.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.carrot",
+        "path": "/decisions/1"
+      },
+      {
+        "file": "organic-vegetables-385-422.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.carrot",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:52:75",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "071150595",
+    "source_title": "실속) 친환경당근 800G(봉)"
+  }
+]

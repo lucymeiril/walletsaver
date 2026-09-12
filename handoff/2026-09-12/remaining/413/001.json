@@ -1,0 +1,149 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.cleaning.laundry.liquid"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:79b91b047ceb3892ffc3095d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생활용품",
+        "청소·세탁",
+        "세탁용품",
+        "액체세탁세제"
+      ],
+      "raw_native_category_id": "18",
+      "raw_record_id": "ingestion:76:7",
+      "review_status": "pending",
+      "source_path": "세탁/청소 > 세탁세제/섬유유연제 > 액체형 세제 > 액체 세탁세제",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "액체형 세제",
+        "액체 세탁세제"
+      ],
+      "source_title": "LG생활건강 피지디나자임 캡슐세제 26입",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "LG생활건강",
+      "crawled_at": "2026-09-02T13:39:44.969849Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 76,
+      "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "18",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "26입",
+        "package_quantity": 26.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 5780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "LG생활건강",
+          "canon_hash": "6b7bb8b8b4efdabb696dfe5f9899ff6e8f6a0d74",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER",
+          "category_hint": "액체 세탁세제",
+          "docId": "H070137671N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/LG%EC%83%9D%ED%99%9C%EA%B1%B4%EA%B0%95-%ED%94%BC%EC%A7%80%EB%94%94%EB%82%98%EC%9E%90%EC%9E%84-%EC%BA%A1%EC%8A%90%EC%84%B8%EC%A0%9C-26%EC%9E%85/070137671",
+          "mart_native_category_id": "18",
+          "mart_native_category_path": "세탁/청소 > 세탁세제/섬유유연제 > 액체형 세제 > 액체 세탁세제",
+          "mart_native_code": "070137671",
+          "normalized_name": "LG생활건강 피지디나자임 캡슐세제 26입",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER",
+          "raw_name": "LG생활건강 피지디나자임 캡슐세제 26입",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070137671",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 222.0
+        },
+        "brand": "__no_brand__",
+        "category": "액체 세탁세제",
+        "crawled_at": "2026-09-02T22:39:44.969849",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER",
+        "discount_percent": 80.0,
+        "display_unit": "26입",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|lg생활건강 피지디나자임 캡슐세제 26입||26입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG생활건강 피지디나자임 캡슐세제 26입",
+        "normalized_name": "LG생활건강 피지디나자임 캡슐세제 26입",
+        "original_price": null,
+        "package_quantity": 26.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5780,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "26입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "4d36c792249a9fe70fd5c85e6b9860cc064be791d92ab41dd3a2e791a2c65f75",
+      "raw_record_id": "ingestion:76:7",
+      "source_category_path": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "액체형 세제",
+        "액체 세탁세제"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070137671",
+      "source_title": "LG생활건강 피지디나자임 캡슐세제 26입",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070137671&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-413-420.json",
+        "flags": [],
+        "leaf": "household.cleaning.laundry.capsule",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:76:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "070137671",
+    "source_title": "LG생활건강 피지디나자임 캡슐세제 26입"
+  }
+]

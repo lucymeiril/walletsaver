@@ -1,0 +1,267 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:dcd4cf12df38691e74e3c68b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:63",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 슈퍼곡물",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "source_title": "병아리콩 (1.5KG)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8804246047445/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "월드그린영농조합법인",
+      "crawled_at": "2026-08-31T01:47:02.653105Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4df627d0-4340-4aa7-8142-3e8432279545/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 63,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.5kg",
+        "package_quantity": 1500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "월드그린영농조합법인",
+          "canon_hash": "f010d77a3ef486b591d8f76868c410b581f1f897",
+          "canonical_url": "https://lottemartzetta.com/products/OS8804246047445/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "슈퍼곡물"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4df627d0-4340-4aa7-8142-3e8432279545/300x300.jpg",
+          "mart_native_code": "8804246047445",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8804246047445",
+          "source_url": "https://lottemartzetta.com/products/OS8804246047445/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:02.653105",
+        "detail_url": "https://lottemartzetta.com/products/OS8804246047445/details",
+        "discount_percent": null,
+        "display_unit": "1.5kg",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4df627d0-4340-4aa7-8142-3e8432279545/300x300.jpg",
+        "match_key": "__no_brand__|병아리콩 1 5kg||1.5kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "병아리콩 (1.5KG)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.5,
+        "package_unit": "kg",
+        "price_per_100g": 666.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1.5kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "16d1bf3b4e8af74d1939b8b9a131226937348e12a32f3f85e0937a216b52220c",
+      "raw_record_id": "ingestion:31:63",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "슈퍼곡물"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8804246047445",
+      "source_title": "병아리콩 (1.5KG)",
+      "source_url": "https://lottemartzetta.com/products/OS8804246047445/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "grains-nuts-small-139-282-344-400-405-443-446.json",
+        "flags": [],
+        "leaf": "food.grains.rice.chickpea",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:31:63",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8804246047445",
+    "source_title": "병아리콩 (1.5KG)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:dcd4cf12df38691e74e3c68b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:27",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 슈퍼곡물",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "source_title": "렌틸콩 (1.7KG)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8804246046172/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "월드그린영농조합법인",
+      "crawled_at": "2026-08-31T01:47:02.672884Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e807bf0-c7ea-43cc-9907-f26e2a280670/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 27,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.7kg",
+        "package_quantity": 1700.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "월드그린영농조합법인",
+          "canon_hash": "6979c619278ae817c5cf1f1dbec079df84cba6ea",
+          "canonical_url": "https://lottemartzetta.com/products/OS8804246046172/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "슈퍼곡물"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e807bf0-c7ea-43cc-9907-f26e2a280670/300x300.jpg",
+          "mart_native_code": "8804246046172",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8804246046172",
+          "source_url": "https://lottemartzetta.com/products/OS8804246046172/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:02.672884",
+        "detail_url": "https://lottemartzetta.com/products/OS8804246046172/details",
+        "discount_percent": null,
+        "display_unit": "1.7kg",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7e807bf0-c7ea-43cc-9907-f26e2a280670/300x300.jpg",
+        "match_key": "__no_brand__|렌틸콩 1 7kg||1.7kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "렌틸콩 (1.7KG)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.7,
+        "package_unit": "kg",
+        "price_per_100g": 587.65,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1.7kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "61f20be594dd57ef42e231cb4d90153b1884e00b45fb414e9d7ec209d4001440",
+      "raw_record_id": "ingestion:33:27",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "슈퍼곡물"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8804246046172",
+      "source_title": "렌틸콩 (1.7KG)",
+      "source_url": "https://lottemartzetta.com/products/OS8804246046172/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:33:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8804246046172",
+    "source_title": "렌틸콩 (1.7KG)"
+  }
+]

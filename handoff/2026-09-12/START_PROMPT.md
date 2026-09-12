@@ -1,0 +1,1 @@
+lucymeiril/walletsaver의 cleanup/remove-legacy-ai-admin-coupling 브랜치에서 handoff/2026-09-12/README.md와 CURRENT_STATUS.md를 읽고 이어가줘. REMAINING.md의 남은 항목만 처리하고 기존 proposal_references를 재사용해. taxonomy.json은 현재 코드 전체 기준이야. 새 제안은 raw_record_ids·원문 제목·근거를 갖춘 JSON으로 저장하고 상태 문서는 하나만 갱신해. DB나 테스트를 실행하지 않았으면 완료했다고 쓰지 마.
