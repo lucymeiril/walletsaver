@@ -1,0 +1,79 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["024"],
+  "scope_note": "Strict GitHub read/write review of pending group 024 (Emart 커피/원두/차). Both pending fragments were read and all 36 observations were accounted for. Two rows were already classification-complete and are excluded from new classification progress. Product title/form and current pass41 taxonomy evidence were prioritized over the broad shelf. No DB import/rebuild, taxonomy code edit, repository test, or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 36,
+    "already_classification_complete_excluded": 2,
+    "strict_classification_reviews": 34,
+    "distinct_source_listings": 34,
+    "existing_leaf_proposals": 23,
+    "holds": 11
+  },
+  "excluded_already_classified": [
+    {
+      "raw_record_ids": ["ingestion:88:10"],
+      "source_record_key": "0000008398879",
+      "source_title": "화이트골드 커피믹스 180입 (+20입)",
+      "existing_unified_category_id": "food.drinks.coffee.mix",
+      "reason": "Classification is already complete; the row remains pending for mixed-package reconciliation only."
+    },
+    {
+      "raw_record_ids": ["ingestion:88:16"],
+      "source_record_key": "1000579128334",
+      "source_title": "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)",
+      "existing_unified_category_id": "food.drinks.coffee.instant",
+      "reason": "Classification is already complete; the row remains pending for mixed-package reconciliation only."
+    }
+  ],
+  "proposed_decisions": [
+    {"raw_record_ids":["ingestion:88:0"],"source_record_key":"2097002297178","source_title":"[오설록] 티 에디션 허브 4종 (16입)","status":"proposed","proposed_unified_category_id":"food.drinks.tea.herbal","reason":"Exact product identity is a caffeine-free herbal-tea assortment; all varieties stay within the current herbal-tea leaf."},
+    {"raw_record_ids":["ingestion:88:4"],"source_record_key":"1000005191478","source_title":"[매일유업] 마이 카페라떼 220ml*6입 기획","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink cafe latte."},
+    {"raw_record_ids":["ingestion:88:9"],"source_record_key":"1000818857033","source_title":"[티젠] 카페 오르조 40입","status":"proposed","proposed_unified_category_id":"food.drinks.tea.barley","reason":"Orzo/barley beverage; retailer product/category evidence identifies barley-tea form."},
+    {"raw_record_ids":["ingestion:88:11"],"source_record_key":"1000260524950","source_title":"모카밀크믹스커피250개입","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.mix","reason":"Title explicitly identifies coffee mix."},
+    {"raw_record_ids":["ingestion:88:13"],"source_record_key":"0000007051239","source_title":"스타벅스 카페 라떼 200ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink cafe latte; matching catalog precedent uses coffee.ready."},
+    {"raw_record_ids":["ingestion:88:15"],"source_record_key":"1000047906471","source_title":"강릉커피 라떼 250ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink latte."},
+    {"raw_record_ids":["ingestion:88:17"],"source_record_key":"1000696295827","source_title":"덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink cafe latte; milk base does not change the coffee beverage identity."},
+    {"raw_record_ids":["ingestion:88:18"],"source_record_key":"1000696295830","source_title":"덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink flavored latte."},
+    {"raw_record_ids":["ingestion:88:19"],"source_record_key":"1000030573216","source_title":"레쓰비마일드 175ml*12입","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Packaged ready-to-drink coffee."},
+    {"raw_record_ids":["ingestion:88:22"],"source_record_key":"1000555175844","source_title":"까페N헤이즐넛향1g*100입","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.instant","reason":"Exact product evidence identifies 1g stick powdered coffee; not a sugar/creamer coffee mix."},
+    {"raw_record_ids":["ingestion:88:24"],"source_record_key":"1000050290365","source_title":"얼그레이 7입","status":"proposed","proposed_unified_category_id":"food.drinks.tea.black","reason":"Earl Grey is explicit black-tea product form."},
+    {"raw_record_ids":["ingestion:88:25"],"source_record_key":"1000791615462","source_title":"찬물 하동녹차1.2g*50티백","status":"proposed","proposed_unified_category_id":"food.drinks.tea.green","reason":"Explicit green-tea bags."},
+    {"raw_record_ids":["ingestion:88:26"],"source_record_key":"1000675902740","source_title":"[립톤] 아이스티 복숭아 120X14G","status":"proposed","proposed_unified_category_id":"food.drinks.tea.black","reason":"Current review precedent classifies explicit iced-tea mixes under the existing black-tea leaf."},
+    {"raw_record_ids":["ingestion:88:29"],"source_record_key":"1000546795074","source_title":"리얼밀크 카페라떼 스위트 950ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Exact retailer detail identifies the food type as coffee beverage; ready-to-drink liquid form."},
+    {"raw_record_ids":["ingestion:88:36"],"source_record_key":"0000006611056","source_title":"[대한] 알곡 옥수수차 1kg","status":"proposed","proposed_unified_category_id":"food.drinks.tea.grain","reason":"Explicit corn/grain tea; prior strict precedent uses tea.grain for corn tea forms."},
+    {"raw_record_ids":["ingestion:88:38"],"source_record_key":"1000034959922","source_title":"마스터 라떼 500ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Packaged ready-to-drink latte."},
+    {"raw_record_ids":["ingestion:88:41"],"source_record_key":"1000045362233","source_title":"스페셜티 에티오피아 예가체프 460ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"RTD 460ml specialty Yirgacheffe coffee item on the coffee shelf; product identity is bottled coffee."},
+    {"raw_record_ids":["ingestion:88:42"],"source_record_key":"1000033898142","source_title":"유기농 말차 45g","status":"proposed","proposed_unified_category_id":"food.drinks.tea.green","reason":"Explicit matcha; current review precedent maps matcha to green tea."},
+    {"raw_record_ids":["ingestion:88:45"],"source_record_key":"1000766445402","source_title":"루이보스티 50입","status":"proposed","proposed_unified_category_id":"food.drinks.tea.herbal","reason":"Explicit rooibos herbal tea."},
+    {"raw_record_ids":["ingestion:88:46"],"source_record_key":"1000600899686","source_title":"커피타운 딥브라운 모카 250ml","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.ready","reason":"Ready-to-drink mocha coffee beverage."},
+    {"raw_record_ids":["ingestion:88:49"],"source_record_key":"1000525747936","source_title":"누룽지차 100티백","status":"proposed","proposed_unified_category_id":"food.drinks.tea.grain","reason":"Roasted-rice/nurungji tea; current strict precedent uses tea.grain for nurungji tea."},
+    {"raw_record_ids":["ingestion:88:55"],"source_record_key":"1000064336258","source_title":"블랙보리차300g (1.5g*200티백)","status":"proposed","proposed_unified_category_id":"food.drinks.tea.barley","reason":"Explicit barley-tea bags; current taxonomy has a barley tea leaf."},
+    {"raw_record_ids":["ingestion:88:56"],"source_record_key":"0000006615924","source_title":"오리지널 리필 170g","status":"proposed","proposed_unified_category_id":"food.drinks.coffee.instant","reason":"Exact product identity is Maxim Original powdered refill coffee; title alone is opaque but retailer identity resolves it."}
+  ],
+  "held_decisions": [
+    {"raw_record_ids":["ingestion:88:1"],"source_record_key":"2097002086239","source_title":"티 에디션 아일랜드 6종 (18입)","status":"held_taxonomy_policy","candidate_family":"mixed tea assortment","reason":"Exact set contains multiple tea subtypes including fermented/blended and black tea; no confirmed mixed-tea pass41 leaf. Do not force the assortment into one subtype."},
+    {"raw_record_ids":["ingestion:88:2"],"source_record_key":"2097002117421","source_title":"러블리 티박스 4종 (12입)","status":"held_taxonomy_policy","candidate_family":"mixed tea assortment","reason":"Mixed tea gift/assortment spans multiple current tea leaves; no confirmed mixed-tea leaf."},
+    {"raw_record_ids":["ingestion:88:12"],"source_record_key":"1000005623882","source_title":"[백설]매실청 1.025kg","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.fruit_preserve","reason":"Fruit cheong/preserve for beverage preparation; reuse non-yuja fruit-preserve candidate instead of forcing into citron."},
+    {"raw_record_ids":["ingestion:88:21"],"source_record_key":"1000812260723","source_title":"카페, 진정성 밀크티 350ml","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.milk_tea","reason":"Explicit ready-to-drink milk tea; prior sweep uses milk_tea as a held candidate, not a confirmed pass41 leaf."},
+    {"raw_record_ids":["ingestion:88:30"],"source_record_key":"1000706100721","source_title":"유기농 광양매실액기스 570g","status":"held_taxonomy_policy","candidate_family":"plum beverage concentrate/extract","reason":"Plum extract/concentrate identity is explicit, but no exact current leaf or stable prior candidate mapping was confirmed. Do not collapse extract into citron or ordinary juice."},
+    {"raw_record_ids":["ingestion:88:35"],"source_record_key":"0000006829368","source_title":"둥글레차 50티백","status":"held_taxonomy_policy","candidate_family":"solomon's-seal/root tea","reason":"Current taxonomy has herbal/grain/barley leaves but no exact 둥글레 leaf or reliable title-level precedent; shelf mapping that combines barley/dunggeulle is insufficient to force barley."},
+    {"raw_record_ids":["ingestion:88:39"],"source_record_key":"1000360744494","source_title":"매실청 570g","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.fruit_preserve","reason":"Fruit cheong/preserve for beverage preparation; reuse held non-yuja fruit-preserve candidate."},
+    {"raw_record_ids":["ingestion:88:44"],"source_record_key":"1000690727780","source_title":"트루 레몬즙 14입","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.concentrates.fruit","reason":"Drinkable lemon juice/concentrate; reuse strict beverage-concentrate candidate rather than force into ordinary juice."},
+    {"raw_record_ids":["ingestion:88:48"],"source_record_key":"1000071114382","source_title":"콤부차 레몬 30입","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.kombucha","reason":"Reuse established kombucha held candidate; it is not a confirmed pass41 leaf."},
+    {"raw_record_ids":["ingestion:88:52"],"source_record_key":"0000007901414","source_title":"결명자차 18티백 (주전자용)","status":"held_taxonomy_policy","candidate_family":"cassia-seed tea","reason":"Explicit cassia-seed tea has no exact current leaf or prior strict mapping; do not guess herbal versus grain solely from a broad tea shelf."},
+    {"raw_record_ids":["ingestion:88:54"],"source_record_key":"1000273953298","source_title":"생강청 580g","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.ginger","reason":"Reuse pending061 ginger-tea candidate precedent; pass41 has no ginger-tea leaf, so do not force it into citron or herbal."}
+  ],
+  "prior_group024_proposal_coverage": {
+    "confirmed_prior_group024_proposal": false,
+    "note": "Group-marker search and five batched searches covering all 34 new source_record_keys surfaced raw/pending/unresolved or unrelated files, not an older proposal covering pending024."
+  },
+  "explicit_review_decision_collision_screen": {
+    "source_record_keys_checked": 34,
+    "method": "five batched repository searches covering all 34 classification-pending source_record_key values",
+    "review_decisions_input_hits": 0,
+    "note": "No review-decisions-input.json hit surfaced; the 431 explicit decisions were not modified."
+  },
+  "executed_tests": []
+}
