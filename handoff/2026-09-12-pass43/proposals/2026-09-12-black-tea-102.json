@@ -1,0 +1,99 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "34da36f8ec61dd718a31a5428619acd50cfeb47b",
+  "work_id": "2026-09-12-black-tea-102",
+  "remaining_group": "102",
+  "source_path": "handoff/2026-09-12-pass43/remaining/102/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-black-tea-102.json",
+  "scope_note": "Classification-only revalidation of the complete Homeplus black-tea/iced-tea remaining bundle. Product flavor/style, quantity, price, promotion, and raw observation identity remain unchanged; no identity merge is requested.",
+  "review_accounting": {
+    "observations_checked": 10,
+    "unique_products": 5,
+    "clear_existing_products": 5,
+    "held_products": 0
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "accepted_record_matches": 0,
+    "historical_proposal_revalidated": true,
+    "target_leaf_exists_in_pass43_taxonomy": true,
+    "note": "All five source_record_keys remain in pass43 remaining and none appears in accepted.json or the 431 explicit review decisions. The current taxonomy contains food.drinks.tea.black and no separate iced-tea leaf is required by the historical classification design."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:80", "ingestion:65:7"],
+      "source_name": "homeplus",
+      "source_record_key": "124835269",
+      "source_title": "트와이닝 얼그레이 25T (50G)",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "얼그레이 티백은 홍차 제품형태가 명확하다. 얼그레이는 향/스타일 속성이며 별도 리프가 필요하지 않다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=124835269&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:19", "ingestion:65:41"],
+      "source_name": "homeplus",
+      "source_record_key": "124602418",
+      "source_title": "트와이닝 잉글리쉬 블랙퍼스트 25T (50G)",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "잉글리쉬 블랙퍼스트는 명시적인 홍차 제품으로 현재 홍차 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=124602418&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:38", "ingestion:65:77"],
+      "source_name": "homeplus",
+      "source_record_key": "070961846",
+      "source_title": "아마드티 잉글리쉬블랙퍼스트 20T",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "잉글리쉬 블랙퍼스트 티백으로 홍차 제품형태가 명확하다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070961846&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:39", "ingestion:65:78"],
+      "source_name": "homeplus",
+      "source_record_key": "070961817",
+      "source_title": "아크바 실론티 25T",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "실론티 티백은 홍차 제품으로 현재 홍차 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070961817&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:48", "ingestion:65:87"],
+      "source_name": "homeplus",
+      "source_record_key": "069894356",
+      "source_title": "쌍계명차 제로 아이스티 유자 10T(12G)",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "현재 taxonomy는 홍차/아이스티를 food.drinks.tea.black으로 수용하며, 유자와 제로 표기는 맛/당류 속성이다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069894356&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "validation_checks": [
+    "10/10 remaining observations accounted for across the five source_record_keys",
+    "0/5 source_record_keys found in pass43 accepted.json",
+    "0/5 source_record_keys found in the 431 explicit review decisions",
+    "food.drinks.tea.black exists in pass43 taxonomy.json",
+    "historical 102 source_record_key/title/leaf decisions remain consistent with current remaining observations"
+  ],
+  "executed_tests": []
+}
