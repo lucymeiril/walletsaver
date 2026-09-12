@@ -1,1 +1,1 @@
-lucymeiril/walletsaver의 cleanup/remove-legacy-ai-admin-coupling 브랜치에서 handoff/2026-09-12/README.md와 CURRENT_STATUS.md를 먼저 읽고, 최신 REMAINING.md의 남은 작업만 이어가줘. 이전 제안을 중복 작성하지 말고 실행하지 않은 DB 반영/테스트는 완료로 보고하지 마.
+GitHub의 lucymeiril/walletsaver 저장소, cleanup/remove-legacy-ai-admin-coupling 브랜치에서 handoff/README.md를 최신 버전으로 읽고 지정된 현재 작업 안내와 상태를 따라 분류를 이어가줘. 기존 제안·진행 중 범위를 먼저 확인하고 결과와 재개 상태를 함께 저장해줘. 제안과 실제 DB 반영을 구분해줘.
