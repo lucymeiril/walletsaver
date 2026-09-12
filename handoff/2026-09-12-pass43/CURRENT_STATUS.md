@@ -6,7 +6,7 @@
 - 작업자는 이 절에만 작업 ID / 기준 SHA / 범위 / 상태 / 결과 파일 / 다음 시작점·보류를 기록한다. 다른 작업 기록을 지우지 않는다. 제안 완료와 아래 DB 반영 실적은 별개다.
 - `2026-09-12-jerky-096` / 기준 `4c6f4e0ffa383b6026d7868c7032dea510236768` / 범위 `remaining/096/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-jerky-096.json` / 다음 시작점·보류: 5상품/10관측 전부 기존 정확 리프 없음. `food.meat.processed.jerky` 신규 리프 후보로 `new_leaf_needed` / `needs_review` 유지. 실제 DB·taxonomy 반영 없음. 다음 작업자는 다른 remaining 묶음에서 새 예약 후 진행.
 - `2026-09-12-flavored-milk-yogurt-098` / 기준 `8ddb377d86b7ca5457b7017794eaaae953bfd438` / 범위 `remaining/098/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-flavored-milk-yogurt-098.json` / 다음 시작점·보류: 5상품/10관측 전부 현재 taxonomy의 정확한 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
-- `2026-09-12-black-tea-102` / 기준 `34da36f8ec61dd718a31a5428619acd50cfeb47b` / 범위 `remaining/102/001.json` 전체 / 상태 `진행 중` / 결과 `proposals/2026-09-12-black-tea-102.json` / 다음 시작점·보류: 과거 102 제안 5상품/10관측을 현재 remaining·accepted·수동결정·taxonomy와 재대조 중.
+- `2026-09-12-black-tea-102` / 기준 `34da36f8ec61dd718a31a5428619acd50cfeb47b` / 범위 `remaining/102/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-black-tea-102.json` / 다음 시작점·보류: 5상품/10관측 전부 `food.drinks.tea.black` 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
 
 ## 실제 DB 반영 실적
 
