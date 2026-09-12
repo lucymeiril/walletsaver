@@ -1,0 +1,268 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-122-126",
+  "baseline_commit": "28c1a39f647ebdc6b7f5b0ca634f4ffd0db80f6f",
+  "reservation_commit": "c26b9ae07b1b693f997e94843437d9ee644017e6",
+  "scope": [
+    "remaining/122/001.json",
+    "remaining/123/001.json",
+    "remaining/124/001.json",
+    "remaining/125/001.json",
+    "remaining/126/001.json"
+  ],
+  "historical_reference": "../2026-09-11/proposals/bulk-pending-110-150.json",
+  "review_accounting": {
+    "bundles": 5,
+    "products": 20,
+    "observations": 40,
+    "existing_leaf_products": 12,
+    "existing_leaf_observations": 24,
+    "new_leaf_needed_products": 6,
+    "new_leaf_needed_observations": 12,
+    "already_classified_products": 2,
+    "already_classified_observations": 4,
+    "hold_products": 0,
+    "hold_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.seafood.shellfish.shrimp",
+      "food.dairy.cheese.portion",
+      "food.meat.eggs.chicken",
+      "food.meat.fresh.beef"
+    ],
+    "missing_review_candidates": [
+      "food.seafood.cephalopod.squid",
+      "food.seafood.mixed.frozen",
+      "food.baking.decorations.food_coloring",
+      "food.baking.decorations.sprinkles",
+      "food.baking.decorations.chocolate_pen"
+    ],
+    "note": "Missing ids are taxonomy-review candidates only. They are not created or treated as final parent/id choices by this proposal."
+  },
+  "conflict_checks": {
+    "accepted_new_included_raw_id_matches": 0,
+    "accepted_but_blocked_raw_id_matches": 0,
+    "explicit_review_decision_matches": 0,
+    "note": "The 40 current remaining raw ids do not overlap accepted new_included_ids or accepted_but_blocked_ids. The historical 110-150 review checked the same high-risk source keys against the preserved 431 explicit review decisions with zero matches; CURRENT_STATUS still records those 431 decisions as preserved."
+  },
+  "decisions": [
+    {
+      "group": "122",
+      "source_record_key": "069646023",
+      "source_title": "냉동 흰다리 새우살(생) 기획(200G+200G)",
+      "raw_record_ids": ["ingestion:3:95", "ingestion:53:21"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.seafood.shellfish.shrimp",
+      "reason": "Explicit shrimp-meat product form and current classification already agree with the shrimp leaf; only mixed-package interpretation remains unresolved.",
+      "issues_preserved": ["mixed_package_unresolved"]
+    },
+    {
+      "group": "122",
+      "source_record_key": "071172776",
+      "source_title": "손질 오징어링 500G(팩)",
+      "raw_record_ids": ["ingestion:4:20", "ingestion:53:43"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.cephalopod.squid",
+      "reason": "Title explicitly identifies prepared squid rings; the retail frozen-shrimp shelf must not override product form, and current taxonomy has no squid leaf."
+    },
+    {
+      "group": "122",
+      "source_record_key": "070287348",
+      "source_title": "냉동 자숙 새우살 기획(200G+200G)",
+      "raw_record_ids": ["ingestion:4:28", "ingestion:53:60"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.seafood.shellfish.shrimp",
+      "reason": "Explicit cooked shrimp-meat product form and current classification agree with the shrimp leaf; only mixed-package interpretation remains unresolved.",
+      "issues_preserved": ["mixed_package_unresolved"]
+    },
+    {
+      "group": "122",
+      "source_record_key": "070499685",
+      "source_title": "간편 씨푸드믹스 600G(팩)",
+      "raw_record_ids": ["ingestion:4:71", "ingestion:53:57"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.mixed.frozen",
+      "reason": "Title identifies a mixed seafood product rather than shrimp; current taxonomy has no exact frozen mixed-seafood leaf."
+    },
+    {
+      "group": "123",
+      "source_record_key": "146824548",
+      "source_title": "매일 상하치즈 미니 아몬드 고다 48G*3",
+      "raw_record_ids": ["ingestion:8:41", "ingestion:57:73"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "Mini individually portioned Gouda cheese; flavor/nut inclusion does not change portion-cheese form."
+    },
+    {
+      "group": "123",
+      "source_record_key": "144807428",
+      "source_title": "포션믹스 20G*6",
+      "raw_record_ids": ["ingestion:8:45", "ingestion:57:76"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "Explicit portion-mix item in the natural/portion cheese shelf; current portion-cheese leaf is exact enough."
+    },
+    {
+      "group": "123",
+      "source_record_key": "128418020",
+      "source_title": "매일 상하치즈 미니 칼슘 체다 48G*3",
+      "raw_record_ids": ["ingestion:8:64", "ingestion:57:95"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "Mini individually portioned Cheddar cheese; calcium claim is an attribute, not a category."
+    },
+    {
+      "group": "123",
+      "source_record_key": "120259681",
+      "source_title": "아페리프레 사뵈르 프로방스 치즈 100G",
+      "raw_record_ids": ["ingestion:9:32", "ingestion:58:69"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "Aperifrais is sold as small flavored cheese portions and matches the existing portion-cheese leaf."
+    },
+    {
+      "group": "124",
+      "source_record_key": "125478027",
+      "source_title": "브레드가든 아이싱 칼라 56G",
+      "raw_record_ids": ["ingestion:25:29", "ingestion:74:65"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.baking.decorations.food_coloring",
+      "reason": "Edible icing coloring is a baking decoration ingredient; current taxonomy has no exact food-coloring leaf."
+    },
+    {
+      "group": "124",
+      "source_record_key": "112791425",
+      "source_title": "브레드가든스프링클 레인보우 25G",
+      "raw_record_ids": ["ingestion:25:37", "ingestion:74:70"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.baking.decorations.sprinkles",
+      "reason": "Explicit baking sprinkles; current taxonomy has no exact decoration/sprinkles leaf."
+    },
+    {
+      "group": "124",
+      "source_record_key": "112791353",
+      "source_title": "브레드가든스프링클 파스텔 미니 하트 25G",
+      "raw_record_ids": ["ingestion:25:38", "ingestion:74:71"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.baking.decorations.sprinkles",
+      "reason": "Explicit baking sprinkles; shape/color are attributes and do not justify a separate category."
+    },
+    {
+      "group": "124",
+      "source_record_key": "106842441",
+      "source_title": "브레드가든 초코펜 3종 세트 80G",
+      "raw_record_ids": ["ingestion:25:39", "ingestion:74:72"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.baking.decorations.chocolate_pen",
+      "reason": "Chocolate decorating pens are a distinct baking-decoration form and current taxonomy has no exact leaf."
+    },
+    {
+      "group": "125",
+      "source_record_key": "071092444",
+      "source_title": "씨제이 더안심 동물복지 유정란 25구",
+      "raw_record_ids": ["ingestion:5:67", "ingestion:55:19"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.chicken",
+      "reason": "Chicken eggs; animal-welfare and fertilized-egg claims are attributes."
+    },
+    {
+      "group": "125",
+      "source_record_key": "071390241",
+      "source_title": "대상 청정원 동물복지 청정유정란 25개입",
+      "raw_record_ids": ["ingestion:6:24", "ingestion:55:57"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.chicken",
+      "reason": "Chicken eggs; animal-welfare/fertilized descriptors do not change product form."
+    },
+    {
+      "group": "125",
+      "source_record_key": "070854858",
+      "source_title": "풀무원 자유방목 동물복지 유정란10구 520G",
+      "raw_record_ids": ["ingestion:6:29", "ingestion:55:65"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.chicken",
+      "reason": "Chicken eggs; free-range/animal-welfare descriptors remain attributes."
+    },
+    {
+      "group": "125",
+      "source_record_key": "070044515",
+      "source_title": "1등급 특란 18입",
+      "raw_record_ids": ["ingestion:6:35", "ingestion:55:74"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.chicken",
+      "reason": "Standard chicken eggs; grade and count are attributes."
+    },
+    {
+      "group": "126",
+      "source_record_key": "069795525",
+      "source_title": "한우 1+등급 사태 100G",
+      "raw_record_ids": ["ingestion:5:74", "ingestion:54:93"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "Fresh Korean beef; shank cut, origin, and grade are attributes within the current beef leaf."
+    },
+    {
+      "group": "126",
+      "source_record_key": "069795306",
+      "source_title": "한우 1+등급 목심 100G",
+      "raw_record_ids": ["ingestion:5:90", "ingestion:55:32"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "Fresh Korean beef; chuck/neck cut, origin, and grade are attributes."
+    },
+    {
+      "group": "126",
+      "source_record_key": "101262923",
+      "source_title": "한우 1+등급 앞다리 100G",
+      "raw_record_ids": ["ingestion:5:91", "ingestion:55:7"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "Fresh Korean beef; foreleg cut, origin, and grade are attributes."
+    },
+    {
+      "group": "126",
+      "source_record_key": "101262704",
+      "source_title": "한우 1+등급 설도 100G",
+      "raw_record_ids": ["ingestion:6:11", "ingestion:55:6"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "Fresh Korean beef; round cut, origin, and grade are attributes."
+    }
+  ],
+  "preserved_contracts": {
+    "quantity": "unchanged",
+    "promotion": "unchanged",
+    "identity_merge": "not_requested",
+    "raw_payloads": "unchanged",
+    "taxonomy": "not_mutated",
+    "accepted": "not_mutated"
+  },
+  "executed_tests": [
+    "manual current remaining accounting: 5 bundles / 20 source products / 40 raw observations",
+    "manual current taxonomy existence check for shrimp, portion cheese, chicken eggs, and fresh beef",
+    "manual missing-leaf check for squid, frozen mixed seafood, food coloring, sprinkles, and chocolate pen",
+    "manual accepted raw-id overlap check against current accepted new_included_ids and accepted_but_blocked_ids",
+    "historical high-risk source-key conflict check against preserved 431 explicit review decisions reused after confirming CURRENT_STATUS still reports 431 preserved decisions"
+  ]
+}
