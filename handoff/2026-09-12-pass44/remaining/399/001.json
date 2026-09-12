@@ -1,0 +1,276 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.seafood.fish.mackerel"
+      ],
+      "category_path": [
+        "식품",
+        "수산물",
+        "생선",
+        "고등어"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:fde2fc7a09ce10f146a294f1",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:53",
+      "review_status": "classified",
+      "source_path": "수산물ㆍ건해산물 > 생선 > 고등어",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "생선",
+        "고등어"
+      ],
+      "source_title": "생물 고등어 (1EA)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS2851550000006/details"
+      ],
+      "unified_category_id": "food.seafood.fish.mackerel",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:02.663536Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/760f2658-c396-40b1-8d72-a8ea61d4143d/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved",
+        "unit_unresolved"
+      ],
+      "item_index": 53,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "25abacc95162f4b11ef535d76ea3391cf9b3acd4",
+          "canonical_url": "https://lottemartzetta.com/products/OS2851550000006/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "생선",
+            "고등어"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/760f2658-c396-40b1-8d72-a8ea61d4143d/300x300.jpg",
+          "mart_native_code": "2851550000006",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "2851550000006",
+          "source_url": "https://lottemartzetta.com/products/OS2851550000006/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:02.663536",
+        "detail_url": "https://lottemartzetta.com/products/OS2851550000006/details",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/760f2658-c396-40b1-8d72-a8ea61d4143d/300x300.jpg",
+        "match_key": "__no_brand__|생물 고등어 1ea||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "생물 고등어 (1EA)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e9939720fc6621caacf628d0b5491cc3f6f7058730f1fd2f9e16b2f4b4da085c",
+      "raw_record_id": "ingestion:32:53",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "생선",
+        "고등어"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "2851550000006",
+      "source_title": "생물 고등어 (1EA)",
+      "source_url": "https://lottemartzetta.com/products/OS2851550000006/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-397-403.json",
+        "flags": [],
+        "leaf": "food.seafood.fish.mackerel",
+        "path": "/nonclassification_pending/0"
+      }
+    ],
+    "raw_record_id": "ingestion:32:53",
+    "reasons": [
+      "promotion_unresolved",
+      "unit_unresolved"
+    ],
+    "source_record_key": "2851550000006",
+    "source_title": "생물 고등어 (1EA)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.seafood.fish.mackerel"
+      ],
+      "category_path": [
+        "식품",
+        "수산물",
+        "생선",
+        "고등어"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:fde2fc7a09ce10f146a294f1",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:76",
+      "review_status": "classified",
+      "source_path": "수산물ㆍ건해산물 > 생선 > 고등어",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "생선",
+        "고등어"
+      ],
+      "source_title": "천일염으로 염장한 국산 고등어자반 (특대) (1EA)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS2528300000004/details"
+      ],
+      "unified_category_id": "food.seafood.fish.mackerel",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:08.157795Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9e6d5a08-2d6d-44fb-9674-869fe172d350/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved",
+        "unit_unresolved"
+      ],
+      "item_index": 76,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 7990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "79a5e958c3100edf0b52ec604636df309977247c",
+          "canonical_url": "https://lottemartzetta.com/products/OS2528300000004/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "생선",
+            "고등어"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9e6d5a08-2d6d-44fb-9674-869fe172d350/300x300.jpg",
+          "mart_native_code": "2528300000004",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "2528300000004",
+          "source_url": "https://lottemartzetta.com/products/OS2528300000004/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:08.157795",
+        "detail_url": "https://lottemartzetta.com/products/OS2528300000004/details",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9e6d5a08-2d6d-44fb-9674-869fe172d350/300x300.jpg",
+        "match_key": "__no_brand__|천일염으로 염장한 국산 고등어자반 특대 1ea||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "천일염으로 염장한 국산 고등어자반 (특대) (1EA)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ddd3c367f52d81b6b0ae70fedbf7b329a4f704cadcbb0fde03b8afb5e1743525",
+      "raw_record_id": "ingestion:34:76",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "생선",
+        "고등어"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "2528300000004",
+      "source_title": "천일염으로 염장한 국산 고등어자반 (특대) (1EA)",
+      "source_url": "https://lottemartzetta.com/products/OS2528300000004/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-397-403.json",
+        "flags": [],
+        "leaf": "food.seafood.fish.mackerel",
+        "path": "/nonclassification_pending/1"
+      }
+    ],
+    "raw_record_id": "ingestion:34:76",
+    "reasons": [
+      "promotion_unresolved",
+      "unit_unresolved"
+    ],
+    "source_record_key": "2528300000004",
+    "source_title": "천일염으로 염장한 국산 고등어자반 (특대) (1EA)"
+  }
+]

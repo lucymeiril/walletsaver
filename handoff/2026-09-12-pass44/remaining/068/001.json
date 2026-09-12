@@ -1,0 +1,1899 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:61",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트진로음료 테라 제로 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801001237882/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로음료",
+      "crawled_at": "2026-08-31T01:46:57.088477Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ff6c549-3636-408e-b063-c054d52f5cf4/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 61,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로음료",
+          "canon_hash": "f5efe0597c49b5e09af3d5cbf81e634c65bf7090",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801001237882/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ff6c549-3636-408e-b063-c054d52f5cf4/300x300.jpg",
+          "mart_native_code": "8801001237882",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801001237882",
+          "source_url": "https://lottemartzetta.com/products/OS8801001237882/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.088477",
+        "detail_url": "https://lottemartzetta.com/products/OS8801001237882/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ff6c549-3636-408e-b063-c054d52f5cf4/300x300.jpg",
+        "match_key": "__no_brand__|하이트진로음료 테라 제로 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트진로음료 테라 제로 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "dd0580cb869b1a81638597f77f6efae4db114443f9581a46b19331cc4a834ab7",
+      "raw_record_id": "ingestion:28:61",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801001237882",
+      "source_title": "하이트진로음료 테라 제로 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801001237882/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:28:61",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801001237882",
+    "source_title": "하이트진로음료 테라 제로 (350ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:48",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 무알콜 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801119221117/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로",
+      "crawled_at": "2026-08-31T01:46:57.095498Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5c3dd3c4-5a26-4efa-98be-c83cbd3447f6/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 48,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로",
+          "canon_hash": "5131fdc3fffc489dfe38aa25e00e5abda7c4477a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801119221117/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5c3dd3c4-5a26-4efa-98be-c83cbd3447f6/300x300.jpg",
+          "mart_native_code": "8801119221117",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801119221117",
+          "source_url": "https://lottemartzetta.com/products/OS8801119221117/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.095498",
+        "detail_url": "https://lottemartzetta.com/products/OS8801119221117/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5c3dd3c4-5a26-4efa-98be-c83cbd3447f6/300x300.jpg",
+        "match_key": "__no_brand__|하이트 제로 무알콜 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트 제로 무알콜 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "139aa8726b9e0cbf8695c72aee3b1bcfdcde55f259707c6662d175f7d0c661ca",
+      "raw_record_id": "ingestion:29:48",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801119221117",
+      "source_title": "하이트 제로 무알콜 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801119221117/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:29:48",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801119221117",
+    "source_title": "하이트 제로 무알콜 (350ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:82",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "클라우드 논알콜릭 (500ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801022025048/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데주류",
+      "crawled_at": "2026-08-31T01:46:57.099013Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b2406356-4624-4857-8fb7-2aa7aec8fc9d/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 82,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500ml",
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1880,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데주류",
+          "canon_hash": "d7ae2be1a041b5bc14c74dfc032b6db70a113d5b",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801022025048/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b2406356-4624-4857-8fb7-2aa7aec8fc9d/300x300.jpg",
+          "mart_native_code": "8801022025048",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801022025048",
+          "source_url": "https://lottemartzetta.com/products/OS8801022025048/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.099013",
+        "detail_url": "https://lottemartzetta.com/products/OS8801022025048/details",
+        "discount_percent": null,
+        "display_unit": "500ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b2406356-4624-4857-8fb7-2aa7aec8fc9d/300x300.jpg",
+        "match_key": "__no_brand__|클라우드 논알콜릭 500ml||500ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "클라우드 논알콜릭 (500ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1880,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "500ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ca88c93751c3511266549e57737dd11e5d0a9833bde7a8ffd3773ae923385fe6",
+      "raw_record_id": "ingestion:29:82",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801022025048",
+      "source_title": "클라우드 논알콜릭 (500ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801022025048/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:29:82",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801022025048",
+    "source_title": "클라우드 논알콜릭 (500ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:87",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801001236434/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로",
+      "crawled_at": "2026-08-31T01:46:57.099384Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/597c5784-9888-483f-9016-d16e3ad24a56/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 87,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500ml",
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로",
+          "canon_hash": "062b6ede3785d503cd2a1f7fc0a52bdd42bf7e0a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801001236434/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/597c5784-9888-483f-9016-d16e3ad24a56/300x300.jpg",
+          "mart_native_code": "8801001236434",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801001236434",
+          "source_url": "https://lottemartzetta.com/products/OS8801001236434/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.099384",
+        "detail_url": "https://lottemartzetta.com/products/OS8801001236434/details",
+        "discount_percent": null,
+        "display_unit": "500ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/597c5784-9888-483f-9016-d16e3ad24a56/300x300.jpg",
+        "match_key": "__no_brand__|하이트 제로 무알콜 캔 500ml||500ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트 제로 (무알콜)(캔) (500ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "500ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "829d030253a23186e0640f3f1e6be3b18caeef599999b1e0d6097aaf80f9ca1a",
+      "raw_record_id": "ingestion:29:87",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801001236434",
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801001236434/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:29:87",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801001236434",
+    "source_title": "하이트 제로 (무알콜)(캔) (500ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:16",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "클라우드 논알콜릭 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801022025086/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데주류",
+      "crawled_at": "2026-08-31T01:46:57.102011Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07bc08dd-45dd-4a34-9f04-c4ecc5185e02/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 16,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1380,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데주류",
+          "canon_hash": "ad6eb1a845e1bfc417942a0976bec3c7ecd8ffaa",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801022025086/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07bc08dd-45dd-4a34-9f04-c4ecc5185e02/300x300.jpg",
+          "mart_native_code": "8801022025086",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801022025086",
+          "source_url": "https://lottemartzetta.com/products/OS8801022025086/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.102011",
+        "detail_url": "https://lottemartzetta.com/products/OS8801022025086/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07bc08dd-45dd-4a34-9f04-c4ecc5185e02/300x300.jpg",
+        "match_key": "__no_brand__|클라우드 논알콜릭 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "클라우드 논알콜릭 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1380,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "79cf303cdbbaecb8bf84f95a34fc4f4d01ed88d05b171f5b6acb8ac304317b40",
+      "raw_record_id": "ingestion:30:16",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801022025086",
+      "source_title": "클라우드 논알콜릭 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801022025086/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:30:16",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801022025086",
+    "source_title": "클라우드 논알콜릭 (350ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:69",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "버드와이저 제로 (330ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801021233925/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오비맥주",
+      "crawled_at": "2026-08-31T01:47:02.653556Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9cdf56c6-1de4-401a-bd94-5ad8a3ae09e7/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 69,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "330ml",
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1760,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오비맥주",
+          "canon_hash": "d1a7c3316c27ccd301db2ea5e1686eea7ef02707",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801021233925/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9cdf56c6-1de4-401a-bd94-5ad8a3ae09e7/300x300.jpg",
+          "mart_native_code": "8801021233925",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801021233925",
+          "source_url": "https://lottemartzetta.com/products/OS8801021233925/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:02.653556",
+        "detail_url": "https://lottemartzetta.com/products/OS8801021233925/details",
+        "discount_percent": null,
+        "display_unit": "330ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9cdf56c6-1de4-401a-bd94-5ad8a3ae09e7/300x300.jpg",
+        "match_key": "__no_brand__|버드와이저 제로 330ml||330ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "버드와이저 제로 (330ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1760,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "330ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "89978c86649e3574e3185d6dbd8f1391f023a3e28cdebce99d2b250961218ffb",
+      "raw_record_id": "ingestion:31:69",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801021233925",
+      "source_title": "버드와이저 제로 (330ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801021233925/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:31:69",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801021233925",
+    "source_title": "버드와이저 제로 (330ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:36",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 무알콜 (350ML * 6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801119221124/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로",
+      "crawled_at": "2026-08-31T01:47:08.141207Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a26ac8b5-f06b-4ede-994f-f44e97934409/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 36,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "350ml×6",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 9540,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로",
+          "canon_hash": "c5ce60847c03d55ee315ba17b32fe4e67dc3d66a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801119221124/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a26ac8b5-f06b-4ede-994f-f44e97934409/300x300.jpg",
+          "mart_native_code": "8801119221124",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801119221124",
+          "source_url": "https://lottemartzetta.com/products/OS8801119221124/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.141207",
+        "detail_url": "https://lottemartzetta.com/products/OS8801119221124/details",
+        "discount_percent": null,
+        "display_unit": "350ml×6",
+        "event_name": "50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a26ac8b5-f06b-4ede-994f-f44e97934409/300x300.jpg",
+        "match_key": "__no_brand__|하이트 제로 무알콜 350ml 6||350ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트 제로 무알콜 (350ML * 6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9540,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b89c2b41fb490da5d6f45fd5388639ef9938d81904e7be3cd482c6e5f287fa4c",
+      "raw_record_id": "ingestion:33:36",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801119221124",
+      "source_title": "하이트 제로 무알콜 (350ML * 6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801119221124/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:33:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801119221124",
+    "source_title": "하이트 제로 무알콜 (350ML * 6)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:40",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML * 6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801001236441/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로",
+      "crawled_at": "2026-08-31T01:47:08.141843Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ade168fd-8596-475e-aaa4-6b1048f0c13d/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "500ml×6",
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 11880,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로",
+          "canon_hash": "f231fb75704ac2a26fa03f85538a6483426a3b5c",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801001236441/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ade168fd-8596-475e-aaa4-6b1048f0c13d/300x300.jpg",
+          "mart_native_code": "8801001236441",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801001236441",
+          "source_url": "https://lottemartzetta.com/products/OS8801001236441/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.141843",
+        "detail_url": "https://lottemartzetta.com/products/OS8801001236441/details",
+        "discount_percent": null,
+        "display_unit": "500ml×6",
+        "event_name": "50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ade168fd-8596-475e-aaa4-6b1048f0c13d/300x300.jpg",
+        "match_key": "__no_brand__|하이트 제로 무알콜 캔 500ml 6||500ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트 제로 (무알콜)(캔) (500ML * 6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 11880,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "500ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "982c50182368ea58f5311f8b0b70452a424d78766151f035d1c6b51c17338985",
+      "raw_record_id": "ingestion:33:40",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801001236441",
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML * 6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801001236441/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:33:40",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801001236441",
+    "source_title": "하이트 제로 (무알콜)(캔) (500ML * 6)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:82",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "크라우스탈러 논알콜 (캔) (330ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0000040534794/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "비어벨트코리아",
+      "crawled_at": "2026-08-31T01:47:08.148107Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/780233a5-9db6-48e0-90e2-9d0fec1b4533/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 82,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "330ml",
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2500,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "비어벨트코리아",
+          "canon_hash": "9a0338c2f72ea1c3db62039fce6c7f37aa359c55",
+          "canonical_url": "https://lottemartzetta.com/products/OS0000040534794/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/780233a5-9db6-48e0-90e2-9d0fec1b4533/300x300.jpg",
+          "mart_native_code": "0000040534794",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "0000040534794",
+          "source_url": "https://lottemartzetta.com/products/OS0000040534794/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.148107",
+        "detail_url": "https://lottemartzetta.com/products/OS0000040534794/details",
+        "discount_percent": null,
+        "display_unit": "330ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/780233a5-9db6-48e0-90e2-9d0fec1b4533/300x300.jpg",
+        "match_key": "__no_brand__|크라우스탈러 논알콜 캔 330ml||330ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크라우스탈러 논알콜 (캔) (330ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2500,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "330ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5c0ac48f1df5318cedfbcdad98ddc3d57e7679daed2d8aca1a3ce29c90155a5f",
+      "raw_record_id": "ingestion:33:82",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "0000040534794",
+      "source_title": "크라우스탈러 논알콜 (캔) (330ML)",
+      "source_url": "https://lottemartzetta.com/products/OS0000040534794/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:33:82",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "0000040534794",
+    "source_title": "크라우스탈러 논알콜 (캔) (330ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:93",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 0.00 포멜로 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801001238810/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이트진로",
+      "crawled_at": "2026-08-31T01:47:08.149140Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/04567504-9af7-461a-a39d-8f6527edc68d/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 93,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이트진로",
+          "canon_hash": "88bdfab1233f1bb14676f2d7d50983fa22625e95",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801001238810/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/04567504-9af7-461a-a39d-8f6527edc68d/300x300.jpg",
+          "mart_native_code": "8801001238810",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801001238810",
+          "source_url": "https://lottemartzetta.com/products/OS8801001238810/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.149140",
+        "detail_url": "https://lottemartzetta.com/products/OS8801001238810/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/04567504-9af7-461a-a39d-8f6527edc68d/300x300.jpg",
+        "match_key": "__no_brand__|하이트 제로 0 00 포멜로 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이트 제로 0.00 포멜로 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c652bea8c6a1a8c55e2084e9db61a299af2245cd27a3c58d1ccbc9d8c6b4c2bd",
+      "raw_record_id": "ingestion:33:93",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801001238810",
+      "source_title": "하이트 제로 0.00 포멜로 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801001238810/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:33:93",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801001238810",
+    "source_title": "하이트 제로 0.00 포멜로 (350ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:6",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이네켄 넌 알콜릭 (330ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8712000055721/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "하이네켄",
+      "crawled_at": "2026-08-31T01:47:08.150515Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/18ee2a6b-1edd-4f5a-85f9-767f37257561/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 6,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "330ml",
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1880,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "하이네켄",
+          "canon_hash": "e9c97635b722376484640589324ec5073fc939f6",
+          "canonical_url": "https://lottemartzetta.com/products/OS8712000055721/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/18ee2a6b-1edd-4f5a-85f9-767f37257561/300x300.jpg",
+          "mart_native_code": "8712000055721",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8712000055721",
+          "source_url": "https://lottemartzetta.com/products/OS8712000055721/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.150515",
+        "detail_url": "https://lottemartzetta.com/products/OS8712000055721/details",
+        "discount_percent": null,
+        "display_unit": "330ml",
+        "event_name": "4개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/18ee2a6b-1edd-4f5a-85f9-767f37257561/300x300.jpg",
+        "match_key": "__no_brand__|하이네켄 넌 알콜릭 330ml||330ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하이네켄 넌 알콜릭 (330ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 330.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1880,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "330ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "27de74d2bb5963357edb5442c010fdcfde8d88cf9014131cec87db00bb71a79f",
+      "raw_record_id": "ingestion:34:6",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8712000055721",
+      "source_title": "하이네켄 넌 알콜릭 (330ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8712000055721/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:34:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8712000055721",
+    "source_title": "하이네켄 넌 알콜릭 (330ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:28",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "티젠 젠하이볼향 0.0 레몬 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809685983071/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "마트기타",
+      "crawled_at": "2026-08-31T01:47:08.152534Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/74f91ba0-4d68-4769-aac0-cd29d3459ba9/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 28,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "마트기타",
+          "canon_hash": "e9b2faef4b1495c16a571d129bbe84a7b5b781ce",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809685983071/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/74f91ba0-4d68-4769-aac0-cd29d3459ba9/300x300.jpg",
+          "mart_native_code": "8809685983071",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809685983071",
+          "source_url": "https://lottemartzetta.com/products/OS8809685983071/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.152534",
+        "detail_url": "https://lottemartzetta.com/products/OS8809685983071/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/74f91ba0-4d68-4769-aac0-cd29d3459ba9/300x300.jpg",
+        "match_key": "__no_brand__|티젠 젠하이볼향 0 0 레몬 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "티젠 젠하이볼향 0.0 레몬 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2b6af695ec13fd9d073704372f2372238a0df0288e310cc505bed29006f1e84a",
+      "raw_record_id": "ingestion:34:28",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809685983071",
+      "source_title": "티젠 젠하이볼향 0.0 레몬 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8809685983071/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:34:28",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809685983071",
+    "source_title": "티젠 젠하이볼향 0.0 레몬 (350ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:77",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "기네스 드래프트 넌 알콜릭 (440ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801027884961/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "디아지오",
+      "crawled_at": "2026-08-31T01:47:08.158014Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/19497164-3c23-4a1f-9f53-0cc778a1cd9e/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 77,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "440ml",
+        "package_quantity": 440.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "디아지오",
+          "canon_hash": "f84b18adae01c54180a8c6d6a92c8be698c5fcfb",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801027884961/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/19497164-3c23-4a1f-9f53-0cc778a1cd9e/300x300.jpg",
+          "mart_native_code": "8801027884961",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801027884961",
+          "source_url": "https://lottemartzetta.com/products/OS8801027884961/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.158014",
+        "detail_url": "https://lottemartzetta.com/products/OS8801027884961/details",
+        "discount_percent": null,
+        "display_unit": "440ml",
+        "event_name": "4개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/19497164-3c23-4a1f-9f53-0cc778a1cd9e/300x300.jpg",
+        "match_key": "__no_brand__|기네스 드래프트 넌 알콜릭 440ml||440ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "기네스 드래프트 넌 알콜릭 (440ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 440.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3000,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "440ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c6bd48792215d2dc423289e7867cec0ccbb85e34e5c714307bb9307fec88c283",
+      "raw_record_id": "ingestion:34:77",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801027884961",
+      "source_title": "기네스 드래프트 넌 알콜릭 (440ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801027884961/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:34:77",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801027884961",
+    "source_title": "기네스 드래프트 넌 알콜릭 (440ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9b50167f76f308ca927d72e4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:22",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 논알콜음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "오비맥주 카스 올제로 (350ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801858048600/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오비맥주",
+      "crawled_at": "2026-08-31T01:47:08.163385Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/70315c6a-fade-4bd1-bb16-1cb02bc28869/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 22,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "350ml",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오비맥주",
+          "canon_hash": "4cf6f72942d07cd22661e78fed44bb4ad248aa0e",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801858048600/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "논알콜음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/70315c6a-fade-4bd1-bb16-1cb02bc28869/300x300.jpg",
+          "mart_native_code": "8801858048600",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801858048600",
+          "source_url": "https://lottemartzetta.com/products/OS8801858048600/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.163385",
+        "detail_url": "https://lottemartzetta.com/products/OS8801858048600/details",
+        "discount_percent": null,
+        "display_unit": "350ml",
+        "event_name": "4개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/70315c6a-fade-4bd1-bb16-1cb02bc28869/300x300.jpg",
+        "match_key": "__no_brand__|오비맥주 카스 올제로 350ml||350ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오비맥주 카스 올제로 (350ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "350ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4f45b11c4fa6f025e12c2a4518bcdd57e446ea7ed4b342b4600984ddd4ed399b",
+      "raw_record_id": "ingestion:35:22",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "논알콜음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801858048600",
+      "source_title": "오비맥주 카스 올제로 (350ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801858048600/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-non-alcoholic-drinks-068.json",
+        "flags": [],
+        "leaf": "food.drinks.non_alcoholic.beer",
+        "path": "/decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:35:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801858048600",
+    "source_title": "오비맥주 카스 올제로 (350ML)"
+  }
+]

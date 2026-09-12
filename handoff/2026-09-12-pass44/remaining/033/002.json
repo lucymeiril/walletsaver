@@ -1,0 +1,929 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:65",
+      "review_status": "classified",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "안심 키친타월 120매x12롤 ESG",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000689518895&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:56.969441Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2645,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/95/88/51/item/1000689518895_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 65,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": 12100,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "12롤",
+        "package_quantity": 12.0,
+        "package_unit": "롤",
+        "standard_unit": null
+      },
+      "price": 8900,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "크리넥스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/95/88/51/item/1000689518895_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000689518895",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000689518895",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689518895&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1m 당 53원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:56.969441",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689518895&siteNo=7009&salestrNo=2551",
+        "discount_percent": 26.4,
+        "display_unit": "12롤",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/95/88/51/item/1000689518895_i1_290.jpg",
+        "match_key": "__no_brand__|안심 키친타월 120매x12롤 esg||12롤",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "안심 키친타월 120매x12롤 ESG",
+        "normalized_name": "",
+        "original_price": 12100,
+        "package_quantity": 12.0,
+        "package_unit": "롤",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8900,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "12롤",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4dbe203117b5dae4f705d97c6508091e7b6f4f1da2240fac30edfbc989b00102",
+      "raw_record_id": "ingestion:96:65",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000689518895",
+      "source_title": "안심 키친타월 120매x12롤 ESG",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689518895&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:65",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "1000689518895",
+    "source_title": "안심 키친타월 120매x12롤 ESG"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.kitchen"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "키친타월"
+      ],
+      "classification_confidence": 0.86,
+      "classification_reason": "supported_by_unambiguous_name_tokens",
+      "evidence_type": "unambiguous_name_tokens",
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:66",
+      "review_status": "classified",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "코디 음식전용 안심 UKP 키친타월 140매*4롤",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632784489&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": "household.hygiene.paper.kitchen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:56.973183Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/89/44/78/item/1000632784489_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 66,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "4롤",
+        "package_quantity": 4.0,
+        "package_unit": "롤",
+        "standard_unit": null
+      },
+      "price": 7480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/89/44/78/item/1000632784489_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000632784489",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000632784489",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632784489&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1m 당 117원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:56.973183",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632784489&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "4롤",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/89/44/78/item/1000632784489_i1_290.jpg",
+        "match_key": "__no_brand__|코디 음식전용 안심 ukp 키친타월 140매 4롤||4롤",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "코디 음식전용 안심 UKP 키친타월 140매*4롤",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 4.0,
+        "package_unit": "롤",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "4롤",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6956ccc06ed0539157add53e32de3ce3a864c5ddb807c411d22e524076e98136",
+      "raw_record_id": "ingestion:96:66",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000632784489",
+      "source_title": "코디 음식전용 안심 UKP 키친타월 140매*4롤",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632784489&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:66",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "1000632784489",
+    "source_title": "코디 음식전용 안심 UKP 키친타월 140매*4롤"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": [
+        "제지/위생/건강"
+      ],
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:68",
+      "review_status": "pending",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "건강한 순수한면 대형 32개입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000048770548&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:56.991365Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/48/05/77/item/1000048770548_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [],
+      "item_index": 68,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "32개입",
+        "package_quantity": 32.0,
+        "package_unit": "개입",
+        "standard_unit": null
+      },
+      "price": 15200,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "깨끗한나라",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/48/05/77/item/1000048770548_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000048770548",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000048770548",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048770548&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "1개 당 475원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:56.991365",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048770548&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "32개입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/48/05/77/item/1000048770548_i1_290.jpg",
+        "match_key": "__no_brand__|건강한 순수한면 대형 32개입||32개입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "건강한 순수한면 대형 32개입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 32.0,
+        "package_unit": "개입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 15200,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "32개입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c891376a60e4a8ef774ff099a76015e6da2c39682f37e29db333a0e60eacf4a3",
+      "raw_record_id": "ingestion:96:68",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000048770548",
+      "source_title": "건강한 순수한면 대형 32개입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048770548&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:68",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000048770548",
+    "source_title": "건강한 순수한면 대형 32개입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": [
+        "제지/위생/건강"
+      ],
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:72",
+      "review_status": "pending",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "깨끗한 리오셀 대형 34P",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000062926083&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:57.003305Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/83/60/92/item/1000062926083_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [],
+      "item_index": 72,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "34P",
+        "package_quantity": 34.0,
+        "package_unit": "p",
+        "standard_unit": null
+      },
+      "price": 5480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/83/60/92/item/1000062926083_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000062926083",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000062926083",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000062926083&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "1개 당 161원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:57.003305",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000062926083&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "34P",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/83/60/92/item/1000062926083_i1_290.jpg",
+        "match_key": "__no_brand__|깨끗한 리오셀 대형 34p||34p",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "깨끗한 리오셀 대형 34P",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 34.0,
+        "package_unit": "P",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "34P",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ef44cdbab55cc548700b88655bb78411befca557f8c62468fa65c45ccb051816",
+      "raw_record_id": "ingestion:96:72",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000062926083",
+      "source_title": "깨끗한 리오셀 대형 34P",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000062926083&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:72",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000062926083",
+    "source_title": "깨끗한 리오셀 대형 34P"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": [
+        "제지/위생/건강"
+      ],
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:74",
+      "review_status": "pending",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "시니어돌봄 리필형패드 일반 20P",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000048428087&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:57.009975Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/87/80/42/item/1000048428087_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [],
+      "item_index": 74,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "20P",
+        "package_quantity": 20.0,
+        "package_unit": "p",
+        "standard_unit": null
+      },
+      "price": 4780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/87/80/42/item/1000048428087_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000048428087",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000048428087",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048428087&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "1개 당 239원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:57.009975",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048428087&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "20P",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/87/80/42/item/1000048428087_i1_290.jpg",
+        "match_key": "__no_brand__|시니어돌봄 리필형패드 일반 20p||20p",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "시니어돌봄 리필형패드 일반 20P",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 20.0,
+        "package_unit": "P",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4780,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20P",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0dce41771655d129dd15dabc6d15c254b21ae15b15f4d467c42724cd29aeb629",
+      "raw_record_id": "ingestion:96:74",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000048428087",
+      "source_title": "시니어돌봄 리필형패드 일반 20P",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000048428087&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:74",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000048428087",
+    "source_title": "시니어돌봄 리필형패드 일반 20P"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "beauty.personal.oral.toothbrush"
+      ],
+      "category_path": [
+        "뷰티·개인관리",
+        "개인위생",
+        "구강관리",
+        "칫솔"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_household_title",
+      "evidence_type": "audited_emart_household_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:76",
+      "review_status": "classified",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "초극세모 칫솔",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610389&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "beauty.personal.oral.toothbrush",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:57.016913Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/89/03/61/item/1000712610389_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 76,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "5K프라이스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/89/03/61/item/1000712610389_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000712610389",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000712610389",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610389&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:57.016913",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610389&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/89/03/61/item/1000712610389_i1_290.jpg",
+        "match_key": "__no_brand__|초극세모 칫솔||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "초극세모 칫솔",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c80a2f3f1ae83bddc9a1ad65e8ecc45e5aeacd290710fa2eea54b0e36e737ec1",
+      "raw_record_id": "ingestion:96:76",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000712610389",
+      "source_title": "초극세모 칫솔",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000712610389&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:76",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000712610389",
+    "source_title": "초극세모 칫솔"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "household.hygiene.paper.toilet"
+      ],
+      "category_path": [
+        "생활용품",
+        "위생용품",
+        "제지",
+        "두루마리휴지"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_household_title",
+      "evidence_type": "audited_emart_household_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:6b445fd2bd3f85495d66b867",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213997",
+      "raw_record_id": "ingestion:96:77",
+      "review_status": "classified",
+      "source_path": "제지/위생/건강",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "제지/위생/건강"
+      ],
+      "source_title": "3겹 컴포트소프트 호호바 30+3M-30롤",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000859265343&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "household.hygiene.paper.toilet",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:53:57.021942Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "30+3",
+      "image_url": "https://sitem.ssgcdn.com/43/53/26/item/1000859265343_i1_290.jpg",
+      "ingestion_id": 96,
+      "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+      "issues": [],
+      "item_index": 77,
+      "mart_native_category_id": "6000213997",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "30롤",
+        "package_quantity": 30.0,
+        "package_unit": "롤",
+        "standard_unit": null
+      },
+      "price": 32900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {
+        "buy_quantity": 30,
+        "condition_text": "30+3",
+        "free_quantity": 3,
+        "minimum_quantity": 30
+      },
+      "promotion_type": "buy_x_get_y",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "제지/위생/건강",
+          "collection": "크리넥스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/43/53/26/item/1000859265343_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213997",
+          "mart_native_category_path": "제지/위생/건강",
+          "mart_native_code": "1000859265343",
+          "promo_label": "30+3",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000859265343",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000859265343&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10m 당 332원"
+        },
+        "brand": "__no_brand__",
+        "category": "제지/위생/건강",
+        "crawled_at": "2026-09-03T01:53:57.021942",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000859265343&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "30롤",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/43/53/26/item/1000859265343_i1_290.jpg",
+        "match_key": "__no_brand__|3겹 컴포트소프트 호호바 30 3m 30롤||30롤",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "3겹 컴포트소프트 호호바 30+3M-30롤",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 30.0,
+        "package_unit": "롤",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 32900,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "30롤",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "188704391740aeaa066128cc73a760c4ed9cb8d0b6b5b5f8b0fc7cdef28249a8",
+      "raw_record_id": "ingestion:96:77",
+      "source_category_path": [
+        "제지/위생/건강"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000859265343",
+      "source_title": "3겹 컴포트소프트 호호바 30+3M-30롤",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000859265343&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:96:77",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000859265343",
+    "source_title": "3겹 컴포트소프트 호호바 30+3M-30롤"
+  }
+]

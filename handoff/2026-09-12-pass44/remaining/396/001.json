@@ -1,0 +1,268 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:c8c6be7a9abcbc8752736037",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자ㆍ스낵ㆍ간식",
+        "맛밤ㆍ김스낵ㆍ과일칩",
+        "과일칩"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:76",
+      "review_status": "pending",
+      "source_path": "과자ㆍ스낵ㆍ간식 > 맛밤ㆍ김스낵ㆍ과일칩 > 과일칩",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "맛밤ㆍ김스낵ㆍ과일칩",
+        "과일칩"
+      ],
+      "source_title": "산골과일참 딸기칩 (7G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809506850346/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "에코맘",
+      "crawled_at": "2026-08-31T01:46:57.089668Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/045912b7-b737-406f-a5d0-f805bc64697f/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 76,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7g",
+        "package_quantity": 7.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2800,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "에코맘",
+          "canon_hash": "feeaac9275203861f0051e5b8e080a2202485b98",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809506850346/details",
+          "category_hint": "과자ㆍ스낵ㆍ간식",
+          "category_path": [
+            "과자ㆍ스낵ㆍ간식",
+            "맛밤ㆍ김스낵ㆍ과일칩",
+            "과일칩"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/045912b7-b737-406f-a5d0-f805bc64697f/300x300.jpg",
+          "mart_native_code": "8809506850346",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809506850346",
+          "source_url": "https://lottemartzetta.com/products/OS8809506850346/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과자ㆍ스낵ㆍ간식",
+        "crawled_at": "2026-08-31T10:46:57.089668",
+        "detail_url": "https://lottemartzetta.com/products/OS8809506850346/details",
+        "discount_percent": null,
+        "display_unit": "7g",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/045912b7-b737-406f-a5d0-f805bc64697f/300x300.jpg",
+        "match_key": "__no_brand__|산골과일참 딸기칩 7g||7g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "산골과일참 딸기칩 (7G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "g",
+        "price_per_100g": 40000.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2800,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2a8f76d2260666dd65b3228390ae4b81f7194a6cb95cad04f43a3e0109346398",
+      "raw_record_id": "ingestion:28:76",
+      "source_category_path": [
+        "과자ᆞ스낵ᆞ간식",
+        "맛밤ᆞ김스낵ᆞ과일칩",
+        "과일칩"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809506850346",
+      "source_title": "산골과일참 딸기칩 (7G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809506850346/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:28:76",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809506850346",
+    "source_title": "산골과일참 딸기칩 (7G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:c8c6be7a9abcbc8752736037",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자ㆍ스낵ㆍ간식",
+        "맛밤ㆍ김스낵ㆍ과일칩",
+        "과일칩"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:78",
+      "review_status": "pending",
+      "source_path": "과자ㆍ스낵ㆍ간식 > 맛밤ㆍ김스낵ㆍ과일칩 > 과일칩",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "맛밤ㆍ김스낵ㆍ과일칩",
+        "과일칩"
+      ],
+      "source_title": "산골과일참 배칩 (10G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809506850353/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "에코맘",
+      "crawled_at": "2026-08-31T01:46:57.107973Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d4601910-ab46-4efe-bf0a-a6ee6861892e/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 78,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "10g",
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2800,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "에코맘",
+          "canon_hash": "1036521839f33c5c412330c4a64d932c3a1c974a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809506850353/details",
+          "category_hint": "과자ㆍ스낵ㆍ간식",
+          "category_path": [
+            "과자ㆍ스낵ㆍ간식",
+            "맛밤ㆍ김스낵ㆍ과일칩",
+            "과일칩"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d4601910-ab46-4efe-bf0a-a6ee6861892e/300x300.jpg",
+          "mart_native_code": "8809506850353",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809506850353",
+          "source_url": "https://lottemartzetta.com/products/OS8809506850353/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과자ㆍ스낵ㆍ간식",
+        "crawled_at": "2026-08-31T10:46:57.107973",
+        "detail_url": "https://lottemartzetta.com/products/OS8809506850353/details",
+        "discount_percent": null,
+        "display_unit": "10g",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d4601910-ab46-4efe-bf0a-a6ee6861892e/300x300.jpg",
+        "match_key": "__no_brand__|산골과일참 배칩 10g||10g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "산골과일참 배칩 (10G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "price_per_100g": 28000.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2800,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "10g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "185dc649ffe510d94c7da119618028696f0c3ec80e45f124fa38c0e184de6e1e",
+      "raw_record_id": "ingestion:30:78",
+      "source_category_path": [
+        "과자ᆞ스낵ᆞ간식",
+        "맛밤ᆞ김스낵ᆞ과일칩",
+        "과일칩"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809506850353",
+      "source_title": "산골과일참 배칩 (10G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809506850353/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:30:78",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809506850353",
+    "source_title": "산골과일참 배칩 (10G)"
+  }
+]

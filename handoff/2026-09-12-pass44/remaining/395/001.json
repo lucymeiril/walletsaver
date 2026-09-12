@@ -1,0 +1,288 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.snacks.baked.biscuits"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4086acdc339fb3bca6024d6c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "과자·간식",
+        "구운과자",
+        "쿠키·비스킷"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:93",
+      "review_status": "pending",
+      "source_path": "과자ㆍ스낵ㆍ간식 > 과자ㆍ쿠키ㆍ파이 > 쿠키ㆍ비스킷",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "과자ㆍ쿠키ㆍ파이",
+        "쿠키ㆍ비스킷"
+      ],
+      "source_title": "오늘좋은 치즈샌드 (90G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS9556023228699/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:02.656728Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/59fd5305-73e0-46f5-a35c-3ae81a64a362/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 93,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "90g",
+        "package_quantity": 90.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "c406ffd2a54be910cb1d6922c6e14c9a61914166",
+          "canonical_url": "https://lottemartzetta.com/products/OS9556023228699/details",
+          "category_hint": "과자ㆍ스낵ㆍ간식",
+          "category_path": [
+            "과자ㆍ스낵ㆍ간식",
+            "과자ㆍ쿠키ㆍ파이",
+            "쿠키ㆍ비스킷"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/59fd5305-73e0-46f5-a35c-3ae81a64a362/300x300.jpg",
+          "mart_native_code": "9556023228699",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "9556023228699",
+          "source_url": "https://lottemartzetta.com/products/OS9556023228699/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과자ㆍ스낵ㆍ간식",
+        "crawled_at": "2026-08-31T10:47:02.656728",
+        "detail_url": "https://lottemartzetta.com/products/OS9556023228699/details",
+        "discount_percent": null,
+        "display_unit": "90g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/59fd5305-73e0-46f5-a35c-3ae81a64a362/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 치즈샌드 90g||90g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 치즈샌드 (90G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 90.0,
+        "package_unit": "g",
+        "price_per_100g": 1655.56,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1490,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "90g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b4559cbae8a6f78d8522e7c878f590a15a163b688d86cb6cc2617074ab2264a8",
+      "raw_record_id": "ingestion:31:93",
+      "source_category_path": [
+        "과자ᆞ스낵ᆞ간식",
+        "과자ᆞ쿠키ᆞ파이",
+        "쿠키ᆞ비스킷"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "9556023228699",
+      "source_title": "오늘좋은 치즈샌드 (90G)",
+      "source_url": "https://lottemartzetta.com/products/OS9556023228699/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-391-396.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.sandwich",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:31:93",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "9556023228699",
+    "source_title": "오늘좋은 치즈샌드 (90G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.snacks.baked.biscuits"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4086acdc339fb3bca6024d6c",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "과자·간식",
+        "구운과자",
+        "쿠키·비스킷"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:28",
+      "review_status": "pending",
+      "source_path": "과자ㆍ스낵ㆍ간식 > 과자ㆍ쿠키ㆍ파이 > 쿠키ㆍ비스킷",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "과자ㆍ쿠키ㆍ파이",
+        "쿠키ㆍ비스킷"
+      ],
+      "source_title": "오늘좋은 초코샌드 (90G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS9556023228705/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:02.673011Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/017bcf5a-2c32-4b54-b69e-7137c60f30a3/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 28,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "90g",
+        "package_quantity": 90.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "3932bd8293eb17a7ea49d37bbb6135a6b22ac4e6",
+          "canonical_url": "https://lottemartzetta.com/products/OS9556023228705/details",
+          "category_hint": "과자ㆍ스낵ㆍ간식",
+          "category_path": [
+            "과자ㆍ스낵ㆍ간식",
+            "과자ㆍ쿠키ㆍ파이",
+            "쿠키ㆍ비스킷"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/017bcf5a-2c32-4b54-b69e-7137c60f30a3/300x300.jpg",
+          "mart_native_code": "9556023228705",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "9556023228705",
+          "source_url": "https://lottemartzetta.com/products/OS9556023228705/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과자ㆍ스낵ㆍ간식",
+        "crawled_at": "2026-08-31T10:47:02.673011",
+        "detail_url": "https://lottemartzetta.com/products/OS9556023228705/details",
+        "discount_percent": null,
+        "display_unit": "90g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/017bcf5a-2c32-4b54-b69e-7137c60f30a3/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 초코샌드 90g||90g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 초코샌드 (90G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 90.0,
+        "package_unit": "g",
+        "price_per_100g": 1655.56,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1490,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "90g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "192d3f6b2a0a2340d48746fb030a34904870c02b21ebc6d3d0c76b67d05753be",
+      "raw_record_id": "ingestion:33:28",
+      "source_category_path": [
+        "과자ᆞ스낵ᆞ간식",
+        "과자ᆞ쿠키ᆞ파이",
+        "쿠키ᆞ비스킷"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "9556023228705",
+      "source_title": "오늘좋은 초코샌드 (90G)",
+      "source_url": "https://lottemartzetta.com/products/OS9556023228705/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-391-396.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.sandwich",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:33:28",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "9556023228705",
+    "source_title": "오늘좋은 초코샌드 (90G)"
+  }
+]

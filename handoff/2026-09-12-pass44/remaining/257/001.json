@@ -1,0 +1,546 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.processed.sausage"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ad011a1798b10737bfb515f7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "정육·계란",
+        "가공육",
+        "소시지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:46",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 햄ㆍ소시지ㆍ베이컨ㆍ하몽 > 소시지",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "CJ 고메 토마토 미트볼 (147G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007626994/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "고메",
+      "crawled_at": "2026-08-31T01:46:57.095343Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c6f1c52-329e-4367-81af-760dbff421f5/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 46,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "147g",
+        "package_quantity": 147.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "고메",
+          "canon_hash": "9313bf24aea121202bbf88c76e57d99b7355eb61",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007626994/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+            "소시지"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c6f1c52-329e-4367-81af-760dbff421f5/300x300.jpg",
+          "mart_native_code": "8801007626994",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007626994",
+          "source_url": "https://lottemartzetta.com/products/OS8801007626994/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:46:57.095343",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007626994/details",
+        "discount_percent": null,
+        "display_unit": "147g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c6f1c52-329e-4367-81af-760dbff421f5/300x300.jpg",
+        "match_key": "__no_brand__|cj 고메 토마토 미트볼 147g||147g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 고메 토마토 미트볼 (147G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 147.0,
+        "package_unit": "g",
+        "price_per_100g": 3387.76,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "147g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c10c0b48826889ce2745e94210839400858ea3fe516cb6ec207a1a9ccde97a24",
+      "raw_record_id": "ingestion:29:46",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+        "소시지"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007626994",
+      "source_title": "CJ 고메 토마토 미트볼 (147G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007626994/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:29:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007626994",
+    "source_title": "CJ 고메 토마토 미트볼 (147G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.processed.sausage"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ad011a1798b10737bfb515f7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "정육·계란",
+        "가공육",
+        "소시지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:71",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 햄ㆍ소시지ㆍ베이컨ㆍ하몽 > 소시지",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "CJ 동그란 스팸 (160G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801392088230/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "씨제이제일제당",
+      "crawled_at": "2026-08-31T01:46:57.097740Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/007d502d-4a0b-4d16-85ff-348634f6bf89/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 71,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "160g",
+        "package_quantity": 160.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5390,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이제일제당",
+          "canon_hash": "bf8d530bb0ea6222247982133686d4865cfa8a3c",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801392088230/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+            "소시지"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/007d502d-4a0b-4d16-85ff-348634f6bf89/300x300.jpg",
+          "mart_native_code": "8801392088230",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801392088230",
+          "source_url": "https://lottemartzetta.com/products/OS8801392088230/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:46:57.097740",
+        "detail_url": "https://lottemartzetta.com/products/OS8801392088230/details",
+        "discount_percent": null,
+        "display_unit": "160g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/007d502d-4a0b-4d16-85ff-348634f6bf89/300x300.jpg",
+        "match_key": "__no_brand__|cj 동그란 스팸 160g||160g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 동그란 스팸 (160G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 160.0,
+        "package_unit": "g",
+        "price_per_100g": 3368.75,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5390,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "160g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ee3fdf4548c33d390b8da48ff3c8dbc7dd31acdf33931d8e445204abacde10dd",
+      "raw_record_id": "ingestion:29:71",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+        "소시지"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801392088230",
+      "source_title": "CJ 동그란 스팸 (160G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801392088230/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:29:71",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801392088230",
+    "source_title": "CJ 동그란 스팸 (160G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.processed.sausage"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ad011a1798b10737bfb515f7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "정육·계란",
+        "가공육",
+        "소시지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:48",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 햄ㆍ소시지ㆍ베이컨ㆍ하몽 > 소시지",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "동원 제주마늘 살코기햄 (300G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047569299/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "동원",
+      "crawled_at": "2026-08-31T01:47:08.142852Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d01af601-adad-4790-a30d-1010cc50f8c9/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 48,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원",
+          "canon_hash": "20476f2205dadcd2995bff928558189a682230d3",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047569299/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+            "소시지"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d01af601-adad-4790-a30d-1010cc50f8c9/300x300.jpg",
+          "mart_native_code": "8801047569299",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047569299",
+          "source_url": "https://lottemartzetta.com/products/OS8801047569299/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:47:08.142852",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047569299/details",
+        "discount_percent": null,
+        "display_unit": "300g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d01af601-adad-4790-a30d-1010cc50f8c9/300x300.jpg",
+        "match_key": "__no_brand__|동원 제주마늘 살코기햄 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 제주마늘 살코기햄 (300G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 3326.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "be12b2591777854cf069f9248458eb44b2553f8e355fd7e0cd0edc365c641e8a",
+      "raw_record_id": "ingestion:33:48",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+        "소시지"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047569299",
+      "source_title": "동원 제주마늘 살코기햄 (300G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047569299/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:33:48",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047569299",
+    "source_title": "동원 제주마늘 살코기햄 (300G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.processed.sausage"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:ad011a1798b10737bfb515f7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "정육·계란",
+        "가공육",
+        "소시지"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:2",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 햄ㆍ소시지ㆍ베이컨ㆍ하몽 > 소시지",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "동원 그릴리 델리햄 오리지널 (450G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047570950/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "그릴리",
+      "crawled_at": "2026-08-31T01:47:08.150037Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/587f3b13-aa28-4e85-9b87-1d0eff3e0c14/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 2,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "450g",
+        "package_quantity": 450.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "그릴리",
+          "canon_hash": "9e5fe41dbe19cd6312a8821aa28f1db8a9a372d2",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047570950/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+            "소시지"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/587f3b13-aa28-4e85-9b87-1d0eff3e0c14/300x300.jpg",
+          "mart_native_code": "8801047570950",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047570950",
+          "source_url": "https://lottemartzetta.com/products/OS8801047570950/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:47:08.150037",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047570950/details",
+        "discount_percent": null,
+        "display_unit": "450g",
+        "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/587f3b13-aa28-4e85-9b87-1d0eff3e0c14/300x300.jpg",
+        "match_key": "__no_brand__|동원 그릴리 델리햄 오리지널 450g||450g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 그릴리 델리햄 오리지널 (450G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 450.0,
+        "package_unit": "g",
+        "price_per_100g": 1553.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "450g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8bbb0bff47b22cb90d64f6902e60dfe6a09dc1dcbb877240675782ed33d4d6c8",
+      "raw_record_id": "ingestion:34:2",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+        "소시지"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047570950",
+      "source_title": "동원 그릴리 델리햄 오리지널 (450G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047570950/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:34:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047570950",
+    "source_title": "동원 그릴리 델리햄 오리지널 (450G)"
+  }
+]

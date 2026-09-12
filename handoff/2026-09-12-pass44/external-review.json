@@ -1,0 +1,2584 @@
+{
+  "identity_errors": [
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "173",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:75",
+          "ingestion:55:31"
+        ],
+        "reason": "Frozen storage does not change the uncooked chicken tenderloin product type; the current fresh-chicken leaf is the closest existing product-form leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069473198",
+        "source_title": "냉동 닭안심 1KG(봉)",
+        "unified_category_id": "food.meat.fresh.chicken"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "173",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:97",
+          "ingestion:55:33"
+        ],
+        "reason": "The title explicitly identifies uncooked chicken tenderloin, matching the current fresh-chicken leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070983083",
+        "source_title": "무항생제 황금닭 닭안심 400G",
+        "unified_category_id": "food.meat.fresh.chicken"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "175",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:16",
+          "ingestion:55:70"
+        ],
+        "reason": "Raw pork belly for grilling matches the current pork leaf; domestic brand/origin and cooking use are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070613977",
+        "source_title": "백두대간 한돈 삼겹살 구이용 400G",
+        "unified_category_id": "food.meat.fresh.pork"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "175",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:32",
+          "ingestion:55:71"
+        ],
+        "reason": "Raw pork belly intended for boiling remains fresh pork; intended preparation is not a separate product-form leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070613994",
+        "source_title": "백두대간 한돈 삼겹살 수육용 500G",
+        "unified_category_id": "food.meat.fresh.pork"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "176",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:47",
+          "ingestion:54:79"
+        ],
+        "reason": "Soy-sauce bulgogi is explicitly seasoned pork and matches the current seasoned-meat leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070590639",
+        "source_title": "생생 한돈 간장 불고기 800G",
+        "unified_category_id": "food.meals.prepared.seasoned_meat"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "176",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:49",
+          "ingestion:54:81"
+        ],
+        "reason": "Gochujang bulgogi is explicitly seasoned pork and fits the current seasoned-meat leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070591143",
+        "source_title": "생생 한돈 고추장 불고기 800G",
+        "unified_category_id": "food.meals.prepared.seasoned_meat"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    }
+  ],
+  "limitations": "Nested ID-free group112-116 excluded; missing mart recovered from originals only after exact identity checks; not full semantic approval; needs_review and deferred forms not promoted.",
+  "remote_commit": "afcc97a",
+  "sampling": "SHA256(raw_record_ids), first two per original mart/leaf",
+  "semantic_samples": [
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "123",
+        "raw_record_ids": [
+          "ingestion:8:64",
+          "ingestion:57:95"
+        ],
+        "reason": "Mini individually portioned Cheddar cheese; calcium claim is an attribute, not a category.",
+        "review_lane": "clear_existing",
+        "source_record_key": "128418020",
+        "source_title": "매일 상하치즈 미니 칼슘 체다 48G*3",
+        "unified_category_id": "food.dairy.cheese.portion"
+      },
+      "file": "2026-09-12-batch-122-126.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "123",
+        "raw_record_ids": [
+          "ingestion:8:45",
+          "ingestion:57:76"
+        ],
+        "reason": "Explicit portion-mix item in the natural/portion cheese shelf; current portion-cheese leaf is exact enough.",
+        "review_lane": "clear_existing",
+        "source_record_key": "144807428",
+        "source_title": "포션믹스 20G*6",
+        "unified_category_id": "food.dairy.cheese.portion"
+      },
+      "file": "2026-09-12-batch-122-126.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "168",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:8:72",
+          "ingestion:58:3"
+        ],
+        "reason": "The product is explicitly whipping cream and the current taxonomy contains the general fresh-cream leaf; import status and package unit do not change classification.",
+        "review_lane": "clear_existing",
+        "source_record_key": "127571149",
+        "source_title": "직수입 LAURA 휘핑크림 250G",
+        "unified_category_id": "food.dairy.cream.fresh"
+      },
+      "file": "2026-09-12-batch-167-171.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "168",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:8:70",
+          "ingestion:58:1"
+        ],
+        "reason": "The title and source shelf explicitly identify whipping cream, and the current dairy fresh-cream leaf is the closest exact product-form leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "127731370",
+        "source_title": "알라 휘핑크림 1L",
+        "unified_category_id": "food.dairy.cream.fresh"
+      },
+      "file": "2026-09-12-batch-167-171.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=069643308&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:7:64",
+          "ingestion:57:4"
+        ],
+        "reason": "바나나우유 제품 정체성이 명확하며 현재 바나나우유 리프와 직접 일치한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069643308",
+        "source_title": "부산우유 바나나가득 200ML",
+        "unified_category_id": "food.dairy.milk.banana"
+      },
+      "file": "2026-09-12-flavored-milk-yogurt-098.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=069643280&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:7:53",
+          "ingestion:56:54"
+        ],
+        "reason": "초코우유 제품 정체성이 명확하며 현재 초코우유 리프와 직접 일치한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069643280",
+        "source_title": "부산우유 초코가득 200ML",
+        "unified_category_id": "food.dairy.milk.chocolate"
+      },
+      "file": "2026-09-12-flavored-milk-yogurt-098.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=062499138&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:7:43",
+          "ingestion:56:35"
+        ],
+        "reason": "커피맛 우유 제품형태가 제목과 우유 진열 경로에서 일치한다. 4입 포장수량은 속성으로 유지한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "062499138",
+        "source_title": "서울우유 커피포리 200ML*4",
+        "unified_category_id": "food.dairy.milk.coffee"
+      },
+      "file": "2026-09-12-flavored-milk-yogurt-098.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=070818902&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:7:54",
+          "ingestion:56:55"
+        ],
+        "reason": "딸기우유 제품 정체성이 명확하며 현재 딸기우유 리프와 직접 일치한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "070818902",
+        "source_title": "부산우유 딸기가득 200ML",
+        "unified_category_id": "food.dairy.milk.strawberry"
+      },
+      "file": "2026-09-12-flavored-milk-yogurt-098.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=071037367&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:7:80",
+          "ingestion:57:26"
+        ],
+        "reason": "제목의 그릭드링크가 음용형 요거트 제품형태를 명시한다. 주변 우유 진열보다 실제 제품형태를 우선하고, 바나나는 맛 속성으로 유지한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071037367",
+        "source_title": "매일 바이오그릭드링크바나나 710ML",
+        "unified_category_id": "food.dairy.yogurt.drink"
+      },
+      "file": "2026-09-12-flavored-milk-yogurt-098.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "188",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:7:24",
+          "ingestion:56:63"
+        ],
+        "reason": "The chilled orange-and-grape beverage is conservatively mapped to the current generic fruit-drink leaf; no juice-purity claim is inferred from the shelf or title.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "114314981",
+        "source_title": "롯데 콜드오렌지+포도 900ML*2",
+        "unified_category_id": "food.drinks.juice.fruit_drink"
+      },
+      "file": "2026-09-12-batch-187-191.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "188",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:8:28"
+        ],
+        "reason": "The title explicitly says grapefruit-flavoured drink, so the current fruit-drink leaf is more precise than a pure-juice leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071404019",
+        "source_title": "우양 자몽맛 가나디 190ML",
+        "unified_category_id": "food.drinks.juice.fruit_drink"
+      },
+      "file": "2026-09-12-batch-187-191.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:16:88",
+          "ingestion:66:28"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "127890301",
+        "source_title": "하이트진로 블랙보리차 1.5L",
+        "unified_category_id": "food.drinks.tea.barley"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:16:82",
+          "ingestion:66:19"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "065175010",
+        "source_title": "하이트진로 블랙보리라이트 1.5L",
+        "unified_category_id": "food.drinks.tea.barley"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=124835269&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:15:80",
+          "ingestion:65:7"
+        ],
+        "reason": "얼그레이 티백은 홍차 제품형태가 명확하다. 얼그레이는 향/스타일 속성이며 별도 리프가 필요하지 않다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "124835269",
+        "source_title": "트와이닝 얼그레이 25T (50G)",
+        "unified_category_id": "food.drinks.tea.black"
+      },
+      "file": "2026-09-12-black-tea-102.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=070961817&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:16:39",
+          "ingestion:65:78"
+        ],
+        "reason": "실론티 티백은 홍차 제품으로 현재 홍차 리프와 직접 일치한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "070961817",
+        "source_title": "아크바 실론티 25T",
+        "unified_category_id": "food.drinks.tea.black"
+      },
+      "file": "2026-09-12-black-tea-102.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "182",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:16:21",
+          "ingestion:65:23"
+        ],
+        "reason": "Buckwheat tea is a grain tea, and the current taxonomy contains the exact generic grain-tea leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "120304000",
+        "source_title": "동서 메밀차 100T (150G)",
+        "unified_category_id": "food.drinks.tea.grain"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:16:93",
+          "ingestion:66:29"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "104806826",
+        "source_title": "광동제약 옥수수수염차 1.5L",
+        "unified_category_id": "food.drinks.tea.grain"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "181",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:15:94",
+          "ingestion:65:24"
+        ],
+        "reason": "The product is explicitly brown-rice green tea; the rice blend is an ingredient variant and the current 녹차·말차 leaf matches the tea base.",
+        "review_lane": "clear_existing",
+        "source_record_key": "100788819",
+        "source_title": "동서 현미녹차 100T (150G)",
+        "unified_category_id": "food.drinks.tea.green"
+      },
+      "file": "2026-09-12-batch-177-181.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "181",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:16:20",
+          "ingestion:65:42"
+        ],
+        "reason": "The title explicitly identifies brown-rice green tea, which fits the current 녹차·말차 leaf; pack size is an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "121183883",
+        "source_title": "동서 현미녹차 200T (300G)",
+        "unified_category_id": "food.drinks.tea.green"
+      },
+      "file": "2026-09-12-batch-177-181.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:16:91",
+          "ingestion:66:20"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "115604859",
+        "source_title": "광동 진한 헛개차 1.5L",
+        "unified_category_id": "food.drinks.tea.herbal"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "155",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:17:4",
+          "ingestion:66:44"
+        ],
+        "reason": "Multipack quantity is an attribute; the explicit 식혜 product form matches the current sikhye leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "000026425",
+        "source_title": "팔도 비락식혜 238ML*6",
+        "unified_category_id": "food.drinks.traditional.sikhye"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "155",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:17:3",
+          "ingestion:66:36"
+        ],
+        "reason": "The product title explicitly identifies 식혜 and the exact current traditional-drink leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "068766736",
+        "source_title": "팔도 비락 식혜 1.5L",
+        "unified_category_id": "food.drinks.traditional.sikhye"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "156",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:17:0",
+          "ingestion:66:30"
+        ],
+        "reason": "Explicit Hot6 energy-drink identity and source path match the current energy-drink leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "130242685",
+        "source_title": "롯데칠성 핫식스 더킹파워 355ML",
+        "unified_category_id": "food.drinks.water_soda.energy"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "156",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:17:5",
+          "ingestion:66:31"
+        ],
+        "reason": "The title and source shelf consistently identify an energy drink; product-line variant does not create a new category.",
+        "review_lane": "clear_existing",
+        "source_record_key": "148753381",
+        "source_title": "롯데칠성 핫식스 더킹포스 355ML",
+        "unified_category_id": "food.drinks.water_soda.energy"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "157",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:16:66",
+          "ingestion:66:5"
+        ],
+        "reason": "The source path explicitly identifies a flavored carbonated drink; apple flavor and zero-sugar positioning are attributes, and the current generic carbonated-drink leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069030233",
+        "source_title": "롯데 탐스제로 사과 1.5L",
+        "unified_category_id": "food.drinks.water_soda.soda"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "157",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:16:67",
+          "ingestion:66:4"
+        ],
+        "reason": "The product is explicitly shelved as flavored carbonated soda; pineapple flavor is an attribute and does not require a separate leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069030227",
+        "source_title": "롯데 탐스제로 파인애플향 1.5L",
+        "unified_category_id": "food.drinks.water_soda.soda"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "139",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:3:88",
+          "ingestion:53:6"
+        ],
+        "reason": "Salted is an attribute; product form is explicitly pistachio and the exact current leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "127487105",
+        "source_title": "원더풀 가염 피스타치오 500G(봉)",
+        "unified_category_id": "food.grains.nuts.pistachio"
+      },
+      "file": "2026-09-12-batch-137-141.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "139",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:3:86",
+          "ingestion:53:7"
+        ],
+        "reason": "Unsalted is an attribute; product form is explicitly pistachio and the exact current leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "127208725",
+        "source_title": "원더풀 무염 피스타치오 500G(봉)",
+        "unified_category_id": "food.grains.nuts.pistachio"
+      },
+      "file": "2026-09-12-batch-137-141.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=071379555&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:12:11",
+          "ingestion:61:52"
+        ],
+        "reason": "제목에 딤섬과 완탕이 모두 명시되어 제품형태가 분명하다. 사천우육은 속재료·맛 속성이다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071379555",
+        "source_title": "동원 딤섬 사천우육 완탕 336G",
+        "unified_category_id": "food.meals.dumplings.dimsum"
+      },
+      "file": "2026-09-12-dimsum-106.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=071379549&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:12:12",
+          "ingestion:61:53"
+        ],
+        "reason": "딤섬·완탕 제품형태가 제목에 직접 드러난다. 광동 스타일과 새우 속재료는 속성으로 유지한다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071379549",
+        "source_title": "동원 딤섬 광동 새우완탕 294G",
+        "unified_category_id": "food.meals.dumplings.dimsum"
+      },
+      "file": "2026-09-12-dimsum-106.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "147",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:9:87",
+          "ingestion:60:15"
+        ],
+        "reason": "The 김치찐만두 source path and explicit kimchi-dumpling title support the existing steamed-dumpling leaf; package count is not a category distinction.",
+        "review_lane": "clear_existing",
+        "source_record_key": "129860109",
+        "source_title": "풀무원 얄피꽉찬 김치만두 400G*2",
+        "unified_category_id": "food.meals.dumplings.steamed"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "147",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:9:73",
+          "ingestion:59:11"
+        ],
+        "reason": "The source path explicitly places the product in 김치찐만두 and the title identifies a kimchi dumpling; kimchi is filling/flavor while the product form is steamed dumpling.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070980564",
+        "source_title": "동원 개성왕만두김치 350G",
+        "unified_category_id": "food.meals.dumplings.steamed"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=057467472&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:21:37",
+          "ingestion:70:91"
+        ],
+        "reason": "사천 스타일은 짜파게티라는 동일 짜장라면 제품형태의 맛 변형이며 별도 taxonomy 분기 근거가 아니다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "057467472",
+        "source_title": "농심 사천짜파게티 137g*4입",
+        "unified_category_id": "food.meals.noodles.black_bean"
+      },
+      "file": "2026-09-12-black-bean-ramen-108.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=068981243&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "promotion_review": "unresolved_preserved",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:20:51",
+          "ingestion:70:73"
+        ],
+        "reason": "현재 원본 진열경로가 짜장라면이고 과거 제안과 일치한다. 두 관측의 promotion_unresolved는 할인조건 문제로 별도 유지하며 분류 승인으로 간주하지 않는다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "068981243",
+        "source_title": "오뚜기 짜슐랭 145G*5입",
+        "unified_category_id": "food.meals.noodles.black_bean"
+      },
+      "file": "2026-09-12-black-bean-ramen-108.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "204",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:10:88",
+          "ingestion:60:6"
+        ],
+        "reason": "The product is explicitly buckwheat soba, which matches the current buckwheat-noodle leaf; serving count is not a category distinction.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071394473",
+        "source_title": "simplus 메밀소바 2인분 392G",
+        "unified_category_id": "food.meals.noodles.buckwheat_noodle"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "204",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:12:3",
+          "ingestion:61:45"
+        ],
+        "reason": "Cold buckwheat soba is an explicit buckwheat-noodle product and matches the current buckwheat-noodle leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071388319",
+        "source_title": "면사랑 냉메밀소바 1008G",
+        "unified_category_id": "food.meals.noodles.buckwheat_noodle"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "133",
+        "raw_record_ids": [
+          "ingestion:20:59",
+          "ingestion:69:97"
+        ],
+        "reason": "Explicit dried dangmyeon/glass-noodle product matches the current glass-noodle leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069003053",
+        "source_title": "동원 일품당면 500G",
+        "unified_category_id": "food.meals.noodles.glass"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "133",
+        "raw_record_ids": [
+          "ingestion:20:75",
+          "ingestion:70:2"
+        ],
+        "reason": "Cut dangmyeon remains the same glass-noodle product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "100494546",
+        "source_title": "오뚜기 옛날 자른 당면 300G",
+        "unified_category_id": "food.meals.noodles.glass"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "146",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:52",
+          "ingestion:60:93"
+        ],
+        "reason": "The title explicitly says jjamppong; the broad retail shelf labelled jjajang must not override the explicit noodle form, and the current jjamppong leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "128917909",
+        "source_title": "씨제이 고메 중화 짬뽕 652G",
+        "unified_category_id": "food.meals.noodles.jjamppong"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "205",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:60:41"
+        ],
+        "reason": "The title explicitly identifies a pasta product; Toowoomba is the sauce/style and the current pasta leaf is the exact available form match.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069394736",
+        "source_title": "투움바 파스타 230G",
+        "unified_category_id": "food.meals.noodles.pasta"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "205",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:60:12"
+        ],
+        "reason": "The title explicitly identifies pasta; ragu/meat sauce is a preparation style and does not change the pasta product form.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069394781",
+        "source_title": "MDS코리아 라구(미트) 파스타 230G",
+        "unified_category_id": "food.meals.noodles.pasta"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "153",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:21:1",
+          "ingestion:69:99"
+        ],
+        "reason": "The title explicitly identifies plain wheat 중면 and the current 소면·국수 wheat-noodle leaf covers this product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "122595855",
+        "source_title": "오뚜기 중면 1.2KG",
+        "unified_category_id": "food.meals.noodles.wheat_noodle"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "153",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:22:75",
+          "ingestion:70:50"
+        ],
+        "reason": "Explicit plain wheat 중면 belongs to the current 소면·국수 leaf; package weight is an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "000044555",
+        "source_title": "오뚜기 중면 900G",
+        "unified_category_id": "food.meals.noodles.wheat_noodle"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "209",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:9:71",
+          "ingestion:59:23"
+        ],
+        "reason": "The explicit cheese-ball product form matches the current cheese-ball leaf; the broader cheese-stick shelf is not used to override the title.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "142080523",
+        "source_title": "풀무원 모짜렐라 치즈볼 360G",
+        "unified_category_id": "food.meals.prepared.cheese_ball"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "preserved_issues": [
+          "unit_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:6:62",
+          "ingestion:55:95"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "070278031",
+        "source_title": "당당 두마리 옛날통닭",
+        "unified_category_id": "food.meals.prepared.chicken"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "210",
+        "issues_preserved": [
+          "unit_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:6:48",
+          "ingestion:55:88"
+        ],
+        "reason": "The title explicitly identifies seasoned prepared chicken and matches the current prepared-chicken leaf. The unresolved unit issue is preserved separately.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069150200",
+        "source_title": "당당 달콤양념 치킨",
+        "unified_category_id": "food.meals.prepared.chicken"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "161",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:4:96",
+          "ingestion:53:72"
+        ],
+        "reason": "The title explicitly identifies seasoned grilled pollock, which matches the existing prepared grilled-fish leaf regardless of the broad shelf path.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071105212",
+        "source_title": "양념황태구이 250g(팩)",
+        "unified_category_id": "food.meals.prepared.grilled_fish"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "161",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:4:85",
+          "ingestion:54:40"
+        ],
+        "reason": "The title explicitly identifies a seasoned grilled fish product; prepared grilled form overrides the broad assorted-fish retail shelf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071108042",
+        "source_title": "양념 민물장어구이 334G(팩)",
+        "unified_category_id": "food.meals.prepared.grilled_fish"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "148",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:45",
+          "ingestion:60:83"
+        ],
+        "reason": "The title directly identifies prepared japchae; the broad shelf does not override product form and the exact current leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "137153595",
+        "source_title": "씨제이 비비고 잡채 644G",
+        "unified_category_id": "food.meals.prepared.japchae"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "206",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:11",
+          "ingestion:60:88"
+        ],
+        "reason": "The source title explicitly labels the product as a meal kit, so the meal-kit leaf takes precedence over ingredient signals such as silken tofu.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "129622202",
+        "source_title": "[밀키트] 홈밀 감자수제비 순두부 찌개 1100G",
+        "unified_category_id": "food.meals.prepared.meal_kit"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "185",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:60:58"
+        ],
+        "reason": "The title explicitly identifies 동그랑땡 and matches the current exact leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "070750934",
+        "source_title": "풀무원 반듯한식 동그랑땡 315G",
+        "unified_category_id": "food.meals.prepared.meat_patty"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "185",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:10:66",
+          "ingestion:60:1"
+        ],
+        "reason": "The title explicitly identifies 동그랑땡; package multiplicity does not change the product-form leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "120854362",
+        "source_title": "씨제이 비비고 도톰 동그랑땡 425G*2",
+        "unified_category_id": "food.meals.prepared.meat_patty"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "190",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:28",
+          "ingestion:55:63"
+        ],
+        "reason": "The title explicitly identifies frozen gochujang-seasoned duck bulgogi, matching the current prepared seasoned-meat leaf rather than raw duck meat.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071048694",
+        "source_title": "품애복 1등급오리석쇠불고기고추장맛 360G / 냉동",
+        "unified_category_id": "food.meals.prepared.seasoned_meat"
+      },
+      "file": "2026-09-12-batch-187-191.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "135",
+        "raw_record_ids": [
+          "ingestion:5:39",
+          "ingestion:54:73"
+        ],
+        "reason": "Raw/chilled seasoned boneless chicken for jjimdak fits seasoned meat; cooking style is an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070590576",
+        "source_title": "생생 안동식 순살찜닭 600G",
+        "unified_category_id": "food.meals.prepared.seasoned_meat"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "206",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:10:73",
+          "ingestion:59:50"
+        ],
+        "reason": "The title identifies a kimchi stew and does not explicitly identify a meal kit; the ready soup/stew form therefore overrides the broader meal-kit retail shelf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069739616",
+        "source_title": "도드람 해남 묵은지 김치찌개 1KG",
+        "unified_category_id": "food.meals.prepared.soup_stew"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "207",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:61",
+          "ingestion:61:2"
+        ],
+        "reason": "The title explicitly identifies samgyetang, a prepared soup/stew form, and the current soup/stew leaf is the exact available match.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "127296515",
+        "source_title": "마니커 에프앤지 녹두 삼계탕 900G",
+        "unified_category_id": "food.meals.prepared.soup_stew"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "149",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:46",
+          "ingestion:55:84"
+        ],
+        "reason": "The title and deli sushi path both explicitly identify a ready-to-eat assorted sushi product; count is an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070454491",
+        "source_title": "홈플델리 실속 모둠초밥 (30입)",
+        "unified_category_id": "food.meals.prepared.sushi"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "149",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:61",
+          "ingestion:55:98"
+        ],
+        "reason": "Ready-to-eat inari sushi is explicitly identified as 유부초밥 and fits the current prepared-sushi leaf; count remains an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070519634",
+        "source_title": "홈플델리 통통유부초밥(9입)",
+        "unified_category_id": "food.meals.prepared.sushi"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "125",
+        "raw_record_ids": [
+          "ingestion:5:67",
+          "ingestion:55:19"
+        ],
+        "reason": "Chicken eggs; animal-welfare and fertilized-egg claims are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071092444",
+        "source_title": "씨제이 더안심 동물복지 유정란 25구",
+        "unified_category_id": "food.meat.eggs.chicken"
+      },
+      "file": "2026-09-12-batch-122-126.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "125",
+        "raw_record_ids": [
+          "ingestion:6:29",
+          "ingestion:55:65"
+        ],
+        "reason": "Chicken eggs; free-range/animal-welfare descriptors remain attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070854858",
+        "source_title": "풀무원 자유방목 동물복지 유정란10구 520G",
+        "unified_category_id": "food.meat.eggs.chicken"
+      },
+      "file": "2026-09-12-batch-122-126.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "172",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:22",
+          "ingestion:55:55"
+        ],
+        "reason": "The title explicitly identifies smoked eggs, which fit the current cooked-egg leaf rather than the generic raw chicken-egg leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "110466506",
+        "source_title": "다사다 훈제계란 6개입",
+        "unified_category_id": "food.meat.eggs.cooked"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "172",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:61",
+          "ingestion:54:96"
+        ],
+        "reason": "The title explicitly identifies roasted eggs, and current taxonomy contains the exact cooked-egg leaf; this is more specific than the historical generic chicken-egg mapping.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069365401",
+        "source_title": "오래구워 탱글한 구운계란 30구",
+        "unified_category_id": "food.meat.eggs.cooked"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "191",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:93",
+          "ingestion:55:17"
+        ],
+        "reason": "US chuck-flap/salchisal is a fresh beef grilling cut and matches the current fresh-beef leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "110479163",
+        "source_title": "미국산 살치살 100G/소고기",
+        "unified_category_id": "food.meat.fresh.beef"
+      },
+      "file": "2026-09-12-batch-187-191.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "126",
+        "raw_record_ids": [
+          "ingestion:5:91",
+          "ingestion:55:7"
+        ],
+        "reason": "Fresh Korean beef; foreleg cut, origin, and grade are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "101262923",
+        "source_title": "한우 1+등급 앞다리 100G",
+        "unified_category_id": "food.meat.fresh.beef"
+      },
+      "file": "2026-09-12-batch-122-126.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "173",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:75",
+          "ingestion:55:31"
+        ],
+        "reason": "Frozen storage does not change the uncooked chicken tenderloin product type; the current fresh-chicken leaf is the closest existing product-form leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069473198",
+        "source_title": "냉동 닭안심 1KG(봉)",
+        "unified_category_id": "food.meat.fresh.chicken"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "173",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:5:64",
+          "ingestion:54:92"
+        ],
+        "reason": "The title and source shelf identify uncooked chicken breast; current taxonomy contains the general fresh-chicken leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070983077",
+        "source_title": "무항생제 황금닭 닭가슴살 400G",
+        "unified_category_id": "food.meat.fresh.chicken"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "175",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:13",
+          "ingestion:55:48"
+        ],
+        "reason": "The title explicitly identifies raw domestic pork belly; scoring/cut style and intended cooking use do not change the pork product type.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070614037",
+        "source_title": "백두대간 한돈 칼집삼겹살 구이용 400G",
+        "unified_category_id": "food.meat.fresh.pork"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "175",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:6:16",
+          "ingestion:55:70"
+        ],
+        "reason": "Raw pork belly for grilling matches the current pork leaf; domestic brand/origin and cooking use are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070613977",
+        "source_title": "백두대간 한돈 삼겹살 구이용 400G",
+        "unified_category_id": "food.meat.fresh.pork"
+      },
+      "file": "2026-09-12-batch-172-176.json",
+      "flags": [
+        "missing_mart",
+        "source_record_key_mismatch",
+        "source_title_mismatch"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "148",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:9:68",
+          "ingestion:59:10"
+        ],
+        "reason": "The title explicitly identifies 찰순대, which overrides the broad 안주/전류 retail shelf and matches the current sundae leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069282942",
+        "source_title": "려강 쫀쫀한 찰순대 503G",
+        "unified_category_id": "food.meat.processed.sundae"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "154",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:22:68",
+          "ingestion:71:96"
+        ],
+        "reason": "No-sugar wording and slice format are attributes; the product remains canned yellow peach and matches the current canned-fruit leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070620041",
+        "source_title": "동원 저스트 노슈가 황도 슬라이스 400G",
+        "unified_category_id": "food.preserved.canned.fruit"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "154",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:20:99",
+          "ingestion:70:57"
+        ],
+        "reason": "The product is canned yellow peach; slice style and origin are attributes and the current generic canned-fruit leaf is exact enough for the preserved product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071136941",
+        "source_title": "simplus 그리스 황도 슬라이스 420G",
+        "unified_category_id": "food.preserved.canned.fruit"
+      },
+      "file": "2026-09-12-batch-152-156.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "preserved_issues": [
+          "bundle_multiplier_unresolved",
+          "mixed_package_unresolved",
+          "multiple_package_quantities"
+        ],
+        "raw_record_ids": [
+          "ingestion:20:78",
+          "ingestion:71:14"
+        ],
+        "reason": "Both title components are tuna cans and the source path is tuna. The grape-seed-oil token denotes the tuna variant and should not route the sale page to cooking oil.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071390258",
+        "source_title": "동원 포도씨유 참치 150G*2+살코기참치 135G*4",
+        "unified_category_id": "food.preserved.canned.tuna"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:14:76",
+          "ingestion:64:13"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "129050711",
+        "source_title": "대상 종가 파김치 300G",
+        "unified_category_id": "food.preserved.kimchi.green_onion"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "raw_record_ids": [
+          "ingestion:14:16",
+          "ingestion:62:70"
+        ],
+        "review_lane": "clear_existing",
+        "source_record_key": "069417491",
+        "source_title": "대상 종가 석박지 900G",
+        "unified_category_id": "food.preserved.kimchi.seokbakji"
+      },
+      "file": "2026-09-12-batch-117-121.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "211",
+        "historical_proposal_file": "../2026-09-11/proposals/homeplus-small-211-217.json",
+        "historical_proposal_path": "/decisions/1",
+        "historical_proposal_revalidated": true,
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:14:91",
+          "ingestion:64:28"
+        ],
+        "reason": "The title explicitly says white kimchi and matches the current white-kimchi leaf. This revalidates the existing linked historical proposal; it is not self-approval or a duplicate DB action.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "127144229",
+        "source_title": "대상 종가 어린이 한입 백김치 300G",
+        "unified_category_id": "food.preserved.kimchi.white"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "211",
+        "historical_proposal_file": "../2026-09-11/proposals/homeplus-small-211-217.json",
+        "historical_proposal_path": "/decisions/0",
+        "historical_proposal_revalidated": true,
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:14:50",
+          "ingestion:63:87"
+        ],
+        "reason": "The title explicitly says white kimchi, so the current white-kimchi leaf overrides the broader cabbage-kimchi shelf. This revalidates the linked historical proposal rather than creating an independent conflicting decision.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "143580391",
+        "source_title": "씨제이 비비고 우리아이 한입 백김치 270G",
+        "unified_category_id": "food.preserved.kimchi.white"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "150",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:14:5",
+          "ingestion:63:17"
+        ],
+        "reason": "The title explicitly identifies pickled wrapping radish; sour flavor wording does not change the preserved-side product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "107028097",
+        "source_title": "씨제이 새콤한 쌈무 350G",
+        "unified_category_id": "food.preserved.sides.pickled"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "150",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:14:32",
+          "ingestion:63:19"
+        ],
+        "reason": "Explicit 쌈무 form fits the current pickled-side leaf; brand and wasabi flavor remain attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "120772435",
+        "source_title": "씨제이 하선정 쌈무 와사비맛 350G",
+        "unified_category_id": "food.preserved.sides.pickled"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "143",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:15",
+          "ingestion:51:13"
+        ],
+        "reason": "The title explicitly identifies Campbell grapes and the current taxonomy contains the exact general grape leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "113440571",
+        "source_title": "유명산지 캠벨포도 1.5KG(박스)",
+        "unified_category_id": "food.produce.fruit.grape"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "200",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:45",
+          "ingestion:51:50"
+        ],
+        "reason": "Black Sapphire is explicitly a grape; variety and origin do not change the product type.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "069343485",
+        "source_title": "프리미엄 블랙사파이어 포도(미국) 600G(팩)",
+        "unified_category_id": "food.produce.fruit.grape"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "142",
+        "issues_preserved": [
+          "count_range_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:2:22",
+          "ingestion:51:20"
+        ],
+        "reason": "Title and source path explicitly identify SunGold kiwi; the count range is a separate quantity issue and does not change classification.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069753944",
+        "source_title": "제스프리 썬골드키위 7-10입(팩)",
+        "unified_category_id": "food.produce.fruit.kiwi"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "142",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:9",
+          "ingestion:51:16"
+        ],
+        "reason": "Title and source path explicitly identify SunGold kiwi; the current taxonomy contains the exact kiwi leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "123567375",
+        "source_title": "14Brix 제스프리 썬골드키위(뉴질랜드) 1.1KG(박스)",
+        "unified_category_id": "food.produce.fruit.kiwi"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "199",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:13",
+          "ingestion:51:17"
+        ],
+        "reason": "Whole musk melon is an exact match for the current melon leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "147492051",
+        "source_title": "12Brix 점보 머스크멜론(통)",
+        "unified_category_id": "food.produce.fruit.melon"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "199",
+        "issues_preserved": [
+          "unit_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:2:28",
+          "ingestion:51:29"
+        ],
+        "reason": "Whole honeydew melon is an exact match for the current melon leaf; origin and sweetness are attributes.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "107993655",
+        "source_title": "고당도 허니듀 멜론(미국)통",
+        "unified_category_id": "food.produce.fruit.melon"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "197",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:17",
+          "ingestion:51:12"
+        ],
+        "reason": "The 400G packaged honeydew item is explicitly sold on the 간편과일 path and matches the current prepared/cut-fruit leaf rather than whole fresh melon.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "122939714",
+        "source_title": "델몬트 허니듀 멜론(미국) 400G(팩)",
+        "unified_category_id": "food.produce.processed_fruit.cut"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "197",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:16",
+          "ingestion:51:18"
+        ],
+        "reason": "The title explicitly identifies packaged cut pineapple and the retail path is 간편과일; the current cut-fruit leaf is the exact product-form match.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "129514774",
+        "source_title": "델몬트 컷파인애플 400G(팩)",
+        "unified_category_id": "food.produce.processed_fruit.cut"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "141",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:47",
+          "ingestion:51:44"
+        ],
+        "reason": "Raisin is explicitly dried fruit and fits the current dried-fruit leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "068777318",
+        "source_title": "점보 건포도 500G(봉)",
+        "unified_category_id": "food.produce.processed_fruit.dried"
+      },
+      "file": "2026-09-12-batch-137-141.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "141",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:2:53",
+          "ingestion:51:51"
+        ],
+        "reason": "Dried blueberry is explicitly dried fruit and fits the current dried-fruit leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "128464528",
+        "source_title": "동우 건 블루베리 400G(봉)",
+        "unified_category_id": "food.produce.processed_fruit.dried"
+      },
+      "file": "2026-09-12-batch-137-141.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "180",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:3:12",
+          "ingestion:52:39"
+        ],
+        "reason": "Peeled packaging does not change the onion product type, and the current taxonomy has the exact 양파 leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "125787825",
+        "source_title": "깐 양파(팩)",
+        "unified_category_id": "food.produce.vegetables.onion"
+      },
+      "file": "2026-09-12-batch-177-181.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "130",
+        "raw_record_ids": [
+          "ingestion:3:5",
+          "ingestion:52:30"
+        ],
+        "reason": "Fresh shishito-style pepper variety; variety and package size are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "106335221",
+        "source_title": "꽈리고추 150G(봉)",
+        "unified_category_id": "food.produce.vegetables.pepper"
+      },
+      "file": "2026-09-12-batch-127-131.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "130",
+        "raw_record_ids": [
+          "ingestion:2:92",
+          "ingestion:51:84"
+        ],
+        "reason": "Fresh Cheongyang pepper; cultivar/heat level and package size are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "106383978",
+        "source_title": "청양고추 150G(봉)",
+        "unified_category_id": "food.produce.vegetables.pepper"
+      },
+      "file": "2026-09-12-batch-127-131.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "180",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:3:38",
+          "ingestion:52:38"
+        ],
+        "reason": "Shredded green onion remains scallion/대파 product form; cutting and pack size are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "127987504",
+        "source_title": "파채 300G(팩)",
+        "unified_category_id": "food.produce.vegetables.scallion"
+      },
+      "file": "2026-09-12-batch-177-181.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "134",
+        "raw_record_ids": [
+          "ingestion:4:8",
+          "ingestion:53:77"
+        ],
+        "reason": "Silver hairtail remains hairtail; thawed/promotion/size descriptors do not change product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "107545959",
+        "source_title": "제주 은갈치 마리(대/행사/해동)",
+        "unified_category_id": "food.seafood.fish.hairtail"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "134",
+        "raw_record_ids": [
+          "ingestion:3:98"
+        ],
+        "reason": "Explicit fresh Jeju hairtail matches the existing hairtail leaf; size is an attribute.",
+        "review_lane": "clear_existing",
+        "source_record_key": "008591962",
+        "source_title": "제주 생물 갈치 마리(대)",
+        "unified_category_id": "food.seafood.fish.hairtail"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "162",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:53:74"
+        ],
+        "reason": "Cube cutting and pack size are presentation attributes; the title remains explicit fresh salmon.",
+        "review_lane": "clear_existing",
+        "source_record_key": "137231883",
+        "source_title": "휘라 노르웨이 큐브 생연어 150G(팩)",
+        "unified_category_id": "food.seafood.fish.salmon"
+      },
+      "file": "2026-09-12-batch-162-166.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "162",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:4:19",
+          "ingestion:53:18"
+        ],
+        "reason": "The title and authoritative shelf explicitly identify fresh salmon; sashimi use is preparation/use context and the current salmon leaf exists.",
+        "review_lane": "clear_existing",
+        "source_record_key": "124697247",
+        "source_title": "휘라 노르웨이 횟감용 생연어 100G",
+        "unified_category_id": "food.seafood.fish.salmon"
+      },
+      "file": "2026-09-12-batch-162-166.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "151",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:13:49",
+          "ingestion:62:99"
+        ],
+        "reason": "The title explicitly identifies 명란 젓갈, and current taxonomy has a dedicated 명란/pollock-roe processed-seafood leaf.",
+        "review_lane": "clear_existing",
+        "source_record_key": "126259216",
+        "source_title": "[반찬] 한성 명란 젓갈 180G",
+        "unified_category_id": "food.seafood.processed.pollock_roe"
+      },
+      "file": "2026-09-12-batch-147-151.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "203",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:12:36",
+          "ingestion:61:76"
+        ],
+        "reason": "The explicit seafood wan-ja form matches the current seafood-ball leaf; squid is an ingredient and does not make this raw squid.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "071345492",
+        "source_title": "simplus 오징어 해물완자 750G",
+        "unified_category_id": "food.seafood.processed.seafood_ball"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "203",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:49",
+          "ingestion:60:90"
+        ],
+        "reason": "The title explicitly identifies a processed seafood wan-ja/ball product, matching the current seafood-ball leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "129437364",
+        "source_title": "씨제이 비비고 도톰 해물완자 795G",
+        "unified_category_id": "food.seafood.processed.seafood_ball"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "208",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:54",
+          "ingestion:60:95"
+        ],
+        "reason": "The title explicitly identifies beef cooking broth; the broad soup/tang retail shelf does not override the broth product form.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "128852547",
+        "source_title": "홈플러스시그니처 소고기 양지 육수500G",
+        "unified_category_id": "food.seasonings.sauces.broth"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "208",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:11:53",
+          "ingestion:60:94"
+        ],
+        "reason": "The title explicitly identifies cooking broth rather than a ready soup/stew. The current cooking-broth leaf is the exact product-form match.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "128904268",
+        "source_title": "홈밀 한우 사골 육수 500G",
+        "unified_category_id": "food.seasonings.sauces.broth"
+      },
+      "file": "2026-09-12-batch-207-211.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "202",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:20:10",
+          "ingestion:67:61"
+        ],
+        "reason": "Kellogg almond flakes are explicitly a flake cereal; almond does not change the cereal product form.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "006174485",
+        "source_title": "농심 켈로그 아몬드 푸레이크 600G",
+        "unified_category_id": "food.snacks.cereal.flakes"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "202",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:17:31",
+          "ingestion:66:54"
+        ],
+        "reason": "The title and source path explicitly identify almond flake cereal; almond is an ingredient/flavour and the current flake-cereal leaf is the exact product-form match.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "141783183",
+        "source_title": "동서 아몬드 후레이크 620G (스탠드업백)",
+        "unified_category_id": "food.snacks.cereal.flakes"
+      },
+      "file": "2026-09-12-batch-202-206.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "201",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:18:94",
+          "ingestion:67:88"
+        ],
+        "reason": "The explicit popcorn product form overrides the broader corn-snack shelf; butter is a flavour attribute.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "070031162",
+        "source_title": "simplus 버터팝콘 80G",
+        "unified_category_id": "food.snacks.savory.popcorn"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "201",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:18:78",
+          "ingestion:67:83"
+        ],
+        "reason": "The explicit popcorn product form overrides the broader corn-snack shelf; caramel is a flavour/coating attribute.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "070031202",
+        "source_title": "simplus 카라멜팝콘 65G",
+        "unified_category_id": "food.snacks.savory.popcorn"
+      },
+      "file": "2026-09-12-batch-197-201.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "145",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:19:60",
+          "ingestion:69:9"
+        ],
+        "reason": "The title explicitly identifies a ramen-style flour snack; current taxonomy contains the savory wheat-snack leaf, while the retail shelf is broader than the product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069487441",
+        "source_title": "검정고무신 왕라면스낵 160G",
+        "unified_category_id": "food.snacks.savory.wheat"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "145",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:19:39",
+          "ingestion:67:95"
+        ],
+        "reason": "The title explicitly identifies oranda, a traditional confection form, and the current taxonomy contains the hangwa/jeonbyeong leaf; the broad fried-snack shelf does not override product form.",
+        "review_lane": "clear_existing",
+        "source_record_key": "069487429",
+        "source_title": "검정고무신 오란다 160G",
+        "unified_category_id": "food.snacks.traditional.hangwa"
+      },
+      "file": "2026-09-12-batch-142-146.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "186",
+        "issues_preserved": [
+          "mixed_package_unresolved",
+          "multiple_package_quantities"
+        ],
+        "raw_record_ids": [
+          "ingestion:26:8",
+          "ingestion:75:28"
+        ],
+        "reason": "The title explicitly identifies a drain-pipe cleaner, matching the current 배수관세정제 leaf despite the broad kitchen-detergent retail shelf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "125624189",
+        "source_title": "LG생활건강 홈스타 싱크대 배수관 클리너 450ML+230ML",
+        "unified_category_id": "household.cleaning.bath.drain"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "evidence_urls": [
+          "https://mfront.homeplus.co.kr/item?itemNo=068840497&storeType=HYPER"
+        ],
+        "identity_merge": "not_requested",
+        "quantity_review": "unchanged",
+        "raw_record_ids": [
+          "ingestion:76:12"
+        ],
+        "reason": "제목이 편백탈취제를 직접 명시하므로 기존 general.deodorizer 리프가 정확하다. 피톤치드와 상쾌한향은 제품형태를 바꾸지 않는다.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "068840497",
+        "source_title": "LG 아우라 편백탈취제 피톤치드 상쾌한향 500ML",
+        "unified_category_id": "household.cleaning.general.deodorizer"
+      },
+      "file": "2026-09-12-softener-deodorizer-109.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "158",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:26:36",
+          "ingestion:75:62"
+        ],
+        "reason": "The retail path states fabric deodorizer and the spray title is consistent with that form; scent is not a category distinction.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071289684",
+        "source_title": "피죤 스프레이 옐로 미모사 430ML",
+        "unified_category_id": "household.cleaning.general.deodorizer"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "186",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:25:79",
+          "ingestion:75:8"
+        ],
+        "reason": "The explicit kitchen-cleaning spray product form matches the current kitchen grease-cleaner leaf; the broad high-concentration dish-detergent shelf is not controlling.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "126261973",
+        "source_title": "유한양행 유한락스 주방청소용 스프레이 715ML*2입",
+        "unified_category_id": "household.cleaning.kitchen.degreaser"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "186",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:75:81"
+        ],
+        "reason": "A range-hood cleaner is a kitchen grease cleaner and matches the current kitchen-degreaser leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "homeplus",
+        "source_record_key": "128827584",
+        "source_title": "LG생활건강 홈스타 렌지후드 클리너 500ML",
+        "unified_category_id": "household.cleaning.kitchen.degreaser"
+      },
+      "file": "2026-09-12-batch-182-186.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "159",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:26:41",
+          "ingestion:75:4"
+        ],
+        "reason": "The title explicitly identifies concentrated capsule laundry detergent; the unresolved promotion is independent from product classification.",
+        "review_lane": "clear_existing",
+        "source_record_key": "071367892",
+        "source_title": "허글리 딥클린 초고농축 캡슐세제 미스틱퍼퓸향 40입",
+        "unified_category_id": "household.cleaning.laundry.capsule"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "159",
+        "issues_preserved": [],
+        "raw_record_ids": [
+          "ingestion:26:15",
+          "ingestion:75:50"
+        ],
+        "reason": "The title explicitly says 캡슐세제 and matches the current capsule-laundry-detergent leaf; scent and count are attributes.",
+        "review_lane": "clear_existing",
+        "source_record_key": "070356365",
+        "source_title": "LG생활건강 피지 디나자임 딥클린 캡슐세제 라벤더 26개입",
+        "unified_category_id": "household.cleaning.laundry.capsule"
+      },
+      "file": "2026-09-12-batch-157-161.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "193",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:29:37"
+        ],
+        "reason": "Explicit Chilsung Cider Zero identity fits the current cider leaf; zero-sugar is an attribute.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801056235987",
+        "source_title": "칠성 사이다제로 (1.25L)",
+        "unified_category_id": "food.drinks.water_soda.cider"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "193",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:28:91"
+        ],
+        "reason": "Explicit Coca-Cola Zero product identity fits the current cola leaf; zero-sugar is an attribute.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801094082321",
+        "source_title": "코카콜라 제로 (1.2L)",
+        "unified_category_id": "food.drinks.water_soda.cola"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "193",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:35:9"
+        ],
+        "reason": "Welch's grape zero carbonated drink fits the current generic soda leaf; flavour and zero-sugar are attributes.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801043064101",
+        "source_title": "웰치포도 제로 (355ML * 6)",
+        "unified_category_id": "food.drinks.water_soda.soda"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "193",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:29:17"
+        ],
+        "reason": "McCol is a carbonated soft drink and fits the current generic soda leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801223007935",
+        "source_title": "맥콜 (1.25L)",
+        "unified_category_id": "food.drinks.water_soda.soda"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "132",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:34:30"
+        ],
+        "reason": "Explicit mapo-tofu cooking sauce matches the existing mapo-tofu sauce leaf rather than a prepared tofu meal.",
+        "review_lane": "clear_existing",
+        "source_record_key": "8801007617107",
+        "source_title": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+        "unified_category_id": "food.seasonings.sauces.mapo_tofu"
+      },
+      "file": "2026-09-12-batch-132-136.json",
+      "flags": [
+        "missing_mart"
+      ]
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "194",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:30:58"
+        ],
+        "reason": "The title explicitly identifies sundubu-jjigae seasoning, matching the current stew-seasoning leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801114173060",
+        "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+        "unified_category_id": "food.seasonings.sauces.stew"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "194",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:34:14"
+        ],
+        "reason": "The explicit sundubu-jjigae seasoning form matches the current stew-seasoning leaf.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8809605520225",
+        "source_title": "오늘좋은 순두부찌개양념 (130G)",
+        "unified_category_id": "food.seasonings.sauces.stew"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    },
+    {
+      "decision": {
+        "decision": "existing_leaf",
+        "group": "194",
+        "issues_preserved": [
+          "promotion_unresolved"
+        ],
+        "raw_record_ids": [
+          "ingestion:34:89"
+        ],
+        "reason": "The title explicitly identifies tteokbokki seasoning, and the current taxonomy contains the exact 떡볶이양념 leaf; this corrects the historical bulk note that did not separately spell out this product.",
+        "review_lane": "clear_existing",
+        "source_name": "lottemart",
+        "source_record_key": "8801114173381",
+        "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+        "unified_category_id": "food.seasonings.sauces.tteokbokki"
+      },
+      "file": "2026-09-12-batch-192-196.json",
+      "flags": []
+    }
+  ],
+  "summary": {
+    "claimed_scope_groups": 100,
+    "decision_observations": {
+      "already_classified": 39,
+      "existing_leaf": 380,
+      "hold": 130,
+      "new_leaf_needed": 85
+    },
+    "decisions": 356,
+    "duplicate_ids": 0,
+    "files": 28,
+    "flags": {
+      "missing_mart": 229,
+      "source_record_key_mismatch": 6,
+      "source_title_mismatch": 6
+    },
+    "nested_layouts": [
+      "2026-09-12-batch-112-116.json",
+      "2026-09-12-batch-117-121.json"
+    ],
+    "pending_observations": 3746,
+    "unique_observations": 634
+  }
+}

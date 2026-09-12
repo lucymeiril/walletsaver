@@ -1,0 +1,1160 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:98",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 순두부찌개 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007013466/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:46:57.091888Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4ef0f9c2-0563-4ed2-b42e-1b3a019e99d2/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 98,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "83ed7067e47d060883e4add2f04cd58288cebf50",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007013466/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4ef0f9c2-0563-4ed2-b42e-1b3a019e99d2/300x300.jpg",
+          "mart_native_code": "8801007013466",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007013466",
+          "source_url": "https://lottemartzetta.com/products/OS8801007013466/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.091888",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007013466/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4ef0f9c2-0563-4ed2-b42e-1b3a019e99d2/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 순두부찌개 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 순두부찌개 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1857.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c7efba99317d846fdc746d6e01478316024406563052dddbedbcefb10607be58",
+      "raw_record_id": "ingestion:28:98",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007013466",
+      "source_title": "(냉장) CJ 백설 다담 순두부찌개 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007013466/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:98",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007013466",
+    "source_title": "(냉장) CJ 백설 다담 순두부찌개 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:35",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007059624/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "씨제이제일제당",
+      "crawled_at": "2026-08-31T01:47:02.650194Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 35,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이제일제당",
+          "canon_hash": "b6261e12ef9a843416352599f3281561673b7594",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+          "mart_native_code": "8801007059624",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007059624",
+          "source_url": "https://lottemartzetta.com/products/OS8801007059624/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.650194",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+        "match_key": "__no_brand__|cj 백설 다담 우렁강된장 비빔양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1857.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fd4063fc83cef97bb133d588d0301c9cb7e1118906a3570c9d490b79daa0fcd6",
+      "raw_record_id": "ingestion:31:35",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007059624",
+      "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:31:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007059624",
+    "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:37",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 정통된장찌개 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007250397/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:02.650430Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37647fb6-504c-467d-9b64-94cda4f252db/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 37,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "91ef0b4c5d4393179a1ce0f9b955294f9a4f132d",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007250397/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37647fb6-504c-467d-9b64-94cda4f252db/300x300.jpg",
+          "mart_native_code": "8801007250397",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007250397",
+          "source_url": "https://lottemartzetta.com/products/OS8801007250397/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.650430",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007250397/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37647fb6-504c-467d-9b64-94cda4f252db/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 정통된장찌개 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 정통된장찌개 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1857.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "13b65bc6ccdf6f77adab1ab2751b869c03950eeba7d7bd8283c52150816fa1c1",
+      "raw_record_id": "ingestion:31:37",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007250397",
+      "source_title": "(냉장) CJ 백설 다담 정통된장찌개 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007250397/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:31:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007250397",
+    "source_title": "(냉장) CJ 백설 다담 정통된장찌개 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:89",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 부대찌개 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007023373/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:02.655409Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/385f2610-0135-4669-ac81-b5bec209f430/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 89,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "27cdbc27947bf6c9f7bcb4031892406dfbbf8b29",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007023373/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/385f2610-0135-4669-ac81-b5bec209f430/300x300.jpg",
+          "mart_native_code": "8801007023373",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007023373",
+          "source_url": "https://lottemartzetta.com/products/OS8801007023373/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.655409",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007023373/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/385f2610-0135-4669-ac81-b5bec209f430/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 부대찌개 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 부대찌개 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1857.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4ba376d5d101bee524bb42d2c91bade23dae09188c3633a4b5dfc4803ad6141a",
+      "raw_record_id": "ingestion:31:89",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007023373",
+      "source_title": "(냉장) CJ 백설 다담 부대찌개 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007023373/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:31:89",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007023373",
+    "source_title": "(냉장) CJ 백설 다담 부대찌개 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:22",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 차돌순두부찌개 양념 (130G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007924717/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:02.659934Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b0a4c013-e884-40f5-a888-e6fa44ed9d3d/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 22,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "130g",
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "0957923aa277c4016af469b3c87d737d18f13ab7",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007924717/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b0a4c013-e884-40f5-a888-e6fa44ed9d3d/300x300.jpg",
+          "mart_native_code": "8801007924717",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007924717",
+          "source_url": "https://lottemartzetta.com/products/OS8801007924717/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.659934",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007924717/details",
+        "discount_percent": null,
+        "display_unit": "130g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b0a4c013-e884-40f5-a888-e6fa44ed9d3d/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 차돌순두부찌개 양념 130g||130g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 차돌순두부찌개 양념 (130G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "price_per_100g": 2000.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "130g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c817e6f757a70a13acb26731392a26b357592bd75f9c3a91efe2a6507d30c7d7",
+      "raw_record_id": "ingestion:32:22",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007924717",
+      "source_title": "(냉장) CJ 백설 다담 차돌순두부찌개 양념 (130G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007924717/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:32:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007924717",
+    "source_title": "(냉장) CJ 백설 다담 차돌순두부찌개 양념 (130G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:43",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 냉이된장찌개 양념 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007013473/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:02.661848Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f488c6be-88d9-46cd-bb16-c95df7585968/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 43,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "17c75dd6daf9335c0b32c237f816aa2cc0329295",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007013473/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f488c6be-88d9-46cd-bb16-c95df7585968/300x300.jpg",
+          "mart_native_code": "8801007013473",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007013473",
+          "source_url": "https://lottemartzetta.com/products/OS8801007013473/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.661848",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007013473/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f488c6be-88d9-46cd-bb16-c95df7585968/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 냉이된장찌개 양념 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 냉이된장찌개 양념 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 1857.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "bc077294162b414ffec18452a0e183ada1a90dd397940363d66d0f3f0e628429",
+      "raw_record_id": "ingestion:32:43",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007013473",
+      "source_title": "(냉장) CJ 백설 다담 냉이된장찌개 양념 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007013473/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:32:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007013473",
+    "source_title": "(냉장) CJ 백설 다담 냉이된장찌개 양념 (140G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:44",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 차돌된장찌개 양념 (145G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007924427/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:08.142412Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e2c61f06-beb3-4ffe-ae2e-b29e41e88ac6/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "145g",
+        "package_quantity": 145.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "b3179eb9098fe3dd94e8a13361c95f07706cd883",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007924427/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e2c61f06-beb3-4ffe-ae2e-b29e41e88ac6/300x300.jpg",
+          "mart_native_code": "8801007924427",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007924427",
+          "source_url": "https://lottemartzetta.com/products/OS8801007924427/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:08.142412",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007924427/details",
+        "discount_percent": null,
+        "display_unit": "145g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e2c61f06-beb3-4ffe-ae2e-b29e41e88ac6/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 차돌된장찌개 양념 145g||145g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 차돌된장찌개 양념 (145G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 145.0,
+        "package_unit": "g",
+        "price_per_100g": 1793.1,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "145g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9b302375cd57f25356bda2e79d2f0e6ec9a2de40108c8f1252c02a39aff90ebe",
+      "raw_record_id": "ingestion:33:44",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007924427",
+      "source_title": "(냉장) CJ 백설 다담 차돌된장찌개 양념 (145G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007924427/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.stew",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:33:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007924427",
+    "source_title": "(냉장) CJ 백설 다담 차돌된장찌개 양념 (145G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:cf97850b2f5f38b397e31be4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:30",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 카레ㆍ짜장ㆍ즉석요리 > 기타즉석요리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "카레ㆍ짜장ㆍ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_title": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007617107/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "다담",
+      "crawled_at": "2026-08-31T01:47:08.152690Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8b27bdb3-f8ca-4c8e-bbeb-658ae0cff2cb/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 30,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "다담",
+          "canon_hash": "772bdc8f079263728781c33fc0ed03eb87a30470",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007617107/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "카레ㆍ짜장ㆍ즉석요리",
+            "기타즉석요리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8b27bdb3-f8ca-4c8e-bbeb-658ae0cff2cb/300x300.jpg",
+          "mart_native_code": "8801007617107",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007617107",
+          "source_url": "https://lottemartzetta.com/products/OS8801007617107/details",
+          "storage_label": "냉장",
+          "storage_type": "chilled"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:08.152690",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007617107/details",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8b27bdb3-f8ca-4c8e-bbeb-658ae0cff2cb/300x300.jpg",
+        "match_key": "__no_brand__|냉장 cj 백설 다담 마파두부 양념 150g||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 1733.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "52ee6dfbb7ca0da23789da5a9f2bbb790a9374a2e68c14b1a4ed08738b971d53",
+      "raw_record_id": "ingestion:34:30",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "카레ᆞ짜장ᆞ즉석요리",
+        "기타즉석요리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007617107",
+      "source_title": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007617107/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "existing_leaf",
+        "file": "2026-09-12-batch-132-136.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": "food.seasonings.sauces.mapo_tofu",
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:34:30",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007617107",
+    "source_title": "(냉장) CJ 백설 다담 마파두부 양념 (150G)"
+  }
+]

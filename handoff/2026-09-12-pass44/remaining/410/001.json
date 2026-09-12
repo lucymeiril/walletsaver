@@ -1,0 +1,147 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:566b7c02625c6179c823aeb0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "스팸/햄/닭가슴살캔",
+        "닭가슴살캔"
+      ],
+      "raw_native_category_id": "16",
+      "raw_record_id": "ingestion:22:46",
+      "review_status": "pending",
+      "source_path": "라면/즉석식품/통조림 > 참치/스팸/축수산통조림 > 스팸/햄/닭가슴살캔 > 닭가슴살캔",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "스팸/햄/닭가슴살캔",
+        "닭가슴살캔"
+      ],
+      "source_title": "CJ 스팸닭가슴살 200G*3",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "CJ",
+      "crawled_at": "2026-08-31T01:46:37.200809Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 22,
+      "ingestion_received_at": "2026-08-31T01:48:00.777171Z",
+      "issues": [],
+      "item_index": 46,
+      "mart_native_category_id": "16",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "200g×3",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "CJ",
+          "canon_hash": "ce45b6d10fb9a6cc20e2bc8e53e42201abccbb8c",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER",
+          "category_hint": "닭가슴살캔",
+          "docId": "H070254404N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/CJ-%EC%8A%A4%ED%8C%B8%EB%8B%AD%EA%B0%80%EC%8A%B4%EC%82%B4-200G-3/070254404",
+          "mart_native_category_id": "16",
+          "mart_native_category_path": "라면/즉석식품/통조림 > 참치/스팸/축수산통조림 > 스팸/햄/닭가슴살캔 > 닭가슴살캔",
+          "mart_native_code": "070254404",
+          "normalized_name": "CJ 스팸닭가슴살 200G*3",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER",
+          "raw_name": "CJ 스팸닭가슴살 200G*3",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070254404",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "10G",
+          "unit_price_displayed": 183.0
+        },
+        "brand": "__no_brand__",
+        "category": "닭가슴살캔",
+        "crawled_at": "2026-08-31T10:46:37.200809",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "200g×3",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|cj 스팸닭가슴살 200g 3||200g×3",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 스팸닭가슴살 200G*3",
+        "normalized_name": "CJ 스팸닭가슴살 200G*3",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "price_per_100g": 1831.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "200g×3",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "fde2a76c9b7029cc70f40aaec51bed0be4c3c17814231645c124f43ec621fa1f",
+      "raw_record_id": "ingestion:22:46",
+      "source_category_path": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "스팸/햄/닭가슴살캔",
+        "닭가슴살캔"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070254404",
+      "source_title": "CJ 스팸닭가슴살 200G*3",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070254404&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-406-412.json",
+        "flags": [],
+        "leaf": "food.preserved.canned.ham",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:22:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "070254404",
+    "source_title": "CJ 스팸닭가슴살 200G*3"
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2914dbc2cd07bd9f3ca7f1ec",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:46",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 간편ㆍ모듬수산물 > 간편수산물",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8859205302592/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데마트",
+      "crawled_at": "2026-08-31T01:47:02.662327Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9a24471c-f471-4473-bd25-861d552a7317/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 46,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "600g",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데마트",
+          "canon_hash": "d1ce3cde1e5f8317e8843a6cbfa1831d1e8c18c9",
+          "canonical_url": "https://lottemartzetta.com/products/OS8859205302592/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "간편ㆍ모듬수산물",
+            "간편수산물"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9a24471c-f471-4473-bd25-861d552a7317/300x300.jpg",
+          "mart_native_code": "8859205302592",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8859205302592",
+          "source_url": "https://lottemartzetta.com/products/OS8859205302592/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:02.662327",
+        "detail_url": "https://lottemartzetta.com/products/OS8859205302592/details",
+        "discount_percent": null,
+        "display_unit": "600g",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9a24471c-f471-4473-bd25-861d552a7317/300x300.jpg",
+        "match_key": "__no_brand__|가시없는 노르웨이 순살 고등어 필렛 600g||600g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "price_per_100g": 3316.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 19900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "600g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a259eaf7d1887fec9ca34e8dbb4602b73a25e2b098265ca6809100103479dab3",
+      "raw_record_id": "ingestion:32:46",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "간편ᆞ모듬수산물",
+        "간편수산물"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8859205302592",
+      "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
+      "source_url": "https://lottemartzetta.com/products/OS8859205302592/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-397-403.json",
+        "flags": [],
+        "leaf": "food.seafood.fish.mackerel",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:32:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8859205302592",
+    "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:2914dbc2cd07bd9f3ca7f1ec",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:8",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 간편ㆍ모듬수산물 > 간편수산물",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "source_title": "노르웨이 고등어 필렛 (700G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8859205302585/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데마트",
+      "crawled_at": "2026-08-31T01:47:08.150664Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/366fbe1e-7a96-4b47-a849-9d2b8251d943/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 8,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "700g",
+        "package_quantity": 700.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데마트",
+          "canon_hash": "a6eb075420efdc867c967b2dee17e9126cb59318",
+          "canonical_url": "https://lottemartzetta.com/products/OS8859205302585/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "간편ㆍ모듬수산물",
+            "간편수산물"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/366fbe1e-7a96-4b47-a849-9d2b8251d943/300x300.jpg",
+          "mart_native_code": "8859205302585",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8859205302585",
+          "source_url": "https://lottemartzetta.com/products/OS8859205302585/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:08.150664",
+        "detail_url": "https://lottemartzetta.com/products/OS8859205302585/details",
+        "discount_percent": null,
+        "display_unit": "700g",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/366fbe1e-7a96-4b47-a849-9d2b8251d943/300x300.jpg",
+        "match_key": "__no_brand__|노르웨이 고등어 필렛 700g||700g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "노르웨이 고등어 필렛 (700G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 700.0,
+        "package_unit": "g",
+        "price_per_100g": 2842.86,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 19900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "700g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ca9847476494bdb9e070aa1bde7479de38471792725ddc27be8098b47d8ca18a",
+      "raw_record_id": "ingestion:34:8",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "간편ᆞ모듬수산물",
+        "간편수산물"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8859205302585",
+      "source_title": "노르웨이 고등어 필렛 (700G)",
+      "source_url": "https://lottemartzetta.com/products/OS8859205302585/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-397-403.json",
+        "flags": [],
+        "leaf": "food.seafood.fish.mackerel",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:34:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8859205302585",
+    "source_title": "노르웨이 고등어 필렛 (700G)"
+  }
+]

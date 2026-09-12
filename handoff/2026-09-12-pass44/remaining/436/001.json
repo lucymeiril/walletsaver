@@ -1,0 +1,148 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.preserved.kimchi.radish"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:a9f3f943e144f8ef747e8834",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "반찬·저장식품",
+        "김치",
+        "총각김치"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:31",
+      "review_status": "pending",
+      "source_path": "김치ㆍ반찬ㆍ젓갈 > 김치 > 총각김치ㆍ파김치ㆍ갓김치 > 총각김치",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "김치ㆍ반찬ㆍ젓갈",
+        "김치",
+        "총각김치ㆍ파김치ㆍ갓김치",
+        "총각김치"
+      ],
+      "source_title": "대상 종가 시원하고 아삭한 석박지 (900G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801052101071/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "종가",
+      "crawled_at": "2026-08-31T01:47:02.649516Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4229b449-bb3c-459a-bd0c-c987f617ed4a/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "900g",
+        "package_quantity": 900.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "종가",
+          "canon_hash": "b7780422d6d631f12195c97e6602e6719b90b909",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801052101071/details",
+          "category_hint": "김치ㆍ반찬ㆍ젓갈",
+          "category_path": [
+            "김치ㆍ반찬ㆍ젓갈",
+            "김치",
+            "총각김치ㆍ파김치ㆍ갓김치",
+            "총각김치"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4229b449-bb3c-459a-bd0c-c987f617ed4a/300x300.jpg",
+          "mart_native_code": "8801052101071",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801052101071",
+          "source_url": "https://lottemartzetta.com/products/OS8801052101071/details"
+        },
+        "brand": "__no_brand__",
+        "category": "김치ㆍ반찬ㆍ젓갈",
+        "crawled_at": "2026-08-31T10:47:02.649516",
+        "detail_url": "https://lottemartzetta.com/products/OS8801052101071/details",
+        "discount_percent": null,
+        "display_unit": "900g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4229b449-bb3c-459a-bd0c-c987f617ed4a/300x300.jpg",
+        "match_key": "__no_brand__|대상 종가 시원하고 아삭한 석박지 900g||900g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "대상 종가 시원하고 아삭한 석박지 (900G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 900.0,
+        "package_unit": "g",
+        "price_per_100g": 1766.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 15900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "900g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "08f999d5b0d3c6bb2a565c31ffaafc3dca92eb4dc7a98fdbe780e0447fb79437",
+      "raw_record_id": "ingestion:31:31",
+      "source_category_path": [
+        "김치ᆞ반찬ᆞ젓갈",
+        "김치",
+        "총각김치ᆞ파김치ᆞ갓김치",
+        "총각김치"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801052101071",
+      "source_title": "대상 종가 시원하고 아삭한 석박지 (900G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801052101071/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-429-436.json",
+        "flags": [],
+        "leaf": "food.preserved.kimchi.seokbakji",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:31:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801052101071",
+    "source_title": "대상 종가 시원하고 아삭한 석박지 (900G)"
+  }
+]

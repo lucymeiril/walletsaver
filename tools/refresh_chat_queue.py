@@ -37,6 +37,14 @@ if __name__ == '__main__':
     for r in report['records']:
         for rid in r['ids']:
             references[rid].append({'file':r['file'],'path':r['path'],'leaf':r['leaf'],'flags':r['flags']})
+    # New-format decisions (including holds) must remain discoverable after rebuild.
+    from audit_pass43_proposals import audit
+    _, newer, _ = audit()
+    for r in newer:
+        d=r['decision']
+        for rid in d['raw_record_ids']:
+            references[rid].append({'file':r['file'],'proposal_base':'handoff/2026-09-12-pass43/proposals',
+                                    'leaf':d.get('unified_category_id'),'decision':d['decision'],'flags':r['flags']})
     old_rows = {r['raw_record_id']:r for p in (BASE/'pending').glob('*/*.json') for r in load(p)}
     current = {r['raw_record_id']:r for r in bundle['unresolved']}
     assert set(current)<=set(old_rows)

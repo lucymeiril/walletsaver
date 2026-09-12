@@ -1,0 +1,3003 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:1",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "산야초 먹인 동물복지 유정란 15개입 (대란, 780g내외)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000015049547&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.175163Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.1152,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/47/95/04/item/1000015049547_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 1,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 8680,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "780g",
+        "package_quantity": 780.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7680,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "자연주의",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/47/95/04/item/1000015049547_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000015049547",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000015049547",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015049547&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 985원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.175163",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015049547&siteNo=7009&salestrNo=2551",
+        "discount_percent": 11.5,
+        "display_unit": "780g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/47/95/04/item/1000015049547_i1_290.jpg",
+        "match_key": "__no_brand__|산야초 먹인 동물복지 유정란 15개입 대란 780g내외||780g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "산야초 먹인 동물복지 유정란 15개입 (대란, 780g내외)",
+        "normalized_name": "",
+        "original_price": 8680,
+        "package_quantity": 780.0,
+        "package_unit": "g",
+        "price_per_100g": 984.62,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "780g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ae403039b5fea1ab92f300a133411a86d4191c6dccd78585b84dcae08002f080",
+      "raw_record_id": "ingestion:95:1",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000015049547",
+      "source_title": "산야초 먹인 동물복지 유정란 15개입 (대란, 780g내외)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000015049547&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.meat.eggs.chicken",
+        "path": "/proposed_decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:95:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000015049547",
+    "source_title": "산야초 먹인 동물복지 유정란 15개입 (대란, 780g내외)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:4",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]친환경 추부깻잎 20장/봉 (25g)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306407&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.198695Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.25,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/07/64/30/item/1000631306407_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 3280,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "25g",
+        "package_quantity": 25.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2460,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/07/64/30/item/1000631306407_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631306407",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631306407",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306407&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 98원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.198695",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306407&siteNo=7009&salestrNo=2551",
+        "discount_percent": 25.0,
+        "display_unit": "25g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/07/64/30/item/1000631306407_i1_290.jpg",
+        "match_key": "__no_brand__|농할 20 할인쿠폰 다운로드 친환경 추부깻잎 20장 봉 25g||25g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[농할 20% 할인쿠폰 다운로드]친환경 추부깻잎 20장/봉 (25g)",
+        "normalized_name": "",
+        "original_price": 3280,
+        "package_quantity": 25.0,
+        "package_unit": "g",
+        "price_per_100g": 9840.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2460,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "25g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ea20e7fb75a6d4dc40faa48155a12340e35064793c515a1f9997391e01b4d049",
+      "raw_record_id": "ingestion:95:4",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631306407",
+      "source_title": "[농할 20% 할인쿠폰 다운로드]친환경 추부깻잎 20장/봉 (25g)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306407&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.leaf",
+        "path": "/proposed_decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:95:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631306407",
+    "source_title": "[농할 20% 할인쿠폰 다운로드]친환경 추부깻잎 20장/봉 (25g)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:5",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 베이비 요구르트 플레인 340g (85g*4)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626449&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.202588Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/49/64/62/item/1000011626449_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 5,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "85g×4",
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4080,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/49/64/62/item/1000011626449_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000011626449",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000011626449",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626449&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 480원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.202588",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626449&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "85g×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/49/64/62/item/1000011626449_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 베이비 요구르트 플레인 340g 85g 4||85g×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 베이비 요구르트 플레인 340g (85g*4)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "price_per_100g": 1200.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4080,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "85g×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5dab9341c077d8189b859e97be21e85cd8ae9450396a0a2f276fcd729f3822b6",
+      "raw_record_id": "ingestion:95:5",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000011626449",
+      "source_title": "유기농 베이비 요구르트 플레인 340g (85g*4)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626449&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.spoon",
+        "path": "/proposed_decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:95:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000011626449",
+    "source_title": "유기농 베이비 요구르트 플레인 340g (85g*4)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.seasonings.oils.olive"
+      ],
+      "category_path": [
+        "식품",
+        "양념·소스",
+        "식용유",
+        "올리브유"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_reviewed_emart_fresh_and_deli",
+      "evidence_type": "reviewed_emart_fresh_and_deli",
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:7",
+      "review_status": "classified",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "델파파 유기농 엑스트라 버진 올리브 오일 250ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000547040107&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.seasonings.oils.olive",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.207070Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.3,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/07/01/04/item/1000547040107_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 12600,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250ml",
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 8820,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/07/01/04/item/1000547040107_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000547040107",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000547040107",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000547040107&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 3,528원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.207070",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000547040107&siteNo=6001&salestrNo=2037",
+        "discount_percent": 30.0,
+        "display_unit": "250ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/07/01/04/item/1000547040107_i1_290.jpg",
+        "match_key": "__no_brand__|델파파 유기농 엑스트라 버진 올리브 오일 250ml||250ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "델파파 유기농 엑스트라 버진 올리브 오일 250ml",
+        "normalized_name": "",
+        "original_price": 12600,
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8820,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "811bbc14e7db01712d5258f11c304fa2703926105692340222fabbeee08bcfc2",
+      "raw_record_id": "ingestion:95:7",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000547040107",
+      "source_title": "델파파 유기농 엑스트라 버진 올리브 오일 250ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000547040107&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:95:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000547040107",
+    "source_title": "델파파 유기농 엑스트라 버진 올리브 오일 250ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:8",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 우유 750ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343896&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.211348Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/96/38/34/item/0000007343896_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 8,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "750ml",
+        "package_quantity": 750.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5380,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/96/38/34/item/0000007343896_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "0000007343896",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000007343896",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343896&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 717원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.211348",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343896&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "750ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/96/38/34/item/0000007343896_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 우유 750ml||750ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 우유 750ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 750.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5380,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "750ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "574045079b9d980baa18a58539c77bbaa5b5ef708a122c92e3d033a7a2373b93",
+      "raw_record_id": "ingestion:95:8",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000007343896",
+      "source_title": "유기농 우유 750ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343896&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/proposed_decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:95:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000007343896",
+    "source_title": "유기농 우유 750ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:10",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "[펠리체티] 유기농 통밀 푸질리 500g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.219344Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 10,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631342420",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000631342420",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 800원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.219344",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+        "match_key": "__no_brand__|펠리체티 유기농 통밀 푸질리 500g||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[펠리체티] 유기농 통밀 푸질리 500g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 800.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4000,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2d723e57a93a0e37996d045b8e8a6c109fa632a0eb1e414e8f41c001a1259434",
+      "raw_record_id": "ingestion:95:10",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631342420",
+      "source_title": "[펠리체티] 유기농 통밀 푸질리 500g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.pasta",
+        "path": "/proposed_decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:95:10",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631342420",
+    "source_title": "[펠리체티] 유기농 통밀 푸질리 500g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:13",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "우리 아이가 좋아하는 깐메추리알 270g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000008646274&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.229958Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2232,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/74/62/64/item/1000008646274_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 13,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 4480,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "270g",
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3480,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/74/62/64/item/1000008646274_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000008646274",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000008646274",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000008646274&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,289원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.229958",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000008646274&siteNo=7009&salestrNo=2551",
+        "discount_percent": 22.3,
+        "display_unit": "270g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/74/62/64/item/1000008646274_i1_290.jpg",
+        "match_key": "__no_brand__|우리 아이가 좋아하는 깐메추리알 270g||270g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "우리 아이가 좋아하는 깐메추리알 270g",
+        "normalized_name": "",
+        "original_price": 4480,
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "price_per_100g": 1288.89,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "270g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9dff32cdf05b09ea4328c9f4503076355d1687ac551546834557de2685892625",
+      "raw_record_id": "ingestion:95:13",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000008646274",
+      "source_title": "우리 아이가 좋아하는 깐메추리알 270g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000008646274&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.meat.eggs.quail",
+        "path": "/proposed_decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:95:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000008646274",
+    "source_title": "우리 아이가 좋아하는 깐메추리알 270g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:17",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "[1번사육] 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 (520g)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938345&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.244588Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/45/83/93/item/1000632938345_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "520g",
+        "package_quantity": 520.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/45/83/93/item/1000632938345_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000632938345",
+          "promo_label": "",
+          "quality_grade": "1",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000632938345",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938345&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,919원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.244588",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938345&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "520g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/45/83/93/item/1000632938345_i1_290.jpg",
+        "match_key": "__no_brand__|1번사육 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 520g||520g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[1번사육] 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 (520g)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 520.0,
+        "package_unit": "g",
+        "price_per_100g": 1919.23,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "520g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6798fa2845cc8d132dfdf2861ec698b810e00d09b2a7b51a03cd8fa0431e78e2",
+      "raw_record_id": "ingestion:95:17",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000632938345",
+      "source_title": "[1번사육] 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 (520g)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938345&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.meat.eggs.chicken",
+        "path": "/proposed_decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:95:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000632938345",
+    "source_title": "[1번사육] 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 (520g)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:18",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 베이비 요구르트 사과&당근 340g (85g*4)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626451&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.248965Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/51/64/62/item/1000011626451_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 18,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "85g×4",
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/51/64/62/item/1000011626451_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000011626451",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000011626451",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626451&siteNo=6001&salestrNo=2037",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "unit_price_display": "10ml 당 527원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.248965",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626451&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "85g×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/51/64/62/item/1000011626451_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 베이비 요구르트 사과 당근 340g 85g 4||85g×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 베이비 요구르트 사과&당근 340g (85g*4)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "price_per_100g": 1317.65,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "85g×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6f1de3aed2a0109a9c281bfb94aca92fcd8f2917646d58b5b77b2d07724f982b",
+      "raw_record_id": "ingestion:95:18",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000011626451",
+      "source_title": "유기농 베이비 요구르트 사과&당근 340g (85g*4)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626451&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.spoon",
+        "path": "/proposed_decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:95:18",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000011626451",
+    "source_title": "유기농 베이비 요구르트 사과&당근 340g (85g*4)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:19",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 (760g)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938306&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.253534Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/06/83/93/item/1000632938306_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 19,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "760g",
+        "package_quantity": 760.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 8280,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/06/83/93/item/1000632938306_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000632938306",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000632938306",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938306&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,089원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.253534",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938306&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "760g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/06/83/93/item/1000632938306_i1_290.jpg",
+        "match_key": "__no_brand__|지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 760g||760g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 (760g)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 760.0,
+        "package_unit": "g",
+        "price_per_100g": 1089.47,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8280,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "760g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "002661435f7e10cb84a72b8793e6a05bad6d1e2f27fa44f3024b335a656d1df4",
+      "raw_record_id": "ingestion:95:19",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000632938306",
+      "source_title": "지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 (760g)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632938306&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.meat.eggs.chicken",
+        "path": "/proposed_decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:95:19",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000632938306",
+    "source_title": "지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 (760g)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:20",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "얼려먹는 아이스크림 밀크 510ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.256213Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/61/42/46/item/1000065464261_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 20,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 7980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "510ml",
+        "package_quantity": 510.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6384,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/61/42/46/item/1000065464261_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000065464261",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000065464261",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 125원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.256213",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037",
+        "discount_percent": 20.0,
+        "display_unit": "510ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/61/42/46/item/1000065464261_i1_290.jpg",
+        "match_key": "__no_brand__|얼려먹는 아이스크림 밀크 510ml||510ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "얼려먹는 아이스크림 밀크 510ml",
+        "normalized_name": "",
+        "original_price": 7980,
+        "package_quantity": 510.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6384,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "510ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8c73c899de3d9eb9ac2cf7bf673d58cfd0621a30dad79f997308c46f9cf021f9",
+      "raw_record_id": "ingestion:95:20",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000065464261",
+      "source_title": "얼려먹는 아이스크림 밀크 510ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:95:20",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000065464261",
+    "source_title": "얼려먹는 아이스크림 밀크 510ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:21",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "얼려먹는 아이스크림 초코 510ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.259695Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/79/86/92/item/1000314928679_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 21,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 7980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "510ml",
+        "package_quantity": 510.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6384,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/79/86/92/item/1000314928679_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000314928679",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000314928679",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 125원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.259695",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037",
+        "discount_percent": 20.0,
+        "display_unit": "510ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/79/86/92/item/1000314928679_i1_290.jpg",
+        "match_key": "__no_brand__|얼려먹는 아이스크림 초코 510ml||510ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "얼려먹는 아이스크림 초코 510ml",
+        "normalized_name": "",
+        "original_price": 7980,
+        "package_quantity": 510.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6384,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "510ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9f50b7d3189246bc717ea5e89ea38cdbca5487bc151b359f21ae3978ea0e522d",
+      "raw_record_id": "ingestion:95:21",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000314928679",
+      "source_title": "얼려먹는 아이스크림 초코 510ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:95:21",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000314928679",
+    "source_title": "얼려먹는 아이스크림 초코 510ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:22",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 요구르트 500ml (100mlx5)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000055206801&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.263675Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/01/68/20/item/1000055206801_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 22,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "500ml",
+        "package_quantity": 100.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2680,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/01/68/20/item/1000055206801_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000055206801",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000055206801",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000055206801&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 54원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.263675",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000055206801&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "500ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/01/68/20/item/1000055206801_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 요구르트 500ml 100mlx5||500ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 요구르트 500ml (100mlx5)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "500ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "66d0bfa4604c3fad6da275da9f5219f5e4bf9c72d70442dfbb2940c87768d00e",
+      "raw_record_id": "ingestion:95:22",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000055206801",
+      "source_title": "유기농 요구르트 500ml (100mlx5)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000055206801&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/proposed_decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:95:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000055206801",
+    "source_title": "유기농 요구르트 500ml (100mlx5)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:23",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "핑크퐁 유기농 아기요거트 딸기바나나 85gX4",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000043620749&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.267010Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.1,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/49/07/62/item/1000043620749_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 23,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 3980,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "10g",
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3582,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "피코크",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/49/07/62/item/1000043620749_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000043620749",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000043620749",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000043620749&siteNo=6001&salestrNo=2037",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "unit_price_display": "10g 당 105원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.267010",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000043620749&siteNo=6001&salestrNo=2037",
+        "discount_percent": 10.0,
+        "display_unit": "10g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/49/07/62/item/1000043620749_i1_290.jpg",
+        "match_key": "__no_brand__|핑크퐁 유기농 아기요거트 딸기바나나 85gx4||10g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "핑크퐁 유기농 아기요거트 딸기바나나 85gX4",
+        "normalized_name": "",
+        "original_price": 3980,
+        "package_quantity": 10.0,
+        "package_unit": "g",
+        "price_per_100g": 35820.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3582,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1850f9e3eeb7cf6212598259e1b9a1866fcd912fe85398d80f9200f87a98e328",
+      "raw_record_id": "ingestion:95:23",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000043620749",
+      "source_title": "핑크퐁 유기농 아기요거트 딸기바나나 85gX4",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000043620749&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.spoon",
+        "path": "/proposed_decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:95:23",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "1000043620749",
+    "source_title": "핑크퐁 유기농 아기요거트 딸기바나나 85gX4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.vegetables.leaf"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선채소",
+        "쌈채소"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_reviewed_emart_fresh_and_deli",
+      "evidence_type": "reviewed_emart_fresh_and_deli",
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:24",
+      "review_status": "classified",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 추부깻잎 20장*2입/봉 (25g*2)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306405&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": "food.produce.vegetables.leaf",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.269375Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.2,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/05/64/30/item/1000631306405_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": 5480,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "20장×2",
+        "package_quantity": 20.0,
+        "package_unit": "장",
+        "standard_unit": null
+      },
+      "price": 4384,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/05/64/30/item/1000631306405_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631306405",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631306405",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306405&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 88원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.269375",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306405&siteNo=7009&salestrNo=2551",
+        "discount_percent": 20.0,
+        "display_unit": "20장×2",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/05/64/30/item/1000631306405_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 추부깻잎 20장 2입 봉 25g 2||20장×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 추부깻잎 20장*2입/봉 (25g*2)",
+        "normalized_name": "",
+        "original_price": 5480,
+        "package_quantity": 20.0,
+        "package_unit": "장",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4384,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "20장×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3315526da38d8c1856566b495fcacb1449e75f5171d9aa57d3fd53cf13fce212",
+      "raw_record_id": "ingestion:95:24",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631306405",
+      "source_title": "친환경 추부깻잎 20장*2입/봉 (25g*2)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306405&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:95:24",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "1000631306405",
+    "source_title": "친환경 추부깻잎 20장*2입/봉 (25g*2)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:28",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 카이피라 85g/팩",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632192361&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.286247Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/61/23/19/item/1000632192361_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 28,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "85g",
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/61/23/19/item/1000632192361_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000632192361",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000632192361",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632192361&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1g 당 47원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.286247",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632192361&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "85g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/61/23/19/item/1000632192361_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 카이피라 85g 팩||85g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 카이피라 85g/팩",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "price_per_100g": 4682.35,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "85g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d830308afa89f945507abd5567fd21a5ca4214d9f8c78ca0ffba1b17a150aa0c",
+      "raw_record_id": "ingestion:95:28",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000632192361",
+      "source_title": "친환경 카이피라 85g/팩",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000632192361&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.leaf",
+        "path": "/proposed_decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:95:28",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000632192361",
+    "source_title": "친환경 카이피라 85g/팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:29",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "매일 상하목장 유기농 우유 180ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343897&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.290173Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/97/38/34/item/0000007343897_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 29,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "180ml",
+        "package_quantity": 180.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1810,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/97/38/34/item/0000007343897_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "0000007343897",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "0000007343897",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343897&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100ml 당 1,006원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.290173",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343897&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "180ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/97/38/34/item/0000007343897_i1_290.jpg",
+        "match_key": "__no_brand__|매일 상하목장 유기농 우유 180ml||180ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "매일 상하목장 유기농 우유 180ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 180.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1810,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "180ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e1a20450933f370701df7b3bc4723abbf3c70c126cd6386cb47b27d4f2de2ef6",
+      "raw_record_id": "ingestion:95:29",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000007343897",
+      "source_title": "매일 상하목장 유기농 우유 180ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007343897&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/proposed_decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:95:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000007343897",
+    "source_title": "매일 상하목장 유기농 우유 180ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:30",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 오이 2입/봉 (250g내외)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631311380&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.294242Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/80/13/31/item/1000631311380_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 30,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250g",
+        "package_quantity": 250.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/80/13/31/item/1000631311380_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631311380",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631311380",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631311380&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,792원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.294242",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631311380&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "250g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/80/13/31/item/1000631311380_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 오이 2입 봉 250g내외||250g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 오이 2입/봉 (250g내외)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "g",
+        "price_per_100g": 1792.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b5e785502946f64e701c54c8c718b376658d655ef0fe76d208b0d65aaefd0550",
+      "raw_record_id": "ingestion:95:30",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631311380",
+      "source_title": "친환경 오이 2입/봉 (250g내외)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631311380&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.cucumber",
+        "path": "/proposed_decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:95:30",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631311380",
+    "source_title": "친환경 오이 2입/봉 (250g내외)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:31",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 우유 500ml (125ml*4입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000105409092&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.297427Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/92/90/40/item/1000105409092_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 31,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "125ml×4",
+        "package_quantity": 125.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 4830,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "상하목장",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/92/90/40/item/1000105409092_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000105409092",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000105409092",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000105409092&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 966원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.297427",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000105409092&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "125ml×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/92/90/40/item/1000105409092_i1_290.jpg",
+        "match_key": "__no_brand__|유기농 우유 500ml 125ml 4입||125ml×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유기농 우유 500ml (125ml*4입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 125.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4830,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "125ml×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1fd8d0aca31d52eda4d62b548ffdd61aebc562740b0219111cf2647b19f970dc",
+      "raw_record_id": "ingestion:95:31",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000105409092",
+      "source_title": "유기농 우유 500ml (125ml*4입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000105409092&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/proposed_decisions/14"
+      }
+    ],
+    "raw_record_id": "ingestion:95:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000105409092",
+    "source_title": "유기농 우유 500ml (125ml*4입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:34",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 청적상추+깻잎혼합 150g/봉",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306409&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.308516Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/09/64/30/item/1000631306409_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 34,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/09/64/30/item/1000631306409_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631306409",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631306409",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306409&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 3,653원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.308516",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306409&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/09/64/30/item/1000631306409_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 청적상추 깻잎혼합 150g 봉||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 청적상추+깻잎혼합 150g/봉",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 3653.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6250fdd43760e80da9feb3eaf55c8d75be50561f552c3fa0ac54fe474f6a9b2c",
+      "raw_record_id": "ingestion:95:34",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631306409",
+      "source_title": "친환경 청적상추+깻잎혼합 150g/봉",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631306409&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.leaf",
+        "path": "/proposed_decisions/15"
+      }
+    ],
+    "raw_record_id": "ingestion:95:34",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631306409",
+    "source_title": "친환경 청적상추+깻잎혼합 150g/봉"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:38",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 애호박 2입/봉 (250g이상)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631339322&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.324956Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/22/93/33/item/1000631339322_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 38,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250g",
+        "package_quantity": 250.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/22/93/33/item/1000631339322_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631339322",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631339322",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631339322&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 2,712원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.324956",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631339322&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "250g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/22/93/33/item/1000631339322_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 애호박 2입 봉 250g이상||250g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 애호박 2입/봉 (250g이상)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 250.0,
+        "package_unit": "g",
+        "price_per_100g": 2712.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6780,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "8277e5ae8ad60fff1e58947331fb653fd8aba9720f255b41cd1f5abbd08c959e",
+      "raw_record_id": "ingestion:95:38",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631339322",
+      "source_title": "친환경 애호박 2입/봉 (250g이상)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631339322&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.zucchini",
+        "path": "/proposed_decisions/16"
+      }
+    ],
+    "raw_record_id": "ingestion:95:38",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631339322",
+    "source_title": "친환경 애호박 2입/봉 (250g이상)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:95aedcd6fd6b93378e1292bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "친환경/유기농"
+      ],
+      "raw_native_category_id": "6000228036",
+      "raw_record_id": "ingestion:95:39",
+      "review_status": "pending",
+      "source_path": "친환경/유기농",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "친환경 무 (1kg이상)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631206094&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:49:33.329464Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/94/60/20/item/1000631206094_i1_290.jpg",
+      "ingestion_id": 95,
+      "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+      "issues": [],
+      "item_index": 39,
+      "mart_native_category_id": "6000228036",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1kg",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "친환경/유기농",
+          "collection": "미식생활",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/94/60/20/item/1000631206094_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000228036",
+          "mart_native_category_path": "친환경/유기농",
+          "mart_native_code": "1000631206094",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000631206094",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631206094&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "1개 당 4원"
+        },
+        "brand": "__no_brand__",
+        "category": "친환경/유기농",
+        "crawled_at": "2026-09-03T01:49:33.329464",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631206094&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "1kg",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/94/60/20/item/1000631206094_i1_290.jpg",
+        "match_key": "__no_brand__|친환경 무 1kg이상||1kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 무 (1kg이상)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "price_per_100g": 398.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e4a75b31d4569bde67089632454df25cc19e6c89fbec839a9e72865b1495fcdc",
+      "raw_record_id": "ingestion:95:39",
+      "source_category_path": [
+        "친환경/유기농"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631206094",
+      "source_title": "친환경 무 (1kg이상)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631206094&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-organic-022.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.radish",
+        "path": "/proposed_decisions/17"
+      }
+    ],
+    "raw_record_id": "ingestion:95:39",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631206094",
+    "source_title": "친환경 무 (1kg이상)"
+  }
+]

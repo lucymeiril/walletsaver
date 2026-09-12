@@ -1,0 +1,140 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.tteokgalbi"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:c37682d6a7204d3b17e73fc3",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "떡갈비"
+      ],
+      "raw_native_category_id": "10",
+      "raw_record_id": "ingestion:60:3",
+      "review_status": "pending",
+      "source_path": "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 떡갈비/동그랑땡&완자/함박스테이크 > 떡갈비",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "떡갈비/동그랑땡&완자/함박스테이크",
+        "떡갈비"
+      ],
+      "source_title": "동원 양반 통살고기 완자 425G*2",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "동원",
+      "crawled_at": "2026-09-02T13:38:54.397600Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 60,
+      "ingestion_received_at": "2026-09-02T13:40:19.631018Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "10",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "425g×2",
+        "package_quantity": 425.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 10490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원",
+          "canon_hash": "0a699526b585d027f756670da6f697a9ffa867a9",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER",
+          "category_hint": "떡갈비",
+          "docId": "H050993297N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8F%99%EC%9B%90-%EC%96%91%EB%B0%98-%ED%86%B5%EC%82%B4%EA%B3%A0%EA%B8%B0-%EC%99%84%EC%9E%90-425G-2/050993297",
+          "mart_native_category_id": "10",
+          "mart_native_category_path": "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 떡갈비/동그랑땡&완자/함박스테이크 > 떡갈비",
+          "mart_native_code": "050993297",
+          "normalized_name": "동원 양반 통살고기 완자 425G*2",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER",
+          "raw_name": "동원 양반 통살고기 완자 425G*2",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "050993297",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1234.0
+        },
+        "brand": "__no_brand__",
+        "category": "떡갈비",
+        "crawled_at": "2026-09-02T22:38:54.397600",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "425g×2",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|동원 양반 통살고기 완자 425g 2||425g×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 양반 통살고기 완자 425G*2",
+        "normalized_name": "동원 양반 통살고기 완자 425G*2",
+        "original_price": null,
+        "package_quantity": 425.0,
+        "package_unit": "g",
+        "price_per_100g": 1234.12,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 10490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "425g×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0c4c71ec9d512a00d46e80f5a0bb24d8e26e7b8e33429cc03ac8592e1b281c54",
+      "raw_record_id": "ingestion:60:3",
+      "source_category_path": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "떡갈비/동그랑땡&완자/함박스테이크",
+        "떡갈비"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "050993297",
+      "source_title": "동원 양반 통살고기 완자 425G*2",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=050993297&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:60:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "050993297",
+    "source_title": "동원 양반 통살고기 완자 425G*2"
+  }
+]

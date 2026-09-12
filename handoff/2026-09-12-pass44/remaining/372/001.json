@@ -1,0 +1,300 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:c37c65bc6b55523c54521e1a",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소",
+        "배추/무",
+        "배추/절임배추"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:3:17",
+      "review_status": "pending",
+      "source_path": "채소 > 배추/무 > 배추/절임배추",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "채소",
+        "배추/무",
+        "배추/절임배추"
+      ],
+      "source_title": "배추 (국산/통)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "배추",
+      "crawled_at": "2026-08-31T01:45:36.834347Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 3,
+      "ingestion_received_at": "2026-08-31T01:46:52.731774Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1개",
+        "package_quantity": 1.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 5990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "배추",
+          "canon_hash": "0e5348c7d07db3d48d8beba7b417fbaf8caab650",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "category_hint": "배추/절임배추",
+          "docId": "H000987166N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B0%B0%EC%B6%94-%EA%B5%AD%EC%82%B0-%ED%86%B5/000987166",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "채소 > 배추/무 > 배추/절임배추 > 배추/절임배추",
+          "mart_native_code": "000987166",
+          "normalized_name": "배추 (국산/통)",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "raw_name": "배추 (국산/통)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "000987166",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 5990.0
+        },
+        "brand": "__no_brand__",
+        "category": "배추/절임배추",
+        "crawled_at": "2026-08-31T10:45:36.834347",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1개",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|배추 국산 통||1개",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "배추 (국산/통)",
+        "normalized_name": "배추 (국산/통)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "개",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1개",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3ba4386df90cfc0b96365d7f1e4b366c1834199fbd75e8e7b79252ea4d932c05",
+      "raw_record_id": "ingestion:3:17",
+      "source_category_path": [
+        "채소",
+        "배추/무",
+        "배추/절임배추",
+        "배추/절임배추"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "000987166",
+      "source_title": "배추 (국산/통)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-kitchen-produce-367-372.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.napa_cabbage",
+        "path": "/decisions/2"
+      },
+      {
+        "file": "vegetables-small-244-382.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.napa_cabbage",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:3:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "000987166",
+    "source_title": "배추 (국산/통)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:c37c65bc6b55523c54521e1a",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소",
+        "배추/무",
+        "배추/절임배추"
+      ],
+      "raw_native_category_id": "3",
+      "raw_record_id": "ingestion:52:22",
+      "review_status": "pending",
+      "source_path": "채소 > 배추/무 > 배추/절임배추",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "채소",
+        "배추/무",
+        "배추/절임배추"
+      ],
+      "source_title": "배추 (국산/통)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "배추",
+      "crawled_at": "2026-09-02T13:38:28.510087Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 52,
+      "ingestion_received_at": "2026-09-02T13:39:51.672155Z",
+      "issues": [],
+      "item_index": 22,
+      "mart_native_category_id": "3",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1개",
+        "package_quantity": 1.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 5990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "배추",
+          "canon_hash": "0e5348c7d07db3d48d8beba7b417fbaf8caab650",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "category_hint": "배추/절임배추",
+          "docId": "H000987166N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B0%B0%EC%B6%94-%EA%B5%AD%EC%82%B0-%ED%86%B5/000987166",
+          "mart_native_category_id": "3",
+          "mart_native_category_path": "채소 > 배추/무 > 배추/절임배추 > 배추/절임배추",
+          "mart_native_code": "000987166",
+          "normalized_name": "배추 (국산/통)",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "raw_name": "배추 (국산/통)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "000987166",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1개",
+          "unit_price_displayed": 5990.0
+        },
+        "brand": "__no_brand__",
+        "category": "배추/절임배추",
+        "crawled_at": "2026-09-02T22:38:28.510087",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "1개",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|배추 국산 통||1개",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "배추 (국산/통)",
+        "normalized_name": "배추 (국산/통)",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "개",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "1개",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e43da33af77646311580293c0a955f37cd5c145a07922e626ff27f5222fc217c",
+      "raw_record_id": "ingestion:52:22",
+      "source_category_path": [
+        "채소",
+        "배추/무",
+        "배추/절임배추",
+        "배추/절임배추"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "000987166",
+      "source_title": "배추 (국산/통)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000987166&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-kitchen-produce-367-372.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.napa_cabbage",
+        "path": "/decisions/2"
+      },
+      {
+        "file": "vegetables-small-244-382.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.napa_cabbage",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:52:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "000987166",
+    "source_title": "배추 (국산/통)"
+  }
+]

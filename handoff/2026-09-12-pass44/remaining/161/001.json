@@ -1,0 +1,302 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:dfddf452c5608ff1f1ab1935",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "raw_native_category_id": "5",
+      "raw_record_id": "ingestion:4:3",
+      "review_status": "pending",
+      "source_path": "수산물/건어물 > 생선 > 구색선어/회 > 구색선어",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "source_title": "자포니카 민물장어 500G (박스/국산/실중량)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "자포니카",
+      "crawled_at": "2026-08-31T01:45:37.001856Z",
+      "crawler_name": "homeplus",
+      "discount_rate": 0.5,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 4,
+      "ingestion_received_at": "2026-08-31T01:46:56.332802Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "5",
+      "observed_time_precision": "item",
+      "original_price": 49800,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24900,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "자포니카",
+          "canon_hash": "df28bece167cf47df7e53bc4809b87ffe901e107",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "category_hint": "구색선어",
+          "docId": "H125105165N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%9E%90%ED%8F%AC%EB%8B%88%EC%B9%B4-%EB%AF%BC%EB%AC%BC%EC%9E%A5%EC%96%B4-500G-%EB%B0%95%EC%8A%A4-%EA%B5%AD%EC%82%B0-%EC%8B%A4%EC%A4%91%EB%9F%89/125105165",
+          "mart_native_category_id": "5",
+          "mart_native_category_path": "수산물/건어물 > 생선 > 구색선어/회 > 구색선어",
+          "mart_native_code": "125105165",
+          "normalized_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "raw_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "125105165",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 4980.0
+        },
+        "brand": "__no_brand__",
+        "category": "구색선어",
+        "crawled_at": "2026-08-31T10:45:37.001856",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+        "discount_percent": 50.0,
+        "display_unit": "500g",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|자포니카 민물장어 500g 박스 국산 실중량||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "자포니카 민물장어 500G (박스/국산/실중량)",
+        "normalized_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+        "original_price": 49800,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 4980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 24900,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "6e1cff5efded7eaaebf6987e6305ef974e9b6c0cce875121ad9b73ab4895afbf",
+      "raw_record_id": "ingestion:4:3",
+      "source_category_path": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "125105165",
+      "source_title": "자포니카 민물장어 500G (박스/국산/실중량)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-157-161.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:4:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "125105165",
+    "source_title": "자포니카 민물장어 500G (박스/국산/실중량)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:dfddf452c5608ff1f1ab1935",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "raw_native_category_id": "5",
+      "raw_record_id": "ingestion:53:37",
+      "review_status": "pending",
+      "source_path": "수산물/건어물 > 생선 > 구색선어/회 > 구색선어",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "source_title": "자포니카 민물장어 500G (박스/국산/실중량)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "자포니카",
+      "crawled_at": "2026-09-02T13:38:32.796528Z",
+      "crawler_name": "homeplus",
+      "discount_rate": 0.5,
+      "event_name": "행사상품",
+      "image_url": "",
+      "ingestion_id": 53,
+      "ingestion_received_at": "2026-09-02T13:39:55.183310Z",
+      "issues": [],
+      "item_index": 37,
+      "mart_native_category_id": "5",
+      "observed_time_precision": "item",
+      "original_price": 49800,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24900,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "자포니카",
+          "canon_hash": "df28bece167cf47df7e53bc4809b87ffe901e107",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "category_hint": "구색선어",
+          "docId": "H125105165N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%9E%90%ED%8F%AC%EB%8B%88%EC%B9%B4-%EB%AF%BC%EB%AC%BC%EC%9E%A5%EC%96%B4-500G-%EB%B0%95%EC%8A%A4-%EA%B5%AD%EC%82%B0-%EC%8B%A4%EC%A4%91%EB%9F%89/125105165",
+          "mart_native_category_id": "5",
+          "mart_native_category_path": "수산물/건어물 > 생선 > 구색선어/회 > 구색선어",
+          "mart_native_code": "125105165",
+          "normalized_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "raw_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "125105165",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 4980.0
+        },
+        "brand": "__no_brand__",
+        "category": "구색선어",
+        "crawled_at": "2026-09-02T22:38:32.796528",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+        "discount_percent": 50.0,
+        "display_unit": "500g",
+        "event_name": "행사상품",
+        "image_url": "",
+        "match_key": "__no_brand__|자포니카 민물장어 500g 박스 국산 실중량||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "자포니카 민물장어 500G (박스/국산/실중량)",
+        "normalized_name": "자포니카 민물장어 500G (박스/국산/실중량)",
+        "original_price": 49800,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 4980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 24900,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "bf8f8ba62a16ceba5f21bb28683372f0f926bc6d519736e60899acea2e9a6b86",
+      "raw_record_id": "ingestion:53:37",
+      "source_category_path": [
+        "수산물/건어물",
+        "생선",
+        "구색선어/회",
+        "구색선어"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "125105165",
+      "source_title": "자포니카 민물장어 500G (박스/국산/실중량)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=125105165&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-157-161.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:53:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "125105165",
+    "source_title": "자포니카 민물장어 500G (박스/국산/실중량)"
+  }
+]
