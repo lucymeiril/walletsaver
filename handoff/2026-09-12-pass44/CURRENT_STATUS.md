@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `classify-084 / e0e7ffb4d52f27f1050c2c19e013c848524b7e75 / remaining/084/001.json / 진행 중 / proposals/classify-084.json / 또띠아3 신규리프·쌀국수3 existing_leaf 제안`
 - `classify-083 / 0d391f448c6795d00b1fe0e0235ea1537a2946ee / remaining/083/001.json / 제안 완료 / proposals/classify-083.json / remaining/084 기존제안 유무 확인`
 - `classify-082 / 9e8b221561b72e39426cfbebf98cf5af6ba8628a / remaining/082/001.json / 제안 완료 / proposals/classify-082.json / remaining/083 기존제안 유무 확인`
 - `classify-077 / 290bc7a8562eec19f8881189614bb649565f46c6 / remaining/077/001.json / 제안 완료 / proposals/classify-077.json / remaining/081 기존제안 유무 확인`
