@@ -1,0 +1,274 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-127-131",
+  "baseline_commit": "2299773400c68a923df77f67ecaf5023a8cdf89c",
+  "reservation_commit": "0f6b0d78c3eb9cdaedc0916f6f62c17552f8d0f2",
+  "scope": [
+    "remaining/127/001.json",
+    "remaining/128/001.json",
+    "remaining/129/001.json",
+    "remaining/130/001.json",
+    "remaining/131/001.json"
+  ],
+  "historical_reference": "../2026-09-11/proposals/bulk-pending-110-150.json",
+  "review_accounting": {
+    "bundles": 5,
+    "products": 20,
+    "observations": 40,
+    "existing_leaf_products": 5,
+    "existing_leaf_observations": 10,
+    "new_leaf_needed_products": 12,
+    "new_leaf_needed_observations": 24,
+    "already_classified_products": 0,
+    "already_classified_observations": 0,
+    "hold_products": 3,
+    "hold_observations": 6
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.produce.vegetables.pepper",
+      "food.drinks.tea.black"
+    ],
+    "missing_review_candidates": [
+      "household.kitchen.utensils.tongs",
+      "household.kitchen.storage.bag",
+      "household.kitchen.cookware.frying_pan",
+      "household.kitchen.cookware.wok",
+      "food.drinks.other.apple_cider_vinegar",
+      "food.drinks.tea.kombucha",
+      "food.drinks.tea.milk_tea"
+    ],
+    "note": "Missing ids are taxonomy-review candidates only. They are not created or treated as final parent/id choices by this proposal."
+  },
+  "conflict_checks": {
+    "accepted_source_record_key_matches": 0,
+    "explicit_review_decision_source_record_key_matches": 0,
+    "note": "All 20 source_record_keys were checked against current accepted data and the preserved 431 explicit review decisions with zero exact matches. Current remaining observations remain integration_state not_integrated."
+  },
+  "decisions": [
+    {
+      "group": "127",
+      "source_record_key": "071226345",
+      "source_title": "simplus 샐러드집게",
+      "raw_record_ids": ["ingestion:27:67", "ingestion:77:22"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.tongs",
+      "reason": "Explicit salad-tongs product form; current taxonomy has no exact kitchen-tongs leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "127",
+      "source_record_key": "071226339",
+      "source_title": "simplus 가위형 집게",
+      "raw_record_ids": ["ingestion:27:68", "ingestion:77:23"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.tongs",
+      "reason": "Scissor-style tongs are still tongs by product form; shape is an attribute and current taxonomy has no exact tongs leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "127",
+      "source_record_key": "071226230",
+      "source_title": "simplus 다용도집게",
+      "raw_record_ids": ["ingestion:27:69", "ingestion:77:24"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.tongs",
+      "reason": "Explicit multipurpose-tongs product form; current taxonomy has no exact tongs leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "127",
+      "source_record_key": "071226201",
+      "source_title": "simplus 미니집게",
+      "raw_record_ids": ["ingestion:27:70", "ingestion:77:25"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.utensils.tongs",
+      "reason": "Explicit mini-tongs product form; size is an attribute and current taxonomy has no exact tongs leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "128",
+      "source_record_key": "071412361",
+      "source_title": "뉴랩 뉴백 17CM*25CM 100매",
+      "raw_record_ids": ["ingestion:27:20", "ingestion:76:79"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.storage.bag",
+      "reason": "Disposable kitchen storage bag; dimensions and sheet count are attributes, and current taxonomy has no exact storage-bag leaf."
+    },
+    {
+      "group": "128",
+      "source_record_key": "071412418",
+      "source_title": "뉴랩 뉴롤백 30CM*40CM 200매",
+      "raw_record_ids": ["ingestion:27:21", "ingestion:76:77"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.storage.bag",
+      "reason": "Roll-type disposable kitchen bag; roll format, dimensions, and sheet count are attributes."
+    },
+    {
+      "group": "128",
+      "source_record_key": "071412378",
+      "source_title": "뉴랩 뉴백 30CM*45CM 100매",
+      "raw_record_ids": ["ingestion:27:23", "ingestion:76:78"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.storage.bag",
+      "reason": "Disposable kitchen storage bag; dimensions and sheet count do not justify a separate category."
+    },
+    {
+      "group": "128",
+      "source_record_key": "071412401",
+      "source_title": "뉴랩 뉴롤백 25CM*35CM 200매",
+      "raw_record_ids": ["ingestion:27:30", "ingestion:76:80"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.storage.bag",
+      "reason": "Roll-type disposable kitchen bag; current taxonomy has no exact storage-bag leaf."
+    },
+    {
+      "group": "129",
+      "source_record_key": "071350675",
+      "source_title": "로얄블루 인덕션가능 프라이팬 28CM",
+      "raw_record_ids": ["ingestion:27:41", "ingestion:77:4"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.cookware.frying_pan",
+      "reason": "Explicit frying-pan product form; induction compatibility and diameter are attributes, and current taxonomy has no cookware pan leaf.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "129",
+      "source_record_key": "071350669",
+      "source_title": "simplus 통3중 스텐 궁중팬 28CM",
+      "raw_record_ids": ["ingestion:27:64", "ingestion:76:97"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.cookware.wok",
+      "reason": "Explicit 궁중팬/wok-style cookware form; material and diameter are attributes, and current taxonomy has no exact wok leaf.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "129",
+      "source_record_key": "071350646",
+      "source_title": "simplus 통3중 스텐 프라이팬 30CM",
+      "raw_record_ids": ["ingestion:27:65", "ingestion:77:10"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.cookware.frying_pan",
+      "reason": "Explicit frying-pan product form; stainless construction and diameter are attributes.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "129",
+      "source_record_key": "071350634",
+      "source_title": "simplus 통3중 스텐 프라이팬 28CM",
+      "raw_record_ids": ["ingestion:27:66", "ingestion:76:81"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.kitchen.cookware.frying_pan",
+      "reason": "Explicit frying-pan product form; stainless construction and diameter are attributes.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "130",
+      "source_record_key": "106383978",
+      "source_title": "청양고추 150G(봉)",
+      "raw_record_ids": ["ingestion:2:92", "ingestion:51:84"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.pepper",
+      "reason": "Fresh Cheongyang pepper; cultivar/heat level and package size are attributes."
+    },
+    {
+      "group": "130",
+      "source_record_key": "112688241",
+      "source_title": "오이맛 고추 150G(봉)",
+      "raw_record_ids": ["ingestion:2:93", "ingestion:51:98"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.pepper",
+      "reason": "Fresh cucumber-flavor pepper variety; variety is an attribute within the current pepper leaf."
+    },
+    {
+      "group": "130",
+      "source_record_key": "106335221",
+      "source_title": "꽈리고추 150G(봉)",
+      "raw_record_ids": ["ingestion:3:5", "ingestion:52:30"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.pepper",
+      "reason": "Fresh shishito-style pepper variety; variety and package size are attributes."
+    },
+    {
+      "group": "130",
+      "source_record_key": "106382983",
+      "source_title": "풋고추 150G(봉)",
+      "raw_record_ids": ["ingestion:3:28", "ingestion:52:43"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.pepper",
+      "reason": "Fresh green pepper; maturity/variety is an attribute within the existing pepper leaf."
+    },
+    {
+      "group": "131",
+      "source_record_key": "070926031",
+      "source_title": "티젠 애플사이다비니거 30T(150G)",
+      "raw_record_ids": ["ingestion:15:81", "ingestion:65:3"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.drinks.other.apple_cider_vinegar",
+      "reason": "Title explicitly identifies an apple-cider-vinegar drink mix, but current taxonomy has no exact beverage leaf; do not collapse it into seasoning vinegar or black tea based on the retail shelf."
+    },
+    {
+      "group": "131",
+      "source_record_key": "070926054",
+      "source_title": "티젠 콤부차 요구르트 30T(150G)",
+      "raw_record_ids": ["ingestion:15:98", "ingestion:65:26"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.drinks.tea.kombucha",
+      "reason": "Explicit kombucha product form; yogurt is flavor, but current taxonomy has no kombucha leaf and the retail black-tea shelf must not override title."
+    },
+    {
+      "group": "131",
+      "source_record_key": "071393848",
+      "source_title": "동서 아이스티 티오 레몬 40T",
+      "raw_record_ids": ["ingestion:16:23", "ingestion:65:61"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.black",
+      "reason": "Explicit iced-tea mix on the black/iced-tea shelf; lemon is flavor and the current black-tea/iced-tea leaf is exact enough."
+    },
+    {
+      "group": "131",
+      "source_record_key": "071000658",
+      "source_title": "녹차원 제로슈가 밀크티 블렌드 7T(70G)",
+      "raw_record_ids": ["ingestion:16:34", "ingestion:65:73"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.drinks.tea.milk_tea",
+      "reason": "Explicit milk-tea blend; zero-sugar is an attribute, but current taxonomy has no exact milk-tea leaf."
+    }
+  ],
+  "preserved_contracts": {
+    "quantity": "unchanged",
+    "promotion": "unchanged",
+    "identity_merge": "not_requested",
+    "raw_payloads": "unchanged",
+    "taxonomy": "not_mutated",
+    "accepted": "not_mutated"
+  },
+  "executed_tests": [
+    "manual current remaining accounting: 5 bundles / 20 source products / 40 raw observations",
+    "manual current taxonomy existence check for fresh pepper and black/iced tea",
+    "manual missing-leaf check for tongs, kitchen storage bags, frying pans, wok/gungjung pan, apple-cider-vinegar beverage, kombucha, and milk tea candidates",
+    "manual accepted source_record_key conflict check for all 20 current source products",
+    "manual explicit review-decision source_record_key conflict check against preserved 431 decisions for all 20 current source products",
+    "manual preservation check for promotion/unit issues on group 127 and unit issues on group 129"
+  ]
+}
