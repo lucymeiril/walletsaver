@@ -1,0 +1,231 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-137-141",
+  "baseline_commit": "412ead2c02a0325e40b3a6ea273529ecbdb14dd3",
+  "reservation_commit": "209de696df2ea0544bae4d9e69359c0ba3abc1cf",
+  "scope": [
+    "remaining/137/001.json",
+    "remaining/138/001.json",
+    "remaining/139/001.json",
+    "remaining/140/001.json",
+    "remaining/141/001.json"
+  ],
+  "historical_reference": "../2026-09-11/proposals/bulk-pending-110-150.json",
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 30,
+    "existing_leaf_products": 9,
+    "existing_leaf_observations": 18,
+    "new_leaf_needed_products": 3,
+    "new_leaf_needed_observations": 6,
+    "hold_products": 3,
+    "hold_observations": 6,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.grains.nuts.pistachio",
+      "food.produce.processed_fruit.dried"
+    ],
+    "missing_or_held_candidates": [
+      "food.health.supplements.banaba",
+      "food.health.supplements.protein",
+      "food.drinks.other.protein",
+      "food.grains.powder.misutgaru",
+      "food.grains.powder.shake"
+    ],
+    "note": "The five historical candidate ids are absent from current pass43 taxonomy. Group 137 remains hold because the current taxonomy has no health-supplement branch and product-function boundaries require taxonomy review. Group 138 product forms are explicit, so the historical ids are retained only as new-leaf naming candidates; final parent/id still requires taxonomy review."
+  },
+  "conflict_checks": {
+    "accepted_source_key_matches": 0,
+    "current_explicit_review_decision_matches_for_groups_137_138": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "All 15 source_record_keys were checked against current pass43 accepted.json with zero matches. All six mixed/new-candidate keys in groups 137-138 were checked against the preserved 431 review decisions with zero exact matches; the historical 110-150 bulk review also recorded zero explicit-review conflicts across this range."
+  },
+  "decisions": [
+    {
+      "group": "137",
+      "source_record_key": "071151899",
+      "source_title": "리얼닥터 혈당케어 바나바잎 추출물 500MG*60정",
+      "raw_record_ids": ["ingestion:26:64", "ingestion:76:21"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.health.supplements.banaba",
+      "reason": "Banaba-leaf supplement form is explicit, but current taxonomy has no health-supplement branch; do not create a functional/efficacy taxonomy boundary from the retail shelf alone.",
+      "issues_preserved": []
+    },
+    {
+      "group": "137",
+      "source_record_key": "070265184",
+      "source_title": "일동후디스 하이뮨 프로틴밸런스 19G*10입",
+      "raw_record_ids": ["ingestion:26:69", "ingestion:76:27"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.health.supplements.protein",
+      "reason": "Powdered protein-balance supplement is explicit, but the current taxonomy lacks a health-supplement branch and the final parent boundary requires taxonomy review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "137",
+      "source_record_key": "069379114",
+      "source_title": "하이뮨 프로틴 밸런스 저당 190ML*16",
+      "raw_record_ids": ["ingestion:26:73", "ingestion:76:31"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.drinks.other.protein",
+      "reason": "Ready-to-drink protein product form is explicit, but current taxonomy has no matching protein-drink leaf and the final beverage/supplement parent boundary requires review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "138",
+      "source_record_key": "071029930",
+      "source_title": "이천쌀로 만든 국산 고단백 미숫가루 500G(봉)",
+      "raw_record_ids": ["ingestion:3:74", "ingestion:52:99"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.grains.powder.misutgaru",
+      "taxonomy_id_review_required": true,
+      "reason": "Title and shelf both explicitly identify misutgaru; current taxonomy has no exact grain-powder leaf. Protein wording is an attribute, not a different product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "138",
+      "source_record_key": "069740343",
+      "source_title": "단백질 귀리 쉐이크 800G(봉)",
+      "raw_record_ids": ["ingestion:3:84", "ingestion:53:5"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.grains.powder.shake",
+      "taxonomy_id_review_required": true,
+      "reason": "The title explicitly identifies an oat shake powder rather than misutgaru; current taxonomy has no exact shake-powder leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "138",
+      "source_record_key": "069740337",
+      "source_title": "단백질 블랙 미숫가루 800G(봉)",
+      "raw_record_ids": ["ingestion:3:87", "ingestion:53:10"],
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.grains.powder.misutgaru",
+      "taxonomy_id_review_required": true,
+      "reason": "Explicit misutgaru product form matches the historical candidate; black/protein wording is flavor/attribute information, while the exact leaf is absent from current taxonomy.",
+      "issues_preserved": []
+    },
+    {
+      "group": "139",
+      "source_record_key": "071043474",
+      "source_title": "피스타치오 200G(봉)",
+      "raw_record_ids": ["ingestion:3:75", "ingestion:52:92"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.grains.nuts.pistachio",
+      "reason": "Title and source path explicitly identify pistachio; current taxonomy contains the exact leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "139",
+      "source_record_key": "127208725",
+      "source_title": "원더풀 무염 피스타치오 500G(봉)",
+      "raw_record_ids": ["ingestion:3:86", "ingestion:53:7"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.grains.nuts.pistachio",
+      "reason": "Unsalted is an attribute; product form is explicitly pistachio and the exact current leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "139",
+      "source_record_key": "127487105",
+      "source_title": "원더풀 가염 피스타치오 500G(봉)",
+      "raw_record_ids": ["ingestion:3:88", "ingestion:53:6"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.grains.nuts.pistachio",
+      "reason": "Salted is an attribute; product form is explicitly pistachio and the exact current leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "140",
+      "source_record_key": "069498860",
+      "source_title": "상주 곶감 12입 470G(팩)",
+      "raw_record_ids": ["ingestion:2:46", "ingestion:51:53"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Dried persimmon is a dried-fruit product; count/region are attributes and current taxonomy contains the dried-fruit leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "140",
+      "source_record_key": "070234705",
+      "source_title": "청도 감 말랭이 300G(팩)",
+      "raw_record_ids": ["ingestion:2:48", "ingestion:51:52"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Persimmon slices are dried fruit; current taxonomy contains the exact general dried-fruit leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "140",
+      "source_record_key": "068734554",
+      "source_title": "믿고먹는 농협 상주 곶감 16입510G(팩)",
+      "raw_record_ids": ["ingestion:2:52", "ingestion:51:67"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Explicit dried persimmon form matches the existing dried-fruit leaf; count and origin remain attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "141",
+      "source_record_key": "069802357",
+      "source_title": "피티드 프룬 (씨를 뺀 건자두) 300G(봉)",
+      "raw_record_ids": ["ingestion:2:31", "ingestion:51:48"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Pitted prune is explicitly dried fruit and fits the current dried-fruit leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "141",
+      "source_record_key": "068777318",
+      "source_title": "점보 건포도 500G(봉)",
+      "raw_record_ids": ["ingestion:2:47", "ingestion:51:44"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Raisin is explicitly dried fruit and fits the current dried-fruit leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "141",
+      "source_record_key": "128464528",
+      "source_title": "동우 건 블루베리 400G(봉)",
+      "raw_record_ids": ["ingestion:2:53", "ingestion:51:51"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "Dried blueberry is explicitly dried fruit and fits the current dried-fruit leaf.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, or taxonomy data modified.",
+    "Promotion, quantity, unit, mixed-package, count-range, and price issues remain outside classification-only scope.",
+    "Retail shelf labels never override explicit product form.",
+    "Missing taxonomy ids in this proposal are candidates only and are not treated as approved taxonomy additions."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 137-141 and grouped repeated observations by exact source_record_key.",
+    "Revalidated all referenced existing and candidate taxonomy ids against current pass43 taxonomy.json.",
+    "Checked all 15 source_record_keys against current pass43 accepted.json with zero matches.",
+    "Checked all six mixed/new-candidate source_record_keys in groups 137-138 against the preserved 431 explicit review decisions with zero matches; historical bulk range also recorded zero explicit-review conflicts.",
+    "Confirmed no *_unresolved issue strings are present in the five current remaining files."
+  ]
+}
