@@ -1,0 +1,93 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "9e8b221561b72e39426cfbebf98cf5af6ba8628a",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:26:62", "ingestion:76:19"],
+      "source_name": "homeplus",
+      "source_record_key": "127372080",
+      "source_title": "삼양사 큐원 상쾌환 3G*3포",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상품명과 진열은 상쾌환 계열을 명확히 가리키지만 현재 taxonomy에는 건강식품/숙취해소 대응 계층이 없다. 음식·음료 리프로 임의 대체하거나 존재하지 않는 상위 경로를 추측하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=127372080&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:67", "ingestion:76:25"],
+      "source_name": "homeplus",
+      "source_record_key": "070612270",
+      "source_title": "삼양사 상쾌환스틱 복숭아맛 18G*3입",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상쾌환 스틱 제품군은 명확하지만 현재 taxonomy에 대응 건강식품 계층이 없다. 복숭아맛은 맛 속성이며 과일식품이나 음료로 분류하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070612270&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:68", "ingestion:76:26"],
+      "source_name": "homeplus",
+      "source_record_key": "070612264",
+      "source_title": "삼양사 상쾌환스틱 샤인머스캣맛 18G*3입",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상쾌환 스틱 제품군은 명확하지만 현재 taxonomy에 대응 건강식품 계층이 없다. 샤인머스캣맛은 맛 속성이며 과일식품이나 음료 리프로 밀어 넣지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070612264&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:71", "ingestion:76:29"],
+      "source_name": "homeplus",
+      "source_record_key": "069402859",
+      "source_title": "삼양사 상쾌환 스틱형 레드 18G 3입",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상쾌환 스틱형 제품임은 명확하지만 현재 taxonomy에 대응 건강식품 계층이 없어 기존 리프를 선택할 근거가 없다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069402859&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:72", "ingestion:76:30"],
+      "source_name": "homeplus",
+      "source_record_key": "069402826",
+      "source_title": "삼양사 상쾌환 스틱형 옐로우 18G*3입",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상쾌환 스틱형 제품임은 명확하지만 현재 taxonomy에 대응 건강식품 계층이 없어 기존 리프를 선택할 근거가 없다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069402826&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:76:20"],
+      "source_name": "homeplus",
+      "source_record_key": "071354711",
+      "source_title": "알부민 프리미엄 골드 20G*14포",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "진열 경로는 상쾌환이지만 제목은 알부민 프리미엄 골드만 명시해 제품형태와 용도를 확정하기 어렵고, 현재 taxonomy에도 대응 건강식품 계층이 없다. 진열명만으로 상쾌환 계열로 단정하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071354711&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "Reviewed all 11 current pass44 observations in remaining/082/001.json and grouped repeated observations into 6 exact source_record_key products while preserving the one single observation for 071354711.",
+    "Confirmed proposal_references is empty for all reviewed observations and no pass44 proposals/classify-082.json existed before this write.",
+    "Exact-searched all 6 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 6 source_record_keys in the preserved 431 review-decisions-input.json with no matches.",
+    "Searched the current pass44 taxonomy for health, 건강, and supplement and found no corresponding taxonomy domain; no new hierarchy was guessed.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
+}
