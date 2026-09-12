@@ -1,0 +1,124 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "8ddb377d86b7ca5457b7017794eaaae953bfd438",
+  "work_id": "2026-09-12-flavored-milk-yogurt-098",
+  "remaining_group": "098",
+  "source_path": "handoff/2026-09-12-pass43/remaining/098/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-flavored-milk-yogurt-098.json",
+  "scope_note": "Classification-only revalidation of the complete Homeplus flavored-milk shelf bundle. Actual product form takes precedence over the broad shelf: the Greek drink product remains drinking yogurt. Quantity, price, promotion, raw observations, and identity merging remain unchanged.",
+  "review_accounting": {
+    "observations_checked": 10,
+    "unique_products": 5,
+    "clear_existing_products": 5,
+    "held_products": 0
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "accepted_record_matches": 0,
+    "historical_proposal_revalidated": true,
+    "all_target_leaves_exist_in_pass43_taxonomy": true,
+    "note": "All five source_record_keys remain unintegrated in pass43 remaining. Their historical proposal references still point to the same existing leaves, and none of the five keys appears in accepted.json or the 431 explicit review decisions."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:7:43",
+        "ingestion:56:35"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "062499138",
+      "source_title": "서울우유 커피포리 200ML*4",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.milk.coffee",
+      "reason": "커피맛 우유 제품형태가 제목과 우유 진열 경로에서 일치한다. 4입 포장수량은 속성으로 유지한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=062499138&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:7:53",
+        "ingestion:56:54"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "069643280",
+      "source_title": "부산우유 초코가득 200ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.milk.chocolate",
+      "reason": "초코우유 제품 정체성이 명확하며 현재 초코우유 리프와 직접 일치한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069643280&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:7:54",
+        "ingestion:56:55"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070818902",
+      "source_title": "부산우유 딸기가득 200ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.milk.strawberry",
+      "reason": "딸기우유 제품 정체성이 명확하며 현재 딸기우유 리프와 직접 일치한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070818902&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:7:64",
+        "ingestion:57:4"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "069643308",
+      "source_title": "부산우유 바나나가득 200ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.milk.banana",
+      "reason": "바나나우유 제품 정체성이 명확하며 현재 바나나우유 리프와 직접 일치한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069643308&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:7:80",
+        "ingestion:57:26"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071037367",
+      "source_title": "매일 바이오그릭드링크바나나 710ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.yogurt.drink",
+      "reason": "제목의 그릭드링크가 음용형 요거트 제품형태를 명시한다. 주변 우유 진열보다 실제 제품형태를 우선하고, 바나나는 맛 속성으로 유지한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071037367&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "validation_checks": [
+    "10/10 remaining observations accounted for across the five source_record_keys",
+    "0/5 source_record_keys found in pass43 accepted.json",
+    "0/5 source_record_keys found in the 431 explicit review decisions",
+    "all five proposed leaf IDs exist in pass43 taxonomy.json",
+    "current proposal_references agree with the historical 098 proposal for all ten observations"
+  ],
+  "executed_tests": []
+}
