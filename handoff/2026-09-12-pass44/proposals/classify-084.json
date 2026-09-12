@@ -1,0 +1,96 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "e0e7ffb4d52f27f1050c2c19e013c848524b7e75",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:20:98", "ingestion:70:56"],
+      "source_name": "homeplus",
+      "source_record_key": "071029964",
+      "source_title": "Simplus 밀또띠아 315G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "상품명이 밀 또띠아를 직접 명시하지만 현재 taxonomy에는 tortilla/또띠아 리프가 없다. 쌀국수/월남쌈 진열명으로 면류에 넣지 않고 빵 계열 신규 리프 검토로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071029964&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:2"],
+      "source_name": "homeplus",
+      "source_record_key": "069837156",
+      "source_title": "델리썬 소프트플라워 또띠아 320G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "상품명이 또띠아를 직접 명시하고 현재 taxonomy에 해당 리프가 없다. 진열 경로의 쌀국수/월남쌈을 제품형태로 대신 사용하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069837156&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:13", "ingestion:70:54"],
+      "source_name": "homeplus",
+      "source_record_key": "071029976",
+      "source_title": "Simplus 통밀또띠아 315G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "통밀은 원료 속성이고 제품형태는 또띠아로 명확하다. 현재 tortilla 리프가 없어 빵 계열 신규 리프 검토가 필요하다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071029976&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:21", "ingestion:70:64"],
+      "source_name": "homeplus",
+      "source_record_key": "069481326",
+      "source_title": "백제 어머님의손맛 파곰탕면쌀국수 93.5G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "상품명이 쌀국수를 직접 명시하며 파곰탕 맛은 국물·맛 속성이다. 현재 rice_noodle 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069481326&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:22", "ingestion:70:65"],
+      "source_name": "homeplus",
+      "source_record_key": "069481228",
+      "source_title": "백제 어머님의손맛 멸치맛쌀국수 92G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "멸치맛은 맛 속성이고 제품형태는 쌀국수로 명확하다. 현재 rice_noodle 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069481228&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:48", "ingestion:71:49"],
+      "source_name": "homeplus",
+      "source_record_key": "069481292",
+      "source_title": "백제 어머님의손맛 얼큰한맛쌀국수 90G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "얼큰한맛은 맛 속성이고 제품형태는 쌀국수로 명확하다. 현재 rice_noodle 리프와 직접 일치한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069481292&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "Reviewed all 11 current pass44 observations in remaining/084/001.json and grouped them into 6 exact source_record_key products while preserving the single observation for 069837156.",
+    "Confirmed proposal_references is empty for all 11 observations and no pass44 proposals/classify-084.json existed before this write.",
+    "Exact-searched all 6 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 6 source_record_keys in the preserved 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy contains food.meals.noodles.rice_noodle and no tortilla/또띠아 leaf; tortilla proposals remain needs_review only.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
+}
