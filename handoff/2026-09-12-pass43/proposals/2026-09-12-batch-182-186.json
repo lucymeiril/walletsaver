@@ -1,0 +1,310 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-182-186",
+  "baseline_commit": "aa1451d3be74cce35b646bda211b4b1a4241f783",
+  "reservation_commit": "9254fa64c6521323b0216926f1884e6580623e64",
+  "scope": [
+    "remaining/182/001.json",
+    "remaining/183/001.json",
+    "remaining/184/001.json",
+    "remaining/185/001.json",
+    "remaining/186/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 17,
+    "observations": 26,
+    "existing_leaf_products": 7,
+    "existing_leaf_observations": 12,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 7,
+    "hold_observations": 9,
+    "already_classified_products": 3,
+    "already_classified_observations": 5
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.drinks.tea.grain",
+      "food.produce.fruit.apple",
+      "food.meals.prepared.meat_patty",
+      "household.cleaning.kitchen.degreaser",
+      "household.cleaning.bath.drain"
+    ],
+    "missing_or_held_candidates": [
+      "food.drinks.tea.root",
+      "apparel.underwear.brief",
+      "apparel.underwear.undershirt",
+      "apparel.underwear.trunks"
+    ],
+    "note": "Current pass43 taxonomy contains the exact grain-tea, apple, 동그랑땡, kitchen-degreaser and drain-cleaner leaves. It does not contain a root-tea leaf or the three underwear-form leaves, so those historical candidates remain held rather than being treated as existing leaves."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_17_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 26 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All 17 source_record_keys in groups 182-186 were exact-searched against the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "182",
+      "source_name": "homeplus",
+      "source_record_key": "125897815",
+      "source_title": "녹차원 팔방미인 우엉차 100T (100G)",
+      "raw_record_ids": ["ingestion:15:79", "ingestion:65:21"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.drinks.tea.root",
+      "reason": "The title explicitly identifies burdock root tea. Current taxonomy has no exact root-tea leaf, so it should not be forced into grain or herbal tea.",
+      "issues_preserved": []
+    },
+    {
+      "group": "182",
+      "source_name": "homeplus",
+      "source_record_key": "120304000",
+      "source_title": "동서 메밀차 100T (150G)",
+      "raw_record_ids": ["ingestion:16:21", "ingestion:65:23"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.grain",
+      "reason": "Buckwheat tea is a grain tea, and the current taxonomy contains the exact generic grain-tea leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "182",
+      "source_name": "homeplus",
+      "source_record_key": "070963204",
+      "source_title": "아크바 생강차 25T",
+      "raw_record_ids": ["ingestion:16:36", "ingestion:65:75"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.drinks.tea.root",
+      "reason": "The title explicitly identifies ginger tea. Current taxonomy lacks a precise root-tea leaf, so the historical held root-tea candidate is preserved.",
+      "issues_preserved": []
+    },
+    {
+      "group": "183",
+      "source_name": "emart",
+      "source_record_key": "1000754425434",
+      "source_title": "면100% 팬티_미디5매",
+      "raw_record_ids": ["ingestion:104:0"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "apparel.underwear.brief",
+      "reason": "The product title explicitly identifies briefs/panties, but current taxonomy has no matching underwear-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "183",
+      "source_name": "emart",
+      "source_record_key": "1000566564680",
+      "source_title": "트라이 남성 민소매런닝 5매입",
+      "raw_record_ids": ["ingestion:104:1"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "apparel.underwear.undershirt",
+      "reason": "The title explicitly identifies a sleeveless undershirt, but current taxonomy has no matching underwear-form leaf.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "183",
+      "source_name": "emart",
+      "source_record_key": "1000754425267",
+      "source_title": ")면100% 런닝",
+      "raw_record_ids": ["ingestion:104:2"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "apparel.underwear.undershirt",
+      "reason": "Despite the malformed leading character, the source title identifies a running-style undershirt; current taxonomy has no matching underwear-form leaf.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "183",
+      "source_name": "emart",
+      "source_record_key": "1000754425183",
+      "source_title": "오가닉 여미디 헴팬티3매",
+      "raw_record_ids": ["ingestion:104:3"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "apparel.underwear.brief",
+      "reason": "The title explicitly identifies hem panties/briefs, but current taxonomy has no matching underwear-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "183",
+      "source_name": "emart",
+      "source_record_key": "1000781652191",
+      "source_title": "선염트렁크3매",
+      "raw_record_ids": ["ingestion:104:4"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "apparel.underwear.trunks",
+      "reason": "The title explicitly identifies trunk underwear, but current taxonomy has no matching underwear-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "184",
+      "source_name": "homeplus",
+      "source_record_key": "129655007",
+      "source_title": "12Brix 유명산지 홍로사과 4-8입(봉)",
+      "raw_record_ids": ["ingestion:2:0"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.apple",
+      "reason": "Classification is already food.produce.fruit.apple; this remaining observation is retained only for non-classification title/count issues.",
+      "issues_preserved": ["count_range_unresolved", "source_title_changed"]
+    },
+    {
+      "group": "184",
+      "source_name": "homeplus",
+      "source_record_key": "068777382",
+      "source_title": "12Brix 맛난이 사과 1.5KG(봉)",
+      "raw_record_ids": ["ingestion:2:14"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.apple",
+      "reason": "Classification is already food.produce.fruit.apple; only the source-title change remains outside this classification-only task.",
+      "issues_preserved": ["source_title_changed"]
+    },
+    {
+      "group": "184",
+      "source_name": "homeplus",
+      "source_record_key": "129655007",
+      "source_title": "12Brix 유명산지 햇 홍로사과 4-8입(봉)",
+      "raw_record_ids": ["ingestion:51:1"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.apple",
+      "reason": "Classification is already food.produce.fruit.apple; this later title variant remains pending only for count/title handling.",
+      "issues_preserved": ["count_range_unresolved", "source_title_changed"]
+    },
+    {
+      "group": "184",
+      "source_name": "homeplus",
+      "source_record_key": "068777382",
+      "source_title": "12Brix 맛난이 홍로사과 1.5KG(봉)",
+      "raw_record_ids": ["ingestion:51:4"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.apple",
+      "reason": "Classification is already food.produce.fruit.apple; only the source-title change remains outside this classification-only task.",
+      "issues_preserved": ["source_title_changed"]
+    },
+    {
+      "group": "184",
+      "source_name": "homeplus",
+      "source_record_key": "125186113",
+      "source_title": "초록사과 5-8입(봉)",
+      "raw_record_ids": ["ingestion:51:24"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.apple",
+      "reason": "Classification is already food.produce.fruit.apple; the unresolved count range is preserved separately.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "185",
+      "source_name": "homeplus",
+      "source_record_key": "070263077",
+      "source_title": "씨제이 비비고도톰동그랑땡 340G",
+      "raw_record_ids": ["ingestion:9:77", "ingestion:59:15"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "reason": "The title and source shelf explicitly identify 동그랑땡, and current taxonomy's meat_patty leaf is named 동그랑땡.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "185",
+      "source_name": "homeplus",
+      "source_record_key": "120854362",
+      "source_title": "씨제이 비비고 도톰 동그랑땡 425G*2",
+      "raw_record_ids": ["ingestion:10:66", "ingestion:60:1"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "reason": "The title explicitly identifies 동그랑땡; package multiplicity does not change the product-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "185",
+      "source_name": "homeplus",
+      "source_record_key": "070750934",
+      "source_title": "풀무원 반듯한식 동그랑땡 315G",
+      "raw_record_ids": ["ingestion:60:58"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "reason": "The title explicitly identifies 동그랑땡 and matches the current exact leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "186",
+      "source_name": "homeplus",
+      "source_record_key": "126261973",
+      "source_title": "유한양행 유한락스 주방청소용 스프레이 715ML*2입",
+      "raw_record_ids": ["ingestion:25:79", "ingestion:75:8"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.kitchen.degreaser",
+      "reason": "The explicit kitchen-cleaning spray product form matches the current kitchen grease-cleaner leaf; the broad high-concentration dish-detergent shelf is not controlling.",
+      "issues_preserved": []
+    },
+    {
+      "group": "186",
+      "source_name": "homeplus",
+      "source_record_key": "125624189",
+      "source_title": "LG생활건강 홈스타 싱크대 배수관 클리너 450ML+230ML",
+      "raw_record_ids": ["ingestion:26:8", "ingestion:75:28"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.bath.drain",
+      "reason": "The title explicitly identifies a drain-pipe cleaner, matching the current 배수관세정제 leaf despite the broad kitchen-detergent retail shelf.",
+      "issues_preserved": ["mixed_package_unresolved", "multiple_package_quantities"]
+    },
+    {
+      "group": "186",
+      "source_name": "homeplus",
+      "source_record_key": "128827584",
+      "source_title": "LG생활건강 홈스타 렌지후드 클리너 500ML",
+      "raw_record_ids": ["ingestion:75:81"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.kitchen.degreaser",
+      "reason": "A range-hood cleaner is a kitchen grease cleaner and matches the current kitchen-degreaser leaf.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Already-classified rows are documented but do not imply a new classification or DB write.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 26 current remaining observations across groups 182-186 and grouped repeated observations by exact source_record_key and exact source_title where titles changed.",
+    "Rechecked historical bulk-pending-151-208 groups 182-186 against current remaining titles and current pass43 taxonomy.",
+    "Confirmed current taxonomy contains food.drinks.tea.grain, food.produce.fruit.apple, food.meals.prepared.meat_patty, household.cleaning.kitchen.degreaser, and household.cleaning.bath.drain, while root-tea and the three underwear-form candidates remain absent.",
+    "Compared all 26 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Exact-searched all 17 source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "No repository tests or DB import were executed because this is proposal-only classification review."
+  ]
+}
