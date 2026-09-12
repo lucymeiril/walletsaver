@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-homeplus-jelly-ice-pop-087 / 2994dcbe8b6dc30ea8a2c24c5ae893ca207b0cd0 / remaining/087/001.json 및 기존 homeplus-jelly-ice-pop-087 / 진행 중 / ../2026-09-11/proposals/homeplus-jelly-ice-pop-087.json / held_decisions 평탄화·현재 충돌 재검증`
 - `classify-084 / e0e7ffb4d52f27f1050c2c19e013c848524b7e75 / remaining/084/001.json / 제안 완료 / proposals/classify-084.json / remaining/087 기존제안 유무 확인`
 - `classify-083 / 0d391f448c6795d00b1fe0e0235ea1537a2946ee / remaining/083/001.json / 제안 완료 / proposals/classify-083.json / remaining/084 기존제안 유무 확인`
 - `classify-082 / 9e8b221561b72e39426cfbebf98cf5af6ba8628a / remaining/082/001.json / 제안 완료 / proposals/classify-082.json / remaining/083 기존제안 유무 확인`
