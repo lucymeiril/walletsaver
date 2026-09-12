@@ -58,7 +58,7 @@
 
 ## 5. 다음에 실제로 할 일
 
-1. **먼저 `CURRENT_STATUS.md`의 `현재 재개점`을 따른다. 임의로 다른 pending 묶음을 고르지 않는다.** 현재 작성 시점 재개점은 `pending 037`이며, 상태 문서가 이후 갱신되면 그 값을 우선한다.
+1. **먼저 `CURRENT_STATUS.md`의 `현재 재개점`을 따른다. 임의로 다른 pending 묶음을 고르지 않는다.** README에는 의도적으로 숫자 재개점을 복제하지 않는다. 숫자가 필요하면 항상 `CURRENT_STATUS.md`에서 직접 읽는다.
 2. 해당 `pending/<group>/` 디렉터리의 파일 목록부터 확인한다. `001.json` 하나뿐이라고 가정하지 않는다. 모든 조각을 읽고 이미 `review_status=classified`인 행을 신규 classification 작업량에서 제외한다.
 3. 기존 카테고리가 맞는지 먼저 확인. 새 리프가 필요하면 proposal에서는 명시적으로 후보/hold로 남긴다. Chat의 GitHub read/write 모드에서는 pass41 snapshot에 없는 leaf를 실존 leaf처럼 사용하지 않는다.
 4. 분류 구현 예시는 `packages/db-admin/backend/services/initial_audited_emart_produce.py`, `initial_audited_baking.py`, `initial_audited_seasonings.py` 및 대응 tests 참고. 모든 마트에 퍼지는 느슨한 정규식보다 **검토한 제목/경로에 제한된 근거**를 쓴다. 매칭·규격은 별도 안전장치를 통과해야 적재된다.
