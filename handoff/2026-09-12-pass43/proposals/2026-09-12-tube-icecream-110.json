@@ -1,0 +1,154 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "f69b89ba11ef383ddd118cc1f41d73b6f250a50a",
+  "work_id": "2026-09-12-tube-icecream-110",
+  "remaining_group": "110",
+  "source_path": "handoff/2026-09-12-pass43/remaining/110/001.json",
+  "historical_reference": null,
+  "scope_note": "Classification-only review of the current Lottemart tube-ice-cream bundle. The current pass43 taxonomy has no exact ice-cream/tube-ice-cream leaf, so this proposal records a taxonomy-review candidate only. No DB integration, taxonomy mutation, promotion approval, quantity change, or product identity merge is performed.",
+  "review_accounting": {
+    "observations_checked": 9,
+    "unique_products": 9,
+    "new_leaf_needed_observations": 9,
+    "promotion_unresolved_observations_preserved": 9
+  },
+  "taxonomy_review": {
+    "exact_existing_leaf_found": false,
+    "suggested_new_leaf_id": "food.snacks.icecream.tube",
+    "taxonomy_id_review_required": true,
+    "note": "All nine products are explicit tube/freezable ice-cream forms on the Lottemart tube-ice-cream shelf. The suggested id is only a naming candidate; the taxonomy integrator must choose the final parent and id."
+  },
+  "conflict_checks": {
+    "exact_source_record_keys_checked": 9,
+    "accepted_record_matches": 0,
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Exact-key searches for all nine source_record_key values returned only pending/remaining/raw/unresolved records and no accepted.json or review-decisions-input.json match."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:28:3"],
+      "source_name": "lottemart",
+      "source_record_key": "8801118250996",
+      "source_title": "롯데 빠삐코 (130ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "롯데마트 원본 경로가 튜브아이스크림이고 빠삐코는 튜브형 냉동 아이스크림 제품이다. 현재 taxonomy에 정확한 아이스크림 리프가 없어 기존 리프로 강제 배정하지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:14"],
+      "source_name": "lottemart",
+      "source_record_key": "8801104111355",
+      "source_title": "빙그레 뽕따 (소다) (130ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "원본 경로가 튜브아이스크림이며 뽕따 소다는 튜브형 빙과 제품이다. 맛 표기는 속성이고 현재 정확 리프가 없어 신규 taxonomy 검토가 필요하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:36"],
+      "source_name": "lottemart",
+      "source_record_key": "8801104111553",
+      "source_title": "빙그레 더위사냥 (140ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "더위사냥은 현재 원본에서 튜브아이스크림으로 판매되는 냉동 제품이며 기존 taxonomy에 이를 정확히 받는 리프가 없다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:50"],
+      "source_name": "lottemart",
+      "source_record_key": "8809713220390",
+      "source_title": "해태 탱크보이 (120ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "탱크보이는 원본 튜브아이스크림 shelf의 튜브형 빙과 제품이다. 정확한 기존 leaf 부재로 taxonomy 검토가 필요하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:70"],
+      "source_name": "lottemart",
+      "source_record_key": "8809713220048",
+      "source_title": "해태 폴라포 (포도) (120ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "폴라포 포도는 튜브아이스크림 경로의 튜브형 빙과다. 포도맛은 속성이고 현재 taxonomy에 정확 리프가 없다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:74"],
+      "source_name": "lottemart",
+      "source_record_key": "8801062623495",
+      "source_title": "롯데 설레임 (밀크) (160ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "설레임 밀크는 튜브아이스크림 shelf의 파우치/튜브형 냉동 아이스크림이다. 밀크 맛과 용량은 taxonomy 분기 근거가 아니다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:29:31"],
+      "source_name": "lottemart",
+      "source_record_key": "8801062872893",
+      "source_title": "롯데 설레임 (쿠앤크) (160ML)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "설레임 쿠앤크는 동일한 튜브/파우치형 아이스크림 제품형태이며 쿠앤크는 맛 속성이다. 현재 정확 리프가 없다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:34:91"],
+      "source_name": "lottemart",
+      "source_record_key": "8801121034927",
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "상품명이 얼려먹는 아이스크림을 직접 명시하고 원본 경로도 튜브아이스크림이다. 초코맛과 6입 구성은 속성이며 정확 기존 리프가 없다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:19"],
+      "source_name": "lottemart",
+      "source_record_key": "8801121031667",
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "food.snacks.icecream.tube",
+      "reason": "상품명이 얼려먹는 아이스크림을 명확히 표현하고 튜브아이스크림 경로와 일치한다. 밀크맛과 6입 포장은 별도 taxonomy가 아니며 신규 리프 검토가 필요하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unresolved_preserved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": [
+    "manual review: 9/9 current remaining observations and 9/9 unique products accounted for",
+    "manual taxonomy check: no exact current ice-cream/tube-ice-cream leaf found",
+    "manual repository conflict search: 0 accepted/review-decision matches across 9 exact source_record_keys",
+    "manual promotion separation check: 9 promotion_unresolved observations preserved without promotion approval"
+  ]
+}
