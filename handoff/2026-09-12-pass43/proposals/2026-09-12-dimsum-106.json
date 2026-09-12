@@ -1,0 +1,121 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "72a3b81332a0e29738fe08a047d3f37b7d8cb246",
+  "work_id": "2026-09-12-dimsum-106",
+  "remaining_group": "106",
+  "source_path": "handoff/2026-09-12-pass43/remaining/106/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-dimsum-106.json",
+  "scope_note": "Classification-only revalidation of the historical dim-sum proposal against the current pass43 remaining bundle, taxonomy, accepted records, and 431 explicit review decisions. Quantity, price, promotion, and product identity are unchanged; no DB integration or taxonomy mutation is performed.",
+  "review_accounting": {
+    "observations_checked": 9,
+    "unique_products": 5,
+    "existing_leaf_assignments_proposed": 5,
+    "held_observations": 0
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "accepted_record_matches": 0,
+    "current_dimsum_leaf_exists": true,
+    "historical_proposal_revalidated": true,
+    "note": "All five current source_record_key values remain unintegrated and have no explicit review-decision conflict. Current taxonomy contains food.meals.dumplings.dimsum, and the current titles explicitly identify hagau, xiaolongbao, or wonton/dim-sum product forms."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:10:7",
+        "ingestion:59:39"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071230973",
+      "source_title": "씨제이 고메 새우 하가우 135G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "하가우라는 딤섬 제품형태가 제목에 명확하다. 새우 속재료와 1+1 행사는 분류를 바꾸지 않는다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071230973&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:10:8",
+        "ingestion:59:47"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071203810",
+      "source_title": "씨제이 고메 샤오롱바오 141G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "샤오롱바오는 명확한 중국식 딤섬 만두 형태로, 일반 만두보다 기존 dimsum 리프가 정확하다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071203810&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:12:11",
+        "ingestion:61:52"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071379555",
+      "source_title": "동원 딤섬 사천우육 완탕 336G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "제목에 딤섬과 완탕이 모두 명시되어 제품형태가 분명하다. 사천우육은 속재료·맛 속성이다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071379555&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:12:12",
+        "ingestion:61:53"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071379549",
+      "source_title": "동원 딤섬 광동 새우완탕 294G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "딤섬·완탕 제품형태가 제목에 직접 드러난다. 광동 스타일과 새우 속재료는 속성으로 유지한다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071379549&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:60:64"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "069063326",
+      "source_title": "동원 딤섬 샤오롱바오 390G*2",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "제목이 딤섬 샤오롱바오를 직접 명시한다. 390G*2 포장수량은 taxonomy 분기 근거가 아니다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069063326&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": [
+    "manual revalidation: 9/9 current remaining observations accounted for",
+    "manual taxonomy check: food.meals.dumplings.dimsum exists in pass43 taxonomy",
+    "manual accepted-record check: 0/5 source_record_keys found in pass43 accepted.json",
+    "manual explicit-review check: 0/5 source_record_keys found in the 431 review decisions"
+  ]
+}
