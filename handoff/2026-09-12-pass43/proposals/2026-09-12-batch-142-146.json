@@ -1,0 +1,234 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-142-146",
+  "baseline_commit": "fd8acf9f24289a77f7df5e1baa304e8c4e1c2a42",
+  "reservation_commit": "33132ac9054c1ac85f274654810a1bd4f1a69179",
+  "scope": [
+    "remaining/142/001.json",
+    "remaining/143/001.json",
+    "remaining/144/001.json",
+    "remaining/145/001.json",
+    "remaining/146/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/fruit-small-142-143-198-199-200-260-284-289-290-291-406-407.json",
+    "../2026-09-11/proposals/bulk-pending-110-150.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 30,
+    "existing_leaf_products": 11,
+    "existing_leaf_observations": 22,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 1,
+    "hold_observations": 2,
+    "already_classified_products": 3,
+    "already_classified_observations": 6
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.produce.fruit.kiwi",
+      "food.produce.fruit.grape",
+      "food.produce.fruit.peach",
+      "food.snacks.traditional.hangwa",
+      "food.snacks.savory.wheat",
+      "food.meals.noodles.black_bean",
+      "food.meals.noodles.jjamppong"
+    ],
+    "missing_or_held_candidates": [
+      "food.snacks.savory.mixed"
+    ],
+    "note": "The seven existing ids are present in current pass43 taxonomy. The historical mixed-savory-snack candidate remains absent, so the explicit snack-mix product stays hold/needs_review instead of creating or self-approving taxonomy. Group 144 is already classified as peach and remains pending only for count-range review."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_groups_145_146": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "All 30 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All six source_record_keys in mixed groups 145-146 were checked against the preserved 431 explicit review decisions with zero exact matches; the historical bulk review also recorded zero explicit-review conflicts for the high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "142",
+      "source_record_key": "123567375",
+      "source_title": "14Brix 제스프리 썬골드키위(뉴질랜드) 1.1KG(박스)",
+      "raw_record_ids": ["ingestion:2:9", "ingestion:51:16"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "Title and source path explicitly identify SunGold kiwi; the current taxonomy contains the exact kiwi leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "142",
+      "source_record_key": "069753944",
+      "source_title": "제스프리 썬골드키위 7-10입(팩)",
+      "raw_record_ids": ["ingestion:2:22", "ingestion:51:20"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "Title and source path explicitly identify SunGold kiwi; the count range is a separate quantity issue and does not change classification.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "142",
+      "source_record_key": "115034331",
+      "source_title": "제스프리 그린키위 7-12입(팩)",
+      "raw_record_ids": ["ingestion:2:30", "ingestion:51:37"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "Title and source path explicitly identify green kiwi; the count range remains outside classification-only scope.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "143",
+      "source_record_key": "115610458",
+      "source_title": "15Brix 샤인머스캣 1.3KG(박스)",
+      "raw_record_ids": ["ingestion:2:4", "ingestion:51:3"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.grape",
+      "reason": "Shine Muscat is explicitly a grape product and the current taxonomy contains the grape leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "143",
+      "source_record_key": "111510492",
+      "source_title": "15Brix 거봉포도 2-3송이(박스)",
+      "raw_record_ids": ["ingestion:2:11", "ingestion:51:5"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.grape",
+      "reason": "The title explicitly identifies Kyoho grapes and the domestic-grape shelf corroborates the existing grape leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "143",
+      "source_record_key": "113440571",
+      "source_title": "유명산지 캠벨포도 1.5KG(박스)",
+      "raw_record_ids": ["ingestion:2:15", "ingestion:51:13"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.grape",
+      "reason": "The title explicitly identifies Campbell grapes and the current taxonomy contains the exact general grape leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "144",
+      "source_record_key": "009978194",
+      "source_title": "아삭한 복숭아 4-7입(박스)",
+      "raw_record_ids": ["ingestion:2:6", "ingestion:51:8"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.produce.fruit.peach",
+      "reason": "Current observations are already classified as peach; only the unresolved count range keeps them in remaining, so classification is preserved without claiming new classification progress.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "144",
+      "source_record_key": "125091789",
+      "source_title": "부드러운 복숭아 4-7입(박스)",
+      "raw_record_ids": ["ingestion:2:7", "ingestion:51:7"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.produce.fruit.peach",
+      "reason": "Current observations already resolve to the peach leaf; count-range interpretation remains a separate review issue.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "144",
+      "source_record_key": "111209712",
+      "source_title": "햇사레 복숭아 4-6입(팩)",
+      "raw_record_ids": ["ingestion:2:35", "ingestion:51:23"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.produce.fruit.peach",
+      "reason": "Current observations already resolve to peach and remain pending only for count-range review; no duplicate classification decision is created.",
+      "issues_preserved": ["count_range_unresolved"]
+    },
+    {
+      "group": "145",
+      "source_record_key": "069487429",
+      "source_title": "검정고무신 오란다 160G",
+      "raw_record_ids": ["ingestion:19:39", "ingestion:67:95"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.traditional.hangwa",
+      "reason": "The title explicitly identifies oranda, a traditional confection form, and the current taxonomy contains the hangwa/jeonbyeong leaf; the broad fried-snack shelf does not override product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "145",
+      "source_record_key": "069487441",
+      "source_title": "검정고무신 왕라면스낵 160G",
+      "raw_record_ids": ["ingestion:19:60", "ingestion:69:9"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.savory.wheat",
+      "reason": "The title explicitly identifies a ramen-style flour snack; current taxonomy contains the savory wheat-snack leaf, while the retail shelf is broader than the product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "145",
+      "source_record_key": "122285997",
+      "source_title": "덴로쿠 오이리 스낵믹스 14봉 294G",
+      "raw_record_ids": ["ingestion:19:76", "ingestion:69:24"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.snacks.savory.mixed",
+      "reason": "The title explicitly identifies a snack mix, but the historical mixed-savory candidate is still absent from current taxonomy. Do not collapse a mixed product into one component leaf or self-create the candidate.",
+      "issues_preserved": []
+    },
+    {
+      "group": "146",
+      "source_record_key": "129342372",
+      "source_title": "씨제이 중화요리 간짜장 2인분 630G",
+      "raw_record_ids": ["ingestion:11:50", "ingestion:60:91"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "The title explicitly identifies gan-jjajang noodles; the current black-bean-noodle leaf is the product-form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "146",
+      "source_record_key": "128917909",
+      "source_title": "씨제이 고메 중화 짬뽕 652G",
+      "raw_record_ids": ["ingestion:11:52", "ingestion:60:93"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.jjamppong",
+      "reason": "The title explicitly says jjamppong; the broad retail shelf labelled jjajang must not override the explicit noodle form, and the current jjamppong leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "146",
+      "source_record_key": "071353332",
+      "source_title": "simplus 짜장면 500G",
+      "raw_record_ids": ["ingestion:12:34", "ingestion:60:10"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "The title explicitly identifies jjajangmyeon and the current black-bean-noodle leaf is exact enough for the product form.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Count-range, quantity, promotion, unit, mixed-package, and price issues remain outside classification-only scope.",
+    "Retail shelf labels never override explicit product form.",
+    "Missing taxonomy ids in this proposal are candidates only and are not treated as approved taxonomy additions.",
+    "Already-classified observations are preserved and are not counted as new classification decisions."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 142-146 and grouped repeated observations by exact source_record_key.",
+    "Rechecked the historical fruit proposal references for groups 142-144 and the historical bulk proposal for groups 142-146 against current remaining titles and raw ids.",
+    "Revalidated kiwi, grape, peach, hangwa, savory-wheat, black-bean-noodle, and jjamppong ids against current pass43 taxonomy; confirmed food.snacks.savory.mixed remains absent.",
+    "Compared all 30 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Checked all six source_record_keys in mixed groups 145-146 against the preserved 431 explicit review decisions with zero exact matches.",
+    "No repository tests or DB import were executed because this is proposal-only classification review."
+  ]
+}
