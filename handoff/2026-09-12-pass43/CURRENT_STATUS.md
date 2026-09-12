@@ -8,6 +8,7 @@
 - `2026-09-12-flavored-milk-yogurt-098` / 기준 `8ddb377d86b7ca5457b7017794eaaae953bfd438` / 범위 `remaining/098/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-flavored-milk-yogurt-098.json` / 다음 시작점·보류: 5상품/10관측 전부 현재 taxonomy의 정확한 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
 - `2026-09-12-black-tea-102` / 기준 `34da36f8ec61dd718a31a5428619acd50cfeb47b` / 범위 `remaining/102/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-black-tea-102.json` / 다음 시작점·보류: 5상품/10관측 전부 `food.drinks.tea.black` 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
 - `2026-09-12-dimsum-106` / 기준 `72a3b81332a0e29738fe08a047d3f37b7d8cb246` / 범위 `remaining/106/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-dimsum-106.json` / 다음 시작점·보류: 5상품/9관측 전부 `food.meals.dumplings.dimsum` 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
+- `2026-09-12-black-bean-ramen-108` / 기준 `432c3c2f4fd426cfb35536b88fbbc2f1b65c0659` / 범위 `remaining/108/001.json` 전체 / 상태 `진행 중` / 결과 `proposals/2026-09-12-black-bean-ramen-108.json` / 다음 시작점·보류: 과거 108 제안의 짜장라면 기존 리프 판단을 현재 remaining·accepted·수동결정·taxonomy와 재대조 중.
 
 ## 실제 DB 반영 실적
 
