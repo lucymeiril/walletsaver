@@ -1,0 +1,131 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "7fb0336a6877a7469e7a9fb9b9e1b81bcfd11506",
+  "work_id": "2026-09-12-softener-deodorizer-109",
+  "remaining_group": "109",
+  "source_path": "handoff/2026-09-12-pass43/remaining/109/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-softener-deodorizer-109.json",
+  "scope_note": "Classification-only revalidation of the historical softener/deodorizer proposal against the current pass43 remaining bundle and taxonomy. Six already-classified softener observations remain unresolved only for mixed-package parsing; three Aura products are revalidated as the existing deodorizer leaf. No DB integration, package repair, promotion approval, taxonomy mutation, or identity merge is performed.",
+  "review_accounting": {
+    "observations_checked": 9,
+    "unique_products": 6,
+    "new_existing_leaf_assignments_proposed": 3,
+    "already_classified_observations_preserved": 6,
+    "mixed_package_unresolved_observations_preserved": 6,
+    "held_classification_observations": 0
+  },
+  "conflict_checks": {
+    "proposed_source_record_keys_checked": 3,
+    "repository_accepted_matches": 0,
+    "repository_explicit_review_decision_matches": 0,
+    "current_deodorizer_leaf_exists": true,
+    "historical_proposal_revalidated": true,
+    "note": "Current remaining data still marks the three Pigeon products as household.cleaning.laundry.softener and pending only because of mixed_package_unresolved. The three Aura titles explicitly identify 탈취제 despite their misleading softener shelf, and repository search found no accepted or explicit-review-decision path matches for those proposed source keys."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:26:17",
+        "ingestion:75:10"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "125025178",
+      "source_title": "피죤 섬유유연제 핑크로즈 기획팩 2.1L+2.1L",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "reason": "현재 remaining에서 이미 섬유유연제로 분류되어 있다. 남은 사유는 2.1L+2.1L 기획팩의 mixed_package_unresolved이며 분류를 다시 바꿀 근거가 아니다.",
+      "quantity_review": "mixed_package_unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:26:18",
+        "ingestion:75:60"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "121183036",
+      "source_title": "피죤 섬유유연제 옐로우 미모사 기획팩 2.1L+2.1L",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "reason": "현재 remaining에서 이미 섬유유연제로 분류되어 있다. 2.1L+2.1L 포장 해석 문제만 별도로 남아 있으므로 기존 분류를 보존한다.",
+      "quantity_review": "mixed_package_unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:26:24",
+        "ingestion:75:30"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "121183416",
+      "source_title": "피죤 섬유유연제 블루비앙카 기획팩 2.1L+2.1L",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "reason": "현재 remaining에서 이미 섬유유연제로 분류되어 있다. 남은 mixed-package 문제는 분류와 분리해 유지한다.",
+      "quantity_review": "mixed_package_unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:76:10"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "068840514",
+      "source_title": "LG 아우라 피톤치드 편백탈취제 숲속향 500ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "제목이 편백탈취제라는 제품형태를 직접 명시한다. 고농축 섬유유연제 진열경로보다 실제 제품형태를 우선하며 숲속향은 향 속성이다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068840514&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:76:11"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "068840508",
+      "source_title": "LG 아우라 피톤치드 편백탈취제 은은한향 500ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "제목의 편백탈취제가 제품형태를 명확히 규정한다. 은은한향은 향 속성이고 잘못된 섬유유연제 shelf는 taxonomy를 덮어쓰지 않는다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068840508&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:76:12"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "068840497",
+      "source_title": "LG 아우라 편백탈취제 피톤치드 상쾌한향 500ML",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "제목이 편백탈취제를 직접 명시하므로 기존 general.deodorizer 리프가 정확하다. 피톤치드와 상쾌한향은 제품형태를 바꾸지 않는다.",
+      "evidence_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068840497&storeType=HYPER"
+      ],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": [
+    "manual revalidation: 9/9 current remaining observations accounted for",
+    "manual state separation: 6 already-classified softener observations preserved with mixed_package_unresolved",
+    "manual taxonomy check: household.cleaning.general.deodorizer exists in pass43 taxonomy",
+    "manual repository conflict search: 0 accepted/review-decision path matches for 3 proposed deodorizer source_record_keys"
+  ]
+}
