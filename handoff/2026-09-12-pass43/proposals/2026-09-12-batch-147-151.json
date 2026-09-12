@@ -1,0 +1,231 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-147-151",
+  "baseline_commit": "fe5d9c1f08aa33e4421e5d40dce6af1f9adf7370",
+  "reservation_commit": "9efa29fe8b556cf4d866a667751b729aa8e298f3",
+  "scope": [
+    "remaining/147/001.json",
+    "remaining/148/001.json",
+    "remaining/149/001.json",
+    "remaining/150/001.json",
+    "remaining/151/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-110-150.json",
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 30,
+    "existing_leaf_products": 12,
+    "existing_leaf_observations": 24,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 3,
+    "hold_observations": 6,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.meals.dumplings.steamed",
+      "food.meat.processed.sundae",
+      "food.meals.prepared.japchae",
+      "food.meals.prepared.sushi",
+      "food.preserved.sides.pickled",
+      "food.seafood.processed.pollock_roe"
+    ],
+    "missing_or_held_candidates": [
+      "food.meals.prepared.ribs",
+      "food.preserved.sides.jeotgal"
+    ],
+    "note": "Current pass43 taxonomy contains the six existing leaves above. The ribs and generic jeotgal candidate ids are absent and remain review-only names; this proposal does not create taxonomy entries."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 30 current remaining raw ids were compared with current accepted new_included_ids and accepted_but_blocked_ids with zero overlaps. The preserved historical bulk reviews for 110-150 and 151-208 both recorded zero explicit-review-decision conflicts for their reviewed high-risk keys; CURRENT_STATUS continues to record the 431 explicit decisions as preserved."
+  },
+  "decisions": [
+    {
+      "group": "147",
+      "source_record_key": "070980564",
+      "source_title": "동원 개성왕만두김치 350G",
+      "raw_record_ids": ["ingestion:9:73", "ingestion:59:11"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.steamed",
+      "reason": "The source path explicitly places the product in 김치찐만두 and the title identifies a kimchi dumpling; kimchi is filling/flavor while the product form is steamed dumpling.",
+      "issues_preserved": []
+    },
+    {
+      "group": "147",
+      "source_record_key": "129860109",
+      "source_title": "풀무원 얄피꽉찬 김치만두 400G*2",
+      "raw_record_ids": ["ingestion:9:87", "ingestion:60:15"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.steamed",
+      "reason": "The 김치찐만두 source path and explicit kimchi-dumpling title support the existing steamed-dumpling leaf; package count is not a category distinction.",
+      "issues_preserved": []
+    },
+    {
+      "group": "147",
+      "source_record_key": "129513470",
+      "source_title": "씨제이 비비고 김치 왕 만두 420G*2",
+      "raw_record_ids": ["ingestion:11:48", "ingestion:60:89"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.dumplings.steamed",
+      "reason": "King-size and kimchi describe variant/filling; the source path identifies the steamed-dumpling form and the exact current leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "148",
+      "source_record_key": "069282942",
+      "source_title": "려강 쫀쫀한 찰순대 503G",
+      "raw_record_ids": ["ingestion:9:68", "ingestion:59:10"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.processed.sundae",
+      "reason": "The title explicitly identifies 찰순대, which overrides the broad 안주/전류 retail shelf and matches the current sundae leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "148",
+      "source_record_key": "070284000",
+      "source_title": "오리지널 바비큐 폭립 500G",
+      "raw_record_ids": ["ingestion:9:98", "ingestion:60:45"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.meals.prepared.ribs",
+      "reason": "The title explicitly identifies prepared barbecue pork ribs, but current taxonomy has no exact ribs leaf. The historical candidate is retained only for taxonomy review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "148",
+      "source_record_key": "137153595",
+      "source_title": "씨제이 비비고 잡채 644G",
+      "raw_record_ids": ["ingestion:11:45", "ingestion:60:83"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.japchae",
+      "reason": "The title directly identifies prepared japchae; the broad shelf does not override product form and the exact current leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "149",
+      "source_record_key": "070454491",
+      "source_title": "홈플델리 실속 모둠초밥 (30입)",
+      "raw_record_ids": ["ingestion:6:46", "ingestion:55:84"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.sushi",
+      "reason": "The title and deli sushi path both explicitly identify a ready-to-eat assorted sushi product; count is an attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "149",
+      "source_record_key": "070454698",
+      "source_title": "홈플델리 특선 초밥 (31입)",
+      "raw_record_ids": ["ingestion:6:51", "ingestion:55:89"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.sushi",
+      "reason": "Explicit prepared sushi title and source path match the current ready-sushi leaf; assortment/count do not create a separate category.",
+      "issues_preserved": []
+    },
+    {
+      "group": "149",
+      "source_record_key": "070519634",
+      "source_title": "홈플델리 통통유부초밥(9입)",
+      "raw_record_ids": ["ingestion:6:61", "ingestion:55:98"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.sushi",
+      "reason": "Ready-to-eat inari sushi is explicitly identified as 유부초밥 and fits the current prepared-sushi leaf; count remains an attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "150",
+      "source_record_key": "071050310",
+      "source_title": "simplus 와사비맛 쌈무 350G",
+      "raw_record_ids": ["ingestion:13:39", "ingestion:63:15"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.sides.pickled",
+      "reason": "쌈무 is an explicit pickled radish side dish; wasabi flavor is an attribute and the current pickled-side leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "150",
+      "source_record_key": "107028097",
+      "source_title": "씨제이 새콤한 쌈무 350G",
+      "raw_record_ids": ["ingestion:14:5", "ingestion:63:17"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.sides.pickled",
+      "reason": "The title explicitly identifies pickled wrapping radish; sour flavor wording does not change the preserved-side product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "150",
+      "source_record_key": "120772435",
+      "source_title": "씨제이 하선정 쌈무 와사비맛 350G",
+      "raw_record_ids": ["ingestion:14:32", "ingestion:63:19"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.sides.pickled",
+      "reason": "Explicit 쌈무 form fits the current pickled-side leaf; brand and wasabi flavor remain attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "151",
+      "source_record_key": "126259216",
+      "source_title": "[반찬] 한성 명란 젓갈 180G",
+      "raw_record_ids": ["ingestion:13:49", "ingestion:62:99"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.processed.pollock_roe",
+      "reason": "The title explicitly identifies 명란 젓갈, and current taxonomy has a dedicated 명란/pollock-roe processed-seafood leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "151",
+      "source_record_key": "000021458",
+      "source_title": "한성기업 새우 젓갈 280G",
+      "raw_record_ids": ["ingestion:14:2", "ingestion:63:35"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.preserved.sides.jeotgal",
+      "reason": "Salted shrimp jeotgal is a preserved/fermented seafood side dish, not raw shrimp; current taxonomy has no exact generic jeotgal leaf, so the historical candidate remains review-only.",
+      "issues_preserved": []
+    },
+    {
+      "group": "151",
+      "source_record_key": "069526845",
+      "source_title": "한성 오징어젓갈 150G",
+      "raw_record_ids": ["ingestion:14:35", "ingestion:63:66"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.preserved.sides.jeotgal",
+      "reason": "Squid jeotgal is a preserved seafood side dish rather than raw squid; current taxonomy lacks an exact jeotgal leaf, so no existing leaf is forced.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Product-title form overrides broad retail shelf labels when they conflict.",
+    "Missing taxonomy ids are review candidates only and are not treated as approved taxonomy additions."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 147-151 and grouped repeated observations into 15 exact source_record_keys.",
+    "Revalidated the six referenced existing leaves and confirmed that food.meals.prepared.ribs and food.preserved.sides.jeotgal are absent from current pass43 taxonomy.json.",
+    "Compared all 30 raw_record_ids with current accepted.json new_included_ids and accepted_but_blocked_ids and found zero overlaps.",
+    "Reused the preserved historical 110-150 and 151-208 explicit-review conflict checks after confirming CURRENT_STATUS still records 431 explicit decisions as preserved."
+  ]
+}
