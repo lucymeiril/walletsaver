@@ -1,0 +1,230 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-202-206",
+  "baseline_commit": "233bd2e6fd8dbff315317d3bbcb8552c30d2dae8",
+  "reservation_commit": "95adf3337419684a20a152d901fbcd0b5409ea8a",
+  "scope": [
+    "remaining/202/001.json",
+    "remaining/203/001.json",
+    "remaining/204/001.json",
+    "remaining/205/001.json",
+    "remaining/206/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 11,
+    "observations": 20,
+    "existing_leaf_products": 11,
+    "existing_leaf_observations": 20,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 0,
+    "hold_observations": 0,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.snacks.cereal.flakes",
+      "food.seafood.processed.seafood_ball",
+      "food.meals.noodles.buckwheat_noodle",
+      "food.meals.noodles.pasta",
+      "food.meals.prepared.soup_stew",
+      "food.meals.prepared.meal_kit"
+    ],
+    "missing_or_held_candidates": [],
+    "note": "Current pass43 taxonomy contains exact leaves for flake cereal, seafood balls, buckwheat noodles, pasta, soup/stew, and meal kits. Explicit product form/title is preferred over broader retail shelf wording when they conflict."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_11_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 20 current raw ids were exact-searched against current pass43 accepted data with zero overlap. All 11 distinct source_record_keys in groups 202-206 were exact-searched against the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk review set."
+  },
+  "decisions": [
+    {
+      "group": "202",
+      "source_name": "homeplus",
+      "source_record_key": "141783183",
+      "source_title": "동서 아몬드 후레이크 620G (스탠드업백)",
+      "raw_record_ids": [
+        "ingestion:17:31",
+        "ingestion:66:54"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.cereal.flakes",
+      "reason": "The title and source path explicitly identify almond flake cereal; almond is an ingredient/flavour and the current flake-cereal leaf is the exact product-form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "202",
+      "source_name": "homeplus",
+      "source_record_key": "006174485",
+      "source_title": "농심 켈로그 아몬드 푸레이크 600G",
+      "raw_record_ids": [
+        "ingestion:20:10",
+        "ingestion:67:61"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.cereal.flakes",
+      "reason": "Kellogg almond flakes are explicitly a flake cereal; almond does not change the cereal product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "203",
+      "source_name": "homeplus",
+      "source_record_key": "129437364",
+      "source_title": "씨제이 비비고 도톰 해물완자 795G",
+      "raw_record_ids": [
+        "ingestion:11:49",
+        "ingestion:60:90"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.processed.seafood_ball",
+      "reason": "The title explicitly identifies a processed seafood wan-ja/ball product, matching the current seafood-ball leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "203",
+      "source_name": "homeplus",
+      "source_record_key": "071345492",
+      "source_title": "simplus 오징어 해물완자 750G",
+      "raw_record_ids": [
+        "ingestion:12:36",
+        "ingestion:61:76"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seafood.processed.seafood_ball",
+      "reason": "The explicit seafood wan-ja form matches the current seafood-ball leaf; squid is an ingredient and does not make this raw squid.",
+      "issues_preserved": []
+    },
+    {
+      "group": "204",
+      "source_name": "homeplus",
+      "source_record_key": "071394473",
+      "source_title": "simplus 메밀소바 2인분 392G",
+      "raw_record_ids": [
+        "ingestion:10:88",
+        "ingestion:60:6"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.buckwheat_noodle",
+      "reason": "The product is explicitly buckwheat soba, which matches the current buckwheat-noodle leaf; serving count is not a category distinction.",
+      "issues_preserved": []
+    },
+    {
+      "group": "204",
+      "source_name": "homeplus",
+      "source_record_key": "071388319",
+      "source_title": "면사랑 냉메밀소바 1008G",
+      "raw_record_ids": [
+        "ingestion:12:3",
+        "ingestion:61:45"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.buckwheat_noodle",
+      "reason": "Cold buckwheat soba is an explicit buckwheat-noodle product and matches the current buckwheat-noodle leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "205",
+      "source_name": "homeplus",
+      "source_record_key": "121207874",
+      "source_title": "씨제이 까르보나라 스파게티 600G",
+      "raw_record_ids": [
+        "ingestion:11:80",
+        "ingestion:61:21"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "The title explicitly identifies spaghetti/pasta; carbonara is the sauce/style and the current pasta leaf is the product-form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "205",
+      "source_name": "homeplus",
+      "source_record_key": "069394781",
+      "source_title": "MDS코리아 라구(미트) 파스타 230G",
+      "raw_record_ids": [
+        "ingestion:60:12"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "The title explicitly identifies pasta; ragu/meat sauce is a preparation style and does not change the pasta product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "205",
+      "source_name": "homeplus",
+      "source_record_key": "069394736",
+      "source_title": "투움바 파스타 230G",
+      "raw_record_ids": [
+        "ingestion:60:41"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "The title explicitly identifies a pasta product; Toowoomba is the sauce/style and the current pasta leaf is the exact available form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "206",
+      "source_name": "homeplus",
+      "source_record_key": "069739616",
+      "source_title": "도드람 해남 묵은지 김치찌개 1KG",
+      "raw_record_ids": [
+        "ingestion:10:73",
+        "ingestion:59:50"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.soup_stew",
+      "reason": "The title identifies a kimchi stew and does not explicitly identify a meal kit; the ready soup/stew form therefore overrides the broader meal-kit retail shelf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "206",
+      "source_name": "homeplus",
+      "source_record_key": "129622202",
+      "source_title": "[밀키트] 홈밀 감자수제비 순두부 찌개 1100G",
+      "raw_record_ids": [
+        "ingestion:11:11",
+        "ingestion:60:88"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The source title explicitly labels the product as a meal kit, so the meal-kit leaf takes precedence over ingredient signals such as silken tofu.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form/title overrides broad retail shelf wording when they conflict.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 20 current remaining observations across groups 202-206 and grouped repeated observations by exact source_record_key.",
+    "Confirmed proposal_references is empty on all 20 current remaining observations.",
+    "Rechecked historical bulk-pending-151-208 groups 202-206 against current remaining titles and current pass43 taxonomy.",
+    "Confirmed current taxonomy contains food.snacks.cereal.flakes, food.seafood.processed.seafood_ball, food.meals.noodles.buckwheat_noodle, food.meals.noodles.pasta, food.meals.prepared.soup_stew, and food.meals.prepared.meal_kit.",
+    "Compared all 20 current raw ids against current pass43 accepted data with zero overlap.",
+    "Exact-searched all 11 distinct source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "Confirmed normalized issues is empty on all 20 observations; promotion labels and quantities were left unchanged.",
+    "No accepted, explicit review-decision, taxonomy, raw, or DB file was modified and no self-approval was performed."
+  ]
+}
