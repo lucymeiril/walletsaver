@@ -1,0 +1,229 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-172-176",
+  "baseline_commit": "8f1d9c2ff599e7e49400ca54c5c969702119d04b",
+  "reservation_commit": "a0201a95218cb5d8264584b48b48b537e8859b27",
+  "scope": [
+    "remaining/172/001.json",
+    "remaining/173/001.json",
+    "remaining/174/001.json",
+    "remaining/175/001.json",
+    "remaining/176/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 30,
+    "existing_leaf_products": 15,
+    "existing_leaf_observations": 30,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 0,
+    "hold_observations": 0,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.meat.eggs.cooked",
+      "food.meat.fresh.chicken",
+      "food.meat.fresh.pork",
+      "food.meals.prepared.seasoned_meat"
+    ],
+    "missing_or_held_candidates": [],
+    "note": "All four selected ids are present in the current pass43 taxonomy. Group 172 corrects the historical bulk decision from general chicken egg to the more exact current food.meat.eggs.cooked leaf (name_ko: 조리계란), because every title is explicitly roasted or smoked egg. Groups 173-176 independently revalidate the historical existing-leaf decisions."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_15_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 30 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All 15 source_record_keys in groups 172-176 were exact-searched against the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "172",
+      "source_record_key": "069365401",
+      "source_title": "오래구워 탱글한 구운계란 30구",
+      "raw_record_ids": ["ingestion:5:61", "ingestion:54:96"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.cooked",
+      "reason": "The title explicitly identifies roasted eggs, and current taxonomy contains the exact cooked-egg leaf; this is more specific than the historical generic chicken-egg mapping.",
+      "issues_preserved": []
+    },
+    {
+      "group": "172",
+      "source_record_key": "110466506",
+      "source_title": "다사다 훈제계란 6개입",
+      "raw_record_ids": ["ingestion:6:22", "ingestion:55:55"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.cooked",
+      "reason": "The title explicitly identifies smoked eggs, which fit the current cooked-egg leaf rather than the generic raw chicken-egg leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "172",
+      "source_record_key": "069896423",
+      "source_title": "풀무원 고소하고 부드럽게 구운란 20구",
+      "raw_record_ids": ["ingestion:6:36", "ingestion:55:75"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.eggs.cooked",
+      "reason": "The title explicitly identifies roasted eggs and current taxonomy provides the exact cooked-egg leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "173",
+      "source_record_key": "070983077",
+      "source_title": "무항생제 황금닭 닭가슴살 400G",
+      "raw_record_ids": ["ingestion:5:64", "ingestion:54:92"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.chicken",
+      "reason": "The title and source shelf identify uncooked chicken breast; current taxonomy contains the general fresh-chicken leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "173",
+      "source_record_key": "069473198",
+      "source_title": "냉동 닭안심 1KG(봉)",
+      "raw_record_ids": ["ingestion:5:75", "ingestion:55:31"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.chicken",
+      "reason": "Frozen storage does not change the uncooked chicken tenderloin product type; the current fresh-chicken leaf is the closest existing product-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "173",
+      "source_record_key": "070983083",
+      "source_title": "무항생제 황금닭 닭안심 400G",
+      "raw_record_ids": ["ingestion:5:97", "ingestion:55:33"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.chicken",
+      "reason": "The title explicitly identifies uncooked chicken tenderloin, matching the current fresh-chicken leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "174",
+      "source_record_key": "071124684",
+      "source_title": "simplus 덴마크산 초간편 구이용 냉동 삼겹살 800G(봉)/돼지고기",
+      "raw_record_ids": ["ingestion:5:40", "ingestion:54:74"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "The title explicitly identifies raw frozen pork belly; origin, storage and cut style are attributes and current taxonomy contains the pork leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "174",
+      "source_record_key": "071095700",
+      "source_title": "덴마크산 초간편 만능 냉동 대패삼겹살 800G(봉)",
+      "raw_record_ids": ["ingestion:5:43", "ingestion:54:77"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "Frozen thin-sliced pork belly remains uncooked pork; origin and slicing are attributes rather than separate taxonomy leaves.",
+      "issues_preserved": []
+    },
+    {
+      "group": "174",
+      "source_record_key": "070333761",
+      "source_title": "스페인산 냉동 뼈없는 대패 삼겹살 700G(팩)/돼지고기",
+      "raw_record_ids": ["ingestion:5:68", "ingestion:55:4"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "The explicit pork-belly title and raw frozen form match the current pork leaf; boneless/thin-sliced/import status remain attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "175",
+      "source_record_key": "070614037",
+      "source_title": "백두대간 한돈 칼집삼겹살 구이용 400G",
+      "raw_record_ids": ["ingestion:6:13", "ingestion:55:48"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "The title explicitly identifies raw domestic pork belly; scoring/cut style and intended cooking use do not change the pork product type.",
+      "issues_preserved": []
+    },
+    {
+      "group": "175",
+      "source_record_key": "070613977",
+      "source_title": "백두대간 한돈 삼겹살 구이용 400G",
+      "raw_record_ids": ["ingestion:6:16", "ingestion:55:70"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "Raw pork belly for grilling matches the current pork leaf; domestic brand/origin and cooking use are attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "175",
+      "source_record_key": "070613994",
+      "source_title": "백두대간 한돈 삼겹살 수육용 500G",
+      "raw_record_ids": ["ingestion:6:32", "ingestion:55:71"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.pork",
+      "reason": "Raw pork belly intended for boiling remains fresh pork; intended preparation is not a separate product-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "176",
+      "source_record_key": "070239844",
+      "source_title": "팔도진미 대구 북성로식 목심구이 800G/돼지고기",
+      "raw_record_ids": ["ingestion:5:35", "ingestion:54:66"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "The product is sold on the seasoned-pork shelf and is an explicitly prepared/grill-style pork item, matching the current seasoned-meat leaf rather than raw pork.",
+      "issues_preserved": []
+    },
+    {
+      "group": "176",
+      "source_record_key": "070590639",
+      "source_title": "생생 한돈 간장 불고기 800G",
+      "raw_record_ids": ["ingestion:5:47", "ingestion:54:79"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Soy-sauce bulgogi is explicitly seasoned pork and matches the current seasoned-meat leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "176",
+      "source_record_key": "070591143",
+      "source_title": "생생 한돈 고추장 불고기 800G",
+      "raw_record_ids": ["ingestion:5:49", "ingestion:54:81"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "Gochujang bulgogi is explicitly seasoned pork and fits the current seasoned-meat leaf.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Historical bulk proposals are references only and may be corrected against current titles and current taxonomy; group 172 was corrected to the exact cooked-egg leaf.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 172-176 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 172-176 against current remaining titles and raw ids; corrected group 172 from generic chicken egg to current cooked egg.",
+    "Revalidated food.meat.eggs.cooked, food.meat.fresh.chicken, food.meat.fresh.pork, and food.meals.prepared.seasoned_meat against current pass43 taxonomy.",
+    "Compared all 30 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Exact-searched all 15 source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "No repository tests or DB import were executed because this is proposal-only classification review."
+  ]
+}
