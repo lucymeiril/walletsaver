@@ -1,0 +1,252 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-187-191",
+  "baseline_commit": "8e4202d3f45743482fdf5d6a7872a3826ecf99f3",
+  "reservation_commit": "8b723203f6d719b60af75f73ade596cc9993d82a",
+  "scope": [
+    "remaining/187/001.json",
+    "remaining/188/001.json",
+    "remaining/189/001.json",
+    "remaining/190/001.json",
+    "remaining/191/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 25,
+    "existing_leaf_products": 12,
+    "existing_leaf_observations": 20,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 3,
+    "hold_observations": 5,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.drinks.juice.fruit_drink",
+      "food.dairy.cheese.portion",
+      "food.meals.prepared.seasoned_meat",
+      "food.meat.fresh.beef"
+    ],
+    "missing_or_held_candidates": [
+      "food.seafood.shellfish.clam",
+      "food.seafood.mixed.raw"
+    ],
+    "note": "Current pass43 taxonomy contains the exact fruit-drink, portion-cheese, prepared seasoned-meat, and fresh-beef leaves. It does not contain a generic clam leaf or a raw mixed-seafood leaf, so the historical 187 candidates remain held rather than being treated as existing leaves."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "accepted_exact_source_record_key_matches": 0,
+    "current_explicit_review_decision_matches_for_15_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 25 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All 15 source_record_keys were exact-searched against current accepted records and the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "187",
+      "source_name": "homeplus",
+      "source_record_key": "059698834",
+      "source_title": "동죽 조개 (국산) 600G(봉)",
+      "raw_record_ids": ["ingestion:4:44", "ingestion:54:6"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seafood.shellfish.clam",
+      "reason": "The title explicitly identifies a clam product, but current taxonomy has no generic clam leaf. It should not be forced into abalone, crab, or shrimp.",
+      "issues_preserved": []
+    },
+    {
+      "group": "187",
+      "source_name": "homeplus",
+      "source_record_key": "120883557",
+      "source_title": "해물모듬 250G(팩)",
+      "raw_record_ids": ["ingestion:5:23", "ingestion:54:36"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seafood.mixed.raw",
+      "reason": "The title identifies a raw mixed-seafood pack. Current taxonomy has no generic raw mixed-seafood leaf, so the broad 기타조개 shelf is not used as a product-type mapping.",
+      "issues_preserved": []
+    },
+    {
+      "group": "187",
+      "source_name": "homeplus",
+      "source_record_key": "071086976",
+      "source_title": "백생합(중국산) 1.5KG",
+      "raw_record_ids": ["ingestion:53:40"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seafood.shellfish.clam",
+      "reason": "The product is a clam, but current taxonomy has no generic clam leaf. Origin is an attribute and does not change the held product-form candidate.",
+      "issues_preserved": []
+    },
+    {
+      "group": "188",
+      "source_name": "homeplus",
+      "source_record_key": "114314981",
+      "source_title": "롯데 콜드오렌지+포도 900ML*2",
+      "raw_record_ids": ["ingestion:7:24", "ingestion:56:63"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The chilled orange-and-grape beverage is conservatively mapped to the current generic fruit-drink leaf; no juice-purity claim is inferred from the shelf or title.",
+      "issues_preserved": []
+    },
+    {
+      "group": "188",
+      "source_name": "homeplus",
+      "source_record_key": "142836477",
+      "source_title": "롯데 콜드오렌지+오렌지 900ML*2",
+      "raw_record_ids": ["ingestion:8:1", "ingestion:57:20"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The chilled orange beverage fits the current fruit-drink leaf without inferring 100% fruit-juice purity.",
+      "issues_preserved": []
+    },
+    {
+      "group": "188",
+      "source_name": "homeplus",
+      "source_record_key": "071404019",
+      "source_title": "우양 자몽맛 가나디 190ML",
+      "raw_record_ids": ["ingestion:8:28"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The title explicitly says grapefruit-flavoured drink, so the current fruit-drink leaf is more precise than a pure-juice leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "189",
+      "source_name": "homeplus",
+      "source_record_key": "127465120",
+      "source_title": "서울우유 앙팡치즈 까요까요 초코 78G",
+      "raw_record_ids": ["ingestion:8:75", "ingestion:58:7"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "까요까요 is a snack/portion cheese product, and the current 포션·큐브치즈 leaf is a better product-form match than the source shelf's sliced-cheese candidate.",
+      "issues_preserved": []
+    },
+    {
+      "group": "189",
+      "source_name": "homeplus",
+      "source_record_key": "126296972",
+      "source_title": "서울우유 앙팡치즈 까요까요 딸기 72.5G",
+      "raw_record_ids": ["ingestion:8:93", "ingestion:58:30"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "The snack/portion cheese form overrides the broad sliced-cheese shelf; strawberry is a flavour attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "189",
+      "source_name": "homeplus",
+      "source_record_key": "103790615",
+      "source_title": "일드프랑스 아페리프레 사뵈르드코트다쥐르 100G",
+      "raw_record_ids": ["ingestion:59:1"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "Aperifrais is sold as individual appetizer/portion cheese pieces, matching the current portion-cheese leaf rather than sliced cheese.",
+      "issues_preserved": []
+    },
+    {
+      "group": "190",
+      "source_name": "homeplus",
+      "source_record_key": "071048705",
+      "source_title": "품애복 1등급오리석쇠불고기간장맛 360G / 냉동",
+      "raw_record_ids": ["ingestion:6:27", "ingestion:55:62"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "The title explicitly identifies frozen soy-seasoned duck bulgogi. Product form overrides the chilled-duck retail shelf and matches the current prepared seasoned-meat leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "190",
+      "source_name": "homeplus",
+      "source_record_key": "071048694",
+      "source_title": "품애복 1등급오리석쇠불고기고추장맛 360G / 냉동",
+      "raw_record_ids": ["ingestion:6:28", "ingestion:55:63"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "The title explicitly identifies frozen gochujang-seasoned duck bulgogi, matching the current prepared seasoned-meat leaf rather than raw duck meat.",
+      "issues_preserved": []
+    },
+    {
+      "group": "190",
+      "source_name": "homeplus",
+      "source_record_key": "070907751",
+      "source_title": "무항생제 오리 슬라이스 구이 400G",
+      "raw_record_ids": ["ingestion:55:64"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.seasoned_meat",
+      "reason": "The explicit sliced-grill prepared form is retained under the current generic prepared seasoned-meat leaf rather than treating the broad chilled-duck shelf as proof of raw fresh meat.",
+      "issues_preserved": []
+    },
+    {
+      "group": "191",
+      "source_name": "homeplus",
+      "source_record_key": "110479180",
+      "source_title": "미국산 프라임 척아이롤(목심+등심) 100G/소고기",
+      "raw_record_ids": ["ingestion:5:70", "ingestion:55:23"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "The title explicitly identifies a fresh US beef grilling cut; origin and cut are attributes under the current fresh-beef leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "191",
+      "source_name": "homeplus",
+      "source_record_key": "124567217",
+      "source_title": "미국산 부채살 100G/소고기",
+      "raw_record_ids": ["ingestion:5:71"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "US flat-iron beef is a fresh beef cut; origin and cut do not require a different product leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "191",
+      "source_name": "homeplus",
+      "source_record_key": "110479163",
+      "source_title": "미국산 살치살 100G/소고기",
+      "raw_record_ids": ["ingestion:5:93", "ingestion:55:17"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.fresh.beef",
+      "reason": "US chuck-flap/salchisal is a fresh beef grilling cut and matches the current fresh-beef leaf.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Historical proposal decisions are references, not authority, and may be corrected when current raw evidence or taxonomy differs.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 25 current remaining observations across groups 187-191 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 187-191 against current remaining titles and current pass43 taxonomy.",
+    "Confirmed current taxonomy contains food.drinks.juice.fruit_drink, food.dairy.cheese.portion, food.meals.prepared.seasoned_meat, and food.meat.fresh.beef, while food.seafood.shellfish.clam and food.seafood.mixed.raw remain absent.",
+    "Compared all 25 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Exact-searched all 15 source_record_keys against current accepted records and the preserved 431 explicit review decisions with zero matches.",
+    "Confirmed the historical 151-208 bulk recorded zero explicit-review conflicts for the high-risk range.",
+    "Did not modify accepted.json, taxonomy.json, review-decisions-input.json, raw remaining files, or any DB data."
+  ]
+}
