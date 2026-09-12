@@ -1,0 +1,224 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-197-201",
+  "baseline_commit": "2edb2fd7eb2d1a0523a6269c09d6590a3240ff4d",
+  "reservation_commit": "28e54551f628895e12eeb99b754f1f0d2ac53f95",
+  "scope": [
+    "remaining/197/001.json",
+    "remaining/198/001.json",
+    "remaining/199/001.json",
+    "remaining/200/001.json",
+    "remaining/201/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 10,
+    "observations": 20,
+    "existing_leaf_products": 8,
+    "existing_leaf_observations": 16,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 1,
+    "hold_observations": 2,
+    "already_classified_products": 1,
+    "already_classified_observations": 2
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.produce.processed_fruit.cut",
+      "food.produce.fruit.banana",
+      "food.produce.fruit.melon",
+      "food.produce.fruit.grape",
+      "food.snacks.savory.popcorn"
+    ],
+    "missing_or_held_candidates": [
+      "food.produce.fruit.pineapple"
+    ],
+    "note": "Current pass43 taxonomy contains exact cut-fruit, banana, melon, grape, and popcorn leaves. It still does not contain a pineapple fruit leaf. Explicit product identity/form overrides broader or incorrect shelf wording."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_10_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 20 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All 10 distinct source_record_keys in groups 197-201 were exact-searched against the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "197",
+      "source_name": "homeplus",
+      "source_record_key": "129514774",
+      "source_title": "델몬트 컷파인애플 400G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:16",
+        "ingestion:51:18"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.cut",
+      "reason": "The title explicitly identifies packaged cut pineapple and the retail path is 간편과일; the current cut-fruit leaf is the exact product-form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "197",
+      "source_name": "homeplus",
+      "source_record_key": "122939714",
+      "source_title": "델몬트 허니듀 멜론(미국) 400G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:17",
+        "ingestion:51:12"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.processed_fruit.cut",
+      "reason": "The 400G packaged honeydew item is explicitly sold on the 간편과일 path and matches the current prepared/cut-fruit leaf rather than whole fresh melon.",
+      "issues_preserved": []
+    },
+    {
+      "group": "198",
+      "source_name": "homeplus",
+      "source_record_key": "070288704",
+      "source_title": "델몬트 바나나(베트남)",
+      "raw_record_ids": [
+        "ingestion:2:3",
+        "ingestion:51:6"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.banana",
+      "reason": "Both observations are already classified as banana from the source full path. They remain only for unresolved unit handling outside this classification-only task.",
+      "issues_preserved": [
+        "unit_unresolved"
+      ]
+    },
+    {
+      "group": "198",
+      "source_name": "homeplus",
+      "source_record_key": "070784036",
+      "source_title": "고산지 허니글로우(베트남)",
+      "raw_record_ids": [
+        "ingestion:2:12",
+        "ingestion:51:14"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.fruit.pineapple",
+      "reason": "Honeyglow is an explicit pineapple product identity and conflicts with the banana shelf. The current taxonomy has no pineapple fruit leaf, so it is held rather than forced into banana.",
+      "issues_preserved": []
+    },
+    {
+      "group": "199",
+      "source_name": "homeplus",
+      "source_record_key": "147492051",
+      "source_title": "12Brix 점보 머스크멜론(통)",
+      "raw_record_ids": [
+        "ingestion:2:13",
+        "ingestion:51:17"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.melon",
+      "reason": "Whole musk melon is an exact match for the current melon leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "199",
+      "source_name": "homeplus",
+      "source_record_key": "107993655",
+      "source_title": "고당도 허니듀 멜론(미국)통",
+      "raw_record_ids": [
+        "ingestion:2:28",
+        "ingestion:51:29"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.melon",
+      "reason": "Whole honeydew melon is an exact match for the current melon leaf; origin and sweetness are attributes.",
+      "issues_preserved": [
+        "unit_unresolved"
+      ]
+    },
+    {
+      "group": "200",
+      "source_name": "homeplus",
+      "source_record_key": "069343485",
+      "source_title": "프리미엄 블랙사파이어 포도(미국) 600G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:45",
+        "ingestion:51:50"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.grape",
+      "reason": "Black Sapphire is explicitly a grape; variety and origin do not change the product type.",
+      "issues_preserved": []
+    },
+    {
+      "group": "200",
+      "source_name": "homeplus",
+      "source_record_key": "070021427",
+      "source_title": "씨없는 청포도(미국) 600G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:56",
+        "ingestion:51:30"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.fruit.grape",
+      "reason": "Seedless green grapes are an exact match for the current grape leaf; seedlessness and origin are attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "201",
+      "source_name": "homeplus",
+      "source_record_key": "070031202",
+      "source_title": "simplus 카라멜팝콘 65G",
+      "raw_record_ids": [
+        "ingestion:18:78",
+        "ingestion:67:83"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.savory.popcorn",
+      "reason": "The explicit popcorn product form overrides the broader corn-snack shelf; caramel is a flavour/coating attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "201",
+      "source_name": "homeplus",
+      "source_record_key": "070031162",
+      "source_title": "simplus 버터팝콘 80G",
+      "raw_record_ids": [
+        "ingestion:18:94",
+        "ingestion:67:88"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.savory.popcorn",
+      "reason": "The explicit popcorn product form overrides the broader corn-snack shelf; butter is a flavour attribute.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Already-classified rows are documented but do not imply a new classification or DB write.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 20 current remaining observations across groups 197-201 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 197-201 against current remaining titles and current pass43 taxonomy.",
+    "Confirmed current taxonomy contains food.produce.processed_fruit.cut, food.produce.fruit.banana, food.produce.fruit.melon, food.produce.fruit.grape, and food.snacks.savory.popcorn, while food.produce.fruit.pineapple remains absent.",
+    "Compared all 20 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Exact-searched all 10 distinct source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "Confirmed historical bulk-pending-151-208 recorded zero explicit-review decision conflicts for its high-risk review set.",
+    "No accepted, explicit review-decision, taxonomy, raw, or DB file was modified and no self-approval was performed."
+  ]
+}
