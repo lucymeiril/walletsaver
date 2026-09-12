@@ -1,0 +1,74 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["022"],
+  "scope_note": "Strict GitHub read/write review of pending group 022 (Emart 친환경/유기농). Both pending fragments were read and all 40 observations were accounted for. Two rows are already classification-complete and are excluded from new classification progress. The broad organic shelf spans produce, eggs, dairy, noodles, beverages, grains and seasonings, so title/product form and current pass41 evidence were prioritized over shelf identity. No DB import/rebuild, taxonomy code edit, repository test or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 40,
+    "already_classification_complete_excluded": 2,
+    "strict_classification_reviews": 38,
+    "distinct_source_listings_reviewed": 38,
+    "existing_leaf_proposals": 31,
+    "holds": 7
+  },
+  "already_classified_exclusions": [
+    {"raw_record_ids":["ingestion:95:7"],"source_record_key":"1000547040107","source_title":"델파파 유기농 엑스트라 버진 올리브 오일 250ml","existing_unified_category_id":"food.seasonings.oils.olive","reason":"review_status=classified; classification is already complete."},
+    {"raw_record_ids":["ingestion:95:24"],"source_record_key":"1000631306405","source_title":"친환경 추부깻잎 20장*2입/봉 (25g*2)","existing_unified_category_id":"food.produce.vegetables.leaf","reason":"review_status=classified; classification is already complete and only non-classification reconciliation remains."}
+  ],
+  "proposed_decisions": [
+    {"raw_record_ids":["ingestion:95:1"],"source_record_key":"1000015049547","source_title":"산야초 먹인 동물복지 유정란 15개입 (대란, 780g내외)","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.chicken","reason":"Fresh chicken eggs are explicit; animal-welfare/organic-style descriptors are attributes."},
+    {"raw_record_ids":["ingestion:95:4"],"source_record_key":"1000631306407","source_title":"[농할 20% 할인쿠폰 다운로드]친환경 추부깻잎 20장/봉 (25g)","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.leaf","reason":"Fresh perilla leaves are explicit; promotion/organic descriptors do not change product form."},
+    {"raw_record_ids":["ingestion:95:5"],"source_record_key":"1000011626449","source_title":"유기농 베이비 요구르트 플레인 340g (85g*4)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Four 85g yogurt cups; exact catalog precedent uses spoon yogurt. This source key is also reviewed in pending026 and is preserved here for strict group accounting pending final global dedupe."},
+    {"raw_record_ids":["ingestion:95:8"],"source_record_key":"0000007343896","source_title":"유기농 우유 750ml","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Plain organic milk; organic is an attribute."},
+    {"raw_record_ids":["ingestion:95:10"],"source_record_key":"1000631342420","source_title":"[펠리체티] 유기농 통밀 푸질리 500g","decision":"propose_existing_leaf","unified_category_id":"food.meals.noodles.pasta","reason":"Dry fusilli pasta is explicit; whole-wheat/organic are attributes."},
+    {"raw_record_ids":["ingestion:95:13"],"source_record_key":"1000008646274","source_title":"우리 아이가 좋아하는 깐메추리알 270g","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.quail","reason":"Peeled quail eggs are explicit and pass41 has a quail-egg leaf."},
+    {"raw_record_ids":["ingestion:95:17"],"source_record_key":"1000632938345","source_title":"[1번사육] 지리산 산골 1등급 111 동물복지 자유방목 신선유정란 10개입 (520g)","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.chicken","reason":"Fresh chicken eggs are explicit; grade/free-range/welfare are attributes."},
+    {"raw_record_ids":["ingestion:95:18"],"source_record_key":"1000011626451","source_title":"유기농 베이비 요구르트 사과&당근 340g (85g*4)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Individual 85g yogurt cups; apple/carrot are flavour ingredients."},
+    {"raw_record_ids":["ingestion:95:19"],"source_record_key":"1000632938306","source_title":"지리산 산골 어린 닭이 낳은 신선 햇달걀 20구 (760g)","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.chicken","reason":"Fresh chicken eggs are explicit."},
+    {"raw_record_ids":["ingestion:95:22"],"source_record_key":"1000055206801","source_title":"유기농 요구르트 500ml (100mlx5)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Five 100ml liquid fermented-yogurt portions match the current yogurt-drink leaf."},
+    {"raw_record_ids":["ingestion:95:23"],"source_record_key":"1000043620749","source_title":"핑크퐁 유기농 아기요거트 딸기바나나 85gX4","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Four 85g yogurt cups; strawberry/banana are flavours."},
+    {"raw_record_ids":["ingestion:95:28"],"source_record_key":"1000632192361","source_title":"친환경 카이피라 85g/팩","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.leaf","reason":"Kaipira is a fresh leafy lettuce type; current leaf-vegetable taxonomy is the appropriate existing leaf."},
+    {"raw_record_ids":["ingestion:95:29"],"source_record_key":"0000007343897","source_title":"매일 상하목장 유기농 우유 180ml","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Plain organic milk."},
+    {"raw_record_ids":["ingestion:95:30"],"source_record_key":"1000631311380","source_title":"친환경 오이 2입/봉 (250g내외)","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.cucumber","reason":"Fresh cucumber is explicit."},
+    {"raw_record_ids":["ingestion:95:31"],"source_record_key":"1000105409092","source_title":"유기농 우유 500ml (125ml*4입)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Plain organic milk multipack."},
+    {"raw_record_ids":["ingestion:95:34"],"source_record_key":"1000631306409","source_title":"친환경 청적상추+깻잎혼합 150g/봉","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.leaf","reason":"Mixed fresh leafy greens remain within the existing leaf-vegetable leaf."},
+    {"raw_record_ids":["ingestion:95:38"],"source_record_key":"1000631339322","source_title":"친환경 애호박 2입/봉 (250g이상)","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.zucchini","reason":"Fresh zucchini is explicit and has a current leaf."},
+    {"raw_record_ids":["ingestion:95:39"],"source_record_key":"1000631206094","source_title":"친환경 무 (1kg이상)","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.radish","reason":"Fresh radish is explicit and has a current leaf."},
+    {"raw_record_ids":["ingestion:95:40"],"source_record_key":"0000007073040","source_title":"앙팡 유기농 아기치즈 스텝2 180g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Exact catalog precedent classifies this baby cheese family as sliced cheese."},
+    {"raw_record_ids":["ingestion:95:44"],"source_record_key":"1000585533619","source_title":"유기농 아기치즈 STEP2 360g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Baby cheese product form matches existing sliced-cheese precedents."},
+    {"raw_record_ids":["ingestion:95:48"],"source_record_key":"0000008264972","source_title":"앙팡 유기농 어린이치즈 스텝3 180g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Same Angpang child/baby sliced-cheese family as exact catalog precedents."},
+    {"raw_record_ids":["ingestion:95:52"],"source_record_key":"1000045173370","source_title":"유기농 마이리틀 요거트 플레인 255g (85g*3)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Three 85g yogurt cups; plain/organic are attributes."},
+    {"raw_record_ids":["ingestion:95:56"],"source_record_key":"1000017812040","source_title":"유기농 베이비 요구르트 딸기&바나나 340g (85g*4)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Four 85g yogurt cups; fruit flavours are attributes."},
+    {"raw_record_ids":["ingestion:95:60"],"source_record_key":"0000007665587","source_title":"[남양] 자연방목 유기농 아기치즈 2단계 180g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Baby cheese product form matches current sliced-cheese precedents."},
+    {"raw_record_ids":["ingestion:95:62"],"source_record_key":"1000631339827","source_title":"친환경 볶음용 모듬버섯 350g 내외/팩","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.mushroom","reason":"Fresh mixed mushrooms; current mushroom leaf intentionally covers fresh mushroom varieties and mixes."},
+    {"raw_record_ids":["ingestion:95:63"],"source_record_key":"1000632938329","source_title":"[농할 20% 할인쿠폰 다운로드] 무항생제 동물복지 유정란 신선 햇달걀 20구 (760g)","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.chicken","reason":"Fresh chicken eggs are explicit; promotion/welfare descriptors are attributes."},
+    {"raw_record_ids":["ingestion:95:67"],"source_record_key":"1000631306396","source_title":"친환경 캠핑용 간편모둠쌈 300g/팩","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.leaf","reason":"Fresh mixed wrap greens are leafy vegetables; convenience packaging is an attribute."},
+    {"raw_record_ids":["ingestion:95:68"],"source_record_key":"1000631206422","source_title":"친환경 트리플 토마토 900g/팩","decision":"propose_existing_leaf","unified_category_id":"food.produce.vegetables.tomato","reason":"Fresh tomato assortment is explicit."},
+    {"raw_record_ids":["ingestion:95:69"],"source_record_key":"1000633383180","source_title":"[농할 20% 할인쿠폰 다운로드] 순수백색 1등급 동물복지 유정란 20구 (대란, 1040g)","decision":"propose_existing_leaf","unified_category_id":"food.meat.eggs.chicken","reason":"Fresh chicken eggs are explicit; grade/welfare/promotion are attributes."},
+    {"raw_record_ids":["ingestion:95:75"],"source_record_key":"1000222810217","source_title":"[서울우유] 유기농 우유 700ml","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Plain organic milk."},
+    {"raw_record_ids":["ingestion:95:77"],"source_record_key":"1000030262308","source_title":"유기농 마이리틀 요거트 딸기&블루베리 255g (85g*3)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Three 85g yogurt cups; fruit flavours are attributes."}
+  ],
+  "held_decisions": [
+    {"raw_record_ids":["ingestion:95:20"],"source_record_key":"1000065464261","source_title":"얼려먹는 아이스크림 밀크 510ml","status":"held_taxonomy_policy","candidate_family":"freezable dairy ice-cream product","reason":"The product is explicitly intended to be frozen/eaten as ice cream, but no exact confirmed pass41 leaf or strict precedent was found. Do not force it into milk or another dairy leaf."},
+    {"raw_record_ids":["ingestion:95:21"],"source_record_key":"1000314928679","source_title":"얼려먹는 아이스크림 초코 510ml","status":"held_taxonomy_policy","candidate_family":"freezable dairy ice-cream product","reason":"Same unresolved freezable ice-cream form as the milk variant; no exact confirmed pass41 leaf."},
+    {"raw_record_ids":["ingestion:95:50"],"source_record_key":"1000559773068","source_title":"유기농 수정과 1.8L","status":"held_taxonomy_policy","candidate_family":"traditional cinnamon/persimmon beverage","reason":"Sujeonggwa identity is explicit, but no confirmed pass41 leaf or strict proposal mapping was found; do not collapse it into tea or generic juice."},
+    {"raw_record_ids":["ingestion:95:51"],"source_record_key":"1000010675647","source_title":"유기농 서리태 400g","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.rice.black_soybean","reason":"Prior strict proposals explicitly hold raw black soybean/서리태 because pass41 lacks a black-soybean leaf; do not substitute chickpea or another grain leaf."},
+    {"raw_record_ids":["ingestion:95:54"],"source_record_key":"1000052318571","source_title":"석류클렌즈콤부차(뷰티) 315ml","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.tea.kombucha","reason":"Reuse the established kombucha held-candidate family; kombucha is not a confirmed pass41 leaf."},
+    {"raw_record_ids":["ingestion:95:57"],"source_record_key":"1000018266489","source_title":"국내산 현미로 만든 스틱 미숫가루 600g","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.powder.misutgaru","reason":"Reuse the prior misutgaru/grain-powder candidate; current pass41 has no confirmed exact leaf."},
+    {"raw_record_ids":["ingestion:95:70"],"source_record_key":"1000057539352","source_title":"유기농 발아 깨소금 180g","status":"held_taxonomy_policy","candidate_family":"ground/seasoned sesame salt","reason":"Current taxonomy has roasted sesame, but the exact 깨소금 form is not confirmed equivalent. Hold rather than force into roasted_sesame."}
+  ],
+  "cross_group_overlap_notes": [
+    {"source_record_key":"1000011626449","raw_record_id_here":"ingestion:95:5","also_reviewed_in":"pending 026 / ingestion:83:71","prior_proposal":"proposals/emart-dairy-026.json","same_decision":"food.dairy.yogurt.spoon","note":"Intentional strict group overlap. Preserve group022 accounting and defer source-key dedupe to final global reconciliation."}
+  ],
+  "prior_group022_proposal_coverage": {
+    "confirmed_prior_group022_proposal": false,
+    "note": "Repository group-marker searches did not surface an older proposal claiming pending022. One exact source-key overlap with group026 was found and is recorded separately above; it is not a conflicting decision."
+  },
+  "explicit_review_decision_collision_screen": {
+    "source_record_keys_checked": 38,
+    "method": "batched repository searches covering all classification-pending source_record_key values; review-decisions-input.json hits were checked separately from raw/pending/unresolved and proposal overlap",
+    "review_decisions_input_hits": 0,
+    "note": "No explicit-decision collision surfaced; the 431 explicit decisions were not modified."
+  },
+  "executed_tests": []
+}
