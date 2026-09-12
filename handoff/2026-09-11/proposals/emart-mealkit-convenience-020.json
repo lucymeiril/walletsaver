@@ -1,0 +1,208 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["020"],
+  "scope_note": "Strict GitHub read/write review of pending group 020 (Emart 밀키트/간편식). Both pending fragments were read. The 42 observations are 21 source listings repeated once each across ingestion runs 84 and 85. Three source listings are already classification-complete, accounting for 6 observations excluded from new classification review. The remaining 36 observations / 18 source listings were reviewed by product title/form and existing pass41 precedents rather than the broad shelf label. No DB import/rebuild, taxonomy code edit, repository test or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 42,
+    "already_classification_complete_excluded": 6,
+    "strict_classification_reviews": 36,
+    "distinct_source_listings_reviewed": 18,
+    "existing_leaf_proposals": 4,
+    "holds": 14
+  },
+  "pair_structure": {
+    "source_listings_total": 21,
+    "observations_per_listing": 2,
+    "ingestion_runs": [84, 85],
+    "already_classified_source_listings": 3,
+    "classification_pending_source_listings": 18,
+    "note": "Each source_record_key in this group has one observation in ingestion 84 and one in ingestion 85. Strict accounting therefore keeps 42 observations while product-form decisions are made once per 18 classification-pending source listings."
+  },
+  "excluded_already_classified": [
+    {
+      "raw_record_ids": ["ingestion:84:13", "ingestion:85:13"],
+      "source_record_key": "1000768602033",
+      "source_title": "NEW 송탄식 부대찌개 1.467kg",
+      "current_leaf": "food.meals.prepared.soup_stew",
+      "reason": "Classification is already complete; any remaining pending condition is outside this classification-only review."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:33", "ingestion:85:33"],
+      "source_record_key": "1000112046904",
+      "source_title": "물만두1,000g",
+      "current_leaf": "food.meals.dumplings.boiled",
+      "reason": "Classification is already complete; the row remains pending for a separate unit/quantity concern."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:75", "ingestion:85:75"],
+      "source_record_key": "1000870082339",
+      "source_title": "[우주인피자] 불고기풀토핑 화덕피자_415g",
+      "current_leaf": "food.meals.prepared.pizza",
+      "reason": "Classification is already complete; exclude it from new classification accounting."
+    }
+  ],
+  "proposed_decisions": [
+    {
+      "raw_record_ids": ["ingestion:84:23", "ingestion:85:23"],
+      "source_record_key": "1000042662244",
+      "source_title": "아삭한 쌈무 350g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.preserved.sides.pickled",
+      "reason": "The title explicitly identifies 쌈무. Prior strict-sweep policy already maps 쌈무/절임반찬 to the existing pickled-side-dish leaf, so the broad 밀키트/간편식 shelf is ignored."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:31", "ingestion:85:31"],
+      "source_record_key": "1000030889333",
+      "source_title": "모짜렐라 비프라자냐 350g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "The current audited pass41 classifier explicitly treats 라자냐 as a pasta-form token. Mozzarella and beef describe filling/topping rather than a different top-level product form."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:38", "ingestion:85:38"],
+      "source_record_key": "1000587568995",
+      "source_title": "소금구이 모듬닭꼬치 600g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "reason": "닭꼬치 is explicit. Prior strict review and the pass41 catalog already place yakitori/닭꼬치 products under the prepared-chicken leaf; salt-grilled seasoning is an attribute."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:63", "ingestion:85:63"],
+      "source_record_key": "0000007694532",
+      "source_title": "다담 된장찌개 양념500g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "The product is explicitly 찌개 양념, and pass41 has an exact 찌개양념 leaf. It is seasoning sauce, not a finished soup/stew meal."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:84:6", "ingestion:85:6"],
+      "source_record_key": "1000576272206",
+      "source_title": "[매일유업] 맘마밀 오트밀과 사과푸룬",
+      "status": "held_new_taxonomy_candidate",
+      "candidate_family": "baby cereal / weaning food",
+      "reason": "The Mamamil line is a processed infant/weaning-food family, and prior strict review holds Mamamil puree/weaning products because pass41 has no baby-food leaf. Do not force this item into raw oat, fruit or ordinary cereal leaves from ingredient words alone.",
+      "quantity_review": "separate unresolved display/unit issue preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:84:7", "ingestion:85:7"],
+      "source_record_key": "1000015776048",
+      "source_title": "[매일유업]맘마밀 안심이유식 미역과소고기100g",
+      "status": "held_new_taxonomy_candidate",
+      "candidate_family": "baby weaning meal",
+      "reason": "이유식 is explicit, but pass41 has no confirmed baby-food/weaning-meal leaf. Ingredient words must not redirect the processed baby meal into seaweed or meat leaves."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:8", "ingestion:85:8"],
+      "source_record_key": "1000015776047",
+      "source_title": "[매일유업]맘마밀 안심이유식 표고버섯과소고기100g",
+      "status": "held_new_taxonomy_candidate",
+      "candidate_family": "baby weaning meal",
+      "reason": "이유식 is explicit, but the current taxonomy has no matching baby-food leaf. Mushroom and beef are ingredients, not a safe substitute taxonomy."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:22", "ingestion:85:22"],
+      "source_record_key": "1000013488631",
+      "source_title": "김밥용 맛 단무지 550g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.preserved.sides.danmuji",
+      "reason": "Reuse the established strict-sweep 단무지 candidate. The current pickled leaf is audited as 장아찌/절임반찬, and prior review deliberately did not force standalone 단무지 into it."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:27", "ingestion:85:27"],
+      "source_record_key": "1000015849657",
+      "source_title": "국산도토리묵 350g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.plant.muk.acorn",
+      "reason": "도토리묵 is explicit. Prior strict review already established an acorn-muk candidate because pass41 has no confirmed 묵 family/leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:29", "ingestion:85:29"],
+      "source_record_key": "1000055037516",
+      "source_title": "우엉절임과 김밥단무지 220g",
+      "status": "held_mixed_leaf_package",
+      "candidate_families": ["food.preserved.sides.pickled", "food.preserved.sides.danmuji"],
+      "reason": "One listing combines pickled burdock and danmuji. 쌈무/ordinary pickled sides have an existing pickled precedent, while standalone danmuji is still a dedicated taxonomy candidate; do not collapse the mixed package to one component."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:51", "ingestion:85:51"],
+      "source_record_key": "1000731999155",
+      "source_title": "양념감자튀김 400g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "Reuse the existing strict-sweep frozen-potato candidate used for 감자튀김/크링클컷/웨지 products. Fresh potato, frozen raw vegetables and potato snacks are not equivalent product forms."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:52", "ingestion:85:52"],
+      "source_record_key": "1000023184799",
+      "source_title": "메밀김치전병720g",
+      "status": "held_taxonomy_policy",
+      "candidate_family": "savory filled buckwheat jeonbyeong",
+      "reason": "The product is a savory kimchi-filled convenience food. The current 한과·전병 leaf belongs to traditional snacks, while 냉동전 is not proven equivalent to filled 메밀전병. Preserve product form rather than force either leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:55", "ingestion:85:55"],
+      "source_record_key": "0000008364050",
+      "source_title": "일가집 쫄깃 치자 단무지 200g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.preserved.sides.danmuji",
+      "reason": "Standalone 단무지; reuse the established dedicated candidate rather than forcing it into 장아찌."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:59", "ingestion:85:59"],
+      "source_record_key": "1000174277424",
+      "source_title": "정선 생 곤드레나물밥 5입(1110g)",
+      "status": "held_taxonomy_policy",
+      "candidate_family": "prepared mixed/seasoned rice (곤드레나물밥)",
+      "reason": "Prepared 곤드레나물밥 is explicit, but the current rice leaves distinguish instant rice, fried rice, cup rice, porridge and other specific forms. The title does not establish a safe exact equivalence, so do not force it into plain 즉석밥."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:61", "ingestion:85:61"],
+      "source_record_key": "1000028686800",
+      "source_title": "도토리묵 350g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.plant.muk.acorn",
+      "reason": "Reuse the established acorn-muk taxonomy candidate; pass41 has no confirmed current 묵 leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:67", "ingestion:85:67"],
+      "source_record_key": "1000811679097",
+      "source_title": "생선까스 280g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.fish_cutlet",
+      "reason": "Fish cutlet is an explicit prepared breaded-fish form. The current pork_cutlet leaf is species-specific and grilled_fish is a different preparation; no exact pass41 fish-cutlet leaf was confirmed."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:68", "ingestion:85:68"],
+      "source_record_key": "1000028384224",
+      "source_title": "딱 한끼(순한맛) 308g",
+      "status": "held_identity_ambiguous",
+      "candidate_family": "Samjin fishcake meal/product — unverified",
+      "reason": "The title itself does not identify the product form. The collection label is 삼진어묵, but brand/collection context alone is not sufficient to assert an 어묵 leaf; recover a verified product detail or alias first."
+    },
+    {
+      "raw_record_ids": ["ingestion:84:71", "ingestion:85:71"],
+      "source_record_key": "1000548820853",
+      "source_title": "무색소김밥단무지 400g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.preserved.sides.danmuji",
+      "reason": "Standalone 김밥단무지; reuse the established dedicated candidate rather than forcing it into the current 장아찌 leaf."
+    }
+  ],
+  "prior_group020_proposal_coverage": {
+    "confirmed_prior_group020_proposal": false,
+    "exact_source_key_hits": 0,
+    "note": "Exact repository search across all 21 source_record_keys found no prior proposal covering this group. Raw/pending/unresolved evidence was not counted as prior proposal completion."
+  },
+  "collision_screen": {
+    "source_record_keys_checked": 21,
+    "method": "All 21 source_record_keys were searched in repository batches against proposals, review-decisions-input.json and pending groups.",
+    "prior_proposal_source_key_hits": 0,
+    "review_decisions_input_hits": 0,
+    "cross_group_pending_hits_surfaced": 0,
+    "note": "Repository search surfaced no exact collision with an existing proposal or the 431 explicit review decisions. The pending-path search surfaced only pending020 itself for these keys."
+  },
+  "executed_tests": []
+}
