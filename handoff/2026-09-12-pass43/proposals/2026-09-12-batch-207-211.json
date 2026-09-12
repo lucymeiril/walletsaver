@@ -1,0 +1,235 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-207-211",
+  "baseline_commit": "a8f1e568383390b9e349921e555289708d1f31e6",
+  "reservation_commit": "c60d94be71cbbe355c51a26271fffee5154c8509",
+  "scope": [
+    "remaining/207/001.json",
+    "remaining/208/001.json",
+    "remaining/209/001.json",
+    "remaining/210/001.json",
+    "remaining/211/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json",
+    "../2026-09-11/proposals/bulk-pending-209-287.json",
+    "../2026-09-11/proposals/homeplus-small-211-217.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 10,
+    "observations": 20,
+    "existing_leaf_products": 8,
+    "existing_leaf_observations": 16,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 2,
+    "hold_observations": 4,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.meals.prepared.soup_stew",
+      "food.seasonings.sauces.broth",
+      "food.meals.prepared.cheese_ball",
+      "food.meals.prepared.chicken",
+      "food.preserved.kimchi.white"
+    ],
+    "missing_or_held_candidates": [
+      "food.meals.prepared.ribs",
+      "food.meals.prepared.cheese_stick"
+    ],
+    "note": "Current pass43 taxonomy contains exact leaves for soup/stew, cooking broth, cheese balls, prepared chicken, and white kimchi. It still has no exact ribs or cheese-stick leaf. Explicit product form/title overrides broader or incorrect retail shelf wording."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_10_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "historical_specific_proposal_revalidated_products": 2,
+    "note": "All 20 current raw ids were exact-searched against current pass43 accepted data with zero overlap. All 10 distinct source_record_keys in groups 207-211 were exact-searched against the preserved 431 explicit review decisions with zero matches. Historical bulk proposals recorded zero explicit-review conflicts for the relevant high-risk sets. The two group-211 white-kimchi products already have proposal references in homeplus-small-211-217.json; this pass43 file revalidates that evidence and does not self-approve or create an independent conflicting classification."
+  },
+  "decisions": [
+    {
+      "group": "207",
+      "source_name": "homeplus",
+      "source_record_key": "071139961",
+      "source_title": "매콤 슬라이스 폭립 500G",
+      "raw_record_ids": [
+        "ingestion:10:12",
+        "ingestion:60:39"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.meals.prepared.ribs",
+      "reason": "The title explicitly identifies prepared pork ribs, while the source shelf says samgyetang. The current taxonomy has no exact ribs leaf, so this is held rather than forced into soup/stew or another prepared-meat leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "207",
+      "source_name": "homeplus",
+      "source_record_key": "127296515",
+      "source_title": "마니커 에프앤지 녹두 삼계탕 900G",
+      "raw_record_ids": [
+        "ingestion:11:61",
+        "ingestion:61:2"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.soup_stew",
+      "reason": "The title explicitly identifies samgyetang, a prepared soup/stew form, and the current soup/stew leaf is the exact available match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "208",
+      "source_name": "homeplus",
+      "source_record_key": "128904268",
+      "source_title": "홈밀 한우 사골 육수 500G",
+      "raw_record_ids": [
+        "ingestion:11:53",
+        "ingestion:60:94"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.broth",
+      "reason": "The title explicitly identifies cooking broth rather than a ready soup/stew. The current cooking-broth leaf is the exact product-form match.",
+      "issues_preserved": []
+    },
+    {
+      "group": "208",
+      "source_name": "homeplus",
+      "source_record_key": "128852547",
+      "source_title": "홈플러스시그니처 소고기 양지 육수500G",
+      "raw_record_ids": [
+        "ingestion:11:54",
+        "ingestion:60:95"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.broth",
+      "reason": "The title explicitly identifies beef cooking broth; the broad soup/tang retail shelf does not override the broth product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "209",
+      "source_name": "homeplus",
+      "source_record_key": "142080523",
+      "source_title": "풀무원 모짜렐라 치즈볼 360G",
+      "raw_record_ids": [
+        "ingestion:9:71",
+        "ingestion:59:23"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.cheese_ball",
+      "reason": "The explicit cheese-ball product form matches the current cheese-ball leaf; the broader cheese-stick shelf is not used to override the title.",
+      "issues_preserved": []
+    },
+    {
+      "group": "209",
+      "source_name": "homeplus",
+      "source_record_key": "071079737",
+      "source_title": "임실치즈 롱치즈스틱 500G",
+      "raw_record_ids": [
+        "ingestion:10:44",
+        "ingestion:59:81"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.meals.prepared.cheese_stick",
+      "reason": "The title explicitly identifies a cheese stick, which is a distinct product form from cheese balls. The current taxonomy has no cheese-stick leaf, so it is held rather than collapsed into cheese_ball.",
+      "issues_preserved": []
+    },
+    {
+      "group": "210",
+      "source_name": "homeplus",
+      "source_record_key": "069664773",
+      "source_title": "솥솥 한판 닭강정",
+      "raw_record_ids": [
+        "ingestion:6:47",
+        "ingestion:55:86"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "reason": "Dakgangjeong is an explicitly prepared chicken product and matches the current prepared-chicken leaf. Unit handling remains outside this classification-only task.",
+      "issues_preserved": [
+        "unit_unresolved"
+      ]
+    },
+    {
+      "group": "210",
+      "source_name": "homeplus",
+      "source_record_key": "069150200",
+      "source_title": "당당 달콤양념 치킨",
+      "raw_record_ids": [
+        "ingestion:6:48",
+        "ingestion:55:88"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "reason": "The title explicitly identifies seasoned prepared chicken and matches the current prepared-chicken leaf. The unresolved unit issue is preserved separately.",
+      "issues_preserved": [
+        "unit_unresolved"
+      ]
+    },
+    {
+      "group": "211",
+      "source_name": "homeplus",
+      "source_record_key": "143580391",
+      "source_title": "씨제이 비비고 우리아이 한입 백김치 270G",
+      "raw_record_ids": [
+        "ingestion:14:50",
+        "ingestion:63:87"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.kimchi.white",
+      "reason": "The title explicitly says white kimchi, so the current white-kimchi leaf overrides the broader cabbage-kimchi shelf. This revalidates the linked historical proposal rather than creating an independent conflicting decision.",
+      "historical_proposal_file": "../2026-09-11/proposals/homeplus-small-211-217.json",
+      "historical_proposal_path": "/decisions/0",
+      "historical_proposal_revalidated": true,
+      "issues_preserved": []
+    },
+    {
+      "group": "211",
+      "source_name": "homeplus",
+      "source_record_key": "127144229",
+      "source_title": "대상 종가 어린이 한입 백김치 300G",
+      "raw_record_ids": [
+        "ingestion:14:91",
+        "ingestion:64:28"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.kimchi.white",
+      "reason": "The title explicitly says white kimchi and matches the current white-kimchi leaf. This revalidates the existing linked historical proposal; it is not self-approval or a duplicate DB action.",
+      "historical_proposal_file": "../2026-09-11/proposals/homeplus-small-211-217.json",
+      "historical_proposal_path": "/decisions/1",
+      "historical_proposal_revalidated": true,
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form/title overrides broad or incorrect retail shelf wording when they conflict.",
+    "Historical proposal references are revalidated as evidence only and are not self-approved or applied to DB.",
+    "No taxonomy creation, accepted mutation, identity merge, or self-approval was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 20 current remaining observations across groups 207-211 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 207-208 and bulk-pending-209-287 groups 209-211 against current remaining titles and current pass43 taxonomy.",
+    "Revalidated the two linked group-211 decisions in homeplus-small-211-217.json against the current raw observations and current white-kimchi leaf.",
+    "Confirmed current taxonomy contains food.meals.prepared.soup_stew, food.seasonings.sauces.broth, food.meals.prepared.cheese_ball, food.meals.prepared.chicken, and food.preserved.kimchi.white, while food.meals.prepared.ribs and food.meals.prepared.cheese_stick remain absent.",
+    "Compared all 20 current raw ids against current pass43 accepted data with zero overlap.",
+    "Exact-searched all 10 distinct source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "Confirmed the four group-210 observations retain unit_unresolved outside classification-only scope.",
+    "No accepted, explicit review-decision, taxonomy, raw, or DB file was modified and no self-approval was performed."
+  ]
+}
