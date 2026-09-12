@@ -1,0 +1,243 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-157-161",
+  "baseline_commit": "8f8a5bcd264d152255ac84ffb4113249a192f5c1",
+  "reservation_commit": "ee46ccc309f228e5a7adabbb35960e01c81a4ead",
+  "scope": [
+    "remaining/157/001.json",
+    "remaining/158/001.json",
+    "remaining/159/001.json",
+    "remaining/160/001.json",
+    "remaining/161/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 16,
+    "observations": 30,
+    "existing_leaf_products": 10,
+    "existing_leaf_observations": 20,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 6,
+    "hold_observations": 10,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.drinks.water_soda.soda",
+      "household.cleaning.general.deodorizer",
+      "household.cleaning.laundry.capsule",
+      "food.meals.prepared.grilled_fish"
+    ],
+    "missing_or_held_candidates": [
+      "household.cleaning.laundry.booster",
+      "food.seafood.processed.dried_shrimp",
+      "food.seafood.fish.eel"
+    ],
+    "note": "Current pass43 taxonomy contains the four existing leaves above. Laundry booster, dried-shrimp, and eel candidate ids are absent and remain review-only names; this proposal does not create taxonomy entries."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_groups_159_161": 0,
+    "explicit_review_decision_count": 431,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "All 30 current remaining raw ids were compared with current accepted new_included_ids and accepted_but_blocked_ids with zero overlaps. The 10 higher-risk source_record_keys in groups 159-161 were searched exactly in the current preserved 431 explicit review decisions with zero matches; the historical 151-208 bulk proposal also recorded zero explicit-review conflicts."
+  },
+  "decisions": [
+    {
+      "group": "157",
+      "source_record_key": "069030233",
+      "source_title": "롯데 탐스제로 사과 1.5L",
+      "raw_record_ids": ["ingestion:16:66", "ingestion:66:5"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "The source path explicitly identifies a flavored carbonated drink; apple flavor and zero-sugar positioning are attributes, and the current generic carbonated-drink leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "157",
+      "source_record_key": "069030227",
+      "source_title": "롯데 탐스제로 파인애플향 1.5L",
+      "raw_record_ids": ["ingestion:16:67", "ingestion:66:4"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "The product is explicitly shelved as flavored carbonated soda; pineapple flavor is an attribute and does not require a separate leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "157",
+      "source_record_key": "127273744",
+      "source_title": "롯데칠성 밀키스 캔 190ML*6",
+      "raw_record_ids": ["ingestion:16:75", "ingestion:66:7"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "Milkis is presented in the same explicit carbonated-drink shelf and the title identifies a packaged soda beverage; multipack count is an attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "158",
+      "source_record_key": "071289696",
+      "source_title": "피죤 스프레이 블루비앙카 430ML",
+      "raw_record_ids": ["ingestion:26:13", "ingestion:75:48"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "The source path explicitly identifies a fabric deodorizer spray; fragrance name is an attribute and the current deodorizer leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "158",
+      "source_record_key": "071289684",
+      "source_title": "피죤 스프레이 옐로 미모사 430ML",
+      "raw_record_ids": ["ingestion:26:36", "ingestion:75:62"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "The retail path states fabric deodorizer and the spray title is consistent with that form; scent is not a category distinction.",
+      "issues_preserved": []
+    },
+    {
+      "group": "158",
+      "source_record_key": "071289673",
+      "source_title": "피죤 스프레이 핑크 로즈 430ML",
+      "raw_record_ids": ["ingestion:26:37", "ingestion:75:63"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "The source path explicitly identifies fabric deodorizer; rose fragrance remains an attribute and the current deodorizer leaf fits the product form.",
+      "issues_preserved": []
+    },
+    {
+      "group": "159",
+      "source_record_key": "070356365",
+      "source_title": "LG생활건강 피지 디나자임 딥클린 캡슐세제 라벤더 26개입",
+      "raw_record_ids": ["ingestion:26:15", "ingestion:75:50"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.laundry.capsule",
+      "reason": "The title explicitly says 캡슐세제 and matches the current capsule-laundry-detergent leaf; scent and count are attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "159",
+      "source_record_key": "071367892",
+      "source_title": "허글리 딥클린 초고농축 캡슐세제 미스틱퍼퓸향 40입",
+      "raw_record_ids": ["ingestion:26:41", "ingestion:75:4"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.laundry.capsule",
+      "reason": "The title explicitly identifies concentrated capsule laundry detergent; the unresolved promotion is independent from product classification.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "159",
+      "source_record_key": "070860165",
+      "source_title": "LG생활건강 피지 모락셀라 냄새제거 부스터 코튼향 26개입",
+      "raw_record_ids": ["ingestion:75:95"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.cleaning.laundry.booster",
+      "reason": "The explicit title identifies a laundry odor-removal booster rather than capsule detergent. Current taxonomy has no booster leaf, so the broad drum-detergent shelf is not used to force a capsule classification.",
+      "issues_preserved": []
+    },
+    {
+      "group": "159",
+      "source_record_key": "070662100",
+      "source_title": "LG생활건강 피지 모락셀라 냄새제거부스터 26개입",
+      "raw_record_ids": ["ingestion:75:96"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "household.cleaning.laundry.booster",
+      "reason": "The product title says odor-removal booster and does not identify capsule detergent; current taxonomy has no exact laundry-booster leaf, so it remains a review-only candidate.",
+      "issues_preserved": []
+    },
+    {
+      "group": "160",
+      "source_record_key": "069758271",
+      "source_title": "강화도 보리새우 200G",
+      "raw_record_ids": ["ingestion:4:73", "ingestion:54:43"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.dried_shrimp",
+      "reason": "The source path explicitly identifies dried shrimp. Current taxonomy lacks an exact dried-shrimp leaf, and the product should not be silently collapsed into raw shrimp or dried fish.",
+      "issues_preserved": []
+    },
+    {
+      "group": "160",
+      "source_record_key": "071305540",
+      "source_title": "고소한 꽃새우(두절) 100G",
+      "raw_record_ids": ["ingestion:4:84", "ingestion:54:20"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.dried_shrimp",
+      "reason": "The source category is explicitly 건새우 and the product form is processed dried shrimp; current taxonomy has no exact dried-shrimp leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "160",
+      "source_record_key": "106503538",
+      "source_title": "강화도 분홍새우 100G(봉)",
+      "raw_record_ids": ["ingestion:5:7", "ingestion:54:37"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.processed.dried_shrimp",
+      "reason": "The authoritative shelf path identifies dried shrimp. Because no exact current dried-shrimp leaf exists, the candidate remains held for taxonomy review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "161",
+      "source_record_key": "125105165",
+      "source_title": "자포니카 민물장어 500G (박스/국산/실중량)",
+      "raw_record_ids": ["ingestion:4:3", "ingestion:53:37"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seafood.fish.eel",
+      "reason": "The title identifies unprepared freshwater eel, but current taxonomy has no exact eel leaf. It is therefore held rather than forced into another fish category.",
+      "issues_preserved": []
+    },
+    {
+      "group": "161",
+      "source_record_key": "071108042",
+      "source_title": "양념 민물장어구이 334G(팩)",
+      "raw_record_ids": ["ingestion:4:85", "ingestion:54:40"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.grilled_fish",
+      "reason": "The title explicitly identifies a seasoned grilled fish product; prepared grilled form overrides the broad assorted-fish retail shelf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "161",
+      "source_record_key": "071105212",
+      "source_title": "양념황태구이 250g(팩)",
+      "raw_record_ids": ["ingestion:4:96", "ingestion:53:72"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.grilled_fish",
+      "reason": "The title explicitly identifies seasoned grilled pollock, which matches the existing prepared grilled-fish leaf regardless of the broad shelf path.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Product-title form overrides broad retail shelf labels when they conflict.",
+    "Missing taxonomy ids are review candidates only and are not treated as approved taxonomy additions.",
+    "Historical bulk decisions may be corrected when current product titles or current taxonomy semantics show that an earlier batch rule was over-broad; group 159 is split accordingly."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 157-161 and grouped repeated observations into 16 exact source_record_keys.",
+    "Revalidated the four referenced existing leaves and confirmed that household.cleaning.laundry.booster, food.seafood.processed.dried_shrimp, and food.seafood.fish.eel are absent from current pass43 taxonomy.json.",
+    "Compared all 30 raw_record_ids with current accepted.json new_included_ids and accepted_but_blocked_ids and found zero overlaps.",
+    "Searched the 10 higher-risk source_record_keys in groups 159-161 against the current preserved 431 explicit review decisions and found zero exact matches; the historical 151-208 bulk conflict record is also zero.",
+    "No repository test or DB import was run because this is proposal-only review and no executable or DB state was changed."
+  ]
+}
