@@ -1,0 +1,285 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "work_id": "2026-09-12-batch-117-121",
+  "baseline_commit": "422e47d5031cc0401137fa7124f7e4a91a64e9ac",
+  "scope": [
+    "remaining/117/001.json",
+    "remaining/118/001.json",
+    "remaining/119/001.json",
+    "remaining/120/001.json",
+    "remaining/121/001.json"
+  ],
+  "historical_reference": "../2026-09-11/proposals/bulk-pending-110-150.json",
+  "review_accounting": {
+    "bundle_count": 5,
+    "product_count": 20,
+    "observation_count": 40,
+    "existing_leaf_products": 11,
+    "existing_leaf_observations": 22,
+    "new_leaf_needed_products": 5,
+    "new_leaf_needed_observations": 10,
+    "hold_products": 1,
+    "hold_observations": 2,
+    "already_classified_products": 3,
+    "already_classified_observations": 6
+  },
+  "taxonomy_checks": {
+    "existing_leaves_confirmed": [
+      "food.meals.prepared.chicken",
+      "food.preserved.kimchi.seokbakji",
+      "food.preserved.kimchi.green_onion",
+      "food.preserved.canned.tuna",
+      "food.drinks.tea.barley",
+      "food.drinks.tea.herbal",
+      "food.drinks.tea.grain"
+    ],
+    "missing_candidate_leaves": [
+      "food.preserved.kimchi.kkakdugi",
+      "food.preserved.sides.danmuji"
+    ]
+  },
+  "conflict_checks": {
+    "source_keys_checked": 20,
+    "accepted_matches": 0,
+    "explicit_review_decision_matches": 0,
+    "note": "All 20 source_record_key values were rechecked against the current accepted.json and the existing 431 explicit review decisions. No matches were found."
+  },
+  "group_reviews": [
+    {
+      "group": "117",
+      "source_path": "델리/치킨/초밥 > 치킨/튀김/구이 > 후라이드/양념/로스트 > 후라이드",
+      "product_count": 4,
+      "observation_count": 8,
+      "summary": "Explicit fried/seasoned chicken products. Current taxonomy contains food.meals.prepared.chicken. unit_unresolved remains independent from classification.",
+      "decisions": [
+        {
+          "source_record_key": "069150196",
+          "source_title": "당당 후라이드 치킨",
+          "raw_record_ids": ["ingestion:6:49", "ingestion:55:87"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.chicken",
+          "preserved_issues": ["unit_unresolved"]
+        },
+        {
+          "source_record_key": "070650166",
+          "source_title": "당당 허브 후라이드 치킨콤보",
+          "raw_record_ids": ["ingestion:6:50", "ingestion:55:85"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.chicken",
+          "preserved_issues": ["unit_unresolved"]
+        },
+        {
+          "source_record_key": "071004504",
+          "source_title": "당당 달콤 양념치킨 콤보",
+          "raw_record_ids": ["ingestion:6:56", "ingestion:55:91"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.chicken",
+          "preserved_issues": ["unit_unresolved"]
+        },
+        {
+          "source_record_key": "070278031",
+          "source_title": "당당 두마리 옛날통닭",
+          "raw_record_ids": ["ingestion:6:62", "ingestion:55:95"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.meals.prepared.chicken",
+          "preserved_issues": ["unit_unresolved"]
+        }
+      ]
+    },
+    {
+      "group": "118",
+      "source_path": "두부/김치/반찬 > 김치 > 무김치/기타김치",
+      "product_count": 4,
+      "observation_count": 8,
+      "summary": "Split explicit kimchi forms by product title. Seokbakji and green-onion kimchi have exact existing leaves; kkakdugi does not.",
+      "decisions": [
+        {
+          "source_record_key": "069417491",
+          "source_title": "대상 종가 석박지 900G",
+          "raw_record_ids": ["ingestion:14:16", "ingestion:62:70"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.preserved.kimchi.seokbakji"
+        },
+        {
+          "source_record_key": "129050711",
+          "source_title": "대상 종가 파김치 300G",
+          "raw_record_ids": ["ingestion:14:76", "ingestion:64:13"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.preserved.kimchi.green_onion"
+        },
+        {
+          "source_record_key": "135950033",
+          "source_title": "대상 종가 깍두기 용기 750G",
+          "raw_record_ids": ["ingestion:14:63", "ingestion:64:1"],
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_leaf": "food.preserved.kimchi.kkakdugi",
+          "reason": "Explicit kkakdugi product form; no exact current leaf. Do not collapse into generic radish kimchi without taxonomy review."
+        },
+        {
+          "source_record_key": "127144212",
+          "source_title": "대상 종가 어린이 한입 깍두기 300G",
+          "raw_record_ids": ["ingestion:14:92", "ingestion:64:29"],
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_leaf": "food.preserved.kimchi.kkakdugi",
+          "reason": "Explicit kkakdugi product form; child-size/one-bite wording is an attribute, not a separate category."
+        }
+      ]
+    },
+    {
+      "group": "119",
+      "source_path": "두부/김치/반찬 > 어묵/맛살/단무지 > 단무지",
+      "product_count": 4,
+      "observation_count": 8,
+      "summary": "Three products are explicit danmuji forms and need a dedicated leaf. The danmuji+burdock mixed product is held separately rather than forced into a pure danmuji leaf.",
+      "decisions": [
+        {
+          "source_record_key": "071049998",
+          "source_title": "simplus 김밥용단무지 550G",
+          "raw_record_ids": ["ingestion:13:0", "ingestion:62:48"],
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_leaf": "food.preserved.sides.danmuji"
+        },
+        {
+          "source_record_key": "071050143",
+          "source_title": "simplus 꼬들단무지 220G",
+          "raw_record_ids": ["ingestion:13:42", "ingestion:63:9"],
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_leaf": "food.preserved.sides.danmuji"
+        },
+        {
+          "source_record_key": "071035064",
+          "source_title": "simplus 반달맛단무지 1KG",
+          "raw_record_ids": ["ingestion:13:61", "ingestion:62:47"],
+          "decision": "new_leaf_needed",
+          "review_lane": "needs_review",
+          "candidate_leaf": "food.preserved.sides.danmuji"
+        },
+        {
+          "source_record_key": "071050235",
+          "source_title": "simplus 김밥용단무지와우엉 250G",
+          "raw_record_ids": ["ingestion:13:64", "ingestion:62:46"],
+          "decision": "hold",
+          "review_lane": "needs_review",
+          "reason": "Explicit mixed danmuji+burdock product. A pure danmuji leaf would discard the second primary component; resolve mixed-side taxonomy before assignment."
+        }
+      ]
+    },
+    {
+      "group": "120",
+      "source_path": "라면/즉석식품/통조림 > 참치/스팸/축수산통조림 > 참치/꽁치/고등어 > 참치",
+      "product_count": 4,
+      "observation_count": 8,
+      "summary": "Three products are already classified as canned tuna and remain only because bundle/mixed-package or promotion issues are unresolved. The grape-seed-oil tuna set is also a tuna product; '포도씨유' describes the tuna preparation, not a standalone cooking-oil product.",
+      "decisions": [
+        {
+          "source_record_key": "061914106",
+          "source_title": "동원 살코기참치+고추참치 135G*6+135G*2",
+          "raw_record_ids": ["ingestion:20:77", "ingestion:71:54"],
+          "decision": "already_classified",
+          "review_lane": "needs_review",
+          "unified_category_id": "food.preserved.canned.tuna",
+          "preserved_issues": ["bundle_multiplier_unresolved", "mixed_package_unresolved"]
+        },
+        {
+          "source_record_key": "062017900",
+          "source_title": "동원 살코기참치+고추참치 90G*4+90G*4",
+          "raw_record_ids": ["ingestion:21:45", "ingestion:71:74"],
+          "decision": "already_classified",
+          "review_lane": "needs_review",
+          "unified_category_id": "food.preserved.canned.tuna",
+          "preserved_issues": ["bundle_multiplier_unresolved", "mixed_package_unresolved"]
+        },
+        {
+          "source_record_key": "069622731",
+          "source_title": "동원 살코기 참치 + 고추참치 135G*3 + 135G*2",
+          "raw_record_ids": ["ingestion:22:21", "ingestion:71:33"],
+          "decision": "already_classified",
+          "review_lane": "needs_review",
+          "unified_category_id": "food.preserved.canned.tuna",
+          "preserved_issues": ["bundle_multiplier_unresolved", "mixed_package_unresolved", "promotion_unresolved"]
+        },
+        {
+          "source_record_key": "071390258",
+          "source_title": "동원 포도씨유 참치 150G*2+살코기참치 135G*4",
+          "raw_record_ids": ["ingestion:20:78", "ingestion:71:14"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.preserved.canned.tuna",
+          "reason": "Both title components are tuna cans and the source path is tuna. The grape-seed-oil token denotes the tuna variant and should not route the sale page to cooking oil.",
+          "preserved_issues": ["bundle_multiplier_unresolved", "mixed_package_unresolved", "multiple_package_quantities"]
+        }
+      ]
+    },
+    {
+      "group": "121",
+      "source_path": "생수/음료/주류 > 전통/차/기타음료 > 기타 음료 > 기타다류음료",
+      "product_count": 4,
+      "observation_count": 8,
+      "summary": "Broad retail shelf is split by explicit beverage form in title: barley tea, herbal tea, and grain tea.",
+      "decisions": [
+        {
+          "source_record_key": "065175010",
+          "source_title": "하이트진로 블랙보리라이트 1.5L",
+          "raw_record_ids": ["ingestion:16:82", "ingestion:66:19"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.drinks.tea.barley"
+        },
+        {
+          "source_record_key": "127890301",
+          "source_title": "하이트진로 블랙보리차 1.5L",
+          "raw_record_ids": ["ingestion:16:88", "ingestion:66:28"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.drinks.tea.barley"
+        },
+        {
+          "source_record_key": "115604859",
+          "source_title": "광동 진한 헛개차 1.5L",
+          "raw_record_ids": ["ingestion:16:91", "ingestion:66:20"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.drinks.tea.herbal"
+        },
+        {
+          "source_record_key": "104806826",
+          "source_title": "광동제약 옥수수수염차 1.5L",
+          "raw_record_ids": ["ingestion:16:93", "ingestion:66:29"],
+          "decision": "existing_leaf",
+          "review_lane": "clear_existing",
+          "unified_category_id": "food.drinks.tea.grain"
+        }
+      ]
+    }
+  ],
+  "quantity": {
+    "status": "unchanged",
+    "note": "No quantity, bundle, mixed-package, or unit interpretation is approved by this proposal."
+  },
+  "identity_merge": {
+    "status": "not_requested"
+  },
+  "preserved_contracts": [
+    "No raw, invalid, accepted, explicit review decision, taxonomy, or DB records are modified.",
+    "Promotion, quantity, bundle, mixed-package, multiple-package-quantity, and unit issues remain independent from classification.",
+    "Broad retail shelf never overrides explicit product form.",
+    "New taxonomy candidates are review suggestions only and are not added to taxonomy by this proposal."
+  ],
+  "executed_tests": [
+    "Manual source-title/source-key/raw-record accounting for all 40 observations.",
+    "Manual current taxonomy leaf existence checks for all proposed existing leaves and missing candidates.",
+    "Manual accepted.json and 431-decision conflict checks for all 20 source_record_key values.",
+    "No DB integration, taxonomy mutation, application test suite, or live collection test was run."
+  ]
+}
