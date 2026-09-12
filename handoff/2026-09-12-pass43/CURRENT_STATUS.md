@@ -11,6 +11,7 @@
 - `2026-09-12-black-bean-ramen-108` / 기준 `432c3c2f4fd426cfb35536b88fbbc2f1b65c0659` / 범위 `remaining/108/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-black-bean-ramen-108.json` / 다음 시작점·보류: 5상품/9관측 전부 `food.meals.noodles.black_bean` 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 짜슐랭 2관측의 `promotion_unresolved`는 별도 보류 유지. 제안 전용이므로 실제 DB 반영은 하지 않음.
 - `2026-09-12-softener-deodorizer-109` / 기준 `7fb0336a6877a7469e7a9fb9b9e1b81bcfd11506` / 범위 `remaining/109/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-softener-deodorizer-109.json` / 다음 시작점·보류: 6상품/9관측 검토 완료. 아우라 탈취제 3상품/3관측은 `household.cleaning.general.deodorizer`의 `existing_leaf` / `clear_existing`; 피죤 섬유유연제 3상품/6관측은 기존 `household.cleaning.laundry.softener` 분류를 보존하되 `mixed_package_unresolved`로 `already_classified` / `needs_review` 유지. 제안 전용이므로 실제 DB·포장 해석 반영 없음.
 - `2026-09-12-tube-icecream-110` / 기준 `f69b89ba11ef383ddd118cc1f41d73b6f250a50a` / 범위 `remaining/110/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-tube-icecream-110.json` / 다음 시작점·보류: 9상품/9관측 전부 명시적 튜브/얼려먹는 아이스크림 형태이나 현재 taxonomy에 정확 리프 없음. `food.snacks.icecream.tube`는 taxonomy 검토용 이름 후보일 뿐 최종 parent/id는 별도 검토 필요. 9건 모두 `new_leaf_needed` / `needs_review`; `promotion_unresolved` 9관측은 별도 보류 유지. 제안 전용이므로 실제 DB·taxonomy·행사 반영 없음.
+- `2026-09-12-emart-hair-body-beauty-111` / 기준 `d10e6b7a970d8c633059e4cdceb7141e421ebba5` / 범위 `remaining/111/001.json` 전체 / 상태 `진행 중` / 결과 `proposals/2026-09-12-emart-hair-body-beauty-111.json` / 다음 시작점·보류: 이마트 헤어/바디/뷰티 8관측을 현재 taxonomy·accepted·수동결정과 재대조 중.
 
 ## 실제 DB 반영 실적
 
