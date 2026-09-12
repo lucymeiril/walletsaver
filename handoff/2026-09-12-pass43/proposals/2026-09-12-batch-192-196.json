@@ -1,0 +1,389 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-192-196",
+  "baseline_commit": "5256b341c5a13b9a910dfb29340c1db40e232b20",
+  "reservation_commit": "71ce86314da8c51a4e5ec07a1f89dd7a6df7a434",
+  "scope": [
+    "remaining/192/001.json",
+    "remaining/193/001.json",
+    "remaining/194/001.json",
+    "remaining/195/001.json",
+    "remaining/196/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 19,
+    "observations": 23,
+    "existing_leaf_products": 8,
+    "existing_leaf_observations": 8,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 6,
+    "hold_observations": 10,
+    "already_classified_products": 5,
+    "already_classified_observations": 5
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.produce.fruit.peach",
+      "food.drinks.water_soda.cola",
+      "food.drinks.water_soda.cider",
+      "food.drinks.water_soda.soda",
+      "food.seasonings.sauces.stew",
+      "food.seasonings.sauces.tteokbokki"
+    ],
+    "missing_or_held_candidates": [
+      "food.seasonings.sauces.stir_fry",
+      "food.health.supplements.weight_management",
+      "food.health.supplements.vitamin_c",
+      "food.health.supplements.multivitamin"
+    ],
+    "note": "Current pass43 taxonomy contains exact peach, cola, cider, generic soda, stew-seasoning, and tteokbokki-seasoning leaves. It does not contain the held generic stir-fry sauce or the three supplement-form candidates. Group 194's historical bulk note omitted the explicit 국물떡볶이 양념 product; the current exact tteokbokki-seasoning leaf is used for that product."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_19_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 23 current raw ids were compared with current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap. All 19 distinct source_record_keys in groups 192-196 were exact-searched against the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "192",
+      "source_name": "lottemart",
+      "source_record_key": "8809045342005",
+      "source_title": "햇사레 부드러운 복숭아 (4-7입/박스)",
+      "raw_record_ids": [
+        "ingestion:28:7"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.peach",
+      "reason": "Classification is already food.produce.fruit.peach from the source full path; this remaining observation is retained only for count-range and promotion handling outside this classification-only task.",
+      "issues_preserved": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "192",
+      "source_name": "lottemart",
+      "source_record_key": "8809953530129",
+      "source_title": "아삭한복숭아 (4~7입/박스)",
+      "raw_record_ids": [
+        "ingestion:28:33"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.peach",
+      "reason": "Classification is already food.produce.fruit.peach from the source full path; this remaining observation is retained only for count-range and promotion handling outside this classification-only task.",
+      "issues_preserved": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "192",
+      "source_name": "lottemart",
+      "source_record_key": "8801448216341",
+      "source_title": "하늘작 부드러운 복숭아 (4-7입/박스)",
+      "raw_record_ids": [
+        "ingestion:28:37"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.peach",
+      "reason": "Classification is already food.produce.fruit.peach from the source full path; this remaining observation is retained only for count-range and promotion handling outside this classification-only task.",
+      "issues_preserved": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "192",
+      "source_name": "lottemart",
+      "source_record_key": "8801448261020",
+      "source_title": "임실 부드러운 복숭아 (4-7입/박스)",
+      "raw_record_ids": [
+        "ingestion:28:44"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.peach",
+      "reason": "Classification is already food.produce.fruit.peach from the source full path; this remaining observation is retained only for count-range and promotion handling outside this classification-only task.",
+      "issues_preserved": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "192",
+      "source_name": "lottemart",
+      "source_record_key": "8801448208490",
+      "source_title": "하늘작 아삭한 복숭아 (4-7입/박스)",
+      "raw_record_ids": [
+        "ingestion:30:29"
+      ],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "existing_classification_id": "food.produce.fruit.peach",
+      "reason": "Classification is already food.produce.fruit.peach from the source full path; this remaining observation is retained only for count-range and promotion handling outside this classification-only task.",
+      "issues_preserved": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "193",
+      "source_name": "lottemart",
+      "source_record_key": "8801094082321",
+      "source_title": "코카콜라 제로 (1.2L)",
+      "raw_record_ids": [
+        "ingestion:28:91"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.cola",
+      "reason": "Explicit Coca-Cola Zero product identity fits the current cola leaf; zero-sugar is an attribute.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "193",
+      "source_name": "lottemart",
+      "source_record_key": "8801223007935",
+      "source_title": "맥콜 (1.25L)",
+      "raw_record_ids": [
+        "ingestion:29:17"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "McCol is a carbonated soft drink and fits the current generic soda leaf.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "193",
+      "source_name": "lottemart",
+      "source_record_key": "8801056235987",
+      "source_title": "칠성 사이다제로 (1.25L)",
+      "raw_record_ids": [
+        "ingestion:29:37"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.cider",
+      "reason": "Explicit Chilsung Cider Zero identity fits the current cider leaf; zero-sugar is an attribute.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "193",
+      "source_name": "lottemart",
+      "source_record_key": "8801043650632",
+      "source_title": "웰치 포도 캔 (355ML * 6)",
+      "raw_record_ids": [
+        "ingestion:33:32"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "Welch's grape canned carbonated drink fits the current generic soda leaf; grape flavour is an attribute.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "193",
+      "source_name": "lottemart",
+      "source_record_key": "8801043064101",
+      "source_title": "웰치포도 제로 (355ML * 6)",
+      "raw_record_ids": [
+        "ingestion:35:9"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.water_soda.soda",
+      "reason": "Welch's grape zero carbonated drink fits the current generic soda leaf; flavour and zero-sugar are attributes.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "194",
+      "source_name": "lottemart",
+      "source_record_key": "8801114173060",
+      "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+      "raw_record_ids": [
+        "ingestion:30:58"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "The title explicitly identifies sundubu-jjigae seasoning, matching the current stew-seasoning leaf.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "194",
+      "source_name": "lottemart",
+      "source_record_key": "8801114173411",
+      "source_title": "풀무원 반듯한식 두부두루치기 양념 (140G)",
+      "raw_record_ids": [
+        "ingestion:32:66"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seasonings.sauces.stir_fry",
+      "reason": "The title is a stir-fry/duruchigi cooking sauce, but the current taxonomy has no exact generic stir-fry sauce leaf; the historical held candidate remains appropriate.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "194",
+      "source_name": "lottemart",
+      "source_record_key": "8801114173404",
+      "source_title": "풀무원 반듯한식 직화제육볶음 양념 (150G)",
+      "raw_record_ids": [
+        "ingestion:33:81"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seasonings.sauces.stir_fry",
+      "reason": "The title explicitly identifies jeyuk-bokkeum seasoning, but the current taxonomy lacks an exact generic stir-fry sauce leaf.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "194",
+      "source_name": "lottemart",
+      "source_record_key": "8809605520225",
+      "source_title": "오늘좋은 순두부찌개양념 (130G)",
+      "raw_record_ids": [
+        "ingestion:34:14"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "The explicit sundubu-jjigae seasoning form matches the current stew-seasoning leaf.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "194",
+      "source_name": "lottemart",
+      "source_record_key": "8801114173381",
+      "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+      "raw_record_ids": [
+        "ingestion:34:89"
+      ],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.sauces.tteokbokki",
+      "reason": "The title explicitly identifies tteokbokki seasoning, and the current taxonomy contains the exact 떡볶이양념 leaf; this corrects the historical bulk note that did not separately spell out this product.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    },
+    {
+      "group": "195",
+      "source_name": "homeplus",
+      "source_record_key": "070826685",
+      "source_title": "푸응 나이트 버닝 프로 601MG*10캡슐",
+      "raw_record_ids": [
+        "ingestion:26:65",
+        "ingestion:76:23"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.health.supplements.weight_management",
+      "reason": "The title presents a weight-management supplement product form, while the child-probiotic retail shelf is contradictory. Current taxonomy has no neutral weight-management supplement leaf; no efficacy claim is inferred.",
+      "issues_preserved": []
+    },
+    {
+      "group": "195",
+      "source_name": "homeplus",
+      "source_record_key": "070826495",
+      "source_title": "푸응 팻버닝 600MG*30캡슐",
+      "raw_record_ids": [
+        "ingestion:26:66",
+        "ingestion:76:24"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.health.supplements.weight_management",
+      "reason": "The title presents a weight-management supplement product form, while the child-probiotic retail shelf is contradictory. Current taxonomy has no neutral weight-management supplement leaf; no efficacy claim is inferred.",
+      "issues_preserved": []
+    },
+    {
+      "group": "196",
+      "source_name": "homeplus",
+      "source_record_key": "071095619",
+      "source_title": "GNM 리포좀 비타민C 1000MG*30정",
+      "raw_record_ids": [
+        "ingestion:26:60",
+        "ingestion:76:22"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.health.supplements.vitamin_c",
+      "reason": "The explicit vitamin C tablet product form contradicts the tonic-drink shelf, and current taxonomy has no exact vitamin-C supplement leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "196",
+      "source_name": "homeplus",
+      "source_record_key": "071226380",
+      "source_title": "simplus 이중제형 멀티비타민 7병",
+      "raw_record_ids": [
+        "ingestion:26:63",
+        "ingestion:76:18"
+      ],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.health.supplements.multivitamin",
+      "reason": "The explicit multivitamin dual-form supplement product form contradicts the tonic-drink shelf, and current taxonomy has no exact multivitamin supplement leaf.",
+      "issues_preserved": [
+        "promotion_unresolved"
+      ]
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, count-range, source-title, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Already-classified rows are documented but do not imply a new classification or DB write.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 23 current remaining observations across groups 192-196 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 192-196 against current remaining titles and current pass43 taxonomy.",
+    "Confirmed current taxonomy contains food.produce.fruit.peach, food.drinks.water_soda.cola, food.drinks.water_soda.cider, food.drinks.water_soda.soda, food.seasonings.sauces.stew, and food.seasonings.sauces.tteokbokki, while stir-fry sauce and the three supplement-form candidates remain absent.",
+    "Compared all 23 current raw ids against current pass43 accepted new_included_ids and accepted_but_blocked_ids with zero overlap.",
+    "Exact-searched all 19 distinct source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "Corrected the historical group-194 omission by routing the explicit 국물떡볶이 양념 product to the current food.seasonings.sauces.tteokbokki leaf rather than leaving it implicit."
+  ]
+}
