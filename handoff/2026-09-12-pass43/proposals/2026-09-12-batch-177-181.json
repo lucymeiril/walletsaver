@@ -1,0 +1,299 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-177-181",
+  "baseline_commit": "b361cd12e58fb10438b295d9c2438f39f7a4cb87",
+  "reservation_commit": "cf30a890dc97d5b3669afb8cac03c6aaaa2435fd",
+  "scope": [
+    "remaining/177/001.json",
+    "remaining/178/001.json",
+    "remaining/179/001.json",
+    "remaining/180/001.json",
+    "remaining/181/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 18,
+    "observations": 30,
+    "existing_leaf_products": 5,
+    "existing_leaf_observations": 9,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 13,
+    "hold_observations": 21,
+    "already_classified_products": 0,
+    "already_classified_observations": 0
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.produce.vegetables.onion",
+      "food.produce.vegetables.scallion",
+      "food.preserved.sides.pickled",
+      "food.drinks.tea.green"
+    ],
+    "existing_but_not_exact": [
+      {
+        "id": "food.produce.vegetables.leaf",
+        "name_ko": "쌈채소",
+        "reason": "Group 179 contains a broader fresh 생나물 set including 깻순, 참나물 and 취나물, so the current 쌈채소 leaf is too narrow to reuse for the whole bundle."
+      },
+      {
+        "id": "food.produce.vegetables.sprouts",
+        "name_ko": "콩나물·숙주",
+        "reason": "Group 180 무순 is radish sprout and should not be collapsed into the current bean/mung-bean sprout leaf."
+      },
+      {
+        "id": "food.drinks.tea.green",
+        "name_ko": "녹차·말차",
+        "reason": "Group 181 현미녹차 products fit this leaf, but the explicit 유자호지차 product is separated because the current taxonomy has no exact hojicha leaf."
+      }
+    ],
+    "missing_or_held_candidates": [
+      "household.kitchen.utensils.spatula",
+      "household.kitchen.wrap.parchment_paper",
+      "household.kitchen.wrap.aluminum_foil",
+      "food.produce.vegetables.leafy_greens",
+      "food.produce.vegetables.radish_sprouts",
+      "food.drinks.tea.hojicha"
+    ],
+    "note": "Groups 177-178 retain the historical held candidates because no household.kitchen leaves exist in the current taxonomy. Group 179 corrects the historical bulk reuse of food.produce.vegetables.leaf after checking that its current Korean name is specifically 쌈채소. Group 180 revalidates onion, scallion and pickled-side existing leaves while retaining a separate radish-sprout candidate. Group 181 keeps explicit 현미녹차 on the existing green-tea leaf but separates explicit 유자호지차 as a held hojicha candidate."
+  },
+  "conflict_checks": {
+    "accepted_exact_source_record_key_matches": 0,
+    "current_explicit_review_decision_matches_for_18_source_keys": 0,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "explicit_review_decision_count": 431,
+    "note": "All 18 source_record_keys in groups 177-181 were exact-searched against current pass43 accepted.json and the preserved 431 explicit review decisions with zero matches. The historical 151-208 bulk also recorded zero explicit-review conflicts for its high-risk range."
+  },
+  "decisions": [
+    {
+      "group": "177",
+      "source_record_key": "071226063",
+      "source_title": "simplus 올스텐 뒤집개 소",
+      "raw_record_ids": ["ingestion:27:49", "ingestion:77:28"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.utensils.spatula",
+      "reason": "The title and source shelf explicitly identify a kitchen spatula/turner, but the current taxonomy has no household kitchen-utensil spatula leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "177",
+      "source_record_key": "071226057",
+      "source_title": "simplus 올스텐 뒤집개 중",
+      "raw_record_ids": ["ingestion:27:73", "ingestion:77:29"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.utensils.spatula",
+      "reason": "The product is explicitly a kitchen spatula/turner; size is an attribute, and no exact current taxonomy leaf exists.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "177",
+      "source_record_key": "071216115",
+      "source_title": "simplus 304 스텐 사각 뒤집개",
+      "raw_record_ids": ["ingestion:27:76", "ingestion:77:32"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.utensils.spatula",
+      "reason": "The explicit square stainless spatula form is clear, but the current taxonomy has no corresponding kitchen-utensil leaf.",
+      "issues_preserved": ["promotion_unresolved", "unit_unresolved"]
+    },
+    {
+      "group": "178",
+      "source_record_key": "071210847",
+      "source_title": "simplus 종이호일 30CM*30M(대)",
+      "raw_record_ids": ["ingestion:27:26", "ingestion:76:89"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.wrap.parchment_paper",
+      "reason": "The title explicitly identifies paper cooking foil/parchment paper; dimensions are attributes, and no exact current wrap leaf exists.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "178",
+      "source_record_key": "070187236",
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "raw_record_ids": ["ingestion:27:46", "ingestion:77:3"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.wrap.aluminum_foil",
+      "reason": "The title identifies conventional cooking foil; length and width are attributes, and the current taxonomy has no aluminum-foil leaf.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "178",
+      "source_record_key": "070186669",
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "raw_record_ids": ["ingestion:27:47", "ingestion:77:13"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "household.kitchen.wrap.aluminum_foil",
+      "reason": "The explicit cooking-foil product form matches the held aluminum-foil candidate; dimensions remain attributes and no exact current leaf exists.",
+      "issues_preserved": ["unit_unresolved"]
+    },
+    {
+      "group": "179",
+      "source_record_key": "115804560",
+      "source_title": "청경채(봉)",
+      "raw_record_ids": ["ingestion:3:23", "ingestion:52:36"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "This is fresh bok choy on a raw leafy-greens shelf. The current food.produce.vegetables.leaf node is specifically named 쌈채소, so it is not reused as a generic leafy-vegetable catch-all.",
+      "issues_preserved": []
+    },
+    {
+      "group": "179",
+      "source_record_key": "107347426",
+      "source_title": "깻순(봉)",
+      "raw_record_ids": ["ingestion:52:27"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "Fresh perilla shoots are a raw leafy green, while the current leaf node is specifically 쌈채소 and no broader exact leafy-greens leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "179",
+      "source_record_key": "107347670",
+      "source_title": "호박잎(봉)",
+      "raw_record_ids": ["ingestion:52:45"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "Fresh pumpkin leaves are leafy greens; the current 쌈채소 leaf is not treated as a generic leafy-vegetable category without explicit taxonomy review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "179",
+      "source_record_key": "104757892",
+      "source_title": "참나물(봉)",
+      "raw_record_ids": ["ingestion:52:59"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "Fresh chamnamul is a leafy green but not safely equivalent to the current taxonomy node named 쌈채소; a broader leafy-greens leaf needs review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "179",
+      "source_record_key": "104757905",
+      "source_title": "취나물(봉)",
+      "raw_record_ids": ["ingestion:52:72"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "Fresh chwinamul is a leafy green; the current 쌈채소 leaf is too narrow to reuse as a generic raw-greens leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "180",
+      "source_record_key": "125787825",
+      "source_title": "깐 양파(팩)",
+      "raw_record_ids": ["ingestion:3:12", "ingestion:52:39"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.onion",
+      "reason": "Peeled packaging does not change the onion product type, and the current taxonomy has the exact 양파 leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "180",
+      "source_record_key": "127987504",
+      "source_title": "파채 300G(팩)",
+      "raw_record_ids": ["ingestion:3:38", "ingestion:52:38"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.produce.vegetables.scallion",
+      "reason": "Shredded green onion remains scallion/대파 product form; cutting and pack size are attributes.",
+      "issues_preserved": []
+    },
+    {
+      "group": "180",
+      "source_record_key": "071327871",
+      "source_title": "마늘쫑 채절임 300G(통)",
+      "raw_record_ids": ["ingestion:3:51"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.preserved.sides.pickled",
+      "reason": "The explicit 채절임 preparation overrides the broad convenience-vegetable shelf and fits the current 장아찌/pickled-side leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "180",
+      "source_record_key": "129772657",
+      "source_title": "무순(팩)",
+      "raw_record_ids": ["ingestion:52:50"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.radish_sprouts",
+      "reason": "Radish sprouts are distinct from the current food.produce.vegetables.sprouts node, whose Korean name is specifically 콩나물·숙주; no exact current radish-sprout leaf exists.",
+      "issues_preserved": []
+    },
+    {
+      "group": "181",
+      "source_record_key": "100788819",
+      "source_title": "동서 현미녹차 100T (150G)",
+      "raw_record_ids": ["ingestion:15:94", "ingestion:65:24"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.green",
+      "reason": "The product is explicitly brown-rice green tea; the rice blend is an ingredient variant and the current 녹차·말차 leaf matches the tea base.",
+      "issues_preserved": []
+    },
+    {
+      "group": "181",
+      "source_record_key": "121183883",
+      "source_title": "동서 현미녹차 200T (300G)",
+      "raw_record_ids": ["ingestion:16:20", "ingestion:65:42"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.tea.green",
+      "reason": "The title explicitly identifies brown-rice green tea, which fits the current 녹차·말차 leaf; pack size is an attribute.",
+      "issues_preserved": []
+    },
+    {
+      "group": "181",
+      "source_record_key": "070983993",
+      "source_title": "동서식품 마음우린 유자호지차 18G(20T)",
+      "raw_record_ids": ["ingestion:16:35", "ingestion:65:74"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.drinks.tea.hojicha",
+      "reason": "The title explicitly identifies hojicha with yuzu flavor. The current taxonomy has no hojicha leaf, and the existing 녹차·말차 leaf is not reused solely because the retail shelf is 현미녹차티백.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Explicit product form overrides broad retail shelf wording when they conflict.",
+    "Historical bulk proposals are references only and may be corrected against current titles and current taxonomy semantics; groups 179 and 181 were narrowed accordingly.",
+    "No self-approval or taxonomy creation was performed."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 177-181 and grouped repeated observations by exact source_record_key.",
+    "Rechecked historical bulk-pending-151-208 groups 177-181 against current remaining titles and current taxonomy semantics.",
+    "Verified current taxonomy contains onion, scallion, pickled-side and green-tea leaves; verified household.kitchen candidates and hojicha are absent; verified current leaf is named 쌈채소 and sprouts is named 콩나물·숙주.",
+    "Exact-searched all 18 source_record_keys against current pass43 accepted.json with zero matches.",
+    "Exact-searched all 18 source_record_keys against the preserved 431 explicit review decisions with zero matches.",
+    "No repository tests or DB import were executed because this is proposal-only classification review."
+  ]
+}
