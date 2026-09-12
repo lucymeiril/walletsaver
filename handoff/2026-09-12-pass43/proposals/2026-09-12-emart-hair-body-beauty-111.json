@@ -1,0 +1,142 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_commit": "d10e6b7a970d8c633059e4cdceb7141e421ebba5",
+  "work_id": "2026-09-12-emart-hair-body-beauty-111",
+  "remaining_group": "111",
+  "source_path": "handoff/2026-09-12-pass43/remaining/111/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/bulk-pending-110-150.json",
+  "scope_note": "Classification-only revalidation of the mixed Emart hair/body/beauty bundle. Historical product-form candidates are reused, but none of the six proposed detailed taxonomy ids currently exists. One shampoo observation is already classified and remains unresolved only for unit parsing. No DB integration, taxonomy mutation, unit repair, promotion approval, or identity merge is performed.",
+  "review_accounting": {
+    "observations_checked": 8,
+    "unique_products": 8,
+    "new_leaf_needed_observations": 7,
+    "already_classified_observations": 1,
+    "unit_unresolved_observations_preserved": 3
+  },
+  "taxonomy_review": {
+    "historical_candidate_ids_checked": [
+      "beauty.personal.hair.scalp_scaler",
+      "household.hygiene.cotton_swab",
+      "beauty.accessories.foaming_bottle",
+      "beauty.personal.face.cleanser",
+      "beauty.personal.face.oil",
+      "beauty.appliances.hair_dryer"
+    ],
+    "historical_candidate_ids_currently_present": [],
+    "taxonomy_id_review_required": true,
+    "note": "The six detailed ids come from the historical bulk proposal and are naming candidates only. The taxonomy integrator must choose final parents and ids before any taxonomy mutation."
+  },
+  "conflict_checks": {
+    "source_record_keys_checked": 8,
+    "accepted_record_matches": 0,
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Exact or OR-key repository searches returned only pending/remaining/raw/unresolved records for the current source keys and no accepted.json or review-decisions-input.json path match."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:97:10"],
+      "source_name": "emart",
+      "source_record_key": "2097002204299",
+      "source_title": "티트리 앤 라임 비건 탈모 딥클렌징 지성케어 두피 워터 스케일러 500ml",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.personal.hair.scalp_scaler",
+      "reason": "제목이 두피 워터 스케일러와 딥클렌징 용도를 직접 명시한다. 기존 hair.treatment나 shampoo보다 두피 스케일링 제품형태가 구체적이며 현재 정확 리프가 없다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:21"],
+      "source_name": "emart",
+      "source_record_key": "1000043522445",
+      "source_title": "종이면봉 300입",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "household.hygiene.cotton_swab",
+      "reason": "상품형태가 종이축 면봉으로 명확하며 현재 taxonomy에 면봉 전용 리프가 없다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:22"],
+      "source_name": "emart",
+      "source_record_key": "0000008645072",
+      "source_title": "거품형 순 용기 250ml",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.accessories.foaming_bottle",
+      "reason": "내용물이 아니라 거품형 리필/공용기 자체가 상품이다. 현재 taxonomy에 뷰티용 거품 용기 리프가 없어 신규 taxonomy 검토가 필요하다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:24"],
+      "source_name": "emart",
+      "source_record_key": "2097002134435",
+      "source_title": "맥주 효모 단백질 샴푸 + 카페인 비오틴 샴푸 1000*2/선물세트",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "beauty.personal.hair.shampoo",
+      "reason": "현재 remaining에서 이미 beauty.personal.hair.shampoo로 분류 완료되어 있으며 남은 사유는 1000*2 선물세트의 unit_unresolved이다. 분류를 재변경하지 않는다.",
+      "quantity_review": "unit_unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:26"],
+      "source_name": "emart",
+      "source_record_key": "0000006826215",
+      "source_title": "에센셜 포밍클렌져 150mL",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.personal.face.cleanser",
+      "reason": "포밍클렌져라는 얼굴 세정 제품형태가 명확하다. 현재 taxonomy에는 face cleanser 전용 리프가 없다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:41"],
+      "source_name": "emart",
+      "source_record_key": "2097002325413",
+      "source_title": "내추럴 발효 동백 오일 100% 카멜리아 페이스 비건 오일",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.personal.face.oil",
+      "reason": "제목이 페이스 오일을 직접 명시하며 식용 동백유가 아닌 얼굴용 뷰티 오일이다. 현재 face oil 전용 리프가 없다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:44"],
+      "source_name": "emart",
+      "source_record_key": "1000619759435",
+      "source_title": "3000시리즈 헤어드라이어 BHD321/09",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.appliances.hair_dryer",
+      "reason": "헤어드라이어라는 전기 미용기기 제품형태가 명확하지만 현재 taxonomy에 헤어드라이어 리프가 없다. package/unit 미해결은 별도 보존한다.",
+      "quantity_review": "unit_unresolved_preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:97:57"],
+      "source_name": "emart",
+      "source_record_key": "1000868449927",
+      "source_title": "에어리라이트 드라이기 ODRY-006WH",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "suggested_new_leaf_id": "beauty.appliances.hair_dryer",
+      "reason": "드라이기 제품형태가 제목에 직접 드러나며 현재 정확한 전기 미용기기 리프가 없다. unit_unresolved는 분류와 분리해 유지한다.",
+      "quantity_review": "unit_unresolved_preserved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": [
+    "manual review: 8/8 current remaining observations and 8/8 unique products accounted for",
+    "manual taxonomy check: 0/6 historical detailed candidate ids exist in current pass43 taxonomy",
+    "manual current-state check: shampoo observation already classified as beauty.personal.hair.shampoo",
+    "manual repository conflict search: no accepted/review-decision path match found for the 8 source keys",
+    "manual unit separation check: 3 unit_unresolved observations preserved without unit repair"
+  ]
+}
