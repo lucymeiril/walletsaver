@@ -1,0 +1,70 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["023"],
+  "scope_note": "Strict GitHub read/write review of pending group 023 (Costco 휴지). Both pending fragments were read and all 39 observations were accounted for. Nine rows were already classification-complete and are excluded from new classification progress. The shelf is materially polluted, so title/product form and official Costco URL taxonomy were preferred over the broad 휴지 shelf. No DB import/rebuild, taxonomy code edit, repository test, or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 39,
+    "already_classification_complete_excluded": 9,
+    "strict_classification_reviews": 30,
+    "distinct_source_listings": 30,
+    "existing_leaf_proposals": 13,
+    "holds": 17
+  },
+  "excluded_already_classified": [
+    {"raw_record_ids":["ingestion:49:17"],"source_record_key":"616638","source_title":"모나리자 미용티슈 300매 x 6 x 4팩","existing_unified_category_id":"household.hygiene.paper.facial","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:18"],"source_record_key":"616640","source_title":"모나리자 미니플러스 미용티슈 250매 x 12 x 4팩","existing_unified_category_id":"household.hygiene.paper.facial","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:23"],"source_record_key":"625708","source_title":"크리넥스 수앤수 여행용 물티슈 10매x 6 x 12팩","existing_unified_category_id":"household.hygiene.paper.wipes","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:24"],"source_record_key":"625714","source_title":"크리넥스 안심 물티슈 휴대용 20매 x 3 x 8팩","existing_unified_category_id":"household.hygiene.paper.wipes","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:33"],"source_record_key":"511066","source_title":"크리넥스 소프트 엠보싱 물티슈 60매x 8 x 2팩","existing_unified_category_id":"household.hygiene.paper.wipes","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:38"],"source_record_key":"654902","source_title":"게런티드 by 바스틀리 2겹 키친타월 85매 x 2롤 x 6","existing_unified_category_id":"household.hygiene.paper.kitchen","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:39"],"source_record_key":"683726","source_title":"아이리스 포켓형 물티슈 8매 x 6입 x 6팩","existing_unified_category_id":"household.hygiene.paper.wipes","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:46"],"source_record_key":"616641","source_title":"모나리자 뽑아쓰는 키친타월 150매 x 4 x 8팩","existing_unified_category_id":"household.hygiene.paper.kitchen","reason":"Classification complete; pending issue is package/unit reconciliation."},
+    {"raw_record_ids":["ingestion:49:47"],"source_record_key":"672911","source_title":"깨끗한나라 뽑아쓰는 대나무 키친타월 100매 x 6 x 3","existing_unified_category_id":"household.hygiene.paper.kitchen","reason":"Classification complete; pending issue is package reconciliation."}
+  ],
+  "proposed_decisions": [
+    {"raw_record_ids":["ingestion:49:9"],"source_record_key":"618582","source_title":"크리넥스순수 3겹 화장지 35m x 24롤 x 2팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit roll bath/toilet tissue; current pass41 toilet-paper leaf exists."},
+    {"raw_record_ids":["ingestion:49:10"],"source_record_key":"718582","source_title":"크리넥스 순수소프트 메가롤 40m x 30롤 x 2","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit bath/toilet tissue rolls."},
+    {"raw_record_ids":["ingestion:49:11"],"source_record_key":"701285","source_title":"커클랜드 시그니춰 프리미엄 3겹화장지40m x 30롤","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit toilet tissue rolls."},
+    {"raw_record_ids":["ingestion:49:12"],"source_record_key":"654896","source_title":"바스틀리 3겹 화장지 33m x 12롤 x 2","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit toilet tissue rolls."},
+    {"raw_record_ids":["ingestion:49:13"],"source_record_key":"627864","source_title":"모나리자 자연이 좋은3겹 화장지 30m x 30롤 x 3","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit toilet tissue rolls."},
+    {"raw_record_ids":["ingestion:49:19"],"source_record_key":"623039","source_title":"크리넥스 카카오 미니 티슈 230매 x 6 x 3팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.facial","reason":"Box/mini dry facial tissue product; current facial-tissue leaf exists."},
+    {"raw_record_ids":["ingestion:49:20"],"source_record_key":"604827","source_title":"크리넥스 소프트터치 티슈 250매 x 8x 2팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.facial","reason":"Official Costco URL identifies facial tissue; current facial leaf exists."},
+    {"raw_record_ids":["ingestion:49:22"],"source_record_key":"701306","source_title":"크리넥스 수프림 플러스 화장지 40m x 30롤","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.toilet","reason":"Explicit toilet tissue rolls."},
+    {"raw_record_ids":["ingestion:49:28"],"source_record_key":"625720","source_title":"크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.facial","reason":"Portable dry facial tissue; not a wet wipe."},
+    {"raw_record_ids":["ingestion:49:34"],"source_record_key":"728936","source_title":"크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.wipes","reason":"Official product identity is toilet wipes; current general wet-wipes leaf is the existing pass41 wipe leaf."},
+    {"raw_record_ids":["ingestion:49:35"],"source_record_key":"635011","source_title":"모나리자 비쥬 코랄 캡형 물티슈70매 x 10팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.wipes","reason":"Explicit cap-type wet wipes."},
+    {"raw_record_ids":["ingestion:49:36"],"source_record_key":"682272","source_title":"크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.facial","reason":"Official Costco URL identifies portable tissue under bath/facial tissue; dry tissue form fits facial rather than wet wipes."},
+    {"raw_record_ids":["ingestion:49:37"],"source_record_key":"622905","source_title":"크리넥스 마이비데 캡형60매x 6 x 2팩","status":"proposed","proposed_unified_category_id":"household.hygiene.paper.wipes","reason":"Official product identity is toilet wipes; current pass41 wet-wipes leaf is reused."}
+  ],
+  "held_decisions": [
+    {"raw_record_ids":["ingestion:49:14"],"source_record_key":"675083","source_title":"메르슈 프리미엄 무표백 코튼티슈 80매 x 5","status":"held_taxonomy_policy","candidate_family":"dry cotton tissue","reason":"Cotton dry tissue is not ordinary paper facial tissue and is not a wet wipe; no exact current pass41 leaf was confirmed."},
+    {"raw_record_ids":["ingestion:49:15"],"source_record_key":"633140","source_title":"슈퍼 쿨링 파우더 시트 15매 x 5","status":"held_taxonomy_policy","candidate_family":"body cooling/deodorant sheet","reason":"Official URL places the item under hand/foot care and deodorant. It is a body-care sheet, not household paper/wet wipes; no exact current leaf was confirmed."},
+    {"raw_record_ids":["ingestion:49:16"],"source_record_key":"675084","source_title":"메르슈 프리미엄 코튼티슈 80매 x 6","status":"held_taxonomy_policy","candidate_family":"dry cotton tissue","reason":"Cotton dry tissue is distinct from paper facial tissue and wet wipes; no exact current leaf confirmed."},
+    {"raw_record_ids":["ingestion:49:25"],"source_record_key":"329281","source_title":"커클랜드 시그니춰 테이블 냅킨 / 최소구매 2","status":"held_new_taxonomy_candidate","suggested_new_leaf":"household.hygiene.paper.napkin","reason":"Explicit table napkin. Search found no confirmed current napkin leaf, so do not force into facial/kitchen tissue."},
+    {"raw_record_ids":["ingestion:49:26"],"source_record_key":"615890","source_title":"베지터블 코인 압축 티슈 300개","status":"held_taxonomy_policy","candidate_family":"compressed coin tissue","reason":"Compressed dry tissue is a distinct product form; no exact current leaf confirmed."},
+    {"raw_record_ids":["ingestion:49:27"],"source_record_key":"675081","source_title":"메르슈 무표백 순면 건티슈 150매 x 5","status":"held_taxonomy_policy","candidate_family":"dry cotton tissue","reason":"Explicit dry cotton tissue; current wet-wipe keyword/leaf is not appropriate and no exact dry-tissue leaf was confirmed."},
+    {"raw_record_ids":["ingestion:49:29"],"source_record_key":"675082","source_title":"메르슈 건티슈 150매 x 3팩 + 15매 x 10 x 2팩","status":"held_taxonomy_policy","candidate_family":"dry cotton tissue","reason":"Dry-tissue product with mixed package; product family lacks confirmed current leaf."},
+    {"raw_record_ids":["ingestion:49:30"],"source_record_key":"675085","source_title":"메르슈 세트구성","status":"held_identity_ambiguous","reason":"Title does not identify the set contents or tissue form strongly enough to choose facial/wipes/dry-tissue taxonomy."},
+    {"raw_record_ids":["ingestion:49:31"],"source_record_key":"673367","source_title":"스카트 잘 닦이는 청소 티슈 60매 x 18팩","status":"held_taxonomy_policy","candidate_family":"household cleaning wipes","reason":"Official URL is Cleaning Products/Cleaning Chemicals. This is surface-cleaning wipe, not personal wet tissue; no exact current cleaning-wipe leaf confirmed."},
+    {"raw_record_ids":["ingestion:49:32"],"source_record_key":"673368","source_title":"스카트 유리 거울 세정청소티슈 30매 x 12팩","status":"held_taxonomy_policy","candidate_family":"glass/mirror cleaning wipes","reason":"Explicit glass/mirror cleaning wipe; no exact current leaf confirmed and paper.wipes would misstate use."},
+    {"raw_record_ids":["ingestion:49:40"],"source_record_key":"773367","source_title":"스카트 잘 닦이는 청소 티슈 60매 x 8팩","status":"held_taxonomy_policy","candidate_family":"household cleaning wipes","reason":"Official URL is Cleaning Products/Cleaning Chemicals; do not force into personal wet-wipes leaf."},
+    {"raw_record_ids":["ingestion:49:41"],"source_record_key":"686345","source_title":"프로메이드 포르티냄새 차단 밀폐 휴지통 24L","status":"held_taxonomy_policy","candidate_family":"household trash bin","reason":"Official URL identifies household storage/trash bin; no confirmed current trash-bin leaf found."},
+    {"raw_record_ids":["ingestion:49:42"],"source_record_key":"686343","source_title":"프로메이드 푸쉬빈 압축 휴지통 10L","status":"held_taxonomy_policy","candidate_family":"household trash bin","reason":"Household trash bin, unrelated to tissue despite source shelf; no confirmed current leaf found."},
+    {"raw_record_ids":["ingestion:49:43"],"source_record_key":"686344","source_title":"프로메이드 푸쉬빈 압축 휴지통 20L","status":"held_taxonomy_policy","candidate_family":"household trash bin","reason":"Household trash bin; no confirmed current leaf found."},
+    {"raw_record_ids":["ingestion:49:44"],"source_record_key":"686352","source_title":"매직캔 히포 휴지통 21L + 리필 6개","status":"held_taxonomy_policy","candidate_family":"trash bin with refill liners","reason":"Mixed trash-bin plus refill product; no confirmed current trash-bin leaf and mixed package should not be collapsed to paper tissue."},
+    {"raw_record_ids":["ingestion:49:45"],"source_record_key":"697603","source_title":"가데나 자동 감김 휴대용 호스릴 12.5m","status":"held_taxonomy_policy","candidate_family":"garden hose reel","reason":"Official URL is Patio/Lawn/Garden hose accessories; this is clear shelf pollution and no exact current leaf was confirmed."},
+    {"raw_record_ids":["ingestion:49:48"],"source_record_key":"686353","source_title":"매직캔 히포 휴지통 27L + 리필 6개","status":"held_taxonomy_policy","candidate_family":"trash bin with refill liners","reason":"Mixed trash-bin plus refill product; no confirmed current trash-bin leaf found."}
+  ],
+  "prior_group023_proposal_coverage": {
+    "confirmed_prior_group023_proposal": false,
+    "note": "Group-marker search for pending 023 did not return a proposal that actually lists 023 as a reviewed group. Exact source-key searches likewise surfaced pending/raw/unresolved records rather than prior proposal coverage."
+  },
+  "explicit_review_decision_collision_screen": {
+    "source_record_keys_checked": 30,
+    "method": "five batched repository searches covering all 30 classification-pending source_record_key values",
+    "review_decisions_input_hits": 0,
+    "note": "No review-decisions-input.json hit surfaced; the 431 explicit decisions were not modified."
+  },
+  "executed_tests": []
+}
