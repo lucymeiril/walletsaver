@@ -4,6 +4,7 @@
 
 - 현재 새 제안 작업 예약 없음. 기존 미검증 제안은 `../2026-09-11/proposals/`, 최신 미적재 목록은 `remaining/`에 있다. 아래 pass43 완료 내역을 다시 작업하지 않는다.
 - 작업자는 이 절에만 작업 ID / 기준 SHA / 범위 / 상태 / 결과 파일 / 다음 시작점·보류를 기록한다. 다른 작업 기록을 지우지 않는다. 제안 완료와 아래 DB 반영 실적은 별개다.
+- `2026-09-12-batch-142-146` / 기준 `fd8acf9f24289a77f7df5e1baa304e8c4e1c2a42` / 범위 `remaining/142/001.json`~`remaining/146/001.json` 전체 5묶음 / 상태 `진행 중` / 결과 `proposals/2026-09-12-batch-142-146.json` / 다음 시작점·보류: 예약 완료. proposal 작성 전 5묶음의 원문·proposal_references·taxonomy·accepted·431개 수동결정을 대조한다. 제안 전용이며 accepted·taxonomy·DB는 직접 변경하지 않는다.
 - `2026-09-12-jerky-096` / 기준 `4c6f4e0ffa383b6026d7868c7032dea510236768` / 범위 `remaining/096/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-jerky-096.json` / 다음 시작점·보류: 5상품/10관측 전부 기존 정확 리프 없음. `food.meat.processed.jerky` 신규 리프 후보로 `new_leaf_needed` / `needs_review` 유지. 실제 DB·taxonomy 반영 없음. 다음 작업자는 다른 remaining 묶음에서 새 예약 후 진행.
 - `2026-09-12-flavored-milk-yogurt-098` / 기준 `8ddb377d86b7ca5457b7017794eaaae953bfd438` / 범위 `remaining/098/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-flavored-milk-yogurt-098.json` / 다음 시작점·보류: 5상품/10관측 전부 현재 taxonomy의 정확한 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
 - `2026-09-12-black-tea-102` / 기준 `34da36f8ec61dd718a31a5428619acd50cfeb47b` / 범위 `remaining/102/001.json` 전체 / 상태 `완료` / 결과 `proposals/2026-09-12-black-tea-102.json` / 다음 시작점·보류: 5상품/10관측 전부 `food.drinks.tea.black` 기존 리프와 일치. 5건 모두 `existing_leaf` / `clear_existing`; accepted·431개 수동결정 충돌 없음. 제안 전용이므로 실제 DB 반영은 하지 않음.
