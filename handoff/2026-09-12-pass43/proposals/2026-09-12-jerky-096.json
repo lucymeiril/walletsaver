@@ -1,0 +1,93 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass43",
+  "baseline_sha": "4c6f4e0ffa383b6026d7868c7032dea510236768",
+  "work_id": "2026-09-12-jerky-096",
+  "remaining_group": "096",
+  "source_path": "handoff/2026-09-12-pass43/remaining/096/001.json",
+  "historical_reference": "handoff/2026-09-11/proposals/homeplus-jerky-096.json",
+  "scope_note": "Classification-only revalidation of the complete Homeplus jerky remaining bundle. All 10 observations across 5 products were checked against current titles, source paths, explicit review decisions, accepted records, and the pass43 taxonomy. No DB integration or taxonomy mutation is performed by this proposal.",
+  "review_accounting": {
+    "observations_checked": 10,
+    "unique_products": 5,
+    "existing_leaf_assignments_proposed": 0,
+    "new_leaf_needed_products": 5,
+    "held_observations": 10
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "accepted_record_matches": 0,
+    "current_jerky_leaf_exists": false,
+    "historical_proposal_revalidated": true,
+    "note": "The pass43 taxonomy has processed-meat leaves for bacon, processed chicken breast, ham, sausage, smoked duck, and sundae, but no jerky leaf. The five source_record_keys and ten raw_record_ids match the historical 096 proposal, so the historical new-leaf conclusion remains valid."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:4:74",
+        "ingestion:53:65"
+      ],
+      "source_record_key": "069348216",
+      "source_title": "궁 우육포 골든올리브 100G",
+      "decision": "new_leaf_needed",
+      "review_status": "needs_review",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "제목과 홈플러스 원본 경로 모두 육포 제품형태를 명시한다. 골든올리브는 맛/제품 변형 속성이며, 현재 taxonomy에 육포 leaf가 없어 햄·소시지 등 기존 가공육 leaf로 강제하지 않는다."
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:4:79",
+        "ingestion:54:9"
+      ],
+      "source_record_key": "069348036",
+      "source_title": "궁 우육포 오리지날 100G",
+      "decision": "new_leaf_needed",
+      "review_status": "needs_review",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "제목과 원본 경로가 우육포를 명확히 가리킨다. 오리지날은 flavor/style 속성이며, 현재 taxonomy에 정확한 육포 leaf가 없다."
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:4:95",
+        "ingestion:54:25"
+      ],
+      "source_record_key": "122951036",
+      "source_title": "코주부 클래식 육포 MILD 130G",
+      "decision": "new_leaf_needed",
+      "review_status": "needs_review",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포 제품형태가 제목과 원본 경로에 명시되어 있다. MILD는 맛 강도 속성이며 별도 taxonomy 분기가 아니다."
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:5:20",
+        "ingestion:54:35"
+      ],
+      "source_record_key": "122951042",
+      "source_title": "코주부 클래식 육포 BBQ 130G",
+      "decision": "new_leaf_needed",
+      "review_status": "needs_review",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포 제품형태가 명확하며 BBQ는 flavor 속성이다. 현재 taxonomy에 정확한 육포 leaf가 없어 기존 가공육 leaf에 억지로 귀속하지 않는다."
+    },
+    {
+      "raw_record_ids": [
+        "ingestion:5:19",
+        "ingestion:54:51"
+      ],
+      "source_record_key": "122951059",
+      "source_title": "코주부 클래식 육포 HOT&SPICY 130G",
+      "decision": "new_leaf_needed",
+      "review_status": "needs_review",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포 제품형태가 명확하며 HOT&SPICY는 flavor 속성이다. 현재 taxonomy에 정확한 육포 leaf가 없어 신규 leaf 검토가 필요하다."
+    }
+  ],
+  "executed_tests": [
+    "manual revalidation: 10/10 remaining observations accounted for",
+    "manual conflict check: 0/5 source_record_keys in explicit review decisions",
+    "manual accepted-record check: 0/5 source_record_keys in pass43 accepted.json",
+    "manual taxonomy check: food.meat.processed.jerky absent from pass43 taxonomy"
+  ]
+}
