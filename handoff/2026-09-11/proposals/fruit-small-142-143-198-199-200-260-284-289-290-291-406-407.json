@@ -1,8 +1,8 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["142", "143", "144", "198", "199", "200", "260", "284", "289", "290", "291", "406", "407"],
-  "scope_note": "GitHub read/write review only. Classification decisions are separated from quantity/unit/title-change pending reasons. No staging DB import or repository tests were executed.",
+  "reviewed_pending_groups": ["142", "143", "144", "198", "199", "200", "260", "284", "289", "290", "291"],
+  "scope_note": "Groups 406-407 were removed because their raw ids are now canonically represented in pass44 proposals/classify-404-412.json. Other legacy classification and non-classification records are preserved.",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:2:9", "ingestion:51:16"],
@@ -99,22 +99,6 @@
       "reason": "홈플러스 아보카도 경로와 제목이 아보카도를 직접 명시한다.",
       "quantity_review": "unchanged; count_range_unresolved remains pending",
       "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:51:57"],
-      "source_title": "제주 황금향 4-7입(박스)",
-      "proposed_leaf": "food.produce.fruit.citrus",
-      "reason": "홈플러스 만감류 경로와 제목의 황금향은 기존 감귤류 통합 리프에 대응한다.",
-      "quantity_review": "unchanged; count_range_unresolved remains pending",
-      "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:51:46"],
-      "source_title": "항공직송 골드 망고(태국) 개",
-      "proposed_leaf": "food.produce.fruit.mango",
-      "reason": "홈플러스 망고/열대과일 경로와 제목의 골드 망고가 기존 망고 리프에 직접 대응한다.",
-      "quantity_review": "unchanged; unit_unresolved remains pending",
-      "identity_merge": "not_requested"
     }
   ],
   "held_decisions": [
@@ -161,5 +145,7 @@
       "note": "바나나 분류는 이미 resolved 상태이며 단위 문제만 남아 있다."
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "groups 406-407 removed after pass44 canonicalization; remaining legacy records not reformatted"
+  ]
 }
