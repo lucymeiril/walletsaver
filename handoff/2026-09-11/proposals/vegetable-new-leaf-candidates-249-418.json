@@ -1,18 +1,9 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["249", "418"],
-  "scope_note": "GitHub read/write review only. Existing-leaf classification is separated from candidate taxonomy additions. Suggested new leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB. Water-parsley, young-napa-cabbage, celery, lettuce, ginger, spring-onion and fresh-corn decisions were removed here because their raw ids are now canonically represented in pass44 proposals.",
-  "decisions": [
-    {
-      "raw_record_ids": ["ingestion:52:69"],
-      "source_title": "목이버섯 150G(팩)",
-      "proposed_leaf": "food.produce.vegetables.mushroom",
-      "reason": "건조 표기가 없는 150g 신선 목이버섯 팩이며 원본 경로도 채소 > 버섯 > 기타버섯이다. 기존 신선 버섯 통합 리프와 일치한다.",
-      "quantity_review": "unchanged",
-      "identity_merge": "not_requested"
-    }
-  ],
+  "reviewed_pending_groups": ["249"],
+  "scope_note": "GitHub read/write review only. Existing-leaf classification is separated from candidate taxonomy additions. Suggested new leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB. Water-parsley, young-napa-cabbage, celery, lettuce, ginger, spring-onion, fresh-corn and wood-ear mushroom decisions were removed here because their raw ids are now canonically represented in pass44 proposals or modernized legacy canonical files.",
+  "decisions": [],
   "deferred_taxonomy_candidates": [
     {
       "raw_record_ids": ["ingestion:2:82", "ingestion:52:0"],
@@ -27,5 +18,7 @@
       "reason": "손질된 신선 브로콜리 팩으로 품목 자체는 브로콜리다. 박피/손질을 이유로 다른 가공채소 리프에 넣지 않고 브로콜리 신규 리프 후보와 함께 검토한다."
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "ingestion:52:69 wood-ear mushroom decision removed here because homeplus-small-413-420.json is now the pass44 canonical decision"
+  ]
 }
