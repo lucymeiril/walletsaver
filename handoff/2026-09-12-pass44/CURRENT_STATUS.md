@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-homeplus-kitchen-gloves-099 / 52b0dfda077e22932ee0bb6bfa329022a564ab9e / remaining/099/001.json 및 기존 homeplus-kitchen-gloves-099 / 진행 중 / ../2026-09-11/proposals/homeplus-kitchen-gloves-099.json / held_decisions 평탄화·현재 충돌 재검증`
 - `fix-homeplus-bath-towels-097 / 61900197a2a8f36cfcff469259a39d25c24ca336 / remaining/097/001.json 및 기존 homeplus-bath-towels-097 / 제안 완료 / ../2026-09-11/proposals/homeplus-bath-towels-097.json / remaining/099 기존제안 유무 확인`
 - `fix-homeplus-seafood-condiments-095 / 6d5f3ffe987eed80689376af7e97222aa670091e / remaining/095/001.json 및 기존 homeplus-seafood-condiments-095 / 제안 완료 / ../2026-09-11/proposals/homeplus-seafood-condiments-095.json / remaining/096 기존제안 유무 확인`
 - `fix-homeplus-tofu-kits-092 / 60c1405802791deecdafb7bd82dc1a7f4e568ac2 / remaining/092/001.json 및 기존 homeplus-tofu-kits-092 / 제안 완료 / ../2026-09-11/proposals/homeplus-tofu-kits-092.json / remaining/094 기존제안 유무 확인`
