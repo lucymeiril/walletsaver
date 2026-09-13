@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-homeplus-frozen-potatoes-107 / 67fb8da7509b8e0275f53eb77be38eadd6ab940a / remaining/107/001.json 및 기존 homeplus-frozen-potatoes-107 / 진행 중 / ../2026-09-11/proposals/homeplus-frozen-potatoes-107.json / held_decisions 평탄화·현재 충돌 재검증`
+- `fix-homeplus-frozen-potatoes-107 / 67fb8da7509b8e0275f53eb77be38eadd6ab940a / remaining/107/001.json 및 기존 homeplus-frozen-potatoes-107 / 제안 완료 / ../2026-09-11/proposals/homeplus-frozen-potatoes-107.json / remaining/108 기존제안 유무 확인`
 - `fix-homeplus-nurungji-105 / ee0600bc006479462046464c1c8308be1827af0b / remaining/105/001.json 및 기존 homeplus-nurungji-105 / 제안 완료 / ../2026-09-11/proposals/homeplus-nurungji-105.json / remaining/107 기존제안 유무 확인`
 - `fix-homeplus-fruit-tea-preserves-104 / 33681d25b050f0a03e26a20d1c8fce487a4187f8 / remaining/104/001.json 및 기존 homeplus-fruit-tea-preserves-104 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-tea-preserves-104.json / remaining/105 기존제안 유무 확인`
 - `fix-homeplus-fruit-concentrates-103 / f2107111ee82f409896d466b51b62cb4761e87e0 / remaining/103/001.json 및 기존 homeplus-fruit-concentrates-103 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-concentrates-103.json / remaining/104 기존제안 유무 확인`
