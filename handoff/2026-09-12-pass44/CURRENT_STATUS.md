@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-homeplus-seafood-condiments-095 / 6d5f3ffe987eed80689376af7e97222aa670091e / remaining/095/001.json 및 기존 homeplus-seafood-condiments-095 / 진행 중 / ../2026-09-11/proposals/homeplus-seafood-condiments-095.json / held_decisions 평탄화·현재 충돌 재검증`
+- `fix-homeplus-seafood-condiments-095 / 6d5f3ffe987eed80689376af7e97222aa670091e / remaining/095/001.json 및 기존 homeplus-seafood-condiments-095 / 제안 완료 / ../2026-09-11/proposals/homeplus-seafood-condiments-095.json / remaining/096 기존제안 유무 확인`
 - `fix-homeplus-tofu-kits-092 / 60c1405802791deecdafb7bd82dc1a7f4e568ac2 / remaining/092/001.json 및 기존 homeplus-tofu-kits-092 / 제안 완료 / ../2026-09-11/proposals/homeplus-tofu-kits-092.json / remaining/094 기존제안 유무 확인`
 - `fix-homeplus-other-noodles-089 / 232d6832b6dc8c8872eb3b1d610f5c87fa96b60d / remaining/089/001.json 및 기존 homeplus-other-noodles-089 / 제안 완료 / ../2026-09-11/proposals/homeplus-other-noodles-089.json / remaining/090 기존제안 유무 확인`
 - `fix-homeplus-fried-meals-088 / f492016b799f1332b9fdf8e285b068ee9067dc07 / remaining/088/001.json 및 기존 homeplus-fried-meals-088 / 제안 완료 / ../2026-09-11/proposals/homeplus-fried-meals-088.json / remaining/089 기존제안 유무 확인`
