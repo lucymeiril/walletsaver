@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-legacy-445-451 / f31d9de8c15c932fb542583256670a514ac20f61 / remaining/445-451 + 기존 grains/lottemart/small-food 제안 / 진행 중 / proposals/classify-445-451.json / 순방향 remaining 완료 후 역감사 지점 재탐색`
 - `fix-legacy-437-444 / 44334245f35273a073b14daec3e10c182c57ed56 / remaining/437-444 + 기존 lottemart-small 제안 / 제안 완료 / proposals/classify-437-444.json / remaining/445 기존제안 유무 확인`
 - `fix-legacy-429-436 / dde9e7b6b382524e7e4c46fc1e5d364461456503 / remaining/429-436 + 기존 lottemart-small 제안 / 제안 완료 / ../2026-09-11/proposals/lottemart-small-429-436.json / remaining/437 기존제안 유무 확인`
 - `fix-legacy-421-428 / fd14e52e007f6cf603b13e291c2491e01688a5af / remaining/421-428 + 기존 mixed-small/organic 제안 / 제안 완료 / ../2026-09-11/proposals/mixed-small-421-428.json / remaining/429 기존제안 유무 확인`
