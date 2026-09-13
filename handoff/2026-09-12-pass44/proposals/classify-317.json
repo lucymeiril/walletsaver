@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/317/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:21:12", "ingestion:71:80"],
+      "source_name": "homeplus",
+      "source_record_key": "120997532",
+      "source_title": "샘표 우리엄마 깻잎 매콤한맛 70G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상품이 보존형 깻잎 반찬이라는 점은 명확하지만 상품명과 원본 경로만으로 현재 taxonomy의 장아찌와 무침반찬 중 어느 조리 방식인지 확정하기 어렵다. 조리 방식을 추정해 강제 분류하지 않고 보류한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/317의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 proposal_references가 비어 있음을 확인했다.",
+    "현재 taxonomy의 밑반찬 리프에 food.preserved.sides.pickled 장아찌와 food.preserved.sides.seasoned 무침반찬이 각각 존재함을 확인했다.",
+    "상품명과 원본 경로에 조리 방식 확정 근거가 없는 상태에서 한 리프로 추정하지 않았다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
