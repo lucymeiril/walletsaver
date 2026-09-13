@@ -1,64 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "101",
-  "source_path": "handoff/2026-09-11/pending/101/001.json",
-  "scope_note": "Classification-only proposal. The current taxonomy has no exact leaf for samgyetang herbal ingredient mixes or standalone astragalus. These are held as cooking-ingredient taxonomy candidates instead of being forced into dried vegetables or generic spices. Price, package size, promotion, and raw observations are unchanged.",
-  "review_accounting": {
-    "pending_rows_checked": 10,
-    "unique_products": 5,
-    "new_classification_reviews": 10,
-    "prior_reviewed": 1239,
-    "current_reviewed": 1249,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2667
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. Repository search found no existing samgyetang_mix/astragalus candidate precedent, and the current taxonomy has no exact 황기 or 삼계재료 leaf."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "abe0d670e3e2b33faf554bf8e3f796dfe3b262c7",
+  "decisions": [
     {
       "raw_record_ids": ["ingestion:3:11", "ingestion:52:60"],
+      "source_name": "homeplus",
       "source_record_key": "123591771",
       "source_title": "온가족 삼계재료 모음 100G(봉)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
-      "reason": "Mixed dried herbal ingredients sold specifically for samgyetang; not a single dried vegetable or a generic spice."
+      "reason": "삼계탕용 혼합 건약재 조리재료로 제품용도가 명확하며 단일 건채소나 일반 향신료로 보기 어렵다. 현재 exact 리프가 없어 삼계재료 혼합 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=123591771&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:3:16", "ingestion:52:62"],
+      "source_name": "homeplus",
       "source_record_key": "068979074",
       "source_title": "간편 삼계재료 티백 100G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
-      "reason": "Samgyetang herbal ingredient mix in tea-bag form. Packaging form does not change the underlying cooking-ingredient type."
+      "reason": "티백은 포장·사용방식이고 본질은 삼계탕용 혼합 건약재 조리재료다. 현재 exact 리프가 없어 동일 samgyetang_mix 신규 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=068979074&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:3:45", "ingestion:52:14"],
+      "source_name": "homeplus",
       "source_record_key": "054133492",
       "source_title": "국산 황기 80G(봉)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.ingredients.herbal.astragalus",
-      "reason": "Standalone dried astragalus root cooking/herbal ingredient; current taxonomy has no exact leaf and dried-vegetable would be semantically misleading."
+      "reason": "단일 황기 건약재 제품으로 제품 정체성이 명확하다. 건채소로 축약하면 의미가 흐려지고 현재 exact 황기 리프가 없어 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=054133492&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:3:49", "ingestion:52:64"],
+      "source_name": "homeplus",
       "source_record_key": "135314374",
       "source_title": "상황 삼계재료 115G(봉)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
-      "reason": "Samgyetang herbal ingredient mix; the 상황 variant is a formulation/style attribute rather than a separate product-type leaf."
+      "reason": "상황 배합은 조성/스타일 속성이고 제품형태는 삼계탕용 혼합 건약재다. 동일 samgyetang_mix 신규 후보를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=135314374&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:3:59", "ingestion:52:63"],
+      "source_name": "homeplus",
       "source_record_key": "069132913",
       "source_title": "찹쌀 누룽지 품은 삼계재료 220G(봉)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
-      "reason": "A samgyetang ingredient kit with added glutinous-rice/nurungji components; product purpose/form remains a samgyetang ingredient mix rather than a prepared meal."
+      "reason": "찹쌀·누룽지 구성요소가 추가됐지만 판매 목적과 제품형태는 삼계탕 조리용 재료 혼합이다. 완성 간편식으로 보지 않고 동일 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069132913&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 10 current pass44 observations in remaining/101/001.json and preserved the 5 exact source_record_key products from the prior proposal.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and added source_name, review_lane, evidence_urls, quantity_review, and identity_merge for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in the frozen 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy has no food.ingredients.herbal hierarchy or exact samgyetang-mix/astragalus leaf; retained the prior product-form candidates.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
