@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-batch-122-126 / c752b8533594201af52760f3d44e066a9eab6304 / 기존 제안 batch-122-126 source_name·신규리프 필드 보완 / 진행 중 / ../2026-09-12-pass43/proposals/2026-09-12-batch-122-126.json / 20결정 source_name 복원·candidate 필드 정규화`
 - `fix-batch-117-121 / dd079a05797fc5c64fe0ef5eb7a5a622950b7ef3 / 기존 제안 batch-117-121 중첩형식·source_name 누락 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-117-121.json / remaining/122 기존제안 유무 확인`
 - `fix-homeplus-frozen-potatoes-107 / 67fb8da7509b8e0275f53eb77be38eadd6ab940a / remaining/107/001.json 및 기존 homeplus-frozen-potatoes-107 / 제안 완료 / ../2026-09-11/proposals/homeplus-frozen-potatoes-107.json / remaining/108 기존제안 유무 확인`
 - `fix-homeplus-nurungji-105 / ee0600bc006479462046464c1c8308be1827af0b / remaining/105/001.json 및 기존 homeplus-nurungji-105 / 제안 완료 / ../2026-09-11/proposals/homeplus-nurungji-105.json / remaining/107 기존제안 유무 확인`
