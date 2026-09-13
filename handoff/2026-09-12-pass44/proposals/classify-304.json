@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/304/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:49", "ingestion:64:87"],
+      "source_name": "homeplus",
+      "source_record_key": "105116704",
+      "source_title": "씨제이 다담 우렁강된장 비빔 양념 140G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상품명은 우렁강된장과 비빔 양념을 함께 나타내고 원본 경로는 냉장소스로만 좁혀진다. 현재 taxonomy에는 된장 계열과 비빔장 계열이 각각 존재해 어느 한 리프로 확정하기에는 근거가 부족하므로 보류한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/304의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 proposal_references가 비어 있음을 확인했다.",
+    "현재 taxonomy에 food.seasonings.pastes.doenjang과 food.seasonings.sauces.bibim 계열이 공존함을 확인했다.",
+    "상품명과 냉장소스 경로만으로 두 리프 사이 의미 경계를 확정하지 않았다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
