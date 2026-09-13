@@ -2,7 +2,8 @@
 
 ## 제안 작업 인계
 
-- `fix-legacy-374-382 / feaa0f9956ea28a5e87a37dcfab07b5158818015 / remaining/374-382 + 기존 homeplus-produce/vegetable 제안 / 진행 중 / ../2026-09-11/proposals/homeplus-produce-374-382.json / remaining/383 기존제안 유무 확인`
+- `fix-legacy-383-384 / 5c233fededce27f7514ca166216cdda89fadcfc9 / remaining/383-384 + 기존 vegetable-new-leaf 후보 / 진행 중 / proposals/classify-383-384.json / remaining/385 기존제안 유무 확인`
+- `fix-legacy-374-382 / feaa0f9956ea28a5e87a37dcfab07b5158818015 / remaining/374-382 + 기존 homeplus-produce/vegetable 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-produce-374-382.json / remaining/383 기존제안 유무 확인`
 - `fix-legacy-373 / 2bf5da78e0aa21a7db2470eebeb5de0a7ecd019b / remaining/373/001.json + 기존 vegetable-new-leaf 후보 / 제안 완료 / proposals/classify-373.json / remaining/374 기존제안 유무 확인`
 - `fix-legacy-367-372 / 67ff67d8a2646f560bdf7df15544bf4eb44fbcab / pass41 구형 제안 homeplus-kitchen-produce-367-372 형식·필수필드·identity 감사 / 제안 완료 / ../2026-09-11/proposals/homeplus-kitchen-produce-367-372.json / remaining/373 기존제안 유무 확인`
 - `fix-legacy-361-366 / 0f74ccdd53e0bfb982d85bc60c4359ffe663a4c5 / pass41 구형 제안 homeplus-kitchen-tools-361-366 형식·필수필드 감사 / 제안 완료 / ../2026-09-11/proposals/homeplus-kitchen-tools-361-366.json / remaining/367 기존제안 유무 확인`
