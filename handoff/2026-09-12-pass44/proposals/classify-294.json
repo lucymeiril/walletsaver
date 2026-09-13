@@ -1,0 +1,25 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:95", "ingestion:61:37"],
+      "source_name": "homeplus",
+      "source_record_key": "071396465",
+      "source_title": "풀무원 동물복지 에그샐러드 350G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.salad",
+      "reason": "상품명이 에그샐러드로 제품 형태를 명확히 밝히며 현재 taxonomy의 조리식품 샐러드 리프와 직접 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/294의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에 food.meals.prepared.salad 리프가 존재함을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
