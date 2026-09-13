@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-batch-142-146 / fe3a850fef418ad1f8f8f6740f9ff1225e0ec8ae / 기존 제안 batch-142-146 source_name·신규후보 필드 보완 / 진행 중 / ../2026-09-12-pass43/proposals/2026-09-12-batch-142-146.json / 15결정 식별자·후보 필드 정규화`
+- `fix-batch-142-146 / fe3a850fef418ad1f8f8f6740f9ff1225e0ec8ae / 기존 제안 batch-142-146 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-142-146.json / remaining/147 기존제안 유무 확인`
 - `fix-batch-137-141 / aca75e9dbe8f7e0de5ff66a83a98cba17b3f281f / 기존 제안 batch-137-141 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-137-141.json / remaining/142 기존제안 유무 확인`
 - `fix-batch-132-136 / 7c5e3dad32a11fb87bef60bcee76cf2060d48885 / 기존 제안 batch-132-136 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-132-136.json / remaining/137 기존제안 유무 확인`
 - `fix-batch-127-131 / 076c4b3cf791e997105bc3854fc38e23e7725e39 / 기존 제안 batch-127-131 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-127-131.json / remaining/132 기존제안 유무 확인`
@@ -11,7 +11,7 @@
 - `fix-homeplus-frozen-potatoes-107 / 67fb8da7509b8e0275f53eb77be38eadd6ab940a / remaining/107/001.json 및 기존 homeplus-frozen-potatoes-107 / 제안 완료 / ../2026-09-11/proposals/homeplus-frozen-potatoes-107.json / remaining/108 기존제안 유무 확인`
 - `fix-homeplus-nurungji-105 / ee0600bc006479462046464c1c8308be1827af0b / remaining/105/001.json 및 기존 homeplus-nurungji-105 / 제안 완료 / ../2026-09-11/proposals/homeplus-nurungji-105.json / remaining/107 기존제안 유무 확인`
 - `fix-homeplus-fruit-tea-preserves-104 / 33681d25b050f0a03e26a20d1c8fce487a4187f8 / remaining/104/001.json 및 기존 homeplus-fruit-tea-preserves-104 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-tea-preserves-104.json / remaining/105 기존제안 유무 확인`
-- `fix-homeplus-fruit-concentrates-103 / f2107111ee82f409896d466b51b62cb4761e87e0 / remaining/103/001.json 및 기존 homeplus-fruit-concentrates-103 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-concentrates-103.json / remaining/104 기존제안 유무 확인`
+- `fix-homeplus-fruit-concentrates-103 / f2107111ee82dc17fd3bb7b70d4dc4c183c / remaining/103/001.json 및 기존 homeplus-fruit-concentrates-103 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-concentrates-103.json / remaining/104 기존제안 유무 확인`
 - `fix-homeplus-samgyetang-herbs-101 / abe0d670e3e2b33faf554bf8e3f796dfe3b262c7 / remaining/101/001.json 및 기존 homeplus-samgyetang-herbs-101 / 제안 완료 / ../2026-09-11/proposals/homeplus-samgyetang-herbs-101.json / remaining/103 기존제안 유무 확인`
 - `fix-homeplus-kitchen-gloves-099 / 52b0dfda077e22932ee0bb6bfa329022a564ab9e / remaining/099/001.json 및 기존 homeplus-kitchen-gloves-099 / 제안 완료 / ../2026-09-11/proposals/homeplus-kitchen-gloves-099.json / remaining/101 기존제안 유무 확인`
 - `fix-homeplus-bath-towels-097 / 61900197a2a8f36cfcff469259a39d25c24ca336 / remaining/097/001.json 및 기존 homeplus-bath-towels-097 / 제안 완료 / ../2026-09-11/proposals/homeplus-bath-towels-097.json / remaining/099 기존제안 유무 확인`
