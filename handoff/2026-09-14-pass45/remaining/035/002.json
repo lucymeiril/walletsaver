@@ -1,0 +1,243 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:c69cdd1c48451ba54e5e4446",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유"
+      ],
+      "raw_native_category_id": "cos_10.10.5",
+      "raw_record_id": "ingestion:38:95",
+      "review_status": "pending",
+      "source_path": "우유",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "우유"
+      ],
+      "source_title": "ORGANIC VALLEY기버터 368G",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "oils"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:41.209255Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h59/hc4/453555427541022.jpg",
+      "ingestion_id": 38,
+      "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+      "issues": [],
+      "item_index": 95,
+      "mart_native_category_id": "cos_10.10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 368.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 28990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "376ae94e23cfea50e3e91a72eca2ceb444d6b3ef",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481",
+        "category": "우유",
+        "cocodalin_join_key": "689481",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h59/hc4/453555427541022.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10.5",
+        "mart_native_category_path": "우유",
+        "mart_native_code": "689481",
+        "match_key": "__no_brand__|organic valley기버터 368g|368.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "ORGANIC VALLEY기버터 368G",
+        "normalized_name": "ORGANIC VALLEY기버터 368G",
+        "pack_qty": 368,
+        "pack_unit": "G",
+        "price": 28990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "ORGANIC VALLEY기버터 368G",
+        "raw_promo_type": null,
+        "sale_price": 28990,
+        "source": "costco",
+        "source_record_key": "689481",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481",
+        "unit_price": 7878.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 7,878원",
+        "unit_price_displayed": 7878,
+        "unit_price_text": "100G당 7,878원"
+      },
+      "raw_payload_sha256": "004943bbeb566a54fd85bcdbe353b1fd62797df54dd657e526fdaea757e5fb82",
+      "raw_record_id": "ingestion:38:95",
+      "source_category_path": [
+        "우유"
+      ],
+      "source_name": "costco",
+      "source_record_key": "689481",
+      "source_title": "ORGANIC VALLEY기버터 368G",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-milk-shelf-035.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.butter",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:38:95",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "689481",
+    "source_title": "ORGANIC VALLEY기버터 368G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:c69cdd1c48451ba54e5e4446",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유"
+      ],
+      "raw_native_category_id": "cos_10.1",
+      "raw_record_id": "ingestion:38:96",
+      "review_status": "pending",
+      "source_path": "우유",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "우유"
+      ],
+      "source_title": "제너럴밀스시나몬토스트크런치702g x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Generalmills-Cinnamon-Toast-Crunch-702g-x-2/p/652406"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "ricegrains",
+        "cereal"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:41.209255Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h98/h0f/437678711472158.jpg",
+      "ingestion_id": 38,
+      "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+      "issues": [],
+      "item_index": 96,
+      "mart_native_category_id": "cos_10.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 702.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 13490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "858855b4982194cf6409eff32a6e22fe88c9aa3e",
+        "canonical_url": "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Generalmills-Cinnamon-Toast-Crunch-702g-x-2/p/652406",
+        "category": "우유",
+        "cocodalin_join_key": "652406",
+        "detail_url": "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Generalmills-Cinnamon-Toast-Crunch-702g-x-2/p/652406",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h98/h0f/437678711472158.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.1",
+        "mart_native_category_path": "우유",
+        "mart_native_code": "652406",
+        "match_key": "__no_brand__|제너럴밀스시나몬토스트크런치702g x 2|702.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "제너럴밀스시나몬토스트크런치702g x 2",
+        "normalized_name": "제너럴밀스시나몬토스트크런치702g x 2",
+        "pack_qty": 702,
+        "pack_unit": "g",
+        "price": 13490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "제너럴밀스시나몬토스트크런치702g x 2",
+        "raw_promo_type": null,
+        "sale_price": 13490,
+        "source": "costco",
+        "source_record_key": "652406",
+        "source_url": "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Generalmills-Cinnamon-Toast-Crunch-702g-x-2/p/652406",
+        "unit_price": 961.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 961원",
+        "unit_price_displayed": 961,
+        "unit_price_text": "100G당 961원"
+      },
+      "raw_payload_sha256": "2447a01dcdf9ea361b1742dd54dea4ca25632a8e03e16eb16746971a2d36421c",
+      "raw_record_id": "ingestion:38:96",
+      "source_category_path": [
+        "우유"
+      ],
+      "source_name": "costco",
+      "source_record_key": "652406",
+      "source_title": "제너럴밀스시나몬토스트크런치702g x 2",
+      "source_url": "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Generalmills-Cinnamon-Toast-Crunch-702g-x-2/p/652406",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:38:96",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "652406",
+    "source_title": "제너럴밀스시나몬토스트크런치702g x 2"
+  }
+]

@@ -1,0 +1,516 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:1926325c37b86816b48a191b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "베이커리/잼"
+      ],
+      "raw_native_category_id": "6000213412",
+      "raw_record_id": "ingestion:93:56",
+      "review_status": "pending",
+      "source_path": "베이커리/잼",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "사라다크라상2입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000620266649&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:43:28.947426Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/49/66/26/item/1000620266649_i1_290.jpg",
+      "ingestion_id": 93,
+      "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+      "issues": [],
+      "item_index": 56,
+      "mart_native_category_id": "6000213412",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "2입",
+        "package_quantity": 2.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "베이커리/잼",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/49/66/26/item/1000620266649_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213412",
+          "mart_native_category_path": "베이커리/잼",
+          "mart_native_code": "1000620266649",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착 툴팁 열기 툴팁 닫기 같은 배송 상품이라도 배송일시가 다를 수 있습니다. 자세한 내용은 상품상세 페이지에서 확인해 주세요.",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000620266649",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000620266649&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "베이커리/잼",
+        "crawled_at": "2026-09-03T01:43:28.947426",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000620266649&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "2입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/49/66/26/item/1000620266649_i1_290.jpg",
+        "match_key": "__no_brand__|사라다크라상2입||2입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "사라다크라상2입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 2.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "2입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f935e3bfce49534aee77b4612a4cd672c3c85a936333a313d7b43f1886d2e305",
+      "raw_record_id": "ingestion:93:56",
+      "source_category_path": [
+        "베이커리/잼"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000620266649",
+      "source_title": "사라다크라상2입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000620266649&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:93:56",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000620266649",
+    "source_title": "사라다크라상2입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:1926325c37b86816b48a191b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "베이커리/잼"
+      ],
+      "raw_native_category_id": "6000213412",
+      "raw_record_id": "ingestion:93:57",
+      "review_status": "pending",
+      "source_path": "베이커리/잼",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "달콤한 디저트 할인전 ~50%",
+      "source_urls": [
+        "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874467972&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:43:28.951430Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/72/79/46/item/1000874467972_i1_290.jpg",
+      "ingestion_id": 93,
+      "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 57,
+      "mart_native_category_id": "6000213412",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 28960,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "베이커리/잼",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/72/79/46/item/1000874467972_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213412",
+          "mart_native_category_path": "베이커리/잼",
+          "mart_native_code": "1000874467972",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000874467972",
+          "source_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874467972&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "베이커리/잼",
+        "crawled_at": "2026-09-03T01:43:28.951430",
+        "detail_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874467972&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/72/79/46/item/1000874467972_i1_290.jpg",
+        "match_key": "__no_brand__|달콤한 디저트 할인전 50||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "달콤한 디저트 할인전 ~50%",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 28960,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a4dae8111ae8495711fd0c8db813836dc60fd934e919570970f2532d20e8b7bd",
+      "raw_record_id": "ingestion:93:57",
+      "source_category_path": [
+        "베이커리/잼"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000874467972",
+      "source_title": "달콤한 디저트 할인전 ~50%",
+      "source_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874467972&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:93:57",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000874467972",
+    "source_title": "달콤한 디저트 할인전 ~50%"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:1926325c37b86816b48a191b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "베이커리/잼"
+      ],
+      "raw_native_category_id": "6000213412",
+      "raw_record_id": "ingestion:93:62",
+      "review_status": "pending",
+      "source_path": "베이커리/잼",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "오뚜기 딸기버터잼 280g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000775223863&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:43:28.974062Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/63/38/22/item/1000775223863_i1_290.jpg",
+      "ingestion_id": 93,
+      "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+      "issues": [],
+      "item_index": 62,
+      "mart_native_category_id": "6000213412",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "280g",
+        "package_quantity": 280.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "베이커리/잼",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/63/38/22/item/1000775223863_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213412",
+          "mart_native_category_path": "베이커리/잼",
+          "mart_native_code": "1000775223863",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000775223863",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000775223863&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,957원"
+        },
+        "brand": "__no_brand__",
+        "category": "베이커리/잼",
+        "crawled_at": "2026-09-03T01:43:28.974062",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000775223863&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "280g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/63/38/22/item/1000775223863_i1_290.jpg",
+        "match_key": "__no_brand__|오뚜기 딸기버터잼 280g||280g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 딸기버터잼 280g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 280.0,
+        "package_unit": "g",
+        "price_per_100g": 1957.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "280g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "748d98130210c48af9fbc64b51034755665ca33c7cf8f34c2f9d00dbf9839043",
+      "raw_record_id": "ingestion:93:62",
+      "source_category_path": [
+        "베이커리/잼"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000775223863",
+      "source_title": "오뚜기 딸기버터잼 280g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000775223863&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-bakery-jam-036.json",
+        "flags": [],
+        "leaf": "food.bakery.spreads.fruit",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:93:62",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000775223863",
+    "source_title": "오뚜기 딸기버터잼 280g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:1926325c37b86816b48a191b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "베이커리/잼"
+      ],
+      "raw_native_category_id": "6000213412",
+      "raw_record_id": "ingestion:93:64",
+      "review_status": "pending",
+      "source_path": "베이커리/잼",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "식사빵 최대 30% 특가전",
+      "source_urls": [
+        "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874470470&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:43:28.981686Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/70/04/47/item/1000874470470_i1_290.jpg",
+      "ingestion_id": 93,
+      "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 64,
+      "mart_native_category_id": "6000213412",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 8720,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "베이커리/잼",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/70/04/47/item/1000874470470_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213412",
+          "mart_native_category_path": "베이커리/잼",
+          "mart_native_code": "1000874470470",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송",
+            "주간배송",
+            "주간배송"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000874470470",
+          "source_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874470470&siteNo=6001&salestrNo=2037",
+          "unit_price_display": ""
+        },
+        "brand": "__no_brand__",
+        "category": "베이커리/잼",
+        "crawled_at": "2026-09-03T01:43:28.981686",
+        "detail_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874470470&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/70/04/47/item/1000874470470_i1_290.jpg",
+        "match_key": "__no_brand__|식사빵 최대 30 특가전||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "식사빵 최대 30% 특가전",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8720,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "7c5d362babdfbe4046087b30c20e115ad644d00c38359f11f78f2ea598a4e1cc",
+      "raw_record_id": "ingestion:93:64",
+      "source_category_path": [
+        "베이커리/잼"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000874470470",
+      "source_title": "식사빵 최대 30% 특가전",
+      "source_url": "https://emart.ssg.com/item/dealItemView.ssg?itemId=1000874470470&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:93:64",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000874470470",
+    "source_title": "식사빵 최대 30% 특가전"
+  }
+]

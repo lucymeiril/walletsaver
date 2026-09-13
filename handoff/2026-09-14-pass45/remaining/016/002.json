@@ -1,0 +1,2562 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.cup_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "컵라면"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:17",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "농심 새우탕 컵 67g x 30개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Shrimp-Bowl-Noodle-67g-x-30/p/603551"
+      ],
+      "unified_category_id": "food.meals.noodles.cup_ramen",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/hed/96902771441694.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 17,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 30,
+        "display_unit": "",
+        "package_quantity": 30.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 32490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "be358ad4735fef80248732cb19b2bf86bc641662",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Shrimp-Bowl-Noodle-67g-x-30/p/603551",
+        "category": "라면",
+        "cocodalin_join_key": "603551",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Shrimp-Bowl-Noodle-67g-x-30/p/603551",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/hed/96902771441694.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "603551",
+        "match_key": "__no_brand__|농심 새우탕 컵 67g x 30개|30.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "농심 새우탕 컵 67g x 30개",
+        "normalized_name": "농심 새우탕 컵 67g x 30개",
+        "pack_qty": 30,
+        "pack_unit": "개",
+        "price": 32490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "농심 새우탕 컵 67g x 30개",
+        "raw_promo_type": null,
+        "sale_price": 32490,
+        "source": "costco",
+        "source_record_key": "603551",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Shrimp-Bowl-Noodle-67g-x-30/p/603551",
+        "unit_price": 1616.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,616원",
+        "unit_price_displayed": 1616,
+        "unit_price_text": "100G당 1,616원"
+      },
+      "raw_payload_sha256": "53d60e16be6eb25e6072763401bc7aeb0a1a54c154bae28f9a96d079e2ba4baf",
+      "raw_record_id": "ingestion:40:17",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "603551",
+      "source_title": "농심 새우탕 컵 67g x 30개",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Shrimp-Bowl-Noodle-67g-x-30/p/603551",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:17",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "603551",
+    "source_title": "농심 새우탕 컵 67g x 30개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:18",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "농심배홍동비빔면137g x 20개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Baehongdong-Bibimmyun-137g-x-20/p/644244"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/hde/156620812451870.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 18,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": 19990,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 20.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 15990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0a7ad34a2263613ec52f22a5570edf4004d18c94",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Baehongdong-Bibimmyun-137g-x-20/p/644244",
+        "category": "라면",
+        "cocodalin_join_key": "644244",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Baehongdong-Bibimmyun-137g-x-20/p/644244",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/hde/156620812451870.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "644244",
+        "match_key": "__no_brand__|농심배홍동비빔면137g x 20개|20.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "농심배홍동비빔면137g x 20개",
+        "normalized_name": "농심배홍동비빔면137g x 20개",
+        "pack_qty": 20,
+        "pack_unit": "개",
+        "price": 19990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "농심배홍동비빔면137g x 20개",
+        "raw_promo_type": "discount",
+        "sale_price": 15990,
+        "source": "costco",
+        "source_record_key": "644244",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Baehongdong-Bibimmyun-137g-x-20/p/644244",
+        "unit_price": 584.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 584원",
+        "unit_price_displayed": 584,
+        "unit_price_text": "100G당 584원"
+      },
+      "raw_payload_sha256": "f515feab4669e1c65a14f4a3d15e9d638dc32bd9b046c37b66ef041c98700d10",
+      "raw_record_id": "ingestion:40:18",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "644244",
+      "source_title": "농심배홍동비빔면137g x 20개",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Baehongdong-Bibimmyun-137g-x-20/p/644244",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:18",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "644244",
+    "source_title": "농심배홍동비빔면137g x 20개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.rice_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "쌀국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:20",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "THAI WAH 쌀국수1,888g (16인분)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/THAI-WAH-Rice-Stick-1888g-16-Servings/p/665287"
+      ],
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc2/h50/189830699843614.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 20,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 888.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "945471c636d7adc2b4f5dbd96d67c16384b4ff46",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/THAI-WAH-Rice-Stick-1888g-16-Servings/p/665287",
+        "category": "라면",
+        "cocodalin_join_key": "665287",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/THAI-WAH-Rice-Stick-1888g-16-Servings/p/665287",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc2/h50/189830699843614.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "665287",
+        "match_key": "__no_brand__|thai wah 쌀국수1 888g 16인분|888.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "THAI WAH 쌀국수1,888g (16인분)",
+        "normalized_name": "THAI WAH 쌀국수1,888g (16인분)",
+        "pack_qty": 888,
+        "pack_unit": "g",
+        "price": 15890,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "THAI WAH 쌀국수1,888g (16인분)",
+        "raw_promo_type": null,
+        "sale_price": 15890,
+        "source": "costco",
+        "source_record_key": "665287",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/THAI-WAH-Rice-Stick-1888g-16-Servings/p/665287",
+        "unit_price": 842.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 842원",
+        "unit_price_displayed": 842,
+        "unit_price_text": "100G당 842원"
+      },
+      "raw_payload_sha256": "18f88bc03874f3eef33e542260fe1f0fddc00398ccede7991669a9fcfd1ead38",
+      "raw_record_id": "ingestion:40:20",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "665287",
+      "source_title": "THAI WAH 쌀국수1,888g (16인분)",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/THAI-WAH-Rice-Stick-1888g-16-Servings/p/665287",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:20",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "665287",
+    "source_title": "THAI WAH 쌀국수1,888g (16인분)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:40:21",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "냉동 손질 오징어 1.5kg X 2pack",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Squid-15kg-X-2pack/p/676966"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h18/hc4/260487082049566.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 21,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 1500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 62900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1f27389e31f04d77eb3afb558c56a91c137bf127",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Squid-15kg-X-2pack/p/676966",
+        "category": "라면",
+        "cocodalin_join_key": "676966",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Squid-15kg-X-2pack/p/676966",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h18/hc4/260487082049566.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "676966",
+        "match_key": "__no_brand__|냉동 손질 오징어 1 5kg x 2pack|1500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "냉동 손질 오징어 1.5kg X 2pack",
+        "normalized_name": "냉동 손질 오징어 1.5kg X 2pack",
+        "pack_qty": 1.5,
+        "pack_unit": "kg",
+        "price": 62900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "냉동 손질 오징어 1.5kg X 2pack",
+        "raw_promo_type": null,
+        "sale_price": 62900,
+        "source": "costco",
+        "source_record_key": "676966",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Squid-15kg-X-2pack/p/676966",
+        "unit_price": 2097.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,097원",
+        "unit_price_displayed": 2097,
+        "unit_price_text": "100G당 2,097원"
+      },
+      "raw_payload_sha256": "c950ba6c734b53075f73ffc7572f07800963646a9037c2090461e7ef58c32b4c",
+      "raw_record_id": "ingestion:40:21",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676966",
+      "source_title": "냉동 손질 오징어 1.5kg X 2pack",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Squid-15kg-X-2pack/p/676966",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:21",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676966",
+    "source_title": "냉동 손질 오징어 1.5kg X 2pack"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.1",
+      "raw_record_id": "ingestion:40:22",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "온가족 누룽지 + 퀴노아미니 60g x 30",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Whole-Family-Quinoa-Scorched-Rice-60g-x-30/p/631094"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "instant-food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/h5c/291447547625502.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 22,
+      "mart_native_category_id": "cos_10.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 30,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 21490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "fc6a00b3f3b9ed1e2c4e9b70882a18ffb03c3857",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Whole-Family-Quinoa-Scorched-Rice-60g-x-30/p/631094",
+        "category": "라면",
+        "cocodalin_join_key": "631094",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Whole-Family-Quinoa-Scorched-Rice-60g-x-30/p/631094",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/h5c/291447547625502.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.1",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "631094",
+        "match_key": "__no_brand__|온가족 누룽지 퀴노아미니 60g x 30|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "온가족 누룽지 + 퀴노아미니 60g x 30",
+        "normalized_name": "온가족 누룽지 + 퀴노아미니 60g x 30",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 21490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "온가족 누룽지 + 퀴노아미니 60g x 30",
+        "raw_promo_type": null,
+        "sale_price": 21490,
+        "source": "costco",
+        "source_record_key": "631094",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Whole-Family-Quinoa-Scorched-Rice-60g-x-30/p/631094",
+        "unit_price": 1194.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,194원",
+        "unit_price_displayed": 1194,
+        "unit_price_text": "100G당 1,194원"
+      },
+      "raw_payload_sha256": "6dedfddffcddc306d28393e184ba61cb269ba84e1ad02f1dfef15688108901b2",
+      "raw_record_id": "ingestion:40:22",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "631094",
+      "source_title": "온가족 누룽지 + 퀴노아미니 60g x 30",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Whole-Family-Quinoa-Scorched-Rice-60g-x-30/p/631094",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "631094",
+    "source_title": "온가족 누룽지 + 퀴노아미니 60g x 30"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.cup_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "컵라면"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:23",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/ShrimpTempura-Udon-Big-Bowl-115g-x-8-111g-x-8/p/616212"
+      ],
+      "unified_category_id": "food.meals.noodles.cup_ramen",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9c/hde/386954864623646.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 23,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 111.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 21990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ed8c0c36ee29acf6fd7295c1fd064379198cb84d",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/ShrimpTempura-Udon-Big-Bowl-115g-x-8-111g-x-8/p/616212",
+        "category": "라면",
+        "cocodalin_join_key": "616212",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/ShrimpTempura-Udon-Big-Bowl-115g-x-8-111g-x-8/p/616212",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9c/hde/386954864623646.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "616212",
+        "match_key": "__no_brand__|농심 새우탕 튀김우동 큰사발 115g x 8 111g x 8|111.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8",
+        "normalized_name": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8",
+        "pack_qty": 111,
+        "pack_unit": "g",
+        "price": 21990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8",
+        "raw_promo_type": null,
+        "sale_price": 21990,
+        "source": "costco",
+        "source_record_key": "616212",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/ShrimpTempura-Udon-Big-Bowl-115g-x-8-111g-x-8/p/616212",
+        "unit_price": 1216.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,216원",
+        "unit_price_displayed": 1216,
+        "unit_price_text": "100G당 1,216원"
+      },
+      "raw_payload_sha256": "ae7f4eae6885742edc5d6911cace8a91d8c4b3e7ad0eae918ff17a94abe48ee8",
+      "raw_record_id": "ingestion:40:23",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "616212",
+      "source_title": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/ShrimpTempura-Udon-Big-Bowl-115g-x-8-111g-x-8/p/616212",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:23",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "616212",
+    "source_title": "농심 새우탕/튀김우동 큰사발 115g x 8 / 111g x 8"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:40:24",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "다담 떡볶이 양념 150g x 20",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Dadam-Tteokbokki-Sauce-150g-x-20/p/662513"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "saucesdressings"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/hcf/150580622917662.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 24,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d624311cae97a53309f430a78a80165ea02efa13",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Dadam-Tteokbokki-Sauce-150g-x-20/p/662513",
+        "category": "라면",
+        "cocodalin_join_key": "662513",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Dadam-Tteokbokki-Sauce-150g-x-20/p/662513",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/hcf/150580622917662.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "662513",
+        "match_key": "__no_brand__|다담 떡볶이 양념 150g x 20|150.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "다담 떡볶이 양념 150g x 20",
+        "normalized_name": "다담 떡볶이 양념 150g x 20",
+        "pack_qty": 150,
+        "pack_unit": "g",
+        "price": 24490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "다담 떡볶이 양념 150g x 20",
+        "raw_promo_type": null,
+        "sale_price": 24490,
+        "source": "costco",
+        "source_record_key": "662513",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Dadam-Tteokbokki-Sauce-150g-x-20/p/662513",
+        "unit_price": 816.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 816원",
+        "unit_price_displayed": 816,
+        "unit_price_text": "100G당 816원"
+      },
+      "raw_payload_sha256": "379804c1c627b499ccf54e4c6cfd24a9f269d61e5d8c1eaa6206e1e1d5fe8d42",
+      "raw_record_id": "ingestion:40:24",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "662513",
+      "source_title": "다담 떡볶이 양념 150g x 20",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Dadam-Tteokbokki-Sauce-150g-x-20/p/662513",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "662513",
+    "source_title": "다담 떡볶이 양념 150g x 20"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:40:25",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "가지 2봉 (7개x 2봉)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eggplants-2-bags-7ea-x-2ct/p/685751"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hde/hc6/363468029100062.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 25,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 14990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a8e55b3736daef8662188ef021ae2b81f4807d6b",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eggplants-2-bags-7ea-x-2ct/p/685751",
+        "category": "라면",
+        "cocodalin_join_key": "685751",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eggplants-2-bags-7ea-x-2ct/p/685751",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hde/hc6/363468029100062.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "685751",
+        "match_key": "__no_brand__|가지 2봉 7개x 2봉|2.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "가지 2봉 (7개x 2봉)",
+        "normalized_name": "가지 2봉 (7개x 2봉)",
+        "pack_qty": 2,
+        "pack_unit": "봉",
+        "price": 14990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "가지 2봉 (7개x 2봉)",
+        "raw_promo_type": null,
+        "sale_price": 14990,
+        "source": "costco",
+        "source_record_key": "685751",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eggplants-2-bags-7ea-x-2ct/p/685751",
+        "unit_price": 1071.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 1,071원",
+        "unit_price_displayed": 1071,
+        "unit_price_text": "개　　　당 1,071원"
+      },
+      "raw_payload_sha256": "536a4467752dbbbf847c050dfa5097943497e69c185c6cb251225c2e0416ee04",
+      "raw_record_id": "ingestion:40:25",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "685751",
+      "source_title": "가지 2봉 (7개x 2봉)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eggplants-2-bags-7ea-x-2ct/p/685751",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "685751",
+    "source_title": "가지 2봉 (7개x 2봉)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:26",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/SulsungFarm-Korean-Beef-Bone-Soup-Stick-14g-x10-x4/p/652265"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "instant-food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/hca/98280911699998.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 26,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 40,
+        "display_unit": "",
+        "package_quantity": 14.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "83642b943cc464f0e5eba62adf4b7984fe8ba8ec",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/SulsungFarm-Korean-Beef-Bone-Soup-Stick-14g-x10-x4/p/652265",
+        "category": "라면",
+        "cocodalin_join_key": "652265",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/SulsungFarm-Korean-Beef-Bone-Soup-Stick-14g-x10-x4/p/652265",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/hca/98280911699998.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "652265",
+        "match_key": "__no_brand__|설성목장한우사골 곰탕 스틱 14g x 10 x 4|14.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+        "normalized_name": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+        "pack_qty": 14,
+        "pack_unit": "g",
+        "price": 24490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+        "raw_promo_type": null,
+        "sale_price": 24490,
+        "source": "costco",
+        "source_record_key": "652265",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/SulsungFarm-Korean-Beef-Bone-Soup-Stick-14g-x10-x4/p/652265",
+        "unit_price": 4373.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,373원",
+        "unit_price_displayed": 4373,
+        "unit_price_text": "100G당 4,373원"
+      },
+      "raw_payload_sha256": "cf90d71c06b1f4f583353c4500aa6d55022ccb16d3a13c64574703110f4b3081",
+      "raw_record_id": "ingestion:40:26",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "652265",
+      "source_title": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/SulsungFarm-Korean-Beef-Bone-Soup-Stick-14g-x10-x4/p/652265",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "652265",
+    "source_title": "설성목장한우사골 곰탕 스틱 14g x 10 x 4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:40:27",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "절단꽃게 1.2kg X 2pack",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Crab-12kg-X-2pack/p/682153"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7b/h32/381558188179486.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 27,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 1200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8050ee665b86afe1ff5b8af323f43a3e9b9266d1",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Crab-12kg-X-2pack/p/682153",
+        "category": "라면",
+        "cocodalin_join_key": "682153",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Crab-12kg-X-2pack/p/682153",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7b/h32/381558188179486.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "682153",
+        "match_key": "__no_brand__|절단꽃게 1 2kg x 2pack|1200.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "절단꽃게 1.2kg X 2pack",
+        "normalized_name": "절단꽃게 1.2kg X 2pack",
+        "pack_qty": 1.2,
+        "pack_unit": "kg",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "절단꽃게 1.2kg X 2pack",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "682153",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Crab-12kg-X-2pack/p/682153",
+        "unit_price": 1750.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,750원",
+        "unit_price_displayed": 1750,
+        "unit_price_text": "100G당 1,750원"
+      },
+      "raw_payload_sha256": "61bdd71a1025645ed9ec0c0dcc6e95e997d0821ddfa7ddf51e6586725e6d030b",
+      "raw_record_id": "ingestion:40:27",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "682153",
+      "source_title": "절단꽃게 1.2kg X 2pack",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Crab-12kg-X-2pack/p/682153",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "682153",
+    "source_title": "절단꽃게 1.2kg X 2pack"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.rice_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "쌀국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:40:31",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "백제 쌀국수 컵 58g x 6입 x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Rice-Noodle-Cup-58g-x-6ct-x-4/p/621485"
+      ],
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/haf/12532849311774.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 24,
+        "display_unit": "",
+        "package_quantity": 6.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "afcac3463f8f1c3ca2dd30ec29d3f6211c805e28",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Rice-Noodle-Cup-58g-x-6ct-x-4/p/621485",
+        "category": "라면",
+        "cocodalin_join_key": "621485",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Rice-Noodle-Cup-58g-x-6ct-x-4/p/621485",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/haf/12532849311774.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "621485",
+        "match_key": "__no_brand__|백제 쌀국수 컵 58g x 6입 x 4|6.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "백제 쌀국수 컵 58g x 6입 x 4",
+        "normalized_name": "백제 쌀국수 컵 58g x 6입 x 4",
+        "pack_qty": 6,
+        "pack_unit": "입",
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "백제 쌀국수 컵 58g x 6입 x 4",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "621485",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Rice-Noodle-Cup-58g-x-6ct-x-4/p/621485",
+        "unit_price": 1795.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,795원",
+        "unit_price_displayed": 1795,
+        "unit_price_text": "100G당 1,795원"
+      },
+      "raw_payload_sha256": "817dbf286f64ecc6b5d9515bed082c1a33eefee1b3bd9b9529364aa3ff9e3276",
+      "raw_record_id": "ingestion:40:31",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "621485",
+      "source_title": "백제 쌀국수 컵 58g x 6입 x 4",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Rice-Noodle-Cup-58g-x-6ct-x-4/p/621485",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:31",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "621485",
+    "source_title": "백제 쌀국수 컵 58g x 6입 x 4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:32",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "Mama's Choice 오징어소면 300g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Mamas-Choice-Squid-Noodles-300g/p/671196"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h92/he3/262132994048030.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [],
+      "item_index": 32,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "91a8a8a41a47a570ea13f965b0e9aee7d3316e80",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Mamas-Choice-Squid-Noodles-300g/p/671196",
+        "category": "라면",
+        "cocodalin_join_key": "671196",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Mamas-Choice-Squid-Noodles-300g/p/671196",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h92/he3/262132994048030.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "671196",
+        "match_key": "__no_brand__|mama s choice 오징어소면 300g|300.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Mama's Choice 오징어소면 300g",
+        "normalized_name": "Mama's Choice 오징어소면 300g",
+        "pack_qty": 300,
+        "pack_unit": "g",
+        "price": 19290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Mama's Choice 오징어소면 300g",
+        "raw_promo_type": null,
+        "sale_price": 19290,
+        "source": "costco",
+        "source_record_key": "671196",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Mamas-Choice-Squid-Noodles-300g/p/671196",
+        "unit_price": 6430.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 6,430원",
+        "unit_price_displayed": 6430,
+        "unit_price_text": "100G당 6,430원"
+      },
+      "raw_payload_sha256": "40bff85cb8a332500ae024e57d96737bc899621033d9661343186c1845103a7e",
+      "raw_record_id": "ingestion:40:32",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "671196",
+      "source_title": "Mama's Choice 오징어소면 300g",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Mamas-Choice-Squid-Noodles-300g/p/671196",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "671196",
+    "source_title": "Mama's Choice 오징어소면 300g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.rice_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "쌀국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:37",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/-100g-x-10-x-2/p/635040"
+      ],
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hcc/hb3/343588392861726.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 37,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 30990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0b2120a7ecd0c07acdbcd7f853447f9488c1eefc",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/-100g-x-10-x-2/p/635040",
+        "category": "라면",
+        "cocodalin_join_key": "635040",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/-100g-x-10-x-2/p/635040",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hcc/hb3/343588392861726.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "635040",
+        "match_key": "__no_brand__|백제 파곰탕면 쌀국수 100g x 10개 x 2박스|10.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스",
+        "normalized_name": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스",
+        "pack_qty": 10,
+        "pack_unit": "개",
+        "price": 30990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스",
+        "raw_promo_type": null,
+        "sale_price": 30990,
+        "source": "costco",
+        "source_record_key": "635040",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/-100g-x-10-x-2/p/635040",
+        "unit_price": 1550.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,550원",
+        "unit_price_displayed": 1550,
+        "unit_price_text": "100G당 1,550원"
+      },
+      "raw_payload_sha256": "4b579376685c1e03bd979bc37dea6e95797c9285ef27a42af7a30eec3991aa61",
+      "raw_record_id": "ingestion:40:37",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "635040",
+      "source_title": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/-100g-x-10-x-2/p/635040",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:37",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "635040",
+    "source_title": "백제 파곰탕면 쌀국수 100g x 10개 x 2박스"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.wheat_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "소면·국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:40:40",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "풍국면 우리밀 국수 400g x 10팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/p/606503"
+      ],
+      "unified_category_id": "food.meals.noodles.wheat_noodle",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h57/h1c/9914441891870.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 22990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9c8bf4befe37cff56bb857e54a1ad4bef8ab6d67",
+        "canonical_url": "https://www.costco.co.kr/Foods/p/606503",
+        "category": "라면",
+        "cocodalin_join_key": "606503",
+        "detail_url": "https://www.costco.co.kr/Foods/p/606503",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h57/h1c/9914441891870.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "606503",
+        "match_key": "__no_brand__|풍국면 우리밀 국수 400g x 10팩|10.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풍국면 우리밀 국수 400g x 10팩",
+        "normalized_name": "풍국면 우리밀 국수 400g x 10팩",
+        "pack_qty": 10,
+        "pack_unit": "팩",
+        "price": 22990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "풍국면 우리밀 국수 400g x 10팩",
+        "raw_promo_type": null,
+        "sale_price": 22990,
+        "source": "costco",
+        "source_record_key": "606503",
+        "source_url": "https://www.costco.co.kr/Foods/p/606503",
+        "unit_price": 575.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 575원",
+        "unit_price_displayed": 575,
+        "unit_price_text": "100G당 575원"
+      },
+      "raw_payload_sha256": "6d52d8f7dcf2d08f05a6926a8c942260f00f7def471b4d66427bbe54339c7507",
+      "raw_record_id": "ingestion:40:40",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606503",
+      "source_title": "풍국면 우리밀 국수 400g x 10팩",
+      "source_url": "https://www.costco.co.kr/Foods/p/606503",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:40",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "606503",
+    "source_title": "풍국면 우리밀 국수 400g x 10팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:40:43",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "고메 고기짜장 1,360g x 2개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb7/h51/490128241197086.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 43,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": 37990,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 31190,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b13faabf6b2c1713da16341d157dee41f8b7aa85",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610",
+        "category": "라면",
+        "cocodalin_join_key": "695610",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb7/h51/490128241197086.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "695610",
+        "match_key": "__no_brand__|고메 고기짜장 1 360g x 2개|2.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "고메 고기짜장 1,360g x 2개",
+        "normalized_name": "고메 고기짜장 1,360g x 2개",
+        "pack_qty": 2,
+        "pack_unit": "개",
+        "price": 37990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "고메 고기짜장 1,360g x 2개",
+        "raw_promo_type": "discount",
+        "sale_price": 31190,
+        "source": "costco",
+        "source_record_key": "695610",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610",
+        "unit_price": 1147.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,147원",
+        "unit_price_displayed": 1147,
+        "unit_price_text": "100G당 1,147원"
+      },
+      "raw_payload_sha256": "30061a89f104399c7ff1446a77e2ed286edd150982df9b578989e8b77c7811e0",
+      "raw_record_id": "ingestion:40:43",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695610",
+      "source_title": "고메 고기짜장 1,360g x 2개",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "695610",
+    "source_title": "고메 고기짜장 1,360g x 2개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.wheat_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "소면·국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:49",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "풍국면 다복면 500g x 10팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Poongkook/Poongkook-Wheat-Noodles-500g-x-10pack/p/606501"
+      ],
+      "unified_category_id": "food.meals.noodles.wheat_noodle",
+      "url_taxonomy_hints": [
+        "poongkook"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h20/h70/9868248514590.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 49,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 17990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3fbd5a68a27cd4aa8ea9c9e7851ff6786950341f",
+        "canonical_url": "https://www.costco.co.kr/Poongkook/Poongkook-Wheat-Noodles-500g-x-10pack/p/606501",
+        "category": "라면",
+        "cocodalin_join_key": "606501",
+        "detail_url": "https://www.costco.co.kr/Poongkook/Poongkook-Wheat-Noodles-500g-x-10pack/p/606501",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h20/h70/9868248514590.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "606501",
+        "match_key": "__no_brand__|풍국면 다복면 500g x 10팩|10.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풍국면 다복면 500g x 10팩",
+        "normalized_name": "풍국면 다복면 500g x 10팩",
+        "pack_qty": 10,
+        "pack_unit": "팩",
+        "price": 17990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "풍국면 다복면 500g x 10팩",
+        "raw_promo_type": null,
+        "sale_price": 17990,
+        "source": "costco",
+        "source_record_key": "606501",
+        "source_url": "https://www.costco.co.kr/Poongkook/Poongkook-Wheat-Noodles-500g-x-10pack/p/606501",
+        "unit_price": 360.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 360원",
+        "unit_price_displayed": 360,
+        "unit_price_text": "100G당 360원"
+      },
+      "raw_payload_sha256": "eb285f7626468aa4a13b400de80e9137540163fef293116c254197f90a279fdf",
+      "raw_record_id": "ingestion:40:49",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606501",
+      "source_title": "풍국면 다복면 500g x 10팩",
+      "source_url": "https://www.costco.co.kr/Poongkook/Poongkook-Wheat-Noodles-500g-x-10pack/p/606501",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:49",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "606501",
+    "source_title": "풍국면 다복면 500g x 10팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.sujebi"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "수제비"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:51",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690"
+      ],
+      "unified_category_id": "food.meals.noodles.sujebi",
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7d/h5c/153742716469278.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "bulk_package_review_required"
+      ],
+      "item_index": 51,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 960,
+        "display_unit": "",
+        "package_quantity": 186.5,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1599000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "56c0c760aec02a7f6be85e53e1041813cd06fbf1",
+        "canonical_url": "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690",
+        "category": "라면",
+        "cocodalin_join_key": "663690",
+        "detail_url": "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7d/h5c/153742716469278.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "663690",
+        "match_key": "__no_brand__|이가자연면감자수제비186 5g x 8 x 120 bd|186.5|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+        "normalized_name": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+        "pack_qty": 186.5,
+        "pack_unit": "g",
+        "price": 1599000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+        "raw_promo_type": null,
+        "sale_price": 1599000,
+        "source": "costco",
+        "source_record_key": "663690",
+        "source_url": "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690",
+        "unit_price": 893.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 893원",
+        "unit_price_displayed": 893,
+        "unit_price_text": "100G당 893원"
+      },
+      "raw_payload_sha256": "30b6f5421996f43bad1be9802a0360e6f62b7526b8605f722bdb5c949f0641ab",
+      "raw_record_id": "ingestion:40:51",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "663690",
+      "source_title": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+      "source_url": "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:51",
+    "reasons": [
+      "bulk_package_review_required"
+    ],
+    "source_record_key": "663690",
+    "source_title": "이가자연면감자수제비186.5g x 8 x 120 (BD)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.buckwheat_noodle"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "메밀국수"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:40:52",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "풍국면 메밀국수 500g x 10팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/p/606502"
+      ],
+      "unified_category_id": "food.meals.noodles.buckwheat_noodle",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h38/h56/10408909537310.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 52,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 34990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9071687f85e20228b21d11419f867c3af89ac622",
+        "canonical_url": "https://www.costco.co.kr/Foods/p/606502",
+        "category": "라면",
+        "cocodalin_join_key": "606502",
+        "detail_url": "https://www.costco.co.kr/Foods/p/606502",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h38/h56/10408909537310.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "606502",
+        "match_key": "__no_brand__|풍국면 메밀국수 500g x 10팩|10.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풍국면 메밀국수 500g x 10팩",
+        "normalized_name": "풍국면 메밀국수 500g x 10팩",
+        "pack_qty": 10,
+        "pack_unit": "팩",
+        "price": 34990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "풍국면 메밀국수 500g x 10팩",
+        "raw_promo_type": null,
+        "sale_price": 34990,
+        "source": "costco",
+        "source_record_key": "606502",
+        "source_url": "https://www.costco.co.kr/Foods/p/606502",
+        "unit_price": 700.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 700원",
+        "unit_price_displayed": 700,
+        "unit_price_text": "100G당 700원"
+      },
+      "raw_payload_sha256": "074fb7cba9a7d4669546a850fb0a23982c9a66e63bb530d4b6c7c3841ca6284e",
+      "raw_record_id": "ingestion:40:52",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606502",
+      "source_title": "풍국면 메밀국수 500g x 10팩",
+      "source_url": "https://www.costco.co.kr/Foods/p/606502",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:52",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "606502",
+    "source_title": "풍국면 메밀국수 500g x 10팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.pasta"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "파스타면"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:53",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "데 체코 라자냐 500g x 4개",
+      "source_urls": [
+        "https://www.costco.co.kr/De-Cecco/De-Cecco-Lasagna-500g-x-4/p/602490"
+      ],
+      "unified_category_id": "food.meals.noodles.pasta",
+      "url_taxonomy_hints": [
+        "de-cecco"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h60/h09/9868040863774.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 53,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 4.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 21990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d23c6938b64b36761bfcb2a379ab99f008776b99",
+        "canonical_url": "https://www.costco.co.kr/De-Cecco/De-Cecco-Lasagna-500g-x-4/p/602490",
+        "category": "라면",
+        "cocodalin_join_key": "602490",
+        "detail_url": "https://www.costco.co.kr/De-Cecco/De-Cecco-Lasagna-500g-x-4/p/602490",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h60/h09/9868040863774.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "602490",
+        "match_key": "__no_brand__|데 체코 라자냐 500g x 4개|4.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "데 체코 라자냐 500g x 4개",
+        "normalized_name": "데 체코 라자냐 500g x 4개",
+        "pack_qty": 4,
+        "pack_unit": "개",
+        "price": 21990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "데 체코 라자냐 500g x 4개",
+        "raw_promo_type": null,
+        "sale_price": 21990,
+        "source": "costco",
+        "source_record_key": "602490",
+        "source_url": "https://www.costco.co.kr/De-Cecco/De-Cecco-Lasagna-500g-x-4/p/602490",
+        "unit_price": 1100.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,100원",
+        "unit_price_displayed": 1100,
+        "unit_price_text": "100G당 1,100원"
+      },
+      "raw_payload_sha256": "2c823c07719d6e3174b713e3573a01a1514e429258cfcbc24a40c60f8ae9f182",
+      "raw_record_id": "ingestion:40:53",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "602490",
+      "source_title": "데 체코 라자냐 500g x 4개",
+      "source_url": "https://www.costco.co.kr/De-Cecco/De-Cecco-Lasagna-500g-x-4/p/602490",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:53",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "602490",
+    "source_title": "데 체코 라자냐 500g x 4개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.pasta"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "파스타면"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_noodle_title",
+      "evidence_type": "contextual_costco_noodle_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:40:57",
+      "review_status": "classified",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Tricolor-Fusilli-500g-x-3-Farfalle-500g-x-3/p/614181"
+      ],
+      "unified_category_id": "food.meals.noodles.pasta",
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h62/ha9/10637157695518.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 57,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 26290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "132de45ae45428252cdd77c1443dbb098df06776",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Tricolor-Fusilli-500g-x-3-Farfalle-500g-x-3/p/614181",
+        "category": "라면",
+        "cocodalin_join_key": "614181",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Tricolor-Fusilli-500g-x-3-Farfalle-500g-x-3/p/614181",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h62/ha9/10637157695518.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "614181",
+        "match_key": "__no_brand__|데 체코 삼색 푸실리 500g x 3 파팔레 500g x 3|500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3",
+        "normalized_name": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3",
+        "pack_qty": 500,
+        "pack_unit": "g",
+        "price": 26290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3",
+        "raw_promo_type": null,
+        "sale_price": 26290,
+        "source": "costco",
+        "source_record_key": "614181",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Tricolor-Fusilli-500g-x-3-Farfalle-500g-x-3/p/614181",
+        "unit_price": 876.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 876원",
+        "unit_price_displayed": 876,
+        "unit_price_text": "100G당 876원"
+      },
+      "raw_payload_sha256": "c29c7dedb26f5e5a6e7a49256154f75f0de66775ed33c3d0a58f2df599e8af5f",
+      "raw_record_id": "ingestion:40:57",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "614181",
+      "source_title": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Tricolor-Fusilli-500g-x-3-Farfalle-500g-x-3/p/614181",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:57",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "614181",
+    "source_title": "데 체코 삼색 푸실리 500g x 3 & 파팔레 500g x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:27ba37e9048b07fe8d937419",
+      "promotion_surface": false,
+      "proposed_path": [
+        "라면"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:40:62",
+      "review_status": "pending",
+      "source_path": "라면",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "pastanoodles"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:48.320787Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf1/hb3/486435398877214.jpg",
+      "ingestion_id": 40,
+      "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 62,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 128.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 16990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "27b98e8242174e859b2e016e2b7ded6de838a3d4",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853",
+        "category": "라면",
+        "cocodalin_join_key": "685853",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf1/hb3/486435398877214.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "라면",
+        "mart_native_code": "685853",
+        "match_key": "__no_brand__|ippudo 하카타 라멘 120g x 4 128g x 4|128.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+        "normalized_name": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+        "pack_qty": 128,
+        "pack_unit": "g",
+        "price": 16990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+        "raw_promo_type": null,
+        "sale_price": 16990,
+        "source": "costco",
+        "source_record_key": "685853",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853",
+        "unit_price": 1713.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,713원",
+        "unit_price_displayed": 1713,
+        "unit_price_text": "100G당 1,713원"
+      },
+      "raw_payload_sha256": "dad26f481fe355b78a5071132427104a99d5bd0b53b6d260abf12b0bdceadd4e",
+      "raw_record_id": "ingestion:40:62",
+      "source_category_path": [
+        "라면"
+      ],
+      "source_name": "costco",
+      "source_record_key": "685853",
+      "source_title": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:40:62",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "685853",
+    "source_title": "Ippudo 하카타 라멘 120g x 4 / 128g x 4"
+  }
+]

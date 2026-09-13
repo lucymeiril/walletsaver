@@ -1,0 +1,2047 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:48:92",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "오뚜기 청주식 돼지김치짜글이 450g x 12",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Ottogi-Kimchi-Jjageuli-450g-x-12/p/673438"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "instant-food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9e/h14/228114327044126.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 92,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": 49990,
+      "package": {
+        "bundle_count": 12,
+        "display_unit": "",
+        "package_quantity": 450.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 45990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "164bcb0fc0860f51596dde618dfae552221a72ca",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Ottogi-Kimchi-Jjageuli-450g-x-12/p/673438",
+        "category": "김치",
+        "cocodalin_join_key": "673438",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Ottogi-Kimchi-Jjageuli-450g-x-12/p/673438",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9e/h14/228114327044126.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "673438",
+        "match_key": "__no_brand__|오뚜기 청주식 돼지김치짜글이 450g x 12|450.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 청주식 돼지김치짜글이 450g x 12",
+        "normalized_name": "오뚜기 청주식 돼지김치짜글이 450g x 12",
+        "pack_qty": 450,
+        "pack_unit": "g",
+        "price": 49990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "오뚜기 청주식 돼지김치짜글이 450g x 12",
+        "raw_promo_type": "discount",
+        "sale_price": 45990,
+        "source": "costco",
+        "source_record_key": "673438",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Ottogi-Kimchi-Jjageuli-450g-x-12/p/673438",
+        "unit_price": 852.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 852원",
+        "unit_price_displayed": 852,
+        "unit_price_text": "100G당 852원"
+      },
+      "raw_payload_sha256": "fd3c5c1899d2e344faace9c056bc4a6aae5da80aee95f423238a679af3667af9",
+      "raw_record_id": "ingestion:48:92",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "673438",
+      "source_title": "오뚜기 청주식 돼지김치짜글이 450g x 12",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Ottogi-Kimchi-Jjageuli-450g-x-12/p/673438",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:92",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "673438",
+    "source_title": "오뚜기 청주식 돼지김치짜글이 450g x 12"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_1.2.2",
+      "raw_record_id": "ingestion:48:93",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690205"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "refrigerators",
+        "kimchi-fridges"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h07/h10/400267924078622.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 93,
+      "mart_native_category_id": "cos_1.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 217000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 969000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d4a97949785ac318b6a3cacc754355ce2c6a9b44",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690205",
+        "category": "김치",
+        "cocodalin_join_key": "690205",
+        "detail_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690205",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h07/h10/400267924078622.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.2.2",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "690205",
+        "match_key": "__no_brand__|lg 디오스 김치톡톡 217l 메탈 린넨화이트|217000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+        "normalized_name": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+        "pack_qty": 217,
+        "pack_unit": "L",
+        "price": 969000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+        "raw_promo_type": null,
+        "sale_price": 969000,
+        "source": "costco",
+        "source_record_key": "690205",
+        "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690205",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "cc25662bb06468ef8b0660448380fb594615f90156dc3607273ae83f63c6bf5b",
+      "raw_record_id": "ingestion:48:93",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690205",
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+      "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690205",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:93",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690205",
+    "source_title": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_1.2.2",
+      "raw_record_id": "ingestion:48:94",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690204"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "refrigerators",
+        "kimchi-fridges"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdb/h42/400267916836894.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 94,
+      "mart_native_category_id": "cos_1.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 217000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 999000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "309ca10073b84cff45bbacb5b4db40c3c3a58f9f",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690204",
+        "category": "김치",
+        "cocodalin_join_key": "690204",
+        "detail_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690204",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdb/h42/400267916836894.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.2.2",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "690204",
+        "match_key": "__no_brand__|lg 디오스 김치톡톡 217l 메탈 샤이니퓨어|217000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+        "normalized_name": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+        "pack_qty": 217,
+        "pack_unit": "L",
+        "price": 999000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+        "raw_promo_type": null,
+        "sale_price": 999000,
+        "source": "costco",
+        "source_record_key": "690204",
+        "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690204",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "08d7016724cb843f7b90f6358468d84d2ced6bb70edb3d88325762575f3edb66",
+      "raw_record_id": "ingestion:48:94",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690204",
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+      "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Kimchi-Refrigerator-217L/p/690204",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:94",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690204",
+    "source_title": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:48:95",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "아워홈 갓석박지 1.5kg x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Radishi-Kimchi-with-Mustard-Leaves-15kg-x-2/p/695898"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "kimchiside-dishes"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h33/hd9/483986981421086.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 95,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 1500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 31990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3c60a019b854052f3f78e598414cfea30dd61210",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Radishi-Kimchi-with-Mustard-Leaves-15kg-x-2/p/695898",
+        "category": "김치",
+        "cocodalin_join_key": "695898",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Radishi-Kimchi-with-Mustard-Leaves-15kg-x-2/p/695898",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h33/hd9/483986981421086.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "695898",
+        "match_key": "__no_brand__|아워홈 갓석박지 1 5kg x 2|1500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아워홈 갓석박지 1.5kg x 2",
+        "normalized_name": "아워홈 갓석박지 1.5kg x 2",
+        "pack_qty": 1.5,
+        "pack_unit": "kg",
+        "price": 31990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "아워홈 갓석박지 1.5kg x 2",
+        "raw_promo_type": null,
+        "sale_price": 31990,
+        "source": "costco",
+        "source_record_key": "695898",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Radishi-Kimchi-with-Mustard-Leaves-15kg-x-2/p/695898",
+        "unit_price": 1066.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,066원",
+        "unit_price_displayed": 1066,
+        "unit_price_text": "100G당 1,066원"
+      },
+      "raw_payload_sha256": "112ada0aacff77deda445eb11d2b1951746376122a43509042a25a2208f09fd9",
+      "raw_record_id": "ingestion:48:95",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695898",
+      "source_title": "아워홈 갓석박지 1.5kg x 2",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Radishi-Kimchi-with-Mustard-Leaves-15kg-x-2/p/695898",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.preserved.kimchi.seokbakji",
+        "path": "/proposed_decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:48:95",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "695898",
+    "source_title": "아워홈 갓석박지 1.5kg x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.6",
+      "raw_record_id": "ingestion:48:96",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "햇님마을 굵은 고춧가루 100g x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haetnim-Maeul-Coarse-Red-Pepper-Powder-100g-x-4/p/688027"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "condimentsspices"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h1f/ha5/451602246041630.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 96,
+      "mart_native_category_id": "cos_10.6",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0cdbebad3e513246ec4296c50726f2d7dd4b63fe",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haetnim-Maeul-Coarse-Red-Pepper-Powder-100g-x-4/p/688027",
+        "category": "김치",
+        "cocodalin_join_key": "688027",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haetnim-Maeul-Coarse-Red-Pepper-Powder-100g-x-4/p/688027",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h1f/ha5/451602246041630.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.6",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "688027",
+        "match_key": "__no_brand__|햇님마을 굵은 고춧가루 100g x 4|100.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "햇님마을 굵은 고춧가루 100g x 4",
+        "normalized_name": "햇님마을 굵은 고춧가루 100g x 4",
+        "pack_qty": 100,
+        "pack_unit": "g",
+        "price": 19490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "햇님마을 굵은 고춧가루 100g x 4",
+        "raw_promo_type": null,
+        "sale_price": 19490,
+        "source": "costco",
+        "source_record_key": "688027",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haetnim-Maeul-Coarse-Red-Pepper-Powder-100g-x-4/p/688027",
+        "unit_price": 4873.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,873원",
+        "unit_price_displayed": 4873,
+        "unit_price_text": "100G당 4,873원"
+      },
+      "raw_payload_sha256": "2e83cf64552179b5b455dc5b98b9448b235089bc37a5937d8a4641847d0a6e32",
+      "raw_record_id": "ingestion:48:96",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "688027",
+      "source_title": "햇님마을 굵은 고춧가루 100g x 4",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haetnim-Maeul-Coarse-Red-Pepper-Powder-100g-x-4/p/688027",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.seasonings.spices.chili_powder",
+        "path": "/proposed_decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:48:96",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "688027",
+    "source_title": "햇님마을 굵은 고춧가루 100g x 4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:48:97",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Chungjungone-Crispy-Pickled-Vegetables-16kg-Wild-Leek-300gx2-Celtuce-250gx2-Pepper-250gx2/p/695907"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "kimchiside-dishes"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/hde/486928111173662.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 97,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c82b9c647b6e899e05adc41c5f959d2b7daf73fc",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Chungjungone-Crispy-Pickled-Vegetables-16kg-Wild-Leek-300gx2-Celtuce-250gx2-Pepper-250gx2/p/695907",
+        "category": "김치",
+        "cocodalin_join_key": "695907",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Chungjungone-Crispy-Pickled-Vegetables-16kg-Wild-Leek-300gx2-Celtuce-250gx2-Pepper-250gx2/p/695907",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/hde/486928111173662.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "695907",
+        "match_key": "__no_brand__|청정원 아삭 장아찌 1 6kg 3종 혼합팩|1600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+        "normalized_name": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+        "pack_qty": 1.6,
+        "pack_unit": "kg",
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "695907",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Chungjungone-Crispy-Pickled-Vegetables-16kg-Wild-Leek-300gx2-Celtuce-250gx2-Pepper-250gx2/p/695907",
+        "unit_price": 1499.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,499원",
+        "unit_price_displayed": 1499,
+        "unit_price_text": "100G당 1,499원"
+      },
+      "raw_payload_sha256": "409c8641e01595ed9e9fa3b8425a0870a7665987d8a64878cbe8900b2a3f08b6",
+      "raw_record_id": "ingestion:48:97",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695907",
+      "source_title": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Chungjungone-Crispy-Pickled-Vegetables-16kg-Wild-Leek-300gx2-Celtuce-250gx2-Pepper-250gx2/p/695907",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.preserved.sides.pickled",
+        "path": "/proposed_decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:48:97",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "695907",
+    "source_title": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.6",
+      "raw_record_id": "ingestion:48:98",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "남안동농협 고춧가루 1kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Namandong-Nonghyup-Red-Chili-Powder-1kg/p/652378"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "condimentsspices"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h5d/132913423712286.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 98,
+      "mart_native_category_id": "cos_10.6",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 30990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d5cc9c7d1525b7788e4e4bc15e961b0aa5d38a7a",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Namandong-Nonghyup-Red-Chili-Powder-1kg/p/652378",
+        "category": "김치",
+        "cocodalin_join_key": "652378",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Namandong-Nonghyup-Red-Chili-Powder-1kg/p/652378",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h5d/132913423712286.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.6",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "652378",
+        "match_key": "__no_brand__|남안동농협 고춧가루 1kg|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "남안동농협 고춧가루 1kg",
+        "normalized_name": "남안동농협 고춧가루 1kg",
+        "pack_qty": 1,
+        "pack_unit": "kg",
+        "price": 30990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "남안동농협 고춧가루 1kg",
+        "raw_promo_type": null,
+        "sale_price": 30990,
+        "source": "costco",
+        "source_record_key": "652378",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Namandong-Nonghyup-Red-Chili-Powder-1kg/p/652378",
+        "unit_price": 3099.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 3,099원",
+        "unit_price_displayed": 3099,
+        "unit_price_text": "100G당 3,099원"
+      },
+      "raw_payload_sha256": "6801506f7b738b92e3ddbdbb3fbb2bcb54a03a1bb962ce592b1aea3cc8bb2f78",
+      "raw_record_id": "ingestion:48:98",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "652378",
+      "source_title": "남안동농협 고춧가루 1kg",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Namandong-Nonghyup-Red-Chili-Powder-1kg/p/652378",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.seasonings.spices.chili_powder",
+        "path": "/proposed_decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:48:98",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "652378",
+    "source_title": "남안동농협 고춧가루 1kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:48:99",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Cabbage-Kimchi-1kg-x-2-Radish-Kimchi-850g-x-1/p/678750"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "kimchiside-dishes"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd2/h91/277784523702302.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 99,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 850.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 33390,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "46a50f9b72dabc2c5e4829ac0061782a6789502c",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Cabbage-Kimchi-1kg-x-2-Radish-Kimchi-850g-x-1/p/678750",
+        "category": "김치",
+        "cocodalin_join_key": "678750",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Cabbage-Kimchi-1kg-x-2-Radish-Kimchi-850g-x-1/p/678750",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd2/h91/277784523702302.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "678750",
+        "match_key": "__no_brand__|종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩|850.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+        "normalized_name": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+        "pack_qty": 850,
+        "pack_unit": "g",
+        "price": 33390,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+        "raw_promo_type": null,
+        "sale_price": 33390,
+        "source": "costco",
+        "source_record_key": "678750",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Cabbage-Kimchi-1kg-x-2-Radish-Kimchi-850g-x-1/p/678750",
+        "unit_price": 1151.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,151원",
+        "unit_price_displayed": 1151,
+        "unit_price_text": "100G당 1,151원"
+      },
+      "raw_payload_sha256": "1ff34c25b7432bd2f7c8670b24896e8ed6c331289b188fe57354b4e170086979",
+      "raw_record_id": "ingestion:48:99",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "678750",
+      "source_title": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Cabbage-Kimchi-1kg-x-2-Radish-Kimchi-850g-x-1/p/678750",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:99",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "678750",
+    "source_title": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:49:0",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가집 총각김치850g열무김치900g혼합팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Radish-Kimchi-850g-Young-Radish-Kimchi-900g/p/678469"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "kimchiside-dishes"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc1/h1a/277784503418910.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 0,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 900.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 20590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "cd6f09da5451d1a2c7b5b65700cd18d151593f2f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Radish-Kimchi-850g-Young-Radish-Kimchi-900g/p/678469",
+        "category": "김치",
+        "cocodalin_join_key": "678469",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Radish-Kimchi-850g-Young-Radish-Kimchi-900g/p/678469",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc1/h1a/277784503418910.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "678469",
+        "match_key": "__no_brand__|종가집 총각김치850g열무김치900g혼합팩|900.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "종가집 총각김치850g열무김치900g혼합팩",
+        "normalized_name": "종가집 총각김치850g열무김치900g혼합팩",
+        "pack_qty": 900,
+        "pack_unit": "g",
+        "price": 20590,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "종가집 총각김치850g열무김치900g혼합팩",
+        "raw_promo_type": null,
+        "sale_price": 20590,
+        "source": "costco",
+        "source_record_key": "678469",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Radish-Kimchi-850g-Young-Radish-Kimchi-900g/p/678469",
+        "unit_price": 1177.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,177원",
+        "unit_price_displayed": 1177,
+        "unit_price_text": "100G당 1,177원"
+      },
+      "raw_payload_sha256": "ceac2510810f73b9547eb36ba8946750626c63c986fc6f16041b2011db6a0e02",
+      "raw_record_id": "ingestion:49:0",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "678469",
+      "source_title": "종가집 총각김치850g열무김치900g혼합팩",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/JGG-Radish-Kimchi-850g-Young-Radish-Kimchi-900g/p/678469",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:0",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "678469",
+    "source_title": "종가집 총각김치850g열무김치900g혼합팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:49:1",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "새우젓 2kg X 2pack",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Fermented-Shrimp-2kg-X-2pack/p/679230"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc5/hdd/291102418141214.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 1,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 38790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "45852d284c19081e37fce0afe92663e80c5bf3c3",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Fermented-Shrimp-2kg-X-2pack/p/679230",
+        "category": "김치",
+        "cocodalin_join_key": "679230",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Fermented-Shrimp-2kg-X-2pack/p/679230",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc5/hdd/291102418141214.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "679230",
+        "match_key": "__no_brand__|새우젓 2kg x 2pack|2000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "새우젓 2kg X 2pack",
+        "normalized_name": "새우젓 2kg X 2pack",
+        "pack_qty": 2,
+        "pack_unit": "kg",
+        "price": 38790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "새우젓 2kg X 2pack",
+        "raw_promo_type": null,
+        "sale_price": 38790,
+        "source": "costco",
+        "source_record_key": "679230",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Fermented-Shrimp-2kg-X-2pack/p/679230",
+        "unit_price": 970.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 970원",
+        "unit_price_displayed": 970,
+        "unit_price_text": "100G당 970원"
+      },
+      "raw_payload_sha256": "5dd3ac40808d8abebd086793e1153eba4fb55b6f70891e0fcad1d2924261deea",
+      "raw_record_id": "ingestion:49:1",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679230",
+      "source_title": "새우젓 2kg X 2pack",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Fermented-Shrimp-2kg-X-2pack/p/679230",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "679230",
+    "source_title": "새우젓 2kg X 2pack"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:49:2",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "오늘차림 한돈 고추장 제육볶음 600g x 3ea",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Dailytable-Gochujang-Pork-Bulgogi-600g-x-3ea/p/677432"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "instant-food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6d/he7/416057145884702.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 2,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "4f7d4ebd510fa2e0ed4b19ea18bdd77f17701240",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Dailytable-Gochujang-Pork-Bulgogi-600g-x-3ea/p/677432",
+        "category": "김치",
+        "cocodalin_join_key": "677432",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Dailytable-Gochujang-Pork-Bulgogi-600g-x-3ea/p/677432",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6d/he7/416057145884702.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "677432",
+        "match_key": "__no_brand__|오늘차림 한돈 고추장 제육볶음 600g x 3ea|600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘차림 한돈 고추장 제육볶음 600g x 3ea",
+        "normalized_name": "오늘차림 한돈 고추장 제육볶음 600g x 3ea",
+        "pack_qty": 600,
+        "pack_unit": "g",
+        "price": 24490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "오늘차림 한돈 고추장 제육볶음 600g x 3ea",
+        "raw_promo_type": null,
+        "sale_price": 24490,
+        "source": "costco",
+        "source_record_key": "677432",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Dailytable-Gochujang-Pork-Bulgogi-600g-x-3ea/p/677432",
+        "unit_price": 1361.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,361원",
+        "unit_price_displayed": 1361,
+        "unit_price_text": "100G당 1,361원"
+      },
+      "raw_payload_sha256": "5d720125caeb33a521c4614ac5de060b3fec62fc48885221b08ebdb359127f4b",
+      "raw_record_id": "ingestion:49:2",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "677432",
+      "source_title": "오늘차림 한돈 고추장 제육볶음 600g x 3ea",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Dailytable-Gochujang-Pork-Bulgogi-600g-x-3ea/p/677432",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.seasoned_meat",
+        "path": "/proposed_decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:49:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "677432",
+    "source_title": "오늘차림 한돈 고추장 제육볶음 600g x 3ea"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:49:3",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "CJ얼큰우동한그릇용기221g X 10ea",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/CJ-Spicy-Udon-Noodle-Soup-221g-X-10ea/p/662047"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h25/138715334410270.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 221.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 29990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8e93001203cffa476677942ed1ca410fc43475ba",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/CJ-Spicy-Udon-Noodle-Soup-221g-X-10ea/p/662047",
+        "category": "김치",
+        "cocodalin_join_key": "662047",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/CJ-Spicy-Udon-Noodle-Soup-221g-X-10ea/p/662047",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h25/138715334410270.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "662047",
+        "match_key": "__no_brand__|cj얼큰우동한그릇용기221g x 10ea|221.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ얼큰우동한그릇용기221g X 10ea",
+        "normalized_name": "CJ얼큰우동한그릇용기221g X 10ea",
+        "pack_qty": 221,
+        "pack_unit": "g",
+        "price": 29990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "CJ얼큰우동한그릇용기221g X 10ea",
+        "raw_promo_type": null,
+        "sale_price": 29990,
+        "source": "costco",
+        "source_record_key": "662047",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/CJ-Spicy-Udon-Noodle-Soup-221g-X-10ea/p/662047",
+        "unit_price": 1357.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,357원",
+        "unit_price_displayed": 1357,
+        "unit_price_text": "100G당 1,357원"
+      },
+      "raw_payload_sha256": "ec8e9516ad87c1176e550470c0b40deb972f91aa2b9b81f3efd4d5088bebb5ab",
+      "raw_record_id": "ingestion:49:3",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "662047",
+      "source_title": "CJ얼큰우동한그릇용기221g X 10ea",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/CJ-Spicy-Udon-Noodle-Soup-221g-X-10ea/p/662047",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.udon",
+        "path": "/proposed_decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:49:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "662047",
+    "source_title": "CJ얼큰우동한그릇용기221g X 10ea"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:49:4",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "비비고 견과류 멸치볶음 60g x 6",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "kimchiside-dishes"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h72/h2e/243487843385374.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 16790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f5648001caa2706a75ec8d4462efa2954798859f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740",
+        "category": "김치",
+        "cocodalin_join_key": "654740",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h72/h2e/243487843385374.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "654740",
+        "match_key": "__no_brand__|비비고 견과류 멸치볶음 60g x 6|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 견과류 멸치볶음 60g x 6",
+        "normalized_name": "비비고 견과류 멸치볶음 60g x 6",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 16790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 견과류 멸치볶음 60g x 6",
+        "raw_promo_type": null,
+        "sale_price": 16790,
+        "source": "costco",
+        "source_record_key": "654740",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740",
+        "unit_price": 4664.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,664원",
+        "unit_price_displayed": 4664,
+        "unit_price_text": "100G당 4,664원"
+      },
+      "raw_payload_sha256": "2791cbde84c9b6234ec2271876e8aded41807d2e3a7e16b95823123c5f33ce6f",
+      "raw_record_id": "ingestion:49:4",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "654740",
+      "source_title": "비비고 견과류 멸치볶음 60g x 6",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-kimchi-shelf-021.json",
+        "flags": [],
+        "leaf": "food.preserved.sides.stir_fried",
+        "path": "/proposed_decisions/14"
+      }
+    ],
+    "raw_record_id": "ingestion:49:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "654740",
+    "source_title": "비비고 견과류 멸치볶음 60g x 6"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:49:5",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "백제 김치볶음밥 누룽지 22g x 36",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Kimchi-Scorched-Rice-22g-x-36/p/676149"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "instant-food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4b/h5b/364551883554846.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 5,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 36,
+        "display_unit": "",
+        "package_quantity": 22.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 16990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3f8e3e698b34a58822a6cc15c260f32535486a30",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Kimchi-Scorched-Rice-22g-x-36/p/676149",
+        "category": "김치",
+        "cocodalin_join_key": "676149",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Kimchi-Scorched-Rice-22g-x-36/p/676149",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4b/h5b/364551883554846.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "676149",
+        "match_key": "__no_brand__|백제 김치볶음밥 누룽지 22g x 36|22.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "백제 김치볶음밥 누룽지 22g x 36",
+        "normalized_name": "백제 김치볶음밥 누룽지 22g x 36",
+        "pack_qty": 22,
+        "pack_unit": "g",
+        "price": 16990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "백제 김치볶음밥 누룽지 22g x 36",
+        "raw_promo_type": null,
+        "sale_price": 16990,
+        "source": "costco",
+        "source_record_key": "676149",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Kimchi-Scorched-Rice-22g-x-36/p/676149",
+        "unit_price": 2145.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,145원",
+        "unit_price_displayed": 2145,
+        "unit_price_text": "100G당 2,145원"
+      },
+      "raw_payload_sha256": "50d0b200ddb017c80c6a601029cb09b9c0bd28e92d2e668f2f737b5e01968a3c",
+      "raw_record_id": "ingestion:49:5",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676149",
+      "source_title": "백제 김치볶음밥 누룽지 22g x 36",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Kimchi-Scorched-Rice-22g-x-36/p/676149",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676149",
+    "source_title": "백제 김치볶음밥 누룽지 22g x 36"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_1.2.2",
+      "raw_record_id": "ingestion:49:6",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690201"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "refrigerators",
+        "kimchi-fridges"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha1/hae/400269356236830.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 6,
+      "mart_native_category_id": "cos_1.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 491000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2379000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "96dbe97415f3734b639dca28b0246f30f3702afc",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690201",
+        "category": "김치",
+        "cocodalin_join_key": "690201",
+        "detail_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690201",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha1/hae/400269356236830.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.2.2",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "690201",
+        "match_key": "__no_brand__|lg 디오스 ai 오브제컬렉션김치톡톡 491l 에센스화이트|491000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+        "normalized_name": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+        "pack_qty": 491,
+        "pack_unit": "L",
+        "price": 2379000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+        "raw_promo_type": null,
+        "sale_price": 2379000,
+        "source": "costco",
+        "source_record_key": "690201",
+        "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690201",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "8d3c83cf1d34204151b22b7752e63044aeb32fa414308fb8dfe4ac0509e929c2",
+      "raw_record_id": "ingestion:49:6",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690201",
+      "source_title": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+      "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690201",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690201",
+    "source_title": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_1.2.2",
+      "raw_record_id": "ingestion:49:7",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690198"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "refrigerators",
+        "kimchi-fridges"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h58/hfe/400269373243422.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "cos_1.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 491000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3179000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "00218abdc058187f98d9cb164fd61426a3177f7e",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690198",
+        "category": "김치",
+        "cocodalin_join_key": "690198",
+        "detail_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690198",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h58/hfe/400269373243422.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.2.2",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "690198",
+        "match_key": "__no_brand__|lg 디오스 ai 오브제컬렉션 김치톡톡 491l 토프아몬드|491000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+        "normalized_name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+        "pack_qty": 491,
+        "pack_unit": "L",
+        "price": 3179000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+        "raw_promo_type": null,
+        "sale_price": 3179000,
+        "source": "costco",
+        "source_record_key": "690198",
+        "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690198",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "93387b4fa91e7c85da0cff1a73c1581afef04e3bd73ce360dcdd8923b6b80d1d",
+      "raw_record_id": "ingestion:49:7",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690198",
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+      "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690198",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690198",
+    "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:5c83d16c7b238ddab9f2d52d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "김치"
+      ],
+      "raw_native_category_id": "cos_1.2.2",
+      "raw_record_id": "ingestion:49:8",
+      "review_status": "pending",
+      "source_path": "김치",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690196"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "refrigerators",
+        "kimchi-fridges"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:20.846498Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc8/ha4/400269332709406.jpg",
+      "ingestion_id": 49,
+      "ingestion_received_at": "2026-08-31T01:52:20.846498Z",
+      "issues": [],
+      "item_index": 8,
+      "mart_native_category_id": "cos_1.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 491000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3179000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "616fcac130057cf3fd4ceb7f6b6e84dd56aa8d5a",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690196",
+        "category": "김치",
+        "cocodalin_join_key": "690196",
+        "detail_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690196",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc8/ha4/400269332709406.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.2.2",
+        "mart_native_category_path": "김치",
+        "mart_native_code": "690196",
+        "match_key": "__no_brand__|lg 디오스 ai 오브제컬렉션 김치톡톡 491l 에센스화이트|491000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+        "normalized_name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+        "pack_qty": 491,
+        "pack_unit": "L",
+        "price": 3179000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+        "raw_promo_type": null,
+        "sale_price": 3179000,
+        "source": "costco",
+        "source_record_key": "690196",
+        "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690196",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "75277676c341d377f152bdb0ffaf08c11ece384e9b9f51abda883bcffb556708",
+      "raw_record_id": "ingestion:49:8",
+      "source_category_path": [
+        "김치"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690196",
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+      "source_url": "https://www.costco.co.kr/Appliances/Refrigerators/Kimchi-Fridges/LG-Objet-Kimchi-Refrigerator-491L/p/690196",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:49:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690196",
+    "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트"
+  }
+]

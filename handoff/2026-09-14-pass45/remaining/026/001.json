@@ -1,0 +1,3041 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:0",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[쓱7클럽] 소와나무 체다치즈 270g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000772503866&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.378855Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.05,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/66/38/50/item/1000772503866_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 0,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": 8980,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "270g",
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 8531,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "소와나무",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/66/38/50/item/1000772503866_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000772503866",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000772503866",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000772503866&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "10g 당 316원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.378855",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000772503866&siteNo=7009&salestrNo=2551",
+        "discount_percent": 5.0,
+        "display_unit": "270g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/66/38/50/item/1000772503866_i1_232.jpg",
+        "match_key": "__no_brand__|쓱7클럽 소와나무 체다치즈 270g||270g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[쓱7클럽] 소와나무 체다치즈 270g",
+        "normalized_name": "",
+        "original_price": 8980,
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "price_per_100g": 3159.63,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8531,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "270g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "08fa9f158247906d3b8bd5dfde57caa3dd0aad46114d2512317846e4aad87a01",
+      "raw_record_id": "ingestion:83:0",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000772503866",
+      "source_title": "[쓱7클럽] 소와나무 체다치즈 270g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000772503866&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.sliced",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:83:0",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000772503866",
+    "source_title": "[쓱7클럽] 소와나무 체다치즈 270g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:3",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "앙팡치즈 까요까요 플레인 72g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917189&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.387997Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/89/71/91/item/1000017917189_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "72g",
+        "package_quantity": 72.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4650,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/89/71/91/item/1000017917189_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000017917189",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000017917189",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917189&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 646원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.387997",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917189&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "72g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/89/71/91/item/1000017917189_i1_232.jpg",
+        "match_key": "__no_brand__|앙팡치즈 까요까요 플레인 72g||72g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "앙팡치즈 까요까요 플레인 72g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 72.0,
+        "package_unit": "g",
+        "price_per_100g": 6458.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4650,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "72g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "76fecb4890bb5b47f7dc67fcdfca7f3afda166c537efdf3050fc425481b23813",
+      "raw_record_id": "ingestion:83:3",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000017917189",
+      "source_title": "앙팡치즈 까요까요 플레인 72g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917189&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.portion",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:83:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000017917189",
+    "source_title": "앙팡치즈 까요까요 플레인 72g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:4",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "앙팡치즈 까요까요 딸기 72g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.392414Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/88/71/91/item/1000017917188_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 4,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "72g",
+        "package_quantity": 72.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4650,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/88/71/91/item/1000017917188_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000017917188",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000017917188",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 646원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.392414",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "72g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/88/71/91/item/1000017917188_i1_232.jpg",
+        "match_key": "__no_brand__|앙팡치즈 까요까요 딸기 72g||72g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "앙팡치즈 까요까요 딸기 72g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 72.0,
+        "package_unit": "g",
+        "price_per_100g": 6458.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4650,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "72g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1f784ed9d2b23d1367f104d891154936e0eb2fce0478ca4591aacb139d61f073",
+      "raw_record_id": "ingestion:83:4",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000017917188",
+      "source_title": "앙팡치즈 까요까요 딸기 72g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.portion",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:83:4",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000017917188",
+    "source_title": "앙팡치즈 까요까요 딸기 72g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:5",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "치즈큐빅 파티 플레인87g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000332411674&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.395664Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/74/16/41/item/1000332411674_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 5,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "87g",
+        "package_quantity": 87.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5380,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/74/16/41/item/1000332411674_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000332411674",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000332411674",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000332411674&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 618원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.395664",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000332411674&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "87g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/74/16/41/item/1000332411674_i1_232.jpg",
+        "match_key": "__no_brand__|치즈큐빅 파티 플레인87g||87g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "치즈큐빅 파티 플레인87g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 87.0,
+        "package_unit": "g",
+        "price_per_100g": 6183.91,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5380,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "87g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "069682885055d173142399f2e6435c02f3ff71a0ee483ce5b6bfed6691e77c77",
+      "raw_record_id": "ingestion:83:5",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000332411674",
+      "source_title": "치즈큐빅 파티 플레인87g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000332411674&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.portion",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:83:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000332411674",
+    "source_title": "치즈큐빅 파티 플레인87g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:6",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[한국야쿠르트]메치니코프플레인사과 140mlX4",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004123&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.399450Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/23/41/00/item/1000642004123_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 6,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "10ml",
+        "package_quantity": 10.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/23/41/00/item/1000642004123_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000642004123",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000642004123",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004123&siteNo=6001&salestrNo=2037",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "unit_price_display": "10ml 당 100원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.399450",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004123&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "10ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/23/41/00/item/1000642004123_i1_232.jpg",
+        "match_key": "__no_brand__|한국야쿠르트 메치니코프플레인사과 140mlx4||10ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[한국야쿠르트]메치니코프플레인사과 140mlX4",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 10.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5600,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0fb433b9799445820fb7f516abfcb1f7993afd8761cb6c75b380db13426125b8",
+      "raw_record_id": "ingestion:83:6",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000642004123",
+      "source_title": "[한국야쿠르트]메치니코프플레인사과 140mlX4",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004123&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:83:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "1000642004123",
+    "source_title": "[한국야쿠르트]메치니코프플레인사과 140mlX4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:7",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "hy 메치니코프 오곡씨리얼 140ml*4",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000813128948&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.402660Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/48/89/12/item/1000813128948_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "140ml×4",
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/48/89/12/item/1000813128948_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000813128948",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000813128948",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000813128948&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 100원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.402660",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000813128948&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "140ml×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/48/89/12/item/1000813128948_i1_232.jpg",
+        "match_key": "__no_brand__|hy 메치니코프 오곡씨리얼 140ml 4||140ml×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "hy 메치니코프 오곡씨리얼 140ml*4",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5600,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "140ml×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "55b1406dfc6d2d3b7206bc10e4f15480783f7668fcfc6df8a7528cd863cb92bf",
+      "raw_record_id": "ingestion:83:7",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000813128948",
+      "source_title": "hy 메치니코프 오곡씨리얼 140ml*4",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000813128948&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:83:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000813128948",
+    "source_title": "hy 메치니코프 오곡씨리얼 140ml*4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:8",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[한국야쿠르트]메치니코프플레인 140mlX4",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004121&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.407830Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/21/41/00/item/1000642004121_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 8,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "10ml",
+        "package_quantity": 10.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/21/41/00/item/1000642004121_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000642004121",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000642004121",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004121&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 100원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.407830",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004121&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "10ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/21/41/00/item/1000642004121_i1_232.jpg",
+        "match_key": "__no_brand__|한국야쿠르트 메치니코프플레인 140mlx4||10ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[한국야쿠르트]메치니코프플레인 140mlX4",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 10.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5600,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "10ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "882373db262e9e17381887e1efb2e66ce3f5bd981a1304a779108403b217056d",
+      "raw_record_id": "ingestion:83:8",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000642004121",
+      "source_title": "[한국야쿠르트]메치니코프플레인 140mlX4",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000642004121&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:83:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "1000642004121",
+    "source_title": "[한국야쿠르트]메치니코프플레인 140mlX4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:13",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615136&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.432054Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/36/51/61/item/0000006615136_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 13,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "270g",
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "매일",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/36/51/61/item/0000006615136_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000006615136",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006615136",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615136&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 370원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.432054",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615136&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "270g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/36/51/61/item/0000006615136_i1_232.jpg",
+        "match_key": "__no_brand__|매일유업 상하치즈 뼈로가는 칼슘치즈 270g||270g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 270.0,
+        "package_unit": "g",
+        "price_per_100g": 3696.3,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "270g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "23cea4175b639bf9609a3921ac2f166f9cecb9bb1f276db7194c9686f59453ef",
+      "raw_record_id": "ingestion:83:13",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006615136",
+      "source_title": "[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615136&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.sliced",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:83:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006615136",
+    "source_title": "[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:16",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "치즈큐빅파티 플레인87g*2입기획",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000392777415&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.447910Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/15/74/77/item/1000392777415_i1_232.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 16,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "87g×2",
+        "package_quantity": 87.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/15/74/77/item/1000392777415_i1_232.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000392777415",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000392777415",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000392777415&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "10g 당 574원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.447910",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000392777415&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "87g×2",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/15/74/77/item/1000392777415_i1_232.jpg",
+        "match_key": "__no_brand__|치즈큐빅파티 플레인87g 2입기획||87g×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "치즈큐빅파티 플레인87g*2입기획",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 87.0,
+        "package_unit": "g",
+        "price_per_100g": 5735.63,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "87g×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "81492613e2d5e45f7f660413d24bcbe4f27c5d5a37be49c4ebee58428fc73dde",
+      "raw_record_id": "ingestion:83:16",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000392777415",
+      "source_title": "치즈큐빅파티 플레인87g*2입기획",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000392777415&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.cheese.portion",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:83:16",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000392777415",
+    "source_title": "치즈큐빅파티 플레인87g*2입기획"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.dairy.milk.plain"
+      ],
+      "category_path": [
+        "식품",
+        "유제품",
+        "우유",
+        "흰우유"
+      ],
+      "classification_attributes": {
+        "fat_content": null,
+        "sterilized": null
+      },
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_dairy_title",
+      "evidence_type": "contextual_dairy_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:20",
+      "review_status": "classified",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "굿모닝 굿밀크 1L",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000277628967&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.dairy.milk.plain",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.464548Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/67/89/62/item/1000277628967_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 20,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1L",
+        "package_quantity": 1000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/67/89/62/item/1000277628967_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000277628967",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000277628967",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000277628967&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 189원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.464548",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000277628967&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1L",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/67/89/62/item/1000277628967_i1_290.jpg",
+        "match_key": "__no_brand__|굿모닝 굿밀크 1l||1l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "굿모닝 굿밀크 1L",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1890,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5ed69c117dbd6570b4b808341698eabdc2286d7f3f811554fe208ef441b2483f",
+      "raw_record_id": "ingestion:83:20",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000277628967",
+      "source_title": "굿모닝 굿밀크 1L",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000277628967&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/already_classified_exclusions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:83:20",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000277628967",
+    "source_title": "굿모닝 굿밀크 1L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:24",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "윌 오리지날 150mlX5개",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008486451&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.502796Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/51/64/48/item/0000008486451_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 24,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "5개",
+        "package_quantity": 5.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 8000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "한국야쿠르트",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/51/64/48/item/0000008486451_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000008486451",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008486451",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008486451&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 107원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.502796",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008486451&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "5개",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/51/64/48/item/0000008486451_i1_290.jpg",
+        "match_key": "__no_brand__|윌 오리지날 150mlx5개||5개",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "윌 오리지날 150mlX5개",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 5.0,
+        "package_unit": "개",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8000,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "5개",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "da667ae21ceb6f0120d8e055c9aa47db096e6e73fa88015dbdc580f9417a7470",
+      "raw_record_id": "ingestion:83:24",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008486451",
+      "source_title": "윌 오리지날 150mlX5개",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008486451&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:83:24",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "0000008486451",
+    "source_title": "윌 오리지날 150mlX5개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:26",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "1000ml 나100%",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615474&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.512224Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/74/54/61/item/0000006615474_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 26,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1000ml",
+        "package_quantity": 1000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2970,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/74/54/61/item/0000006615474_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000006615474",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006615474",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615474&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 297원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.512224",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615474&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1000ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/74/54/61/item/0000006615474_i1_290.jpg",
+        "match_key": "__no_brand__|1000ml 나100||1000ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "1000ml 나100%",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1000.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2970,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1000ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0e521ab2283f5341dca30d402b0f9d45f42bf964ecd432547f5ada390c3c2301",
+      "raw_record_id": "ingestion:83:26",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006615474",
+      "source_title": "1000ml 나100%",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615474&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:83:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006615474",
+    "source_title": "1000ml 나100%"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:31",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[매일유업] 엔요 10입 기획(100ml*10)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000721236973&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.533681Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/73/69/23/item/1000721236973_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 31,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "100ml×10",
+        "package_quantity": 100.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "매일",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/73/69/23/item/1000721236973_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000721236973",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000721236973",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000721236973&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 30원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.533681",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000721236973&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100ml×10",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/73/69/23/item/1000721236973_i1_290.jpg",
+        "match_key": "__no_brand__|매일유업 엔요 10입 기획 100ml 10||100ml×10",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[매일유업] 엔요 10입 기획(100ml*10)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100ml×10",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "7abbd9b6067fba31234454730b1aee97e3751f41a033ab6cfa34f9ab9aeec92f",
+      "raw_record_id": "ingestion:83:31",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000721236973",
+      "source_title": "[매일유업] 엔요 10입 기획(100ml*10)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000721236973&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:83:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000721236973",
+    "source_title": "[매일유업] 엔요 10입 기획(100ml*10)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:32",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[매일유업] 바이오 그릭 딜라이트 무가당 플레인 8본 (80G*8)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000809018961&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.538551Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/61/89/01/item/1000809018961_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 32,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "80g×8",
+        "package_quantity": 80.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "매일",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/61/89/01/item/1000809018961_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000809018961",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000809018961",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000809018961&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 86원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.538551",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000809018961&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "80g×8",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/61/89/01/item/1000809018961_i1_290.jpg",
+        "match_key": "__no_brand__|매일유업 바이오 그릭 딜라이트 무가당 플레인 8본 80g 8||80g×8",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[매일유업] 바이오 그릭 딜라이트 무가당 플레인 8본 (80G*8)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 80.0,
+        "package_unit": "g",
+        "price_per_100g": 856.25,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "80g×8",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "39b52ccfd22988f7805b87beaed723eb971530fa6c727613d8d4a40c454f78b6",
+      "raw_record_id": "ingestion:83:32",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000809018961",
+      "source_title": "[매일유업] 바이오 그릭 딜라이트 무가당 플레인 8본 (80G*8)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000809018961&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.greek",
+        "path": "/decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:83:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000809018961",
+    "source_title": "[매일유업] 바이오 그릭 딜라이트 무가당 플레인 8본 (80G*8)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:35",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "짜요짜요 딸기맛 240g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.552651Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/66/71/61/item/0000006617166_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 35,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "240g",
+        "package_quantity": 240.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/66/71/61/item/0000006617166_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000006617166",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "0000006617166",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "10g 당 83원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.552651",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "240g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/66/71/61/item/0000006617166_i1_290.jpg",
+        "match_key": "__no_brand__|짜요짜요 딸기맛 240g||240g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "짜요짜요 딸기맛 240g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 240.0,
+        "package_unit": "g",
+        "price_per_100g": 825.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "240g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5897a6c893fb2fb1856fca26095f957d6af26ffe432c2c1ad780a7fb307ae669",
+      "raw_record_id": "ingestion:83:35",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006617166",
+      "source_title": "짜요짜요 딸기맛 240g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.squeeze",
+        "path": "/decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:83:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006617166",
+    "source_title": "짜요짜요 딸기맛 240g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:36",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "더 진한 순수 플레인 요거트 1.8L",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000031728895&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.556501Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/95/88/72/item/1000031728895_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 36,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.8L",
+        "package_quantity": 1800.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6880,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/95/88/72/item/1000031728895_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000031728895",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000031728895",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031728895&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10ml 당 38원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.556501",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031728895&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1.8L",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/95/88/72/item/1000031728895_i1_290.jpg",
+        "match_key": "__no_brand__|더 진한 순수 플레인 요거트 1 8l||1.8l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "더 진한 순수 플레인 요거트 1.8L",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.8,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6880,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1.8L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c9767b0285bb5c7466bfd98da57e7abc747e615e42df47bebc2ea1ae7375e76d",
+      "raw_record_id": "ingestion:83:36",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000031728895",
+      "source_title": "더 진한 순수 플레인 요거트 1.8L",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031728895&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.drink",
+        "path": "/decisions/14"
+      }
+    ],
+    "raw_record_id": "ingestion:83:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000031728895",
+    "source_title": "더 진한 순수 플레인 요거트 1.8L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:37",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "[매일유업] 매일우유 오리지널 후레쉬팩 900ML*2",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000026680931&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.561363Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/31/09/68/item/1000026680931_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 37,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "900ml×2",
+        "package_quantity": 900.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 5720,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "매일",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/31/09/68/item/1000026680931_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000026680931",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000026680931",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026680931&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 318원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.561363",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026680931&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "900ml×2",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/31/09/68/item/1000026680931_i1_290.jpg",
+        "match_key": "__no_brand__|매일유업 매일우유 오리지널 후레쉬팩 900ml 2||900ml×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[매일유업] 매일우유 오리지널 후레쉬팩 900ML*2",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 900.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5720,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "900ml×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0b71d63548ad62187e98befa21caa7975f5f3a6aaf8b6d93f4f4fb2b48c71ab0",
+      "raw_record_id": "ingestion:83:37",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000026680931",
+      "source_title": "[매일유업] 매일우유 오리지널 후레쉬팩 900ML*2",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026680931&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/decisions/15"
+      }
+    ],
+    "raw_record_id": "ingestion:83:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000026680931",
+    "source_title": "[매일유업] 매일우유 오리지널 후레쉬팩 900ML*2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:39",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "커피포리 200ml* 4입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000103647391&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.568394Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/91/73/64/item/1000103647391_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 39,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "200ml×4",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 4580,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/91/73/64/item/1000103647391_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "1000103647391",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000103647391",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000103647391&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 573원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.568394",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000103647391&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "200ml×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/91/73/64/item/1000103647391_i1_290.jpg",
+        "match_key": "__no_brand__|커피포리 200ml 4입||200ml×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커피포리 200ml* 4입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4580,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "200ml×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fc6543a03e22327eb68b5a59364f2371acfd1e8b1e1e7000bc91db6fd73b4777",
+      "raw_record_id": "ingestion:83:39",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000103647391",
+      "source_title": "커피포리 200ml* 4입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000103647391&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.coffee",
+        "path": "/decisions/16"
+      }
+    ],
+    "raw_record_id": "ingestion:83:39",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000103647391",
+    "source_title": "커피포리 200ml* 4입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:41",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "목장의 신선함이 살아 있는 저지방 1L",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008040272&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.575107Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/72/02/04/item/0000008040272_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 41,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1L",
+        "package_quantity": 1000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3650,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/72/02/04/item/0000008040272_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000008040272",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 09/04(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "09/04(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "0000008040272",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008040272&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100ml 당 365원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.575107",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008040272&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "1L",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/72/02/04/item/0000008040272_i1_290.jpg",
+        "match_key": "__no_brand__|목장의 신선함이 살아 있는 저지방 1l||1l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "목장의 신선함이 살아 있는 저지방 1L",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3650,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fea4295971bd8182241222b75b5f120025462736c0ddb52b3f98465e9d77345a",
+      "raw_record_id": "ingestion:83:41",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008040272",
+      "source_title": "목장의 신선함이 살아 있는 저지방 1L",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008040272&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/decisions/17"
+      }
+    ],
+    "raw_record_id": "ingestion:83:41",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008040272",
+    "source_title": "목장의 신선함이 살아 있는 저지방 1L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:42",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "(200ml*3개)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008350710&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.581690Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/10/07/35/item/0000008350710_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 42,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "200ml×3",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3180,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/10/07/35/item/0000008350710_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000008350710",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008350710",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008350710&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 530원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.581690",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008350710&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "200ml×3",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/10/07/35/item/0000008350710_i1_290.jpg",
+        "match_key": "__no_brand__|200ml 3개||200ml×3",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "(200ml*3개)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3180,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "200ml×3",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b36a92bb443436dea7a1b5b94a7ecb92dbd7675f81eec74317506ce76c73f1f8",
+      "raw_record_id": "ingestion:83:42",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008350710",
+      "source_title": "(200ml*3개)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008350710&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.plain",
+        "path": "/decisions/18"
+      }
+    ],
+    "raw_record_id": "ingestion:83:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008350710",
+    "source_title": "(200ml*3개)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:44",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "바나나 스페셜(240ml*6개) 1440ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008562071&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.592161Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/71/20/56/item/0000008562071_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 44,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "240ml×6",
+        "package_quantity": 240.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 8100,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "빙그레",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/71/20/56/item/0000008562071_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000008562071",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008562071",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008562071&siteNo=6001&salestrNo=2037",
+          "storage_label": "상온",
+          "storage_type": "ambient",
+          "unit_price_display": "100ml 당 563원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.592161",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008562071&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "240ml×6",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/71/20/56/item/0000008562071_i1_290.jpg",
+        "match_key": "__no_brand__|바나나 스페셜 240ml 6개 1440ml||240ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바나나 스페셜(240ml*6개) 1440ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 240.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8100,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "240ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3510b90000578775848f5d36d381225b1a13e5ae880664a9fd9520c032b5b4f5",
+      "raw_record_id": "ingestion:83:44",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008562071",
+      "source_title": "바나나 스페셜(240ml*6개) 1440ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008562071&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.milk.banana",
+        "path": "/decisions/19"
+      }
+    ],
+    "raw_record_id": "ingestion:83:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008562071",
+    "source_title": "바나나 스페셜(240ml*6개) 1440ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:f6096aeca75528f0e613c93d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유/유제품"
+      ],
+      "raw_native_category_id": "6000213534",
+      "raw_record_id": "ingestion:83:46",
+      "review_status": "pending",
+      "source_path": "우유/유제품",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "비요뜨 초코링 (138g*2개)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000007900507&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T14:51:14.599423Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/07/05/90/item/0000007900507_i1_290.jpg",
+      "ingestion_id": 83,
+      "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+      "issues": [],
+      "item_index": 46,
+      "mart_native_category_id": "6000213534",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "138g×2",
+        "package_quantity": 138.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "우유/유제품",
+          "collection": "서울우유",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/07/05/90/item/0000007900507_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213534",
+          "mart_native_category_path": "우유/유제품",
+          "mart_native_code": "0000007900507",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 내일(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "내일(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000007900507",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007900507&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 90원"
+        },
+        "brand": "__no_brand__",
+        "category": "우유/유제품",
+        "crawled_at": "2026-09-02T23:51:14.599423",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007900507&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "138g×2",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/07/05/90/item/0000007900507_i1_290.jpg",
+        "match_key": "__no_brand__|비요뜨 초코링 138g 2개||138g×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비요뜨 초코링 (138g*2개)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 138.0,
+        "package_unit": "g",
+        "price_per_100g": 898.55,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "138g×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f040ce97a97be4ec48262720f7b31ca2fa6d6e8059f9cf773cfebbd6576d13c8",
+      "raw_record_id": "ingestion:83:46",
+      "source_category_path": [
+        "우유/유제품"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000007900507",
+      "source_title": "비요뜨 초코링 (138g*2개)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000007900507&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-dairy-026.json",
+        "flags": [],
+        "leaf": "food.dairy.yogurt.topping",
+        "path": "/decisions/20"
+      }
+    ],
+    "raw_record_id": "ingestion:83:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000007900507",
+    "source_title": "비요뜨 초코링 (138g*2개)"
+  }
+]

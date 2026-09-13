@@ -45,6 +45,13 @@ if __name__ == '__main__':
         for rid in d['raw_record_ids']:
             references[rid].append({'file':r['file'],'proposal_base':'handoff/2026-09-12-pass43/proposals',
                                     'leaf':d.get('unified_category_id'),'decision':d['decision'],'flags':r['flags']})
+    from audit_pass44_proposals import audit as audit_latest
+    _, latest, _, _, _ = audit_latest()
+    for r in latest:
+        d=r['decision']
+        for rid in d['raw_record_ids']:
+            references[rid].append({'file':r['file'],'path_kind':'repository_relative',
+                                    'leaf':d.get('unified_category_id'),'decision':d['decision'],'flags':r['flags']})
     old_rows = {r['raw_record_id']:r for p in (BASE/'pending').glob('*/*.json') for r in load(p)}
     current = {r['raw_record_id']:r for r in bundle['unresolved']}
     assert set(current)<=set(old_rows)

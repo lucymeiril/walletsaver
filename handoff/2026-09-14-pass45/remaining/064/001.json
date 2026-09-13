@@ -1,0 +1,1679 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:6",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Bread/p/646229"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb9/h2c/170087710621726.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 6,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 115.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c1351502d87611f9f2cbc11d2ba0f58e5bc0cd4f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Bread/p/646229",
+        "category": "빵",
+        "cocodalin_join_key": "646229",
+        "detail_url": "https://www.costco.co.kr/Foods/Bread/p/646229",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb9/h2c/170087710621726.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "646229",
+        "match_key": "__no_brand__|삼립 408시간 주종발효 단팥크림빵 115g x 20|115.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+        "normalized_name": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+        "pack_qty": 115,
+        "pack_unit": "g",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "646229",
+        "source_url": "https://www.costco.co.kr/Foods/Bread/p/646229",
+        "unit_price": 83.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 83원",
+        "unit_price_displayed": 83,
+        "unit_price_text": "10G당 83원"
+      },
+      "raw_payload_sha256": "7b254229eb06a7f25dd68ea4123c63d81787aaade4a29b6fec7e5d48ff85d403",
+      "raw_record_id": "ingestion:48:6",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "646229",
+      "source_title": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+      "source_url": "https://www.costco.co.kr/Foods/Bread/p/646229",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:6",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "646229",
+    "source_title": "삼립 408시간 주종발효 단팥크림빵 115g x 20"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:7",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 단팥빵 85g x 20",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Bread/p/646152"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/hcb/502978805989406.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 7,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 85.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a131ca7217f57db453356775badc2fbc9e25b731",
+        "canonical_url": "https://www.costco.co.kr/Foods/Bread/p/646152",
+        "category": "빵",
+        "cocodalin_join_key": "646152",
+        "detail_url": "https://www.costco.co.kr/Foods/Bread/p/646152",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/hcb/502978805989406.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "646152",
+        "match_key": "__no_brand__|삼립 단팥빵 85g x 20|85.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 단팥빵 85g x 20",
+        "normalized_name": "삼립 단팥빵 85g x 20",
+        "pack_qty": 85,
+        "pack_unit": "g",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 단팥빵 85g x 20",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "646152",
+        "source_url": "https://www.costco.co.kr/Foods/Bread/p/646152",
+        "unit_price": 112.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 112원",
+        "unit_price_displayed": 112,
+        "unit_price_text": "10G당 112원"
+      },
+      "raw_payload_sha256": "36742fdcdbf1fc5bc44c6ce6817b40f013b65e75bfb4f3f7529cfc58b371cf56",
+      "raw_record_id": "ingestion:48:7",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "646152",
+      "source_title": "삼립 단팥빵 85g x 20",
+      "source_url": "https://www.costco.co.kr/Foods/Bread/p/646152",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:7",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "646152",
+    "source_title": "삼립 단팥빵 85g x 20"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:8",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립보름달 케이크 80g x 20입",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Fullmoon-Cake-20ct/p/666434"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "bread"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8e/h32/170088685928478.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 8,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 20.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 18590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c9e79d699e8cbb5330fb8afee1e8c6fde22908b9",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Fullmoon-Cake-20ct/p/666434",
+        "category": "빵",
+        "cocodalin_join_key": "666434",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Fullmoon-Cake-20ct/p/666434",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8e/h32/170088685928478.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "666434",
+        "match_key": "__no_brand__|삼립보름달 케이크 80g x 20입|20.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립보름달 케이크 80g x 20입",
+        "normalized_name": "삼립보름달 케이크 80g x 20입",
+        "pack_qty": 20,
+        "pack_unit": "입",
+        "price": 18590,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립보름달 케이크 80g x 20입",
+        "raw_promo_type": null,
+        "sale_price": 18590,
+        "source": "costco",
+        "source_record_key": "666434",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Fullmoon-Cake-20ct/p/666434",
+        "unit_price": 116.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 116원",
+        "unit_price_displayed": 116,
+        "unit_price_text": "10G당 116원"
+      },
+      "raw_payload_sha256": "cd58a5f7b17c377bd6d08fcea3cee7a7940c4d66f0257f990b726c861ddfc852",
+      "raw_record_id": "ingestion:48:8",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "666434",
+      "source_title": "삼립보름달 케이크 80g x 20입",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Fullmoon-Cake-20ct/p/666434",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.cake",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:48:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "666434",
+    "source_title": "삼립보름달 케이크 80g x 20입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:9",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 옛날 꿀호떡 1120g x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "bread"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h02/170087715635230.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 9,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 1120.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8be48d5e8efd353e31dd1061c38c4c3340012cd1",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233",
+        "category": "빵",
+        "cocodalin_join_key": "646233",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h02/170087715635230.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "646233",
+        "match_key": "__no_brand__|삼립 옛날 꿀호떡 1120g x 4|1120.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 옛날 꿀호떡 1120g x 4",
+        "normalized_name": "삼립 옛날 꿀호떡 1120g x 4",
+        "pack_qty": 1120,
+        "pack_unit": "g",
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 옛날 꿀호떡 1120g x 4",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "646233",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233",
+        "unit_price": 54.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 54원",
+        "unit_price_displayed": 54,
+        "unit_price_text": "10G당 54원"
+      },
+      "raw_payload_sha256": "2c8e7c9685391c40cd05806758d3697c8e7ee06def1aec8313c34bcaf3a220ae",
+      "raw_record_id": "ingestion:48:9",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "646233",
+      "source_title": "삼립 옛날 꿀호떡 1120g x 4",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:9",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "646233",
+    "source_title": "삼립 옛날 꿀호떡 1120g x 4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:48:10",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Sennenya 바움쿠헨 50g x 16",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Sennenya-Baumkuchen-50g-x-16/p/36540"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "bread"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/hc0/333081932070942.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 10,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 16,
+        "display_unit": "",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "59e4be120c6a6f08727c0a2380d066bac73643a3",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Sennenya-Baumkuchen-50g-x-16/p/36540",
+        "category": "빵",
+        "cocodalin_join_key": "36540",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Sennenya-Baumkuchen-50g-x-16/p/36540",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/hc0/333081932070942.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "36540",
+        "match_key": "__no_brand__|sennenya 바움쿠헨 50g x 16|50.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Sennenya 바움쿠헨 50g x 16",
+        "normalized_name": "Sennenya 바움쿠헨 50g x 16",
+        "pack_qty": 50,
+        "pack_unit": "g",
+        "price": 19490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Sennenya 바움쿠헨 50g x 16",
+        "raw_promo_type": null,
+        "sale_price": 19490,
+        "source": "costco",
+        "source_record_key": "36540",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Sennenya-Baumkuchen-50g-x-16/p/36540",
+        "unit_price": 244.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 244원",
+        "unit_price_displayed": 244,
+        "unit_price_text": "10G당 244원"
+      },
+      "raw_payload_sha256": "e5e5f22d6719de284afa5a737c3e5361d647257359f20f37e23d40fc52dc2356",
+      "raw_record_id": "ingestion:48:10",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "36540",
+      "source_title": "Sennenya 바움쿠헨 50g x 16",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Sennenya-Baumkuchen-50g-x-16/p/36540",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.cake",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:48:10",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "36540",
+    "source_title": "Sennenya 바움쿠헨 50g x 16"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:11",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 미니생크림파운드 360g x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Bread/p/666441"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6e/h91/204372118143006.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 11,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 360.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 15990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "06f383d1ec188bfff4694d1654cfee19240e2415",
+        "canonical_url": "https://www.costco.co.kr/Foods/Bread/p/666441",
+        "category": "빵",
+        "cocodalin_join_key": "666441",
+        "detail_url": "https://www.costco.co.kr/Foods/Bread/p/666441",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6e/h91/204372118143006.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "666441",
+        "match_key": "__no_brand__|삼립 미니생크림파운드 360g x 3|360.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 미니생크림파운드 360g x 3",
+        "normalized_name": "삼립 미니생크림파운드 360g x 3",
+        "pack_qty": 360,
+        "pack_unit": "g",
+        "price": 15990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 미니생크림파운드 360g x 3",
+        "raw_promo_type": null,
+        "sale_price": 15990,
+        "source": "costco",
+        "source_record_key": "666441",
+        "source_url": "https://www.costco.co.kr/Foods/Bread/p/666441",
+        "unit_price": 148.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 148원",
+        "unit_price_displayed": 148,
+        "unit_price_text": "10G당 148원"
+      },
+      "raw_payload_sha256": "dd5dcb09e83aa6f9d362c50cca0c7061723b052f75b492d9b6f946f263313abb",
+      "raw_record_id": "ingestion:48:11",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "666441",
+      "source_title": "삼립 미니생크림파운드 360g x 3",
+      "source_url": "https://www.costco.co.kr/Foods/Bread/p/666441",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.cake",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:48:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "666441",
+    "source_title": "삼립 미니생크림파운드 360g x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:12",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 정통 보름달 88g x 20",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Cream-Chiffon-Cake-88g-x-20/p/646222"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "bread"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc0/h42/172373588312094.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 12,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 88.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "937e105d17cea39d9c8bf0dc2877acadf65bf62a",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Cream-Chiffon-Cake-88g-x-20/p/646222",
+        "category": "빵",
+        "cocodalin_join_key": "646222",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Cream-Chiffon-Cake-88g-x-20/p/646222",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc0/h42/172373588312094.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "646222",
+        "match_key": "__no_brand__|삼립 정통 보름달 88g x 20|88.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 정통 보름달 88g x 20",
+        "normalized_name": "삼립 정통 보름달 88g x 20",
+        "pack_qty": 88,
+        "pack_unit": "g",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 정통 보름달 88g x 20",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "646222",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Cream-Chiffon-Cake-88g-x-20/p/646222",
+        "unit_price": 108.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 108원",
+        "unit_price_displayed": 108,
+        "unit_price_text": "10G당 108원"
+      },
+      "raw_payload_sha256": "7018dd52d84da708e6bb7bb70a07ed3f9415d4d523e9c10a2e54a533321e98f3",
+      "raw_record_id": "ingestion:48:12",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "646222",
+      "source_title": "삼립 정통 보름달 88g x 20",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Cream-Chiffon-Cake-88g-x-20/p/646222",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.snacks.baked.cake",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:48:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "646222",
+    "source_title": "삼립 정통 보름달 88g x 20"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:48:13",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "레꼴뜨 샌드위치 메이커 플래드",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/MicrowavesOvensToasters/Recolte-Press-Sand-Maker-Plaid/p/642685"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "microwavesovenstoasters"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h45/h50/63317371125790.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 13,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 49990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "adf5f7615d23563fe647117c28f0c18d502b4653",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/MicrowavesOvensToasters/Recolte-Press-Sand-Maker-Plaid/p/642685",
+        "category": "빵",
+        "cocodalin_join_key": "642685",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/MicrowavesOvensToasters/Recolte-Press-Sand-Maker-Plaid/p/642685",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h45/h50/63317371125790.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "642685",
+        "match_key": "__no_brand__|레꼴뜨 샌드위치 메이커 플래드||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "레꼴뜨 샌드위치 메이커 플래드",
+        "normalized_name": "레꼴뜨 샌드위치 메이커 플래드",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 49990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "레꼴뜨 샌드위치 메이커 플래드",
+        "raw_promo_type": null,
+        "sale_price": 49990,
+        "source": "costco",
+        "source_record_key": "642685",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/MicrowavesOvensToasters/Recolte-Press-Sand-Maker-Plaid/p/642685",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "8094ba5ebae004291c2f14fd5324cfefe56cc589d35919aed0ca5943625219e9",
+      "raw_record_id": "ingestion:48:13",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "642685",
+      "source_title": "레꼴뜨 샌드위치 메이커 플래드",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/MicrowavesOvensToasters/Recolte-Press-Sand-Maker-Plaid/p/642685",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "642685",
+    "source_title": "레꼴뜨 샌드위치 메이커 플래드"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:14",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Dessertine 초콜릿무스 100g x 6",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Dessertine-Chocolate-mousse-100g-x-6/p/693511"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha0/h8d/466548108099614.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 14,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 27990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ace7654480afbd50ca4b235ad1dd15d171373508",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Dessertine-Chocolate-mousse-100g-x-6/p/693511",
+        "category": "빵",
+        "cocodalin_join_key": "693511",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Dessertine-Chocolate-mousse-100g-x-6/p/693511",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha0/h8d/466548108099614.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "693511",
+        "match_key": "__no_brand__|dessertine 초콜릿무스 100g x 6|100.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Dessertine 초콜릿무스 100g x 6",
+        "normalized_name": "Dessertine 초콜릿무스 100g x 6",
+        "pack_qty": 100,
+        "pack_unit": "g",
+        "price": 27990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Dessertine 초콜릿무스 100g x 6",
+        "raw_promo_type": null,
+        "sale_price": 27990,
+        "source": "costco",
+        "source_record_key": "693511",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Dessertine-Chocolate-mousse-100g-x-6/p/693511",
+        "unit_price": 467.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 467원",
+        "unit_price_displayed": 467,
+        "unit_price_text": "10G당 467원"
+      },
+      "raw_payload_sha256": "c37ea1339769ef9a4f6eabe890f4de7877458ae6398fe251160c2372541ab821",
+      "raw_record_id": "ingestion:48:14",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "693511",
+      "source_title": "Dessertine 초콜릿무스 100g x 6",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Dessertine-Chocolate-mousse-100g-x-6/p/693511",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "693511",
+    "source_title": "Dessertine 초콜릿무스 100g x 6"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_18",
+      "raw_record_id": "ingestion:48:15",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "큐원 와플믹스 500g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Q1-Waffle-Mix-500g/p/644634"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "sugarsaltflourbaking-supplies"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/h7a/133118074191902.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 15,
+      "mart_native_category_id": "cos_18",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "dd484b6364a439f4c4f4a42ada55bfab8bcbfbac",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Q1-Waffle-Mix-500g/p/644634",
+        "category": "빵",
+        "cocodalin_join_key": "644634",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Q1-Waffle-Mix-500g/p/644634",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/h7a/133118074191902.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_18",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "644634",
+        "match_key": "__no_brand__|큐원 와플믹스 500g|500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "큐원 와플믹스 500g",
+        "normalized_name": "큐원 와플믹스 500g",
+        "pack_qty": 500,
+        "pack_unit": "g",
+        "price": 5490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "큐원 와플믹스 500g",
+        "raw_promo_type": null,
+        "sale_price": 5490,
+        "source": "costco",
+        "source_record_key": "644634",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Q1-Waffle-Mix-500g/p/644634",
+        "unit_price": 1098.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,098원",
+        "unit_price_displayed": 1098,
+        "unit_price_text": "100G당 1,098원"
+      },
+      "raw_payload_sha256": "c8efecba45cc0c2e3ee0586861b64dc37b94d65797e0fd2f658bb768860280cf",
+      "raw_record_id": "ingestion:48:15",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "644634",
+      "source_title": "큐원 와플믹스 500g",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Q1-Waffle-Mix-500g/p/644634",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:15",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "644634",
+    "source_title": "큐원 와플믹스 500g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:48:16",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Custard-Streusel-Bread-130g-x-20/p/666438"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "processed-food",
+        "bread"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd3/h8d/170088688484382.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 16,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 20,
+        "display_unit": "",
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "37380a2b0030aa43bc725b44005cdae5a5f7b65b",
+        "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Custard-Streusel-Bread-130g-x-20/p/666438",
+        "category": "빵",
+        "cocodalin_join_key": "666438",
+        "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Custard-Streusel-Bread-130g-x-20/p/666438",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd3/h8d/170088688484382.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "666438",
+        "match_key": "__no_brand__|삼립 408시간 주종발효 카스타드 소보루 130g x 20|130.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+        "normalized_name": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+        "pack_qty": 130,
+        "pack_unit": "g",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "666438",
+        "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Custard-Streusel-Bread-130g-x-20/p/666438",
+        "unit_price": 73.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 73원",
+        "unit_price_displayed": 73,
+        "unit_price_text": "10G당 73원"
+      },
+      "raw_payload_sha256": "ca2d68a66ac1a5a124a84dacd77a388d44af05c4c368293c289ca3f7e109d078",
+      "raw_record_id": "ingestion:48:16",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "666438",
+      "source_title": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+      "source_url": "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Custard-Streusel-Bread-130g-x-20/p/666438",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:16",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "666438",
+    "source_title": "삼립 408시간 주종발효 카스타드 소보루 130g x 20"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10.6",
+      "raw_record_id": "ingestion:48:17",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "곰표 와플믹스 1kg x 4",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Gompyo-Waffle-Mix-1kg-x-4/p/645685"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "sugarsaltflourbaking-supplies"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2e/hc2/330148823924766.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "cos_10.6",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "830d1da2a799b9dfcc4ce1783891c4dbad42c684",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Gompyo-Waffle-Mix-1kg-x-4/p/645685",
+        "category": "빵",
+        "cocodalin_join_key": "645685",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Gompyo-Waffle-Mix-1kg-x-4/p/645685",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2e/hc2/330148823924766.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.6",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "645685",
+        "match_key": "__no_brand__|곰표 와플믹스 1kg x 4|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "곰표 와플믹스 1kg x 4",
+        "normalized_name": "곰표 와플믹스 1kg x 4",
+        "pack_qty": 1,
+        "pack_unit": "kg",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "곰표 와플믹스 1kg x 4",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "645685",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Gompyo-Waffle-Mix-1kg-x-4/p/645685",
+        "unit_price": 475.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 475원",
+        "unit_price_displayed": 475,
+        "unit_price_text": "100G당 475원"
+      },
+      "raw_payload_sha256": "6194ef6d82ef5bbbb748c9445d0d4dee64a59b03b62dfddae584676192c805e4",
+      "raw_record_id": "ingestion:48:17",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "645685",
+      "source_title": "곰표 와플믹스 1kg x 4",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Gompyo-Waffle-Mix-1kg-x-4/p/645685",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "645685",
+    "source_title": "곰표 와플믹스 1kg x 4"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_18.15",
+      "raw_record_id": "ingestion:48:18",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "커클랜드 시그니춰 아몬드가루 1.36kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Kirkland-Signature-Almond-Flour-136kg/p/1178969"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "sugarsaltflourbaking-supplies"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h20/h15/67647377375262.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 18,
+      "mart_native_category_id": "cos_18.15",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1360.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 26990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b58a7fdb70003b55018e349520b103d9ac68f5fc",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Kirkland-Signature-Almond-Flour-136kg/p/1178969",
+        "category": "빵",
+        "cocodalin_join_key": "1178969",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Kirkland-Signature-Almond-Flour-136kg/p/1178969",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h20/h15/67647377375262.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_18.15",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "1178969",
+        "match_key": "__no_brand__|커클랜드 시그니춰 아몬드가루 1 36kg|1360.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 아몬드가루 1.36kg",
+        "normalized_name": "커클랜드 시그니춰 아몬드가루 1.36kg",
+        "pack_qty": 1.36,
+        "pack_unit": "kg",
+        "price": 26990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 아몬드가루 1.36kg",
+        "raw_promo_type": null,
+        "sale_price": 26990,
+        "source": "costco",
+        "source_record_key": "1178969",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Kirkland-Signature-Almond-Flour-136kg/p/1178969",
+        "unit_price": 1985.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,985원",
+        "unit_price_displayed": 1985,
+        "unit_price_text": "100G당 1,985원"
+      },
+      "raw_payload_sha256": "eff402d1915b149c2bf868b08ad9264ad3c8b47345b388180a06e22de1844916",
+      "raw_record_id": "ingestion:48:18",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "1178969",
+      "source_title": "커클랜드 시그니춰 아몬드가루 1.36kg",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/SugarSaltFlourBaking-Supplies/Kirkland-Signature-Almond-Flour-136kg/p/1178969",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.seasonings.baking.almond_flour",
+        "path": "/decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:48:18",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1178969",
+    "source_title": "커클랜드 시그니춰 아몬드가루 1.36kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d89ae43b62b3d2754bf98f7f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "빵"
+      ],
+      "raw_native_category_id": "cos_10.3",
+      "raw_record_id": "ingestion:48:19",
+      "review_status": "pending",
+      "source_path": "빵",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Dessert Factory Belgian 초콜릿케이크 454g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dessert-Factory-Belgian-Chocolate-Flourless-Cake/p/693502"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/h4a/449241503432734.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 19,
+      "mart_native_category_id": "cos_10.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 454.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 22790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b6545080cb6682914392f3bbcfe3e0554a2d75d1",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dessert-Factory-Belgian-Chocolate-Flourless-Cake/p/693502",
+        "category": "빵",
+        "cocodalin_join_key": "693502",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dessert-Factory-Belgian-Chocolate-Flourless-Cake/p/693502",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/h4a/449241503432734.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.3",
+        "mart_native_category_path": "빵",
+        "mart_native_code": "693502",
+        "match_key": "__no_brand__|dessert factory belgian 초콜릿케이크 454g|454.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Dessert Factory Belgian 초콜릿케이크 454g",
+        "normalized_name": "Dessert Factory Belgian 초콜릿케이크 454g",
+        "pack_qty": 454,
+        "pack_unit": "g",
+        "price": 22790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Dessert Factory Belgian 초콜릿케이크 454g",
+        "raw_promo_type": null,
+        "sale_price": 22790,
+        "source": "costco",
+        "source_record_key": "693502",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dessert-Factory-Belgian-Chocolate-Flourless-Cake/p/693502",
+        "unit_price": 502.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 502원",
+        "unit_price_displayed": 502,
+        "unit_price_text": "10G당 502원"
+      },
+      "raw_payload_sha256": "49e09d4185415cabf2eaf97460c3efe725672793e36fb60e3d7e06875f23190c",
+      "raw_record_id": "ingestion:48:19",
+      "source_category_path": [
+        "빵"
+      ],
+      "source_name": "costco",
+      "source_record_key": "693502",
+      "source_title": "Dessert Factory Belgian 초콜릿케이크 454g",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dessert-Factory-Belgian-Chocolate-Flourless-Cake/p/693502",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-bread-shelf-064.json",
+        "flags": [],
+        "leaf": "food.bakery.dessert.cake",
+        "path": "/decisions/13"
+      }
+    ],
+    "raw_record_id": "ingestion:48:19",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "693502",
+    "source_title": "Dessert Factory Belgian 초콜릿케이크 454g"
+  }
+]

@@ -1,0 +1,242 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:48:4",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/KS-Conventional-Chunky-Guacamole-70g-x-16ct-x-180/p/669087"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hff/h67/193172715700254.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "bulk_package_review_required"
+      ],
+      "item_index": 4,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2880,
+        "display_unit": "",
+        "package_quantity": 70.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4799000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3adb3ad47732d32c47f78dc2adf5127befd8217f",
+        "canonical_url": "https://www.costco.co.kr/Food/KS-Conventional-Chunky-Guacamole-70g-x-16ct-x-180/p/669087",
+        "category": "채소",
+        "cocodalin_join_key": "669087",
+        "detail_url": "https://www.costco.co.kr/Food/KS-Conventional-Chunky-Guacamole-70g-x-16ct-x-180/p/669087",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hff/h67/193172715700254.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "669087",
+        "match_key": "__no_brand__|커클랜드 시그니춰 과카몰리 70g x 16ct x 180|70.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+        "normalized_name": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+        "pack_qty": 70,
+        "pack_unit": "g",
+        "price": 4799000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+        "raw_promo_type": null,
+        "sale_price": 4799000,
+        "source": "costco",
+        "source_record_key": "669087",
+        "source_url": "https://www.costco.co.kr/Food/KS-Conventional-Chunky-Guacamole-70g-x-16ct-x-180/p/669087",
+        "unit_price": 2380.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,380원",
+        "unit_price_displayed": 2380,
+        "unit_price_text": "100G당 2,380원"
+      },
+      "raw_payload_sha256": "5aee223647bbefaee80b83754fceae83526feec4c5c1ba84991e87f6483fb511",
+      "raw_record_id": "ingestion:48:4",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "669087",
+      "source_title": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+      "source_url": "https://www.costco.co.kr/Food/KS-Conventional-Chunky-Guacamole-70g-x-16ct-x-180/p/669087",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:4",
+    "reasons": [
+      "bulk_package_review_required",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "669087",
+    "source_title": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_17",
+      "raw_record_id": "ingestion:48:5",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Kirkland-Signature-Threeberry-Blend-181kg-x-240ea/p/645163"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "food"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb3/h8b/246150110314526.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 5,
+      "mart_native_category_id": "cos_17",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 240,
+        "display_unit": "",
+        "package_quantity": 240.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 3899000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1d5a7b26d5b4e5953263d1509eca1589ae941462",
+        "canonical_url": "https://www.costco.co.kr/Food/Kirkland-Signature-Threeberry-Blend-181kg-x-240ea/p/645163",
+        "category": "채소",
+        "cocodalin_join_key": "645163",
+        "detail_url": "https://www.costco.co.kr/Food/Kirkland-Signature-Threeberry-Blend-181kg-x-240ea/p/645163",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb3/h8b/246150110314526.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_17",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "645163",
+        "match_key": "__no_brand__|커클랜드 시그니춰 쓰리베리블렌드1 81kg x 240개|240.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+        "normalized_name": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+        "pack_qty": 240,
+        "pack_unit": "개",
+        "price": 3899000,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+        "raw_promo_type": null,
+        "sale_price": 3899000,
+        "source": "costco",
+        "source_record_key": "645163",
+        "source_url": "https://www.costco.co.kr/Food/Kirkland-Signature-Threeberry-Blend-181kg-x-240ea/p/645163",
+        "unit_price": 898.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 898원",
+        "unit_price_displayed": 898,
+        "unit_price_text": "100G당 898원"
+      },
+      "raw_payload_sha256": "5f91cf26c0bb16a650e37f29eeec5dd066a090297060205f94cba5ae30369ec4",
+      "raw_record_id": "ingestion:48:5",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "645163",
+      "source_title": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+      "source_url": "https://www.costco.co.kr/Food/Kirkland-Signature-Threeberry-Blend-181kg-x-240ea/p/645163",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "645163",
+    "source_title": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개"
+  }
+]

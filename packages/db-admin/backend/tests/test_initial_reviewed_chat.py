@@ -17,12 +17,21 @@ PASS44_BLOCKED = {
     **dict.fromkeys(['120108964','068981243','057467472','000045411'],
                    'source_leaf_needs_name_corroboration'),
 }
+PASS45_BLOCKED = {
+    **dict.fromkeys(['112841891','070137671','141923001','112088334',
+                    '140583801','140583784','058706690','148605655','071275902'],
+                   'conflicting_category_evidence'),
+    '129081772':'dairy_ingredient_accessory_or_mixed_product',
+}
 
 @pytest.mark.parametrize('accepted',ROWS)
 def test_review_is_identity_bound_and_does_not_override_conflicts(accepted):
     row = {'source_name':accepted['mart'],'source_record_key':accepted['source_record_key'],'source_title':accepted['source_title'],'source_category_path':accepted['source_path_parts']}
     result = classify_record(row)
-    if accepted['source_record_key'] in PASS44_BLOCKED:
+    if accepted['source_record_key'] in PASS45_BLOCKED:
+        assert result['unified_category_id'] is None
+        assert result['classification_reason'] == PASS45_BLOCKED[accepted['source_record_key']]
+    elif accepted['source_record_key'] in PASS44_BLOCKED:
         assert result['unified_category_id'] is None
         assert result['classification_reason'] == PASS44_BLOCKED[accepted['source_record_key']]
     elif accepted['source_record_key'] in PASS43_BLOCKED:

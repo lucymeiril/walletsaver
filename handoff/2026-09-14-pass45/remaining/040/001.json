@@ -1,0 +1,2973 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_18",
+      "raw_record_id": "ingestion:47:66",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "옥소 소프트웍스 야채 탈수기",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Kitchen-AccessoriesUtensils/OXO-SoftWorks-Salad-Spinner/p/1371826"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "kitchen-accessoriesutensils"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h12/115133348577310.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 66,
+      "mart_native_category_id": "cos_18",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 22970,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "476ef455a0c2bf0f9d818b71410f47726043e790",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Kitchen-AccessoriesUtensils/OXO-SoftWorks-Salad-Spinner/p/1371826",
+        "category": "채소",
+        "cocodalin_join_key": "1371826",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Kitchen-AccessoriesUtensils/OXO-SoftWorks-Salad-Spinner/p/1371826",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h12/115133348577310.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_18",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "1371826",
+        "match_key": "__no_brand__|옥소 소프트웍스 야채 탈수기||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "옥소 소프트웍스 야채 탈수기",
+        "normalized_name": "옥소 소프트웍스 야채 탈수기",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 22970,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "옥소 소프트웍스 야채 탈수기",
+        "raw_promo_type": null,
+        "sale_price": 22970,
+        "source": "costco",
+        "source_record_key": "1371826",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Kitchen-AccessoriesUtensils/OXO-SoftWorks-Salad-Spinner/p/1371826",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "8126dbc1ad45e74759dc464c4b7f775f1aae9154ad3b64a871ee6c2425548fc1",
+      "raw_record_id": "ingestion:47:66",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "1371826",
+      "source_title": "옥소 소프트웍스 야채 탈수기",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Kitchen-AccessoriesUtensils/OXO-SoftWorks-Salad-Spinner/p/1371826",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:66",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "1371826",
+    "source_title": "옥소 소프트웍스 야채 탈수기"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:67",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "유러피언 쌈채소 5종(440g)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/European-Lettuce-Assortment-440g/p/676562"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/hfa/262612885110814.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 67,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 440.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 14990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "96654f9a521a20b14b1bc6dc4259713fd8c6ae7e",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/European-Lettuce-Assortment-440g/p/676562",
+        "category": "채소",
+        "cocodalin_join_key": "676562",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/European-Lettuce-Assortment-440g/p/676562",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/hfa/262612885110814.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "676562",
+        "match_key": "__no_brand__|유러피언 쌈채소 5종 440g|440.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "유러피언 쌈채소 5종(440g)",
+        "normalized_name": "유러피언 쌈채소 5종(440g)",
+        "pack_qty": 440,
+        "pack_unit": "g",
+        "price": 14990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "유러피언 쌈채소 5종(440g)",
+        "raw_promo_type": null,
+        "sale_price": 14990,
+        "source": "costco",
+        "source_record_key": "676562",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/European-Lettuce-Assortment-440g/p/676562",
+        "unit_price": 3407.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 3,407원",
+        "unit_price_displayed": 3407,
+        "unit_price_text": "100G당 3,407원"
+      },
+      "raw_payload_sha256": "5d64fb27c753725d5a81c43710321a902cc45f918f74924e6a95867bc28a7006",
+      "raw_record_id": "ingestion:47:67",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676562",
+      "source_title": "유러피언 쌈채소 5종(440g)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/European-Lettuce-Assortment-440g/p/676562",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:67",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676562",
+    "source_title": "유러피언 쌈채소 5종(440g)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.1.2",
+      "raw_record_id": "ingestion:47:68",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 솥밥용 버섯채소모둠200g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Grains/Assorted-Mushroom-Vegetable-Pack-200g/p/694437"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "ricegrains",
+        "grains"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/ha6/487723866783774.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 68,
+      "mart_native_category_id": "cos_10.1.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 16490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "08f3e7358e695befac7ce9ff6a652db62b720b95",
+        "canonical_url": "https://www.costco.co.kr/Foods/RiceGrains/Grains/Assorted-Mushroom-Vegetable-Pack-200g/p/694437",
+        "category": "채소",
+        "cocodalin_join_key": "694437",
+        "detail_url": "https://www.costco.co.kr/Foods/RiceGrains/Grains/Assorted-Mushroom-Vegetable-Pack-200g/p/694437",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/ha6/487723866783774.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.1.2",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694437",
+        "match_key": "__no_brand__|일품채 솥밥용 버섯채소모둠200g|200.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 솥밥용 버섯채소모둠200g",
+        "normalized_name": "일품채 솥밥용 버섯채소모둠200g",
+        "pack_qty": 200,
+        "pack_unit": "g",
+        "price": 16490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 솥밥용 버섯채소모둠200g",
+        "raw_promo_type": null,
+        "sale_price": 16490,
+        "source": "costco",
+        "source_record_key": "694437",
+        "source_url": "https://www.costco.co.kr/Foods/RiceGrains/Grains/Assorted-Mushroom-Vegetable-Pack-200g/p/694437",
+        "unit_price": 825.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 825원",
+        "unit_price_displayed": 825,
+        "unit_price_text": "10G당 825원"
+      },
+      "raw_payload_sha256": "71d628594fe69d8ad96ed71ceeea107be45ae85ca2d2d797391a0146dcc97e7d",
+      "raw_record_id": "ingestion:47:68",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694437",
+      "source_title": "일품채 솥밥용 버섯채소모둠200g",
+      "source_url": "https://www.costco.co.kr/Foods/RiceGrains/Grains/Assorted-Mushroom-Vegetable-Pack-200g/p/694437",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:68",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "694437",
+    "source_title": "일품채 솥밥용 버섯채소모둠200g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_15",
+      "raw_record_id": "ingestion:47:71",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "마이크로플레인스파이럴커터",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/CutleryCutting-Board/KnifeScissors/Microplane-Spiral-Cutter/p/633700"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "cutlerycutting-board",
+        "knifescissors"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h63/h05/31619431301150.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 71,
+      "mart_native_category_id": "cos_15",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8b2853690f21f7ca651fa5841de40ce2a4042dcd",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/CutleryCutting-Board/KnifeScissors/Microplane-Spiral-Cutter/p/633700",
+        "category": "채소",
+        "cocodalin_join_key": "633700",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/CutleryCutting-Board/KnifeScissors/Microplane-Spiral-Cutter/p/633700",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h63/h05/31619431301150.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_15",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "633700",
+        "match_key": "__no_brand__|마이크로플레인스파이럴커터||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "마이크로플레인스파이럴커터",
+        "normalized_name": "마이크로플레인스파이럴커터",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "마이크로플레인스파이럴커터",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "633700",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/CutleryCutting-Board/KnifeScissors/Microplane-Spiral-Cutter/p/633700",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "4e05c898ab64a10f14dbdaff6b8bed23352eac8b37d04131a085b53a59c17bb3",
+      "raw_record_id": "ingestion:47:71",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "633700",
+      "source_title": "마이크로플레인스파이럴커터",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/CutleryCutting-Board/KnifeScissors/Microplane-Spiral-Cutter/p/633700",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:71",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "633700",
+    "source_title": "마이크로플레인스파이럴커터"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:72",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "백오이 2봉 (10개 x 2봉)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Cucumbers-2-bags-10ea-x-2ct/p/685752"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7a/h7e/363468030083102.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 72,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 26490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7501e44a1b6301c120b49aec62ca1d40c06c9a80",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Cucumbers-2-bags-10ea-x-2ct/p/685752",
+        "category": "채소",
+        "cocodalin_join_key": "685752",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Cucumbers-2-bags-10ea-x-2ct/p/685752",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7a/h7e/363468030083102.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "685752",
+        "match_key": "__no_brand__|백오이 2봉 10개 x 2봉|2.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "백오이 2봉 (10개 x 2봉)",
+        "normalized_name": "백오이 2봉 (10개 x 2봉)",
+        "pack_qty": 2,
+        "pack_unit": "봉",
+        "price": 26490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "백오이 2봉 (10개 x 2봉)",
+        "raw_promo_type": null,
+        "sale_price": 26490,
+        "source": "costco",
+        "source_record_key": "685752",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Cucumbers-2-bags-10ea-x-2ct/p/685752",
+        "unit_price": 1325.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 1,325원",
+        "unit_price_displayed": 1325,
+        "unit_price_text": "개　　　당 1,325원"
+      },
+      "raw_payload_sha256": "e62c6493d8b93d6d1c163c1a57fae46d8c4263fae9916697769703c30d523827",
+      "raw_record_id": "ingestion:47:72",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "685752",
+      "source_title": "백오이 2봉 (10개 x 2봉)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Cucumbers-2-bags-10ea-x-2ct/p/685752",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.cucumber",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:47:72",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "685752",
+    "source_title": "백오이 2봉 (10개 x 2봉)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:76",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd1/h57/492569266356254.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 76,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 27490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "16ffb25b8f10d49429db6f1110e941b5d2f8d7cf",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408",
+        "category": "채소",
+        "cocodalin_join_key": "697408",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd1/h57/492569266356254.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "697408",
+        "match_key": "__no_brand__|무농약 생 표고버섯 흑화고 선물세트 600g|600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+        "normalized_name": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+        "pack_qty": 600,
+        "pack_unit": "g",
+        "price": 27490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+        "raw_promo_type": null,
+        "sale_price": 27490,
+        "source": "costco",
+        "source_record_key": "697408",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "1b0731d6a64b0a32e817e2fd7645ff9d595c31f91557d3ef9e0b4c5c563149d5",
+      "raw_record_id": "ingestion:47:76",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "697408",
+      "source_title": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.mushroom",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:47:76",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "697408",
+    "source_title": "무농약 생 표고버섯(흑화고) 선물세트 600g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:77",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "루꼴라샐러드 500g x 2입",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Argula-Salad-500g-x-2ea/p/694990"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h22/h4d/472789370142750.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 77,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f18962c941eab42203eb6f563cde42984757cb81",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Argula-Salad-500g-x-2ea/p/694990",
+        "category": "채소",
+        "cocodalin_join_key": "694990",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Argula-Salad-500g-x-2ea/p/694990",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h22/h4d/472789370142750.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694990",
+        "match_key": "__no_brand__|루꼴라샐러드 500g x 2입|2.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "루꼴라샐러드 500g x 2입",
+        "normalized_name": "루꼴라샐러드 500g x 2입",
+        "pack_qty": 2,
+        "pack_unit": "입",
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "루꼴라샐러드 500g x 2입",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "694990",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Argula-Salad-500g-x-2ea/p/694990",
+        "unit_price": 1999.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,999원",
+        "unit_price_displayed": 1999,
+        "unit_price_text": "100G당 1,999원"
+      },
+      "raw_payload_sha256": "99da69605d9d63613e0ddbb4cd495364512357953ada1975af5717ad1b144085",
+      "raw_record_id": "ingestion:47:77",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694990",
+      "source_title": "루꼴라샐러드 500g x 2입",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Argula-Salad-500g-x-2ea/p/694990",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:77",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "694990",
+    "source_title": "루꼴라샐러드 500g x 2입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:79",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5d/h7e/467018807738398.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "mixed_package_unresolved"
+      ],
+      "item_index": 79,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c0cca36c90ea9d3a3d900e94179561420b3abb76",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986",
+        "category": "채소",
+        "cocodalin_join_key": "694986",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5d/h7e/467018807738398.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694986",
+        "match_key": "__no_brand__|무농약버터헤드레터스 4입 무농약 미니로메인 5입|5.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+        "normalized_name": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+        "pack_qty": 5,
+        "pack_unit": "입",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "694986",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "2cd8f415e5b4688a401e30a1426dd52a8fc6616ea82b72ffd1748f4fd444cceb",
+      "raw_record_id": "ingestion:47:79",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694986",
+      "source_title": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:79",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "mixed_package_unresolved"
+    ],
+    "source_record_key": "694986",
+    "source_title": "무농약버터헤드레터스 4입+무농약 미니로메인 5입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 양파 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+        "promotion_surface": false,
+        "proposed_path": [
+          "채소"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:81",
+        "review_status": "pending",
+        "source_path": "채소",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "채소"
+        ],
+        "source_title": "친환경 양파 2망(4kg x 2개)",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "vegetables"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:81",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 양파 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.vegetables.onion"
+      },
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "친환경 양파 2망(4kg x 2개)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046"
+      ],
+      "unified_category_id": "food.produce.vegetables.onion",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hae/h78/104135290847262.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 81,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 28490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3afadd4acc850e7033aed89c66758d1199096d99",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046",
+        "category": "채소",
+        "cocodalin_join_key": "655046",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hae/h78/104135290847262.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "655046",
+        "match_key": "__no_brand__|친환경 양파 2망 4kg x 2개|2.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "친환경 양파 2망(4kg x 2개)",
+        "normalized_name": "친환경 양파 2망(4kg x 2개)",
+        "pack_qty": 2,
+        "pack_unit": "개",
+        "price": 28490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "친환경 양파 2망(4kg x 2개)",
+        "raw_promo_type": null,
+        "sale_price": 28490,
+        "source": "costco",
+        "source_record_key": "655046",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046",
+        "unit_price": 356.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 356원",
+        "unit_price_displayed": 356,
+        "unit_price_text": "100G당 356원"
+      },
+      "raw_payload_sha256": "9adec85f2ad19a375f8ceab2bc7c56d0b5347f1d8fb19fdb3fd1efdb956e44a1",
+      "raw_record_id": "ingestion:47:81",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "655046",
+      "source_title": "친환경 양파 2망(4kg x 2개)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Eco-Friendly-Onions-4kg-x-2/p/655046",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.onion",
+        "path": "/excluded_already_classified/0"
+      }
+    ],
+    "raw_record_id": "ingestion:47:81",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "655046",
+    "source_title": "친환경 양파 2망(4kg x 2개)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 당근 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+        "promotion_surface": false,
+        "proposed_path": [
+          "채소"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:83",
+        "review_status": "pending",
+        "source_path": "채소",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "채소"
+        ],
+        "source_title": "당근 2kg x 2봉",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "vegetables"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:83",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 당근 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.vegetables.carrot"
+      },
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "당근 2kg x 2봉",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688"
+      ],
+      "unified_category_id": "food.produce.vegetables.carrot",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/he2/h4b/293335975133214.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 83,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 23490,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 19490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "52bef68d58b1e8e215acbbe19679dc87efc49433",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688",
+        "category": "채소",
+        "cocodalin_join_key": "679688",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/he2/h4b/293335975133214.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "679688",
+        "match_key": "__no_brand__|당근 2kg x 2봉|2.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "당근 2kg x 2봉",
+        "normalized_name": "당근 2kg x 2봉",
+        "pack_qty": 2,
+        "pack_unit": "봉",
+        "price": 23490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "당근 2kg x 2봉",
+        "raw_promo_type": "discount",
+        "sale_price": 19490,
+        "source": "costco",
+        "source_record_key": "679688",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688",
+        "unit_price": 487.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 487원",
+        "unit_price_displayed": 487,
+        "unit_price_text": "100G당 487원"
+      },
+      "raw_payload_sha256": "49111d86f4165dd0eee17ff7f6f88f830c3b000573a56ce3e4cc907033ff55b0",
+      "raw_record_id": "ingestion:47:83",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679688",
+      "source_title": "당근 2kg x 2봉",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Carrots-2kg-x-2-bags/p/679688",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.carrot",
+        "path": "/excluded_already_classified/1"
+      }
+    ],
+    "raw_record_id": "ingestion:47:83",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "679688",
+    "source_title": "당근 2kg x 2봉"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:47:85",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "dried-products",
+        "dried-fruitsvegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3b/h1f/486719208783902.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 85,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 21990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a835448d0420d212d9b0cbebc86128d81f887c32",
+        "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098",
+        "category": "채소",
+        "cocodalin_join_key": "694098",
+        "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3b/h1f/486719208783902.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694098",
+        "match_key": "__no_brand__|chewy eatus 한입 꿀고구마 말랭이 80g x 10|80.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+        "normalized_name": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+        "pack_qty": 80,
+        "pack_unit": "g",
+        "price": 21990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+        "raw_promo_type": null,
+        "sale_price": 21990,
+        "source": "costco",
+        "source_record_key": "694098",
+        "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098",
+        "unit_price": 275.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 275원",
+        "unit_price_displayed": 275,
+        "unit_price_text": "10G당 275원"
+      },
+      "raw_payload_sha256": "91a88f24e1c2842b98afc4d3712eb84e336f1bcd34f3a8c932b021939a4f2f49",
+      "raw_record_id": "ingestion:47:85",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694098",
+      "source_title": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+      "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:85",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "694098",
+    "source_title": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_3",
+      "raw_record_id": "ingestion:47:87",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "뉴트리플랜 동결건조 야채트릿 200g",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Nutriplan-Freeze-Dried-Treats-Vegetable-Mix-200g/p/694291"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "dog-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/h05/472789350350878.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [],
+      "item_index": 87,
+      "mart_native_category_id": "cos_3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 21990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b16594c65181ae1963bfc0ade5af4b0354aca545",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Nutriplan-Freeze-Dried-Treats-Vegetable-Mix-200g/p/694291",
+        "category": "채소",
+        "cocodalin_join_key": "694291",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Nutriplan-Freeze-Dried-Treats-Vegetable-Mix-200g/p/694291",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/h05/472789350350878.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_3",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694291",
+        "match_key": "__no_brand__|뉴트리플랜 동결건조 야채트릿 200g|200.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "뉴트리플랜 동결건조 야채트릿 200g",
+        "normalized_name": "뉴트리플랜 동결건조 야채트릿 200g",
+        "pack_qty": 200,
+        "pack_unit": "g",
+        "price": 21990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "뉴트리플랜 동결건조 야채트릿 200g",
+        "raw_promo_type": null,
+        "sale_price": 21990,
+        "source": "costco",
+        "source_record_key": "694291",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Nutriplan-Freeze-Dried-Treats-Vegetable-Mix-200g/p/694291",
+        "unit_price": 10995.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 10,995원",
+        "unit_price_displayed": 10995,
+        "unit_price_text": "100G당 10,995원"
+      },
+      "raw_payload_sha256": "598d966a0c4345272238fd72b244e9bab6f44ba1d8c4bcc30df49849545a4a72",
+      "raw_record_id": "ingestion:47:87",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694291",
+      "source_title": "뉴트리플랜 동결건조 야채트릿 200g",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Nutriplan-Freeze-Dried-Treats-Vegetable-Mix-200g/p/694291",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:87",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "694291",
+    "source_title": "뉴트리플랜 동결건조 야채트릿 200g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_5",
+      "raw_record_id": "ingestion:47:88",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "타카쇼 우드 플랜터 600 2PK",
+      "source_urls": [
+        "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/Planters/Takasho-Wood-Planter-600-2PK/p/694401"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "patiolawngarden",
+        "garden-toolsequipment",
+        "planters"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2f/h0d/455923892977694.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 88,
+      "mart_native_category_id": "cos_5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c16923d6492fdc917f32894ec04281448e5327fd",
+        "canonical_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/Planters/Takasho-Wood-Planter-600-2PK/p/694401",
+        "category": "채소",
+        "cocodalin_join_key": "694401",
+        "detail_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/Planters/Takasho-Wood-Planter-600-2PK/p/694401",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2f/h0d/455923892977694.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_5",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "694401",
+        "match_key": "__no_brand__|타카쇼 우드 플랜터 600 2pk||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "타카쇼 우드 플랜터 600 2PK",
+        "normalized_name": "타카쇼 우드 플랜터 600 2PK",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "타카쇼 우드 플랜터 600 2PK",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "694401",
+        "source_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/Planters/Takasho-Wood-Planter-600-2PK/p/694401",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "cc0515683c49afe0c8228d6abc05a414d36a74c39b219250d3262341c6e65da7",
+      "raw_record_id": "ingestion:47:88",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694401",
+      "source_title": "타카쇼 우드 플랜터 600 2PK",
+      "source_url": "https://www.costco.co.kr/PatioLawnGarden/Garden-ToolsEquipment/Planters/Takasho-Wood-Planter-600-2PK/p/694401",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:47:88",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "694401",
+    "source_title": "타카쇼 우드 플랜터 600 2PK"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 고추·파프리카 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+        "promotion_surface": false,
+        "proposed_path": [
+          "채소"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:89",
+        "review_status": "pending",
+        "source_path": "채소",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "채소"
+        ],
+        "source_title": "할라페뇨고추 1kg x 2개",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "vegetables"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:89",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 고추·파프리카 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.vegetables.pepper"
+      },
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "할라페뇨고추 1kg x 2개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925"
+      ],
+      "unified_category_id": "food.produce.vegetables.pepper",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/h4f/315430794625054.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 89,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 17990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b85950bb90774d3699d82536a323442ecf3663a8",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925",
+        "category": "채소",
+        "cocodalin_join_key": "681925",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/h4f/315430794625054.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "681925",
+        "match_key": "__no_brand__|할라페뇨고추 1kg x 2개|2.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "할라페뇨고추 1kg x 2개",
+        "normalized_name": "할라페뇨고추 1kg x 2개",
+        "pack_qty": 2,
+        "pack_unit": "개",
+        "price": 17990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "할라페뇨고추 1kg x 2개",
+        "raw_promo_type": null,
+        "sale_price": 17990,
+        "source": "costco",
+        "source_record_key": "681925",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925",
+        "unit_price": 900.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 900원",
+        "unit_price_displayed": 900,
+        "unit_price_text": "100G당 900원"
+      },
+      "raw_payload_sha256": "c3edf3bff2d02e2888f610734121450fabe87bb01afd922c4c1a1a10c71072b0",
+      "raw_record_id": "ingestion:47:89",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "681925",
+      "source_title": "할라페뇨고추 1kg x 2개",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Jalapeno-1kg-x-2ea/p/681925",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.pepper",
+        "path": "/excluded_already_classified/2"
+      }
+    ],
+    "raw_record_id": "ingestion:47:89",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "681925",
+    "source_title": "할라페뇨고추 1kg x 2개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:47:90",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 2호",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No2/p/655871"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb5/h62/117503163662366.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 90,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 60900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "863b2c0f4ba80eee07b6efe7a12847b5189a0781",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No2/p/655871",
+        "category": "채소",
+        "cocodalin_join_key": "655871",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No2/p/655871",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb5/h62/117503163662366.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "655871",
+        "match_key": "__no_brand__|일품채 상황영지 모둠세트 2호||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 상황영지 모둠세트 2호",
+        "normalized_name": "일품채 상황영지 모둠세트 2호",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 60900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 상황영지 모둠세트 2호",
+        "raw_promo_type": null,
+        "sale_price": 60900,
+        "source": "costco",
+        "source_record_key": "655871",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No2/p/655871",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "c99077431c46674590f5535f9d4d1d85eb45b8776b441b421c2edf3125d29c17",
+      "raw_record_id": "ingestion:47:90",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "655871",
+      "source_title": "일품채 상황영지 모둠세트 2호",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No2/p/655871",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.mushroom",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:47:90",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "655871",
+    "source_title": "일품채 상황영지 모둠세트 2호"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:47:91",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 건표고 혼합세트 2호 x 10세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dried-Shiitake-Mix-No-2-x-10-sets/p/615085"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "gift-set-special-offers"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h15/h08/10891325800478.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 91,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 299900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f9430b9e76dfb7d3c2c48eca6dbf42f5be8c399d",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dried-Shiitake-Mix-No-2-x-10-sets/p/615085",
+        "category": "채소",
+        "cocodalin_join_key": "615085",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dried-Shiitake-Mix-No-2-x-10-sets/p/615085",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h15/h08/10891325800478.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "615085",
+        "match_key": "__no_brand__|일품채 건표고 혼합세트 2호 x 10세트||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 건표고 혼합세트 2호 x 10세트",
+        "normalized_name": "일품채 건표고 혼합세트 2호 x 10세트",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 299900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 건표고 혼합세트 2호 x 10세트",
+        "raw_promo_type": null,
+        "sale_price": 299900,
+        "source": "costco",
+        "source_record_key": "615085",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dried-Shiitake-Mix-No-2-x-10-sets/p/615085",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "0c42d8dfe2f4a4da5fb0b4e10593b2877475fae268bcfd7b555bedb5373d8725",
+      "raw_record_id": "ingestion:47:91",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "615085",
+      "source_title": "일품채 건표고 혼합세트 2호 x 10세트",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dried-Shiitake-Mix-No-2-x-10-sets/p/615085",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.processed_vegetables.dried_mushroom",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:47:91",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "615085",
+    "source_title": "일품채 건표고 혼합세트 2호 x 10세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:47:92",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 건표고 혼합세트 2호",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/-2/p/615083"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hda/h31/10891325538334.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 92,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 36990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "582e6c4ec4e87560cf8fd0ad5a331bb8c14dae8a",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/-2/p/615083",
+        "category": "채소",
+        "cocodalin_join_key": "615083",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/-2/p/615083",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hda/h31/10891325538334.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "615083",
+        "match_key": "__no_brand__|일품채 건표고 혼합세트 2호||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 건표고 혼합세트 2호",
+        "normalized_name": "일품채 건표고 혼합세트 2호",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 36990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 건표고 혼합세트 2호",
+        "raw_promo_type": null,
+        "sale_price": 36990,
+        "source": "costco",
+        "source_record_key": "615083",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/-2/p/615083",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "8113cc38796fc5a36aa2726f95befc5e2fb771055588b241d558fe6697955ca3",
+      "raw_record_id": "ingestion:47:92",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "615083",
+      "source_title": "일품채 건표고 혼합세트 2호",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/-2/p/615083",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.processed_vegetables.dried_mushroom",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:47:92",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "615083",
+    "source_title": "일품채 건표고 혼합세트 2호"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:47:94",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 1호",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No1/p/655867"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd5/hea/117503161008158.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 94,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 76900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "20ebcdf17a9189b7dc8d2a067e40324249cd8f09",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No1/p/655867",
+        "category": "채소",
+        "cocodalin_join_key": "655867",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No1/p/655867",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd5/hea/117503161008158.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "655867",
+        "match_key": "__no_brand__|일품채 상황영지 모둠세트 1호||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 상황영지 모둠세트 1호",
+        "normalized_name": "일품채 상황영지 모둠세트 1호",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 76900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 상황영지 모둠세트 1호",
+        "raw_promo_type": null,
+        "sale_price": 76900,
+        "source": "costco",
+        "source_record_key": "655867",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No1/p/655867",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "3cf44858e34e2b2bf0eae7b6b917d2e9a5c14cde3fcf96b70cbf60e5d9513352",
+      "raw_record_id": "ingestion:47:94",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "655867",
+      "source_title": "일품채 상황영지 모둠세트 1호",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Reishi-Mushroom-Gift-Set-No1/p/655867",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.mushroom",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:47:94",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "655867",
+    "source_title": "일품채 상황영지 모둠세트 1호"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:47:95",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 1호x 10",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Reishi-Mushroom-Gift-Set-No1-x-10/p/655870"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "gift-set-special-offers"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd5/hea/117503161008158.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 95,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 622900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "217ec8a499b44d8e93548b59e456597eaaca4251",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Reishi-Mushroom-Gift-Set-No1-x-10/p/655870",
+        "category": "채소",
+        "cocodalin_join_key": "655870",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Reishi-Mushroom-Gift-Set-No1-x-10/p/655870",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd5/hea/117503161008158.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "655870",
+        "match_key": "__no_brand__|일품채 상황영지 모둠세트 1호x 10||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일품채 상황영지 모둠세트 1호x 10",
+        "normalized_name": "일품채 상황영지 모둠세트 1호x 10",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 622900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일품채 상황영지 모둠세트 1호x 10",
+        "raw_promo_type": null,
+        "sale_price": 622900,
+        "source": "costco",
+        "source_record_key": "655870",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Reishi-Mushroom-Gift-Set-No1-x-10/p/655870",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "b9951e9112aefc75cd294982a8dcf80acb3707de9ed7ad86cc4afed519d744af",
+      "raw_record_id": "ingestion:47:95",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "655870",
+      "source_title": "일품채 상황영지 모둠세트 1호x 10",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Reishi-Mushroom-Gift-Set-No1-x-10/p/655870",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.mushroom",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:47:95",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "655870",
+    "source_title": "일품채 상황영지 모둠세트 1호x 10"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 버섯 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+        "promotion_surface": false,
+        "proposed_path": [
+          "채소"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:47:96",
+        "review_status": "pending",
+        "source_path": "채소",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "채소"
+        ],
+        "source_title": "양송이버섯 500g x 2개",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "vegetables"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:47:96",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 버섯 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.vegetables.mushroom"
+      },
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "양송이버섯 500g x 2개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909"
+      ],
+      "unified_category_id": "food.produce.vegetables.mushroom",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h54/h6b/344479063146526.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 96,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8ebf46dd4b57347dc4559d77a70ef903e172aa0d",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909",
+        "category": "채소",
+        "cocodalin_join_key": "683909",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h54/h6b/344479063146526.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "683909",
+        "match_key": "__no_brand__|양송이버섯 500g x 2개|2.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "양송이버섯 500g x 2개",
+        "normalized_name": "양송이버섯 500g x 2개",
+        "pack_qty": 2,
+        "pack_unit": "개",
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "양송이버섯 500g x 2개",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "683909",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909",
+        "unit_price": 1999.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,999원",
+        "unit_price_displayed": 1999,
+        "unit_price_text": "100G당 1,999원"
+      },
+      "raw_payload_sha256": "c5f45db9acd10fb6a5dc4c59630adb6349ef40f6f35500e8fd60438327469de5",
+      "raw_record_id": "ingestion:47:96",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "683909",
+      "source_title": "양송이버섯 500g x 2개",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/White-Mushrooms-500g-x-2ct/p/683909",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.mushroom",
+        "path": "/excluded_already_classified/3"
+      }
+    ],
+    "raw_record_id": "ingestion:47:96",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "683909",
+    "source_title": "양송이버섯 500g x 2개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:47:97",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "바다소리 독거도 명품 돌미역 선물세트",
+      "source_urls": [
+        "https://www.costco.co.kr/p/624156"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:13.223165Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h3b/13965902807070.jpg",
+      "ingestion_id": 47,
+      "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 97,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 127900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "198bac4162384f2bedc7d994edbad4ed029f06cc",
+        "canonical_url": "https://www.costco.co.kr/p/624156",
+        "category": "채소",
+        "cocodalin_join_key": "624156",
+        "detail_url": "https://www.costco.co.kr/p/624156",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h3b/13965902807070.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "624156",
+        "match_key": "__no_brand__|바다소리 독거도 명품 돌미역 선물세트||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바다소리 독거도 명품 돌미역 선물세트",
+        "normalized_name": "바다소리 독거도 명품 돌미역 선물세트",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 127900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "바다소리 독거도 명품 돌미역 선물세트",
+        "raw_promo_type": null,
+        "sale_price": 127900,
+        "source": "costco",
+        "source_record_key": "624156",
+        "source_url": "https://www.costco.co.kr/p/624156",
+        "unit_price": 127900.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 127,900원",
+        "unit_price_displayed": 127900,
+        "unit_price_text": "개　　　당 127,900원"
+      },
+      "raw_payload_sha256": "2267ccb9835572e59e94efb446563648fca04cccbf605dc29abf8af6b453508b",
+      "raw_record_id": "ingestion:47:97",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "624156",
+      "source_title": "바다소리 독거도 명품 돌미역 선물세트",
+      "source_url": "https://www.costco.co.kr/p/624156",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.seafood.seaweed.miyeok",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:47:97",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "624156",
+    "source_title": "바다소리 독거도 명품 돌미역 선물세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_attributes": null,
+      "classification_confidence": 0.95,
+      "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 건블루베리·건크랜베리·건자두·감말랭이의 건조 과일 형태 확인. 원본 검색이 채소인 감말랭이도 과일로 개별 판단. 생과일/냉동과일로 넣지 않음.",
+      "evidence_type": "reviewed_raw_snapshot",
+      "initial_classifier_decision": {
+        "candidate_category_ids": [],
+        "category_path": [],
+        "classification_confidence": 0.0,
+        "classification_reason": "broad_source_category",
+        "evidence_type": null,
+        "mart": "costco",
+        "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+        "promotion_surface": false,
+        "proposed_path": [
+          "채소"
+        ],
+        "raw_native_category_id": "cos_10.10",
+        "raw_record_id": "ingestion:48:1",
+        "review_status": "pending",
+        "source_path": "채소",
+        "source_path_field": "mart_native_category_path",
+        "source_path_parts": [
+          "채소"
+        ],
+        "source_title": "감말랭이 400g x 4팩",
+        "source_urls": [
+          "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469"
+        ],
+        "unified_category_id": null,
+        "url_taxonomy_hints": [
+          "foods",
+          "fresh-foods",
+          "fruit"
+        ]
+      },
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:48:1",
+      "review_status": "classified",
+      "reviewed_assignment": {
+        "classification_confidence": 0.95,
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 건블루베리·건크랜베리·건자두·감말랭이의 건조 과일 형태 확인. 원본 검색이 채소인 감말랭이도 과일로 개별 판단. 생과일/냉동과일로 넣지 않음.",
+        "review_status": "classified",
+        "unified_category_id": "food.produce.processed_fruit.dried"
+      },
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "감말랭이 400g x 4팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469"
+      ],
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h58/h3d/62653363978270.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 1,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 4.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b2d0dc0556d7cb6c56f97e6bc3f5efbbf79cb9ea",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469",
+        "category": "채소",
+        "cocodalin_join_key": "609469",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h58/h3d/62653363978270.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "609469",
+        "match_key": "__no_brand__|감말랭이 400g x 4팩|4.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "감말랭이 400g x 4팩",
+        "normalized_name": "감말랭이 400g x 4팩",
+        "pack_qty": 4,
+        "pack_unit": "팩",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "감말랭이 400g x 4팩",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "609469",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469",
+        "unit_price": 2624.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,624원",
+        "unit_price_displayed": 2624,
+        "unit_price_text": "100G당 2,624원"
+      },
+      "raw_payload_sha256": "3f021cdb10d95d29616b51b9629f8695bfc50a17bf22bba72ea77e517f0b11e2",
+      "raw_record_id": "ingestion:48:1",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "609469",
+      "source_title": "감말랭이 400g x 4팩",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dried-Persimmon-Slices-400g-x-4pack/p/609469",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-vegetable-shelf-040.json",
+        "flags": [],
+        "leaf": "food.produce.processed_fruit.dried",
+        "path": "/excluded_already_classified/4"
+      }
+    ],
+    "raw_record_id": "ingestion:48:1",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "609469",
+    "source_title": "감말랭이 400g x 4팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:eba013c32d085e9fbedafd23",
+      "promotion_surface": false,
+      "proposed_path": [
+        "채소"
+      ],
+      "raw_native_category_id": "cos_3",
+      "raw_record_id": "ingestion:48:3",
+      "review_status": "pending",
+      "source_path": "채소",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Cat-Trigger-Fish-Vegetable-Cat-Food-10kg/p/600473"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "cat-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:16.801509Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf5/hb3/9867996397598.jpg",
+      "ingestion_id": 48,
+      "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+      "issues": [],
+      "item_index": 3,
+      "mart_native_category_id": "cos_3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 10000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 30290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f1bd83728a02d5fcd88811c4e3a211dfcd9c0c9e",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Cat-Trigger-Fish-Vegetable-Cat-Food-10kg/p/600473",
+        "category": "채소",
+        "cocodalin_join_key": "600473",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Cat-Trigger-Fish-Vegetable-Cat-Food-10kg/p/600473",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf5/hb3/9867996397598.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_3",
+        "mart_native_category_path": "채소",
+        "mart_native_code": "600473",
+        "match_key": "__no_brand__|캣 트리거 피쉬 야채 고양이사료10kg|10000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+        "normalized_name": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+        "pack_qty": 10,
+        "pack_unit": "kg",
+        "price": 30290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+        "raw_promo_type": null,
+        "sale_price": 30290,
+        "source": "costco",
+        "source_record_key": "600473",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Cat-Trigger-Fish-Vegetable-Cat-Food-10kg/p/600473",
+        "unit_price": 303.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 303원",
+        "unit_price_displayed": 303,
+        "unit_price_text": "100G당 303원"
+      },
+      "raw_payload_sha256": "30503e5c53e3c3ada72eb52d43ffbef3a8c18624941fdfa591366ef9385d7312",
+      "raw_record_id": "ingestion:48:3",
+      "source_category_path": [
+        "채소"
+      ],
+      "source_name": "costco",
+      "source_record_key": "600473",
+      "source_title": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Cat-Trigger-Fish-Vegetable-Cat-Food-10kg/p/600473",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:48:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "600473",
+    "source_title": "캣 트리거 피쉬 & 야채 고양이사료10kg"
+  }
+]

@@ -1,0 +1,2916 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:46:33",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 생선구이 혼합 6팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Fish-Mix-6packs/p/635794"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h71/h53/227854309359646.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 33,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 6.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 19290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f1565e79ff8dba6bc3f0fee2810c380c7c87801d",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Fish-Mix-6packs/p/635794",
+        "category": "생선",
+        "cocodalin_join_key": "635794",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Fish-Mix-6packs/p/635794",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h71/h53/227854309359646.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "635794",
+        "match_key": "__no_brand__|비비고 생선구이 혼합 6팩|6.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 생선구이 혼합 6팩",
+        "normalized_name": "비비고 생선구이 혼합 6팩",
+        "pack_qty": 6,
+        "pack_unit": "팩",
+        "price": 19290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 생선구이 혼합 6팩",
+        "raw_promo_type": null,
+        "sale_price": 19290,
+        "source": "costco",
+        "source_record_key": "635794",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Fish-Mix-6packs/p/635794",
+        "unit_price": 3215.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 3,215원",
+        "unit_price_displayed": 3215,
+        "unit_price_text": "개　　　당 3,215원"
+      },
+      "raw_payload_sha256": "b9af1b6d27e77acec70d96896a876da35e1a79477e9b9b7769dced6563e3e37c",
+      "raw_record_id": "ingestion:46:33",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "635794",
+      "source_title": "비비고 생선구이 혼합 6팩",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Fish-Mix-6packs/p/635794",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.grilled_fish",
+        "path": "/decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:46:33",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "635794",
+    "source_title": "비비고 생선구이 혼합 6팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:34",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 고등어구이 60g x 8",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Mackerel-60g-x-8/p/660573"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4e/h3b/227560262271006.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 34,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c74d450a79d5c0617f71120a39d494bdb7ff99fe",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Mackerel-60g-x-8/p/660573",
+        "category": "생선",
+        "cocodalin_join_key": "660573",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Mackerel-60g-x-8/p/660573",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4e/h3b/227560262271006.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "660573",
+        "match_key": "__no_brand__|비비고 고등어구이 60g x 8|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 고등어구이 60g x 8",
+        "normalized_name": "비비고 고등어구이 60g x 8",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 고등어구이 60g x 8",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "660573",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Mackerel-60g-x-8/p/660573",
+        "unit_price": 500.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 500원",
+        "unit_price_displayed": 500,
+        "unit_price_text": "10G당 500원"
+      },
+      "raw_payload_sha256": "ea664d228bde7a1d6b622f11b59bbaff1c88f183c38341a4b39175be147e7049",
+      "raw_record_id": "ingestion:46:34",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "660573",
+      "source_title": "비비고 고등어구이 60g x 8",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Mackerel-60g-x-8/p/660573",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.grilled_fish",
+        "path": "/decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:46:34",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "660573",
+    "source_title": "비비고 고등어구이 60g x 8"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:35",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 삼치구이 60g x 6",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Spanish-Mackerel-60g-x-6/p/638576"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc0/h43/227560247132190.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 35,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "2af2ace58a1db53319de13b8a63974532a48bad2",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Spanish-Mackerel-60g-x-6/p/638576",
+        "category": "생선",
+        "cocodalin_join_key": "638576",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Spanish-Mackerel-60g-x-6/p/638576",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc0/h43/227560247132190.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "638576",
+        "match_key": "__no_brand__|비비고 삼치구이 60g x 6|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 삼치구이 60g x 6",
+        "normalized_name": "비비고 삼치구이 60g x 6",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 18290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 삼치구이 60g x 6",
+        "raw_promo_type": null,
+        "sale_price": 18290,
+        "source": "costco",
+        "source_record_key": "638576",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Spanish-Mackerel-60g-x-6/p/638576",
+        "unit_price": 508.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 508원",
+        "unit_price_displayed": 508,
+        "unit_price_text": "10G당 508원"
+      },
+      "raw_payload_sha256": "9f4b2d2857d12264db602069676fbd12c2c6f607e8a27efeb16382ab6219e1de",
+      "raw_record_id": "ingestion:46:35",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "638576",
+      "source_title": "비비고 삼치구이 60g x 6",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Spanish-Mackerel-60g-x-6/p/638576",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.grilled_fish",
+        "path": "/decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:46:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "638576",
+    "source_title": "비비고 삼치구이 60g x 6"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:36",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 갈치구이 70g x 5",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Hairtail-70g-x-5/p/652150"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4c/h2f/223522466594846.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 36,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "",
+        "package_quantity": 70.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1e1053745dd3076caff7144132a94abb0f4f3f5f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Hairtail-70g-x-5/p/652150",
+        "category": "생선",
+        "cocodalin_join_key": "652150",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Hairtail-70g-x-5/p/652150",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4c/h2f/223522466594846.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "652150",
+        "match_key": "__no_brand__|비비고 갈치구이 70g x 5|70.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 갈치구이 70g x 5",
+        "normalized_name": "비비고 갈치구이 70g x 5",
+        "pack_qty": 70,
+        "pack_unit": "g",
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 갈치구이 70g x 5",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "652150",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Hairtail-70g-x-5/p/652150",
+        "unit_price": 571.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 571원",
+        "unit_price_displayed": 571,
+        "unit_price_text": "10G당 571원"
+      },
+      "raw_payload_sha256": "c6d1e5d53cd90e5565a47b8f921096b2629e20194a81e149a711181c1777ca80",
+      "raw_record_id": "ingestion:46:36",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "652150",
+      "source_title": "비비고 갈치구이 70g x 5",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Bibigo-Grilled-Hairtail-70g-x-5/p/652150",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.grilled_fish",
+        "path": "/decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:46:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "652150",
+    "source_title": "비비고 갈치구이 70g x 5"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:46:37",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "알래스카손질대구살1kg x 2pack",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Alaska-Cod-Fillet-1kg-X-2pack/p/692390"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/haa/hf8/431821331562526.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 37,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 51490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "59293c704681bd8cebc3e27f20f09616228f0c11",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Alaska-Cod-Fillet-1kg-X-2pack/p/692390",
+        "category": "생선",
+        "cocodalin_join_key": "692390",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Alaska-Cod-Fillet-1kg-X-2pack/p/692390",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/haa/hf8/431821331562526.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "692390",
+        "match_key": "__no_brand__|알래스카손질대구살1kg x 2pack|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "알래스카손질대구살1kg x 2pack",
+        "normalized_name": "알래스카손질대구살1kg x 2pack",
+        "pack_qty": 1,
+        "pack_unit": "kg",
+        "price": 51490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "알래스카손질대구살1kg x 2pack",
+        "raw_promo_type": null,
+        "sale_price": 51490,
+        "source": "costco",
+        "source_record_key": "692390",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Alaska-Cod-Fillet-1kg-X-2pack/p/692390",
+        "unit_price": 2575.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,575원",
+        "unit_price_displayed": 2575,
+        "unit_price_text": "100G당 2,575원"
+      },
+      "raw_payload_sha256": "2a012d65682d15af6008b155082d98b8328d764e28f8c2ed0019223e565abd7b",
+      "raw_record_id": "ingestion:46:37",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "692390",
+      "source_title": "알래스카손질대구살1kg x 2pack",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Alaska-Cod-Fillet-1kg-X-2pack/p/692390",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "692390",
+    "source_title": "알래스카손질대구살1kg x 2pack"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:46:38",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Seasoned-Soybean-Paste-450g-x-3/p/653899"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "saucescondiments",
+        "condimentsspices"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf5/h34/134402209972254.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 38,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 450.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 12990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b50f2a080f5da267a74a6b69aa1a2fbc1cbe4714",
+        "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Seasoned-Soybean-Paste-450g-x-3/p/653899",
+        "category": "생선",
+        "cocodalin_join_key": "653899",
+        "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Seasoned-Soybean-Paste-450g-x-3/p/653899",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf5/h34/134402209972254.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "653899",
+        "match_key": "__no_brand__|해찬들 청양초 차돌 바지락꽃게 된장찌개양념 450gx3|450.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+        "normalized_name": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+        "pack_qty": 450,
+        "pack_unit": "g",
+        "price": 12990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+        "raw_promo_type": null,
+        "sale_price": 12990,
+        "source": "costco",
+        "source_record_key": "653899",
+        "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Seasoned-Soybean-Paste-450g-x-3/p/653899",
+        "unit_price": 9622.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 9,622원",
+        "unit_price_displayed": 9622,
+        "unit_price_text": "100G당 9,622원"
+      },
+      "raw_payload_sha256": "250fb9f35b72be7e4de013876e80794e5c4ce7634306f0ab315d61eb5664b253",
+      "raw_record_id": "ingestion:46:38",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "653899",
+      "source_title": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+      "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Seasoned-Soybean-Paste-450g-x-3/p/653899",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seasonings.pastes.doenjang",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:46:38",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "653899",
+    "source_title": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:46:39",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "촉촉한 반건조 열빙어1.2kg X 2pack",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Capelin-12kg-X-2pack/p/676969"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h99/260487099285534.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 39,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 1200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 34990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d215ad2a3ffb31eef9dffcc1b18e44cdc6a992fb",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Capelin-12kg-X-2pack/p/676969",
+        "category": "생선",
+        "cocodalin_join_key": "676969",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Capelin-12kg-X-2pack/p/676969",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h99/260487099285534.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "676969",
+        "match_key": "__no_brand__|촉촉한 반건조 열빙어1 2kg x 2pack|1200.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "촉촉한 반건조 열빙어1.2kg X 2pack",
+        "normalized_name": "촉촉한 반건조 열빙어1.2kg X 2pack",
+        "pack_qty": 1.2,
+        "pack_unit": "kg",
+        "price": 34990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "촉촉한 반건조 열빙어1.2kg X 2pack",
+        "raw_promo_type": null,
+        "sale_price": 34990,
+        "source": "costco",
+        "source_record_key": "676969",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Capelin-12kg-X-2pack/p/676969",
+        "unit_price": 1458.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,458원",
+        "unit_price_displayed": 1458,
+        "unit_price_text": "100G당 1,458원"
+      },
+      "raw_payload_sha256": "a5dadeffd9121e247f0efe9e1a14ce7c6200571ab5afebbf5cf719ea0ed0b368",
+      "raw_record_id": "ingestion:46:39",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676969",
+      "source_title": "촉촉한 반건조 열빙어1.2kg X 2pack",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Frozen-Capelin-12kg-X-2pack/p/676969",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:39",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "676969",
+    "source_title": "촉촉한 반건조 열빙어1.2kg X 2pack"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_5.6.2",
+      "raw_record_id": "ingestion:46:40",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "생선뼈 선인장 토분3팩",
+      "source_urls": [
+        "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Fishbone-Cactus-3PK/p/668584"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "patiolawngarden",
+        "live-plants"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h58/188977012867102.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 40,
+      "mart_native_category_id": "cos_5.6.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 22990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a7f2fd2e407b23c8ae638276bf6428b385288438",
+        "canonical_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Fishbone-Cactus-3PK/p/668584",
+        "category": "생선",
+        "cocodalin_join_key": "668584",
+        "detail_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Fishbone-Cactus-3PK/p/668584",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h58/188977012867102.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_5.6.2",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "668584",
+        "match_key": "__no_brand__|생선뼈 선인장 토분3팩|3.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "생선뼈 선인장 토분3팩",
+        "normalized_name": "생선뼈 선인장 토분3팩",
+        "pack_qty": 3,
+        "pack_unit": "팩",
+        "price": 22990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "생선뼈 선인장 토분3팩",
+        "raw_promo_type": null,
+        "sale_price": 22990,
+        "source": "costco",
+        "source_record_key": "668584",
+        "source_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Fishbone-Cactus-3PK/p/668584",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "aa52d900c6ea492beec62eeea48af147408f513333f211db469d264d2e1e96b7",
+      "raw_record_id": "ingestion:46:40",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "668584",
+      "source_title": "생선뼈 선인장 토분3팩",
+      "source_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Fishbone-Cactus-3PK/p/668584",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:40",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "668584",
+    "source_title": "생선뼈 선인장 토분3팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.9.2",
+      "raw_record_id": "ingestion:46:41",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Adult-TunaChicken-80g-x-12-x-3/p/668204"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "cat-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h65/h87/120675515891742.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 41,
+      "mart_native_category_id": "cos_10.9.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 36,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1bb820c1fccffc79733567ca5b726c0f9ec881c1",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Adult-TunaChicken-80g-x-12-x-3/p/668204",
+        "category": "생선",
+        "cocodalin_join_key": "668204",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Adult-TunaChicken-80g-x-12-x-3/p/668204",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h65/h87/120675515891742.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.9.2",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "668204",
+        "match_key": "__no_brand__|뉴트리플랜 모이스 트루 어덜트 참치 닭고기 80g x 12 x 3|80.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+        "normalized_name": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+        "pack_qty": 80,
+        "pack_unit": "g",
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "668204",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Adult-TunaChicken-80g-x-12-x-3/p/668204",
+        "unit_price": 868.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 868원",
+        "unit_price_displayed": 868,
+        "unit_price_text": "100G당 868원"
+      },
+      "raw_payload_sha256": "8949c431b2014d1b3dec503ab9ef9b265ea8d3b79969fe4234ead4561aafc12b",
+      "raw_record_id": "ingestion:46:41",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "668204",
+      "source_title": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Adult-TunaChicken-80g-x-12-x-3/p/668204",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:41",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "668204",
+    "source_title": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:42",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "삼진해물맛/야채맛모듬어묵1,968g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/650636"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/he0/86286836957214.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 42,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 968.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "4adcf8f871dd79e3306ebd94bac698727fcd5c31",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/650636",
+        "category": "생선",
+        "cocodalin_join_key": "650636",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/650636",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/he0/86286836957214.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "650636",
+        "match_key": "__no_brand__|삼진해물맛 야채맛모듬어묵1 968g|968.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼진해물맛/야채맛모듬어묵1,968g",
+        "normalized_name": "삼진해물맛/야채맛모듬어묵1,968g",
+        "pack_qty": 968,
+        "pack_unit": "g",
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼진해물맛/야채맛모듬어묵1,968g",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "650636",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/650636",
+        "unit_price": 1016.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,016원",
+        "unit_price_displayed": 1016,
+        "unit_price_text": "100G당 1,016원"
+      },
+      "raw_payload_sha256": "986ab954d488224b16636ebbd94d0bc9e7cfce5a977d33a5f83aacdbd433461a",
+      "raw_record_id": "ingestion:46:42",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "650636",
+      "source_title": "삼진해물맛/야채맛모듬어묵1,968g",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/650636",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.processed.fishcake",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:46:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "650636",
+    "source_title": "삼진해물맛/야채맛모듬어묵1,968g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:43",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 볶음조림용소멸치1000g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-Dried-Anchovy-fryboil-1000g/p/640375"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h63/h15/51162417397790.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 43,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 27690,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d1c3291673fa2e226dc5ef32b83145710c40fc2c",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-Dried-Anchovy-fryboil-1000g/p/640375",
+        "category": "생선",
+        "cocodalin_join_key": "640375",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-Dried-Anchovy-fryboil-1000g/p/640375",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h63/h15/51162417397790.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "640375",
+        "match_key": "__no_brand__|fish tree 볶음조림용소멸치1000g|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Fish Tree 볶음조림용소멸치1000g",
+        "normalized_name": "Fish Tree 볶음조림용소멸치1000g",
+        "pack_qty": 1000,
+        "pack_unit": "g",
+        "price": 27690,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Fish Tree 볶음조림용소멸치1000g",
+        "raw_promo_type": null,
+        "sale_price": 27690,
+        "source": "costco",
+        "source_record_key": "640375",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-Dried-Anchovy-fryboil-1000g/p/640375",
+        "unit_price": 2769.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,769원",
+        "unit_price_displayed": 2769,
+        "unit_price_text": "100G당 2,769원"
+      },
+      "raw_payload_sha256": "38a179d5cb9ffdd74bfa80f12446a0c0d40b45823b13819b121ac76e500c1ce6",
+      "raw_record_id": "ingestion:46:43",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "640375",
+      "source_title": "Fish Tree 볶음조림용소멸치1000g",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-Dried-Anchovy-fryboil-1000g/p/640375",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.processed.anchovy",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:46:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "640375",
+    "source_title": "Fish Tree 볶음조림용소멸치1000g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:44",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "려강부추편육 300g x 2 + 순살족발400g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300gx4Boneless-Legs-400g/p/785801"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb4/h45/363071748341790.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "mixed_package_unresolved",
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 22990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7aebf20cebbbb1f44666b82ef93e0ff63583aaec",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300gx4Boneless-Legs-400g/p/785801",
+        "category": "생선",
+        "cocodalin_join_key": "785801",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300gx4Boneless-Legs-400g/p/785801",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb4/h45/363071748341790.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "785801",
+        "match_key": "__no_brand__|려강부추편육 300g x 2 순살족발400g|400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "려강부추편육 300g x 2 + 순살족발400g",
+        "normalized_name": "려강부추편육 300g x 2 + 순살족발400g",
+        "pack_qty": 400,
+        "pack_unit": "g",
+        "price": 22990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "려강부추편육 300g x 2 + 순살족발400g",
+        "raw_promo_type": null,
+        "sale_price": 22990,
+        "source": "costco",
+        "source_record_key": "785801",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300gx4Boneless-Legs-400g/p/785801",
+        "unit_price": 2299.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,299원",
+        "unit_price_displayed": 2299,
+        "unit_price_text": "100G당 2,299원"
+      },
+      "raw_payload_sha256": "55ac930c1934d22c7e4a92cf37d3a07c773adc0e88d5b4f70f58438074a0a2cd",
+      "raw_record_id": "ingestion:46:44",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "785801",
+      "source_title": "려강부추편육 300g x 2 + 순살족발400g",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300gx4Boneless-Legs-400g/p/785801",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "mixed_package_unresolved",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "785801",
+    "source_title": "려강부추편육 300g x 2 + 순살족발400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_3",
+      "raw_record_id": "ingestion:46:45",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Salmon-for-Dogs-60g-x-10/p/687936"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "dog-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf4/heb/380874500276254.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 45,
+      "mart_native_category_id": "cos_3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 25990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0a80079b18ba6e56b6b403506926b1bb7ebe1018",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Salmon-for-Dogs-60g-x-10/p/687936",
+        "category": "생선",
+        "cocodalin_join_key": "687936",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Salmon-for-Dogs-60g-x-10/p/687936",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf4/heb/380874500276254.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_3",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "687936",
+        "match_key": "__no_brand__|하림 더리얼 밀 냉동 화식 연어 60g x 10|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+        "normalized_name": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 25990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+        "raw_promo_type": null,
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "687936",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Salmon-for-Dogs-60g-x-10/p/687936",
+        "unit_price": 4332.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,332원",
+        "unit_price_displayed": 4332,
+        "unit_price_text": "100G당 4,332원"
+      },
+      "raw_payload_sha256": "71a2f5f591d38d372d33abe4cfe2c1e1fd28c867beec1ddc5e172f447a52c581",
+      "raw_record_id": "ingestion:46:45",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "687936",
+      "source_title": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Salmon-for-Dogs-60g-x-10/p/687936",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:45",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "687936",
+    "source_title": "하림 더리얼 밀 냉동 화식 연어 60g x 10"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_3",
+      "raw_record_id": "ingestion:46:46",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Grain-Free-Salmon-for-Dogs/p/687939"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "dog-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0c/hee/380874502242334.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 46,
+      "mart_native_category_id": "cos_3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 25990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "18a703c564a9046e0d3bd8edddaee36e0617726c",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Grain-Free-Salmon-for-Dogs/p/687939",
+        "category": "생선",
+        "cocodalin_join_key": "687939",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Grain-Free-Salmon-for-Dogs/p/687939",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0c/hee/380874502242334.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_3",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "687939",
+        "match_key": "__no_brand__|하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10|60.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+        "normalized_name": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+        "pack_qty": 60,
+        "pack_unit": "g",
+        "price": 25990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+        "raw_promo_type": null,
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "687939",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Grain-Free-Salmon-for-Dogs/p/687939",
+        "unit_price": 4332.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 4,332원",
+        "unit_price_displayed": 4332,
+        "unit_price_text": "100G당 4,332원"
+      },
+      "raw_payload_sha256": "5b63867652730140ddc2a964bfc0457caea8ad347aecf21279360820656d8ad3",
+      "raw_record_id": "ingestion:46:46",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "687939",
+      "source_title": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Harim-The-Real-Meal-Grain-Free-Salmon-for-Dogs/p/687939",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "687939",
+    "source_title": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:47",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "려강부추편육300g +순살족발400g + 불족발 400g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300g-Legs-800g/p/785802"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/he2/363071753158686.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "mixed_package_unresolved",
+        "multiple_package_quantities"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8e0aae49a7fb3c5a74e2f27b7364aecb54722c82",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300g-Legs-800g/p/785802",
+        "category": "생선",
+        "cocodalin_join_key": "785802",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300g-Legs-800g/p/785802",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/he2/363071753158686.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "785802",
+        "match_key": "__no_brand__|려강부추편육300g 순살족발400g 불족발 400g|400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "려강부추편육300g +순살족발400g + 불족발 400g",
+        "normalized_name": "려강부추편육300g +순살족발400g + 불족발 400g",
+        "pack_qty": 400,
+        "pack_unit": "g",
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "려강부추편육300g +순살족발400g + 불족발 400g",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "785802",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300g-Legs-800g/p/785802",
+        "unit_price": 2272.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,272원",
+        "unit_price_displayed": 2272,
+        "unit_price_text": "100G당 2,272원"
+      },
+      "raw_payload_sha256": "4c7a6074ccd1d964e6d41b5d8fb62b23c1da9e8e4233548e0b5dc88eef68898f",
+      "raw_record_id": "ingestion:46:47",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "785802",
+      "source_title": "려강부추편육300g +순살족발400g + 불족발 400g",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ryeogang-Pork-Slices-300g-Legs-800g/p/785802",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:47",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "mixed_package_unresolved",
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "785802",
+    "source_title": "려강부추편육300g +순살족발400g + 불족발 400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:46:48",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Fish-Tree-Dried-Pollack-525g/p/672329"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "dried-products",
+        "dried-fishseafoods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha2/h78/227294364270622.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 48,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 525.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 30790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "919f5eacb3eea4c76588f5ce05407388f438a2ba",
+        "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Fish-Tree-Dried-Pollack-525g/p/672329",
+        "category": "생선",
+        "cocodalin_join_key": "672329",
+        "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Fish-Tree-Dried-Pollack-525g/p/672329",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha2/h78/227294364270622.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "672329",
+        "match_key": "__no_brand__|fish tree 빠삭하고 더 고소한 먹태 525g|525.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+        "normalized_name": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+        "pack_qty": 525,
+        "pack_unit": "g",
+        "price": 30790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+        "raw_promo_type": null,
+        "sale_price": 30790,
+        "source": "costco",
+        "source_record_key": "672329",
+        "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Fish-Tree-Dried-Pollack-525g/p/672329",
+        "unit_price": 5865.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 5,865원",
+        "unit_price_displayed": 5865,
+        "unit_price_text": "100G당 5,865원"
+      },
+      "raw_payload_sha256": "ab6d70ef97c15ef6926a8d8806f1903e813e8b0185cbb2980f2831011456d8a0",
+      "raw_record_id": "ingestion:46:48",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "672329",
+      "source_title": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+      "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Fish-Tree-Dried-Pollack-525g/p/672329",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.processed.dried_fish",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:46:48",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "672329",
+    "source_title": "Fish Tree 빠삭하고 더 고소한 먹태 525g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:49",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 국물용 멸치 1.3kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-13KG/p/639597"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h91/hb7/49378405941278.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 49,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 26490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "57acdc049d95c3b589e101592f269733fd370130",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-13KG/p/639597",
+        "category": "생선",
+        "cocodalin_join_key": "639597",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-13KG/p/639597",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h91/hb7/49378405941278.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "639597",
+        "match_key": "__no_brand__|fish tree 국물용 멸치 1 3kg|1300.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Fish Tree 국물용 멸치 1.3kg",
+        "normalized_name": "Fish Tree 국물용 멸치 1.3kg",
+        "pack_qty": 1.3,
+        "pack_unit": "kg",
+        "price": 26490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Fish Tree 국물용 멸치 1.3kg",
+        "raw_promo_type": null,
+        "sale_price": 26490,
+        "source": "costco",
+        "source_record_key": "639597",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-13KG/p/639597",
+        "unit_price": 2038.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,038원",
+        "unit_price_displayed": 2038,
+        "unit_price_text": "100G당 2,038원"
+      },
+      "raw_payload_sha256": "c12b770fc3e8874b3c2005ef8c58076e4e5a2557b3252eecfc949a70a4e06c17",
+      "raw_record_id": "ingestion:46:49",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "639597",
+      "source_title": "Fish Tree 국물용 멸치 1.3kg",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Fish-Tree-13KG/p/639597",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.processed.anchovy",
+        "path": "/decisions/8"
+      }
+    ],
+    "raw_record_id": "ingestion:46:49",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "639597",
+    "source_title": "Fish Tree 국물용 멸치 1.3kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:46:50",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "3 컬러 오징어300g / 100g x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/CandyGum/3-Color-Squid-300g-100g-x-3/p/654944"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "candygum"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8b/h1b/261451862966302.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 50,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 18790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7126b6f6f41ee509a899ba40272807d6b2283c50",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/3-Color-Squid-300g-100g-x-3/p/654944",
+        "category": "생선",
+        "cocodalin_join_key": "654944",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/3-Color-Squid-300g-100g-x-3/p/654944",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8b/h1b/261451862966302.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "654944",
+        "match_key": "__no_brand__|3 컬러 오징어300g 100g x 3|100.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "3 컬러 오징어300g / 100g x 3",
+        "normalized_name": "3 컬러 오징어300g / 100g x 3",
+        "pack_qty": 100,
+        "pack_unit": "g",
+        "price": 18790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "3 컬러 오징어300g / 100g x 3",
+        "raw_promo_type": null,
+        "sale_price": 18790,
+        "source": "costco",
+        "source_record_key": "654944",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/3-Color-Squid-300g-100g-x-3/p/654944",
+        "unit_price": 6263.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 6,263원",
+        "unit_price_displayed": 6263,
+        "unit_price_text": "100G당 6,263원"
+      },
+      "raw_payload_sha256": "216815824f8be3d121d225aa6e5d82fab3aadbf624f0e39d1c5e75e9f8bd8afa",
+      "raw_record_id": "ingestion:46:50",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "654944",
+      "source_title": "3 컬러 오징어300g / 100g x 3",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/3-Color-Squid-300g-100g-x-3/p/654944",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.processed.dried_fish",
+        "path": "/decisions/9"
+      }
+    ],
+    "raw_record_id": "ingestion:46:50",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "654944",
+    "source_title": "3 컬러 오징어300g / 100g x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:46:51",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Tuna-Chicken-80g-x-12-x-3pk/p/658206"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "cat-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h02/h66/120967523729438.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 51,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 36,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 25990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d1d6f70f3a0b8d2c6ccc5a1dfb8d17fe9091905f",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Tuna-Chicken-80g-x-12-x-3pk/p/658206",
+        "category": "생선",
+        "cocodalin_join_key": "658206",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Tuna-Chicken-80g-x-12-x-3pk/p/658206",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h02/h66/120967523729438.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "658206",
+        "match_key": "__no_brand__|뉴트리플랜모이스트루참치 참치 닭고기80g x 12 x 3|80.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+        "normalized_name": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+        "pack_qty": 80,
+        "pack_unit": "g",
+        "price": 25990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+        "raw_promo_type": null,
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "658206",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Tuna-Chicken-80g-x-12-x-3pk/p/658206",
+        "unit_price": 902.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 902원",
+        "unit_price_displayed": 902,
+        "unit_price_text": "100G당 902원"
+      },
+      "raw_payload_sha256": "c013ca6825856dea2001e90ceae7ffb651183184b9e13173401680815e8f1784",
+      "raw_record_id": "ingestion:46:51",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "658206",
+      "source_title": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Cat-Foods/Nutriplan-Moistrue-Tuna-Chicken-80g-x-12-x-3pk/p/658206",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:51",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "658206",
+    "source_title": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:46:52",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Dried-Products/LaverSeaweed/Badasori-Roasted-Laver-9g-x-15/p/510583"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "dried-products",
+        "laverseaweed"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h66/h66/9896212463646.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 52,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 15,
+        "display_unit": "",
+        "package_quantity": 9.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 27490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "cfd600c2e049ec948019bc9decbabcb7c6acb49f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/LaverSeaweed/Badasori-Roasted-Laver-9g-x-15/p/510583",
+        "category": "생선",
+        "cocodalin_join_key": "510583",
+        "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/LaverSeaweed/Badasori-Roasted-Laver-9g-x-15/p/510583",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h66/h66/9896212463646.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "510583",
+        "match_key": "__no_brand__|바다소리 장에 찍어먹는 생돌김 9g x 15|9.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+        "normalized_name": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+        "pack_qty": 9,
+        "pack_unit": "g",
+        "price": 27490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+        "raw_promo_type": null,
+        "sale_price": 27490,
+        "source": "costco",
+        "source_record_key": "510583",
+        "source_url": "https://www.costco.co.kr/Foods/Dried-Products/LaverSeaweed/Badasori-Roasted-Laver-9g-x-15/p/510583",
+        "unit_price": 2036.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 2,036원",
+        "unit_price_displayed": 2036,
+        "unit_price_text": "10G당 2,036원"
+      },
+      "raw_payload_sha256": "5982400b567a64e6c96b6a443df524470e95e340a099c0ee6da031f53ba9b437",
+      "raw_record_id": "ingestion:46:52",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "510583",
+      "source_title": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+      "source_url": "https://www.costco.co.kr/Foods/Dried-Products/LaverSeaweed/Badasori-Roasted-Laver-9g-x-15/p/510583",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.seafood.seaweed.laver",
+        "path": "/decisions/10"
+      }
+    ],
+    "raw_record_id": "ingestion:46:52",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "510583",
+    "source_title": "바다소리 장에 찍어먹는 생돌김 9g x 15"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:46:53",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "해드림 한우선지해장국 2,260g",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Haedream-Beef-Stew-with-OX-Blood-2260g/p/619201"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "chilled-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf2/hd9/193310041833502.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 53,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 260.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 22290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c428274479be215a1404ce5f0377470730d51a4c",
+        "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Haedream-Beef-Stew-with-OX-Blood-2260g/p/619201",
+        "category": "생선",
+        "cocodalin_join_key": "619201",
+        "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Haedream-Beef-Stew-with-OX-Blood-2260g/p/619201",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf2/hd9/193310041833502.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "619201",
+        "match_key": "__no_brand__|해드림 한우선지해장국 2 260g|260.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "해드림 한우선지해장국 2,260g",
+        "normalized_name": "해드림 한우선지해장국 2,260g",
+        "pack_qty": 260,
+        "pack_unit": "g",
+        "price": 22290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "해드림 한우선지해장국 2,260g",
+        "raw_promo_type": null,
+        "sale_price": 22290,
+        "source": "costco",
+        "source_record_key": "619201",
+        "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Haedream-Beef-Stew-with-OX-Blood-2260g/p/619201",
+        "unit_price": 986.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 986원",
+        "unit_price_displayed": 986,
+        "unit_price_text": "100G당 986원"
+      },
+      "raw_payload_sha256": "08914e495a60d67ae88e60e3d6f8715cf2581a42de85beb1254ec177f6ce65a6",
+      "raw_record_id": "ingestion:46:53",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "619201",
+      "source_title": "해드림 한우선지해장국 2,260g",
+      "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Haedream-Beef-Stew-with-OX-Blood-2260g/p/619201",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.soup_stew",
+        "path": "/decisions/11"
+      }
+    ],
+    "raw_record_id": "ingestion:46:53",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "619201",
+    "source_title": "해드림 한우선지해장국 2,260g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:46:54",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "동원참치회1kg (눈다랑어뱃살)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "seafood"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h72/hb5/398314643882014.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 54,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 52900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "23c137a717758998369f2dcd049fdb872145a430",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025",
+        "category": "생선",
+        "cocodalin_join_key": "689025",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h72/hb5/398314643882014.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "689025",
+        "match_key": "__no_brand__|동원참치회1kg 눈다랑어뱃살|1000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원참치회1kg (눈다랑어뱃살)",
+        "normalized_name": "동원참치회1kg (눈다랑어뱃살)",
+        "pack_qty": 1,
+        "pack_unit": "kg",
+        "price": 52900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "동원참치회1kg (눈다랑어뱃살)",
+        "raw_promo_type": null,
+        "sale_price": 52900,
+        "source": "costco",
+        "source_record_key": "689025",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025",
+        "unit_price": 5290.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 5,290원",
+        "unit_price_displayed": 5290,
+        "unit_price_text": "100G당 5,290원"
+      },
+      "raw_payload_sha256": "4a8208e3a6b376fd82109d6be128a3df63506a94a7edc7c76fd52b4b566eb56a",
+      "raw_record_id": "ingestion:46:54",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "689025",
+      "source_title": "동원참치회1kg (눈다랑어뱃살)",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:54",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "689025",
+    "source_title": "동원참치회1kg (눈다랑어뱃살)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_10.4",
+      "raw_record_id": "ingestion:46:55",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "바다소리 참멸치 ２호 선물세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Anchovy-Gift-Set-No-2/p/609348"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h34/h2c/9945512837150.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 55,
+      "mart_native_category_id": "cos_10.4",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9f59c1d267604c43c4fbceb8eda06c34000690e5",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Anchovy-Gift-Set-No-2/p/609348",
+        "category": "생선",
+        "cocodalin_join_key": "609348",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Anchovy-Gift-Set-No-2/p/609348",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h34/h2c/9945512837150.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.4",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "609348",
+        "match_key": "__no_brand__|바다소리 참멸치 ２호 선물세트||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바다소리 참멸치 ２호 선물세트",
+        "normalized_name": "바다소리 참멸치 ２호 선물세트",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "바다소리 참멸치 ２호 선물세트",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "609348",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Anchovy-Gift-Set-No-2/p/609348",
+        "unit_price": 24990.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 24,990원",
+        "unit_price_displayed": 24990,
+        "unit_price_text": "개　　　당 24,990원"
+      },
+      "raw_payload_sha256": "7422c762103304c0685be03b413363381df1b263e54f5db3143285ce608e0a09",
+      "raw_record_id": "ingestion:46:55",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "609348",
+      "source_title": "바다소리 참멸치 2호 선물세트",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Anchovy-Gift-Set-No-2/p/609348",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "costco-fish-shelf-041.json",
+        "flags": [
+          "title_mismatch"
+        ],
+        "leaf": "food.seafood.processed.anchovy",
+        "path": "/decisions/12"
+      }
+    ],
+    "raw_record_id": "ingestion:46:55",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "609348",
+    "source_title": "바다소리 참멸치 ２호 선물세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:1a32cf07f111272d9c636f53",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생선"
+      ],
+      "raw_native_category_id": "cos_3",
+      "raw_record_id": "ingestion:46:56",
+      "review_status": "pending",
+      "source_path": "생선",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+      "source_urls": [
+        "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/ANF-Six-Free-Gold-Beef-Salmon-for-Indoor-Dog/p/753144"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "babykidstoyspets",
+        "pet-supplies",
+        "dog-foods"
+      ]
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:09.675986Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/h14/470121882026014.jpg",
+      "ingestion_id": 46,
+      "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+      "issues": [],
+      "item_index": 56,
+      "mart_native_category_id": "cos_3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 10000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 72900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "38a8f95d6105e978b02e9f2193513c52e1cc55c4",
+        "canonical_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/ANF-Six-Free-Gold-Beef-Salmon-for-Indoor-Dog/p/753144",
+        "category": "생선",
+        "cocodalin_join_key": "753144",
+        "detail_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/ANF-Six-Free-Gold-Beef-Salmon-for-Indoor-Dog/p/753144",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/h14/470121882026014.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_3",
+        "mart_native_category_path": "생선",
+        "mart_native_code": "753144",
+        "match_key": "__no_brand__|anf 식스프리골드 인도어 독 소고기 연어 10kg|10000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+        "normalized_name": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+        "pack_qty": 10,
+        "pack_unit": "kg",
+        "price": 72900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+        "raw_promo_type": null,
+        "sale_price": 72900,
+        "source": "costco",
+        "source_record_key": "753144",
+        "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/ANF-Six-Free-Gold-Beef-Salmon-for-Indoor-Dog/p/753144",
+        "unit_price": 729.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 729원",
+        "unit_price_displayed": 729,
+        "unit_price_text": "100G당 729원"
+      },
+      "raw_payload_sha256": "4725649b65567b61d51bf63b5fd208b6d78f3cd74845931c0e8b0f189b6b3432",
+      "raw_record_id": "ingestion:46:56",
+      "source_category_path": [
+        "생선"
+      ],
+      "source_name": "costco",
+      "source_record_key": "753144",
+      "source_title": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+      "source_url": "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/ANF-Six-Free-Gold-Beef-Salmon-for-Indoor-Dog/p/753144",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:46:56",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "753144",
+    "source_title": "ANF 식스프리골드 인도어 독 소고기&연어 10kg"
+  }
+]

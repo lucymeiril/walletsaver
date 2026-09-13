@@ -1,0 +1,856 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:27:26",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 종이호일 30CM*30M(대)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-08-31T01:46:47.725089Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 27,
+      "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 26,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 2990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "02103abdbd2ad96f8dbbc34e89ba8d1c8d546a84",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H071210847N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%A2%85%EC%9D%B4%ED%98%B8%EC%9D%BC-30CM-30M-%EB%8C%80/071210847",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "071210847",
+          "normalized_name": "simplus 종이호일 30CM*30M(대)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "raw_name": "simplus 종이호일 30CM*30M(대)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071210847",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "storeType": "HYPER"
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-08-31T10:46:47.725089",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 종이호일 30cm 30m 대||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 종이호일 30CM*30M(대)",
+        "normalized_name": "simplus 종이호일 30CM*30M(대)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "db8fa34264ec73f9cd32f01155200742940cdf5b9dd697ad043a5590df6064c0",
+      "raw_record_id": "ingestion:27:26",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071210847",
+      "source_title": "simplus 종이호일 30CM*30M(대)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:27:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "071210847",
+    "source_title": "simplus 종이호일 30CM*30M(대)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:27:46",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-08-31T01:46:47.728122Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 27,
+      "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 46,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "1445fd0d71a5e6eb005c0c2bdee7130c10c6aa40",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H070187236N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%BF%A0%ED%82%B9%ED%98%B8%EC%9D%BC-30CM-30M-%EB%8C%80/070187236",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "070187236",
+          "normalized_name": "simplus 쿠킹호일 30CM*30M(대)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "raw_name": "simplus 쿠킹호일 30CM*30M(대)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070187236",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1M",
+          "unit_price_displayed": 150.0
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-08-31T10:46:47.728122",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "30M",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 쿠킹호일 30cm 30m 대||30m",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 쿠킹호일 30CM*30M(대)",
+        "normalized_name": "simplus 쿠킹호일 30CM*30M(대)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "30M",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3499fcc3291bf2f896694024e01a978342b3277a01894c334e3ccee3e97ca686",
+      "raw_record_id": "ingestion:27:46",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070187236",
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:27:46",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "070187236",
+    "source_title": "simplus 쿠킹호일 30CM*30M(대)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:27:47",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-08-31T01:46:47.728208Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 27,
+      "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "7451d6c6bb502a0ee2bb81d2ae46f9647b90318f",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H070186669N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%BF%A0%ED%82%B9%ED%98%B8%EC%9D%BC-25CM-30M-%EC%A4%91/070186669",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "070186669",
+          "normalized_name": "simplus 쿠킹호일 25CM*30M(중)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "raw_name": "simplus 쿠킹호일 25CM*30M(중)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070186669",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1M",
+          "unit_price_displayed": 133.0
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-08-31T10:46:47.728208",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "30M",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 쿠킹호일 25cm 30m 중||30m",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 쿠킹호일 25CM*30M(중)",
+        "normalized_name": "simplus 쿠킹호일 25CM*30M(중)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "30M",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "485b9a2fb34303408e167d4d07f376983469143d70dec28a63b43ffc4b97c07b",
+      "raw_record_id": "ingestion:27:47",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070186669",
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:27:47",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "070186669",
+    "source_title": "simplus 쿠킹호일 25CM*30M(중)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:76:89",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 종이호일 30CM*30M(대)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-09-02T13:39:45.183822Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 76,
+      "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 89,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 2990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "02103abdbd2ad96f8dbbc34e89ba8d1c8d546a84",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H071210847N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%A2%85%EC%9D%B4%ED%98%B8%EC%9D%BC-30CM-30M-%EB%8C%80/071210847",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "071210847",
+          "normalized_name": "simplus 종이호일 30CM*30M(대)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "raw_name": "simplus 종이호일 30CM*30M(대)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071210847",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+          "storeType": "HYPER"
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-09-02T22:39:45.183822",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 종이호일 30cm 30m 대||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 종이호일 30CM*30M(대)",
+        "normalized_name": "simplus 종이호일 30CM*30M(대)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6cddc644d46b6d815d91f2fd2cf779732dbb74d1d8f622bec29d51d7c08dcd6b",
+      "raw_record_id": "ingestion:76:89",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071210847",
+      "source_title": "simplus 종이호일 30CM*30M(대)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071210847&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:76:89",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "071210847",
+    "source_title": "simplus 종이호일 30CM*30M(대)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:77:3",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-09-02T13:39:45.185384Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 77,
+      "ingestion_received_at": "2026-09-02T13:41:20.167544Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "1445fd0d71a5e6eb005c0c2bdee7130c10c6aa40",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H070187236N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%BF%A0%ED%82%B9%ED%98%B8%EC%9D%BC-30CM-30M-%EB%8C%80/070187236",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "070187236",
+          "normalized_name": "simplus 쿠킹호일 30CM*30M(대)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "raw_name": "simplus 쿠킹호일 30CM*30M(대)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070187236",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1M",
+          "unit_price_displayed": 150.0
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-09-02T22:39:45.185384",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "30M",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 쿠킹호일 30cm 30m 대||30m",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 쿠킹호일 30CM*30M(대)",
+        "normalized_name": "simplus 쿠킹호일 30CM*30M(대)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "30M",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e426c3e5ebc6b23c9e2ceb08d685b4100a7aa8fd8f8c74bf33a5936286f9787c",
+      "raw_record_id": "ingestion:77:3",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070187236",
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070187236&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:77:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "070187236",
+    "source_title": "simplus 쿠킹호일 30CM*30M(대)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:5ab773e21515705590a27c29",
+      "promotion_surface": false,
+      "proposed_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "raw_native_category_id": "23",
+      "raw_record_id": "ingestion:77:13",
+      "review_status": "pending",
+      "source_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "simplus",
+      "crawled_at": "2026-09-02T13:39:45.186261Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 77,
+      "ingestion_received_at": "2026-09-02T13:41:20.167544Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 13,
+      "mart_native_category_id": "23",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "simplus",
+          "canon_hash": "7451d6c6bb502a0ee2bb81d2ae46f9647b90318f",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "category_hint": "호일",
+          "docId": "H070186669N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EC%BF%A0%ED%82%B9%ED%98%B8%EC%9D%BC-25CM-30M-%EC%A4%91/070186669",
+          "mart_native_category_id": "23",
+          "mart_native_category_path": "주방용품 > 주방/일회용품 > 고무장갑/랩/팩 > 호일",
+          "mart_native_code": "070186669",
+          "normalized_name": "simplus 쿠킹호일 25CM*30M(중)",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "raw_name": "simplus 쿠킹호일 25CM*30M(중)",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070186669",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "1M",
+          "unit_price_displayed": 133.0
+        },
+        "brand": "__no_brand__",
+        "category": "호일",
+        "crawled_at": "2026-09-02T22:39:45.186261",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "30M",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|simplus 쿠킹호일 25cm 30m 중||30m",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "simplus 쿠킹호일 25CM*30M(중)",
+        "normalized_name": "simplus 쿠킹호일 25CM*30M(중)",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "30M",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "cae179354098190eef34c3c53b3fb86e5f7ba5069186acdaa83c9d69304d2c05",
+      "raw_record_id": "ingestion:77:13",
+      "source_category_path": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070186669",
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070186669&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "hold",
+        "file": "2026-09-12-batch-177-181.json",
+        "flags": [
+          "missing_mart"
+        ],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:77:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "070186669",
+    "source_title": "simplus 쿠킹호일 25CM*30M(중)"
+  }
+]

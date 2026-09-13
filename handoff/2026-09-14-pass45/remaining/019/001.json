@@ -1,0 +1,3085 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:1",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "신라면 5입 600g (120gx5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.043052Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 1,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "600g",
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4150,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "농심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008333648",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008333648",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 692원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.043052",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "600g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+        "match_key": "__no_brand__|신라면 5입 600g 120gx5입||600g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "신라면 5입 600g (120gx5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "price_per_100g": 691.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4150,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "600g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6ed0a8b1770165cf2919a6c375470cbf6556c04314e4aff03e9534cc5c5084fc",
+      "raw_record_id": "ingestion:89:1",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008333648",
+      "source_title": "신라면 5입 600g (120gx5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008333648",
+    "source_title": "신라면 5입 600g (120gx5입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:2",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "올리브 짜파게티 (140gx5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333613&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.049938Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/13/36/33/item/0000008333613_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 2,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "5입",
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 5300,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "농심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/13/36/33/item/0000008333613_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008333613",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008333613",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333613&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 757원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.049938",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333613&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "5입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/13/36/33/item/0000008333613_i1_290.jpg",
+        "match_key": "__no_brand__|올리브 짜파게티 140gx5입||5입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "올리브 짜파게티 (140gx5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5300,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "5입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "36fc5e1fe2450adec8e282dd929b55d611fbb270a3c48219123d9ae578a71606",
+      "raw_record_id": "ingestion:89:2",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008333613",
+      "source_title": "올리브 짜파게티 (140gx5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333613&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "0000008333613",
+    "source_title": "올리브 짜파게티 (140gx5입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:3",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "얼큰한 너구리 (120gx5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333620&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.053809Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/20/36/33/item/0000008333620_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "5입",
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 4700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "농심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/20/36/33/item/0000008333620_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008333620",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008333620",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333620&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 783원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.053809",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333620&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "5입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/20/36/33/item/0000008333620_i1_290.jpg",
+        "match_key": "__no_brand__|얼큰한 너구리 120gx5입||5입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "얼큰한 너구리 (120gx5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4700,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "5입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1790a55f39fc246009bf21cac73914df8a0d0e13147b3308e58443ba63f840c5",
+      "raw_record_id": "ingestion:89:3",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008333620",
+      "source_title": "얼큰한 너구리 (120gx5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333620&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "0000008333620",
+    "source_title": "얼큰한 너구리 (120gx5입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:5",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "불닭볶음면 (140gx5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008549264&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.062937Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/64/92/54/item/0000008549264_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 5,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "5입",
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 5100,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "삼양",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/64/92/54/item/0000008549264_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008549264",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008549264",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008549264&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 729원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.062937",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008549264&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "5입",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/64/92/54/item/0000008549264_i1_290.jpg",
+        "match_key": "__no_brand__|불닭볶음면 140gx5입||5입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "불닭볶음면 (140gx5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5100,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "5입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0c1e7d9842d07fc893b57b4094ad0a571f2cf8c4a46ed3100b8a3c46a737fd17",
+      "raw_record_id": "ingestion:89:5",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008549264",
+      "source_title": "불닭볶음면 (140gx5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008549264&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:5",
+    "reasons": [
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "0000008549264",
+    "source_title": "불닭볶음면 (140gx5입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:8",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "라면사리 110g*4입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000737358661&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.074102Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/61/86/35/item/1000737358661_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 8,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "110g×4",
+        "package_quantity": 110.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1180,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/61/86/35/item/1000737358661_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000737358661",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000737358661",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000737358661&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 268원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.074102",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000737358661&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "110g×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/61/86/35/item/1000737358661_i1_290.jpg",
+        "match_key": "__no_brand__|라면사리 110g 4입||110g×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "라면사리 110g*4입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 110.0,
+        "package_unit": "g",
+        "price_per_100g": 268.18,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1180,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "110g×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6bde3c748ceec3d492339f4767b38ea40b25061609dbf33073ef6655c345e7ff",
+      "raw_record_id": "ingestion:89:8",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000737358661",
+      "source_title": "라면사리 110g*4입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000737358661&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:8",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000737358661",
+    "source_title": "라면사리 110g*4입"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:9",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "5K PRICE 간편잡채 89.5g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000872593403&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.078692Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/03/34/59/item/1000872593403_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 9,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "89.5g",
+        "package_quantity": 89.5,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "5K프라이스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/03/34/59/item/1000872593403_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000872593403",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000872593403",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872593403&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 2,200원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.078692",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872593403&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "89.5g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/03/34/59/item/1000872593403_i1_290.jpg",
+        "match_key": "__no_brand__|5k price 간편잡채 89 5g||89.5g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "5K PRICE 간편잡채 89.5g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 89.5,
+        "package_unit": "g",
+        "price_per_100g": 2212.29,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "89.5g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "da0e54f1336c6641dd7e95f795a5133708ddcd46ad3767cb1ee88c4a09f1872c",
+      "raw_record_id": "ingestion:89:9",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000872593403",
+      "source_title": "5K PRICE 간편잡채 89.5g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872593403&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.japchae",
+        "path": "/proposed_decisions/0"
+      }
+    ],
+    "raw_record_id": "ingestion:89:9",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000872593403",
+    "source_title": "5K PRICE 간편잡채 89.5g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:10",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "진비빔면 (156GX4)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000042393832&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.082279Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/32/38/39/item/1000042393832_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 10,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "오뚜기",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/32/38/39/item/1000042393832_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000042393832",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000042393832",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000042393832&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 718원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.082279",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000042393832&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100g 당 718원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/32/38/39/item/1000042393832_i1_290.jpg",
+        "match_key": "__no_brand__|진비빔면 156gx4||100g 당 718원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "진비빔면 (156GX4)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100g 당 718원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f73841d78b39c8c54605a5447dc4aa51eaebf1f69e3a2df52ffe62415c90b53e",
+      "raw_record_id": "ingestion:89:10",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000042393832",
+      "source_title": "진비빔면 (156GX4)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000042393832&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:10",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000042393832",
+    "source_title": "진비빔면 (156GX4)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:13",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000852538693&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.093780Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/93/86/53/item/1000852538693_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 13,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "115g×4",
+        "package_quantity": 115.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/93/86/53/item/1000852538693_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000852538693",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000852538693",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000852538693&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,300원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.093780",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000852538693&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "115g×4",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/93/86/53/item/1000852538693_i1_290.jpg",
+        "match_key": "__no_brand__|신상 오뚜기 동대문식 닭한마리 칼국수 115g 4개||115g×4",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 115.0,
+        "package_unit": "g",
+        "price_per_100g": 1300.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "115g×4",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "83b9d7cd7b873ec53624322acb7db0980a62803a3153ea9b517bd7c4633d59af",
+      "raw_record_id": "ingestion:89:13",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000852538693",
+      "source_title": "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000852538693&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.kalguksu",
+        "path": "/proposed_decisions/1"
+      }
+    ],
+    "raw_record_id": "ingestion:89:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000852538693",
+    "source_title": "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:16",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "짜슐랭(145GX5)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000343332900&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.106176Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/00/29/33/item/1000343332900_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 16,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "오뚜기",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/00/29/33/item/1000343332900_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000343332900",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000343332900",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000343332900&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 687원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.106176",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000343332900&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100g 당 687원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/00/29/33/item/1000343332900_i1_290.jpg",
+        "match_key": "__no_brand__|짜슐랭 145gx5||100g 당 687원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "짜슐랭(145GX5)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100g 당 687원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "31c8a20778ea630d6f700e35b9e9077947923093cf9134717c8907d9a980f4fc",
+      "raw_record_id": "ingestion:89:16",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000343332900",
+      "source_title": "짜슐랭(145GX5)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000343332900&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:16",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000343332900",
+    "source_title": "짜슐랭(145GX5)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:18",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "오징어 짬뽕 5입 620g (124g5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333658&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.113075Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/58/36/33/item/0000008333658_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "multiple_package_quantities"
+      ],
+      "item_index": 18,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "124g",
+        "package_quantity": 124.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5300,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "농심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/58/36/33/item/0000008333658_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008333658",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008333658",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333658&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 855원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.113075",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333658&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "124g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/58/36/33/item/0000008333658_i1_290.jpg",
+        "match_key": "__no_brand__|오징어 짬뽕 5입 620g 124g5입||124g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오징어 짬뽕 5입 620g (124g5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 124.0,
+        "package_unit": "g",
+        "price_per_100g": 4274.19,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5300,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "124g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1e7315afdaadf7751574f7eb4d5443162e8abf769d95e84ef58ffe7aaae2f2e2",
+      "raw_record_id": "ingestion:89:18",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008333658",
+      "source_title": "오징어 짬뽕 5입 620g (124g5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333658&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:18",
+    "reasons": [
+      "multiple_package_quantities"
+    ],
+    "source_record_key": "0000008333658",
+    "source_title": "오징어 짬뽕 5입 620g (124g5입)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:28",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "불닭볶음면 (70g*6개) 420g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000010733416&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.164515Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/16/34/73/item/0000010733416_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 28,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "70g×6",
+        "package_quantity": 70.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6300,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "삼양",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/16/34/73/item/0000010733416_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000010733416",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000010733416",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000010733416&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,500원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.164515",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000010733416&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "70g×6",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/16/34/73/item/0000010733416_i1_290.jpg",
+        "match_key": "__no_brand__|불닭볶음면 70g 6개 420g||70g×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "불닭볶음면 (70g*6개) 420g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 70.0,
+        "package_unit": "g",
+        "price_per_100g": 1500.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6300,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "70g×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "78eb6ddbe8563f1adca7aa3248dc6df6862afe037ad222c9a9cf0081194ba6bb",
+      "raw_record_id": "ingestion:89:28",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000010733416",
+      "source_title": "불닭볶음면 (70g*6개) 420g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000010733416&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.cup_ramen",
+        "path": "/proposed_decisions/2"
+      }
+    ],
+    "raw_record_id": "ingestion:89:28",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000010733416",
+    "source_title": "불닭볶음면 (70g*6개) 420g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:31",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "아즈텍카 밀또띠아 320g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000006070370&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.182578Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/70/03/07/item/1000006070370_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 31,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "320g",
+        "package_quantity": 320.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4480,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/70/03/07/item/1000006070370_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000006070370",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000006070370",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000006070370&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 140원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.182578",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000006070370&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "320g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/70/03/07/item/1000006070370_i1_290.jpg",
+        "match_key": "__no_brand__|아즈텍카 밀또띠아 320g||320g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아즈텍카 밀또띠아 320g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 320.0,
+        "package_unit": "g",
+        "price_per_100g": 1400.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4480,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "320g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "29322dc067b9cca144adcac807e29f2f285052f1688e1a2305fbb60533242ac7",
+      "raw_record_id": "ingestion:89:31",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000006070370",
+      "source_title": "아즈텍카 밀또띠아 320g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000006070370&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000006070370",
+    "source_title": "아즈텍카 밀또띠아 320g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.cup_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "컵라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:32",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "컵누들 매콤한맛 컵 (37.8GX6)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008783908&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.cup_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.186122Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/08/39/78/item/0000008783908_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 32,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 8680,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "오뚜기",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/08/39/78/item/0000008783908_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008783908",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008783908",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008783908&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 3,824원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.186122",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008783908&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100g 당 3,824원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/08/39/78/item/0000008783908_i1_290.jpg",
+        "match_key": "__no_brand__|컵누들 매콤한맛 컵 37 8gx6||100g 당 3,824원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "컵누들 매콤한맛 컵 (37.8GX6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8680,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100g 당 3,824원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4208bf5d4873c81b6d251a3454816ade122fac3d8376f463aecb6c44b03405b1",
+      "raw_record_id": "ingestion:89:32",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008783908",
+      "source_title": "컵누들 매콤한맛 컵 (37.8GX6)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008783908&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:32",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "0000008783908",
+    "source_title": "컵누들 매콤한맛 컵 (37.8GX6)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:33",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "크링클컷 슬라이스 피클 500g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000689799083&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.192191Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/83/90/79/item/1000689799083_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 33,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2780,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "5K프라이스",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/83/90/79/item/1000689799083_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000689799083",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000689799083",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689799083&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 53원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.192191",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689799083&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/83/90/79/item/1000689799083_i1_290.jpg",
+        "match_key": "__no_brand__|크링클컷 슬라이스 피클 500g||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크링클컷 슬라이스 피클 500g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 556.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2780,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f80eb319c13e803fd8396e429c3e7929214ac185f5caf18da935d0166e9e7c49",
+      "raw_record_id": "ingestion:89:33",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000689799083",
+      "source_title": "크링클컷 슬라이스 피클 500g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000689799083&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.preserved.sides.pickled",
+        "path": "/proposed_decisions/3"
+      }
+    ],
+    "raw_record_id": "ingestion:89:33",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000689799083",
+    "source_title": "크링클컷 슬라이스 피클 500g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:34",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "진라면 순한맛 (120GX5)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610869&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.196278Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/69/08/61/item/0000006610869_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 34,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 3950,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "오뚜기",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/69/08/61/item/0000006610869_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000006610869",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006610869",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610869&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 658원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.196278",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610869&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100g 당 658원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/69/08/61/item/0000006610869_i1_290.jpg",
+        "match_key": "__no_brand__|진라면 순한맛 120gx5||100g 당 658원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "진라면 순한맛 (120GX5)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3950,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100g 당 658원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "53c69a3ff513ab06b310f6848ceea1725d1d60c7a4666ad6e5162f6e8fb34343",
+      "raw_record_id": "ingestion:89:34",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006610869",
+      "source_title": "진라면 순한맛 (120GX5)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610869&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:34",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "0000006610869",
+    "source_title": "진라면 순한맛 (120GX5)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:38",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "샘표 메밀쌀소면 400g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000846029343&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.211506Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.3342,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/43/93/02/item/1000846029343_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 38,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": 7480,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4980,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/43/93/02/item/1000846029343_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000846029343",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000846029343",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000846029343&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 1,245원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.211506",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000846029343&siteNo=6001&salestrNo=2037",
+        "discount_percent": 33.4,
+        "display_unit": "400g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/43/93/02/item/1000846029343_i1_290.jpg",
+        "match_key": "__no_brand__|샘표 메밀쌀소면 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "샘표 메밀쌀소면 400g",
+        "normalized_name": "",
+        "original_price": 7480,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 1245.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1a349161345f41914df98cbeb887846489ba5d6132d545c05ab0fa0bc9951008",
+      "raw_record_id": "ingestion:89:38",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000846029343",
+      "source_title": "샘표 메밀쌀소면 400g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000846029343&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.naengmyeon",
+        "path": "/proposed_decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:89:38",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000846029343",
+    "source_title": "샘표 메밀쌀소면 400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:45",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "썬큐 베이크드 빈스 420g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610103&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.255865Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/03/01/61/item/0000006610103_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 45,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "420g",
+        "package_quantity": 420.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 1830,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/03/01/61/item/0000006610103_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000006610103",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006610103",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610103&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "10g 당 44원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.255865",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610103&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "420g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/03/01/61/item/0000006610103_i1_290.jpg",
+        "match_key": "__no_brand__|썬큐 베이크드 빈스 420g||420g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "썬큐 베이크드 빈스 420g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 420.0,
+        "package_unit": "g",
+        "price_per_100g": 435.71,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1830,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "420g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a3a26dc9a8886ae19626f3947a54646b87277bc74d2eac0dfeb54e58b64ea77a",
+      "raw_record_id": "ingestion:89:45",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006610103",
+      "source_title": "썬큐 베이크드 빈스 420g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610103&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:45",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000006610103",
+    "source_title": "썬큐 베이크드 빈스 420g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:47",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "짜장면사리 400g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000641362724&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.268770Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/24/27/36/item/1000641362724_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 47,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "400g",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "칠갑농산",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/24/27/36/item/1000641362724_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000641362724",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000641362724",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000641362724&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 745원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.268770",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000641362724&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "400g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/24/27/36/item/1000641362724_i1_290.jpg",
+        "match_key": "__no_brand__|짜장면사리 400g||400g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "짜장면사리 400g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "price_per_100g": 745.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "400g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "99c8bd43a88c3302cc8ac84d420ef0b784143bbc2d35dc4b258d3af99b3ac523",
+      "raw_record_id": "ingestion:89:47",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000641362724",
+      "source_title": "짜장면사리 400g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000641362724&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.black_bean",
+        "path": "/proposed_decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:89:47",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000641362724",
+    "source_title": "짜장면사리 400g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:49",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "오이피클 300g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000007073669&siteNo=7009&salestrNo=2551"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.281031Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/69/36/07/item/1000007073669_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 49,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "피코크",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/69/36/07/item/1000007073669_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000007073669",
+          "promo_label": "",
+          "salestr_no": "2551",
+          "shipping_labels": [
+            "새벽배송 내일(금) 07:00까지 도착",
+            "새벽배송",
+            "새벽배송",
+            "내일(금) 07:00까지 도착"
+          ],
+          "shipping_type_code": "20",
+          "site_no": "7009",
+          "source_name": "emart",
+          "source_record_key": "1000007073669",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000007073669&siteNo=7009&salestrNo=2551",
+          "unit_price_display": "100g 당 1,993원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.281031",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000007073669&siteNo=7009&salestrNo=2551",
+        "discount_percent": null,
+        "display_unit": "300g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/69/36/07/item/1000007073669_i1_290.jpg",
+        "match_key": "__no_brand__|오이피클 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오이피클 300g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 1993.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "805a49ca397fb3d6a6468cd1f390db5aea26a906f05c2f08449272189d7daf59",
+      "raw_record_id": "ingestion:89:49",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000007073669",
+      "source_title": "오이피클 300g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000007073669&siteNo=7009&salestrNo=2551",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.preserved.sides.pickled",
+        "path": "/proposed_decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:89:49",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000007073669",
+    "source_title": "오이피클 300g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.pasta"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "파스타면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:53",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "[펠리체티] 유기농 통밀 푸질리 500g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.pasta",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.301238Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 53,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000631342420",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000631342420",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 800원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.301238",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/20/24/34/item/1000631342420_i1_290.jpg",
+        "match_key": "__no_brand__|펠리체티 유기농 통밀 푸질리 500g||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "[펠리체티] 유기농 통밀 푸질리 500g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 800.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4000,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "fa4eee1a0ae652df87d47c2bd835d69e9a5482a220629c62b3aea611a4dc466e",
+      "raw_record_id": "ingestion:89:53",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000631342420",
+      "source_title": "[펠리체티] 유기농 통밀 푸질리 500g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000631342420&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:89:53",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000631342420",
+    "source_title": "[펠리체티] 유기농 통밀 푸질리 500g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": [
+        "면류/통조림"
+      ],
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:89:54",
+      "review_status": "pending",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "완면각짬뽕105g",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000148468400&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:23:22.311605Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/00/84/46/item/1000148468400_i1_290.jpg",
+      "ingestion_id": 89,
+      "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+      "issues": [],
+      "item_index": 54,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "105g",
+        "package_quantity": 105.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "노브랜드",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/00/84/46/item/1000148468400_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000148468400",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000148468400",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000148468400&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 933원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T00:23:22.311605",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000148468400&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "105g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/00/84/46/item/1000148468400_i1_290.jpg",
+        "match_key": "__no_brand__|완면각짬뽕105g||105g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "완면각짬뽕105g",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 105.0,
+        "package_unit": "g",
+        "price_per_100g": 933.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "105g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "83ff9f7503074af1c9c05b05af4db0d60c2fb9dac2ca302d07fed1a905e71008",
+      "raw_record_id": "ingestion:89:54",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000148468400",
+      "source_title": "완면각짬뽕105g",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000148468400&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "emart-noodles-canned-019.json",
+        "flags": [],
+        "leaf": "food.meals.noodles.cup_ramen",
+        "path": "/proposed_decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:89:54",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000148468400",
+    "source_title": "완면각짬뽕105g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:90:0",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "진라면 매운맛 (120GX5)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000016397446&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:15:37.660739Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/46/74/39/item/1000016397446_i1_290.jpg",
+      "ingestion_id": 90,
+      "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 0,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 3950,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "오뚜기",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/46/74/39/item/1000016397446_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "1000016397446",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000016397446",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000016397446&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 658원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T01:15:37.660739",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000016397446&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100g 당 658원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/46/74/39/item/1000016397446_i1_290.jpg",
+        "match_key": "__no_brand__|진라면 매운맛 120gx5||100g 당 658원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "진라면 매운맛 (120GX5)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3950,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100g 당 658원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9975e968e570648843ae0d5da0fca72203c17471bd68aa866bc7a04589fbf31d",
+      "raw_record_id": "ingestion:90:0",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000016397446",
+      "source_title": "진라면 매운맛 (120GX5)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000016397446&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:90:0",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "1000016397446",
+    "source_title": "진라면 매운맛 (120GX5)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.bag_ramen"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "봉지라면"
+      ],
+      "classification_confidence": 0.95,
+      "classification_reason": "supported_by_audited_emart_food_title",
+      "evidence_type": "audited_emart_food_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:ad32b9b7f53324311b783cd4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213319",
+      "raw_record_id": "ingestion:90:2",
+      "review_status": "classified",
+      "source_path": "면류/통조림",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "신라면 5입 600g (120gx5입)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.meals.noodles.bag_ramen",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T16:15:37.674894Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+      "ingestion_id": 90,
+      "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+      "issues": [],
+      "item_index": 2,
+      "mart_native_category_id": "6000213319",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "600g",
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4150,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "면류/통조림",
+          "collection": "농심",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213319",
+          "mart_native_category_path": "면류/통조림",
+          "mart_native_code": "0000008333648",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000008333648",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100g 당 692원"
+        },
+        "brand": "__no_brand__",
+        "category": "면류/통조림",
+        "crawled_at": "2026-09-03T01:15:37.674894",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "600g",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/48/36/33/item/0000008333648_i1_290.jpg",
+        "match_key": "__no_brand__|신라면 5입 600g 120gx5입||600g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "신라면 5입 600g (120gx5입)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "price_per_100g": 691.67,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4150,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "600g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "86153568ed78944e3af83792afa8339c0408ca4b81842d651ca3c8cb1291e8fd",
+      "raw_record_id": "ingestion:90:2",
+      "source_category_path": [
+        "면류/통조림"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000008333648",
+      "source_title": "신라면 5입 600g (120gx5입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [],
+    "raw_record_id": "ingestion:90:2",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000008333648",
+    "source_title": "신라면 5입 600g (120gx5입)"
+  }
+]

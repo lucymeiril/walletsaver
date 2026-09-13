@@ -1,0 +1,590 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:142bcf1e3aa892035fda4dce",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": "16",
+      "raw_record_id": "ingestion:21:56",
+      "review_status": "pending",
+      "source_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "티아시아 비프키마커리전자레인지용 170G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "티아시아",
+      "crawled_at": "2026-08-31T01:46:33.111146Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "1+1",
+      "image_url": "",
+      "ingestion_id": 21,
+      "ingestion_received_at": "2026-08-31T01:47:57.252545Z",
+      "issues": [],
+      "item_index": 56,
+      "mart_native_category_id": "16",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "170g",
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      },
+      "promotion_type": "buy_x_get_y",
+      "raw_payload": {
+        "attributes": {
+          "brand": "티아시아",
+          "canon_hash": "e051afa9a6026ee8572c87fe6552dd0c18ba8dc2",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER",
+          "category_hint": "즉석국(레토르트)",
+          "docId": "H068964483N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%8B%B0%EC%95%84%EC%8B%9C%EC%95%84-%EB%B9%84%ED%94%84%ED%82%A4%EB%A7%88%EC%BB%A4%EB%A6%AC%EC%A0%84%EC%9E%90%EB%A0%88%EC%9D%B8%EC%A7%80%EC%9A%A9-170G/068964483",
+          "mart_native_category_id": "16",
+          "mart_native_category_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+          "mart_native_code": "068964483",
+          "normalized_name": "티아시아 비프키마커리전자레인지용 170G",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER",
+          "promo_label": "1+1",
+          "raw_name": "티아시아 비프키마커리전자레인지용 170G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "068964483",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 2347.0
+        },
+        "brand": "__no_brand__",
+        "category": "즉석국(레토르트)",
+        "crawled_at": "2026-08-31T10:46:33.111146",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "170g",
+        "event_name": "1+1",
+        "image_url": "",
+        "match_key": "__no_brand__|티아시아 비프키마커리전자레인지용 170g||170g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "티아시아 비프키마커리전자레인지용 170G",
+        "normalized_name": "티아시아 비프키마커리전자레인지용 170G",
+        "original_price": null,
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "price_per_100g": 2347.06,
+        "promo_label": "1+1",
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "170g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "bf10ae3cedd4b20e93e84bcee91418427c9316694a33bba4ca6fd1ae335b941b",
+      "raw_record_id": "ingestion:21:56",
+      "source_category_path": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "068964483",
+      "source_title": "티아시아 비프키마커리전자레인지용 170G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=068964483&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-211-217.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.curry",
+        "path": "/decisions/4"
+      }
+    ],
+    "raw_record_id": "ingestion:21:56",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "068964483",
+    "source_title": "티아시아 비프키마커리전자레인지용 170G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:142bcf1e3aa892035fda4dce",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": "16",
+      "raw_record_id": "ingestion:71:97",
+      "review_status": "pending",
+      "source_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로짜장 200G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-09-02T13:39:35.794233Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 71,
+      "ingestion_received_at": "2026-09-02T13:40:59.106972Z",
+      "issues": [],
+      "item_index": 97,
+      "mart_native_category_id": "16",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "200g",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "29e9baf36b924393e429d95956f974bcd340863c",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER",
+          "category_hint": "즉석국(레토르트)",
+          "docId": "H070500707N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%9A%9C%EA%B8%B0-%EA%B7%B8%EB%8C%80%EB%A1%9C%EC%A7%9C%EC%9E%A5-200G/070500707",
+          "mart_native_category_id": "16",
+          "mart_native_category_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+          "mart_native_code": "070500707",
+          "normalized_name": "오뚜기 그대로짜장 200G",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER",
+          "raw_name": "오뚜기 그대로짜장 200G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070500707",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1245.0
+        },
+        "brand": "__no_brand__",
+        "category": "즉석국(레토르트)",
+        "crawled_at": "2026-09-02T22:39:35.794233",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "200g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|오뚜기 그대로짜장 200g||200g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 그대로짜장 200G",
+        "normalized_name": "오뚜기 그대로짜장 200G",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "price_per_100g": 1245.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "200g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5f31d4f3736f4e17da3b097030b2952273d9b4141d201421591872bacd248a50",
+      "raw_record_id": "ingestion:71:97",
+      "source_category_path": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070500707",
+      "source_title": "오뚜기 그대로짜장 200G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500707&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-211-217.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.black_bean",
+        "path": "/decisions/5"
+      }
+    ],
+    "raw_record_id": "ingestion:71:97",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "070500707",
+    "source_title": "오뚜기 그대로짜장 200G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:142bcf1e3aa892035fda4dce",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": "16",
+      "raw_record_id": "ingestion:71:98",
+      "review_status": "pending",
+      "source_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로카레 약간매운맛 200G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-09-02T13:39:35.794309Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 71,
+      "ingestion_received_at": "2026-09-02T13:40:59.106972Z",
+      "issues": [],
+      "item_index": 98,
+      "mart_native_category_id": "16",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "200g",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "d2c3cd6fe6bc1d7cacfbe85bd6f2250beed3603e",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER",
+          "category_hint": "즉석국(레토르트)",
+          "docId": "H070500673N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%9A%9C%EA%B8%B0-%EA%B7%B8%EB%8C%80%EB%A1%9C%EC%B9%B4%EB%A0%88-%EC%95%BD%EA%B0%84%EB%A7%A4%EC%9A%B4%EB%A7%9B-200G/070500673",
+          "mart_native_category_id": "16",
+          "mart_native_category_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+          "mart_native_code": "070500673",
+          "normalized_name": "오뚜기 그대로카레 약간매운맛 200G",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER",
+          "raw_name": "오뚜기 그대로카레 약간매운맛 200G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070500673",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1245.0
+        },
+        "brand": "__no_brand__",
+        "category": "즉석국(레토르트)",
+        "crawled_at": "2026-09-02T22:39:35.794309",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "200g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|오뚜기 그대로카레 약간매운맛 200g||200g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 그대로카레 약간매운맛 200G",
+        "normalized_name": "오뚜기 그대로카레 약간매운맛 200G",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "price_per_100g": 1245.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "200g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ff4feb09d74edce60e74721adce83ea53027a1eabdb07d3450e3873a4eef209b",
+      "raw_record_id": "ingestion:71:98",
+      "source_category_path": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070500673",
+      "source_title": "오뚜기 그대로카레 약간매운맛 200G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500673&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-211-217.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.curry",
+        "path": "/decisions/6"
+      }
+    ],
+    "raw_record_id": "ingestion:71:98",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "070500673",
+    "source_title": "오뚜기 그대로카레 약간매운맛 200G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:142bcf1e3aa892035fda4dce",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": "16",
+      "raw_record_id": "ingestion:71:99",
+      "review_status": "pending",
+      "source_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로카레 순한맛 200G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-09-02T13:39:35.794381Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 71,
+      "ingestion_received_at": "2026-09-02T13:40:59.106972Z",
+      "issues": [],
+      "item_index": 99,
+      "mart_native_category_id": "16",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "200g",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "37f1b9a32ae1bfcc47c3d6ce1c8f6efb2b4f06a8",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER",
+          "category_hint": "즉석국(레토르트)",
+          "docId": "H070500667N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%9A%9C%EA%B8%B0-%EA%B7%B8%EB%8C%80%EB%A1%9C%EC%B9%B4%EB%A0%88-%EC%88%9C%ED%95%9C%EB%A7%9B-200G/070500667",
+          "mart_native_category_id": "16",
+          "mart_native_category_path": "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)",
+          "mart_native_code": "070500667",
+          "normalized_name": "오뚜기 그대로카레 순한맛 200G",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER",
+          "raw_name": "오뚜기 그대로카레 순한맛 200G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "070500667",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1245.0
+        },
+        "brand": "__no_brand__",
+        "category": "즉석국(레토르트)",
+        "crawled_at": "2026-09-02T22:39:35.794381",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "200g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|오뚜기 그대로카레 순한맛 200g||200g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 그대로카레 순한맛 200G",
+        "normalized_name": "오뚜기 그대로카레 순한맛 200G",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "price_per_100g": 1245.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2490,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "200g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9536edb01928242c9232a096b384860aa8ef321a8521f889110ee9a3ed2fda45",
+      "raw_record_id": "ingestion:71:99",
+      "source_category_path": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "070500667",
+      "source_title": "오뚜기 그대로카레 순한맛 200G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=070500667&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "homeplus-small-211-217.json",
+        "flags": [],
+        "leaf": "food.meals.prepared.curry",
+        "path": "/decisions/7"
+      }
+    ],
+    "raw_record_id": "ingestion:71:99",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "070500667",
+    "source_title": "오뚜기 그대로카레 순한맛 200G"
+  }
+]

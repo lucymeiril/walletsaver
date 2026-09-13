@@ -1,5 +1,7 @@
 # 초기 분류 작업 — pass44
 
+> 최신 지침은 [고정 입구](../README.md)를 따른다. 아래는 이력이며 현재 지침에 중복 적용하지 않는다.
+
 ## 재개와 저장
 
 1. 원격 최신 [고정 입구](../README.md)와 [현재 상태](CURRENT_STATUS.md)를 읽는다. `REMAINING.md`는 미적재 목록이지 미검토 목록이 아니다. `remaining/<ID>/*.json` 전부, `proposal_references`, 현재/이전 proposals를 확인해 중복 작업을 피한다.

@@ -1,0 +1,1235 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:3",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "롯데 빠삐코 (130ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801118250996/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데웰푸드",
+      "crawled_at": "2026-08-31T01:46:57.083623Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26bdd1d9-5994-451f-9a7d-24ccef2a0c93/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "130ml",
+        "package_quantity": 130.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데웰푸드",
+          "canon_hash": "65845755a1727c0fb1f9ca6e401716b0a859bb5d",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801118250996/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26bdd1d9-5994-451f-9a7d-24ccef2a0c93/300x300.jpg",
+          "mart_native_code": "8801118250996",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801118250996",
+          "source_url": "https://lottemartzetta.com/products/OS8801118250996/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.083623",
+        "detail_url": "https://lottemartzetta.com/products/OS8801118250996/details",
+        "discount_percent": null,
+        "display_unit": "130ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/26bdd1d9-5994-451f-9a7d-24ccef2a0c93/300x300.jpg",
+        "match_key": "__no_brand__|롯데 빠삐코 130ml||130ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "롯데 빠삐코 (130ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 130.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "130ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "29d7f9807970414b24e92abf1e0b68cc9b276d8594186e9fd48cd1b56ef2b829",
+      "raw_record_id": "ingestion:28:3",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801118250996",
+      "source_title": "롯데 빠삐코 (130ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801118250996/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801118250996",
+    "source_title": "롯데 빠삐코 (130ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:14",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "빙그레 뽕따 (소다) (130ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801104111355/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "빙그레",
+      "crawled_at": "2026-08-31T01:46:57.084915Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2636f7b4-16a1-4cc0-b2cb-079a8f447854/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 14,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "130ml",
+        "package_quantity": 130.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "빙그레",
+          "canon_hash": "5d069f9ed2a047c3eb3921b8dcf0f08b141047c2",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801104111355/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2636f7b4-16a1-4cc0-b2cb-079a8f447854/300x300.jpg",
+          "mart_native_code": "8801104111355",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801104111355",
+          "source_url": "https://lottemartzetta.com/products/OS8801104111355/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.084915",
+        "detail_url": "https://lottemartzetta.com/products/OS8801104111355/details",
+        "discount_percent": null,
+        "display_unit": "130ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2636f7b4-16a1-4cc0-b2cb-079a8f447854/300x300.jpg",
+        "match_key": "__no_brand__|빙그레 뽕따 소다 130ml||130ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "빙그레 뽕따 (소다) (130ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 130.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "130ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ef974cb4cad5d7f411df03ca1a4bf4fe4209d944775184986d315cd1df0f69d8",
+      "raw_record_id": "ingestion:28:14",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801104111355",
+      "source_title": "빙그레 뽕따 (소다) (130ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801104111355/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801104111355",
+    "source_title": "빙그레 뽕따 (소다) (130ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:36",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "빙그레 더위사냥 (140ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801104111553/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "빙그레",
+      "crawled_at": "2026-08-31T01:46:57.086802Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/125a2f63-6694-4604-8cf4-03cad97782ab/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 36,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140ml",
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "빙그레",
+          "canon_hash": "92386780f34df3e66d20aa360084ca7321718495",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801104111553/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/125a2f63-6694-4604-8cf4-03cad97782ab/300x300.jpg",
+          "mart_native_code": "8801104111553",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801104111553",
+          "source_url": "https://lottemartzetta.com/products/OS8801104111553/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.086802",
+        "detail_url": "https://lottemartzetta.com/products/OS8801104111553/details",
+        "discount_percent": null,
+        "display_unit": "140ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/125a2f63-6694-4604-8cf4-03cad97782ab/300x300.jpg",
+        "match_key": "__no_brand__|빙그레 더위사냥 140ml||140ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "빙그레 더위사냥 (140ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1000,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "415df762c68fe1b35f917863f93a45bd75a27ab3b9c8dce8f069194afe8bf576",
+      "raw_record_id": "ingestion:28:36",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801104111553",
+      "source_title": "빙그레 더위사냥 (140ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801104111553/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801104111553",
+    "source_title": "빙그레 더위사냥 (140ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:50",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "해태 탱크보이 (120ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809713220390/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "해태",
+      "crawled_at": "2026-08-31T01:46:57.087721Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e95587a5-1bf6-472e-a538-bdb27818e81f/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 50,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "120ml",
+        "package_quantity": 120.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "해태",
+          "canon_hash": "f5b945bd82b1436e9a29d1334caa68ad5197c8e9",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809713220390/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e95587a5-1bf6-472e-a538-bdb27818e81f/300x300.jpg",
+          "mart_native_code": "8809713220390",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809713220390",
+          "source_url": "https://lottemartzetta.com/products/OS8809713220390/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.087721",
+        "detail_url": "https://lottemartzetta.com/products/OS8809713220390/details",
+        "discount_percent": null,
+        "display_unit": "120ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e95587a5-1bf6-472e-a538-bdb27818e81f/300x300.jpg",
+        "match_key": "__no_brand__|해태 탱크보이 120ml||120ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "해태 탱크보이 (120ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 120.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "120ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1f4b5585b9a6ad286ff44fa6cc1342eb791a551103396713056a8f3434b22a54",
+      "raw_record_id": "ingestion:28:50",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809713220390",
+      "source_title": "해태 탱크보이 (120ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8809713220390/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:50",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809713220390",
+    "source_title": "해태 탱크보이 (120ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:70",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "해태 폴라포 (포도) (120ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809713220048/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "해태",
+      "crawled_at": "2026-08-31T01:46:57.089097Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2f1f3496-8207-43c5-854d-ed905098ac74/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 70,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "120ml",
+        "package_quantity": 120.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "해태",
+          "canon_hash": "bdd90a3a98ee2a4b1435ba816bcfa6fa16879bc4",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809713220048/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2f1f3496-8207-43c5-854d-ed905098ac74/300x300.jpg",
+          "mart_native_code": "8809713220048",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809713220048",
+          "source_url": "https://lottemartzetta.com/products/OS8809713220048/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.089097",
+        "detail_url": "https://lottemartzetta.com/products/OS8809713220048/details",
+        "discount_percent": null,
+        "display_unit": "120ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2f1f3496-8207-43c5-854d-ed905098ac74/300x300.jpg",
+        "match_key": "__no_brand__|해태 폴라포 포도 120ml||120ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "해태 폴라포 (포도) (120ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 120.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1000,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "120ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0db678b6a9f806d170ddb2a42d5ad62983b9ba6a82d07cc9ccca9a5e82cf2c8c",
+      "raw_record_id": "ingestion:28:70",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809713220048",
+      "source_title": "해태 폴라포 (포도) (120ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8809713220048/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:70",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809713220048",
+    "source_title": "해태 폴라포 (포도) (120ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:74",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "롯데 설레임 (밀크) (160ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801062623495/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데웰푸드",
+      "crawled_at": "2026-08-31T01:46:57.089471Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07893a3e-e27c-4d97-b713-3d52b8432154/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 74,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "160ml",
+        "package_quantity": 160.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1400,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데웰푸드",
+          "canon_hash": "419bf19f1b07fb496254805eae52dc31119b4a9b",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801062623495/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07893a3e-e27c-4d97-b713-3d52b8432154/300x300.jpg",
+          "mart_native_code": "8801062623495",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801062623495",
+          "source_url": "https://lottemartzetta.com/products/OS8801062623495/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.089471",
+        "detail_url": "https://lottemartzetta.com/products/OS8801062623495/details",
+        "discount_percent": null,
+        "display_unit": "160ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07893a3e-e27c-4d97-b713-3d52b8432154/300x300.jpg",
+        "match_key": "__no_brand__|롯데 설레임 밀크 160ml||160ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "롯데 설레임 (밀크) (160ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 160.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1400,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "160ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "5b4075694ea4e28f800b887013de0ea562a0df94ce8f1b3e3d95febb2cc2de63",
+      "raw_record_id": "ingestion:28:74",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801062623495",
+      "source_title": "롯데 설레임 (밀크) (160ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801062623495/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:28:74",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801062623495",
+    "source_title": "롯데 설레임 (밀크) (160ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:31",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "롯데 설레임 (쿠앤크) (160ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801062872893/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "롯데웰푸드",
+      "crawled_at": "2026-08-31T01:46:57.094347Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "10개씩 골라 담으면, 10% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2cdfb34-4e8c-46e8-b81e-6875be9ddf22/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "160ml",
+        "package_quantity": 160.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1400,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데웰푸드",
+          "canon_hash": "fbb7453a13010c2b2298ebce4263ac474de509aa",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801062872893/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2cdfb34-4e8c-46e8-b81e-6875be9ddf22/300x300.jpg",
+          "mart_native_code": "8801062872893",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801062872893",
+          "source_url": "https://lottemartzetta.com/products/OS8801062872893/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:46:57.094347",
+        "detail_url": "https://lottemartzetta.com/products/OS8801062872893/details",
+        "discount_percent": null,
+        "display_unit": "160ml",
+        "event_name": "10개씩 골라 담으면, 10% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2cdfb34-4e8c-46e8-b81e-6875be9ddf22/300x300.jpg",
+        "match_key": "__no_brand__|롯데 설레임 쿠앤크 160ml||160ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "롯데 설레임 (쿠앤크) (160ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 160.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1400,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "160ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "bf9811748d9f6249b01e23984a3ce5af1b3fb416df6034c20ddc9caf941a05a8",
+      "raw_record_id": "ingestion:29:31",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801062872893",
+      "source_title": "롯데 설레임 (쿠앤크) (160ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801062872893/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:29:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801062872893",
+    "source_title": "롯데 설레임 (쿠앤크) (160ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:91",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801121034927/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "상하목장",
+      "crawled_at": "2026-08-31T01:47:08.160268Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8294d92-cd4f-4c22-a52e-b39737408fea/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 91,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "85ml×6",
+        "package_quantity": 85.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "상하목장",
+          "canon_hash": "61b05ad547058605ed4e0ce83ccab8078a56bb6f",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801121034927/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8294d92-cd4f-4c22-a52e-b39737408fea/300x300.jpg",
+          "mart_native_code": "8801121034927",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801121034927",
+          "source_url": "https://lottemartzetta.com/products/OS8801121034927/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:47:08.160268",
+        "detail_url": "https://lottemartzetta.com/products/OS8801121034927/details",
+        "discount_percent": null,
+        "display_unit": "85ml×6",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8294d92-cd4f-4c22-a52e-b39737408fea/300x300.jpg",
+        "match_key": "__no_brand__|매일유업 상하목장 얼려먹는 아이스크림 초코 85ml 6||85ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "85ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "dfeabb368539fc7b1f0628b724dcd3fe22d1935f00dc5bcdc9f2422f0210ca69",
+      "raw_record_id": "ingestion:34:91",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801121034927",
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801121034927/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:34:91",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801121034927",
+    "source_title": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4dd86497ecfa9e1199ff0490",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:19",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 튜브아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801121031667/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "상하목장",
+      "crawled_at": "2026-08-31T01:47:08.163104Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4640ef79-e889-4893-bf15-a8f448e4fc13/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 19,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "85ml×6",
+        "package_quantity": 85.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "상하목장",
+          "canon_hash": "783d12a8052e5e4443aef379b05ac6370d53c8cb",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801121031667/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "튜브아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4640ef79-e889-4893-bf15-a8f448e4fc13/300x300.jpg",
+          "mart_native_code": "8801121031667",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801121031667",
+          "source_url": "https://lottemartzetta.com/products/OS8801121031667/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:47:08.163104",
+        "detail_url": "https://lottemartzetta.com/products/OS8801121031667/details",
+        "discount_percent": null,
+        "display_unit": "85ml×6",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4640ef79-e889-4893-bf15-a8f448e4fc13/300x300.jpg",
+        "match_key": "__no_brand__|매일유업 상하목장 얼려먹는 아이스크림 밀크 85ml 6||85ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 85.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "85ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2d82153ef39da808f542e284a7336652193eb016c6f37d52ee62ed7529ea754e",
+      "raw_record_id": "ingestion:35:19",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "튜브아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801121031667",
+      "source_title": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801121031667/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "decision": "new_leaf_needed",
+        "file": "2026-09-12-tube-icecream-110.json",
+        "flags": [],
+        "leaf": null,
+        "proposal_base": "handoff/2026-09-12-pass43/proposals"
+      }
+    ],
+    "raw_record_id": "ingestion:35:19",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801121031667",
+    "source_title": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)"
+  }
+]

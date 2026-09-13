@@ -1,0 +1,140 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.vegetables.cabbage"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선채소",
+        "양배추"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:a823536bbd1ed19847ce1032",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:11",
+      "review_status": "classified",
+      "source_path": "채소 > 양배추ㆍ양상추ㆍ브로콜리 > 양배추",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "채소",
+        "양배추ㆍ양상추ㆍ브로콜리",
+        "양배추"
+      ],
+      "source_title": "국내산 양배추 (1EA)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809597440167/details"
+      ],
+      "unified_category_id": "food.produce.vegetables.cabbage",
+      "url_taxonomy_hints": []
+    },
+    "integration_state": "not_integrated",
+    "normalized": {
+      "brand": "초이스L",
+      "crawled_at": "2026-08-31T01:46:57.084652Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3d060bcc-928d-4aee-81ee-aad1befe9fff/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved",
+        "unit_unresolved"
+      ],
+      "item_index": 11,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 3740,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "초이스L",
+          "canon_hash": "4abb1740cf24f8729b638c3e377e415929e4dd56",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809597440167/details",
+          "category_hint": "채소",
+          "category_path": [
+            "채소",
+            "양배추ㆍ양상추ㆍ브로콜리",
+            "양배추"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3d060bcc-928d-4aee-81ee-aad1befe9fff/300x300.jpg",
+          "mart_native_code": "8809597440167",
+          "origin": "domestic",
+          "origin_label": "국내산",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809597440167",
+          "source_url": "https://lottemartzetta.com/products/OS8809597440167/details"
+        },
+        "brand": "__no_brand__",
+        "category": "채소",
+        "crawled_at": "2026-08-31T10:46:57.084652",
+        "detail_url": "https://lottemartzetta.com/products/OS8809597440167/details",
+        "discount_percent": null,
+        "display_unit": "",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3d060bcc-928d-4aee-81ee-aad1befe9fff/300x300.jpg",
+        "match_key": "__no_brand__|국내산 양배추 1ea||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "국내산 양배추 (1EA)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3740,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "39ff10c79c45b42d661c97c53ee627b5d176b6d0c2f9f84d3d9945a1b47f9ae9",
+      "raw_record_id": "ingestion:28:11",
+      "source_category_path": [
+        "채소",
+        "양배추ᆞ양상추ᆞ브로콜리",
+        "양배추"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809597440167",
+      "source_title": "국내산 양배추 (1EA)",
+      "source_url": "https://lottemartzetta.com/products/OS8809597440167/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "proposal_references": [
+      {
+        "file": "lottemart-small-447-448-451.json",
+        "flags": [],
+        "leaf": "food.produce.vegetables.cabbage",
+        "path": "/already_classified_pending/0"
+      }
+    ],
+    "raw_record_id": "ingestion:28:11",
+    "reasons": [
+      "promotion_unresolved",
+      "unit_unresolved"
+    ],
+    "source_record_key": "8809597440167",
+    "source_title": "국내산 양배추 (1EA)"
+  }
+]

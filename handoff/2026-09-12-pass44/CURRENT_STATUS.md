@@ -1,5 +1,7 @@
 # 현재 상태 — pass44
 
+> 최신 실적·예약 인계는 [고정 입구](../README.md)로 이동했다. 아래 기록은 보존된 이력이며 여기에 새 작업을 예약하지 않는다.
+
 ## 제안 작업 인계
 
 - `fix-legacy-177-192 / 8391f7f694771fd9ad222a025a0f3811c16bf894 / pass43 proposals batch-177-196 + remaining/177-192 identity·source_name·현행형식 감사 / 진행 중 / ../2026-09-12-pass43/proposals/ / remaining/193 역감사`
