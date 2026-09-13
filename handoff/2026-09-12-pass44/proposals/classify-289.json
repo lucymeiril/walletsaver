@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "495cdd98bfd4aa971f20fcff90eb81bbafc6b02b",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/289/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:25", "ingestion:51:22"],
+      "source_name": "homeplus",
+      "source_record_key": "113946994",
+      "source_title": "11Brix 당도선별 햇배 4-6입(박스)",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "두 관측 모두 현재 분류가 food.produce.fruit.pear로 이미 확정되어 있고 상품명·원본 경로도 배와 일치한다. 남은 사유는 count_range_unresolved이므로 분류는 보존하고 수량 문제는 별도 검토 대상으로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/289의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 기존 unified_category_id가 food.produce.fruit.pear이고 review_status=classified인지 확인했다.",
+    "두 raw_record_id가 accepted.json의 new_included_ids/accepted_but_blocked_ids에 없음을 확인했다.",
+    "과거 bulk-pending-288-451-final-sweep.json에서 group 289가 food.produce.fruit.pear already_classified exclusion이며 남은 사유가 count_range_unresolved로 기록된 것을 확인했다.",
+    "DB import, 수량 수정, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
