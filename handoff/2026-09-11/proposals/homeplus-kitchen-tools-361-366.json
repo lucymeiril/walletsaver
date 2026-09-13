@@ -1,72 +1,106 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["361", "362", "363", "364", "365", "366"],
-  "scope_note": "GitHub read/write review only. Current pass41 taxonomy has cleaning.kitchen but no product taxonomy for reusable kitchen utensils or disposable kitchen gloves, so the ids below are taxonomy-review labels only. Existing promotion/unit issues remain unresolved and unchanged.",
-  "progress_accounting": {
-    "baseline_pending_observations": 3916,
-    "prior_reviewed_unique_observations": 368,
-    "batch_reviewed_unique_observations": 12,
-    "cumulative_reviewed_unique_observations": 380,
-    "remaining_unreviewed_observations": 3536
-  },
-  "explicit_review_decision_conflict_check": {
-    "file": "handoff/2026-09-11/review-decisions-input.json",
-    "checked_source_record_keys": ["071226126", "071226114", "071225761", "071292426", "071392982", "071412332"],
-    "matches_found": 0
-  },
-  "deferred_taxonomy_candidates": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "0f74ccdd53e0bfb982d85bc60c4359ffe663a4c5",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/361/001.json",
+    "handoff/2026-09-12-pass44/remaining/362/001.json",
+    "handoff/2026-09-12-pass44/remaining/363/001.json",
+    "handoff/2026-09-12-pass44/remaining/364/001.json",
+    "handoff/2026-09-12-pass44/remaining/365/001.json",
+    "handoff/2026-09-12-pass44/remaining/366/001.json"
+  ],
+  "decisions": [
     {
       "raw_record_ids": ["ingestion:27:54", "ingestion:77:26"],
+      "source_name": "homeplus",
       "source_record_key": "071226126",
       "source_title": "simplus 올스텐 미니거품기",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.tools.whisk",
-      "reason": "제목과 원본 경로가 거품기 조리도구를 직접 가리킨다. 현재 unified taxonomy에는 주방 조리도구 리프가 없어 신규 후보로 둔다.",
-      "quantity_review": "unchanged; unit_unresolved remains",
-      "promotion_review": "unchanged; promotion_unresolved remains"
+      "reason": "상품명과 원본 경로가 거품기 조리도구를 직접 가리키지만 현재 taxonomy에 대응 주방 조리도구 리프가 없어 신규 리프 후보로 유지한다. promotion_unresolved와 unit_unresolved는 분류와 별도 문제로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:72", "ingestion:76:85"],
+      "source_name": "homeplus",
       "source_record_key": "071226114",
       "source_title": "simplus 올스텐 미니 거품건지기",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.tools.skimmer",
-      "reason": "건지개라는 조리도구가 제목과 경로에서 명확하지만 현재 대응 리프가 없다. 거품기나 국자와 하나로 뭉개지 않고 조리도구 설계 후보로 보존한다.",
-      "quantity_review": "unchanged; unit_unresolved remains",
-      "promotion_review": "unchanged; promotion_unresolved remains"
+      "reason": "상품명과 원본 경로가 건지개 조리도구를 직접 가리키지만 현재 대응 리프가 없다. 거품기나 국자로 강제 통합하지 않고 신규 리프 후보로 유지하며 promotion_unresolved와 unit_unresolved는 별도 검토 대상으로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:74", "ingestion:77:30"],
+      "source_name": "homeplus",
       "source_record_key": "071225761",
       "source_title": "simplus 올스텐 국자 대",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.tools.ladle",
-      "reason": "국자 조리도구가 명확하며 current taxonomy에 주방도구 leaf가 없다. '대'는 크기 속성으로 둔다.",
-      "quantity_review": "unchanged; unit_unresolved remains",
-      "promotion_review": "unchanged; promotion_unresolved remains"
+      "reason": "상품명과 원본 경로가 국자 조리도구를 명확히 가리키지만 현재 대응 주방도구 리프가 없다. '대'는 크기 속성으로 보고 신규 국자 리프 후보로 유지한다. promotion_unresolved와 unit_unresolved는 별도 검토 대상으로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:42", "ingestion:77:21"],
+      "source_name": "homeplus",
       "source_record_key": "071292426",
       "source_title": "simplus 칼도마 5종 세트",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.tools.knife_board_set",
-      "reason": "칼과 도마로 구성된 조리도구 세트이며 current taxonomy에 대응 주방도구 리프가 없다. 5종 세트 정보는 product/variant 구성으로 보존한다.",
-      "quantity_review": "unchanged; unit_unresolved remains"
+      "reason": "칼과 도마로 구성된 조리도구 세트가 명확하지만 현재 taxonomy에 대응 리프가 없다. 5종 세트 정보는 구성 속성으로 보존하고 신규 리프 후보로 유지하며 unit_unresolved는 별도 문제로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:52", "ingestion:76:96"],
+      "source_name": "homeplus",
       "source_record_key": "071392982",
       "source_title": "simplus 주방용 전자저울",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.tools.scale",
-      "reason": "주방용 전자저울이라는 도구 유형이 명확하고 current taxonomy에 대응 leaf가 없어 신규 후보로 둔다.",
-      "quantity_review": "unchanged; unit_unresolved remains"
+      "reason": "주방용 전자저울이라는 제품 유형이 명확하지만 현재 taxonomy에 대응 리프가 없다. 다른 조리도구 리프로 흡수하지 않고 신규 리프 후보로 유지하며 unit_unresolved는 별도 문제로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:19", "ingestion:76:86"],
+      "source_name": "homeplus",
       "source_record_key": "071412332",
       "source_title": "뉴랩 뉴장갑 100매",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.disposables.gloves",
-      "reason": "원본 경로가 위생장갑이고 100매 일회용 주방장갑 제품이다. 청소용 고무장갑이나 다른 cleaning leaf로 흡수하지 않고 주방 일회용품 후보로 분리한다.",
-      "quantity_review": "unchanged; source count 100매 retained; standard_unit remains null"
+      "reason": "상품명과 원본 경로가 100매 일회용 위생장갑을 직접 가리킨다. 청소용 고무장갑과 제품형태가 달라 기존 cleaning 리프로 흡수하지 않고 주방 일회용 장갑 신규 리프 후보로 유지한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "remaining/361~366의 raw_record_id, source_name, source_record_key, source_title을 기존 pass41 제안과 대조했다.",
+    "361~366의 각 묶음에서 반복 관측이 같은 판매키와 제목을 유지하는지 확인했다.",
+    "기존 deferred_taxonomy_candidates를 현행 new_leaf_needed/needs_review/suggested_new_leaf 형식으로 변환하고 의미 판단을 재검토했다.",
+    "promotion_unresolved, unit_unresolved 및 100매 수량 정보는 변경하지 않았다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
 }
