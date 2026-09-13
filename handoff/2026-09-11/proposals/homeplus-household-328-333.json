@@ -1,80 +1,116 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["328", "329", "330", "331", "332", "333"],
-  "scope_note": "GitHub read/write review only. Existing household leaves are reused where product form is direct; pest-control and cleaning-tool ids below are taxonomy-review labels only and have not been added to initial_taxonomy.py or any DB. Quantity/unit issues remain separate from classification.",
-  "progress_accounting": {
-    "baseline_pending_observations": 3916,
-    "prior_reviewed_unique_observations": 320,
-    "batch_reviewed_unique_observations": 12,
-    "cumulative_reviewed_unique_observations": 332,
-    "remaining_unreviewed_observations": 3584
-  },
-  "explicit_review_decision_conflict_check": {
-    "file": "handoff/2026-09-11/review-decisions-input.json",
-    "checked_source_record_keys": ["058448545", "133537729", "133537712", "106559304", "071193405", "070813049", "071193365"],
-    "matches_found": 0
-  },
+  "baseline_pass": "pass44",
+  "baseline_commit": "8db914c49c15b4c8035af276d8d7716f602ff8e2",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/328/001.json",
+    "handoff/2026-09-12-pass44/remaining/329/001.json",
+    "handoff/2026-09-12-pass44/remaining/330/001.json",
+    "handoff/2026-09-12-pass44/remaining/331/001.json",
+    "handoff/2026-09-12-pass44/remaining/332/001.json",
+    "handoff/2026-09-12-pass44/remaining/333/001.json"
+  ],
   "decisions": [
     {
       "raw_record_ids": ["ingestion:75:79"],
+      "source_name": "homeplus",
       "source_record_key": "133537729",
       "source_title": "LG 냄새먹는 홈스타 냉장고용 탈취제 유칼립투스 420G",
-      "proposed_leaf": "household.cleaning.general.deodorizer",
-      "reason": "제목과 원본 경로가 냉장고용 탈취제를 직접 명시하며 pass41 일반청소 taxonomy에 탈취제 리프가 존재한다. 냉장고용이라는 사용처는 제품유형을 바꾸지 않는다.",
-      "quantity_review": "unchanged; classification-only proposal",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "제목과 원본 경로가 냉장고용 탈취제를 직접 명시하며 현재 탈취제 리프와 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:75:80"],
+      "source_name": "homeplus",
       "source_record_key": "133537712",
       "source_title": "LG 냄새먹는 홈스타 냉장고용 탈취제 참숯 420G",
-      "proposed_leaf": "household.cleaning.general.deodorizer",
-      "reason": "제목과 원본 경로가 냉장고용 탈취제를 직접 명시한다. 참숯은 향/소재 속성이며 기존 탈취제 리프와 일치한다.",
-      "quantity_review": "unchanged; classification-only proposal",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "제목과 원본 경로가 냉장고용 탈취제를 직접 명시하며 참숯은 향·소재 속성이다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:25:99", "ingestion:74:91"],
+      "source_name": "homeplus",
       "source_record_key": "106559304",
       "source_title": "피죤 울터치 소프트펄 리필 1.3L",
-      "proposed_leaf": "household.cleaning.laundry.liquid",
-      "reason": "원본 경로가 울세제/홈드라이이고 1.3L 리필 액상 제품이다. pass41 세탁 taxonomy에는 별도 울세제 리프가 없고 액체세탁세제 리프가 제품형태와 가장 직접적으로 일치한다.",
-      "quantity_review": "unchanged; classification-only proposal",
-      "promotion_review": "unchanged; existing 1+1 structured promotion retained",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "household.cleaning.laundry.liquid",
+      "reason": "원본 경로가 울세제/홈드라이이고 액상 리필 제품이다. 별도 울세제 리프가 없어 액체세탁세제 리프가 제품 형태와 가장 직접적으로 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "not_requested"
-    }
-  ],
-  "deferred_taxonomy_candidates": [
+    },
     {
       "raw_record_ids": ["ingestion:26:59", "ingestion:75:6"],
+      "source_name": "homeplus",
       "source_record_key": "058448545",
       "source_title": "홈키파 마이키파 제로 미스트 100ML",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.pest_control.mosquito_repellent",
-      "reason": "원본 경로는 모기향 계열이지만 제목은 미스트형 모기 기피/방충 제품이다. 현재 pass41 household taxonomy에 방충·살충 리프가 없으며 탈취제나 일반 세정제로 흡수할 수 없다."
+      "reason": "제목과 원본 경로가 미스트형 모기 기피·방충 제품을 가리키지만 현재 household taxonomy에 방충·살충 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:26:53", "ingestion:75:54"],
+      "source_name": "homeplus",
       "source_record_key": "071193405",
       "source_title": "simplus 미세 분무기 300ml",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.cleaning.tools.spray_bottle",
-      "reason": "세정제가 아니라 재사용 분무기 도구다. 현재 pass41 청소 taxonomy에 청소도구 구조가 없어 신규 도구 리프 후보로 분리한다. 용량 300ml 표시는 용기 용량이며 그대로 보존한다."
+      "reason": "세정제가 아니라 재사용 분무기 도구이며 현재 청소도구 대응 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:26:28", "ingestion:75:17"],
+      "source_name": "homeplus",
       "source_record_key": "070813049",
       "source_title": "simplus 세탁볼 4P",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.cleaning.laundry.laundry_ball",
-      "reason": "세탁세제나 세탁조세정제가 아니라 물리적 세탁 보조도구다. 현재 세탁용품 taxonomy에 대응 도구 리프가 없어 별도 후보로 둔다."
+      "reason": "세탁세제가 아니라 물리적 세탁 보조도구이며 현재 대응 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:26:54", "ingestion:75:72"],
+      "source_name": "homeplus",
       "source_record_key": "071193365",
       "source_title": "simplus 클립형 막대걸레 중",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.cleaning.tools.mop",
-      "reason": "제목과 원본 경로가 막대걸레 도구를 직접 가리키지만 현재 pass41 청소도구 리프가 없다. `unit_unresolved`는 별도 데이터 품질 이슈로 유지하며 분류 제안만 기록한다.",
-      "quantity_review": "unchanged; unit_unresolved remains"
+      "reason": "제목과 원본 경로가 막대걸레 도구를 직접 가리키지만 현재 청소도구 리프가 없다. unit_unresolved는 별도 데이터 품질 이슈로 유지한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "legacy pass41 중첩 필드를 pass44 top-level decisions 형식으로 정규화했다.",
+    "각 결정에 raw_record_ids/source_name/source_record_key/source_title/decision/review_lane을 채웠다.",
+    "수량·단위 이슈는 분류 판단과 분리해 원본 상태를 유지했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
 }
