@@ -1,17 +1,9 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["420", "421", "422"],
-  "scope_note": "GitHub read/write review only. Organic/eco-friendly merchandising is treated as product evidence/attribute, not as a separate unified product-type branch. Group 385 decisions were removed because their raw ids are now canonically represented in homeplus-produce-tea-honey-385-390.json.",
+  "reviewed_pending_groups": ["421", "422"],
+  "scope_note": "GitHub read/write review only. Organic/eco-friendly merchandising is treated as product evidence/attribute, not as a separate unified product-type branch. Group 385 decisions were removed because their raw ids are now canonically represented in homeplus-produce-tea-honey-385-390.json. Group 420 was removed because its raw id is now canonically represented in homeplus-small-413-420.json.",
   "decisions": [
-    {
-      "raw_record_ids": ["ingestion:52:70"],
-      "source_title": "친환경 오이맛고추 150G(봉)",
-      "proposed_leaf": "food.produce.vegetables.pepper",
-      "reason": "오이맛고추는 신선 고추 품종이며 현재 통합 리프가 고추·파프리카를 포괄하는 food.produce.vegetables.pepper다. 친환경 표시는 속성으로 보존한다.",
-      "quantity_review": "unchanged",
-      "identity_merge": "not_requested"
-    },
     {
       "raw_record_ids": ["ingestion:52:16"],
       "source_title": "친환경 양파 800G(망)",
@@ -29,5 +21,7 @@
       "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "ingestion:52:70 cucumber-pepper decision removed here because homeplus-small-413-420.json is now the pass44 canonical decision"
+  ]
 }
