@@ -1,0 +1,26 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:6", "ingestion:61:48"],
+      "source_name": "homeplus",
+      "source_record_key": "071386039",
+      "source_title": "라라스윗 저당 초콜릿 초코바 90ML*4",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.frozen.desserts.ice_cream_bar",
+      "reason": "상품명과 판매 형태가 개별 초코 아이스크림바 묶음을 가리킨다. 현재 taxonomy의 컵 아이스크림 등 다른 형태 리프로 강제 분류하지 않고 아이스크림바 리프 후보로 둔다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/301의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에 ice_cream_bar 리프가 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
