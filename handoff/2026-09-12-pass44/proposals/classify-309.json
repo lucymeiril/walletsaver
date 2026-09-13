@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/309/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:68", "ingestion:62:2"],
+      "source_name": "homeplus",
+      "source_record_key": "071294504",
+      "source_title": "품애복 1등급 흑마늘 오리바베큐 슬라이스 500G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meat.processed.smoked_duck",
+      "reason": "상품명이 오리 바베큐 슬라이스이고 원본 경로도 닭가슴살/훈제오리를 명시한다. 현재 taxonomy의 훈제오리 리프 food.meat.processed.smoked_duck가 제품 형태와 가장 직접적으로 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/309의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 proposal_references가 비어 있음을 확인했다.",
+    "현재 pass44 taxonomy에 food.meat.processed.smoked_duck 리프가 존재함을 확인했다.",
+    "상품명과 원본 경로가 모두 가공 오리 제품을 지지하는지 대조했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
