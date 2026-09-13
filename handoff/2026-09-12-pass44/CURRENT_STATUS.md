@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `classify-391-398 / 58af1c6549b6669c7aaffee334c137227c16077d / remaining/391-398 / 진행 중 / proposals/classify-391-398.json / remaining/399 기존제안 유무 확인`
+- `classify-391-398 / 58af1c6549b6669c7aaffee334c137227c16077d / remaining/391-398 / 제안 완료 / proposals/classify-391-398.json / remaining/399 기존제안 유무 확인`
 - `fix-legacy-385-390 / 31dc3a3e5b23efcaff6b79d0e1ad3d4f9678f69f / remaining/385-390 + 기존 homeplus-produce-tea-honey 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-produce-tea-honey-385-390.json / remaining/391 기존제안 유무 확인`
 - `fix-legacy-383-384 / 5c233fededce27f7514ca166216cdda89fadcfc9 / remaining/383-384 + 기존 vegetable-new-leaf 후보 / 제안 완료 / proposals/classify-383-384.json / remaining/385 기존제안 유무 확인`
 - `fix-legacy-374-382 / feaa0f9956ea28a5e87a37dcfab07b5158818015 / remaining/374-382 + 기존 homeplus-produce/vegetable 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-produce-374-382.json / remaining/383 기존제안 유무 확인`
