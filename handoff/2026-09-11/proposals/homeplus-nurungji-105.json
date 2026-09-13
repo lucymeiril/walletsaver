@@ -1,59 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "105",
-  "source_path": "handoff/2026-09-11/pending/105/001.json",
-  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
-  "review_accounting": {
-    "pending_rows_checked": 9,
-    "unique_products": 5,
-    "new_classification_reviews": 9,
-    "prior_reviewed": 1279,
-    "current_reviewed": 1288,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2628
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Repository search found no existing food.grains.processed.nurungji candidate precedent. Current broad name rules can surface tea/snack candidates for 누룽지, but these products are bulk processed-rice foods and those candidates are product-form conflicts."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "ee0600bc006479462046464c1c8308be1827af0b",
+  "decisions": [
     {
+      "raw_record_ids": ["ingestion:3:63", "ingestion:52:89"],
+      "source_name": "homeplus",
       "source_record_key": "071367724",
       "source_title": "달콤바삭 찹쌀누룽지 920G(팩)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.grains.processed.nurungji",
-      "reason": "Bulk glutinous-rice nurungji is a processed grain/rice food, not grain tea or a conventional savory snack."
+      "reason": "대용량 찹쌀누룽지는 곡물차나 일반 스낵보다 가공 쌀식품이라는 제품형태가 명확하다. 현재 exact 누룽지 리프가 없어 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071367724&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:3:70", "ingestion:53:11"],
+      "source_name": "homeplus",
       "source_record_key": "071384410",
       "source_title": "포켓 김치누룽지 330G(팩)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.grains.processed.nurungji",
-      "reason": "Kimchi is a flavor/style attribute on a nurungji product; retain the common processed-rice product form."
+      "reason": "김치는 맛/스타일 속성이고 기본 제품형태는 누룽지다. 동일 가공 쌀식품 신규 후보를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071384410&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:3:77", "ingestion:52:90"],
+      "source_name": "homeplus",
       "source_record_key": "070913645",
       "source_title": "국산 100% 가마솥 누룽지 2.5KG(봉)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.grains.processed.nurungji",
-      "reason": "Large-format cauldron nurungji clearly represents processed rice food rather than tea or snack."
+      "reason": "2.5kg 가마솥 누룽지는 차나 과자보다 가공 쌀식품 제품형태가 명확하다. 현재 exact 리프가 없어 동일 신규 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070913645&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:3:78"],
+      "source_name": "homeplus",
       "source_record_key": "071431643",
       "source_title": "달콤바삭 찹쌀누룽지 구운김 920G(팩)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.grains.processed.nurungji",
-      "reason": "Roasted laver is a flavor/addition; product form remains glutinous-rice nurungji."
+      "reason": "구운김은 첨가/맛 속성이고 본체는 찹쌀누룽지다. 제품형태를 유지해 동일 누룽지 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071431643&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:3:83", "ingestion:53:4"],
+      "source_name": "homeplus",
       "source_record_key": "071384393",
       "source_title": "국내산 100% 포켓 백미 누룽지 330G(팩)",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.grains.processed.nurungji",
-      "reason": "Explicit white-rice nurungji is a processed rice product; rice variety is an attribute rather than a separate leaf."
+      "reason": "백미 원료는 속성이며 제품형태는 누룽지다. 곡물차나 일반 스낵으로 강제하지 않고 동일 신규 후보를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071384393&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 9 current pass44 observations in remaining/105/001.json and grouped them into 5 exact source_record_key products with matching source_name and source_title.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and restored raw_record_ids plus pass44-required decision fields for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in handoff/2026-09-11/review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy does not contain food.grains.processed.nurungji; retained the prior processed-rice nurungji candidate instead of forcing tea/snack leaves.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
