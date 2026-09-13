@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-legacy-385-390 / 31dc3a3e5b23efcaff6b79d0e1ad3d4f9678f69f / remaining/385-390 + 기존 homeplus-produce-tea-honey 제안 / 진행 중 / ../2026-09-11/proposals/homeplus-produce-tea-honey-385-390.json / remaining/391 기존제안 유무 확인`
 - `fix-legacy-383-384 / 5c233fededce27f7514ca166216cdda89fadcfc9 / remaining/383-384 + 기존 vegetable-new-leaf 후보 / 제안 완료 / proposals/classify-383-384.json / remaining/385 기존제안 유무 확인`
 - `fix-legacy-374-382 / feaa0f9956ea28a5e87a37dcfab07b5158818015 / remaining/374-382 + 기존 homeplus-produce/vegetable 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-produce-374-382.json / remaining/383 기존제안 유무 확인`
 - `fix-legacy-373 / 2bf5da78e0aa21a7db2470eebeb5de0a7ecd019b / remaining/373/001.json + 기존 vegetable-new-leaf 후보 / 제안 완료 / proposals/classify-373.json / remaining/374 기존제안 유무 확인`
@@ -33,7 +34,7 @@
 - `fix-batch-162-166 / b1554e95d166da5b4316a0d3493dd52a9d7774bb / 기존 제안 batch-162-166 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-162-166.json / 기존 제안 없는 잔여 범위 선택 후 remaining/287`
 - `fix-batch-157-161 / ff8301053310e2e13b32895c51d807edf0f170fa / 기존 제안 batch-157-161 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-157-161.json / remaining/162 기존제안 유무 확인`
 - `fix-batch-152-156 / 94cfc9283301f29bae0986aef58858f84c8155ec / 기존 제안 batch-152-156 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-152-156.json / remaining/157 기존제안 유무 확인`
-- `fix-batch-147-151 / 5d0740f81b3cdfb962c9fb19ef5ea3fddf3ebbf8 / 기존 제안 batch-147-151 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-147-151.json / remaining/152 기존제안 유무 확인`
+- `fix-batch-147-151 / 5d0740f81b3d7e0c2c941d3eaa6f12fe4235e3bb9 / 기존 제안 batch-147-151 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-147-151.json / remaining/152 기존제안 유무 확인`
 - `fix-batch-142-146 / fe3a850fef418ad1f8f8f6740f9ff1225e0ec8ae / 기존 제안 batch-142-146 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-142-146.json / remaining/147 기존제안 유무 확인`
 - `fix-batch-137-141 / aca75e9dbe8f7e0de5ff66a83a98cba17b3f281f / 기존 제안 batch-137-141 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-137-141.json / remaining/142 기존제안 유무 확인`
 - `fix-batch-132-136 / 7c5e3dad32a11fb87bef60bcee76cf2060d48885 / 기존 제안 batch-132-136 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-132-136.json / remaining/137 기존제안 유무 확인`
