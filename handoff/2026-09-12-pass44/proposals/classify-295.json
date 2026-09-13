@@ -1,0 +1,27 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:3", "ingestion:59:34"],
+      "source_name": "homeplus",
+      "source_record_key": "070904535",
+      "source_title": "목우촌 주부9단치킨까스 360G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.meals.prepared.chicken_cutlet",
+      "reason": "상품명은 치킨까스로 닭고기 커틀릿을 명확히 가리킨다. 돈까스 진열 경로만으로 pork_cutlet에 넣지 않으며 현재 taxonomy에는 치킨까스 전용 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/295의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "제품명 우선 원칙에 따라 돈까스 진열 경로와 치킨까스 상품명 충돌을 확인했다.",
+    "현재 pass44 taxonomy에 chicken_cutlet 리프가 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
