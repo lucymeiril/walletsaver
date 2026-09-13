@@ -2,6 +2,14 @@
 
 ## 제안 작업 인계
 
+- `classify-301 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/301/001.json / 진행 중 / proposals/classify-301.json / remaining/302 기존제안 유무 확인`
+- `classify-300 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/300/001.json / 진행 중 / proposals/classify-300.json / remaining/301 기존제안 유무 확인`
+- `classify-299 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/299/001.json / 진행 중 / proposals/classify-299.json / remaining/300 기존제안 유무 확인`
+- `classify-298 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/298/001.json / 진행 중 / proposals/classify-298.json / remaining/299 기존제안 유무 확인`
+- `classify-297 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/297/001.json / 진행 중 / proposals/classify-297.json / remaining/298 기존제안 유무 확인`
+- `classify-296 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/296/001.json / 진행 중 / proposals/classify-296.json / remaining/297 기존제안 유무 확인`
+- `classify-295 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/295/001.json / 진행 중 / proposals/classify-295.json / remaining/296 기존제안 유무 확인`
+- `classify-294 / cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7 / remaining/294/001.json / 진행 중 / proposals/classify-294.json / remaining/295 기존제안 유무 확인`
 - `classify-293 / 98db0e4f6de81c37f8ee6420c9400076e0918c3e / remaining/293/001.json / 제안 완료 / proposals/classify-293.json / remaining/294 기존제안 유무 확인`
 - `classify-292 / 3e9066c27cb98126cd66a640c0eec2326e2b423c / remaining/292/001.json / 제안 완료 / proposals/classify-292.json / remaining/293 기존제안 유무 확인`
 - `classify-289 / 495cdd98bfd4aa971f20fcff90eb81bbafc6b02b / remaining/289/001.json / 제안 완료 / proposals/classify-289.json / remaining/290 기존제안 유무 확인`
