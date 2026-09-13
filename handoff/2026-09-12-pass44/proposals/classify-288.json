@@ -1,0 +1,32 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "8ecdde899be19794cea90d71fed59a879b0654cb",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/288/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:32", "ingestion:51:27"],
+      "source_name": "homeplus",
+      "source_record_key": "149806813",
+      "source_title": "델몬트 허니글로우 파인애플(필리핀) 개",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.fruit.pineapple",
+      "reason": "상품명과 원본 경로가 모두 생 파인애플을 명확히 가리키지만 현재 taxonomy에는 pineapple 리프가 없다. 다른 과일 리프로 강제 분류하지 않고 파인애플 리프 후보로 보류한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/288의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에서 pineapple 리프가 없음을 확인했다.",
+    "두 raw_record_id가 accepted.json의 new_included_ids/accepted_but_blocked_ids에 없음을 확인했다.",
+    "과거 bulk-pending-288-451-final-sweep.json에서 food.produce.fruit.pineapple이 기존 리프가 아닌 후보/보류 목록에 있음을 확인했다.",
+    "reconciliation-pending-288-451.json에서 이 두 raw_record_id가 당시 unique_new_observations로 기록되고 explicit review decision exact match가 없었음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
