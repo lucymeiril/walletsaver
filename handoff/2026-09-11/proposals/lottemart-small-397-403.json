@@ -1,57 +1,9 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["397", "398", "399", "401", "402", "403"],
-  "scope_note": "GitHub read/write review only. All 12 observations in these six groups were read. Pending 400 and 404 were intentionally skipped because prior proposal files already cover them. All 12 source_record_keys were checked against prior proposal search results and all 431 explicit review decisions; no overlaps/conflicts were found. Existing decisions, pass41 catalog/DB and taxonomy source were not modified.",
-  "progress_accounting": {
-    "baseline_pending_observations": 3916,
-    "prior_reviewed_unique_observations": 426,
-    "batch_new_unique_observations": 12,
-    "cumulative_reviewed_unique_observations": 438,
-    "remaining_unreviewed_observations": 3478
-  },
-  "explicit_review_decision_conflicts": [],
+  "reviewed_pending_groups": ["399", "401", "402", "403"],
+  "scope_note": "Groups 397-398 were removed because their raw ids are now canonically represented in pass44 proposals/classify-391-398.json. Remaining legacy decisions are preserved for subsequent raw-id audit.",
   "decisions": [
-    {
-      "raw_record_ids": ["ingestion:32:14"],
-      "source_record_key": "8801007876283",
-      "source_title": "CJ 비비고 석박지 (900G)",
-      "proposed_leaf": "food.preserved.kimchi.seokbakji",
-      "reason": "마트 세부 경로는 열무김치이지만 제목이 석박지를 직접 명시하고 현재 taxonomy에 정확한 seokbakji 리프가 있다. 상품명 근거를 우선한다.",
-      "quantity_review": "unchanged",
-      "promotion_review": "unchanged; promotion_unresolved remains",
-      "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:35:41"],
-      "source_record_key": "8801024947287",
-      "source_title": "대상 종가 백열무물김치 (1.2KG)",
-      "proposed_leaf": "food.preserved.kimchi.water",
-      "reason": "제목이 백열무 '물김치'라는 완제품 형태를 직접 명시한다. source path의 열무김치보다 제품명 형태 근거를 우선하며, 백열무는 재료/변형 속성으로 본다.",
-      "quantity_review": "unchanged",
-      "promotion_review": "unchanged; promotion_unresolved remains",
-      "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:32:46"],
-      "source_record_key": "8859205302592",
-      "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
-      "proposed_leaf": "food.seafood.fish.mackerel",
-      "reason": "제목이 고등어 필렛을 직접 명시하고 조리 완료 제품임을 뜻하는 표현이 없다. 간편수산물 진열보다 생선 종 기준의 기존 mackerel 리프가 제품 정체성과 맞는다.",
-      "quantity_review": "unchanged",
-      "promotion_review": "unchanged; promotion_unresolved remains",
-      "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:34:8"],
-      "source_record_key": "8859205302585",
-      "source_title": "노르웨이 고등어 필렛 (700G)",
-      "proposed_leaf": "food.seafood.fish.mackerel",
-      "reason": "제목이 고등어 필렛을 직접 명시하며 현재 taxonomy의 mackerel 리프가 정확한 생선 종류를 표현한다.",
-      "quantity_review": "unchanged",
-      "promotion_review": "unchanged; promotion_unresolved remains",
-      "identity_merge": "not_requested"
-    },
     {
       "raw_record_ids": ["ingestion:31:5"],
       "source_record_key": "8801013777246",
@@ -117,5 +69,7 @@
       "followup": "collect other stir-fry seasoning listings; promotion_unresolved remains"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "397-398 legacy decisions removed after canonical pass44 proposal creation; remaining legacy 399/401/402/403 content not yet reformatted"
+  ]
 }
