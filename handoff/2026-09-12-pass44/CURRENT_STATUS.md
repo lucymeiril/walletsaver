@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-batch-117-121 / dd079a05797fc5c64fe0ef5eb7a5a622950b7ef3 / 기존 제안 batch-117-121 중첩형식·source_name 누락 보완 / 진행 중 / ../2026-09-12-pass43/proposals/2026-09-12-batch-117-121.json / 20결정 평탄화·source_name 복원`
+- `fix-batch-117-121 / dd079a05797fc5c64fe0ef5eb7a5a622950b7ef3 / 기존 제안 batch-117-121 중첩형식·source_name 누락 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-117-121.json / remaining/122 기존제안 유무 확인`
 - `fix-homeplus-frozen-potatoes-107 / 67fb8da7509b8e0275f53eb77be38eadd6ab940a / remaining/107/001.json 및 기존 homeplus-frozen-potatoes-107 / 제안 완료 / ../2026-09-11/proposals/homeplus-frozen-potatoes-107.json / remaining/108 기존제안 유무 확인`
 - `fix-homeplus-nurungji-105 / ee0600bc006479462046464c1c8308be1827af0b / remaining/105/001.json 및 기존 homeplus-nurungji-105 / 제안 완료 / ../2026-09-11/proposals/homeplus-nurungji-105.json / remaining/107 기존제안 유무 확인`
 - `fix-homeplus-fruit-tea-preserves-104 / 33681d25b050f0a03e26a20d1c8fce487a4187f8 / remaining/104/001.json 및 기존 homeplus-fruit-tea-preserves-104 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-tea-preserves-104.json / remaining/105 기존제안 유무 확인`
