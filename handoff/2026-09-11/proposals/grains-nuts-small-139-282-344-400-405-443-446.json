@@ -1,8 +1,8 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["139", "282", "400", "405", "443", "444", "445", "446"],
-  "scope_note": "GitHub read/write review only. Existing pass41 taxonomy leaves were reused where evidence was direct. Group 344 was removed from this legacy file because its raw ids are now canonicalized in small-food-344-354-404-449-450.json. No staging DB import or repository tests were executed.",
+  "reviewed_pending_groups": ["139", "282", "405", "443", "444", "445", "446"],
+  "scope_note": "Group 400 was removed because its raw ids are now canonically represented in pass44 proposals/classify-399-403.json. Group 344 was previously removed for the same reason into small-food canonical coverage. Remaining legacy decisions are preserved for later raw-id audit.",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:3:75", "ingestion:52:92"],
@@ -59,23 +59,9 @@
       "reason": "롯데마트 세부 원본 경로가 쌀ㆍ백미 > 4kg내외이고 제목도 햅쌀 4kg을 직접 명시한다. 행사조건 문제와 분류 판단은 분리한다.",
       "quantity_review": "unchanged; classification-only proposal; promotion remains unresolved",
       "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:31:63"],
-      "source_title": "병아리콩 (1.5KG)",
-      "proposed_leaf": "food.grains.rice.chickpea",
-      "reason": "롯데마트 슈퍼곡물 진열에서 제목이 병아리콩 1.5kg을 직접 명시하며 pass41에 병아리콩 독립 리프가 존재한다. 행사조건 문제와 분류 판단은 분리한다.",
-      "quantity_review": "unchanged; classification-only proposal; promotion remains unresolved",
-      "identity_merge": "not_requested"
     }
   ],
   "held_decisions": [
-    {
-      "raw_record_ids": ["ingestion:33:27"],
-      "source_title": "렌틸콩 (1.7KG)",
-      "reason": "렌틸콩 원물임은 명확하지만 pass41에 렌틸콩 독립 리프가 없다. 병아리콩 리프로 대체하지 않는다.",
-      "followup": "렌틸콩 신규 리프 필요성 검토"
-    },
     {
       "raw_record_ids": ["ingestion:32:23"],
       "source_title": "국내산 고구마 말랭이 (150G)",
@@ -89,5 +75,7 @@
       "followup": "부각/전통스낵 리프와 원문 상세 근거 검토"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "group 400 chickpea/lentil legacy entries removed after pass44 canonicalization; remaining groups not yet reformatted"
+  ]
 }
