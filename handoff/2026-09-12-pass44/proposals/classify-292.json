@@ -1,0 +1,26 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "3e9066c27cb98126cd66a640c0eec2326e2b423c",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:18:43", "ingestion:67:26"],
+      "source_name": "homeplus",
+      "source_record_key": "071295244",
+      "source_title": "simplus 미니 찹쌀약과 300G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.snacks.traditional.hangwa",
+      "reason": "상품명이 찹쌀약과로 제품 형태를 명확히 나타내고 원본 경로도 한과류이며, 현재 taxonomy에 한과·전병 리프 food.snacks.traditional.hangwa가 존재한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/292의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에 food.snacks.traditional.hangwa 리프가 존재함을 확인했다.",
+    "두 raw_record_id가 accepted.json의 new_included_ids/accepted_but_blocked_ids에 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
