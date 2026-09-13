@@ -1,59 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "107",
-  "source_path": "handoff/2026-09-11/pending/107/001.json",
-  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
-  "review_accounting": {
-    "pending_rows_checked": 9,
-    "unique_products": 5,
-    "new_classification_reviews": 9,
-    "prior_reviewed": 1297,
-    "current_reviewed": 1306,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2610
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "All five source_record_key values were checked against the existing explicit review decisions with no match. Current taxonomy has fresh potato, potato snack, and generic raw/prepped frozen-vegetable leaves, but no exact leaf for ready-to-cook frozen fries/wedges. Repository search found no existing frozen-potato candidate precedent."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "67fb8da7509b8e0275f53eb77be38eadd6ab940a",
+  "decisions": [
     {
+      "raw_record_ids": ["ingestion:10:67", "ingestion:59:70"],
+      "source_name": "homeplus",
       "source_record_key": "070374959",
       "source_title": "써니데일 슈튜링컷 감자튀김 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.frozen_potato",
-      "reason": "Explicit frozen fry-cut potato product is more processed than raw/prepped frozen vegetables and is not a shelf-stable potato snack."
+      "reason": "감자튀김용 컷 냉동감자는 생감자나 상온 감자스낵과 다른 조리 전 냉동 사이드 제품이다. 현재 exact 리프가 없어 기존 frozen_potato 신규 후보를 유지한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070374959&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:10:77", "ingestion:59:83"],
+      "source_name": "homeplus",
       "source_record_key": "070375388",
       "source_title": "동원 퀴진 크링클컷 냉동감자 650G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.frozen_potato",
-      "reason": "Crinkle-cut frozen potato is a ready-to-cook frozen potato side; cut style is an attribute rather than a separate leaf."
+      "reason": "크링클컷은 절단 형태 속성이고 제품형태는 조리용 냉동감자 사이드다. 동일 frozen_potato 신규 후보를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070375388&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:10:84", "ingestion:60:5"],
+      "source_name": "homeplus",
       "source_record_key": "070374965",
       "source_title": "써니데일 크링클컷 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.frozen_potato",
-      "reason": "The audited frozen-potato shelf plus crinkle-cut product form supports a prepared frozen-potato candidate, not fresh potato or chips."
+      "reason": "냉동감자 진열과 크링클컷 제품형태가 조리용 냉동감자에 부합한다. 생감자·칩으로 강제하지 않고 동일 신규 후보를 유지한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070374965&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:11:4", "ingestion:60:87"],
+      "source_name": "homeplus",
       "source_record_key": "133161810",
       "source_title": "동원 퀴진 케이준 양념감자 800G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.frozen_potato",
-      "reason": "Cajun seasoning is a flavor treatment on the same frozen potato side product form."
+      "reason": "케이준 양념은 맛 처리 속성이고 기본 제품형태는 조리용 냉동감자 사이드다. 동일 frozen_potato 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=133161810&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:11:20"],
+      "source_name": "homeplus",
       "source_record_key": "070374971",
       "source_title": "써니데일 스파이스웨지 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.frozen_potato",
-      "reason": "Spiced wedges are the same ready-to-cook frozen potato family; wedge shape and seasoning remain attributes."
+      "reason": "웨지 모양과 스파이스는 형태/맛 속성이고 제품군은 조리용 냉동감자다. 현재 exact 리프가 없어 동일 신규 후보를 유지한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070374971&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 9 current pass44 observations in remaining/107/001.json and grouped them into 5 exact source_record_key products with matching source_name and source_title.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and restored raw_record_ids plus pass44-required decision fields for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in handoff/2026-09-11/review-decisions-input.json with no matches.",
+    "Reconfirmed the existing frozen-potato candidate precedent and that current taxonomy lacks an exact ready-to-cook frozen fries/wedges leaf; did not force fresh-potato, generic frozen-vegetable, or potato-snack leaves.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
