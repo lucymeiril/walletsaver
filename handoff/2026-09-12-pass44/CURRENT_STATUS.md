@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-legacy-413-420 / 9775a44ac0526097502acd517e49b9c4c3091027 / remaining/413-420 + 기존 homeplus-small/vegetable/organic 제안 / 진행 중 / ../2026-09-11/proposals/homeplus-small-413-420.json / remaining/421 기존제안 유무 확인`
+- `fix-legacy-413-420 / 9775a44ac0526097502acd517e49b9c4c3091027 / remaining/413-420 + 기존 homeplus-small/vegetable/organic 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-small-413-420.json / remaining/421 기존제안 유무 확인`
 - `classify-404-412 / 1819d3ef1899ffbd55e053fdb63d9f9fca89424d / remaining/404-412 / 제안 완료 / proposals/classify-404-412.json / remaining/413 기존제안 유무 확인`
 - `classify-399-403 / 063e95ccc491db083aeade41de42b145489acef3 / remaining/399-403 / 제안 완료 / proposals/classify-399-403.json / remaining/404 기존제안 유무 확인`
 - `classify-391-398 / 58af1c6549b6669c7aaffee334c137227c16077d / remaining/391-398 / 제안 완료 / proposals/classify-391-398.json / remaining/399 기존제안 유무 확인`
