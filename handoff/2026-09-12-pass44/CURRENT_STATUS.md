@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-legacy-437-444 / 44334245f35273a073b14daec3e10c182c57ed56 / remaining/437-444 + 기존 lottemart-small 제안 / 진행 중 / proposals/classify-437-444.json / remaining/445 기존제안 유무 확인`
 - `fix-legacy-429-436 / dde9e7b6b382524e7e4c46fc1e5d364461456503 / remaining/429-436 + 기존 lottemart-small 제안 / 제안 완료 / ../2026-09-11/proposals/lottemart-small-429-436.json / remaining/437 기존제안 유무 확인`
 - `fix-legacy-421-428 / fd14e52e007f6cf603b13e291c2491e01688a5af / remaining/421-428 + 기존 mixed-small/organic 제안 / 제안 완료 / ../2026-09-11/proposals/mixed-small-421-428.json / remaining/429 기존제안 유무 확인`
 - `fix-legacy-413-420 / 9775a44ac0526097502acd517e49b9c4c3091027 / remaining/413-420 + 기존 homeplus-small/vegetable/organic 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-small-413-420.json / remaining/421 기존제안 유무 확인`
