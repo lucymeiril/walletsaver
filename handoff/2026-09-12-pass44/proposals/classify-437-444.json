@@ -1,0 +1,118 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "44334245f35273a073b14daec3e10c182c57ed56",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:28:35"],
+      "source_name": "lottemart",
+      "source_record_key": "2700000096345",
+      "source_title": "탱글탱글 소세지가 쏙!  15핫도그 (팩)",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.meals.prepared.hotdog",
+      "reason": "마트는 샌드위치 진열이지만 제목이 핫도그를 직접 명시한다. promotion_unresolved는 별도 보존한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:12"],
+      "source_name": "lottemart",
+      "source_record_key": "8801045480572",
+      "source_title": "오뚜기 옛날 잡채 (75G*4)",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.meals.prepared.japchae",
+      "reason": "봉지라면 진열과 달리 제목이 잡채를 직접 명시하고 75G×4 규격도 그대로 보존한다. promotion_unresolved는 별도 문제다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:34:51"],
+      "source_name": "lottemart",
+      "source_record_key": "8801045695075",
+      "source_title": "오뚜기 동대문식 닭한마리 칼국수 (460G)",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "reason": "봉지라면 진열보다 제목의 닭한마리 칼국수 제품형태가 명확하다. promotion_unresolved는 별도 보존한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:33:22"],
+      "source_name": "lottemart",
+      "source_record_key": "8809025823333",
+      "source_title": "신선한 생멍게 (150G)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seafood.other.sea_squirt",
+      "reason": "생멍게 제품형태는 명확하지만 현재 수산 taxonomy에 멍게를 정확히 표현하는 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:42"],
+      "source_name": "lottemart",
+      "source_record_key": "2580430000002",
+      "source_title": "국산 생물도미 (마리)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.seafood.fish.sea_bream",
+      "reason": "생물 도미임이 제목과 경로에서 명확하지만 현재 생선 taxonomy에 도미 리프가 없다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; 1마리 unit and promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:13"],
+      "source_name": "lottemart",
+      "source_record_key": "8801045197319",
+      "source_title": "이금기 팬더굴소스 (320G)",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.seasonings.sauces.oyster",
+      "reason": "수입식품 진열과 관계없이 제목이 굴소스를 직접 명시하며 굴소스 전용 리프가 있다. promotion_unresolved는 별도 보존한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:23"],
+      "source_name": "lottemart",
+      "source_record_key": "8809478916514",
+      "source_title": "국내산 고구마 말랭이 (150G)",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "건과일 진열이지만 상품 자체는 말린 고구마이므로 과일이 아니라 기존 건조 가공채소 리프가 제품형태에 맞다. promotion_unresolved는 별도 보존한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:31"],
+      "source_name": "lottemart",
+      "source_record_key": "8807354223435",
+      "source_title": "명인부각 오리지널 (180G)",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "과일칩 진열은 제품명과 충돌하고 제목만으로 김부각·채소부각 등 정확한 원재료/제품형태를 확정할 수 없어 기존 리프에 강제하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged; promotion_unresolved preserved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/437-444 raw_record_id, source_name, source_record_key and exact source_title compared against current pass44 files",
+    "current pass44 taxonomy checked for hotdog, japchae, kalguksu, oyster sauce and dried processed vegetables existing leaves and absence of sea-squirt/sea-bream leaves",
+    "legacy 437-442 proposal semantics reviewed; DB import, taxonomy mutation, accepted/REMAINING writes, repository test suite, browser/live collection not run"
+  ]
+}
