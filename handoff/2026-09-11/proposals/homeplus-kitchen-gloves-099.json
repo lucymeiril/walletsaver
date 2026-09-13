@@ -1,64 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "099",
-  "source_path": "handoff/2026-09-11/pending/099/001.json",
-  "scope_note": "Classification-only proposal. The current taxonomy has no kitchen-glove leaf. Reusable rubber gloves and disposable nitrile gloves are held separately by product form/material. Sizes, colors, counts, prices, and promotions are unchanged.",
-  "review_accounting": {
-    "pending_rows_checked": 10,
-    "unique_products": 5,
-    "new_classification_reviews": 10,
-    "prior_reviewed": 1219,
-    "current_reviewed": 1229,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2687
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. No existing household.kitchen.gloves candidate precedent was found in repository search."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "52b0dfda077e22932ee0bb6bfa329022a564ab9e",
+  "decisions": [
     {
       "raw_record_ids": ["ingestion:27:27", "ingestion:77:39"],
+      "source_name": "homeplus",
       "source_record_key": "070483162",
       "source_title": "simplus 고무장갑(대) 1입",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.gloves.rubber",
-      "reason": "Reusable rubber kitchen glove. Size and single-pack count are attributes, and there is no exact current taxonomy leaf."
+      "reason": "재사용 고무 주방장갑 제품형태가 명확하며 대형·1입은 속성이다. 현재 taxonomy에 exact 주방 고무장갑 리프가 없어 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070483162&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:34", "ingestion:76:82"],
+      "source_name": "homeplus",
       "source_record_key": "069620399",
       "source_title": "뉴랩 도톰한 니트릴 장갑 핑크M 100매",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.gloves.nitrile",
-      "reason": "Disposable nitrile gloves are a different product form/material from reusable rubber gloves; color, size, and 100-count are attributes."
+      "reason": "일회용 니트릴 장갑은 재사용 고무장갑과 재질·사용형태가 다르다. 핑크·M·100매는 속성이며 현재 exact 리프가 없다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069620399&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:36", "ingestion:77:1"],
+      "source_name": "homeplus",
       "source_record_key": "070483381",
       "source_title": "simplus 고무장갑(대) 3입",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.gloves.rubber",
-      "reason": "Same reusable rubber-glove product type as the one-pack variant; three-pack quantity does not create a taxonomy split."
+      "reason": "동일한 재사용 고무 주방장갑 제품형태이며 3입 묶음 수량은 taxonomy 분기 근거가 아니다. 동일 rubber 신규 후보를 재사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070483381&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:37", "ingestion:77:6"],
+      "source_name": "homeplus",
       "source_record_key": "070483110",
       "source_title": "simplus 고무장갑(중) 1입",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.gloves.rubber",
-      "reason": "Same reusable rubber-glove product type; medium size is an attribute."
+      "reason": "동일 재사용 고무장갑 제품형태이며 중형·1입은 규격/수량 속성이다. 동일 rubber 신규 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070483110&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:27:84", "ingestion:77:41"],
+      "source_name": "homeplus",
       "source_record_key": "069224661",
       "source_title": "뉴랩 도톰한 니트릴 장갑 S 100매",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "household.kitchen.gloves.nitrile",
-      "reason": "Same disposable nitrile-glove product type as the M variant; size and count remain attributes."
+      "reason": "동일 일회용 니트릴장갑 제품형태이며 S·100매는 규격/수량 속성이다. 재사용 고무장갑과 분리한 nitrile 신규 후보를 유지한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=069224661&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 10 current pass44 observations in remaining/099/001.json and preserved the 5 exact source_record_key products from the prior proposal.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and added source_name, review_lane, evidence_urls, quantity_review, and identity_merge for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in the frozen 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy has no household.kitchen.gloves leaf; retained distinct rubber and nitrile candidate leaves because product form/material differ.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
