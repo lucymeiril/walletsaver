@@ -1,27 +1,11 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["421", "422"],
-  "scope_note": "GitHub read/write review only. Organic/eco-friendly merchandising is treated as product evidence/attribute, not as a separate unified product-type branch. Group 385 decisions were removed because their raw ids are now canonically represented in homeplus-produce-tea-honey-385-390.json. Group 420 was removed because its raw id is now canonically represented in homeplus-small-413-420.json.",
-  "decisions": [
-    {
-      "raw_record_ids": ["ingestion:52:16"],
-      "source_title": "친환경 양파 800G(망)",
-      "proposed_leaf": "food.produce.vegetables.onion",
-      "reason": "원본 진열명은 친환경김장채소지만 제목이 양파를 직접 명시하므로 기존 신선 양파 리프가 맞다.",
-      "quantity_review": "unchanged",
-      "identity_merge": "not_requested"
-    },
-    {
-      "raw_record_ids": ["ingestion:52:68"],
-      "source_title": "친환경 부추 180G(봉)",
-      "proposed_leaf": "food.produce.vegetables.chives",
-      "reason": "제목이 친환경 부추를 직접 명시하며 기존 부추 리프와 일치한다.",
-      "quantity_review": "unchanged",
-      "identity_merge": "not_requested"
-    }
-  ],
+  "reviewed_pending_groups": [],
+  "scope_note": "GitHub read/write review only. Organic/eco-friendly merchandising is treated as product evidence/attribute, not as a separate unified product-type branch. Groups 385, 420, 421 and 422 were removed because their raw ids are now canonically represented in modernized pass44 proposals.",
+  "decisions": [],
   "executed_tests": [
-    "ingestion:52:70 cucumber-pepper decision removed here because homeplus-small-413-420.json is now the pass44 canonical decision"
+    "ingestion:52:70 cucumber-pepper decision removed because homeplus-small-413-420.json is canonical",
+    "ingestion:52:16 onion and ingestion:52:68 chives decisions removed because mixed-small-421-428.json is canonical"
   ]
 }
