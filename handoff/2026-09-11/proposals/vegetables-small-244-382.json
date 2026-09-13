@@ -1,8 +1,8 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["244", "245", "246", "247", "248", "371", "372", "374", "375", "380", "382"],
-  "scope_note": "GitHub read/write review only. Classification proposals are separate from the staging DB and are not consumed automatically by the importer.",
+  "reviewed_pending_groups": ["244", "245", "246", "247", "248", "374", "375", "380", "382"],
+  "scope_note": "GitHub read/write review only. Classification proposals are separate from the staging DB and are not consumed automatically by the importer. The chives and napa-cabbage decisions were removed here because their raw ids are now canonically represented in homeplus-kitchen-produce-367-372.json.",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:3:9", "ingestion:52:9"],
@@ -58,22 +58,6 @@
       "proposed_leaf": "food.produce.vegetables.scallion",
       "reason": "껍질/불필요 부위를 손질한 대파로 제목과 원본 경로가 대파를 직접 명시하며 별도 가공식품 형태는 아니다.",
       "quantity_review": "unchanged; classification-only proposal; 봉 단위는 그대로 보존",
-      "identity_merge": "same_source_listing_observations_only"
-    },
-    {
-      "raw_record_ids": ["ingestion:3:6", "ingestion:52:3"],
-      "source_title": "부추(봉)",
-      "proposed_leaf": "food.produce.vegetables.chives",
-      "reason": "제목과 원본 경로 모두 신선 부추를 직접 명시하며 현재 taxonomy에 부추 리프가 존재한다.",
-      "quantity_review": "unchanged; classification-only proposal; 봉 단위는 그대로 보존",
-      "identity_merge": "same_source_listing_observations_only"
-    },
-    {
-      "raw_record_ids": ["ingestion:3:17", "ingestion:52:22"],
-      "source_title": "배추 (국산/통)",
-      "proposed_leaf": "food.produce.vegetables.napa_cabbage",
-      "reason": "원본 경로는 배추/절임배추 혼합 진열이지만 제목이 절임이 아닌 통배추를 명시하므로 신선 배추 리프가 맞다.",
-      "quantity_review": "unchanged; classification-only proposal; 개 단위는 그대로 보존",
       "identity_merge": "same_source_listing_observations_only"
     },
     {
