@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `classify-399-406 / 063e95ccc491db083aeade41de42b145489acef3 / remaining/399-406 / 진행 중 / proposals/classify-399-406.json / remaining/407 기존제안 유무 확인`
+- `classify-399-403 / 063e95ccc491db083aeade41de42b145489acef3 / remaining/399-403 / 진행 중 / proposals/classify-399-403.json / existing classify-404-412 감사 후 remaining/413`
 - `classify-391-398 / 58af1c6549b6669c7aaffee334c137227c16077d / remaining/391-398 / 제안 완료 / proposals/classify-391-398.json / remaining/399 기존제안 유무 확인`
 - `fix-legacy-385-390 / 31dc3a3e5b23efcaff6b79d0e1ad3d4f9678f69f / remaining/385-390 + 기존 homeplus-produce-tea-honey 제안 / 제안 완료 / ../2026-09-11/proposals/homeplus-produce-tea-honey-385-390.json / remaining/391 기존제안 유무 확인`
 - `fix-legacy-383-384 / 5c233fededce27f7514ca166216cdda89fadcfc9 / remaining/383-384 + 기존 vegetable-new-leaf 후보 / 제안 완료 / proposals/classify-383-384.json / remaining/385 기존제안 유무 확인`
@@ -52,7 +52,7 @@
 - `fix-homeplus-bath-towels-097 / 61900197a2a8f36cfcff469259a39d25c24ca336 / remaining/097/001.json 및 기존 homeplus-bath-towels-097 / 제안 완료 / ../2026-09-11/proposals/homeplus-bath-towels-097.json / remaining/099 기존제안 유무 확인`
 - `fix-homeplus-seafood-condiments-095 / 6d5f3ffe987eed80689376af7e97222aa670091e / remaining/095/001.json 및 기존 homeplus-seafood-condiments-095 / 제안 완료 / ../2026-09-11/proposals/homeplus-seafood-condiments-095.json / remaining/096 기존제안 유무 확인`
 - `fix-homeplus-tofu-kits-092 / 60c1405802791deecdafb7bd82dc1a7f4e568ac2 / remaining/092/001.json 및 기존 homeplus-tofu-kits-092 / 제안 완료 / ../2026-09-11/proposals/homeplus-tofu-kits-092.json / remaining/094 기존제안 유무 확인`
-- `fix-homeplus-other-noodles-089 / 232d6832b6dc8c8872eb3b1d610f5c87fa96b60d / remaining/089/001.json 및 기존 homeplus-other-noodles-089 / 제안 완료 / ../2026-09-11/proposals/homeplus-other-noodles-089.json / remaining/090 기존제안 유무 확인`
+- `fix-homeplus-other-noodles-089 / 232d6832b6dc8c8872eb3b1d610f5c87fa96b60d / remaining/089/001.json 및 기존 homeplus-other-noodles-089 형식·필수필드 감사 / 제안 완료 / ../2026-09-11/proposals/homeplus-other-noodles-089.json / remaining/090 기존제안 유무 확인`
 - `fix-homeplus-fried-meals-088 / f492016b799f1332b9fdf8e285b068ee9067dc07 / remaining/088/001.json 및 기존 homeplus-fried-meals-088 / 제안 완료 / ../2026-09-11/proposals/homeplus-fried-meals-088.json / remaining/089 기존제안 유무 확인`
 - `fix-homeplus-jelly-ice-pop-087 / 2994dcbe8b6dc30ea8a2c24c5ae893ca207b0cd0 / remaining/087/001.json 및 기존 homeplus-jelly-ice-pop-087 / 제안 완료 / ../2026-09-11/proposals/homeplus-jelly-ice-pop-087.json / remaining/088 기존제안 유무 확인`
 - `classify-084 / e0e7ffb4d52f27f1050c2c19e013c848524b7e75 / remaining/084/001.json / 제안 완료 / proposals/classify-084.json / remaining/087 기존제안 유무 확인`
