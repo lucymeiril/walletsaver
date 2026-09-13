@@ -1,0 +1,31 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/314/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:22:61", "ingestion:71:65"],
+      "source_name": "homeplus",
+      "source_record_key": "107799422",
+      "source_title": "S&W 프리미엄 키드니 빈 400G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.preserved.canned.beans",
+      "reason": "상품명과 원본 경로가 통조림 콩류인 키드니빈을 명확히 가리킨다. 현재 canned taxonomy에는 옥수수·과일·햄·꽁치·참치·골뱅이 리프가 있으나 콩 통조림 리프가 없어 신규 리프 후보로 남긴다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/314의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 proposal_references가 비어 있음을 확인했다.",
+    "현재 pass44 canned taxonomy 목록에 beans 리프가 없음을 확인했다.",
+    "상품명과 원본 경로가 모두 콩 통조림 제품임을 지지하는지 대조했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
