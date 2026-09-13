@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "76aa83e46d89e58f2aed671739779356766e858b",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/287/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:39", "ingestion:51:35"],
+      "source_name": "homeplus",
+      "source_record_key": "070094933",
+      "source_title": "체리(캐나다) 400G(팩)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.fruit.cherry",
+      "reason": "상품명과 원본 경로가 모두 생 체리를 명확히 가리키지만 현재 taxonomy에는 cherry 리프가 없다. berry 등 다른 과일 리프로 강제 분류하지 않고 체리 리프 후보로 보류한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/287의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에서 cherry 리프가 없음을 확인했다.",
+    "두 raw_record_id가 accepted.json의 new_included_ids/accepted_but_blocked_ids에 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
