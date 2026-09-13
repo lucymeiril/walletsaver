@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-legacy-361-366 / 0f74ccdd53e0bfb982d85bc60c4359ffe663a4c5 / pass41 구형 제안 homeplus-kitchen-tools-361-366 형식·필수필드 감사 / 진행 중 / ../2026-09-11/proposals/homeplus-kitchen-tools-361-366.json / remaining/367 기존제안 유무 확인`
 - `fix-legacy-355-360 / 585ab1b5f1015a7a9dfdb9022429e6123048d01e / pass41 구형 제안 homeplus-meat-355-360 형식·필수필드 감사 / 제안 완료 / ../2026-09-11/proposals/homeplus-meat-355-360.json / remaining/361 기존제안 유무 확인`
 - `fix-legacy-334-354 / aba5bc6fd93e60a5ec0489a8a6f12fe4235e3bb9 / pass41 구형 제안 4파일 형식·필수필드·identity 분리·344 중복 정리 / 제안 완료 / ../2026-09-11/proposals/ / remaining/355 기존제안 유무 확인`
 - `fix-legacy-305-333 / 5971cc9524933fde9b84869856bd22a56833fd54 / pass41 구형 제안 6파일 형식·필수필드·중복충돌 보수 / 제안 완료 / ../2026-09-11/proposals/ / remaining/334 기존제안 유무 확인`
