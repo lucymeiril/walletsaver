@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `fix-homeplus-fruit-tea-preserves-104 / 33681d25b050f0a03e26a20d1c8fce487a4187f8 / remaining/104/001.json 및 기존 homeplus-fruit-tea-preserves-104 / 진행 중 / ../2026-09-11/proposals/homeplus-fruit-tea-preserves-104.json / held_decisions 평탄화·현재 충돌 재검증`
+- `fix-homeplus-fruit-tea-preserves-104 / 33681d25b050f0a03e26a20d1c8fce487a4187f8 / remaining/104/001.json 및 기존 homeplus-fruit-tea-preserves-104 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-tea-preserves-104.json / remaining/105 기존제안 유무 확인`
 - `fix-homeplus-fruit-concentrates-103 / f2107111ee82f409896d466b51b62cb4761e87e0 / remaining/103/001.json 및 기존 homeplus-fruit-concentrates-103 / 제안 완료 / ../2026-09-11/proposals/homeplus-fruit-concentrates-103.json / remaining/104 기존제안 유무 확인`
 - `fix-homeplus-samgyetang-herbs-101 / abe0d670e3b33faf554bf8e3f796dfe3b262c7 / remaining/101/001.json 및 기존 homeplus-samgyetang-herbs-101 / 제안 완료 / ../2026-09-11/proposals/homeplus-samgyetang-herbs-101.json / remaining/103 기존제안 유무 확인`
 - `fix-homeplus-kitchen-gloves-099 / 52b0dfda077e22932ee0bb6bfa329022a564ab9e / remaining/099/001.json 및 기존 homeplus-kitchen-gloves-099 / 제안 완료 / ../2026-09-11/proposals/homeplus-kitchen-gloves-099.json / remaining/101 기존제안 유무 확인`
