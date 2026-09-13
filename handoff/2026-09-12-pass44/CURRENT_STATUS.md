@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `classify-292 / 3e9066c27cb98126cd66a640c0eec2326e2b423c / remaining/292/001.json / 진행 중 / proposals/classify-292.json / remaining/293 기존제안 유무 확인`
 - `classify-289 / 495cdd98bfd4aa971f20fcff90eb81bbafc6b02b / remaining/289/001.json / 제안 완료 / proposals/classify-289.json / remaining/290 기존제안 유무 확인`
 - `classify-288 / 8ecdde899be19794cea90d71fed59a879b0654cb / remaining/288/001.json / 제안 완료 / proposals/classify-288.json / remaining/289 기존제안 유무 확인`
 - `classify-287 / 76aa83e46d89e58f2aed671739779356766e858b / remaining/287/001.json / 제안 완료 / proposals/classify-287.json / 기존 제안 없는 잔여 범위 재탐색`
