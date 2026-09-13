@@ -1,59 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "104",
-  "source_path": "handoff/2026-09-11/pending/104/001.json",
-  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
-  "review_accounting": {
-    "pending_rows_checked": 10,
-    "unique_products": 5,
-    "new_classification_reviews": 10,
-    "prior_reviewed": 1269,
-    "current_reviewed": 1279,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2637
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Existing food.drinks.tea.citron is specific to yuzu/citron tea and does not justify treating other fruit preserves as citron."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "33681d25b050f0a03e26a20d1c8fce487a4187f8",
+  "decisions": [
     {
+      "raw_record_ids": ["ingestion:15:86", "ingestion:65:71"],
+      "source_name": "homeplus",
       "source_record_key": "071000848",
       "source_title": "simplus 한라봉청 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
-      "reason": "Hallabong fruit preserve/tea base is not citron/yuzu tea merely because the retail shelf is 유자차."
+      "reason": "한라봉청은 과일청/차 베이스 제품이며 유자 전용 citron 리프와 과일 종류가 다르다. 현재 과일청 공통 리프가 없어 신규 fruit_preserve 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071000848&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:15:95", "ingestion:65:70"],
+      "source_name": "homeplus",
       "source_record_key": "071000854",
       "source_title": "simplus 자몽청 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
-      "reason": "Grapefruit preserve/tea base is a fruit-tea preserve product, not yuzu tea."
+      "reason": "자몽청은 과일청/차 베이스로 제품형태가 명확하며 유자차 리프에 넣으면 과일 정체성이 달라진다. 동일 fruit_preserve 신규 후보를 사용한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071000854&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:15:96", "ingestion:65:45"],
+      "source_name": "homeplus",
       "source_record_key": "071000831",
       "source_title": "simplus 레몬청 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
-      "reason": "Lemon preserve/tea base is distinct from existing citron/yuzu tea."
+      "reason": "레몬청은 과일청/차 베이스이며 유자 전용 citron 리프와 구분해야 한다. 현재 exact 과일청 리프가 없어 신규 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071000831&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:15:97", "ingestion:65:72"],
+      "source_name": "homeplus",
       "source_record_key": "071000819",
       "source_title": "simplus 생강레몬청 1KG",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
-      "reason": "Ginger-lemon preserve is still a fruit/herbal tea-base preserve; ginger is a flavor/blend attribute."
+      "reason": "생강은 혼합 재료 속성이고 기본 제품형태는 레몬 과일청/차 베이스다. 유자차로 축약하지 않고 동일 fruit_preserve 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071000819&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:16:25", "ingestion:65:63"],
+      "source_name": "homeplus",
       "source_record_key": "071270752",
       "source_title": "자임 비타민들어있는 햇 제주 한라봉차 800G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
-      "reason": "Hallabong tea product belongs with fruit-tea bases rather than the yuzu-specific citron leaf."
+      "reason": "한라봉차는 병입 과일청/차 베이스 계열로 보이며 유자 전용 citron 리프와 과일 종류가 다르다. 현재 exact 공통 리프가 없어 fruit_preserve 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071270752&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 10 current pass44 observations in remaining/104/001.json and grouped them into 5 exact source_record_key pairs with matching source_name and source_title.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and restored raw_record_ids plus pass44-required decision fields for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in the frozen 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy does not contain food.drinks.tea.fruit_preserve; existing food.drinks.tea.citron remains yuzu/citron-specific and was not broadened to unrelated fruit preserves.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
