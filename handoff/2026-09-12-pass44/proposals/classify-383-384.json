@@ -1,0 +1,45 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "5c233fededce27f7514ca166216cdda89fadcfc9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/383/001.json",
+    "handoff/2026-09-12-pass44/remaining/384/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:22", "ingestion:52:26"],
+      "source_name": "homeplus",
+      "source_record_key": "000004774",
+      "source_title": "깐쪽파(봉)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.spring_onion",
+      "reason": "상품명과 원본 경로가 쪽파를 직접 가리킨다. 현재 taxonomy의 scallion 리프는 대파용이고 쪽파 전용 리프는 없으므로 대파로 강제 합치지 않고 별도 신규 리프 검토 대상으로 둔다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:44", "ingestion:52:44"],
+      "source_name": "homeplus",
+      "source_record_key": "070224942",
+      "source_title": "달콤한 옥수수(태국) 2입(봉)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.corn",
+      "reason": "상품명과 원본 경로가 통 생옥수수 신선채소를 직접 가리킨다. 현재 taxonomy에는 통조림 옥수수 리프는 있지만 신선 옥수수 전용 리프가 없어 별도 신규 리프 검토가 필요하다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "executed_tests": [
+    "remaining/383-384의 raw_record_id/source_name/source_record_key/source_title을 선행 vegetable-new-leaf 후보와 대조했다.",
+    "현재 pass44 taxonomy에 food.produce.vegetables.spring_onion 및 food.produce.vegetables.corn 리프가 없음을 확인했다.",
+    "네 raw_record_id가 accepted.json의 accepted_but_blocked_ids/new_included_ids에 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
