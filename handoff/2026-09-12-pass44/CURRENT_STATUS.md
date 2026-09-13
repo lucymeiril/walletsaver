@@ -2,10 +2,11 @@
 
 ## 제안 작업 인계
 
-- `classify-317 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/317/001.json / 제안 완료 / proposals/classify-317.json / remaining/318 기존제안 유무 확인`
-- `classify-314 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/314/001.json / 제안 완료 / proposals/classify-314.json / remaining/317 기존제안 유무 확인`
-- `classify-312 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/312/001.json / 제안 완료 / proposals/classify-312.json / remaining/314 기존제안 유무 확인`
-- `classify-309 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/309/001.json / 제안 완료 / proposals/classify-309.json / remaining/312 기존제안 유무 확인`
+- `fix-legacy-305-333 / 5971cc9524933fde9b84869856bd22a56833fd54 / pass41 구형 제안 6파일 형식·필수필드·중복충돌 보수 / 제안 완료 / ../2026-09-11/proposals/ / remaining/334 기존제안 유무 확인`
+- `classify-317 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/317/001.json / 제안 완료 / ../2026-09-11/proposals/homeplus-canned-sides-spreads-317-322.json / remaining/318 기존제안 유무 확인`
+- `classify-314 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/314/001.json / 제안 완료 / ../2026-09-11/proposals/homeplus-noodles-canned-311-316.json / remaining/317 기존제안 유무 확인`
+- `classify-312 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/312/001.json / 제안 완료 / ../2026-09-11/proposals/homeplus-noodles-canned-311-316.json / remaining/314 기존제안 유무 확인`
+- `classify-309 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/309/001.json / 제안 완료 / ../2026-09-11/proposals/homeplus-small-306-310.json / remaining/312 기존제안 유무 확인`
 - `classify-304 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/304/001.json / 제안 완료 / proposals/classify-304.json / remaining/309 기존제안 유무 확인`
 - `classify-303 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/303/001.json / 제안 완료 / proposals/classify-303.json / remaining/304 기존제안 유무 확인`
 - `classify-302 / 1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9 / remaining/302/001.json / 제안 완료 / proposals/classify-302.json / remaining/303 기존제안 유무 확인`
