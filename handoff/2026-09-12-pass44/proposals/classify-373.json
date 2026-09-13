@@ -1,0 +1,34 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "2bf5da78e0aa21a7db2470eebeb5de0a7ecd019b",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/373/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": [
+        "ingestion:3:21",
+        "ingestion:52:61"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "103628861",
+      "source_title": "얼갈이(국산/봉)",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.produce.vegetables.young_napa_cabbage",
+      "reason": "상품명과 원본 경로가 얼갈이 신선채소를 직접 가리킨다. 현재 taxonomy에는 일반 배추 리프는 있으나 얼갈이 전용 리프가 없고, 선행 제안도 별도 소매 품목으로 신규 리프 검토를 제안한다. taxonomy 정책 승인 없이 일반 배추로 강제 축소하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "executed_tests": [
+    "remaining/373 두 관측의 raw_record_id/source_name/source_record_key/source_title identity를 대조했다.",
+    "현재 pass44 taxonomy에 food.produce.vegetables.young_napa_cabbage가 없음을 확인했다.",
+    "선행 vegetable-new-leaf-candidates-249-418.json의 동일 raw IDs/얼갈이 후보와 의미 판단이 일치함을 확인했다.",
+    "두 raw_record_id가 accepted.json의 accepted_but_blocked_ids/new_included_ids에 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
