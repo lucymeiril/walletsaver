@@ -1,0 +1,31 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "1d9d7ad162a92ccd4e18bf1de43a38c57a5fc8d9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/303/001.json"
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:6:57", "ingestion:56:1"],
+      "source_name": "homeplus",
+      "source_record_key": "069804919",
+      "source_title": "홈플델리 로스트 치킨",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.meals.prepared.roast_chicken",
+      "reason": "상품명과 원본 경로가 모두 조리된 로스트 치킨을 명확히 가리키지만 현재 taxonomy에서 로스트 치킨 전용 리프를 확인하지 못했다. 다른 치킨/육가공 리프로 강제 분류하지 않고 신규 리프 후보로 남긴다. unit_unresolved는 별도 문제로 그대로 둔다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/303의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "두 관측의 proposal_references가 비어 있음을 확인했다.",
+    "현재 pass44 taxonomy에서 food.meals.prepared.roast_chicken 리프가 없음을 확인했다.",
+    "unit_unresolved는 분류 판단과 별도로 보존했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
