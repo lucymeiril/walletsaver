@@ -1,59 +1,85 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "103",
-  "source_path": "handoff/2026-09-11/pending/103/001.json",
-  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
-  "review_accounting": {
-    "pending_rows_checked": 10,
-    "unique_products": 5,
-    "new_classification_reviews": 10,
-    "prior_reviewed": 1259,
-    "current_reviewed": 1269,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2647
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Current taxonomy has no exact fruit-concentrate drink leaf."
-  },
-  "decisions": [],
-  "held_decisions": [
+  "baseline_pass": "pass44",
+  "baseline_commit": "f2107111ee82f409896d466b51b62cb4761e87e0",
+  "decisions": [
     {
+      "raw_record_ids": ["ingestion:15:76", "ingestion:65:32"],
+      "source_name": "homeplus",
       "source_record_key": "070688692",
       "source_title": "하루하나 유기농 레몬즙 14T",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.concentrates.fruit",
-      "reason": "Explicit lemon juice sold on a liquid-tea/concentrate shelf. Do not force this beverage concentrate into the cooking-acid candidate used for a cooking lemon-juice product; 1+1 remains unchanged."
+      "reason": "액상차/농축액 진열의 레몬즙 음용 베이스 제품이며 현재 taxonomy에 과일 농축액 전용 리프가 없다. 조리용 산미료나 즉석 음료 리프로 강제하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070688692&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:15:99", "ingestion:65:16"],
+      "source_name": "homeplus",
       "source_record_key": "070812407",
       "source_title": "하루하나 유기농 레몬즙 480ML",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.concentrates.fruit",
-      "reason": "Fruit juice/concentrate product form is clear, but no exact current leaf exists; 1+1 remains unchanged."
+      "reason": "레몬즙 액상 농축/음용 베이스 제품형태가 명확하지만 현재 exact 과일 농축액 리프가 없다. ready-to-drink 주스로 단정하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070812407&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:16:13", "ingestion:65:56"],
+      "source_name": "homeplus",
       "source_record_key": "128545842",
       "source_title": "녹차원 깔라만시 100 480G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.concentrates.fruit",
-      "reason": "Calamansi concentrate/juice base belongs with fruit concentrates rather than tea flavor or fresh fruit."
+      "reason": "깔라만시 100% 계열 액상 농축/음용 베이스로 보는 것이 진열과 제품명에 부합한다. 차 향미나 생과일로 넣지 않고 과일 농축액 신규 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=128545842&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:16:43", "ingestion:65:82"],
+      "source_name": "homeplus",
       "source_record_key": "070414556",
       "source_title": "비타민 레몬 티앤에이드 680G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.concentrates.fruit",
-      "reason": "Tea-and-ade lemon base is a concentrated fruit beverage base; current taxonomy has no exact concentrate leaf."
+      "reason": "티앤에이드용 레몬 액상 베이스로 농축 음료 재료 제품형태가 명확하다. 현재 exact concentrate 리프가 없어 동일 과일 농축액 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070414556&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
+      "raw_record_ids": ["ingestion:16:46", "ingestion:65:85"],
+      "source_name": "homeplus",
       "source_record_key": "070028604",
       "source_title": "100%깔라만시 1L",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.drinks.concentrates.fruit",
-      "reason": "Explicit 100% calamansi liquid on the concentrate shelf is safer as a fruit-concentrate candidate than forcing it into ready-to-drink juice."
+      "reason": "농축액 진열의 100% 깔라만시 액상 제품으로, 즉석 주스보다 음용/희석용 과일 농축액 후보가 보수적이다. 현재 exact 리프가 없다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070028604&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 10 current pass44 observations in remaining/103/001.json and grouped them into 5 exact source_record_key pairs with matching source_name and source_title.",
+    "Replaced the prior empty decisions plus held_decisions structure with one top-level decisions array and restored raw_record_ids plus pass44-required decision fields for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in the frozen 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy does not contain food.drinks.concentrates.fruit; retained the prior fruit-concentrate candidate instead of forcing ready-to-drink juice or cooking seasoning leaves.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
