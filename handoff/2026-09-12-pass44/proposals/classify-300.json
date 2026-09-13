@@ -1,0 +1,26 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:94", "ingestion:61:36"],
+      "source_name": "homeplus",
+      "source_record_key": "071402995",
+      "source_title": "상하이 버터떡 225G",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.meals.prepared.rice_cake",
+      "reason": "상품명이 완제품 떡인 버터떡을 명확히 가리키고 원본 경로도 디저트 > 떡이다. 현재 taxonomy의 조리식품 떡 리프에 직접 대응한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/300의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에 food.meals.prepared.rice_cake 리프가 존재함을 확인했다.",
+    "떡볶이떡 원재료와 달리 이 상품은 완제품 디저트 떡으로 판단했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
