@@ -1,8 +1,8 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["139", "282", "344", "400", "405", "443", "444", "445", "446"],
-  "scope_note": "GitHub read/write review only. Existing pass41 taxonomy leaves were reused where evidence was direct. No staging DB import or repository tests were executed.",
+  "reviewed_pending_groups": ["139", "282", "400", "405", "443", "444", "445", "446"],
+  "scope_note": "GitHub read/write review only. Existing pass41 taxonomy leaves were reused where evidence was direct. Group 344 was removed from this legacy file because its raw ids are now canonicalized in small-food-344-354-404-449-450.json. No staging DB import or repository tests were executed.",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:3:75", "ingestion:52:92"],
@@ -70,12 +70,6 @@
     }
   ],
   "held_decisions": [
-    {
-      "raw_record_ids": ["ingestion:2:69", "ingestion:51:74"],
-      "source_title": "국산 서리태 1KG(봉)",
-      "reason": "원물 서리태임은 명확하지만 pass41 곡물 리프에는 서리태/검정콩 독립 리프가 없다. 병아리콩 등 다른 콩 리프로 대체하지 않는다.",
-      "followup": "서리태 또는 일반 콩류 신규 리프 정책 검토"
-    },
     {
       "raw_record_ids": ["ingestion:33:27"],
       "source_title": "렌틸콩 (1.7KG)",
