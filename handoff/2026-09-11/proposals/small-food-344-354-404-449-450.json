@@ -1,86 +1,210 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["344", "345", "346", "349", "350", "351", "352", "353", "354", "404", "449", "450"],
-  "scope_note": "GitHub read/write review only. All observations listed for these pending groups were read. This file is not an import input and does not change the staging DB.",
+  "baseline_pass": "pass44",
+  "baseline_commit": "aba5bc6fd93e60a5ec0489a8a6f12fe4235e3bb9",
+  "scope": [
+    "handoff/2026-09-12-pass44/remaining/344/001.json",
+    "handoff/2026-09-12-pass44/remaining/345/001.json",
+    "handoff/2026-09-12-pass44/remaining/346/001.json",
+    "handoff/2026-09-12-pass44/remaining/349/001.json",
+    "handoff/2026-09-12-pass44/remaining/350/001.json",
+    "handoff/2026-09-12-pass44/remaining/351/001.json",
+    "handoff/2026-09-12-pass44/remaining/352/001.json",
+    "handoff/2026-09-12-pass44/remaining/353/001.json",
+    "handoff/2026-09-12-pass44/remaining/354/001.json",
+    "handoff/2026-09-12-pass44/remaining/404/001.json",
+    "handoff/2026-09-12-pass44/remaining/449/001.json",
+    "handoff/2026-09-12-pass44/remaining/450/001.json"
+  ],
   "decisions": [
     {
+      "raw_record_ids": ["ingestion:2:69", "ingestion:51:74"],
+      "source_name": "homeplus",
+      "source_record_key": "062165516",
+      "source_title": "국산 서리태 1KG(봉)",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "서리태 원물임은 명확하지만 현재 곡물 taxonomy에 서리태/검정콩 독립 리프가 없다. 과거 제안들도 신규 후보 검토와 hold 사이에서 정책 결정을 유보했으므로 다른 콩 리프로 강제하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
       "raw_record_ids": ["ingestion:7:51", "ingestion:56:93"],
+      "source_name": "homeplus",
+      "source_record_key": "129081772",
       "source_title": "서울우유 비요뜨 쿠키앤크림 131G*2",
-      "proposed_leaf": "food.dairy.yogurt.topping",
-      "reason": "홈플러스 원본 경로가 토핑요거트이며 현재 initial_taxonomy.py에도 이 정확 제목을 토핑요거트로 제한 매핑하는 감사 규칙이 존재한다.",
-      "quantity_review": "unchanged; repeated observations share the same source_record_key and 131g×2 normalized package",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.yogurt.topping",
+      "reason": "원본 경로가 토핑요거트이고 제품형태도 토핑형 요거트로 명확해 기존 토핑요거트 리프와 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "same_source_listing_observations_only"
     },
     {
       "raw_record_ids": ["ingestion:8:53", "ingestion:57:84"],
+      "source_name": "homeplus",
+      "source_record_key": "137194868",
       "source_title": "빙그레 바나나맛우유 미니 120ML*6",
-      "proposed_leaf": "food.dairy.milk.banana",
-      "reason": "제목이 바나나맛우유를 직접 명시하고 원본 경로도 멸균우유 딸기/초코/바나나이며, 멸균 여부는 맛 리프와 별개의 속성으로 취급하는 현재 분류 계약과 맞는다.",
-      "quantity_review": "unchanged; repeated observations share the same source_record_key and 120ml×6 normalized package",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.milk.banana",
+      "reason": "제목이 바나나맛우유를 직접 명시하며 멸균 여부는 제품 보관·가공 속성이므로 기존 바나나우유 리프를 사용한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "same_source_listing_observations_only"
     },
     {
       "raw_record_ids": ["ingestion:24:63", "ingestion:72:34"],
+      "source_name": "homeplus",
+      "source_record_key": "141923001",
       "source_title": "신영 페페로치노홀 20G",
-      "proposed_leaf": "food.seasonings.spices.whole_chili",
-      "reason": "마트 경로의 후추 표기와 달리 제목은 페페로치노 홀(통 건고추)을 명시하며 initial_audited_seasonings.py에 동일 정확 제목이 whole_chili로 이미 감사되어 있다.",
-      "quantity_review": "unchanged; repeated observations share the same source_record_key and 20g package",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.spices.whole_chili",
+      "reason": "마트 경로는 후추지만 제목은 페페로치노 홀, 즉 통 건고추를 직접 명시하므로 제목 근거를 우선해 기존 건고추 리프를 사용한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:32", "ingestion:74:67"],
+      "source_name": "homeplus",
+      "source_record_key": "124132749",
+      "source_title": "농심 혼다시 120G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "일본식 어류계 다시 조미료로 보이지만 현재 stock taxonomy에 어류 다시 전용 리프가 없다. 마트의 멸치/해물다시다 경로만으로 다른 육수 리프에 흡수하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:24:94", "ingestion:73:75"],
+      "source_name": "homeplus",
+      "source_record_key": "115207571",
+      "source_title": "CJ 백설 자일로스 갈색설탕 1KG",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "자일로스 혼합설탕은 과거 감사에서도 성분 정책 미확정으로 보류됐다. 갈색설탕 진열만으로 일반 brown sugar 성격으로 확정하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:23:87", "ingestion:73:48"],
+      "source_name": "homeplus",
+      "source_record_key": "071296214",
+      "source_title": "simplus 뉴슈가 100G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "뉴슈가는 일반 설탕과 구별해 성분 미확정으로 유지된 제품이다. 흰설탕 진열만으로 sugar 리프에 넣지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:24:85", "ingestion:73:82"],
+      "source_name": "homeplus",
+      "source_record_key": "135612983",
       "source_title": "폰타나 모데나 발사믹 식초 실버라벨 250ML",
-      "proposed_leaf": "food.seasonings.baking.vinegar",
-      "reason": "마트 진열은 샐러드드레싱/발사믹이지만 제목이 발사믹 식초를 직접 명시하므로 드레싱보다 기존 식초 리프가 제품 형태와 일치한다.",
-      "quantity_review": "unchanged; repeated observations share the same source_record_key and 250ml package",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.seasonings.baking.vinegar",
+      "reason": "마트 진열은 드레싱/발사믹이지만 제목이 발사믹 식초를 직접 명시하므로 기존 식초 리프가 제품 형태와 일치한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
       "identity_merge": "same_source_listing_observations_only"
     },
     {
+      "raw_record_ids": ["ingestion:24:89"],
+      "source_name": "homeplus",
+      "source_record_key": "126312695",
+      "source_title": "청정원 까르보나라 파스타소스 350G",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "분류는 이미 food.seasonings.sauces.pasta로 확정되어 있다. 같은 판매키의 후속 관측에서 제조사명이 제목에 추가되어 source_title_changed가 남았으므로 분류를 보존하고 identity/title 변경만 별도 검토한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:74:64"],
+      "source_name": "homeplus",
+      "source_record_key": "126312695",
+      "source_title": "대상 청정원 까르보나라 파스타소스 350G",
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "분류는 이미 food.seasonings.sauces.pasta로 확정되어 있다. 동일 판매키의 이전 제목과 달라 source_title_changed가 남았으므로 제목 identity 문제만 별도 검토한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:35"],
+      "source_name": "lottemart",
+      "source_record_key": "8801207000433",
+      "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "멸균우유 경로지만 검은콩·검은깨맛에 대응하는 현행 맛 우유 리프가 없고 plain milk로 축소하면 제품 의미가 손실된다. promotion_unresolved도 별도로 유지한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:34:70"],
+      "source_name": "lottemart",
+      "source_record_key": "8801207000303",
+      "source_title": "파스퇴르 단백질플러스 곡물맛 (195ML)",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "멸균우유 경로지만 곡물맛에 대응하는 현행 맛 우유 리프가 없어 plain milk로 강제하지 않는다. promotion_unresolved도 별도로 유지한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:76"],
+      "source_name": "lottemart",
+      "source_record_key": "8809520491549",
+      "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "원본 경로는 마시는요구르트이고 제목은 그릭요거트를 동시에 명시해 drink와 greek 리프가 충돌한다. taxonomy 우선순위 정책 전까지 보류하며 promotion_unresolved도 유지한다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
       "raw_record_ids": ["ingestion:32:79"],
+      "source_name": "lottemart",
+      "source_record_key": "8809734560406",
       "source_title": "빙그레 벨큐브 고메스타일 (125G)",
-      "proposed_leaf": "food.dairy.cheese.portion",
-      "reason": "롯데 원본 세부 경로가 스낵치즈이고 기존 catalog의 벨큐브 125g 플레인/피크닉/파티 믹스 큐브치즈가 모두 portion 리프로 분류되어 있어 동일 제품군 형태의 보수적 후보로 제안한다. 상품군 병합 자체는 요청하지 않는다.",
+      "decision": "existing_leaf",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.dairy.cheese.portion",
+      "reason": "원본 경로가 스낵치즈이고 기존 벨큐브 제품군도 portion 리프를 사용해 제품형태가 일치한다. 다만 promotion_unresolved는 별도 검토가 필요하다.",
+      "evidence_urls": [],
       "quantity_review": "unchanged",
       "identity_merge": "not_requested"
     }
   ],
-  "deferred": [
-    {
-      "raw_record_ids": ["ingestion:2:69", "ingestion:51:74"],
-      "source_title": "국산 서리태 1KG(봉)",
-      "reason": "서리태 원물임은 명확하지만 현재 쌀·잡곡 리프에 일반 콩/서리태 리프가 없다. suggested_new_leaf=food.grains.rice.black_soybean 후보는 전체 콩류 taxonomy 정책 검토 후 결정한다."
-    },
-    {
-      "raw_record_ids": ["ingestion:25:32", "ingestion:74:67"],
-      "source_title": "농심 혼다시 120G",
-      "reason": "일본식 어류계 다시 조미료로 보이나 현재 stock 리프에는 쇠고기/치킨/감칠맛/채소육수정 등이 있고 어류 다시 전용 리프가 없다. 멸치/해물다시다 원본 경로만으로 기존 다른 stock 리프에 넣지 않는다."
-    },
-    {
-      "raw_record_ids": ["ingestion:24:94", "ingestion:73:75"],
-      "source_title": "CJ 백설 자일로스 갈색설탕 1KG",
-      "reason": "pass39 체크포인트에서 자일로스 혼합설탕은 성분 불명으로 의도적으로 미확정한 기존 결정을 보존한다. 새 성분 근거 없이 brown_sugar로 승격하지 않는다."
-    },
-    {
-      "raw_record_ids": ["ingestion:23:87", "ingestion:73:48"],
-      "source_title": "simplus 뉴슈가 100G",
-      "reason": "pass39 체크포인트에서 뉴슈가는 일반 설탕과 구별해 성분 불명으로 미확정했다. 마트의 흰설탕 경로만으로 sugar 리프에 넣지 않는다."
-    },
-    {
-      "raw_record_ids": ["ingestion:24:89", "ingestion:74:64"],
-      "source_title": "청정원/대상 청정원 까르보나라 파스타소스 350G",
-      "reason": "두 관측 모두 이미 food.seasonings.sauces.pasta로 분류되어 있고 pending 이유는 source_title_changed이다. 이번 분류 배치에서 별도 재분류하지 않고 동일 source_record_key의 이름변경/정체성 검토 대상으로 유지한다."
-    },
-    {
-      "raw_record_ids": ["ingestion:32:35", "ingestion:34:70"],
-      "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 / 곡물맛 195ML",
-      "reason": "원본은 멸균우유 경로지만 현재 우유 리프가 흰우유와 명시 맛별 리프로 구성되어 있고 검은콩·검은깨/곡물맛에 대응하는 리프가 없다. plain milk로 축소하지 않고 신규 기타가향우유 정책을 검토한다."
-    },
-    {
-      "raw_record_ids": ["ingestion:32:76"],
-      "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
-      "reason": "원본 경로는 마시는요구르트이고 제목은 그릭요거트를 동시에 명시해 drink와 greek 리프가 충돌한다. 어떤 축을 우선할지 taxonomy 정책 결정 전까지 보류한다."
-    }
-  ],
-  "executed_tests": []
+  "executed_tests": [
+    "legacy pass41 decisions/deferred를 pass44 top-level decisions 형식으로 정규화했다.",
+    "누락된 source_record_key와 source_name을 현재 pass44 remaining 원본에서 raw_record_id/title을 대조해 복원했다.",
+    "354는 동일 source_record_key의 제목 변경 두 관측을 분리했고 404는 서로 다른 판매키 두 상품을 분리했다.",
+    "promotion_unresolved/source_title_changed 같은 비분류 이슈는 해소했다고 주장하지 않고 needs_review로 보존했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
 }
