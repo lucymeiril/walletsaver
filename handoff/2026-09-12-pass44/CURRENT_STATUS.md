@@ -2,6 +2,7 @@
 
 ## 제안 작업 인계
 
+- `fix-batch-142-146 / fe3a850fef418ad1f8f8f6740f9ff1225e0ec8ae / 기존 제안 batch-142-146 source_name·신규후보 필드 보완 / 진행 중 / ../2026-09-12-pass43/proposals/2026-09-12-batch-142-146.json / 15결정 식별자·후보 필드 정규화`
 - `fix-batch-137-141 / aca75e9dbe8f7e0de5ff66a83a98cba17b3f281f / 기존 제안 batch-137-141 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-137-141.json / remaining/142 기존제안 유무 확인`
 - `fix-batch-132-136 / 7c5e3dad32a11fb87bef60bcee76cf2060d48885 / 기존 제안 batch-132-136 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-132-136.json / remaining/137 기존제안 유무 확인`
 - `fix-batch-127-131 / 076c4b3cf791e997105bc3854fc38e23e7725e39 / 기존 제안 batch-127-131 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-127-131.json / remaining/132 기존제안 유무 확인`
