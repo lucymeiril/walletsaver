@@ -1,0 +1,26 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:37", "ingestion:59:62"],
+      "source_name": "homeplus",
+      "source_record_key": "138313382",
+      "source_title": "풀무원 밀 떡볶이떡 550G",
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "reason": "상품은 조리된 떡볶이가 아니라 떡볶이용 떡 원재료다. 현재 taxonomy의 prepared.rice_cake가 이 원재료형 상품까지 포함하는지 경계가 불명확해 강제 분류하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/297의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "상품명이 떡볶이 완제품이 아니라 떡볶이떡 원재료임을 확인했다.",
+    "기존 rice_cake 리프와 원재료형 떡볶이떡의 의미 경계가 불명확하여 보류했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
