@@ -1,0 +1,26 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass44",
+  "baseline_commit": "cde0b9f736acb1712c0e83c8f61906b4fc5ce0b7",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:87", "ingestion:61:28"],
+      "source_name": "homeplus",
+      "source_record_key": "101423045",
+      "source_title": "해태 찹쌀 왕 만두피 360G",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
+      "suggested_new_leaf": "food.meals.dumplings.wrapper",
+      "reason": "상품명과 원본 경로가 모두 만두피를 명확히 가리킨다. 현재 taxonomy에는 만두피 전용 리프가 없어 완성 만두 리프로 강제 분류하지 않는다.",
+      "evidence_urls": [],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": [
+    "remaining/299의 두 관측이 동일 source_record_key/source_title/source_name=homeplus인지 대조했다.",
+    "현재 pass44 taxonomy에 dumpling wrapper 리프가 없음을 확인했다.",
+    "DB import, taxonomy mutation, accepted write, repository test suite, browser test, live collection은 실행하지 않았다."
+  ]
+}
