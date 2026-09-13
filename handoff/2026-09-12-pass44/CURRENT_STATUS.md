@@ -2,7 +2,7 @@
 
 ## 제안 작업 인계
 
-- `classify-288 / 8ecdde899be19794cea90d71fed59a879b0654cb / remaining/288/001.json / 진행 중 / proposals/classify-288.json / remaining/289 또는 기존 제안 없는 잔여 범위 재탐색`
+- `classify-288 / 8ecdde899be19794cea90d71fed59a879b0654cb / remaining/288/001.json / 제안 완료 / proposals/classify-288.json / remaining/289 기존제안 유무 확인`
 - `classify-287 / 76aa83e46d89e58f2aed671739779356766e858b / remaining/287/001.json / 제안 완료 / proposals/classify-287.json / 기존 제안 없는 잔여 범위 재탐색`
 - `fix-batch-162-166 / b1554e95d166da5b4316a0d3493dd52a9d7774bb / 기존 제안 batch-162-166 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-162-166.json / 기존 제안 없는 잔여 범위 선택 후 remaining/287`
 - `fix-batch-157-161 / ff8301053310e2e13b32895c51d807edf0f170fa / 기존 제안 batch-157-161 source_name·신규후보 필드 보완 / 제안 완료 / ../2026-09-12-pass43/proposals/2026-09-12-batch-157-161.json / remaining/162 기존제안 유무 확인`
