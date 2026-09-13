@@ -1,8 +1,8 @@
 {
   "status": "proposal_only",
   "baseline_pass": "pass41",
-  "reviewed_pending_groups": ["249", "383", "384", "418"],
-  "scope_note": "GitHub read/write review only. Existing-leaf classification is separated from candidate taxonomy additions. Suggested new leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB. Water-parsley, young-napa-cabbage, celery, lettuce and ginger decisions were removed here because their raw ids are now canonically represented in pass44 proposals/homeplus-produce-374-382.json or classify-373.json.",
+  "reviewed_pending_groups": ["249", "418"],
+  "scope_note": "GitHub read/write review only. Existing-leaf classification is separated from candidate taxonomy additions. Suggested new leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB. Water-parsley, young-napa-cabbage, celery, lettuce, ginger, spring-onion and fresh-corn decisions were removed here because their raw ids are now canonically represented in pass44 proposals.",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:52:69"],
@@ -25,18 +25,6 @@
       "source_title": "손질 브로콜리 300G(팩)",
       "suggested_new_leaf": "food.produce.vegetables.broccoli",
       "reason": "손질된 신선 브로콜리 팩으로 품목 자체는 브로콜리다. 박피/손질을 이유로 다른 가공채소 리프에 넣지 않고 브로콜리 신규 리프 후보와 함께 검토한다."
-    },
-    {
-      "raw_record_ids": ["ingestion:3:22", "ingestion:52:26"],
-      "source_title": "깐쪽파(봉)",
-      "suggested_new_leaf": "food.produce.vegetables.spring_onion",
-      "reason": "쪽파는 현재 대파 리프(food.produce.vegetables.scallion, 표시명 대파)와 다른 소매 품목이다. 기존 대파로 합치지 않고 별도 리프 필요성을 검토한다."
-    },
-    {
-      "raw_record_ids": ["ingestion:3:44", "ingestion:52:44"],
-      "source_title": "달콤한 옥수수(태국) 2입(봉)",
-      "suggested_new_leaf": "food.produce.vegetables.corn",
-      "reason": "통 생옥수수 품목임이 제목과 채소 경로에서 명확하지만 현재 신선 옥수수 리프가 없다. 통조림/시리얼/스낵과 구분되는 신선 리프 후보로 보류한다."
     }
   ],
   "executed_tests": []
