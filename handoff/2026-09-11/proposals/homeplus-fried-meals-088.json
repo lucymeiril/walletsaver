@@ -1,67 +1,84 @@
 {
   "status": "proposal_only",
-  "baseline_pass": "pass41",
-  "pending_group": "088",
-  "source_path": "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 돈까스/생선까스/탕수육/김말이/기타 > 탕수육/김말이",
-  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and package fields are preserved unchanged.",
-  "review_accounting": {
-    "pending_rows_checked": 10,
-    "unique_products": 5,
-    "new_classification_reviews": 10,
-    "prior_reviewed": 1109,
-    "current_reviewed": 1119,
-    "baseline_pending": 3916,
-    "remaining_unreviewed": 2797
-  },
-  "conflict_checks": {
-    "explicit_review_decision_matches": 0,
-    "repository_search_note": "Repository evidence for these products is pending/raw/catalog-unresolved only; no explicit review-decision conflict was found."
-  },
+  "baseline_pass": "pass44",
+  "baseline_commit": "f492016b799f1332b9fdf8e285b068ee9067dc07",
   "decisions": [
     {
       "raw_record_ids": ["ingestion:12:37", "ingestion:61:77"],
+      "source_name": "homeplus",
       "source_record_key": "071342627",
       "source_title": "씨제이 고메 흑백요리사 유린기 370G",
-      "decision": "propose_existing_leaf",
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
       "unified_category_id": "food.meals.prepared.chicken",
-      "reason": "유린기는 조리된 닭고기 요리이며 pass41의 조리치킨 leaf가 제품형태를 포괄한다. broad 탕수육/김말이 shelf보다 실제 닭고기 조리식품 정체성을 우선한다."
-    }
-  ],
-  "held_decisions": [
+      "reason": "유린기는 조리된 닭고기 요리이며 현재 조리치킨 리프가 제품형태를 포괄한다. broad 탕수육/김말이 진열보다 실제 닭고기 조리식품 정체성을 우선한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071342627&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
     {
       "raw_record_ids": ["ingestion:9:93", "ingestion:59:32"],
+      "source_name": "homeplus",
       "source_record_key": "070960974",
       "source_title": "동원 양반 야채바삭 김말이 475G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.gimmari",
-      "reason": "김말이는 당면을 김으로 말아 튀긴 독립 조리식품 형태이며 pass41에 대응 leaf가 없다. 다른 튀김/만두 leaf에 강제하지 않는다.",
-      "promotion_review": "unchanged; 1+1 preserved"
+      "reason": "김말이는 당면을 김으로 말아 튀긴 독립 조리식품 형태이며 현재 taxonomy에 대응 리프가 없다. 다른 튀김·만두 리프로 강제하지 않는다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070960974&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:10:1", "ingestion:59:79"],
+      "source_name": "homeplus",
       "source_record_key": "070960951",
       "source_title": "동원 양반 매콤바삭 김말이 475G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.gimmari",
-      "reason": "매콤 맛 차이는 속성이며 제품형태는 김말이다. 기존 exact leaf가 없어 동일 신규 후보로 보존한다.",
-      "promotion_review": "unchanged; 1+1 preserved"
+      "reason": "매콤은 맛 속성이고 제품형태는 김말이로 명확하다. 현재 exact 리프가 없어 동일 신규 gimmari 후보로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=070960951&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:12:38", "ingestion:61:78"],
+      "source_name": "homeplus",
       "source_record_key": "071342610",
       "source_title": "씨제이 고메 흑백요리사 탕수육 390G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.tangsuyuk",
-      "reason": "탕수육은 독립 조리식품 형태지만 pass41에 대응 leaf가 없다. 돈까스나 일반 조리치킨으로 확대하지 않는다."
+      "reason": "상품명이 탕수육 형태를 직접 명시하지만 현재 taxonomy에는 대응 리프가 없다. 돈까스나 조리치킨으로 확대하지 않고 신규 리프 검토로 남긴다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071342610&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     },
     {
       "raw_record_ids": ["ingestion:12:59", "ingestion:61:99"],
+      "source_name": "homeplus",
       "source_record_key": "071259346",
       "source_title": "simplus 김말이튀김 700G",
-      "status": "held_new_taxonomy_candidate",
+      "decision": "new_leaf_needed",
+      "review_lane": "needs_review",
+      "unified_category_id": null,
       "suggested_new_leaf": "food.meals.prepared.gimmari",
-      "reason": "제품명이 김말이튀김 형태를 직접 명시하며 동일 gimmari 신규 후보가 적합하다."
+      "reason": "상품명이 김말이튀김 형태를 직접 명시하며 현재 taxonomy에 exact 리프가 없다. 동일 gimmari 신규 후보로 보존한다.",
+      "evidence_urls": ["https://mfront.homeplus.co.kr/item?itemNo=071259346&storeType=HYPER"],
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
     }
   ],
-  "executed_tests": []
+  "executed_tests": [
+    "Reviewed all 10 current pass44 observations in remaining/088/001.json and preserved the 5 exact source_record_key products from the prior proposal.",
+    "Replaced the prior split decisions/held_decisions structure with one top-level decisions array and added source_name, review_lane, evidence_urls, quantity_review, and identity_merge for every product.",
+    "Exact-searched all 5 source_record_keys in current pass44 accepted.json with no matches.",
+    "Exact-searched all 5 source_record_keys in the frozen 431 review-decisions-input.json with no matches.",
+    "Verified current pass44 taxonomy contains food.meals.prepared.chicken and does not contain food.meals.prepared.gimmari or food.meals.prepared.tangsuyuk.",
+    "No DB import, application test suite, browser test, or live collection was executed because this is proposal-only classification work."
+  ]
 }
