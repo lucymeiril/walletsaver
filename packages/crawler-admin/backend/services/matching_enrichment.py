@@ -19,6 +19,7 @@ from sqlalchemy import text
 
 from core.match_key import NO_BRAND_SENTINEL, build_match_key, normalize_pack_identity
 from core.product_units import parse_package_quantity
+from core.catalog_quantity import normalize_catalog_package, uses_reviewed_quantity_rules
 from services.db_admin_readonly import (
     _table_columns, bulk_lookup_match_statuses, get_db_admin_session,
 )
@@ -262,9 +263,17 @@ def _source_package(row: dict[str, Any]) -> tuple[tuple[float, str, int] | None,
     display_unit. Restore only that explicit multiplier, checking all evidence.
     """
     layers = [row, *[row[key] for key in ("attributes", "attrs") if isinstance(row.get(key), dict)]]
+    title = _extract_str(row, ["source_title", "name", "productName", "itemName", "prdtName", "goodsName", "title"]) or ""
+    reviewed_quantity = uses_reviewed_quantity_rules(title)
+    attrs = {key: value for layer in layers[1:] for key, value in layer.items()}
     quantities = [layer[key] for layer in layers for key in _QUANTITY_KEYS if layer.get(key) not in (None, "")]
     units = [layer[key] for layer in layers for key in _UNIT_KEYS if layer.get(key) not in (None, "")]
     if not quantities or not units:
+        if reviewed_quantity:
+            package, issues = normalize_catalog_package(row, attrs, title)
+            if package and not issues:
+                canonical = _package_identity(package['package_quantity'], package['package_unit'])
+                return (*canonical, package['bundle_count']), None
         return None, "normalized_unit_unresolved"
     identity = next((_package_identity(quantities[0], unit) for unit in units if _package_identity(quantities[0], unit)), None)
     if identity is None:
@@ -289,6 +298,30 @@ def _source_package(row: dict[str, Any]) -> tuple[tuple[float, str, int] | None,
                 structured.append(pair)
     if any(pair != identity for pair in structured):
         return None, "normalized_variant_conflict"
+
+    if reviewed_quantity:
+        # Preserve independent structured-field conflicts above. Use the same
+        # bounded content/container/roll repairs as staging only after exact
+        # reviewed source identity is checked by _normalized_source_reason.
+        explicit_counts = [layer['bundle_count'] for layer in layers if layer.get('bundle_count') not in (None, '')]
+        if any((count := _positive_number(value)) is None or not count.is_integer() for value in explicit_counts):
+            return None, 'normalized_unit_unresolved'
+        if len({int(float(value)) for value in explicit_counts}) > 1:
+            return None, 'normalized_variant_conflict'
+        canonical_row = {**row, 'package_quantity': identity[0], 'package_unit': identity[1]}
+        package, issues = normalize_catalog_package(canonical_row, attrs, title)
+        if not package or issues:
+            return None, 'normalized_variant_conflict'
+        expected = (package['package_quantity'], package['package_unit'], package['bundle_count'])
+        for layer in layers:
+            for field in ('display_unit', 'unit'):
+                value = layer.get(field)
+                if value and parse_package_quantity(str(value)):
+                    candidate, conflicts = normalize_catalog_package({**canonical_row, 'display_unit': value}, attrs, title)
+                    if not candidate or conflicts or (candidate['package_quantity'], candidate['package_unit'], candidate['bundle_count']) != expected:
+                        return None, 'normalized_variant_conflict'
+        canonical = _package_identity(package['package_quantity'], package['package_unit'])
+        return (*canonical, package['bundle_count']), None
 
     texts = list(dict.fromkeys(str(layer[key]) for layer in layers for key in ("source_title", "name", "title", "display_unit", "unit") if layer.get(key)))
     parsed = [value for text_value in texts if (value := parse_package_quantity(text_value))]

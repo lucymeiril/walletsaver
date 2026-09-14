@@ -12,6 +12,7 @@ assembling matching keys independently.
 from __future__ import annotations
 
 import re
+import unicodedata
 from typing import Optional
 
 NO_BRAND_SENTINEL = "__no_brand__"
@@ -35,7 +36,7 @@ _VOLUME_TO_ML = {
 
 
 def normalize_brand(brand: Optional[str]) -> str:
-    value = (brand or "").strip().lower()
+    value = unicodedata.normalize("NFKC", brand or "").strip().lower()
     return value or NO_BRAND_SENTINEL
 
 
@@ -43,7 +44,7 @@ def normalize_pack_identity(
     pack_qty: Optional[float],
     pack_unit: Optional[str],
 ) -> tuple[Optional[float], str]:
-    unit = (pack_unit or "").strip().lower()
+    unit = unicodedata.normalize("NFKC", pack_unit or "").strip().lower()
     if pack_qty is None:
         return None, unit
 
@@ -81,7 +82,7 @@ def build_match_key(
     """
     b = normalize_brand(brand)
 
-    n = (name_core or "").lower()
+    n = unicodedata.normalize("NFKC", name_core or "").lower()
     n = _SPECIAL_RE.sub(" ", n)
     n = _WHITESPACE_RE.sub(" ", n).strip()
 

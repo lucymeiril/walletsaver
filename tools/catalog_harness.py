@@ -74,7 +74,8 @@ def code_hashes(root):
  paths=list((root/'packages/db-admin/backend/services').glob('*.py'))
  paths+=list((root/'packages/shared').rglob('*.py'))
  paths+=list((root/'packages/db-admin/backend/services').glob('reviewed_chat_batch*.json'))
- paths += [root/'tools'/name for name in ('catalog_harness.py','prepare_initial_catalog.py','verify_initial_stage.py','verify_reviewed_runtime.py')]
+ paths += [root/'tools'/name for name in ('catalog_harness.py','prepare_initial_catalog.py','verify_initial_stage.py','verify_reviewed_runtime.py','verify_batch_runtime.py')]
+ paths += [root/'packages/crawler-admin/backend/services/matching_enrichment.py', root/'packages/crawler-admin/backend/tests/test_matching_enrichment.py']
  paths += [root/p for p in TESTS]+[root/'docs/catalog-state.json']
  return {str(p.relative_to(root)):sha(p) for p in sorted(paths)}
 
@@ -83,9 +84,11 @@ def run(run_id,root=ROOT):
  out=output_path(root,run_id);fingerprints=code_hashes(root)
  commands=[
   [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short'],
+  [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short'],
   [sys.executable,'tools/prepare_initial_catalog.py','--db',str(source),'--out',str(out),'--run-id',run_id,'--review-decisions',str(decisions)],
   [sys.executable,'tools/verify_initial_stage.py',run_id],
   [sys.executable,'tools/verify_reviewed_runtime.py',run_id],
+  [sys.executable,'tools/verify_batch_runtime.py',run_id,'--save'],
  ]
  try:
   for command in commands:subprocess.run(command,cwd=root,check=True)

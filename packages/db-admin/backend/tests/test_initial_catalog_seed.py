@@ -8,6 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from core.match_key import build_match_key
+from core.product_units import parse_package_quantity
+from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES
 from services.catalog_bundle import validate_bundle
 from services.initial_catalog_seed import (
     build_initial_catalog_bundle,
@@ -145,6 +147,54 @@ def test_resolved_cleaning_identity_does_not_erase_mixed_refill_quantity_holds(t
     bundle = build([ingestion(1, [raw])])
     assert not bundle["offers"]
     assert "mixed_package_unresolved" in bundle["unresolved"][0]["reasons"]
+
+
+@pytest.mark.parametrize("title", sorted(COUNTED_CONTENT_TITLES))
+def test_reviewed_purchased_count_recovers_content_boundary_without_changing_source(title):
+    expected = parse_package_quantity(title)
+    count = expected["bundle_count"]
+    payload = {"package_quantity": count, "package_unit": "입", "display_unit": f"{count}입"}
+    before = deepcopy(payload)
+    package, issues = _package(payload, {}, title)
+    assert issues == []
+    assert package["package_quantity"] == expected["package_quantity"]
+    assert package["bundle_count"] == count
+    assert package["standard_unit"] in {"g", "ml"}
+    assert payload == before
+
+
+@pytest.mark.parametrize("payload", [
+    {"package_quantity": 29, "package_unit": "개"},
+    {"package_quantity": 30, "package_unit": "개", "bundle_count": 30},
+    {"package_quantity": 30, "package_unit": "개", "bundle_count": "bad"},
+    {"package_quantity": 30, "package_unit": "개", "display_unit": "20개"},
+    {"package_quantity": 30, "package_unit": "개", "display_unit": "30개x2"},
+    {"package_quantity": 30, "package_unit": "개", "display_unit": "100g"},
+])
+def test_counted_content_recovery_does_not_hide_structured_or_display_conflicts(payload):
+    package, issues = _package(payload, {}, "농심 신라면 120g x 30개")
+    assert package is None or issues
+
+
+@pytest.mark.parametrize("title", [
+    "농심 신라면 120g x 30개 x 2박스", "농심 신라면 120g x 30개+사은품",
+    "머그컵 350ml x 30개", "새로운 불명품 120g x 30개",
+])
+def test_counted_content_recovery_requires_reviewed_title_not_measurement_alone(title):
+    assert title not in COUNTED_CONTENT_TITLES
+    package, issues = _package({"package_quantity": 30, "package_unit": "개"}, {}, title)
+    assert package is None or issues
+
+
+def test_counted_ramen_one_plus_one_uses_received_content_for_unit_price():
+    raw = item(name="농심 신라면 120g x 30개", package_quantity=30, package_unit="개",
+               display_unit="30개", unit="30개", sale_price=36000, original_price=None,
+               promo_label="1+1", promotion_type="buy_x_get_y")
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle["unresolved"]
+    assert bundle["variants"][0]["package_quantity"] == 120
+    assert bundle["variants"][0]["bundle_count"] == 30
+    assert bundle["offers"][0]["price_per_100g"] == 500
 
 
 def item(**changes):

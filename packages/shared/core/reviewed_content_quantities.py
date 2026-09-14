@@ -1,0 +1,50 @@
+"""Hand-reviewed consumable titles whose crawler stored purchased count only.
+
+Exact title gate, not a generic reinterpretation of container capacity or a
+fuzzy alias. Arithmetic still must agree with structured count and display.
+Original source payload remains unchanged in observation provenance.
+"""
+
+COUNTED_CONTENT_TITLES = frozenset((
+    "농심 신라면 120g x 30개",
+    "진라면플러스매운맛 120g x 30개",
+    "진라면플러스순한맛 120g x 30개",
+    "농심 너구리 컵라면 62g x 30개",
+    "농심 신라면 컵65g x 30개",
+    "농심 안성탕면 125g x 20개",
+    "농심 신라면건면 97g x 20개",
+    "농심 신라면 큰사발 114g x 16개",
+    "팔도비빔면 156g x 20개",
+    "농심 사리면 110g x 30개",
+    "농심올리브짜파게티 140g x 20개",
+    "농심 짜파게티범벅 70g x 30개",
+    "농심 육개장 큰사발 110g x 16 개",
+    "팔도 왕뚜껑 110g x 18개",
+    "농심 김치 사발면 86g x 24개",
+    "농심너구리120g x 20개",
+    "농심 육개장 사발면 86g x 24개",
+    "농심 새우탕 컵 67g x 30개",
+    "농심배홍동비빔면137g x 20개",
+    "풍국면 우리밀 국수 400g x 10팩",
+    "풍국면 다복면 500g x 10팩",
+    "풍국면 메밀국수 500g x 10팩",
+    "데 체코 라자냐 500g x 4개",
+    "뻥이요 골드 3,240g / 270g x 12팩",
+    "프링글스 53g x 24팩",
+    "갓 튀김 어포 900g (60g x 15봉)",
+    "갓튀김청양고추어포 900g (60g x 15봉)",
+    "다담정우리쌀로만든전병648g / 24g x 27봉",
+    "플랜터스 솔티드 피넛 28g x 48팩",
+    "펄몰 과일캔디 45g x 10 개",
+    "스위토리 졸음 확 깨는 껌 108g x 8개",
+    "황토가마에 구운 호두 250g x 5봉",
+    "썬키스트 구운 캐슈넛 250g x 3봉",
+    "썬키스트 견과 3종세트 25g x 60봉",
+    "테라로사 싱글오리진 드립백커피 10g x 33입",
+    "맥널티 오리지널 스테비아 커피믹스9.5g x 250입",
+    "맥널티 헤이즐넛 스테비아 커피믹스 9.5g x 250입",
+    "고메포테이토 치즈핫도그 400g x 3 개",
+    "Euro Pomella 냉동부라타치즈 100g x 8 개",
+    "양송이버섯 500g x 2개",
+    "감말랭이 400g x 4팩",
+))

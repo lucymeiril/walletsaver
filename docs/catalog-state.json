@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260914-pass55",
+  "baseline": ".debug-artifacts/initial-catalog-20260914-pass56-final",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6093,
-  "unresolved": 3103,
-  "next_task": "Audited count-vs-content quantity recovery: one explicit g/ml x sold-count chain for already classified consumables; compare structured purchased counts to title and preserve multi-chain/mixed/containers/conflicts. Review whole impact, not generic weakening of unit conflicts.",
+  "included": 6134,
+  "unresolved": 3062,
+  "next_task": "Typed measured chains in coffee/tea/drinks: g/ml x sticks/T/teabags/cans x boxes. Audit exact complete chains, retain mixed/unknown suffix/count conflicts and >500 wholesale review. Both staging and runtime must share quantity interpretation and new-batch runtime gate must pass.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

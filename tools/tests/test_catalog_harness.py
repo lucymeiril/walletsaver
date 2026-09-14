@@ -71,3 +71,18 @@ def test_failed_command_never_certifies(workspace,monkeypatch):
  monkeypatch.setattr(h.subprocess,'run',fail)
  with pytest.raises(subprocess.CalledProcessError):h.run('initial-catalog-fail',workspace)
  assert not list(workspace.rglob('checks-passed.json'))
+
+
+def test_new_batch_matching_failure_blocks_certificate_after_other_checks(workspace,monkeypatch):
+ monkeypatch.setattr(h,'code_hashes',lambda root:{'code':'same'})
+ calls=[]
+ def execute(command,**kwargs):
+  calls.append(command)
+  if 'tools/verify_batch_runtime.py' in command:
+   raise subprocess.CalledProcessError(1,command)
+ monkeypatch.setattr(h.subprocess,'run',execute)
+ with pytest.raises(subprocess.CalledProcessError):h.run('initial-catalog-batch-fail',workspace)
+ assert any('tools/verify_reviewed_runtime.py' in command for command in calls)
+ assert any('packages/crawler-admin/backend/tests/test_matching_enrichment.py' in command for command in calls)
+ assert calls[-1][1:]==['tools/verify_batch_runtime.py','initial-catalog-batch-fail','--save']
+ assert not list(workspace.rglob('checks-passed.json'))

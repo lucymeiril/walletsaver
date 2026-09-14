@@ -12,6 +12,40 @@ from services.matching_enrichment import (
 )
 
 
+@pytest.mark.parametrize('row,expected', [
+    ({'name':'농심 신라면 120g x 30개','pack_qty':30,'pack_unit':'개'}, (120, 'g', 30)),
+    ({'name':'썬키스트 견과 ３종세트 25g x 60봉','pack_qty':60,'pack_unit':'봉'}, (25, 'g', 60)),
+    ({'name':'두꺼운 종이컵 260ml / 40p','package_quantity':260,'package_unit':'ml','display_unit':'260ml'}, (40, 'ea', 1)),
+    ({'name':'종이컵180ml*50개','package_quantity':180,'package_unit':'ml','display_unit':'180ml×50'}, (50, 'ea', 1)),
+    ({'name':'키친타올 200매*6롤','package_quantity':6,'package_unit':'롤','display_unit':'6롤'}, (200, '매', 6)),
+    ({'name':'고무장갑 2켤레(중)'}, (2, '켤레', 1)),
+])
+def test_reviewed_recollection_uses_same_content_container_and_roll_quantities_as_staging(row, expected):
+    assert _source_package(row) == (expected, None)
+
+
+@pytest.mark.parametrize('changes', [
+    {'package_quantity':50,'package_unit':'개'},
+    {'attributes':{'package_quantity':2,'package_unit':'개'}},
+    {'bundle_count':2}, {'display_unit':'20개'},
+])
+def test_count_recovery_does_not_hide_stale_or_conflicting_structured_values(changes):
+    row = {'name':'농심 신라면 120g x 30개','pack_qty':30,'pack_unit':'개', **changes}
+    assert _source_package(row)[1] is not None
+
+
+@pytest.mark.parametrize('display', ['180ml×20', '200ml×50', '40개'])
+def test_cup_capacity_recovery_rejects_independently_changed_display_quantity(display):
+    row = {'name':'종이컵180ml*50개','package_quantity':180,'package_unit':'ml','display_unit':display}
+    assert _source_package(row)[1] is not None
+
+
+def test_cosmetic_fullwidth_identity_is_shared_but_real_name_or_pack_changes_are_not():
+    from core.match_key import build_match_key
+    assert build_match_key('ＣＪ','견과 ３종',1,'Ｌ') == build_match_key('CJ','견과 3종',1000,'ml')
+    assert build_match_key(None,'견과 ３종',3,'개') != build_match_key(None,'견과 4종',3,'개')
+
+
 def _engine(tmp_path):
     engine = create_engine(f"sqlite:///{(tmp_path / 'db.sqlite').as_posix()}")
     with engine.begin() as connection:
