@@ -5,6 +5,7 @@ import pytest
 from services.initial_audited_emart_produce import FRUIT_TITLES, reviewed_emart_produce_leaf
 from services.initial_audited_costco_cleaning import TITLES as CLEANING_TITLES, reviewed_costco_cleaning_leaf
 from services.initial_audited_homeplus_seafood import ENTRIES as SEAFOOD_ENTRIES, reviewed_homeplus_seafood_leaf
+from services.initial_audited_homeplus_snacks import ENTRIES as SNACK_ENTRIES, reviewed_homeplus_snack_leaf
 
 from services.initial_taxonomy import (
     LEAVES,
@@ -108,6 +109,29 @@ def test_audited_seafood_does_not_override_a_candidate_without_a_veto(monkeypatc
     result=classify_record(_raw('homeplus',path,'손질 오징어링 500G(팩)'))
     assert result['unified_category_id'] is None
     assert set(result['candidate_category_ids'])=={'food.seafood.molluscs.squid','food.seafood.shellfish.shrimp'}
+
+
+@pytest.mark.parametrize('path,title,leaf',[(path,title,leaf) for (path,title),leaf in SNACK_ENTRIES.items()])
+def test_snack_and_bakery_forms_are_not_the_mixed_retail_leaf(path,title,leaf):
+    result=classify_record(_raw('homeplus',list(path),title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'homeplus','source_path_parts':list(path),'source_title':title}
+    assert reviewed_homeplus_snack_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_homeplus_snack_leaf({**evidence,'source_path_parts':['과자/시리얼']}) is None
+    assert reviewed_homeplus_snack_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', ['풀무원 토이쿠키 만들기 300G','화정당 두바이 쫀득쿠키 오리지널 160G','화정당 두바이+말차 쫀득쿠키 160G'])
+def test_frozen_dessert_brand_or_diy_kit_does_not_prove_ready_baked_cookie(title):
+    from services.initial_audited_homeplus_snacks import FROZEN
+    assert classify_record(_raw('homeplus',list(FROZEN),title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title', ['돌핀 폴라레티 후르트 400ML','돌핀 폴라레티 해피썸머 400ML','돌핀 폴라레티 후르츠 바이오 400ML','자임 콜라겐 애사비 젤리 210G','자임 콜라겐 레몬 젤리 210G'])
+def test_unknown_liquid_jelly_shelf_forms_are_not_assumed_pudding(title):
+    from services.initial_audited_homeplus_snacks import JELLY
+    assert classify_record(_raw('homeplus',list(JELLY),title))['unified_category_id'] is None
 
 
 def test_homeplus_full_path_maps_to_a_four_level_flavoured_milk_leaf():

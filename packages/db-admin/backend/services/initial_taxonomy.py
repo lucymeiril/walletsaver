@@ -23,6 +23,7 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 from services.initial_audited_costco_cleaning import reviewed_costco_cleaning_leaf
 from services.initial_audited_homeplus_seafood import reviewed_homeplus_seafood_leaf
+from services.initial_audited_homeplus_snacks import reviewed_homeplus_snack_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -299,6 +300,10 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.snacks.cereal", ("식품", "과자·간식", "시리얼"), "과자/시리얼|과자/스낵/간식", (
         ("flakes", "플레이크시리얼", "후레이크|플레이크"), ("granola", "그래놀라", "그래놀라", "그래놀라"),
+        ("chocolate", "초코시리얼", ""),
+    )),
+    *_group("food.snacks.bars", ("식품", "과자·간식", "영양바"), "", (
+        ("protein", "단백질바", ""),
     )),
     *_group("food.snacks.traditional", ("식품", "과자·간식", "전통간식"), "", (
         ("hangwa", "한과·전병", ""), ("yanggaeng", "양갱", ""),
@@ -367,9 +372,11 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.bakery.bread", ("식품", "베이커리·스프레드", "빵"), "", (
         ("sliced", "식빵", ""), ("roll", "모닝롤", ""), ("bagel", "베이글", ""),
         ("hard", "하드롤·바게트", ""), ("pastry", "페이스트리", ""), ("dough", "제빵생지", ""),
+        ("filled", "속채운빵", ""),
     )),
     *_group("food.bakery.dessert", ("식품", "베이커리·스프레드", "디저트"), "", (
         ("cake", "케이크", ""), ("muffin", "머핀", ""), ("scone", "스콘", ""), ("financier", "휘낭시에", ""),
+        ("churros", "츄러스", ""),
     )),
     *_group("food.seasonings.oils", ("식품", "양념·소스", "식용유"), "장류/양념/제빵|양념/오일/분말류", (
         ("canola", "카놀라유", "카놀라유", "카놀라유"), ("grape", "포도씨유", "포도씨유", "포도씨유"),
@@ -1598,6 +1605,10 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
     reviewed_dairy_ids = _contextual_homeplus_yogurt_cheese(evidence)
     homeplus_shelf_ids |= reviewed_dairy_ids
+    reviewed_snack_leaf = reviewed_homeplus_snack_leaf(evidence)
+    if reviewed_snack_leaf:
+        homeplus_shelf_ids.add(reviewed_snack_leaf)
+        path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) not in {"source_title_product_type_conflict", "source_leaf_needs_name_corroboration"}}
     reviewed_seafood_leaf = reviewed_homeplus_seafood_leaf(evidence)
     if reviewed_seafood_leaf:
         homeplus_shelf_ids.add(reviewed_seafood_leaf)
