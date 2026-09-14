@@ -3,6 +3,8 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('하루하나 유기농 레몬즙 480ML','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액','food.drinks.bases.lemon'),
+ ('비타민 레몬 티앤에이드 680G','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액','food.drinks.bases.tea_ade'),
  ('simplus 생강레몬청 1KG','커피/차 > 전통차/액상차/꿀 > 유자차','food.drinks.tea.fruit_preserve'),
  ('간편 삼계재료 티백 100G','채소 > 건채소 > 건약재','food.seasonings.cooking_herbs.samgyetang'),
  ('녹차원 깔라만시 100 480G','커피/차 > 액상차/농축액 > 농축액','food.drinks.bases.calamansi'),
@@ -46,6 +48,8 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
  ('국산 황기 80G','건채소 > 건약재'),
  ('깔라만시 100 에이드 혼합 세트','액상차/농축액 > 농축액'),
  ('하루하나 유기농 레몬즙 480ML','액상차/농축액 > 농축액'),
+ ('레몬즙 탄산 에이드 혼합세트','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액'),
+ ('티앤에이드 젤리 사탕','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액'),
  ('레몬청과 유자차 혼합 세트','커피/차 > 전통차/액상차/꿀 > 유자차'),
  ('한라봉차 탄산 주스','커피/차 > 전통차/액상차/꿀 > 유자차'),
 ])
@@ -85,3 +89,10 @@ def test_non_exact_citron_shelf_is_not_overridden():
     result=classify_record({'source_name':'homeplus','source_title':'simplus 레몬청 1KG',
         'source_category_path':['커피/차','전통차/액상차/꿀','유자차','다른 상품']})
     assert result['unified_category_id'] is None
+
+def test_lemon_classification_does_not_invent_contents():
+    row={'source_name':'homeplus','source_title':'하루하나 유기농 레몬즙 14T',
+        'source_category_path':['커피/차','전통차/액상차/꿀','액상차/농축액','농축액']}
+    result=classify_record(row)
+    assert result['unified_category_id'] is None
+    assert 'package_quantity' not in result

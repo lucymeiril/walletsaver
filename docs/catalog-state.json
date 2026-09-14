@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260914-pass48-final",
+  "baseline": ".debug-artifacts/initial-catalog-20260914-pass49-final",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6010,
-  "unresolved": 3186,
-  "next_task": "Review lemon juice and tea/ade bases in pass45/remaining/103; distinguish product form and quantity holds. Fruit-preserve source-citron conflict in 104 completed. Next select a larger coherent product-form batch from current unresolved; do not replay completed rules.",
+  "included": 6014,
+  "unresolved": 3182,
+  "next_task": "Review current unresolved kitchen goods as one larger product-form batch (42 non-Costco observations under kitchen goods). Do not replay completed 101/103/104. Lemon juice 14T remains pending until content quantity is verified; pass49 draft invalid.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

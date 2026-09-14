@@ -8,6 +8,8 @@ import re
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('food.drinks.bases.lemon',('식품','음료','음료용 원액','레몬즙'),r'레몬즙',r'^커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액$',r'에이드|탄산|젤리|세트|혼합|레몬청|\d+\s*[Tt]\b'),
+ ('food.drinks.bases.tea_ade',('식품','음료','음료용 원액','차·에이드 베이스'),r'티앤에이드',r'^커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액$',r'탄산|젤리|세트|혼합|사탕'),
  ('food.drinks.tea.fruit_preserve',('식품','음료','차·코코아','과일청차'),r'(?:생강)?레몬청|자몽청|한라봉청|한라봉차',r'^커피/차 > 전통차/액상차/꿀 > 유자차(?: > 유자차)?$',r'주스|쥬스|탄산|사탕|잼|혼합|세트|유자|녹차|홍차|티백'),
  ('food.seasonings.cooking_herbs.samgyetang',('식품','양념·소스','조리용 건재료','삼계 조리재료'),r'삼계\s*재료',r'건채소|건약재',r'누룽지|찹쌀|닭|삼계탕|완성|밀키트'),
  ('food.drinks.bases.calamansi',('식품','음료','음료용 원액','깔라만시 원액'),r'100%\s*깔라만시|깔라만시\s*100(?:\s|$)',r'액상차/농축액.*농축액',r'에이드|탄산|젤리|세트|혼합'),
