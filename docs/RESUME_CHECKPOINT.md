@@ -1,8 +1,9 @@
-# 재개점 — pass45
+# 재개점 — pass46-final
 
-- 매번 원격 최신 [고정 입구](../handoff/README.md)와 지정된 CURRENT_STATUS.md를 먼저 확인한다.
-- 최신 사본 `.debug-artifacts/initial-catalog-20260914-pass45`: 5,855적재/3,341미해결. 이번87판매상품/160관측 추가. 원본/431결정 보존, 관련733검사·DB·매칭회귀 통과. 운영 승인/공개 없음.
-- 외부 `0484e54`까지 감사. 변경된 제안78파일/488결정/871ID, 제목 불일치4결정 제외. 이미 pass44에 포함된156관측 재참조는 신규 진행량이 아니다. 현재 external-review.json과 예약 인계 참조.
-- 원문/ID/리프/중복은 프로그램 전량검사, 명확한 기존 분류는 묶음별 표본검사하고 오류 시 확대한다. 신규 리프·상품 병합·수량/행사·충돌은 전량검토. 표본검사를 전량 의미검증으로 보고하지 않는다.
-- 결정은 중간 저장하고 여러 묶음을 모아 DB 구축·통합검사·백업한다. 작은 묶음마다 전체 자료를 재생성하지 않는다. 공통 로직 변경 때 넓은 회귀검사.
-- 도구: audit_pass44_proposals.py → integrate_reviewed_chat_pass45.py(승격 선택 목록 고정, 재실행/일괄승인 금지) → prepare_initial_catalog.py → verify_initial_stage.py / verify_reviewed_runtime.py. refresh_chat_queue.py는 이전/신규 경로를 인자로 받으며 신규 제안 링크도 남긴다.
+- 최신 안내는 [고정 입구](../handoff/README.md) → handoff/2026-09-14-pass46. GitHub 채팅 외주 반복 대신 로컬 공통 규칙 구현으로 전환했다.
+- 새 사본 `.debug-artifacts/initial-catalog-20260914-pass46-final`: 5,990적재/3,206미해결. 이번18리프 정의, 78판매상품/135관측 새 적재. 분류해결89판매페이지/150관측. 초안 pass46은 사용금지.
+- 원본 운영DB/복원 source-pending.sqlite SHA256 전후 동일, 기존 포함행/수동431결정 보존. 관련766테스트·DB·멱등import·매칭119상품군/375hit·25miss/1,200변형 통과. 공개/운영승인 없음.
+- Luna는 읽기 전용 JSON 집계만 수행(322관측/95후보). 파일/DB/git/네트워크 접근 범위를 지시로 제한했고 주 에이전트가 원본 해시와 diff 확인. 절감률은 미측정. 다음에는 집계를 재사용하고 과일청/농축액/삼계재료 등 미해결 공통 형태를 처리한다.
+- 이번에는 외주용 전체 자료를 복제하지 않았다. pass45 remaining에서 pass46 delta.json의135개ID를 제외하거나 로컬 최종 bundle의 unresolved를 사용한다. 새 taxonomy는 코드 기준. 기존 DB 사본은 보존했다.
+- 원격0091915까지 후발 전체 제안파일을 보존했으나 의미/DB 검증은 하지 않았다. 이를 완료로 신뢰하거나 전량 승인하지 않는다.
+- 관련 파일: initial_product_forms.py(입출력 없는18규칙), initial_taxonomy.py(기존 후보 없을 때만 적용), test_initial_product_forms.py, tools/verify_product_form_batch.py. 원본대신 복원된 수집전용DB로 새 출력폴더에만 빌드한다.

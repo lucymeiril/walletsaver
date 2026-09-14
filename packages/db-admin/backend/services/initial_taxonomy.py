@@ -19,6 +19,7 @@ from services.initial_audited_baking import reviewed_baking_leaf
 from services.initial_audited_seasonings import reviewed_seasoning_leaf
 from services.initial_audited_emart_produce import reviewed_emart_produce_leaf
 from services.initial_reviewed_chat import reviewed_chat_leaf
+from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
@@ -453,6 +454,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
 )
 
+LEAVES += tuple(Leaf(id,path,(),(),()) for id,path,*_ in FORM_RULES)
 _BY_ID = {leaf.id: leaf for leaf in LEAVES}
 _PROMO = {_label_key(v) for v in ("Best", "베스트", "Obanjang", "오반장", "SpecialPriceOffers", "OnlineDeals", "온라인할인", "행사상품")}
 _MART_ALIASES = {"이마트": "emart", "홈플러스": "homeplus", "롯데마트": "lottemart", "코스트코": "costco"}
@@ -1598,6 +1600,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
     all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids | emart_fresh_ids
+    form_ids = product_form_candidates(evidence) if not all_ids else set()
+    all_ids |= form_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1641,6 +1645,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.95, "audited_emart_household_title"
         if homeplus_shelf_ids:
             confidence, kind = 0.90, "reviewed_homeplus_shelf_and_form"
+        if form_ids:
+            confidence, kind = 0.90, "explicit_product_form_and_context"
         if emart_fresh_ids:
             confidence, kind = 0.90, "reviewed_emart_fresh_and_deli"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
