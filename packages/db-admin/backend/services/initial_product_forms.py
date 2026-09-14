@@ -8,6 +8,14 @@ import re
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('pet.food.feed.cat',('반려동물','먹거리','사료','고양이사료'),r'반려묘\s*사료|고양이\s*사료',r'^반려동물$',r'반려견|강아지|혼합|세트|간식'),
+ ('pet.food.feed.dog',('반려동물','먹거리','사료','강아지사료'),r'반려견\s*사료|강아지\s*사료',r'^반려동물$',r'반려묘|고양이|혼합|세트|간식'),
+ ('pet.food.treats.chew',('반려동물','먹거리','간식','씹는간식'),r'육포|덴탈(?:껌|스틱|크런치|라이프)|우유껌|내츄럴껌|츄잉스틱|터키츄|칠면조힘줄',r'^반려동물$',r'사료|샴푸|세트|혼합|장난감'),
+ ('pet.food.treats.creamy',('반려동물','먹거리','간식','짜먹는간식'),r'츄르|짜먹는',r'^반려동물$',r'사료|샴푸|세트|혼합|장난감'),
+ ('pet.food.treats.meat',('반려동물','먹거리','간식','순살간식'),r'간식.*순살|순살.*간식',r'^반려동물$',r'육포|덴탈|껌|츄잉|츄르|짜먹는|사료|샴푸|세트|혼합|장난감'),
+ ('pet.food.treats.tofu',('반려동물','먹거리','간식','두부간식'),r'간식.*두부|두부.*간식',r'^반려동물$',r'육포|덴탈|껌|츄잉|츄르|짜먹는|사료|샴푸|세트|혼합|장난감'),
+ ('pet.cat.hygiene.litter',('반려동물','고양이용품','배변용품','고양이모래'),r'고양이\s*모래',r'^반려동물$',r'사료|간식|세트|혼합'),
+ ('pet.hygiene.waste.pads',('반려동물','위생용품','배변용품','배변패드'),r'배변패드|쉬야응가.*패드',r'^반려동물$',r'세트|혼합'),
  ('household.kitchen.consumables.paper_cup',('생활용품','주방용품','주방소모품','종이컵'),r'종이컵',r'주방',r'뚜껑|세트|혼합|특가|라면|커피믹스'),
  ('household.kitchen.consumables.coffee_filter',('생활용품','주방용품','주방소모품','커피필터'),r'커피\s*필터',r'주방|커피용품',r'머신|세트|정수|공기'),
  ('household.kitchen.consumables.drain_net',('생활용품','주방용품','주방소모품','싱크대거름망'),r'싱크대\s*거름망',r'주방',r'세트|세제'),
@@ -45,8 +53,8 @@ FORM_RULES = (
 def product_form_candidates(evidence):
     title=evidence['source_title']
     path=' > '.join(evidence['source_path_parts'])
-    if re.search(r'반려|애견|펫푸드|강아지|고양이',path+' '+title):
-        return set()
+    pet_context = bool(re.search(r'반려|애견|펫푸드|강아지|고양이',path+' '+title))
     return {id for id,_,required,context,excluded in FORM_RULES
-            if re.search(required,title) and re.search(context,path)
+            if (not pet_context or id.startswith('pet.'))
+            and re.search(required,title) and re.search(context,path)
             and not re.search(excluded,title)}

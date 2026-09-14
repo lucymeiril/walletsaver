@@ -3,6 +3,14 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('몰리스픽 전연령 반려묘사료 15KG','반려동물','pet.food.feed.cat'),
+ ('몰리스픽 전연령 반려견 사료 15kg','반려동물','pet.food.feed.dog'),
+ ('풀무원아미오 건강담은 칠면조육포50g','반려동물','pet.food.treats.chew'),
+ ('챠오 츄르 참치 4개입','반려동물','pet.food.treats.creamy'),
+ ('건강한간식 순살듬뿍 안심오리 300g','반려동물','pet.food.treats.meat'),
+ ('아미오 자연담은 간식 채소쏙쏙 두부봉 (17g x 6ea)','반려동물','pet.food.treats.tofu'),
+ ('국민 두부 고양이 모래(녹차) 7L','반려동물','pet.cat.hygiene.litter'),
+ ('배변패드(특대)75*90cm*24매','반려동물','pet.hygiene.waste.pads'),
  ('종이컵180ml*50개','주방용품','household.kitchen.consumables.paper_cup'),
  ('커피필터(100매) #2','주방용품','household.kitchen.consumables.coffee_filter'),
  ('싱크대거름망 100매(대)','주방용품','household.kitchen.consumables.drain_net'),
@@ -46,7 +54,7 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
     validate_taxonomy(taxonomy_categories({leaf}),{leaf})
 
 @pytest.mark.parametrize('title,path',[
- ('정직하개 애견용 소고기 육포 1kg','과자'),('오리고기 육포스틱','반려동물'),
+ ('정직하개 애견용 소고기 육포 1kg','과자'),
  ('누룽지차 100티백','곡물가공'),('누룽지 삼계재료','곡물가공'),
  ('수세미즙','주방용품'),('행주 전용비누','주방용품'),
  ('샤워볼 워시 세트','욕실용품'),('빨래집게','주방용품'),
@@ -71,6 +79,25 @@ def test_nonfood_ingredients_and_mixed_products_are_excluded(title,path):
 def test_registry_depth_and_unique_ids():
     assert len({r[0] for r in FORM_RULES})==len(FORM_RULES)==len(CASES)
     validate_taxonomy(taxonomy_categories(),{r[0] for r in FORM_RULES})
+
+
+@pytest.mark.parametrize('title',[
+ '고양이와 강아지 사료 혼합세트', '강아지 고양이 사료',
+ '몰리스 프로발란스 어덜트 8kg', '클래식 5kg', '건강한간식 300g',
+ '덴탈껌 장난감 혼합 세트', '고양이 모래 간식 세트',
+])
+def test_pet_forms_do_not_guess_opaque_products_or_accept_mixed_kits(title):
+    assert product_form_candidates({'source_title':title,'source_path_parts':['반려동물']}) == set()
+
+
+@pytest.mark.parametrize('title', ['자연소재 오리고기 육포스틱 460g', '통통닭가슴살225g', '츄잉스틱플레인요거트230g'])
+def test_pet_shelf_never_creates_a_human_food_form(title):
+    candidates = product_form_candidates({'source_title':title,'source_path_parts':['반려동물']})
+    assert all(leaf.startswith('pet.') for leaf in candidates)
+
+
+def test_pet_jerky_is_pet_chew_not_a_blanket_pet_exclusion():
+    assert product_form_candidates({'source_title':'오리고기 육포스틱','source_path_parts':['반려동물']}) == {'pet.food.treats.chew'}
 
 def test_existing_conflicts_are_not_overridden():
     row={'source_name':'homeplus','source_record_key':'071390258',
