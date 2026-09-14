@@ -157,7 +157,10 @@ def test_reviewed_purchased_count_recovers_content_boundary_without_changing_sou
     before = deepcopy(payload)
     package, issues = _package(payload, {}, title)
     assert issues == []
-    assert package["package_quantity"] == expected["package_quantity"]
+    # Parser preserves the printed unit; staging SSOT stores grams/ml.
+    factor, unit = {"kg": (1000, "g"), "l": (1000, "ml")}.get(expected["package_unit"].lower(), (1, expected["package_unit"]))
+    assert package["package_quantity"] == expected["package_quantity"] * factor
+    assert package["package_unit"] == unit
     assert package["bundle_count"] == count
     assert package["standard_unit"] in {"g", "ml"}
     assert payload == before

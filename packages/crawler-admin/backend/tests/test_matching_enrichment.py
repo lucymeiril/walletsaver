@@ -13,6 +13,8 @@ from services.matching_enrichment import (
 
 
 @pytest.mark.parametrize('row,expected', [
+    ({'name':'국내산 양념 돼지갈비 2.9kg x 2팩','pack_qty':2,'pack_unit':'팩'}, (2900,'g',2)),
+    ({'name':'호주산 냉장 안창살 로스 500g x 4팩','pack_qty':4,'pack_unit':'팩'}, (500,'g',4)),
     ({'name':'농심 신라면 120g x 30개','pack_qty':30,'pack_unit':'개'}, (120, 'g', 30)),
     ({'name':'썬키스트 견과 ３종세트 25g x 60봉','pack_qty':60,'pack_unit':'봉'}, (25, 'g', 60)),
     ({'name':'두꺼운 종이컵 260ml / 40p','package_quantity':260,'package_unit':'ml','display_unit':'260ml'}, (40, 'ea', 1)),
