@@ -3,6 +3,12 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('삼풍 커피필터 600매','커피','household.kitchen.consumables.coffee_filter'),
+ ('하리오 V60 세라믹 컬러 드리퍼 1P','커피','household.kitchen.coffee.dripper'),
+ ('하리오 V60 스이렌 드리퍼 1P','커피','household.kitchen.coffee.dripper'),
+ ('하리오 침출식 스위치 드립퍼','커피','household.kitchen.coffee.dripper'),
+ ('하리오 커피밀 스마트 G 프로','커피','household.kitchen.coffee.manual_grinder'),
+ ('하리오 커피 전자 저울 폴라리스','커피','household.kitchen.coffee.scale'),
  ('몰리스픽 전연령 반려묘사료 15KG','반려동물','pet.food.feed.cat'),
  ('몰리스픽 전연령 반려견 사료 15kg','반려동물','pet.food.feed.dog'),
  ('풀무원아미오 건강담은 칠면조육포50g','반려동물','pet.food.treats.chew'),
@@ -54,6 +60,9 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
     validate_taxonomy(taxonomy_categories({leaf}),{leaf})
 
 @pytest.mark.parametrize('title,path',[
+ ('하리오 V60 세라믹 드리퍼 세트','커피'),
+ ('하리오 전동 커피밀','커피'),
+ ('삼풍 커피필터 머신 세트','커피'),
  ('정직하개 애견용 소고기 육포 1kg','과자'),
  ('누룽지차 100티백','곡물가공'),('누룽지 삼계재료','곡물가공'),
  ('수세미즙','주방용품'),('행주 전용비누','주방용품'),
@@ -77,8 +86,16 @@ def test_nonfood_ingredients_and_mixed_products_are_excluded(title,path):
     assert product_form_candidates({'source_title':title,'source_path_parts':[path]})==set()
 
 def test_registry_depth_and_unique_ids():
-    assert len({r[0] for r in FORM_RULES})==len(FORM_RULES)==len(CASES)
+    assert len({r[0] for r in FORM_RULES})==len(FORM_RULES)
+    assert {r[0] for r in FORM_RULES}=={leaf for _,_,leaf in CASES}
     validate_taxonomy(taxonomy_categories(),{r[0] for r in FORM_RULES})
+
+
+@pytest.mark.parametrize('title,path,leaf',CASES[:6])
+def test_reviewed_coffee_accessories_are_not_coffee_food(title,path,leaf):
+    result=classify_record({'mart':'costco','name':title,'attributes':{'mart_native_category_path':path}})
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
 
 
 @pytest.mark.parametrize('title',[

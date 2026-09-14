@@ -397,7 +397,7 @@ def test_audited_coffee_shelves_use_explicit_product_form(mart, path, title, lea
 
 
 @pytest.mark.parametrize("title", [
-    "삼풍 커피필터 600매", "프리파라 네스프레소 전용 캡슐홀더",
+    "프리파라 네스프레소 전용 캡슐홀더",
     "아소부 뉴 콜드브루 커피메이커", "쏘울핸드 커피 그라인더",
     "카피탈리 시스템 캡슐 커피 머신", "쓰임 스테이블 커피잔 세트",
     "카페, 진정성 밀크티 350ml", "펄세스 스테비아 율무차 18g x 100ct",
