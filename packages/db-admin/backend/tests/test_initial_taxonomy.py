@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import pytest
+from services.initial_audited_emart_produce import FRUIT_TITLES, reviewed_emart_produce_leaf
 
 from services.initial_taxonomy import (
     LEAVES,
@@ -20,6 +21,31 @@ from services.initial_taxonomy import (
 
 def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
+
+
+@pytest.mark.parametrize("mart,title,leaf", [(mart, title, leaf) for mart, titles in FRUIT_TITLES.items() for title, leaf in titles.items()])
+def test_reviewed_single_fruit_titles_reuse_existing_leaves_without_approval(mart, title, leaf):
+    result = classify_record(_raw(mart, "과일", title))
+    assert result["unified_category_id"] == leaf
+    assert result["review_status"] == "classified"
+    assert result["classification_confidence"] >= 0.80
+    evidence = {"mart": mart, "source_title": title, "source_path_parts": ["과일"]}
+    assert reviewed_emart_produce_leaf({**evidence, "source_path_parts": ["무관한 매대"]}) is None
+    assert reviewed_emart_produce_leaf({**evidence, "mart": "costco"}) is None
+    assert reviewed_emart_produce_leaf({**evidence, "source_title": title + " 혼합세트"}) is None
+
+
+@pytest.mark.parametrize("mart,title", [
+    ("lottemart", "프라임 사과, 배 (사과4입, 배6입)"),
+    ("lottemart", "한가득 정성담은 혼합과일 11종 (4KG/박스)"),
+    ("lottemart", "망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)"),
+    ("emart", "부드러운 복숭아 1.25kg 내외 (4~6입)/팩"),
+    ("emart", "까망 애플수박 1.5kg미만"),
+    ("emart", "친환경 신선 행사 모음전"),
+])
+def test_new_fruit_table_does_not_resolve_mixed_or_variable_weight_listings(mart, title):
+    result = classify_record(_raw(mart, "과일", title))
+    assert result["unified_category_id"] is None
 
 
 def test_homeplus_full_path_maps_to_a_four_level_flavoured_milk_leaf():

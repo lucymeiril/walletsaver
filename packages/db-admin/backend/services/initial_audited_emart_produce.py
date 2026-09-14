@@ -24,8 +24,31 @@ GROUPS = {
 }
 TITLES = {title: leaf for leaf, titles in GROUPS.items() for title in titles}
 
+# Reviewed single-fruit listings only. A range may establish fruit identity,
+# but must still fail the independent fixed-quantity contract. No approximate
+# weight, mixed gift or inferred new alias is accepted by this table.
+FRUIT_GROUPS = {
+    "emart": {
+        "food.produce.fruit.peach": ("부드러운 복숭아 4~6입 팩", "아삭한 복숭아 4~6입 팩"),
+    },
+    "lottemart": {
+        "food.produce.fruit.peach": ("정감 부드러운 복숭아 (4-7입/박스)",),
+        "food.produce.fruit.pear": ("천안배 (배 5-6입)", "나주 최종기 농부의 하우스배 (배 7-11입)", "천안 지순태 농부의 GAP 배 (배 8-9입)"),
+        "food.produce.fruit.melon": ("AI로 선별한 머스크 메론 (메론4입)",),
+        "food.produce.fruit.kiwi": ("제스프리 그린키위 (22~25입)", "제스프리 골드키위 (20~25입)"),
+        "food.produce.fruit.mango": ("태국산 망고 (태국망고 9입)",),
+        "food.produce.processed_fruit.dried": ("상주곶감(복) (곶감30입)", "상주 곶감 (정) (상주곶감 30입)", "상주 무농약 왕곶감 (곶감 24입)", "청도 실속 반건시 (반건시 20입)", "GAP 청도 반건시 (반건시 30입)", "상주 왕 곶감 (상주곶감 32입)"),
+    },
+}
+FRUIT_TITLES = {mart: {title: leaf for leaf, titles in groups.items() for title in titles}
+                for mart, groups in FRUIT_GROUPS.items()}
+
 
 def reviewed_emart_produce_leaf(evidence):
+    if tuple(evidence["source_path_parts"]) == ("과일",):
+        fruit = FRUIT_TITLES.get(evidence["mart"], {}).get(evidence["source_title"])
+        if fruit:
+            return fruit
     if evidence["mart"] != "emart" or tuple(evidence["source_path_parts"]) not in {("채소",), ("친환경/유기농",), ("과일",), ("쌀/잡곡/견과",)}:
         return None
     return TITLES.get(evidence["source_title"])

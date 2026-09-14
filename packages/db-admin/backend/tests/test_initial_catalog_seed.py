@@ -124,6 +124,18 @@ def test_sheet_roll_offer_preserves_total_sheets_without_inventing_volume_price(
     assert bundle["offers"][0]["price_per_100g"] is None
 
 
+@pytest.mark.parametrize("title,count", [
+    ("부드러운 복숭아 4~6입 팩", 6),
+    ("천안배 (배 5-6입)", 6),
+    ("제스프리 골드키위 (20~25입)", 25),
+])
+def test_resolved_fruit_identity_does_not_make_a_quantity_range_exact(title, count):
+    raw = item(name=title, package_quantity=count, package_unit="입", display_unit=f"{count}입", unit=f"{count}입")
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle["offers"]
+    assert "count_range_unresolved" in bundle["unresolved"][0]["reasons"]
+
+
 def item(**changes):
     row = {
         "name": "초코우유 120ml×24", "brand": "__no_brand__", "source": "homeplus",
