@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import pytest
 from services.initial_audited_emart_produce import FRUIT_TITLES, reviewed_emart_produce_leaf
+from services.initial_audited_costco_cleaning import TITLES as CLEANING_TITLES, reviewed_costco_cleaning_leaf
 
 from services.initial_taxonomy import (
     LEAVES,
@@ -46,6 +47,27 @@ def test_reviewed_single_fruit_titles_reuse_existing_leaves_without_approval(mar
 def test_new_fruit_table_does_not_resolve_mixed_or_variable_weight_listings(mart, title):
     result = classify_record(_raw(mart, "과일", title))
     assert result["unified_category_id"] is None
+
+
+@pytest.mark.parametrize("title,leaf", CLEANING_TITLES.items())
+def test_reviewed_cleaning_forms_use_exact_titles_and_context_not_shelf_alone(title, leaf):
+    result = classify_record(_raw("costco", "세제", title))
+    assert result["unified_category_id"] == leaf
+    assert result["review_status"] == "classified"
+    assert result["evidence_type"] == "audited_costco_cleaning_title"
+    evidence = {"mart": "costco", "source_title": title, "source_path_parts": ["세제"]}
+    assert reviewed_costco_cleaning_leaf({**evidence, "mart": "emart"}) is None
+    assert reviewed_costco_cleaning_leaf({**evidence, "source_path_parts": ["가전"]}) is None
+    assert reviewed_costco_cleaning_leaf({**evidence, "source_title": title + " 혼합 선물세트"}) is None
+
+
+@pytest.mark.parametrize("title", [
+    "레고 시티 드라이브스루 세차장 60497", "펠로우즈 문서세단기 12C 19L (꽃가루형)",
+    "네일메드코세정제리필세정용분말250포", "프로쉬 세탁세제 선물세트",
+    "비트세탁세제 7kg", "넬리 소다세제 1.5kg + 울드라이어볼x 4",
+])
+def test_cleaning_shelf_does_not_infer_devices_medical_or_opaque_forms(title):
+    assert classify_record(_raw("costco", "세제", title))["unified_category_id"] is None
 
 
 def test_homeplus_full_path_maps_to_a_four_level_flavoured_milk_leaf():

@@ -21,6 +21,7 @@ from services.initial_audited_emart_produce import reviewed_emart_produce_leaf
 from services.initial_reviewed_chat import reviewed_chat_leaf
 from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
+from services.initial_audited_costco_cleaning import reviewed_costco_cleaning_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -407,11 +408,13 @@ LEAVES: tuple[Leaf, ...] = (
         ("softener", "섬유유연제", "고농축 섬유유연제|섬유유연제", "섬유유연제"),
         ("capsule", "캡슐세탁세제", ""), ("dryer_sheet", "건조기시트", ""),
         ("oxygen_bleach", "산소계표백제", ""), ("machine_cleaner", "세탁조세정제", ""),
+        ("sheet", "시트세탁세제", ""), ("powder", "분말세탁세제", ""), ("stain", "얼룩제거제", ""),
     )),
     *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "세탁/청소|청소/생활용품", (
         ("detergent", "주방세제", "일반 주방세제/퐁퐁|주방세제", "주방세제|주방 세제"),
         ("dishwasher", "식기세척기세제", "식기세척기 세제|식기세척기세제", "식기세척기세제|식기세척기 세제"),
         ("degreaser", "주방기름때세정제", ""),
+        ("produce_wash", "과일·채소세정제", ""),
     )),
     *_group("household.cleaning.bath", ("생활용품", "청소·세탁", "욕실청소"), "세탁/청소|청소/생활용품", (
         ("cleaner", "욕실세정제", "욕실세정제", "욕실세정제|욕실 세정제"),
@@ -420,6 +423,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("household.cleaning.general", ("생활용품", "청소·세탁", "일반청소"), "", (
         ("chlorine", "염소계표백제", ""), ("glass", "유리세정제", ""), ("wipes", "청소용티슈", ""),
         ("dehumidifier", "제습제", ""), ("deodorizer", "탈취제", ""),
+        ("multipurpose", "다목적세정제", ""),
     )),
     *_group("household.hygiene.feminine", ("생활용품", "위생용품", "생리용품"), "", (
         ("liner", "팬티라이너", ""), ("overnight", "오버나이트패드", ""),
@@ -1564,6 +1568,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         } else None
     )
     household_ids = {household_leaf} if household_leaf else set()
+    costco_cleaning_leaf = reviewed_costco_cleaning_leaf(evidence)
+    if costco_cleaning_leaf:
+        household_ids.add(costco_cleaning_leaf)
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
@@ -1653,7 +1660,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         if audited_emart_ids:
             confidence, kind = 0.95, "audited_emart_food_title"
         if household_ids:
-            confidence, kind = 0.95, "audited_emart_household_title"
+            confidence, kind = 0.95, "audited_costco_cleaning_title" if costco_cleaning_leaf else "audited_emart_household_title"
         if homeplus_shelf_ids:
             confidence, kind = 0.90, "reviewed_homeplus_shelf_and_form"
         if form_ids:

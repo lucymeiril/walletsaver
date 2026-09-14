@@ -136,6 +136,17 @@ def test_resolved_fruit_identity_does_not_make_a_quantity_range_exact(title, cou
     assert "count_range_unresolved" in bundle["unresolved"][0]["reasons"]
 
 
+@pytest.mark.parametrize("title,quantity", [
+    ("액츠 프리미엄 젤 세탁세제 2.7L x 2 + 리필 1L x 4", 2.7),
+    ("무궁화키친솝주방세제4L + 700ml", 4),
+])
+def test_resolved_cleaning_identity_does_not_erase_mixed_refill_quantity_holds(title, quantity):
+    raw = item(name=title, package_quantity=quantity, package_unit="l", display_unit=f"{quantity}L", unit=f"{quantity}L")
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle["offers"]
+    assert "mixed_package_unresolved" in bundle["unresolved"][0]["reasons"]
+
+
 def item(**changes):
     row = {
         "name": "초코우유 120ml×24", "brand": "__no_brand__", "source": "homeplus",
