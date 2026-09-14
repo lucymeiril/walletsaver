@@ -21,3 +21,11 @@
 - 현재 미적재가 아닌156관측은 모두 pass44에 이미 적재된 ID였다. 해당 옛 제안의 형식 재정리는 새 DB 진행량이 아니다. 기존 정의로의 제안을 DB-ready로 부르는 추가 지침은 실제 충돌/단위검사와 혼동되므로 용어를 정리했다.
 - 원본마트/리프별 SHA256 순서2개씩164표본을 검토했다. 메밀면/냉면·찐만두·양념육·어종·과즙음료·젤리·탈취제 등 불명확한 형태는 승격 제외. 롯데마트 후보와 신규리프/보류 판단도 이번 승격 제외. **전량 의미검증이나 전체 제안 합격 아님.**
 - 옛 문서와 proposals는 이력으로 남겼다. 최신 링크만 이 폴더로 이동. 관련 검사만 실행하고 통합·백업은 이번 묶음 전체에 한 번 수행했다.
+
+## 전체 remaining 제안 큐 완료
+
+- `complete-remaining-001-451 / 기준b4e0073 / pass45 remaining/001-451 현재 3,341관측 전부 / 제안 완료 / proposals/complete-remaining-001-451.json / 다음: Work 모드 교차검증·일괄검증·통합`. 현재 원문과 ID·마트·판매키·제목이 정확히 맞는 과거 제안은 재사용하고, 나머지는 현재 taxonomy의 직접 일치만 existing_leaf로 제안했다. taxonomy 밖 제품축이 명확한 경우만 new_leaf_needed로 분리했으며 나머지 불명확 항목은 hold로 보존했다.
+- 결정수: 3,341. decision 분포: {'already_classified': 27, 'existing_leaf': 1202, 'hold': 1498, 'new_leaf_needed': 614}. 생성근거 분포: {'conservative_hold': 1444, 'exact_current_taxonomy': 1022, 'exact_historical_reuse': 592, 'explicit_new_leaf_domain': 283}.
+- 이 완료 표시는 **제안작성 coverage 완료**를 뜻한다. new_leaf_needed/hold/단위·수량·프로모션 이슈는 후속 설계·충돌검사·통합 검토가 필요하며 DB 적재 완료를 뜻하지 않는다.
+- 이번 작업은 `REMAINING.md`, `accepted.json`, `archives`, DB를 수정하지 않았다. 테스트·lint·import를 실행하지 않았고 결과파일의 `executed_tests`는 빈 배열이다.
+
