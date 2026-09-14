@@ -27,6 +27,7 @@ from services.initial_audited_homeplus_snacks import reviewed_homeplus_snack_lea
 from services.initial_audited_lotte_nuts import reviewed_lotte_nut_leaf
 from services.initial_audited_costco_fruit_forms import reviewed_costco_fruit_form_leaf
 from services.initial_audited_costco_rice_forms import reviewed_costco_rice_form_leaf
+from services.initial_audited_emart_snacks import reviewed_emart_snack_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -322,6 +323,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("capsule", "캡슐커피", "캡슐커피"),
     )),
     *_group("food.drinks.water_soda", ("식품", "음료", "생수·탄산"), "생수/음료|생수/음료/주류", (
+        ("ice", "식용얼음", ""),
         ("water", "생수", "생수|먹는샘물", "먹는샘물|미네랄워터|백산수|아이시스|트루워터|삼다수|에비앙|피지워터"), ("sparkling", "탄산수", "탄산수", "탄산수"),
         ("cola", "콜라", "콜라"), ("cider", "사이다", "사이다"), ("soda", "탄산음료", ""),
         ("sports", "스포츠음료", "스포츠/이온음료", "이온음료|스포츠음료"),
@@ -1614,6 +1616,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     costco_rice_form_leaf = reviewed_costco_rice_form_leaf(evidence)
     if costco_rice_form_leaf:
         homeplus_shelf_ids.add(costco_rice_form_leaf)
+    emart_snack_leaf = reviewed_emart_snack_leaf(evidence)
+    if emart_snack_leaf:
+        homeplus_shelf_ids.add(emart_snack_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
