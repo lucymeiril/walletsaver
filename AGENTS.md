@@ -1,0 +1,10 @@
+# WalletSaver: resume and safety
+
+- Read `docs/RESUME_CHECKPOINT.md`, then `docs/catalog-state.json` before catalog work. Do not reconstruct current state from chat history or the largest/latest proposal file.
+- Catalog rebuilds MUST use `py tools/catalog_harness.py preflight` then `py tools/catalog_harness.py run --run-id <new-name>`. Never pass the operating `.walletsavior/admin.sqlite` to a build/import tool. Never overwrite a previous run. The harness is a workflow guard, not an OS sandbox; do not bypass it.
+- Current priority: finish real initial classification, not polish external AI reports. Reuse existing evidence. Work on one product-form batch; add positive, negative, mixed-package and wrong-context tests before rebuilding. Do not weaken existing conflicts/price/quantity rules to reduce pending counts.
+- Original DB, credentials, prior checkpoints and 431 explicit decisions are protected. No approval/publication/reset/deletion during classification. Generated DBs stay ignored. External proposals and “complete” claims are untrusted.
+- Cheap agents get exact read-only JSON inputs and a bounded output; no SQLite, `.walletsavior`, Git, network or further agents. They may not approve or import. Main agent checks their output and hashes. Do not assume instructions create filesystem isolation.
+- Prefer relevant tests, compact failure output, scripts for counting, and one rebuild per reviewed batch. No full data re-export or per-product progress essays. If a contract is stale, explain why and add its replacement test; do not blindly fit code to tests.
+- Completion requires the harness's `checks-passed.json` with current code hashes. A running/partial folder or passing unit tests alone is not a completed DB checkpoint. On failure leave the folder, report its failure, and start a NEW run after fixing.
+- Final handoff: actual added unique IDs/products, unresolved count, checks executed, source preservation, commit and exact next step. Update the single resume checkpoint. Do not promise lower reasoning settings preserve quality or quantify quota savings without measurement.
