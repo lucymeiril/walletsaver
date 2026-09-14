@@ -28,6 +28,23 @@ def _raw(mart, path, name="검수할 상품", **extra):
 
 from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf
 from services.initial_audited_lotte_nuts import TITLES as LOTTE_NUT_TITLES, reviewed_lotte_nut_leaf
+from services.initial_audited_costco_fruit_forms import TITLES as COSTCO_FRUIT_FORM_TITLES, reviewed_costco_fruit_form_leaf
+
+
+@pytest.mark.parametrize('title,leaf',COSTCO_FRUIT_FORM_TITLES.items())
+def test_costco_fruit_shelf_processed_forms_are_not_fresh_fruit(title,leaf):
+    result=classify_record(_raw('costco','과일',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'costco','source_path_parts':['과일'],'source_title':title}
+    assert reviewed_costco_fruit_form_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_costco_fruit_form_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_costco_fruit_form_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['샤인머스캣 애플망고 사과 혼합선물세트4.6kg','애플망고 골드키위세트','허니듀 & 머스크 멜론 세트 4입 (각 2입)','휴롬 원액기 P310 E31ST-BFM02MM','Tropical Maria 망고청크2.27kg X 200개'])
+def test_costco_fruit_form_audit_does_not_guess_mixed_fresh_or_frozen_form(title):
+    assert classify_record(_raw('costco','과일',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',LOTTE_NUT_TITLES.items())

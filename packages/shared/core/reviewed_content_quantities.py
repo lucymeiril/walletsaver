@@ -52,6 +52,16 @@ COUNTED_CONTENT_TITLES = frozenset((
 # Full single-product measured chains reviewed from pending source titles.
 # This is not permission to treat any arbitrary set/unknown suffix as a chain.
 REVIEWED_CHAIN_TITLES = frozenset((
+    "티젠 피치 콤부차 5g x 30ct x 2",
+    "티젠 파인애플 콤부차 5g x 30ct x 2",
+    "티젠 매실 콤부차 5g x 30ct x 2",
+    "티젠 유자 콤부차 5g x 30ct x 2",
+    "티젠 샤인머스캣 콤부차 5g x 30ct x 2",
+    "티젠 레몬 콤부차 5g x 30ct x 2",
+    "티젠 스트로베리 & 키위 콤부차 5g x 30ct x 2",
+    "티젠 청귤라임 콤부차 5g x 30ct x 2",
+    "티젠 망고구아바 콤부차 5g x 30ct x 2",
+    "티젠 베리 콤부차 5g x 30ct x 2",
     "멸치 해산물 다시팩 300G(15Gx20입)",
     "코카콜라제로제로190ml x 30can x 2",
     "녹차원 보이차 0.9g x 100티백 x 3",

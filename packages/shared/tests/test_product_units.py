@@ -132,6 +132,7 @@ def test_single_measure_chain_multiplies_all_explicit_factors() -> None:
 
 @pytest.mark.parametrize('title,quantity,count', [
     ('카누 라떼 커피 13.5g x 50스틱 x 2박스',13.5,100),
+    ('티젠 레몬 콤부차 5g x 30ct x 2',5,60),
     ('맥심 화이트 골드 커피믹스 11.7g x 210T x 2',11.7,420),
     ('녹차원 보이차 0.9g x 100티백 x 3',0.9,300),
     ('코카콜라제로제로190ml x 30can x 2',190,60),
