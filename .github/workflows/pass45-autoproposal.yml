@@ -20,6 +20,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Exclude incomplete legacy new-leaf candidates
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/pass45_complete_remaining.py')
+          text = path.read_text(encoding='utf-8')
+          needle = '            if kind == "hold" and decision.get("suggested_new_leaf"):\n'
+          replacement = '            if kind == "new_leaf_needed" and not decision.get("suggested_new_leaf"):\n                continue\n            if kind == "hold" and decision.get("suggested_new_leaf"):\n'
+          if needle not in text:
+              raise SystemExit('expected legacy-filter insertion point not found')
+          path.write_text(text.replace(needle, replacement, 1), encoding='utf-8')
+          PY
+
       - name: Generate proposal-only coverage
         run: python tools/pass45_complete_remaining.py --baseline "$GITHUB_SHA"
 
