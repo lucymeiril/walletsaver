@@ -29,6 +29,7 @@ from services.initial_audited_costco_fruit_forms import reviewed_costco_fruit_fo
 from services.initial_audited_costco_rice_forms import reviewed_costco_rice_form_leaf
 from services.initial_audited_emart_snacks import reviewed_emart_snack_leaf
 from services.initial_audited_costco_egg_meat import reviewed_costco_egg_meat_leaf
+from services.initial_audited_costco_kimchi_forms import reviewed_costco_kimchi_form_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -274,6 +275,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("radish", "총각김치", "총각김치", "총각김치"), ("yeolmu", "열무김치", "열무김치", "열무김치"),
         ("water", "물김치", "물김치", "물김치"), ("white", "백김치", "백김치", "백김치"),
         ("green_onion", "파김치", ""), ("mustard", "갓김치", ""), ("seokbakji", "석박지", ""),
+        ("bossam", "보쌈김치", ""), ("aged", "묵은지", ""),
     )),
     *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("stir_fried", "볶음반찬", ""),
@@ -1623,6 +1625,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     egg_meat_leaf = reviewed_costco_egg_meat_leaf(evidence)
     if egg_meat_leaf:
         homeplus_shelf_ids.add(egg_meat_leaf)
+    costco_kimchi_form_leaf = reviewed_costco_kimchi_form_leaf(evidence)
+    if costco_kimchi_form_leaf:
+        homeplus_shelf_ids.add(costco_kimchi_form_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
@@ -1716,7 +1721,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         if household_ids:
             confidence, kind = 0.95, "audited_costco_cleaning_title" if costco_cleaning_leaf else "audited_emart_household_title"
         if homeplus_shelf_ids:
-            confidence, kind = 0.90, "reviewed_homeplus_shelf_and_form"
+            confidence, kind = 0.90, ("reviewed_homeplus_shelf_and_form" if evidence['mart']=='homeplus' else "reviewed_source_shelf_and_form")
         if form_ids:
             confidence, kind = 0.90, "explicit_product_form_and_context"
         if emart_fresh_ids:

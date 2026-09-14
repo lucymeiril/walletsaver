@@ -32,6 +32,23 @@ from services.initial_audited_costco_fruit_forms import TITLES as COSTCO_FRUIT_F
 from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FORM_TITLES, reviewed_costco_rice_form_leaf
 from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, reviewed_emart_snack_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
+from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
+
+
+@pytest.mark.parametrize('title,leaf',KIMCHI_FORM_TITLES.items())
+def test_costco_kimchi_shelf_declared_forms_do_not_become_kimchi_by_shelf(title,leaf):
+    result=classify_record(_raw('costco','김치',title))
+    assert result['unified_category_id']==leaf
+    assert result['evidence_type']=='reviewed_source_shelf_and_form'
+    evidence={'mart':'costco','source_path_parts':['김치'],'source_title':title}
+    assert reviewed_costco_kimchi_form_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_costco_kimchi_form_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_costco_kimchi_form_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['종가 포기김치1kg x 2열무김치900g x 1혼합팩','종가 김치공방 보쌈김치 1kg + 겉절이 1kg','LG 디오스 김치톡톡 217L- 메탈 린넨화이트','아워홈 갈치김치 800 g x 4','농협선장김치5kg x 2'])
+def test_costco_kimchi_audit_does_not_guess_mixed_unknown_types_or_appliances(title):
+    assert classify_record(_raw('costco','김치',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',EGG_MEAT_TITLES.items())
