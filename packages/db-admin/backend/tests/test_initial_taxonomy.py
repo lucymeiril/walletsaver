@@ -31,6 +31,34 @@ from services.initial_audited_lotte_nuts import TITLES as LOTTE_NUT_TITLES, revi
 from services.initial_audited_costco_fruit_forms import TITLES as COSTCO_FRUIT_FORM_TITLES, reviewed_costco_fruit_form_leaf
 from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FORM_TITLES, reviewed_costco_rice_form_leaf
 from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, reviewed_emart_snack_leaf
+from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
+
+
+@pytest.mark.parametrize('title,leaf',EGG_MEAT_TITLES.items())
+def test_costco_egg_shelf_declared_species_and_seasoning_are_separate(title,leaf):
+    result=classify_record(_raw('costco','계란',title))
+    assert result['unified_category_id']==leaf
+    evidence={'mart':'costco','source_path_parts':['계란'],'source_title':title}
+    assert reviewed_costco_egg_meat_leaf({**evidence,'mart':'homeplus'}) is None
+    assert reviewed_costco_egg_meat_leaf({**evidence,'source_path_parts':['가구']}) is None
+    assert reviewed_costco_egg_meat_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',sorted(URL_BEEF_TITLES))
+def test_ambiguous_costco_cut_requires_independent_beef_product_url(title):
+    evidence={'mart':'costco','source_path_parts':['계란'],'source_title':title}
+    assert reviewed_costco_egg_meat_leaf(evidence) is None
+    for url in ['https://www.costco.co.kr/Foods/AU-Pork-500g/p/1','https://example.com/AU-Beef/p/1','https://www.costco.co.kr/Foods/Cut/p/1?beef=1']:
+        assert reviewed_costco_egg_meat_leaf({**evidence,'source_urls':[url]}) is None
+    url='https://www.costco.co.kr/Foods/MeatEggs/AU-Fresh-Beef-500g/p/1'
+    assert reviewed_costco_egg_meat_leaf({**evidence,'source_urls':[url]})=='food.meat.fresh.beef'
+    result=classify_record(_raw('costco','계란',title,canonical_url=url))
+    assert result['unified_category_id']=='food.meat.fresh.beef'
+
+
+@pytest.mark.parametrize('title',['보만 2단 계란찜기 EB7210WG','포크밸리 삼겹 1kg +칼집삼겹 1kg +목심 1kg (로스용)','호주산 양념 LA 갈비, 소불고기 콤보팩','국내산냉동돈육한입삼겹살1.0kg +등심돈가스1.0kg','테팔 인덕션 주물 계란말이 팬'])
+def test_costco_egg_meat_audit_does_not_accept_tools_or_mixed_cuts(title):
+    assert classify_record(_raw('costco','계란',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',EMART_SNACK_TITLES.items())

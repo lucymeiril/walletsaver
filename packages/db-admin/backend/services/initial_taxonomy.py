@@ -28,6 +28,7 @@ from services.initial_audited_lotte_nuts import reviewed_lotte_nut_leaf
 from services.initial_audited_costco_fruit_forms import reviewed_costco_fruit_form_leaf
 from services.initial_audited_costco_rice_forms import reviewed_costco_rice_form_leaf
 from services.initial_audited_emart_snacks import reviewed_emart_snack_leaf
+from services.initial_audited_costco_egg_meat import reviewed_costco_egg_meat_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -1619,6 +1620,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_snack_leaf = reviewed_emart_snack_leaf(evidence)
     if emart_snack_leaf:
         homeplus_shelf_ids.add(emart_snack_leaf)
+    egg_meat_leaf = reviewed_costco_egg_meat_leaf(evidence)
+    if egg_meat_leaf:
+        homeplus_shelf_ids.add(egg_meat_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
