@@ -8,6 +8,8 @@ import re
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('food.seasonings.cooking_herbs.samgyetang',('식품','양념·소스','조리용 건재료','삼계 조리재료'),r'삼계\s*재료',r'건채소|건약재',r'누룽지|찹쌀|닭|삼계탕|완성|밀키트'),
+ ('food.drinks.bases.calamansi',('식품','음료','음료용 원액','깔라만시 원액'),r'100%\s*깔라만시|깔라만시\s*100(?:\s|$)',r'액상차/농축액.*농축액',r'에이드|탄산|젤리|세트|혼합'),
  ('household.kitchen.gloves.rubber',('생활용품','주방용품','주방장갑','고무장갑'),r'고무장갑',r'주방|청소|생활용품',r'니트릴'),
  ('household.kitchen.gloves.nitrile',('생활용품','주방용품','주방장갑','니트릴장갑'),r'니트릴\s*장갑',r'주방',r'의료|수술'),
  ('household.kitchen.cleaning.scourer',('생활용품','주방용품','주방청소도구','수세미'),r'수세미',r'주방|세제|청소',r'차|즙|열매|씨앗'),
