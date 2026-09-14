@@ -14,6 +14,7 @@ from services.initial_catalog_seed import (
     normalize_pending_ingestions,
     stable_id,
     validated_brand,
+    _package,
 )
 from storage.models import Base
 
@@ -25,6 +26,51 @@ CATEGORIES = [
     {"id": "food.dairy.milk.chocolate", "parent_id": "food.dairy.milk", "name_ko": "초코우유"},
 ]
 LEAF = "food.dairy.milk.chocolate"
+
+
+@pytest.mark.parametrize("title,capacity,count", [
+    ("종이컵180ml*50개", 180, 50),
+    ("테이크아웃 종이컵 380ml 100개입", 380, 100),
+    ("두꺼운 종이컵 260ml / 40p", 260, 40),
+    ("종이컵 180ml*450P", 180, 450),
+    ("종이컵180ml*1000개", 180, 1000),
+])
+def test_paper_cup_capacity_is_not_consumable_volume(title, capacity, count):
+    package, issues = _package({"package_quantity": capacity, "package_unit": "ml"}, {}, title)
+    assert issues == []
+    assert (package["package_quantity"], package["package_unit"], package["bundle_count"]) == (count, "개", 1)
+    assert package["standard_unit"] is None
+    assert package["display_unit"] == title
+
+
+@pytest.mark.parametrize("title", [
+    "종이컵 180ml", "종이컵뚜껑 473ML 25P", "종이컵 180ml 50개+50개",
+    "종이컵 180ml 50개 세트", "종이컵 180ml*50개*2팩",
+    "종이컵 180ml 50~60개", "종이컵 180ml 50-60개",
+])
+def test_ambiguous_cup_counts_and_mixed_products_remain_unresolved(title):
+    package, issues = _package({"package_quantity": 180, "package_unit": "ml"}, {}, title)
+    assert package is None
+    assert issues
+
+
+def test_cup_structured_capacity_and_count_conflicts_are_not_hidden():
+    for payload in [
+        {"package_quantity": 200, "package_unit": "ml"},
+        {"package_quantity": 20, "package_unit": "개"},
+        {"package_quantity": 180, "package_unit": "ml", "bundle_count": 2},
+    ]:
+        assert _package(payload, {}, "종이컵180ml*50개")[0] is None
+
+
+def test_explicit_rubber_glove_pairs_recover_missing_crawler_quantity():
+    package, issues = _package({}, {}, "고무장갑 2켤레(중)")
+    assert issues == []
+    assert package["package_quantity"] == 2
+    assert package["package_unit"] == "켤레"
+    assert package["standard_unit"] is None
+    for title in ["고무장갑 중형", "고무장갑 2켤레+1켤레", "고무장갑 2켤레 x 2", "팬28cm", "종이호일30cm*40m"]:
+        assert _package({}, {}, title)[0] is None
 
 
 def item(**changes):

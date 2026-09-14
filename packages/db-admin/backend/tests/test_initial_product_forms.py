@@ -3,6 +3,7 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('종이컵180ml*50개','주방용품','household.kitchen.consumables.paper_cup'),
  ('커피필터(100매) #2','주방용품','household.kitchen.consumables.coffee_filter'),
  ('싱크대거름망 100매(대)','주방용품','household.kitchen.consumables.drain_net'),
  ('나무젓가락 80P','주방용품','household.kitchen.consumables.chopsticks'),

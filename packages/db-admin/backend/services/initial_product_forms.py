@@ -8,6 +8,7 @@ import re
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('household.kitchen.consumables.paper_cup',('생활용품','주방용품','주방소모품','종이컵'),r'종이컵',r'주방',r'뚜껑|세트|혼합|특가|라면|커피믹스'),
  ('household.kitchen.consumables.coffee_filter',('생활용품','주방용품','주방소모품','커피필터'),r'커피\s*필터',r'주방|커피용품',r'머신|세트|정수|공기'),
  ('household.kitchen.consumables.drain_net',('생활용품','주방용품','주방소모품','싱크대거름망'),r'싱크대\s*거름망',r'주방',r'세트|세제'),
  ('household.kitchen.consumables.chopsticks',('생활용품','주방용품','주방소모품','일회용젓가락'),r'나무젓가락|일회용\s*젓가락',r'주방',r'세트|도시락|라면'),

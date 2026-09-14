@@ -142,6 +142,32 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
     issues: list[str] = []
     quantity = _positive(_first((payload, attrs), ("package_quantity", "pack_qty")))
     unit = _text(_first((payload, attrs), ("package_unit", "pack_unit"))).casefold()
+    # A paper cup's ml label is vessel capacity, never edible contents.
+    # Recover only one explicit sold count; retain original capacity in raw
+    # evidence/display text. Lids, kits and incomplete multiplications wait.
+    if "종이컵" in title:
+        counts = re.findall(r"(?<![\d.])(\d+)\s*(개입|개|[pP])(?![A-Za-z가-힣])", title)
+        capacities = re.findall(r"(?<![\d.])(\d+(?:\.\d+)?)\s*ml(?![A-Za-z])", title, re.I)
+        count = int(counts[0][0]) if len(counts) == 1 else 0
+        raw_bundle = _first((payload, attrs), ("bundle_count",))
+        structured_count = _number(raw_bundle) if raw_bundle is not None else None
+        if (not count or len(capacities) > 1 or _COUNT_RANGE_RE.search(title) or re.search(r"뚜껑|세트|혼합|특가|[+~～]|[x×*]\s*\d+\s*(?!ml)(?:롤|팩)", title, re.I)
+            or len(re.findall(r"[x×*]\s*\d+", title, re.I)) > (1 if capacities else 0)
+            or structured_count is not None and structured_count not in {1, count}):
+            return None, ["unit_container_count_unresolved"]
+        if unit in {"ml", "cc"}:
+            if len(capacities) != 1 or quantity != float(capacities[0]):
+                return None, ["unit_container_capacity_conflict"]
+        elif quantity is not None and (unit not in {"개", "개입", "p", "ea"} or quantity != count):
+            return None, ["unit_container_count_conflict"]
+        return {"package_quantity": float(count), "package_unit": "개", "bundle_count": 1,
+                "standard_unit": None, "display_unit": title}, []
+    # Missing crawler quantity is not proof of a singleton. A literal pair
+    # count can establish rubber glove quantity without guessing sizes.
+    if (quantity is None or not unit) and "고무장갑" in title:
+        pair = re.search(r"(?<![\d.])(\d+)\s*켤레(?![가-힣])", title)
+        if pair and not re.search(r"[+x×*~～]|세트|혼합", title, re.I):
+            quantity, unit = int(pair.group(1)), "켤레"
     if quantity is None or not unit:
         return None, ["unit_unresolved"]
     if unit not in UNIT_ALIASES and unit not in COUNT_UNITS:

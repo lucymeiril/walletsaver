@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260914-pass50",
+  "baseline": ".debug-artifacts/initial-catalog-20260914-pass51",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6021,
-  "unresolved": 3175,
-  "next_task": "Improve kitchen goods quantity interpretation: distinguish cup/container capacity and utensil dimensions from purchased counts; retain mixed/unknown holds. 22 listings classified in pass50 but only 6 added due quantity holds. Do not replay completed classification batches.",
+  "included": 6028,
+  "unresolved": 3168,
+  "next_task": "Kitchen sheet/roll quantities: audit exact single-chain sheets x rolls, distinguish per-roll sheets from purchased roll count; preserve mixed/three-factor/structured conflicts. Cup capacity/count and explicit rubber glove pair recovery completed in pass51. Do not infer singleton quantities for utensils or cookware dimensions.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }
