@@ -6,6 +6,12 @@ Original source payload remains unchanged in observation provenance.
 """
 
 COUNTED_CONTENT_TITLES = frozenset((
+    "오뚜기오뚜기밥 큰밥 300g x 18개",
+    "햇반 이천 쌀밥 210g x 18개",
+    "오뚜기 오뚜기밥 작은밥 150g x 30개",
+    "오뚜기 오뚜기밥 발아현미 210g x 18개",
+    "오뚜기 오뚜기밥 발아흑미210g x 18개",
+    "오뚜기 오뚜기밥 고시히카리 210g x 18개",
     "농심 신라면 120g x 30개",
     "진라면플러스매운맛 120g x 30개",
     "진라면플러스순한맛 120g x 30개",
@@ -52,6 +58,7 @@ COUNTED_CONTENT_TITLES = frozenset((
 # Full single-product measured chains reviewed from pending source titles.
 # This is not permission to treat any arbitrary set/unknown suffix as a chain.
 REVIEWED_CHAIN_TITLES = frozenset((
+    "봉하쌀영양찰밥230g x 6 x 2",
     "티젠 피치 콤부차 5g x 30ct x 2",
     "티젠 파인애플 콤부차 5g x 30ct x 2",
     "티젠 매실 콤부차 5g x 30ct x 2",

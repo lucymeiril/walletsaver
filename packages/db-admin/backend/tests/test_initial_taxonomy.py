@@ -29,6 +29,23 @@ def _raw(mart, path, name="검수할 상품", **extra):
 from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf
 from services.initial_audited_lotte_nuts import TITLES as LOTTE_NUT_TITLES, reviewed_lotte_nut_leaf
 from services.initial_audited_costco_fruit_forms import TITLES as COSTCO_FRUIT_FORM_TITLES, reviewed_costco_fruit_form_leaf
+from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FORM_TITLES, reviewed_costco_rice_form_leaf
+
+
+@pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())
+def test_costco_rice_shelf_declared_grains_and_prepared_food_are_separate(title,leaf):
+    result=classify_record(_raw('costco','쌀',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'costco','source_path_parts':['쌀'],'source_title':title}
+    assert reviewed_costco_rice_form_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_costco_rice_form_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_costco_rice_form_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['세계인의 건강곡물 선물세트 1.54kg x 10세트','세계인의 건강 곡물 선물세트 1.54kg','다담정 우리쌀로 만든 전병 648g x 5세트','푸른들판 유기농 골든퀸 3kg x 3','익산농협 쌀이보배10kg x 2','대구농산 쌀가루 2.5kg'])
+def test_costco_rice_form_audit_does_not_guess_opaque_or_mixed_goods(title):
+    assert classify_record(_raw('costco','쌀',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_FRUIT_FORM_TITLES.items())

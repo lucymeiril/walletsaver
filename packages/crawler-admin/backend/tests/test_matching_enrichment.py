@@ -48,6 +48,7 @@ def test_cosmetic_fullwidth_identity_is_shared_but_real_name_or_pack_changes_are
 
 @pytest.mark.parametrize('title,quantity,count', [
     ('카누 라떼 커피 13.5g x 50스틱 x 2박스',13.5,100),
+    ('봉하쌀영양찰밥230g x 6 x 2',230,12),
     ('티젠 레몬 콤부차 5g x 30ct x 2',5,60),
     ('맥심 화이트 골드 커피믹스 11.7g x 210T x 2',11.7,420),
     ('녹차원 보이차 0.9g x 100티백 x 3',.9,300),

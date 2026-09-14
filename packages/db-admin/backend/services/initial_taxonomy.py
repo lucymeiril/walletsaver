@@ -26,6 +26,7 @@ from services.initial_audited_homeplus_seafood import reviewed_homeplus_seafood_
 from services.initial_audited_homeplus_snacks import reviewed_homeplus_snack_leaf
 from services.initial_audited_lotte_nuts import reviewed_lotte_nut_leaf
 from services.initial_audited_costco_fruit_forms import reviewed_costco_fruit_form_leaf
+from services.initial_audited_costco_rice_forms import reviewed_costco_rice_form_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -172,7 +173,7 @@ LEAVES: tuple[Leaf, ...] = (
         # foods that merely mention these ingredients.
         ("glutinous", "찹쌀", ""), ("black", "흑미", ""),
         ("barley", "보리", ""), ("millet", "기장", ""),
-        ("chickpea", "병아리콩", ""),
+        ("chickpea", "병아리콩", ""), ("quinoa", "퀴노아", ""), ("farro", "파로", ""),
     )),
     *_group("food.grains.nuts", ("식품", "곡물·견과", "견과류"), "견과|견과류|쌀/잡곡/견과류", (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),
@@ -1610,6 +1611,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     costco_fruit_form_leaf = reviewed_costco_fruit_form_leaf(evidence)
     if costco_fruit_form_leaf:
         homeplus_shelf_ids.add(costco_fruit_form_leaf)
+    costco_rice_form_leaf = reviewed_costco_rice_form_leaf(evidence)
+    if costco_rice_form_leaf:
+        homeplus_shelf_ids.add(costco_rice_form_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
