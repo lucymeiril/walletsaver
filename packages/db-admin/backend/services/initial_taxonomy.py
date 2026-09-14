@@ -24,6 +24,7 @@ from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 from services.initial_audited_costco_cleaning import reviewed_costco_cleaning_leaf
 from services.initial_audited_homeplus_seafood import reviewed_homeplus_seafood_leaf
 from services.initial_audited_homeplus_snacks import reviewed_homeplus_snack_leaf
+from services.initial_audited_lotte_nuts import reviewed_lotte_nut_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -176,6 +177,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),
         ("macadamia", "마카다미아", "마카다미아"), ("cashew", "캐슈넛", "캐슈넛"),
         ("pistachio", "피스타치오", ""), ("mixed", "혼합견과", ""),
+        ("pecan", "피칸", ""), ("pumpkin_seed", "호박씨", ""),
     )),
     *_group("food.meat.fresh", ("식품", "정육·계란", "신선육"), "정육/계란|정육/계란류|정육|축산", (
         ("beef", "소고기", "국내산소고기|수입산소고기|한우|한우간편팩상품|프리미엄 한우구이|소고기"),
@@ -292,6 +294,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("wheat", "밀가루스낵", "밀가루스낵"), ("popcorn", "팝콘", "팝콘"),
         ("grain", "곡물스낵", ""),
         ("vegetable", "채소스낵", ""), ("seaweed", "해조스낵", ""),
+        ("fruit", "과일칩", ""),
     )),
     *_group("food.snacks.sweets", ("식품", "과자·간식", "단과자"), "과자/시리얼|과자/스낵/간식", (
         ("chocolate", "초콜릿", "바초콜릿|볼초콜릿|초콜릿"), ("jelly", "젤리", "젤리"),
@@ -1599,6 +1602,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     seasoning_leaf = reviewed_seasoning_leaf(evidence)
     if seasoning_leaf:
         homeplus_shelf_ids.add(seasoning_leaf)
+    lotte_nut_leaf = reviewed_lotte_nut_leaf(evidence)
+    if lotte_nut_leaf:
+        homeplus_shelf_ids.add(lotte_nut_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

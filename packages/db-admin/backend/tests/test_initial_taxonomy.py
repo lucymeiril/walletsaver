@@ -27,6 +27,23 @@ def _raw(mart, path, name="검수할 상품", **extra):
 
 
 from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf
+from services.initial_audited_lotte_nuts import TITLES as LOTTE_NUT_TITLES, reviewed_lotte_nut_leaf
+
+
+@pytest.mark.parametrize('title,leaf',LOTTE_NUT_TITLES.items())
+def test_lotte_nuts_and_chips_are_not_assumed_raw_grains(title,leaf):
+    result=classify_record(_raw('lottemart','쌀ㆍ잡곡ㆍ견과류',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'lottemart','source_path_parts':['쌀ㆍ잡곡ㆍ견과류'],'source_title':title}
+    assert reviewed_lotte_nut_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_lotte_nut_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_lotte_nut_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['바프 HBAF 허니버터아몬드&땅콩 (280G)','바프 HBAF 와사비맛아몬드&땅콩 (280G)','HBAF 카라멜 아몬드 앤 프레첼 (120G)','고구마 스틱 (300G)','명인부각 누룽지 (180G)','듀럼밀 (1.5KG)'])
+def test_lotte_mixed_nut_kits_and_unclear_product_forms_remain_pending(title):
+    assert classify_record(_raw('lottemart','쌀ㆍ잡곡ㆍ견과류',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',EMART_TITLES.items())
