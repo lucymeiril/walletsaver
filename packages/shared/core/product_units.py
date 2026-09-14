@@ -21,7 +21,7 @@ _MEASURE_BUNDLE_RE = re.compile(
 )
 _MEASURE_CHAIN_RE = re.compile(
     rf"(?<![\d.,])(?P<qty>{_MEASURE_NUMBER_PATTERN})\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
-    r"(?P<factors>(?:\s*[x×*]\s*\d+\s*(?:개입|입|개|팩|봉|병|캔|포|장|ct|pk|ea)?){2,})"
+    r"(?P<factors>(?:\s*[x×*]\s*\d+\s*(?:개입|스틱|티백|박스|입|개|팩|봉|병|캔|포|장|can|ct|pk|ea|t)?){2,})"
     r"(?![A-Za-z0-9가-힣.,])", re.I,
 )
 _COUNT_UNIT_PATTERN = r"개입|봉지|인분|세트|마리|회분|구|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P|t|T"

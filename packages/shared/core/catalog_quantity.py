@@ -9,13 +9,13 @@ import re
 import unicodedata
 from typing import Any, Iterable, Mapping
 from core.product_units import parse_package_quantity
-from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES
+from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CHAIN_TITLES
 
 
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
-    return (title in COUNTED_CONTENT_TITLES or "종이컵" in title
+    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or "종이컵" in title
             or "고무장갑" in title and bool(re.search(r"\d+\s*켤레", title))
             or bool(re.search(r"키친타[월올]|종이타[월올]|위생행주", title))
             and bool(re.search(r"\d+\s*매\s*[x×*]\s*\d+\s*롤", title, re.I)))

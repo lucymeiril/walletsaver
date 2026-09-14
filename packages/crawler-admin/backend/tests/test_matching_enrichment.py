@@ -46,6 +46,24 @@ def test_cosmetic_fullwidth_identity_is_shared_but_real_name_or_pack_changes_are
     assert build_match_key(None,'견과 ３종',3,'개') != build_match_key(None,'견과 4종',3,'개')
 
 
+@pytest.mark.parametrize('title,quantity,count', [
+    ('카누 라떼 커피 13.5g x 50스틱 x 2박스',13.5,100),
+    ('맥심 화이트 골드 커피믹스 11.7g x 210T x 2',11.7,420),
+    ('녹차원 보이차 0.9g x 100티백 x 3',.9,300),
+    ('코카콜라제로제로190ml x 30can x 2',190,60),
+])
+def test_reviewed_typed_chain_recollects_complete_variant_not_first_factor(title,quantity,count):
+    unit='ml' if 'ml' in title else 'g'
+    row={'name':title,'pack_qty':quantity,'pack_unit':unit}
+    assert _source_package(row)==((quantity,unit,count),None)
+    assert _source_package({**row,'bundle_count':2})[1] is not None
+
+
+def test_recollection_keeps_typed_wholesale_chain_held_for_review():
+    row={'name':'카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스','pack_qty':.9,'pack_unit':'g'}
+    assert _source_package(row)[1] is not None
+
+
 def _engine(tmp_path):
     engine = create_engine(f"sqlite:///{(tmp_path / 'db.sqlite').as_posix()}")
     with engine.begin() as connection:

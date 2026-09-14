@@ -13,6 +13,7 @@ import sys
 
 ROOT=Path(__file__).resolve().parents[1]
 TESTS=[
+ 'packages/shared/tests/test_product_units.py',
  'packages/db-admin/backend/tests/test_initial_catalog_seed.py',
  'packages/db-admin/backend/tests/test_initial_product_forms.py',
  'packages/db-admin/backend/tests/test_initial_taxonomy.py',

@@ -197,6 +197,29 @@ def test_counted_ramen_one_plus_one_uses_received_content_for_unit_price():
     assert bundle["offers"][0]["price_per_100g"] == 500
 
 
+def test_typed_coffee_chain_retains_real_paid_total_and_complete_content():
+    raw = item(name="맥심 화이트 골드 커피믹스 11.7g x 210T x 2", package_quantity=11.7, package_unit="g",
+               display_unit="", unit="", sale_price=49140, original_price=None)
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle['unresolved']
+    assert bundle['variants'][0]['bundle_count'] == 420
+    assert bundle['offers'][0]['price'] == 49140
+    assert bundle['offers'][0]['price_per_100g'] == 1000
+
+
+def test_typed_chain_does_not_override_count_conflict_or_wholesale_boundary():
+    conflicting = item(name="카누 라떼 커피 13.5g x 50스틱 x 2박스", package_quantity=13.5, package_unit="g", bundle_count=50, display_unit='', unit='')
+    assert 'bundle_count_conflict' in build([ingestion(1,[conflicting])])['unresolved'][0]['reasons']
+    wholesale = item(name="카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스", package_quantity=.9, package_unit="g", display_unit='',unit='')
+    assert 'bulk_package_review_required' in build([ingestion(1,[wholesale])])['unresolved'][0]['reasons']
+
+
+def test_typed_chain_keeps_mixed_and_unknown_package_labels_unresolved():
+    for title in ['커피 11.7g x 210T x 2unknown', '커피 11.7g x 210T + 12g x 10T']:
+        package, issues = _package({'package_quantity':11.7,'package_unit':'g'}, {}, title)
+        assert package is None or issues
+
+
 def item(**changes):
     row = {
         "name": "초코우유 120ml×24", "brand": "__no_brand__", "source": "homeplus",

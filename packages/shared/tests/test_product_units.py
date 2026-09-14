@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from core.product_units import normalize_unit_metadata, parse_package_quantity
+import pytest
+import re
 
 
 def test_count_package_parser_handles_common_korean_non_weight_units() -> None:
@@ -126,6 +128,20 @@ def test_single_measure_chain_multiplies_all_explicit_factors() -> None:
         assert parsed["package_quantity"] == quantity
         assert parsed["bundle_count"] == count
     assert normalize_unit_metadata(name="잡채350g x 5 x 2pk", sale_price=35000)["price_per_100g"] == 1000
+
+
+@pytest.mark.parametrize('title,quantity,count', [
+    ('카누 라떼 커피 13.5g x 50스틱 x 2박스',13.5,100),
+    ('맥심 화이트 골드 커피믹스 11.7g x 210T x 2',11.7,420),
+    ('녹차원 보이차 0.9g x 100티백 x 3',0.9,300),
+    ('코카콜라제로제로190ml x 30can x 2',190,60),
+])
+def test_typed_measured_chain_counts_sticks_teabags_and_cans_not_tons(title,quantity,count):
+    package = parse_package_quantity(title)
+    assert package['package_quantity'] == quantity
+    assert package['bundle_count'] == count
+    assert package['package_unit'] in {'g','ml'}
+    assert len(re.findall(r'[x×*]\s*\d+',package['raw_match'],re.I)) == 2
 
 
 def test_trailing_unit_price_reference_does_not_override_package_quantity() -> None:
