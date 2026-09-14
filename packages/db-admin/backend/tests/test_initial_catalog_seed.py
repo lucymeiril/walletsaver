@@ -15,6 +15,7 @@ from services.initial_catalog_seed import (
     stable_id,
     validated_brand,
     _package,
+    _sheet_roll_package,
 )
 from storage.models import Base
 
@@ -71,6 +72,56 @@ def test_explicit_rubber_glove_pairs_recover_missing_crawler_quantity():
     assert package["standard_unit"] is None
     for title in ["고무장갑 중형", "고무장갑 2켤레+1켤레", "고무장갑 2켤레 x 2", "팬28cm", "종이호일30cm*40m"]:
         assert _package({}, {}, title)[0] is None
+
+
+@pytest.mark.parametrize("title,sheets,rolls", [
+    ("안심 키친타월 120매x12롤 ESG", 120, 12),
+    ("키친타올 200매*6롤", 200, 6),
+    ("빨아쓰는 위생행주 MAX 45매x3롤", 45, 3),
+    ("커클랜드 시그니춰 종이타월 160매 x 12롤", 160, 12),
+])
+@pytest.mark.parametrize("structured_unit", ["롤", "매"])
+def test_complete_sheet_roll_chain_preserves_per_roll_and_purchased_quantity(title, sheets, rolls, structured_unit):
+    quantity = rolls if structured_unit == "롤" else sheets
+    package, issues = _package({"package_quantity": quantity, "package_unit": structured_unit,
+                               "display_unit": f"{quantity}{structured_unit}"}, {}, title)
+    assert issues == []
+    assert (package["package_quantity"], package["package_unit"], package["bundle_count"]) == (sheets, "매", rolls)
+    assert package["standard_unit"] is None
+    assert package["display_unit"] == title
+
+
+@pytest.mark.parametrize("payload", [
+    {"package_quantity": 5, "package_unit": "롤"},
+    {"package_quantity": 150, "package_unit": "매"},
+    {"package_quantity": 200, "package_unit": "ml"},
+    {"package_quantity": 200, "package_unit": "매", "bundle_count": 1},
+    {"package_quantity": 6, "package_unit": "롤", "bundle_count": 6},
+    {"package_quantity": 6, "package_unit": "롤", "bundle_count": "bad"},
+    {"package_quantity": 6, "package_unit": "롤", "display_unit": "4롤"},
+    {"package_quantity": 6, "package_unit": "롤", "display_unit": "200매x6롤x2"},
+])
+def test_sheet_roll_structured_and_display_conflicts_remain_pending(payload):
+    assert _package(payload, {}, "키친타올 200매*6롤")[0] is None
+
+
+@pytest.mark.parametrize("title", [
+    "키친타올 200매*6롤*2팩", "키친타올 200매*6롤+행주 20매",
+    "키친타올 200매*6롤 혼합세트", "키친타올 200매*5~6롤",
+    "냉동식품 200매*6롤", "팬28cm*6", "종이호일30cm*40m",
+])
+def test_sheet_roll_recovery_does_not_resolve_partial_mixed_or_wrong_forms(title):
+    assert _sheet_roll_package({"package_quantity": 200, "package_unit": "매"}, {}, title) is None
+
+
+def test_sheet_roll_offer_preserves_total_sheets_without_inventing_volume_price():
+    raw = item(name="키친타올 200매*6롤", package_quantity=6, package_unit="롤",
+               display_unit="6롤", unit="6롤", sale_price=6000, original_price=None)
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle["unresolved"]
+    assert bundle["variants"][0]["package_quantity"] * bundle["variants"][0]["bundle_count"] == 1200
+    assert bundle["offers"][0]["standard_unit_price"] is None
+    assert bundle["offers"][0]["price_per_100g"] is None
 
 
 def item(**changes):
@@ -143,7 +194,7 @@ def test_display_and_title_multiplier_conflict_is_held():
 @pytest.mark.parametrize(("title", "quantity", "unit", "reason"), [
     ("찹쌀 김부각 세트(5개입) x 5", 5, "ea", "bundle_multiplier_unresolved"),
     ("네일메드코세정제콤보(용기3개+세정용분말250포)", 3, "ea", "mixed_package_unresolved"),
-    ("커클랜드 시그니춰 종이타월 160매 x 12롤", 160, "매", "bundle_multiplier_unresolved"),
+    ("커클랜드 시그니춰 종이타월 160매 x 12롤 x 2팩", 160, "매", "bundle_multiplier_unresolved"),
 ])
 def test_unparsed_multipliers_and_mixed_count_packages_are_not_staged(title, quantity, unit, reason):
     raw = item(name=title, package_quantity=None, package_unit=None, pack_qty=quantity, pack_unit=unit, display_unit="", unit="")

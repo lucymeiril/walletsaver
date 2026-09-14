@@ -138,7 +138,52 @@ def _package_signature(package: Mapping[str, Any] | None) -> tuple[Any, ...] | N
     return (package["package_quantity"], package["package_unit"], package["bundle_count"])
 
 
+def _sheet_roll_package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -> tuple[dict[str, Any] | None, list[str]] | None:
+    """One explicit sheet-per-roll chain, not an arbitrary count multiplier.
+
+    A 200-sheet roll sold as six rolls is quantity=200 sheets, bundle=6.
+    Providers may store either sheets per roll or total purchased rolls; both
+    must agree with the complete title, including independent display evidence.
+    """
+    if not re.search(r"키친타[월올]|종이타[월올]|위생행주", title):
+        return None
+    matches = list(re.finditer(r"(?<![\d.])(\d+)\s*매\s*[x×*]\s*(\d+)\s*롤(?![가-힣A-Za-z\d])", title, re.I))
+    if not matches:
+        return None
+    # Partial/multi-product chains remain under the existing conservative
+    # parser. Never interpret another pack factor or promotional + as quantity.
+    if (len(matches) != 1 or len(re.findall(r"(?<![A-Za-z])[x×*]\s*\d+", title, re.I)) != 1
+        or re.search(r"[+~～]|세트|혼합|특가", title) or _COUNT_RANGE_RE.search(title)
+        or len(re.findall(r"\d+\s*(?:매|롤|팩|개|입)(?![가-힣])", title)) != 2):
+        return None
+    sheets, rolls = map(int, matches[0].groups())
+    if not sheets or not rolls or rolls > 500:
+        return None, ["unit_sheet_roll_unresolved"]
+    quantity = _positive(_first((payload, attrs), ("package_quantity", "pack_qty")))
+    unit = _text(_first((payload, attrs), ("package_unit", "pack_unit"))).casefold()
+    count = _first((payload, attrs), ("bundle_count",))
+    count = _number(count) if count is not None else None
+    if quantity is not None and (unit, quantity) not in {("매", sheets), ("롤", rolls)}:
+        return None, ["unit_sheet_roll_conflict"]
+    if count is not None and count not in ({1} if unit == "롤" else {rolls}):
+        return None, ["bundle_count_conflict"]
+    if _first((payload, attrs), ("bundle_count",)) is not None and count is None:
+        return None, ["bundle_count_invalid"]
+    display = _text(_first((payload, attrs), ("display_unit", "unit")))
+    if display and display != title:
+        display_chain = list(re.finditer(r"(\d+)\s*매\s*[x×*]\s*(\d+)\s*롤", display, re.I))
+        if display_chain:
+            if len(display_chain) != 1 or tuple(map(int, display_chain[0].groups())) != (sheets, rolls) or display.strip() != display_chain[0].group():
+                return None, ["unit_text_conflict"]
+        elif not re.fullmatch(rf"\s*(?:{sheets}\s*매|{rolls}\s*롤)\s*", display):
+            return None, ["unit_text_conflict"]
+    return {"package_quantity": float(sheets), "package_unit": "매", "bundle_count": rolls,
+            "standard_unit": None, "display_unit": title}, []
+
+
 def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -> tuple[dict[str, Any] | None, list[str]]:
+    if (sheet_roll := _sheet_roll_package(payload, attrs, title)) is not None:
+        return sheet_roll
     issues: list[str] = []
     quantity = _positive(_first((payload, attrs), ("package_quantity", "pack_qty")))
     unit = _text(_first((payload, attrs), ("package_unit", "pack_unit"))).casefold()
