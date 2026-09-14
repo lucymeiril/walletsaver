@@ -26,6 +26,25 @@ def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
 
 
+from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf
+
+
+@pytest.mark.parametrize('title,leaf',EMART_TITLES.items())
+def test_emart_pantry_exact_forms_reuse_leaves_without_shelf_guessing(title,leaf):
+    result=classify_record(_raw('emart','양념/오일',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'emart','source_path_parts':['양념/오일'],'source_title':title}
+    assert reviewed_seasoning_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_seasoning_leaf({**evidence,'source_path_parts':['과자/간식']}) is None
+    assert reviewed_seasoning_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['백설 알룰로스 700g','현미유1L','백설 멸치디포리가득 육수에는 1분링 80g','데일리갈릭디핑소스315g','장아찌간장소스 1.7L'])
+def test_emart_pantry_does_not_guess_unspecified_form_or_opaque_sauce(title):
+    assert classify_record(_raw('emart','양념/오일',title))['unified_category_id'] is None
+
+
 @pytest.mark.parametrize("mart,title,leaf", [(mart, title, leaf) for mart, titles in FRUIT_TITLES.items() for title, leaf in titles.items()])
 def test_reviewed_single_fruit_titles_reuse_existing_leaves_without_approval(mart, title, leaf):
     result = classify_record(_raw(mart, "과일", title))
