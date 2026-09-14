@@ -3,6 +3,14 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('커피필터(100매) #2','주방용품','household.kitchen.consumables.coffee_filter'),
+ ('싱크대거름망 100매(대)','주방용품','household.kitchen.consumables.drain_net'),
+ ('나무젓가락 80P','주방용품','household.kitchen.consumables.chopsticks'),
+ ('컬러풀주방가위_SBLU','주방용품','household.kitchen.utensils.scissors'),
+ ('실리콘 뒤집개 민트','주방용품','household.kitchen.utensils.turner'),
+ ('스타 사각 채칼','주방용품','household.kitchen.utensils.slicer'),
+ ('몽블랑 IH 에칭 궁중팬 28cm','주방용품','household.kitchen.cookware.wok'),
+ ('에어프라이어 종이호일 24cm*60매','주방용품','household.kitchen.consumables.baking_paper'),
  ('하루하나 유기농 레몬즙 480ML','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액','food.drinks.bases.lemon'),
  ('비타민 레몬 티앤에이드 680G','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액','food.drinks.bases.tea_ade'),
  ('simplus 생강레몬청 1KG','커피/차 > 전통차/액상차/꿀 > 유자차','food.drinks.tea.fruit_preserve'),
@@ -50,6 +58,9 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
  ('하루하나 유기농 레몬즙 480ML','액상차/농축액 > 농축액'),
  ('레몬즙 탄산 에이드 혼합세트','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액'),
  ('티앤에이드 젤리 사탕','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액'),
+ ('스텐 만능채칼&가위&도마&믹싱볼 외 BEST 주방용품 특가','주방용품'),
+ ('커피 필터 머신 세트','주방용품'),('궁중팬 뚜껑 세트','주방용품'),
+ ('도시락 일회용 젓가락 세트','주방용품'),('에어프라이어 사각종이호일5L','주방용품'),
  ('레몬청과 유자차 혼합 세트','커피/차 > 전통차/액상차/꿀 > 유자차'),
  ('한라봉차 탄산 주스','커피/차 > 전통차/액상차/꿀 > 유자차'),
 ])

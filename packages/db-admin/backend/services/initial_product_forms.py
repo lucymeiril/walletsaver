@@ -8,6 +8,14 @@ import re
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('household.kitchen.consumables.coffee_filter',('생활용품','주방용품','주방소모품','커피필터'),r'커피\s*필터',r'주방|커피용품',r'머신|세트|정수|공기'),
+ ('household.kitchen.consumables.drain_net',('생활용품','주방용품','주방소모품','싱크대거름망'),r'싱크대\s*거름망',r'주방',r'세트|세제'),
+ ('household.kitchen.consumables.chopsticks',('생활용품','주방용품','주방소모품','일회용젓가락'),r'나무젓가락|일회용\s*젓가락',r'주방',r'세트|도시락|라면'),
+ ('household.kitchen.utensils.scissors',('생활용품','주방용품','조리도구','주방가위'),r'주방가위|불고기\s*가위',r'주방',r'세트|특가|외 BEST|채칼|도마'),
+ ('household.kitchen.utensils.turner',('생활용품','주방용품','조리도구','뒤집개'),r'뒤집개',r'주방',r'세트|특가'),
+ ('household.kitchen.utensils.slicer',('생활용품','주방용품','조리도구','채칼'),r'채칼',r'주방',r'세트|특가|가위|도마|믹싱볼'),
+ ('household.kitchen.cookware.wok',('생활용품','주방용품','조리용기','궁중팬'),r'궁중팬',r'주방',r'세트|특가|뚜껑'),
+ ('household.kitchen.consumables.baking_paper',('생활용품','주방용품','주방소모품','종이호일'),r'종이호일',r'주방',r'세트|특가|\d+\s*[Ll]\b'),
  ('food.drinks.bases.lemon',('식품','음료','음료용 원액','레몬즙'),r'레몬즙',r'^커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액$',r'에이드|탄산|젤리|세트|혼합|레몬청|\d+\s*[Tt]\b'),
  ('food.drinks.bases.tea_ade',('식품','음료','음료용 원액','차·에이드 베이스'),r'티앤에이드',r'^커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액$',r'탄산|젤리|세트|혼합|사탕'),
  ('food.drinks.tea.fruit_preserve',('식품','음료','차·코코아','과일청차'),r'(?:생강)?레몬청|자몽청|한라봉청|한라봉차',r'^커피/차 > 전통차/액상차/꿀 > 유자차(?: > 유자차)?$',r'주스|쥬스|탄산|사탕|잼|혼합|세트|유자|녹차|홍차|티백'),
