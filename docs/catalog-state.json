@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260914-pass57",
+  "baseline": ".debug-artifacts/initial-catalog-20260914-pass58-final",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6140,
-  "unresolved": 3056,
-  "next_task": "Homeplus seafood pending shelf batch: audit 60 source titles for explicitly prepared/dried seafood vs species, sauces and variable-weight sales. Reuse existing leaves, add only evidenced types; preserve conflicts and quantity review. Typed coffee/tea/can chains completed pass57.",
+  "included": 6208,
+  "unresolved": 2988,
+  "next_task": "Homeplus snack/bakery shelf batch: review 33 snack and 10 frozen-dessert source titles. Separate crackers/wafers/cereal/bread from mixed merchandising shelves; unknown Polaretti and DIY kits stay pending. Reuse leaves and retain valid conflicts. Seafood pass58-final completed.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

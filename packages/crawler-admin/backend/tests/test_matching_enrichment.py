@@ -64,6 +64,12 @@ def test_recollection_keeps_typed_wholesale_chain_held_for_review():
     assert _source_package(row)[1] is not None
 
 
+def test_reviewed_stock_total_recovers_same_per_sachet_boundary_as_staging():
+    row={'name':'멸치 해산물 다시팩 300G(15Gx20입)','package_quantity':300,'package_unit':'g'}
+    assert _source_package(row)==((15,'g',20),None)
+    assert _source_package({**row,'package_quantity':250})[1] is not None
+
+
 def _engine(tmp_path):
     engine = create_engine(f"sqlite:///{(tmp_path / 'db.sqlite').as_posix()}")
     with engine.begin() as connection:

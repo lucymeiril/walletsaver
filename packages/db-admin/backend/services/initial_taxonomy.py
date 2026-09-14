@@ -22,6 +22,7 @@ from services.initial_reviewed_chat import reviewed_chat_leaf
 from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 from services.initial_audited_costco_cleaning import reviewed_costco_cleaning_leaf
+from services.initial_audited_homeplus_seafood import reviewed_homeplus_seafood_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -195,9 +196,14 @@ LEAVES: tuple[Leaf, ...] = (
         ("mackerel", "고등어", "고등어"), ("salmon", "연어", "연어"), ("pollock", "명태", "명태|동태|생태"),
         ("flounder", "가자미", ""), ("spanish_mackerel", "삼치", ""),
         ("hairtail", "갈치", ""), ("croaker", "조기", ""), ("rockfish", "볼락", ""),
+        ("cod", "대구", ""), ("eel", "장어", ""),
     )),
     *_group("food.seafood.shellfish", ("식품", "수산물", "갑각·패류"), "수산물/건어물|수산물/건해산물|수산물", (
         ("shrimp", "새우", "냉동새우|새우"), ("crab", "게", "게/꽃게/대게"), ("abalone", "전복", "전복"),
+        ("clam", "조개", ""),
+    )),
+    *_group("food.seafood.molluscs", ("식품", "수산물", "연체류"), "", (
+        ("squid", "오징어", ""), ("webfoot_octopus", "주꾸미", ""), ("small_octopus", "낙지", ""),
     )),
     *_group("food.seafood.seaweed", ("식품", "수산물", "해조류"), "수산물/건어물|수산물/건해산물|수산물", (
         ("laver", "김", "김|도시락김|전장김|김자반/김가루"), ("miyeok", "미역", "미역"), ("kelp", "다시마", "다시마"),
@@ -206,6 +212,11 @@ LEAVES: tuple[Leaf, ...] = (
         ("fishcake", "어묵", "볶음용어묵|국탕용어묵|간식용어묵|요리용어묵"),
         ("surimi", "맛살", "맛살|간식용맛살"), ("dried_fish", "건어물스낵", "어포|쥐치"), ("anchovy", "건멸치", "멸치"),
         ("pollock_roe", "명란", ""), ("seafood_ball", "해물경단", ""),
+        ("squid_shreds", "조미오징어채", ""), ("dried_pollock", "건황태", ""),
+        ("dried_shrimp", "건새우", ""), ("stock_pack", "수산육수팩", ""), ("dried_dipori", "건디포리", ""),
+    )),
+    *_group("food.meals.seafood", ("식품", "간편식·면", "수산요리"), "", (
+        ("stir_fried", "수산볶음", ""), ("steamed", "수산찜", ""),
     )),
     *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트|건면/생면/면요리", (
         ("cup_ramen", "컵라면", "컵라면", "컵라면"),
@@ -1144,7 +1155,7 @@ def _suspicion_reason(category_id: str, evidence: Mapping[str, Any]) -> str | No
         return "pet_product_context"
     if category_id.startswith(("food.plant.", "food.meals.noodles.", "food.dairy.milk.")) and re.search(r"양념|드레싱|제조기", title):
         return "ingredient_or_accessory_instead_of_product"
-    if category_id.startswith("food.seasonings.oils.") and re.search(r"김자반|돌자반|재래김|스낵|김밥|참치", title):
+    if category_id.startswith("food.seasonings.oils.") and re.search(r"김자반|돌자반|재래김|파래김|돌김|스낵|김밥|참치", title):
         return "ingredient_mentioned_in_different_product"
     if category_id.startswith("household.hygiene.paper.") and ("특가" in title or "일부품목제외" in title) and "/" in title:
         return "multi_product_promotion_not_listing"
@@ -1587,6 +1598,14 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
     reviewed_dairy_ids = _contextual_homeplus_yogurt_cheese(evidence)
     homeplus_shelf_ids |= reviewed_dairy_ids
+    reviewed_seafood_leaf = reviewed_homeplus_seafood_leaf(evidence)
+    if reviewed_seafood_leaf:
+        homeplus_shelf_ids.add(reviewed_seafood_leaf)
+        # Only this exact audited source/title pair may remove a retail
+        # candidate already rejected by its product-form veto (e.g. squid in
+        # a shrimp shelf). Every otherwise valid contradiction stays visible.
+        path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) not in {"source_title_product_type_conflict", "source_leaf_needs_name_corroboration"}}
+        name_ids = {c for c in name_ids if _suspicion_reason(c, evidence) != "ingredient_mentioned_in_different_product"}
     if reviewed_dairy_ids:
         # Only discard a retail/name candidate already vetoed by product form.
         # Other valid contradictory evidence must still block classification.

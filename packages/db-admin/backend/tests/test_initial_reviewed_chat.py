@@ -5,8 +5,10 @@ from services.initial_taxonomy import classify_record, source_evidence, taxonomy
 PASS43_BLOCKED = {
     # Review evidence is not authority to bypass ingredient/product conflicts.
     '070567864': 'source_title_product_type_conflict',
-    '069278314': 'conflicting_category_evidence',
-    '069278268': 'conflicting_category_evidence',
+    # 069278314/069278268 were ingredient-name conflicts, not real oil
+    # products. Pass58 exact seafood/title evidence removes only candidates
+    # vetoed as oil ingredients; the ordinary accepted-leaf assertion below
+    # now covers them. Valid contradictory candidates remain blocked.
 }
 PASS44_BLOCKED = {
     # Accepted category evidence must not suppress source/ingredient conflicts.

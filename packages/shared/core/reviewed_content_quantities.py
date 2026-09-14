@@ -52,6 +52,7 @@ COUNTED_CONTENT_TITLES = frozenset((
 # Full single-product measured chains reviewed from pending source titles.
 # This is not permission to treat any arbitrary set/unknown suffix as a chain.
 REVIEWED_CHAIN_TITLES = frozenset((
+    "멸치 해산물 다시팩 300G(15Gx20입)",
     "코카콜라제로제로190ml x 30can x 2",
     "녹차원 보이차 0.9g x 100티백 x 3",
     "카누 라떼 커피 13.5g x 50스틱 x 2박스",

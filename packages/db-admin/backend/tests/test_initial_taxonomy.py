@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 from services.initial_audited_emart_produce import FRUIT_TITLES, reviewed_emart_produce_leaf
 from services.initial_audited_costco_cleaning import TITLES as CLEANING_TITLES, reviewed_costco_cleaning_leaf
+from services.initial_audited_homeplus_seafood import ENTRIES as SEAFOOD_ENTRIES, reviewed_homeplus_seafood_leaf
 
 from services.initial_taxonomy import (
     LEAVES,
@@ -68,6 +69,45 @@ def test_reviewed_cleaning_forms_use_exact_titles_and_context_not_shelf_alone(ti
 ])
 def test_cleaning_shelf_does_not_infer_devices_medical_or_opaque_forms(title):
     assert classify_record(_raw("costco", "세제", title))["unified_category_id"] is None
+
+
+@pytest.mark.parametrize('path,title,leaf',[(path,title,leaf) for (path,title),leaf in SEAFOOD_ENTRIES.items()])
+def test_reviewed_seafood_requires_exact_title_full_path_and_real_product_form(path,title,leaf):
+    result=classify_record(_raw('homeplus',list(path),title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    assert len(result['category_path'])==4
+    evidence={'mart':'homeplus','source_path_parts':list(path),'source_title':title}
+    assert reviewed_homeplus_seafood_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_homeplus_seafood_leaf({**evidence,'source_path_parts':['수산물/건어물']}) is None
+    assert reviewed_homeplus_seafood_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('path,title',[
+    (['수산물/건어물','간편/냉동수산물','수산간편식','소스류'],'홀스래디쉬 소스 210G'),
+    (['수산물/건어물','간편/냉동수산물','냉동간편수산물','냉동새우'],'간편 씨푸드믹스 600G(팩)'),
+    (['수산물/건어물','연체갑각류','새우/게/랍스터/크랩류','꽃게'],'서해안 꽃게(국내산/해동) 100G'),
+])
+def test_seafood_table_does_not_guess_sauces_mixed_or_counter_sale_quantity(path,title):
+    assert reviewed_homeplus_seafood_leaf({'mart':'homeplus','source_path_parts':path,'source_title':title}) is None
+
+
+def test_audited_squid_only_removes_vetoed_shrimp_not_other_valid_conflicts():
+    path=['수산물/건어물','간편/냉동수산물','냉동간편수산물','냉동새우']
+    result=classify_record(_raw('homeplus',path,'손질 오징어링 500G(팩)'))
+    assert result['unified_category_id']=='food.seafood.molluscs.squid'
+
+
+def test_audited_seafood_does_not_override_a_candidate_without_a_veto(monkeypatch):
+    import services.initial_taxonomy as taxonomy
+    original=taxonomy._suspicion_reason
+    def suspicion(category,evidence):
+        return None if category=='food.seafood.shellfish.shrimp' else original(category,evidence)
+    monkeypatch.setattr(taxonomy,'_suspicion_reason',suspicion)
+    path=['수산물/건어물','간편/냉동수산물','냉동간편수산물','냉동새우']
+    result=classify_record(_raw('homeplus',path,'손질 오징어링 500G(팩)'))
+    assert result['unified_category_id'] is None
+    assert set(result['candidate_category_ids'])=={'food.seafood.molluscs.squid','food.seafood.shellfish.shrimp'}
 
 
 def test_homeplus_full_path_maps_to_a_four_level_flavoured_milk_leaf():
