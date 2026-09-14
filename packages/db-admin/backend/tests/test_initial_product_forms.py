@@ -3,6 +3,7 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('simplus 생강레몬청 1KG','커피/차 > 전통차/액상차/꿀 > 유자차','food.drinks.tea.fruit_preserve'),
  ('간편 삼계재료 티백 100G','채소 > 건채소 > 건약재','food.seasonings.cooking_herbs.samgyetang'),
  ('녹차원 깔라만시 100 480G','커피/차 > 액상차/농축액 > 농축액','food.drinks.bases.calamansi'),
  ('고무장갑 2켤레','주방용품','household.kitchen.gloves.rubber'),
@@ -45,6 +46,8 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
  ('국산 황기 80G','건채소 > 건약재'),
  ('깔라만시 100 에이드 혼합 세트','액상차/농축액 > 농축액'),
  ('하루하나 유기농 레몬즙 480ML','액상차/농축액 > 농축액'),
+ ('레몬청과 유자차 혼합 세트','커피/차 > 전통차/액상차/꿀 > 유자차'),
+ ('한라봉차 탄산 주스','커피/차 > 전통차/액상차/꿀 > 유자차'),
 ])
 def test_nonfood_ingredients_and_mixed_products_are_excluded(title,path):
     assert product_form_candidates({'source_title':title,'source_path_parts':[path]})==set()
@@ -58,3 +61,27 @@ def test_existing_conflicts_are_not_overridden():
          'source_title':'동원 포도씨유 참치 150G*2+살코기참치 135G*4',
          'source_category_path':['라면/즉석식품/통조림','통조림','참치']}
     assert classify_record(row)['unified_category_id'] is None
+
+@pytest.mark.parametrize('title',[
+ 'simplus 한라봉청 1KG','simplus 자몽청 1KG','simplus 레몬청 1KG',
+ 'simplus 생강레몬청 1KG','자임 비타민들어있는 햇 제주 한라봉차 800G',
+])
+@pytest.mark.parametrize('duplicate_leaf',[False,True])
+def test_homeplus_non_citron_preserves(title,duplicate_leaf):
+    path=['커피/차','전통차/액상차/꿀','유자차']+(['유자차'] if duplicate_leaf else [])
+    result=classify_record({'source_name':'homeplus','source_title':title,'source_category_path':path})
+    assert result['unified_category_id']=='food.drinks.tea.fruit_preserve'
+    assert result['classification_confidence']==0.90
+
+@pytest.mark.parametrize('title',[
+ '유자차 1KG','레몬청과 유자차 혼합 세트','레몬청 녹차 1KG','정체불명 청 1KG',
+])
+def test_fruit_preserve_does_not_replace_other_evidence(title):
+    result=classify_record({'source_name':'homeplus','source_title':title,
+        'source_category_path':['커피/차','전통차/액상차/꿀','유자차']})
+    assert result['unified_category_id']!='food.drinks.tea.fruit_preserve'
+
+def test_non_exact_citron_shelf_is_not_overridden():
+    result=classify_record({'source_name':'homeplus','source_title':'simplus 레몬청 1KG',
+        'source_category_path':['커피/차','전통차/액상차/꿀','유자차','다른 상품']})
+    assert result['unified_category_id'] is None

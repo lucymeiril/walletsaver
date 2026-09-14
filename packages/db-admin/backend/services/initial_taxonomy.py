@@ -1599,6 +1599,17 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
+    # This exact Homeplus shelf also holds non-citron fruit preserves. Remove
+    # only its citron path candidate when the existing title check rejects it.
+    # Valid name/URL/other evidence remains a conflict, not an override.
+    if (evidence['mart'] == 'homeplus'
+        and tuple(evidence['source_path_parts']) in {
+            ('커피/차','전통차/액상차/꿀','유자차'),
+            ('커피/차','전통차/액상차/꿀','유자차','유자차'),
+        }
+        and product_form_candidates(evidence) == {'food.drinks.tea.fruit_preserve'}
+        and _suspicion_reason('food.drinks.tea.citron', evidence) == 'source_leaf_needs_name_corroboration'):
+        path_ids.discard('food.drinks.tea.citron')
     all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids | emart_fresh_ids
     form_ids = product_form_candidates(evidence) if not all_ids else set()
     all_ids |= form_ids
