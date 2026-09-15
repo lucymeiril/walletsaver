@@ -54,6 +54,7 @@ from services.initial_audited_costco_fruit_forms import TITLES as COSTCO_FRUIT_F
 from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FORM_TITLES, reviewed_costco_rice_form_leaf
 from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, reviewed_emart_snack_leaf
 from services.initial_audited_emart_bakery import TITLES as EMART_BAKERY_TITLES, reviewed_emart_bakery_leaf
+from services.initial_audited_emart_noodles_canned import TITLES as EMART_NOODLES_CANNED_TITLES, reviewed_emart_noodles_canned_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
@@ -382,6 +383,22 @@ def test_emart_bakery_audit_classifies_only_exact_single_product_forms(title,lea
 @pytest.mark.parametrize('title',['8월 베이커리 최대 50% 특가','식사빵 & 간식빵 최대 50% 특가전','올리브 치아바타 2Pack 기획 (쁘띠 672g+이탈리안 800g)','샌드위치용 샐러드 계란 250g','찹쌀깨찰빵 4입'])
 def test_emart_bakery_audit_keeps_promotions_mixed_packages_and_unclear_forms_pending(title):
     assert classify_record(_raw('emart','베이커리/잼',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf',EMART_NOODLES_CANNED_TITLES.items())
+def test_emart_noodles_canned_audit_uses_only_exact_declared_food_forms(title,leaf):
+    result=classify_record(_raw('emart','면류/통조림',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'emart','source_path_parts':['면류/통조림'],'source_title':title}
+    assert reviewed_emart_noodles_canned_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_emart_noodles_canned_leaf({**evidence,'source_path_parts':['베이커리/잼']}) is None
+    assert reviewed_emart_noodles_canned_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['삼양 1963 우지 파개장 115g','면류/통조림 최대 30% 할인','라면과 통조림 혼합세트'])
+def test_emart_noodles_canned_audit_keeps_opaque_promotions_and_mixed_sets_pending(title):
+    assert classify_record(_raw('emart','면류/통조림',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())

@@ -43,6 +43,7 @@ from services.initial_audited_homeplus_flavored_powders import reviewed_homeplus
 from services.initial_audited_emart_pet import reviewed_emart_pet_leaf
 from services.initial_audited_emart_grains import reviewed_emart_grain_leaf
 from services.initial_audited_emart_bakery import reviewed_emart_bakery_leaf
+from services.initial_audited_emart_noodles_canned import reviewed_emart_noodles_canned_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -257,6 +258,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sujebi", "수제비", ""), ("tofu_noodle", "두부면", ""),
         ("jjamppong", "짬뽕면", ""),
         ("pad_thai", "팟타이", ""),
+        ("ramen_sari", "라면사리", ""),
         ("gnocchi", "뇨끼", ""), ("ravioli", "라비올리", ""),
     )),
     *_group("food.meals.rice", ("식품", "간편식·면", "밥·죽"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트", (
@@ -302,6 +304,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("stir_fried", "볶음반찬", ""),
         ("braised", "조림반찬", ""), ("pickled", "장아찌", ""), ("seasoned", "무침반찬", ""),
         ("danmuji", "단무지", ""), ("ssammu", "쌈무", ""), ("acorn_jelly", "도토리묵", ""),
+        ("cucumber_pickle", "오이피클", ""),
     )),
     *_group("food.preserved.canned", ("식품", "반찬·저장식품", "통조림"), "라면/즉석식품/통조림|라면/통조림/즉석밥|통조림", (
         ("tuna", "참치통조림", "참치|참치통조림", "참치통조림|참치 통조림"),
@@ -310,6 +313,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("fruit", "과일통조림", "과일통조림", "과일통조림"),
         ("whelk", "골뱅이통조림", "골뱅이통조림", "골뱅이통조림"),
         ("saury", "꽁치통조림", "꽁치통조림", "꽁치통조림"),
+        ("beans", "콩통조림", ""),
     )),
     *_group("food.snacks.baked", ("식품", "과자·간식", "구운과자"), "과자/시리얼|과자/스낵/간식", (
         ("biscuits", "쿠키·비스킷", "버터비스켓|초코비스켓|쿠키/비스킷|비스킷|쿠키"),
@@ -1714,6 +1718,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_bakery_leaf = reviewed_emart_bakery_leaf(evidence)
     if emart_bakery_leaf:
         homeplus_shelf_ids.add(emart_bakery_leaf)
+    emart_noodles_canned_leaf = reviewed_emart_noodles_canned_leaf(evidence)
+    if emart_noodles_canned_leaf:
+        homeplus_shelf_ids.add(emart_noodles_canned_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
