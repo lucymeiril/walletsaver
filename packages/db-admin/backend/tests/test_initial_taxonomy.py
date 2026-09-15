@@ -111,7 +111,7 @@ def test_costco_snack_unusual_forms_require_official_product_url(title,entry):
     assert classify_record(_raw('costco','과자',title,canonical_url=url))['unified_category_id']==leaf
 
 
-@pytest.mark.parametrize('title',['정직하개 애견용 소고기 육포 1kg','산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L'])
+@pytest.mark.parametrize('title',['정직하개 애견용 소고기 육포 1kg','산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L','LOTTE 빼빼로 모음 644g / 15팩','프리미엄 제철과일 선물세트 5.5KG 이상','말랑말랑꿀오랑오리지날480g (16g x 10 x 3pk)','말랑말랑꿀오랑780g (26g x 10 x 3pk)'])
 def test_costco_snack_url_audit_does_not_accept_pet_food_kits_or_tools(title):
     assert classify_record(_raw('costco','과자',title))['unified_category_id'] is None
 
