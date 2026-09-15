@@ -221,6 +221,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("surimi", "맛살", "맛살|간식용맛살"), ("dried_fish", "건어물스낵", "어포|쥐치"), ("anchovy", "건멸치", "멸치"),
         ("pollock_roe", "명란", ""), ("seafood_ball", "해물경단", ""),
         ("squid_shreds", "조미오징어채", ""), ("dried_pollock", "건황태", ""),
+        ("salted_shrimp", "새우젓", ""),
         ("dried_shrimp", "건새우", ""), ("stock_pack", "수산육수팩", ""), ("dried_dipori", "건디포리", ""),
     )),
     *_group("food.meals.seafood", ("식품", "간편식·면", "수산요리"), "", (

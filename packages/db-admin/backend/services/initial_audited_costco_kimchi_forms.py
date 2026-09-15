@@ -6,7 +6,7 @@ GROUPS={
  'food.preserved.kimchi.aged': ('비비고 묵은지 900g X 3ea',),
  'food.meals.prepared.soup_stew': ("Mama's Choice 돼지고기 김치찜 700g x 3",'오뚜기 청주식 돼지김치짜글이 450g x 12'),
  'food.seasonings.spices.chili_powder': ('햇님마을 굵은 고춧가루 100g x 4','남안동농협 고춧가루 1kg'),
- 'food.preserved.sides.salted_shrimp': ('새우젓 2kg X 2pack',),
+ 'food.seafood.processed.salted_shrimp': ('새우젓 2kg X 2pack',),
  'food.meals.prepared.seasoned_meat': ('오늘차림 한돈 고추장 제육볶음 600g x 3ea',),
  'food.meals.noodles.udon': ('CJ얼큰우동한그릇용기221g X 10ea',),
  'food.preserved.sides.stir_fried': ('비비고 견과류 멸치볶음 60g x 6',),
