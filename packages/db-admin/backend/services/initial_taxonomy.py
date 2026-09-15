@@ -387,6 +387,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.frozen.dessert", ("식품", "냉동식품", "아이스디저트"), "", (
         ("ice_bar", "아이스바", ""),
+        ("ice_cream", "아이스크림·젤라또", ""),
     )),
     *_group("food.seasonings.pastes", ("식품", "양념·소스", "장류"), "장류/양념/제빵|양념/오일/분말류", (
         ("soy", "간장", "간장"), ("gochujang", "고추장", "고추장"), ("doenjang", "된장", "된장"), ("ssamjang", "쌈장", "쌈장"),

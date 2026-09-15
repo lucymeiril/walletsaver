@@ -354,9 +354,17 @@ def test_emart_snack_shelf_only_readable_product_forms_are_classified(title,leaf
     assert reviewed_emart_snack_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['비쵸비 125g','왕고래밥 56g','고소미 216g','초코베어 300g','옥수수로 만든 밀크롤 35g'])
+@pytest.mark.parametrize('title',['비쵸비 125g','왕고래밥 56g','롯데 빈츠 204g','롯데 몽쉘 오리지널 12입 408G','고소미 216g','코코넛로쉐 238 g','초코베어 300g','스니커즈 아몬드 펀사이즈 500g','옥수수로 만든 밀크롤 35g','롯데 마가렛트구운모카352g'])
 def test_emart_snack_audit_does_not_guess_opaque_brands_or_roll_form(title):
     assert classify_record(_raw('emart','과자/간식',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title',['포카칩 소금 66g','참쌀선과 253g','참붕어빵 8입 232g(패키지 랜덤 발송)','X복순도가 쌀젤라또 474ml'])
+def test_emart_snack_audit_rejects_mixed_package_and_wrong_context_mutations(title):
+    evidence={'mart':'emart','source_path_parts':['과자/간식'],'source_title':title}
+    assert reviewed_emart_snack_leaf({**evidence,'mart':'lotte'}) is None
+    assert reviewed_emart_snack_leaf({**evidence,'source_path_parts':['생활용품']}) is None
+    assert reviewed_emart_snack_leaf({**evidence,'source_title':title+' 혼합박스'}) is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())
