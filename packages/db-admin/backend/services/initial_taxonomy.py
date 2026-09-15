@@ -452,6 +452,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("capsule", "캡슐세탁세제", ""), ("dryer_sheet", "건조기시트", ""),
         ("oxygen_bleach", "산소계표백제", ""), ("machine_cleaner", "세탁조세정제", ""),
         ("sheet", "시트세탁세제", ""), ("powder", "분말세탁세제", ""), ("stain", "얼룩제거제", ""),
+        ("scent_booster", "세탁향기부스터", ""),
     )),
     *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "세탁/청소|청소/생활용품", (
         ("detergent", "주방세제", "일반 주방세제/퐁퐁|주방세제", "주방세제|주방 세제"),

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 from services.initial_audited_emart_produce import FRUIT_TITLES, reviewed_emart_produce_leaf
-from services.initial_audited_costco_cleaning import TITLES as CLEANING_TITLES, reviewed_costco_cleaning_leaf
+from services.initial_audited_costco_cleaning import TITLES as CLEANING_TITLES, URL_ENTRIES as CLEANING_URL_ENTRIES, reviewed_costco_cleaning_leaf
 from services.initial_audited_homeplus_seafood import ENTRIES as SEAFOOD_ENTRIES, reviewed_homeplus_seafood_leaf
 from services.initial_audited_homeplus_snacks import ENTRIES as SNACK_ENTRIES, reviewed_homeplus_snack_leaf
 
@@ -24,6 +24,28 @@ from services.initial_taxonomy import (
 
 def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
+
+
+@pytest.mark.parametrize('title,entry', CLEANING_URL_ENTRIES.items())
+def test_additional_costco_cleaning_forms_require_exact_official_url(title, entry):
+    leaf, marker = entry
+    evidence = {'mart': 'costco', 'source_path_parts': ['세제'], 'source_title': title}
+    assert reviewed_costco_cleaning_leaf(evidence) is None
+    assert reviewed_costco_cleaning_leaf({**evidence, 'source_urls': ['https://example.com' + marker]}) is None
+    url = 'https://www.costco.co.kr/HomeKitchen/Cleaning-Products' + marker + 'p/1'
+    assert classify_record(_raw('costco', '세제', title, canonical_url=url))['unified_category_id'] == leaf
+
+
+@pytest.mark.parametrize('title', [
+    '프로쉬 세탁세제 선물세트',
+    '넬리 소다세제 1.5kg + 울드라이어볼x 4',
+    '파워브라이트캡슐세제 180개x 120',
+    '슈가버블베이킹소다 2kg x 3 + 500g 용기',
+    '네일메드코세정제콤보(용기3개+세정용분말250포)',
+    '무아스 소프트 버블 & 젤 자동 디스펜서 2P',
+])
+def test_costco_cleaning_audit_keeps_mixed_bulk_medical_and_appliance_rows_pending(title):
+    assert classify_record(_raw('costco', '세제', title))['unified_category_id'] is None
 
 
 from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf

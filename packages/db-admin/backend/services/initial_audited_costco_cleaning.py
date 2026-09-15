@@ -6,6 +6,8 @@ them. Unspecified powders, opaque brands, appliances and medical products are
 not inferred. No fuzzy aliases are produced.
 """
 
+from urllib.parse import urlparse
+
 GROUPS = {
     "household.cleaning.laundry.liquid": (
         "프로쉬 알로에 베라 세탁세제 3L x 2",
@@ -39,8 +41,27 @@ GROUPS = {
 }
 TITLES = {title: leaf for leaf, titles in GROUPS.items() for title in titles}
 
+URL_ENTRIES = {
+    "라브아실내건조캡슐세제 아이리스&피오니 60개": ("household.cleaning.laundry.capsule", "/LAVOIR-Capsule-Detergent-Iris-Peony-60-Pac/"),
+    "파워브라이트캡슐세제 180 Pacs": ("household.cleaning.laundry.capsule", "/Powerbright-Capsule-Detergent-180-Pacs/"),
+    "파워브라이트 초고농축 캡슐세제 180pc x 2": ("household.cleaning.laundry.capsule", "/PowerBright-Capsule-Detergent-180pc-x-2/"),
+    "퍼실 디스크 캡슐세제 25g x 60pc": ("household.cleaning.laundry.capsule", "/Persil-Discs-Capsule-25g-x-60pc/"),
+    "커클랜드 시그니춰 울트라 클린 팩세제 140팩": ("household.cleaning.laundry.capsule", "/Kirkland-Signature-Ultraclean-Pacs-140-Pacs/"),
+    "퍼울머스크블룸 2L x 4": ("household.cleaning.laundry.liquid", "/Perwoll-Musk-Bloom-Detergent-2L-x-4/"),
+    "FiJi 모락셀라스포츠 세제 3.5L x 2": ("household.cleaning.laundry.liquid", "/FiJi-Moraxella-Sports-Detergent-35L-x-2/"),
+    "FiJi 디나자임딥클린맥스4.7L": ("household.cleaning.laundry.liquid", "/FiJi-Dnazyme-Deep-Clean-Max-47L/"),
+    "액츠 데오후레쉬 3.5L x 2": ("household.cleaning.laundry.liquid", "/Actz-Deofresh-35L-x-2/"),
+    "다우니 향기 부스터 화이트 티 840g": ("household.cleaning.laundry.scent_booster", "/Downy-Scent-Booster-White-Tea-840g/"),
+}
+
 
 def reviewed_costco_cleaning_leaf(evidence):
     if evidence["mart"] != "costco" or tuple(evidence["source_path_parts"]) != ("세제",):
         return None
-    return TITLES.get(evidence["source_title"])
+    title = evidence["source_title"]
+    entry = URL_ENTRIES.get(title)
+    if entry:
+        leaf, marker = entry
+        if any(urlparse(url).hostname in {"costco.co.kr", "www.costco.co.kr"} and marker in urlparse(url).path for url in evidence.get("source_urls", ())):
+            return leaf
+    return TITLES.get(title)
