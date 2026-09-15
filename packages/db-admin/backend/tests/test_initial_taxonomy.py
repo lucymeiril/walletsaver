@@ -58,6 +58,7 @@ from services.initial_audited_emart_noodles_canned import TITLES as EMART_NOODLE
 from services.initial_audited_emart_seafood import TITLES as EMART_SEAFOOD_TITLES, reviewed_emart_seafood_leaf
 from services.initial_audited_emart_meat_eggs import TITLES as EMART_MEAT_EGG_TITLES, reviewed_emart_meat_egg_leaf
 from services.initial_audited_lotte_vegetables import TITLES as LOTTE_VEGETABLE_TITLES, reviewed_lotte_vegetable_leaf
+from services.initial_audited_lotte_general_snacks import PATH as LOTTE_GENERAL_SNACK_PATH, TITLES as LOTTE_GENERAL_SNACK_TITLES, reviewed_lotte_general_snack_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
@@ -450,6 +451,23 @@ def test_lotte_vegetable_audit_separates_exact_produce_tofu_and_sprouts(title,le
 @pytest.mark.parametrize('title',['채소 최대 30% 할인','콩나물과 두부 혼합세트','오늘좋은 신선상품'])
 def test_lotte_vegetable_audit_rejects_promotions_mixed_sets_and_opaque_names(title):
     assert classify_record(_raw('lottemart','채소',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf',LOTTE_GENERAL_SNACK_TITLES.items())
+def test_lotte_general_snack_audit_classifies_exact_declared_chip_forms(title,leaf):
+    path=' > '.join(LOTTE_GENERAL_SNACK_PATH)
+    result=classify_record(_raw('lottemart',path,title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'lottemart','source_path_parts':list(LOTTE_GENERAL_SNACK_PATH),'source_title':title}
+    assert reviewed_lotte_general_snack_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_lotte_general_snack_leaf({**evidence,'source_path_parts':['채소']}) is None
+    assert reviewed_lotte_general_snack_leaf({**evidence,'source_title':title+' 혼합박스'}) is None
+
+
+@pytest.mark.parametrize('title',['오리온 왕 고래밥 (56G)','오리온 꼬북칩초코츄러스 (64G)','오늘좋은 땅콩 오징어볼 (200G)','농심 바삭츄리 고튀 (90G)','농심 망고킥 (100G)','오늘좋은 오징어해씨볼 (200G)','일반과자 최대 30% 할인'])
+def test_lotte_general_snack_audit_keeps_opaque_mixed_and_promotion_rows_pending(title):
+    assert classify_record(_raw('lottemart',' > '.join(LOTTE_GENERAL_SNACK_PATH),title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())
