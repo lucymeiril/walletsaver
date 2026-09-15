@@ -34,7 +34,7 @@ from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, 
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
-from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE_TITLES, BEAN_TITLES, reviewed_costco_coffee_form_leaf
+from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE_TITLES, BEAN_TITLES, URL_ENTRIES as COSTCO_COFFEE_URL_ENTRIES, reviewed_costco_coffee_form_leaf
 from services.initial_audited_costco_snack_forms import ENTRIES as COSTCO_SNACK_ENTRIES, reviewed_costco_snack_form_leaf
 from services.initial_audited_emart_dairy import TITLES as EMART_DAIRY_TITLES, reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import TITLES as EMART_COFFEE_TEA_TITLES, reviewed_emart_coffee_tea_leaf
@@ -133,6 +133,26 @@ def test_costco_blend_requires_official_bean_or_ground_coffee_url(title):
     assert reviewed_costco_coffee_form_leaf({**evidence,'source_urls':['https://example.com/Whole-BeansGround-Coffee/x']}) is None
     result=classify_record(_raw('costco','커피',title,canonical_url='https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/item/p/1'))
     assert result['unified_category_id']=='food.drinks.coffee.beans'
+
+
+@pytest.mark.parametrize('title,entry', COSTCO_COFFEE_URL_ENTRIES.items())
+def test_costco_additional_coffee_food_requires_exact_official_url(title, entry):
+    leaf, marker = entry
+    evidence = {'mart': 'costco', 'source_path_parts': ['커피'], 'source_title': title}
+    assert reviewed_costco_coffee_form_leaf(evidence) is None
+    assert reviewed_costco_coffee_form_leaf({**evidence, 'source_urls': ['https://example.com' + marker]}) is None
+    url = 'https://www.costco.co.kr/Foods' + marker + 'p/1'
+    assert classify_record(_raw('costco', '커피', title, canonical_url=url))['unified_category_id'] == leaf
+
+
+@pytest.mark.parametrize('title', [
+    '스타벅스 아메리카노 & 드립백커피 선물세트',
+    '오르조 유기농 보리차세트',
+    '폴바셋 x 오덴세 홈카페 선물세트',
+    '드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)',
+])
+def test_costco_coffee_shelf_keeps_mixed_gifts_and_cleaner_pending(title):
+    assert classify_record(_raw('costco', '커피', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_BEVERAGE_TITLES.items())
