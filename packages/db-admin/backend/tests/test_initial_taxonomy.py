@@ -35,6 +35,23 @@ from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, 
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
 from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE_TITLES, BEAN_TITLES, reviewed_costco_coffee_form_leaf
+from services.initial_audited_costco_snack_forms import ENTRIES as COSTCO_SNACK_ENTRIES, reviewed_costco_snack_form_leaf
+
+
+@pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
+def test_costco_snack_unusual_forms_require_official_product_url(title,entry):
+    leaf,marker=entry
+    evidence={'mart':'costco','source_path_parts':['과자'],'source_title':title}
+    assert reviewed_costco_snack_form_leaf(evidence) is None
+    assert reviewed_costco_snack_form_leaf({**evidence,'source_urls':['https://example.com/'+marker]}) is None
+    url='https://www.costco.co.kr/Foods/Snack/'+marker+'item/p/1'
+    assert reviewed_costco_snack_form_leaf({**evidence,'source_urls':[url]})==leaf
+    assert classify_record(_raw('costco','과자',title,canonical_url=url))['unified_category_id']==leaf
+
+
+@pytest.mark.parametrize('title',['정직하개 애견용 소고기 육포 1kg','산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L'])
+def test_costco_snack_url_audit_does_not_accept_pet_food_kits_or_tools(title):
+    assert classify_record(_raw('costco','과자',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_COFFEE_TITLES.items())
