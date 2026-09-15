@@ -33,6 +33,30 @@ from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FOR
 from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, reviewed_emart_snack_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
+from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
+
+
+@pytest.mark.parametrize('title,leaf',COSTCO_BEVERAGE_TITLES.items())
+def test_costco_beverage_shelf_uses_explicit_drink_or_frozen_form(title,leaf):
+    result=classify_record(_raw('costco','음료',title))
+    assert result['unified_category_id']==leaf
+    assert result['evidence_type']=='reviewed_source_shelf_and_form'
+    evidence={'mart':'costco','source_path_parts':['음료'],'source_title':title}
+    assert reviewed_costco_beverage_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_costco_beverage_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_costco_beverage_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['뉴케어 당플랜 플러스 200ml X 24개입','정관장 활기력 20ml x 16병','끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2','벤딕트 차량용 보냉 컵홀더 2개','스타벅스피지오쿨라임400ml x 6 + 피치딸기 400ml x 6'])
+def test_costco_beverage_audit_does_not_guess_supplement_cosmetic_tool_or_mixed_pack(title):
+    assert classify_record(_raw('costco','음료',title))['unified_category_id'] is None
+
+
+def test_costco_polaretti_needs_its_official_frozen_ice_bar_url():
+    title='폴라레티 후르트 아이스바 40ml x 80'
+    assert classify_record(_raw('costco','음료',title))['unified_category_id'] is None
+    url='https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975'
+    assert classify_record(_raw('costco','음료',title,canonical_url=url))['unified_category_id']=='food.frozen.dessert.ice_bar'
 
 
 @pytest.mark.parametrize('title,leaf',KIMCHI_FORM_TITLES.items())

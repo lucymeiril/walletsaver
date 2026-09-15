@@ -79,6 +79,7 @@ COUNTED_CONTENT_TITLES = frozenset((
 # Full single-product measured chains reviewed from pending source titles.
 # This is not permission to treat any arbitrary set/unknown suffix as a chain.
 REVIEWED_CHAIN_TITLES = frozenset((
+    "델몬트 스퀴즈 사과/오렌지 에이드 240ml x 30 x 2팩",
     "봉하쌀영양찰밥230g x 6 x 2",
     "티젠 피치 콤부차 5g x 30ct x 2",
     "티젠 파인애플 콤부차 5g x 30ct x 2",

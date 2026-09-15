@@ -30,6 +30,7 @@ from services.initial_audited_costco_rice_forms import reviewed_costco_rice_form
 from services.initial_audited_emart_snacks import reviewed_emart_snack_leaf
 from services.initial_audited_costco_egg_meat import reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import reviewed_costco_kimchi_form_leaf
+from services.initial_audited_costco_beverages import reviewed_costco_beverage_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -334,6 +335,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("energy", "에너지음료", "", ""),
     )),
     *_group("food.drinks.juice", ("식품", "음료", "과채음료"), "생수/음료|생수/음료/주류", (
+        ("smoothie", "스무디", "", ""), ("lemonade", "레몬에이드", "", ""),
         ("fruit", "과일주스", "", ""),
         ("vegetable", "채소주스", "", ""),
         ("coconut", "코코넛워터", "", ""),
@@ -351,8 +353,11 @@ LEAVES: tuple[Leaf, ...] = (
         ("barley", "보리차", "보리차", "보리차"), ("herbal", "허브차", "허브차"),
         ("citron", "유자차", "유자차", "유자차"), ("cocoa", "코코아·핫초코", "코코아/핫초코", "핫초코|코코아분말"),
         ("green", "녹차·말차", "", ""), ("black", "홍차·아이스티", "", ""),
-        ("puer", "보이차", "", ""), ("grain", "곡물차", "", ""),
+        ("puer", "보이차", "", ""), ("grain", "곡물차", "", ""), ("ready", "차음료", "", ""),
         ("kombucha", "콤부차", "", ""),
+    )),
+    *_group("food.frozen.dessert", ("식품", "냉동식품", "아이스디저트"), "", (
+        ("ice_bar", "아이스바", ""),
     )),
     *_group("food.seasonings.pastes", ("식품", "양념·소스", "장류"), "장류/양념/제빵|양념/오일/분말류", (
         ("soy", "간장", "간장"), ("gochujang", "고추장", "고추장"), ("doenjang", "된장", "된장"), ("ssamjang", "쌈장", "쌈장"),
@@ -1629,6 +1634,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     costco_kimchi_form_leaf = reviewed_costco_kimchi_form_leaf(evidence)
     if costco_kimchi_form_leaf:
         homeplus_shelf_ids.add(costco_kimchi_form_leaf)
+    costco_beverage_leaf = reviewed_costco_beverage_leaf(evidence)
+    if costco_beverage_leaf:
+        homeplus_shelf_ids.add(costco_beverage_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
