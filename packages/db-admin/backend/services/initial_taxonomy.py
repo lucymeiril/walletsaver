@@ -38,6 +38,7 @@ from services.initial_audited_emart_coffee_tea import reviewed_emart_coffee_tea_
 from services.initial_audited_costco_meat_contaminants import reviewed_costco_meat_contaminant_leaf
 from services.initial_audited_emart_organic import reviewed_emart_organic_leaf
 from services.initial_audited_emart_meals import reviewed_emart_meal_leaf
+from services.initial_audited_emart_health import reviewed_emart_health_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -330,6 +331,15 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.snacks.bars", ("식품", "과자·간식", "영양바"), "", (
         ("protein", "단백질바", ""),
     )),
+    *_group("food.supplements.functional", ("식품", "건강식품", "건강보조식품"), "", (
+        ("calcium", "칼슘", ""), ("zinc", "아연", ""), ("probiotics", "유산균", ""),
+        ("red_ginseng", "홍삼", ""), ("vitamin_c", "비타민C", ""), ("lutein", "루테인", ""),
+        ("omega3", "오메가3", ""), ("multivitamin", "종합비타민", ""), ("biotin", "비오틴", ""),
+        ("collagen", "콜라겐", ""),
+    )),
+    *_group("food.supplements.protein", ("식품", "건강식품", "단백질보충식품"), "", (
+        ("powder", "단백질분말", ""), ("drink", "단백질음료", ""),
+    )),
     *_group("food.snacks.traditional", ("식품", "과자·간식", "전통간식"), "", (
         ("hangwa", "한과·전병", ""), ("yanggaeng", "양갱", ""),
     )),
@@ -434,6 +444,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("oligosaccharide", "올리고당", "", ""), ("starch", "물엿", "", ""),
         ("plum", "매실청", "", ""), ("allulose", "액상알룰로스", "", ""),
         ("rice", "쌀조청", "", ""),
+        ("honey", "벌꿀", "", ""),
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
@@ -1675,6 +1686,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_meal_leaf = reviewed_emart_meal_leaf(evidence)
     if emart_meal_leaf:
         homeplus_shelf_ids.add(emart_meal_leaf)
+    emart_health_leaf = reviewed_emart_health_leaf(evidence)
+    if emart_health_leaf:
+        homeplus_shelf_ids.add(emart_health_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

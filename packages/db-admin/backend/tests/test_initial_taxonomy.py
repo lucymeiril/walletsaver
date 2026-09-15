@@ -63,6 +63,7 @@ from services.initial_audited_emart_coffee_tea import TITLES as EMART_COFFEE_TEA
 from services.initial_audited_costco_meat_contaminants import ENTRIES as COSTCO_MEAT_CONTAMINANTS, reviewed_costco_meat_contaminant_leaf
 from services.initial_audited_emart_organic import TITLES as EMART_ORGANIC_TITLES, reviewed_emart_organic_leaf
 from services.initial_audited_emart_meals import TITLES as EMART_MEAL_TITLES, reviewed_emart_meal_leaf
+from services.initial_audited_emart_health import TITLES as EMART_HEALTH_TITLES, reviewed_emart_health_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -152,6 +153,21 @@ def test_emart_meal_shelf_uses_exact_product_form(title, leaf):
 @pytest.mark.parametrize('title', ['우엉절임과 김밥단무지 220g', '딱 한끼(순한맛) 308g', '간편식 모음 최대 30%'])
 def test_emart_meal_shelf_keeps_mixed_opaque_and_promotion_rows_pending(title):
     assert classify_record(_raw('emart', '밀키트/간편식', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', EMART_HEALTH_TITLES.items())
+def test_emart_health_shelf_uses_exact_product_form(title, leaf):
+    result = classify_record(_raw('emart', '건강식품', title))
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'emart', 'source_path_parts': ['건강식품'], 'source_title': title}
+    assert reviewed_emart_health_leaf({**evidence, 'mart': 'costco'}) is None
+    assert reviewed_emart_health_leaf({**evidence, 'source_path_parts': ['화장품']}) is None
+    assert reviewed_emart_health_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', ['서울우유 한끼식사 구수한 맛 190ml*18입', '건강식품 베스트 모음', '비타민과 화장품 혼합세트'])
+def test_emart_health_shelf_keeps_opaque_promotion_and_mixed_rows_pending(title):
+    assert classify_record(_raw('emart', '건강식품', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
