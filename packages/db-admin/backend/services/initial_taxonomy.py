@@ -35,6 +35,7 @@ from services.initial_audited_costco_coffee_forms import reviewed_costco_coffee_
 from services.initial_audited_costco_snack_forms import reviewed_costco_snack_form_leaf
 from services.initial_audited_emart_dairy import reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import reviewed_emart_coffee_tea_leaf
+from services.initial_audited_costco_meat_contaminants import reviewed_costco_meat_contaminant_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -162,6 +163,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("leaf", "쌈채소", "쌈채소|상추|깻잎"), ("sprouts", "콩나물·숙주", "콩나물|숙주|숙주나물"),
         ("mushroom", "버섯", "버섯|팽이버섯|새송이버섯|느타리버섯|표고버섯"),
         ("salad", "샐러드채소", "믹스샐러드|샐러드채소"),
+        ("mixed", "모둠채소", ""),
         ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
         ("radish", "무", ""), ("zucchini", "애호박", ""),
         ("chives", "부추", "", ""),
@@ -412,6 +414,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("chili_powder", "고춧가루", "", ""), ("cumin", "쿠민", "", ""),
         ("parsley", "파슬리", "", ""), ("star_anise", "팔각", "", ""),
         ("roasted_sesame", "볶음참깨", "", ""), ("whole_chili", "건고추", "", ""),
+        ("blend", "혼합향신료", "", ""),
     )),
     *_group("food.seasonings.stock", ("식품", "양념·소스", "조미료"), "", (
         ("beef", "쇠고기조미료", "", ""), ("seasoned_salt", "맛소금", "", ""),
@@ -1653,6 +1656,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_coffee_tea_leaf = reviewed_emart_coffee_tea_leaf(evidence)
     if emart_coffee_tea_leaf:
         homeplus_shelf_ids.add(emart_coffee_tea_leaf)
+    costco_meat_contaminant_leaf = reviewed_costco_meat_contaminant_leaf(evidence)
+    if costco_meat_contaminant_leaf:
+        homeplus_shelf_ids.add(costco_meat_contaminant_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

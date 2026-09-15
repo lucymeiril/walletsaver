@@ -38,6 +38,7 @@ from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE
 from services.initial_audited_costco_snack_forms import ENTRIES as COSTCO_SNACK_ENTRIES, reviewed_costco_snack_form_leaf
 from services.initial_audited_emart_dairy import TITLES as EMART_DAIRY_TITLES, reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import TITLES as EMART_COFFEE_TEA_TITLES, reviewed_emart_coffee_tea_leaf
+from services.initial_audited_costco_meat_contaminants import ENTRIES as COSTCO_MEAT_CONTAMINANTS, reviewed_costco_meat_contaminant_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -75,6 +76,28 @@ def test_emart_coffee_tea_shelf_uses_exact_product_form(title, leaf):
 ])
 def test_emart_coffee_tea_audit_keeps_mixed_corrupt_or_opaque_forms_pending(title):
     assert classify_record(_raw('emart', '커피/원두/차', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,entry', COSTCO_MEAT_CONTAMINANTS.items())
+def test_costco_meat_shelf_contaminants_need_exact_official_url(title, entry):
+    leaf, marker = entry
+    evidence = {'mart': 'costco', 'source_path_parts': ['고기'], 'source_title': title}
+    assert reviewed_costco_meat_contaminant_leaf(evidence) is None
+    assert reviewed_costco_meat_contaminant_leaf({**evidence, 'source_urls': ['https://example.com' + marker]}) is None
+    url = 'https://www.costco.co.kr/Foods' + marker + 'p/1'
+    assert reviewed_costco_meat_contaminant_leaf({**evidence, 'source_urls': [url]}) == leaf
+    assert classify_record(_raw('costco', '고기', title, canonical_url=url))['unified_category_id'] == leaf
+
+
+@pytest.mark.parametrize('title', [
+    '안방그릴 울트라 AB1107CO',
+    '파이어폭스 BBQ 석쇠 5개입 / 최소구매 2',
+    '궁한우나주식곰탕500gx3 +소스+ 갈비찜1kgx2 +당면',
+    '부추고기순대500Gx3 족발슬라이스 960g',
+    '마이셰프X EBS 산더미소고기콩불830g x 2',
+])
+def test_costco_meat_shelf_does_not_guess_grills_or_mixed_food_sets(title):
+    assert classify_record(_raw('costco', '고기', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
