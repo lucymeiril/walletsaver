@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass98-workflow",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "팽이버섯 (봉)",
+      "raw_record_ids": [
+        "ingestion:79:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:6": "3e59e2b76519cbe587753a5992ed3587c47725c3b4f6a5fd2ed3715e84211946"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "새송이 버섯 (팩)",
+      "raw_record_ids": [
+        "ingestion:79:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:7": "2ba6b5aa229bb630e39b64c98b6e9b6fa1556f27ec390938e1ecce3a5767874f"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "소소한하루 새송이",
+      "raw_record_ids": [
+        "ingestion:79:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:8": "71ce9f4cacc21a628e58cc8e0c392c2201a9f56167ec4850ef14654964855b41"
+      },
+      "number": 3,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "강원 인큐 애호박 (개, 200g이상)",
+      "raw_record_ids": [
+        "ingestion:79:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:11": "6e8600cb27807ddc1e70e4e9464e9e7ebb433cf59f0cf0787927eb09f406fee2"
+      },
+      "number": 4,
+      "leaf": "food.produce.vegetables.zucchini",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "채소 행사전 (대파/배추 등)",
+      "raw_record_ids": [
+        "ingestion:79:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:13": "9ef5e519e38125bdc67820494d6368107912a87a044d288f55fa2a2e1e2b006a"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "행사 배너"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "소소한 하루 오이맛고추(봉)",
+      "raw_record_ids": [
+        "ingestion:79:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:20": "2ed1c76837d3949f70fd35d282b5738e2b2d07f02e655875d3c4561c9e35143b"
+      },
+      "number": 6,
+      "leaf": "food.produce.vegetables.pepper",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "모닝 샐러드 (300g)",
+      "raw_record_ids": [
+        "ingestion:79:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:23": "fbd9f5a7db0053d84f2fb9f8b9e2668eb71e7bb1efd3e3a8f1130e126e4b9138"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "혼합 및 가공 상태 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "소소한하루 흙당근(봉)",
+      "raw_record_ids": [
+        "ingestion:79:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:24": "e62d82dad5d7095dff66773099f08101a18bb59b590aeeb8e3e241947016d7b2"
+      },
+      "number": 8,
+      "leaf": "food.produce.vegetables.carrot",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "팽이버섯 (3입) 봉",
+      "raw_record_ids": [
+        "ingestion:79:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:27": "a6b7eadeda882bfb420901b47997fd57938b2fb7f8b0da935e5becaba87b8295"
+      },
+      "number": 9,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "금주 채소 행사전",
+      "raw_record_ids": [
+        "ingestion:79:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:34": "6d697c38a206965e6fc37be61a4343f3d285e3ac4e534dc9fc7bd9f4381f3e2b"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "행사 배너"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "하루채소 만가닥",
+      "raw_record_ids": [
+        "ingestion:79:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:41": "aa3efa30869ad303321037414da2989edbe847c839f4348207e90a5b75c8b362"
+      },
+      "number": 11,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "미역줄기 (300g*2)",
+      "raw_record_ids": [
+        "ingestion:79:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:42": "a52d6a85f6e1e7129a96c75c57cc9634140b518638e2accb67f9b9f4cfb23ac1"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "혼합 및 가공 상태 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "소소한 하루 가벼운 샐러드 (80g)",
+      "raw_record_ids": [
+        "ingestion:79:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:53": "0eb7aaa889e4f8e07328c9453322c1cedeef7bc4ff5fb3cb75e14cc08e0963ba"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "혼합 및 가공 상태 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "청경채 200g (4~6입)",
+      "raw_record_ids": [
+        "ingestion:79:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:56": "4b390ab8c0110c89bd05ac0f707c424daea6bb78969825055ae146342bc37b39"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "전용 리프 추가 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "우엉대 절단(봉)",
+      "raw_record_ids": [
+        "ingestion:79:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:79:61": "a94f990097f5d31147ae27c8b454359b5e98ae25a9f196b7a2fc09031ee4b242"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "전용 리프 추가 검토"
+    }
+  ],
+  "packet_sha256": "5afc17650fa1925b47401bf752d3c0b3c363e626a96b4c233f1cc96949b2d9c6"
+}

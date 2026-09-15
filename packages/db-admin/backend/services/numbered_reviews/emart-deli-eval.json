@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass98-workflow",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "김자반 야채",
+      "raw_record_ids": [
+        "ingestion:86:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:1": "e60374a91cf78d095dbd2dd7f321b0bd69f55ad828d2239f892d543e7744b9dc"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "토굴숙성 광천 새우젓 250g",
+      "raw_record_ids": [
+        "ingestion:86:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:25": "dbfd4d8cfcb30b1a30986515ed5eb39776f02cefeea1fb3c744d05733b072eab"
+      },
+      "number": 2,
+      "leaf": "food.seafood.processed.salted_shrimp",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "풍림 메추리알 장조림 400g",
+      "raw_record_ids": [
+        "ingestion:86:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:27": "25c18594a99a18ec06b02ace19bd8a3a561056c089f0841a30bdc0faf1398b88"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "메추리알 원재료 분류와 장조림 완제품 분류 충돌"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "[키친델리] 칠리함박&매쉬포테이토(팩)",
+      "raw_record_ids": [
+        "ingestion:86:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:42": "edce8d95623b2fe3da4b05bbdb5f3d4d95442e7dd133e51270e5a5b2a32c7536"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "정성식품 백명란젓 300g",
+      "raw_record_ids": [
+        "ingestion:86:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:43": "9d864c483ae089446d2245275b035ed5a3aebcf98f5c7f151e8f30d50271d1bc"
+      },
+      "number": 5,
+      "leaf": "food.seafood.processed.pollock_roe",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "콘치즈 255g",
+      "raw_record_ids": [
+        "ingestion:86:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:45": "e249dd07ab76e58e7d33f127277bb6edb76f12c4966287bd3394097b438a2542"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "[키친델리] 뉴강정사새우(팩)",
+      "raw_record_ids": [
+        "ingestion:86:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:50": "c33b975eef8be0da5dddfcb856ecaa1c8848f0e55fb2480b79da3915877e5e4b"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "오징어젓갈 500g",
+      "raw_record_ids": [
+        "ingestion:86:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:53": "f2b4c52bfe314ce78d2ab66e760322db16e72b133ba97d4c09959aca7b3c61e2"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "젓갈 전용 리프 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "[키친델리] 생연어초밥&훈제말이",
+      "raw_record_ids": [
+        "ingestion:86:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:55": "1f63cded0f44279c80eac6713a65d6944dc384bf3a81589fd096f21b808e1e98"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "낙지젓갈 400g",
+      "raw_record_ids": [
+        "ingestion:86:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:59": "4c9b02b6cf1a7704439dc552008bf15671c5236e40bdc68edcc2f8859fc05c51"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "젓갈 전용 리프 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "정성담은 메추리알 장조림400g",
+      "raw_record_ids": [
+        "ingestion:86:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:64": "8abae85ea80b868b048085173031d3e7227ee314176a78e82d041339785d840a"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "메추리알 원재료 분류와 장조림 완제품 분류 충돌"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "김치/반찬/델리"
+      ],
+      "source_title": "[키친델리] 팔보채 WITH 이금기",
+      "raw_record_ids": [
+        "ingestion:86:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:86:65": "7d1168a74458e27d2b3cde0638b2776d902ae9a0ec652f105b457edb6d494c0e"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "혼합 구성 또는 조리 형태 검토"
+    }
+  ],
+  "packet_sha256": "c05d7fc36a8e25f94ebf391e12bb26b4f6abee536a0b902198ce93042fa7a964"
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass98-workflow",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "[할인 특가]시즌 제철 과일 딜",
+      "raw_record_ids": [
+        "ingestion:78:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:1": "dfac908844bec0a474c35d79a537dc108a2b0b74f7f973942a36924af042fee0"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "행사 배너"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "뉴질랜드산 골드키위 (팩)",
+      "raw_record_ids": [
+        "ingestion:78:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:5": "9243402e19a61340717127098038b32aabcfb2f2e75c61e7055ad63375b0ff7e"
+      },
+      "number": 2,
+      "leaf": "food.produce.fruit.kiwi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "부드러운 복숭아 1.25kg 내외 (4~6입)/팩",
+      "raw_record_ids": [
+        "ingestion:78:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:7": "1627593465b4e1b35eafa79fe66972fd5230a91bec4365bd63fced4e9310ee37"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "가변 중량 과일 기존 보류 계약 유지; 종류 분류와 단위가격 분리 여부는 별도 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "까망 애플수박 1.5kg미만",
+      "raw_record_ids": [
+        "ingestion:78:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:11": "de8e9debc3adf01bde6da712a49ba9a059ef310cc2e25c95e19b95b0753e08d6"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "가변 중량 과일 기존 보류 계약 유지; 종류 분류와 단위가격 분리 여부는 별도 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "머스크 메론 2.2kg내외 (왕특대)",
+      "raw_record_ids": [
+        "ingestion:78:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:12": "4639b373df03c1730575575f9d7fe2c2dd8b67e4bd47b635b32402f019455fec"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "가변 중량 과일 기존 보류 계약 유지; 종류 분류와 단위가격 분리 여부는 별도 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "칠레산 레몬 1개(150g내외)",
+      "raw_record_ids": [
+        "ingestion:78:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:28": "4446789ce8487e82f054360b85a0d4820adb94781c5d5631d9b0f39a49ee5640"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "레몬 및 가공 밤 전용 리프 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "미국산 허니듀 메론 1.8kg내외",
+      "raw_record_ids": [
+        "ingestion:78:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:30": "7b2963c3bb7ea82637f29daed575f7f4f8802a36fadf549088ece8ffe6d90898"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "가변 중량 과일 기존 보류 계약 유지; 종류 분류와 단위가격 분리 여부는 별도 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "아삭 복숭아 1.25kg 내외 (4~6입)/팩",
+      "raw_record_ids": [
+        "ingestion:78:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:32": "a1f7b21412c98eca1fb7e26981bcc678de8c6979e7a0997a417944e2dbbc8244"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "가변 중량 과일 기존 보류 계약 유지; 종류 분류와 단위가격 분리 여부는 별도 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "한입 쏙 유기농 군밤 240g",
+      "raw_record_ids": [
+        "ingestion:78:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:33": "d14528e0507bf348641e564776e71bd520b752942c185a3784e27de88428a0cd"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "레몬 및 가공 밤 전용 리프 검토"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "친환경 신선 행사 모음전",
+      "raw_record_ids": [
+        "ingestion:78:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:78:34": "3006d21f7ada1f93eaafd0b4d9e1b65f3060544adbb3d06ebb1ca6c2044a02a3"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "행사 배너"
+    }
+  ],
+  "packet_sha256": "f271fe97ef0bf4b8f9ae5e25b7fb690a460ee679ef1f101a4f6076a8c9befff4"
+}

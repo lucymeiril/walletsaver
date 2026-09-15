@@ -101,10 +101,35 @@ def main():
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
+    p = sub.add_parser('hold-draft'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--numbers',required=True); p.add_argument('--reason',required=True)
     args = parser.parse_args()
     if args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
+    elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
     else: checkpoint(args.run_id,args.next)
+
+
+def hold_draft(name, rule_sha, numbers, reason, root=ROOT):
+    state, _, baseline, _, _ = preflight(root)
+    path = named(root,name,REVIEWS)
+    require(sha(path) == rule_sha, 'Rule file changed')
+    doc = read(path)
+    require(doc['baseline'] == state['baseline'], 'Stale draft')
+    certified = read(baseline/'checks-passed.json')['code_sha256']
+    require(str(path.relative_to(root)) not in certified and path.relative_to(root).as_posix() not in certified, 'Certified rules require separate revision review')
+    selected = [int(value) for value in numbers.split(',')]
+    require(bool(reason.strip()) and len(selected)==len(set(selected)), 'Reason and unique numbers required')
+    require(set(selected) <= {row['number'] for row in doc['rows']}, 'Unknown number')
+    backup = named(root,name+'-'+rule_sha[:12],'.debug-artifacts/review-revisions')
+    write_new(backup,doc)
+    for row in doc['rows']:
+        if row['number'] in selected:
+            row['leaf']=None
+            row['hold_reason']=reason
+    temp=path.with_suffix('.json.tmp')
+    write_new(temp,doc)
+    temp.replace(path)
+    print(f'Draft holds updated: {len(selected)}; backup={backup.relative_to(root)}')
 
 
 def checkpoint(run_id, next_task, root=ROOT):

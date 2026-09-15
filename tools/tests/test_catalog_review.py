@@ -54,3 +54,21 @@ def test_checkpoint_rejects_changed_code_before_document_update(tmp_path,monkeyp
     review.write_new(out/'checks-passed.json',{'status':'checks_passed_not_published','baseline':'old','code_sha256':{'code':'old'}})
     with pytest.raises(ValueError,match='Code changed'): review.checkpoint('run','next',tmp_path)
     assert not (tmp_path/'docs').exists()
+
+
+def test_hold_draft_preserves_backup_and_rejects_certified_file(tmp_path,monkeypatch):
+    baseline=tmp_path/'baseline';baseline.mkdir()
+    monkeypatch.setattr(review,'preflight',lambda root:({'baseline':'baseline'},None,baseline,None,None))
+    certificate=baseline/'checks-passed.json'
+    review.write_new(certificate,{'code_sha256':{}})
+    path=review.named(tmp_path,'sample',review.REVIEWS)
+    original={'baseline':'baseline','rows':[{'number':1,'leaf':'leaf','hold_reason':''}]}
+    review.write_new(path,original)
+    old_hash=review.sha(path)
+    with pytest.raises(ValueError,match='Unknown'):review.hold_draft('sample',old_hash,'2','reason',tmp_path)
+    review.hold_draft('sample',old_hash,'1','conflict',tmp_path)
+    assert review.read(path)['rows'][0]['leaf'] is None
+    backups=list((tmp_path/'.debug-artifacts/review-revisions').glob('*.json'))
+    assert len(backups)==1 and review.read(backups[0])==original
+    certificate.write_text(json.dumps({'code_sha256':{path.relative_to(tmp_path).as_posix():'hash'}}))
+    with pytest.raises(ValueError,match='Certified'):review.hold_draft('sample',review.sha(path),'1','reason',tmp_path)

@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260915-pass98-workflow",
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass100-numbered-eval",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6866,
-  "unresolved": 2330,
-  "next_task": "Use numbered prepare/decide on the next unreviewed shelf; workflow-smoke has 8 held forms (16 observations): jjolmyeon conflicts with source naengmyeon, broth needs a specific leaf. Verify pass96 pumpkin inactivity from offer evidence before explaining it.",
+  "included": 6880,
+  "unresolved": 2316,
+  "next_task": "번호 검토 계속. 45형태 검토, 14관측/11상품 추가. 새송이·만가닥은 수량 미해결; 팽이버섯은 분류 JSON과 적재 보고서 차이 후속 확인. pass99는 실패 로그만 있어 기준 사용 금지. 후보 선반의 기존 테스트 계약부터 검색. pass96 단호박 비활성 사유 미확인. 상세: docs/catalog-numbered-evaluation.md",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }
