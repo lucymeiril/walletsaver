@@ -56,6 +56,7 @@ from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, 
 from services.initial_audited_emart_bakery import TITLES as EMART_BAKERY_TITLES, reviewed_emart_bakery_leaf
 from services.initial_audited_emart_noodles_canned import TITLES as EMART_NOODLES_CANNED_TITLES, reviewed_emart_noodles_canned_leaf
 from services.initial_audited_emart_seafood import TITLES as EMART_SEAFOOD_TITLES, reviewed_emart_seafood_leaf
+from services.initial_audited_emart_meat_eggs import TITLES as EMART_MEAT_EGG_TITLES, reviewed_emart_meat_egg_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
@@ -416,6 +417,22 @@ def test_emart_seafood_audit_classifies_exact_single_seafood_forms(title,leaf):
 @pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동] 해물모둠 600g','[냉동][베트남] 슈림프링 (453g/팩)','건조 황태채 ~20%','볶음/국물용 멸치 ~40% 할인','국산 참기름 들기름 만전재래김 4g*20봉'])
 def test_emart_seafood_audit_keeps_promotions_mixed_and_unclear_preparations_pending(title):
     assert classify_record(_raw('emart','수산물/건해산',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf',EMART_MEAT_EGG_TITLES.items())
+def test_emart_meat_egg_audit_classifies_only_exact_species_declared_forms(title,leaf):
+    result=classify_record(_raw('emart','정육/계란류',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'emart','source_path_parts':['정육/계란류'],'source_title':title}
+    assert reviewed_emart_meat_egg_leaf({**evidence,'mart':'costco'}) is None
+    assert reviewed_emart_meat_egg_leaf({**evidence,'source_path_parts':['수산물/건해산']}) is None
+    assert reviewed_emart_meat_egg_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['국내산 앞다리 불고기용 (100g)','국내산 등심 카레용 (100g) (팩)','국내산 냉장 갈비 찜용 (100g)','[더느림+] 무항생제 목심 (100g)','닭다리살/닭가슴살 등 ~20%','냉동 삼겹살/목심 할인행사'])
+def test_emart_meat_egg_audit_keeps_unspecified_species_promotions_and_mixed_cuts_pending(title):
+    assert classify_record(_raw('emart','정육/계란류',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())
