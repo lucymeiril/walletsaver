@@ -40,6 +40,7 @@ from services.initial_audited_emart_organic import reviewed_emart_organic_leaf
 from services.initial_audited_emart_meals import reviewed_emart_meal_leaf
 from services.initial_audited_emart_health import reviewed_emart_health_leaf
 from services.initial_audited_homeplus_flavored_powders import reviewed_homeplus_flavored_powder_leaf
+from services.initial_audited_emart_pet import reviewed_emart_pet_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -523,6 +524,11 @@ LEAVES: tuple[Leaf, ...] = (
 )
 
 LEAVES += tuple(Leaf(id,path,(),(),()) for id,path,*_ in FORM_RULES)
+LEAVES += (
+    Leaf("pet.food.treats.cat_crunchy", ("반려동물", "먹거리", "간식", "고양이크런치간식"), (), (), ()),
+    Leaf("pet.food.treats.cheese", ("반려동물", "먹거리", "간식", "치즈간식"), (), (), ()),
+    Leaf("pet.food.supplement.milk", ("반려동물", "먹거리", "영양식", "펫밀크"), (), (), ()),
+)
 _BY_ID = {leaf.id: leaf for leaf in LEAVES}
 _PROMO = {_label_key(v) for v in ("Best", "베스트", "Obanjang", "오반장", "SpecialPriceOffers", "OnlineDeals", "온라인할인", "행사상품")}
 _MART_ALIASES = {"이마트": "emart", "홈플러스": "homeplus", "롯데마트": "lottemart", "코스트코": "costco"}
@@ -1693,6 +1699,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_flavored_powder_leaf = reviewed_homeplus_flavored_powder_leaf(evidence)
     if homeplus_flavored_powder_leaf:
         homeplus_shelf_ids.add(homeplus_flavored_powder_leaf)
+    emart_pet_leaf = reviewed_emart_pet_leaf(evidence)
+    if emart_pet_leaf:
+        homeplus_shelf_ids.add(emart_pet_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

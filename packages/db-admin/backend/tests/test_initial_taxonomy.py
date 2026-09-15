@@ -65,6 +65,7 @@ from services.initial_audited_emart_organic import TITLES as EMART_ORGANIC_TITLE
 from services.initial_audited_emart_meals import TITLES as EMART_MEAL_TITLES, reviewed_emart_meal_leaf
 from services.initial_audited_emart_health import TITLES as EMART_HEALTH_TITLES, reviewed_emart_health_leaf
 from services.initial_audited_homeplus_flavored_powders import PATH as HOMEPLUS_FLAVORED_PATH, TITLES as HOMEPLUS_FLAVORED_TITLES, reviewed_homeplus_flavored_powder_leaf
+from services.initial_audited_emart_pet import TITLES as EMART_PET_TITLES, reviewed_emart_pet_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -185,6 +186,24 @@ def test_homeplus_misc_flavored_powder_uses_exact_form(title, leaf):
 def test_homeplus_misc_flavored_powder_keeps_vinegar_opaque_and_mixed_rows_pending(title):
     row = {'source_name': 'homeplus', 'source_title': title, 'source_category_path': list(HOMEPLUS_FLAVORED_PATH)}
     assert classify_record(row)['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', EMART_PET_TITLES.items())
+def test_emart_pet_shelf_uses_exact_animal_and_product_form(title, leaf):
+    result = classify_record(_raw('emart', '반려동물', title))
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'emart', 'source_path_parts': ['반려동물'], 'source_title': title}
+    assert reviewed_emart_pet_leaf({**evidence, 'mart': 'costco'}) is None
+    assert reviewed_emart_pet_leaf({**evidence, 'source_path_parts': ['과자']}) is None
+    assert reviewed_emart_pet_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', [
+    '해피밀 황태와 소고기 1.2kg', '몰리스 프로발란스 어덜트 8kg',
+    '몰리스 미니캔 닭가슴살과연어 6개입', '더리얼 오븐베이크드 소고기 어덜트 1kg', '클래식 5kg',
+])
+def test_emart_pet_shelf_keeps_unknown_animal_or_opaque_forms_pending(title):
+    assert classify_record(_raw('emart', '반려동물', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
