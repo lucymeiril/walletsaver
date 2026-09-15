@@ -46,6 +46,7 @@ from services.initial_audited_emart_bakery import reviewed_emart_bakery_leaf
 from services.initial_audited_emart_noodles_canned import reviewed_emart_noodles_canned_leaf
 from services.initial_audited_emart_seafood import reviewed_emart_seafood_leaf
 from services.initial_audited_emart_meat_eggs import reviewed_emart_meat_egg_leaf
+from services.initial_audited_lotte_vegetables import reviewed_lotte_vegetable_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -177,6 +178,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
         ("radish", "무", ""), ("zucchini", "애호박", ""),
         ("chives", "부추", "", ""),
+        ("lettuce", "양상추", ""), ("broccoli", "브로콜리", ""),
     )),
     # Dry/frozen processing wins over an unreliable Fresh-Foods source path.
     # These leaves and search terms add no automatic source/name mappings.
@@ -1729,6 +1731,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_meat_egg_leaf = reviewed_emart_meat_egg_leaf(evidence)
     if emart_meat_egg_leaf:
         homeplus_shelf_ids.add(emart_meat_egg_leaf)
+    lotte_vegetable_leaf = reviewed_lotte_vegetable_leaf(evidence)
+    if lotte_vegetable_leaf:
+        homeplus_shelf_ids.add(lotte_vegetable_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
