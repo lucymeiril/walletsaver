@@ -42,6 +42,7 @@ from services.initial_audited_emart_health import reviewed_emart_health_leaf
 from services.initial_audited_homeplus_flavored_powders import reviewed_homeplus_flavored_powder_leaf
 from services.initial_audited_emart_pet import reviewed_emart_pet_leaf
 from services.initial_audited_emart_grains import reviewed_emart_grain_leaf
+from services.initial_audited_emart_bakery import reviewed_emart_bakery_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -420,10 +421,12 @@ LEAVES: tuple[Leaf, ...] = (
         ("sliced", "식빵", ""), ("roll", "모닝롤", ""), ("bagel", "베이글", ""),
         ("hard", "하드롤·바게트", ""), ("pastry", "페이스트리", ""), ("dough", "제빵생지", ""),
         ("filled", "속채운빵", ""),
+        ("sandwich", "샌드위치빵", ""),
     )),
     *_group("food.bakery.dessert", ("식품", "베이커리·스프레드", "디저트"), "", (
         ("cake", "케이크", ""), ("muffin", "머핀", ""), ("scone", "스콘", ""), ("financier", "휘낭시에", ""),
         ("churros", "츄러스", ""),
+        ("donut", "도넛", ""), ("cream_puff", "슈크림빵", ""),
     )),
     *_group("food.seasonings.oils", ("식품", "양념·소스", "식용유"), "장류/양념/제빵|양념/오일/분말류", (
         ("canola", "카놀라유", "카놀라유", "카놀라유"), ("grape", "포도씨유", "포도씨유", "포도씨유"),
@@ -1708,6 +1711,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_grain_leaf = reviewed_emart_grain_leaf(evidence)
     if emart_grain_leaf:
         homeplus_shelf_ids.add(emart_grain_leaf)
+    emart_bakery_leaf = reviewed_emart_bakery_leaf(evidence)
+    if emart_bakery_leaf:
+        homeplus_shelf_ids.add(emart_bakery_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
