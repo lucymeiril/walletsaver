@@ -34,6 +34,26 @@ from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, 
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
+from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE_TITLES, BEAN_TITLES, reviewed_costco_coffee_form_leaf
+
+
+@pytest.mark.parametrize('title,leaf',COSTCO_COFFEE_TITLES.items())
+def test_costco_coffee_shelf_explicit_food_forms_are_separate(title,leaf):
+    result=classify_record(_raw('costco','커피',title))
+    assert result['unified_category_id']==leaf
+    evidence={'mart':'costco','source_path_parts':['커피'],'source_title':title}
+    assert reviewed_costco_coffee_form_leaf({**evidence,'mart':'emart'}) is None
+    assert reviewed_costco_coffee_form_leaf({**evidence,'source_path_parts':['가전']}) is None
+    assert reviewed_costco_coffee_form_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',sorted(BEAN_TITLES))
+def test_costco_blend_requires_official_bean_or_ground_coffee_url(title):
+    evidence={'mart':'costco','source_path_parts':['커피'],'source_title':title}
+    assert reviewed_costco_coffee_form_leaf(evidence) is None
+    assert reviewed_costco_coffee_form_leaf({**evidence,'source_urls':['https://example.com/Whole-BeansGround-Coffee/x']}) is None
+    result=classify_record(_raw('costco','커피',title,canonical_url='https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/item/p/1'))
+    assert result['unified_category_id']=='food.drinks.coffee.beans'
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_BEVERAGE_TITLES.items())
@@ -556,8 +576,7 @@ def test_audited_coffee_shelves_use_explicit_product_form(mart, path, title, lea
     "프리파라 네스프레소 전용 캡슐홀더",
     "아소부 뉴 콜드브루 커피메이커", "쏘울핸드 커피 그라인더",
     "카피탈리 시스템 캡슐 커피 머신", "쓰임 스테이블 커피잔 세트",
-    "카페, 진정성 밀크티 350ml", "펄세스 스테비아 율무차 18g x 100ct",
-    "커피빈 얼그레이 바닐라라떼 25g x 40ct", "루카스나인 우베라떼 18g x 50",
+    "카페, 진정성 밀크티 350ml", "루카스나인 우베라떼 18g x 50",
     "맥널티 스테비아 단백질 고구마크림라떼 20T(360G)",
 ])
 def test_polluted_coffee_shelf_accessories_and_other_drinks_stay_pending(title):
