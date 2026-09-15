@@ -100,3 +100,10 @@ REVIEWED_CHAIN_TITLES = frozenset((
     "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
     "맥심 모카골드마일드커피믹스 12g x 210T x 2",
 ))
+
+# Exact count-only goods whose source omitted structured package fields.
+REVIEWED_COUNT_ONLY = {
+    "한스팜 유기농계란15ea x 2": 30,
+    "한스팜 자연을품은동물복지란20ea x 2": 40,
+    "풀무원 동물복지란 60 구 (30ea x 2)": 60,
+}

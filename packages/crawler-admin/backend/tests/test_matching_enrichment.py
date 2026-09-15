@@ -26,6 +26,12 @@ def test_reviewed_recollection_uses_same_content_container_and_roll_quantities_a
     assert _source_package(row) == (expected, None)
 
 
+@pytest.mark.parametrize('title,count',[('한스팜 유기농계란15ea x 2',30),('한스팜 자연을품은동물복지란20ea x 2',40),('풀무원 동물복지란 60 구 (30ea x 2)',60)])
+def test_runtime_recovers_only_reviewed_count_only_eggs(title,count):
+    assert _source_package({'name':title})==((count,'ea',1),None)
+    assert _source_package({'name':title,'pack_qty':1,'pack_unit':'kg'})[1] is not None
+
+
 @pytest.mark.parametrize('changes', [
     {'package_quantity':50,'package_unit':'개'},
     {'attributes':{'package_quantity':2,'package_unit':'개'}},

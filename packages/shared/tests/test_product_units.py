@@ -203,3 +203,12 @@ def test_parenthesized_count_unit_with_descriptor_parses_as_single_unit() -> Non
 def test_dimension_and_device_capacity_numbers_are_not_package_units() -> None:
     assert parse_package_quantity("보쉬 V4 클리어비젼 400mm") is None
     assert parse_package_quantity("아이폰 17 프로 256GB 자급제") is None
+
+
+@pytest.mark.parametrize('title,count',[('한스팜 유기농계란15ea x 2',30),('한스팜 자연을품은동물복지란20ea x 2',40),('풀무원 동물복지란 60 구 (30ea x 2)',60)])
+def test_reviewed_count_only_eggs_have_individual_count_not_weight(title,count):
+    from core.catalog_quantity import normalize_catalog_package
+    package,issues=normalize_catalog_package({}, {}, title)
+    assert issues==[]
+    assert (package['package_quantity'],package['package_unit'],package['bundle_count'])==(float(count),'개',1)
+    assert normalize_catalog_package({'pack_qty':1,'pack_unit':'kg'}, {}, title)[1]

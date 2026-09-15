@@ -3,6 +3,7 @@ import re
 from urllib.parse import urlparse
 
 GROUPS={
+ 'food.meat.eggs.chicken': ('한스팜 유기농계란15ea x 2','한스팜 자연을품은동물복지란20ea x 2','풀무원 동물복지란 60 구 (30ea x 2)'),
  'food.meat.fresh.beef': ('한우 1++(9) 냉장 등심 로스 170g X 4팩','1등급 한우 불고기 2kg','1등급 한우불고기 2kg x 2ea','호주산 냉장 와규 윗등심살 로스 300g x 4팩','호주산 냉장 와규 부채살 로스 300g x 4팩','호주산 와규 치마살 로스 300g x 4팩'),
  'food.meat.fresh.pork': ('국내산 냉동 돈육 한입 삼겹살 (1.0kg x 2)','포크밸리숯불구이용 삼겹살( 1.0kg X 2 )','포크밸리숯불구이용 목심( 1.0kg X 2 )'),
  'food.meals.prepared.seasoned_meat': ('호주산 양념 소불고기 2.7kg','호주산 양념 LA 갈비2.5kg x 2팩','미국산 돈육고추장불고기 600g x 4팩','미국산 돈육고추장불고기2.5kg x 2팩','미국산 돈육 양념 칼집구이 600g x 4팩','미국산 돈육 양념 칼집구이 2.5kg x 2팩','국내산 양념 돼지갈비 2.9kg x 2팩','미국산 부채살 양념 칼집구이 600g X 4'),
