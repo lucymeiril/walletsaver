@@ -55,6 +55,7 @@ from services.initial_audited_costco_rice_forms import TITLES as COSTCO_RICE_FOR
 from services.initial_audited_emart_snacks import TITLES as EMART_SNACK_TITLES, reviewed_emart_snack_leaf
 from services.initial_audited_emart_bakery import TITLES as EMART_BAKERY_TITLES, reviewed_emart_bakery_leaf
 from services.initial_audited_emart_noodles_canned import TITLES as EMART_NOODLES_CANNED_TITLES, reviewed_emart_noodles_canned_leaf
+from services.initial_audited_emart_seafood import TITLES as EMART_SEAFOOD_TITLES, reviewed_emart_seafood_leaf
 from services.initial_audited_costco_egg_meat import TITLES as EGG_MEAT_TITLES, URL_BEEF_TITLES, reviewed_costco_egg_meat_leaf
 from services.initial_audited_costco_kimchi_forms import TITLES as KIMCHI_FORM_TITLES, reviewed_costco_kimchi_form_leaf
 from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_TITLES, reviewed_costco_beverage_leaf
@@ -399,6 +400,22 @@ def test_emart_noodles_canned_audit_uses_only_exact_declared_food_forms(title,le
 @pytest.mark.parametrize('title',['삼양 1963 우지 파개장 115g','면류/통조림 최대 30% 할인','라면과 통조림 혼합세트'])
 def test_emart_noodles_canned_audit_keeps_opaque_promotions_and_mixed_sets_pending(title):
     assert classify_record(_raw('emart','면류/통조림',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf',EMART_SEAFOOD_TITLES.items())
+def test_emart_seafood_audit_classifies_exact_single_seafood_forms(title,leaf):
+    result=classify_record(_raw('emart','수산물/건해산',title))
+    assert result['unified_category_id']==leaf
+    assert result['review_status']=='classified'
+    evidence={'mart':'emart','source_path_parts':['수산물/건해산'],'source_title':title}
+    assert reviewed_emart_seafood_leaf({**evidence,'mart':'homeplus'}) is None
+    assert reviewed_emart_seafood_leaf({**evidence,'source_path_parts':['면류/통조림']}) is None
+    assert reviewed_emart_seafood_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동] 해물모둠 600g','[냉동][베트남] 슈림프링 (453g/팩)','건조 황태채 ~20%','볶음/국물용 멸치 ~40% 할인','국산 참기름 들기름 만전재래김 4g*20봉'])
+def test_emart_seafood_audit_keeps_promotions_mixed_and_unclear_preparations_pending(title):
+    assert classify_record(_raw('emart','수산물/건해산',title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_RICE_FORM_TITLES.items())
