@@ -37,6 +37,7 @@ from services.initial_audited_costco_beverages import TITLES as COSTCO_BEVERAGE_
 from services.initial_audited_costco_coffee_forms import TITLES as COSTCO_COFFEE_TITLES, BEAN_TITLES, reviewed_costco_coffee_form_leaf
 from services.initial_audited_costco_snack_forms import ENTRIES as COSTCO_SNACK_ENTRIES, reviewed_costco_snack_form_leaf
 from services.initial_audited_emart_dairy import TITLES as EMART_DAIRY_TITLES, reviewed_emart_dairy_leaf
+from services.initial_audited_emart_coffee_tea import TITLES as EMART_COFFEE_TEA_TITLES, reviewed_emart_coffee_tea_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -52,6 +53,28 @@ def test_emart_broad_dairy_shelf_uses_exact_product_form(title,leaf):
 @pytest.mark.parametrize('title',['1000ml 나100%','(200ml*3개)','인기 치즈/버터 모음전, 최대 ~50% 행사'])
 def test_emart_dairy_audit_does_not_guess_size_only_or_promotion_titles(title):
     assert classify_record(_raw('emart','우유/유제품',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', EMART_COFFEE_TEA_TITLES.items())
+def test_emart_coffee_tea_shelf_uses_exact_product_form(title, leaf):
+    result = classify_record(_raw('emart', '커피/원두/차', title))
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'emart', 'source_path_parts': ['커피/원두/차'], 'source_title': title}
+    assert reviewed_emart_coffee_tea_leaf({**evidence, 'mart': 'costco'}) is None
+    assert reviewed_emart_coffee_tea_leaf({**evidence, 'source_path_parts': ['생활용품']}) is None
+    assert reviewed_emart_coffee_tea_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', [
+    '[오설록] 티 에디션 허브 4종 (16입)',
+    '티 에디션 아일랜드 6종 (18입)',
+    '러블리 티박스 4종 (12입)',
+    '[립톤] 아이스티 복숭아 120X14G',
+    '트루 레몬즙 14입',
+    '오리지널 리필 170g',
+])
+def test_emart_coffee_tea_audit_keeps_mixed_corrupt_or_opaque_forms_pending(title):
+    assert classify_record(_raw('emart', '커피/원두/차', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
