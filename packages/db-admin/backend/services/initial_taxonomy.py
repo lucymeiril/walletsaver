@@ -37,6 +37,7 @@ from services.initial_audited_emart_dairy import reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import reviewed_emart_coffee_tea_leaf
 from services.initial_audited_costco_meat_contaminants import reviewed_costco_meat_contaminant_leaf
 from services.initial_audited_emart_organic import reviewed_emart_organic_leaf
+from services.initial_audited_emart_meals import reviewed_emart_meal_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -258,6 +259,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("soup", "스프", "스프|즉석스프"),
         ("rice_ball", "주먹밥", ""), ("sticky", "찰밥", ""),
     )),
+    *_group("food.meals.baby", ("식품", "간편식·면", "영유아식"), "", (
+        ("puree", "이유식", ""),
+    )),
     *_group("food.meals.dumplings", ("식품", "간편식·면", "만두"), "간편식/밀키트|냉장/냉동/밀키트", (
         ("gyoza", "교자만두", "고기교자만두|교자만두", "교자만두"),
         ("steamed", "찐만두", "고기찐만두|찐만두", "찐만두"),
@@ -279,6 +283,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("japchae", "조리잡채", ""), ("seasoned_meat", "양념육", ""),
         ("sushi", "완성초밥", ""), ("kimbap", "김밥", ""), ("salad", "조리샐러드", ""),
         ("grilled_fish", "조리생선구이", ""),
+        ("chicken_skewer", "닭꼬치", ""), ("fish_cutlet", "생선까스", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
@@ -290,6 +295,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("stir_fried", "볶음반찬", ""),
         ("braised", "조림반찬", ""), ("pickled", "장아찌", ""), ("seasoned", "무침반찬", ""),
+        ("danmuji", "단무지", ""), ("ssammu", "쌈무", ""), ("acorn_jelly", "도토리묵", ""),
     )),
     *_group("food.preserved.canned", ("식품", "반찬·저장식품", "통조림"), "라면/즉석식품/통조림|라면/통조림/즉석밥|통조림", (
         ("tuna", "참치통조림", "참치|참치통조림", "참치통조림|참치 통조림"),
@@ -1666,6 +1672,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_organic_leaf = reviewed_emart_organic_leaf(evidence)
     if emart_organic_leaf:
         homeplus_shelf_ids.add(emart_organic_leaf)
+    emart_meal_leaf = reviewed_emart_meal_leaf(evidence)
+    if emart_meal_leaf:
+        homeplus_shelf_ids.add(emart_meal_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
