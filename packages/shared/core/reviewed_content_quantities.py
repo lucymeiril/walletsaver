@@ -107,3 +107,12 @@ REVIEWED_COUNT_ONLY = {
     "한스팜 자연을품은동물복지란20ea x 2": 40,
     "풀무원 동물복지란 60 구 (30ea x 2)": 60,
 }
+
+# (bad source quantity, bad unit, bad display, content, content unit, count)
+REVIEWED_CORRUPTED_MEASURED = {
+    "[한국야쿠르트]메치니코프플레인사과 140mlX4": (10, "ml", "10ml", 140, "ml", 4),
+    "[한국야쿠르트]메치니코프플레인 140mlX4": (10, "ml", "10ml", 140, "ml", 4),
+    "윌 오리지날 150mlX5개": (5, "개", "5개", 150, "ml", 5),
+    "윌 저지방 150mlX5개": (5, "개", "5개", 150, "ml", 5),
+    "피로케어 쿠퍼스 140mlX4개": (4, "개", "4개", 140, "ml", 4),
+}

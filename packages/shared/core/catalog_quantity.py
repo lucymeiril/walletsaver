@@ -9,13 +9,13 @@ import re
 import unicodedata
 from typing import Any, Iterable, Mapping
 from core.product_units import parse_package_quantity
-from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CHAIN_TITLES, REVIEWED_COUNT_ONLY
+from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CHAIN_TITLES, REVIEWED_COUNT_ONLY, REVIEWED_CORRUPTED_MEASURED
 
 
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
-    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or "종이컵" in title
+    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or "종이컵" in title
             or "고무장갑" in title and bool(re.search(r"\d+\s*켤레", title))
             or bool(re.search(r"키친타[월올]|종이타[월올]|위생행주", title))
             and bool(re.search(r"\d+\s*매\s*[x×*]\s*\d+\s*롤", title, re.I)))
@@ -110,6 +110,15 @@ def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, An
     issues: list[str] = []
     quantity = _positive(_first((payload, attrs), ("package_quantity", "pack_qty")))
     unit = _text(_first((payload, attrs), ("package_unit", "pack_unit"))).casefold()
+    if title in REVIEWED_CORRUPTED_MEASURED:
+        bad_quantity,bad_unit,bad_display,content,content_unit,count=REVIEWED_CORRUPTED_MEASURED[title]
+        display=_text(_first((payload, attrs), ("display_unit", "unit")))
+        actual_identity=(float(quantity), UNIT_ALIASES.get(unit,(1,unit))[1]) if quantity is not None else None
+        bad_identity=(float(bad_quantity), UNIT_ALIASES.get(bad_unit,(1,bad_unit))[1])
+        if actual_identity!=bad_identity or display!=bad_display:
+            return None,["reviewed_source_measurement_changed"]
+        return {"package_quantity": float(content), "package_unit": content_unit, "bundle_count": count,
+                "standard_unit": content_unit, "display_unit": title}, []
     if title in REVIEWED_COUNT_ONLY and quantity is None and not unit:
         return {"package_quantity": float(REVIEWED_COUNT_ONLY[title]), "package_unit": "개", "bundle_count": 1,
                 "standard_unit": None, "display_unit": ""}, []

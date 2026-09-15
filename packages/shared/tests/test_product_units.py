@@ -212,3 +212,12 @@ def test_reviewed_count_only_eggs_have_individual_count_not_weight(title,count):
     assert issues==[]
     assert (package['package_quantity'],package['package_unit'],package['bundle_count'])==(float(count),'개',1)
     assert normalize_catalog_package({'pack_qty':1,'pack_unit':'kg'}, {}, title)[1]
+
+
+def test_reviewed_corrupted_yogurt_measurement_is_exact_and_bounded():
+    from core.catalog_quantity import normalize_catalog_package
+    title='윌 오리지날 150mlX5개'
+    package,issues=normalize_catalog_package({'package_quantity':5,'package_unit':'개','display_unit':'5개'}, {}, title)
+    assert issues==[] and (package['package_quantity'],package['package_unit'],package['bundle_count'])==(150.0,'ml',5)
+    for changed in ({'package_quantity':4,'package_unit':'개','display_unit':'5개'},{'package_quantity':5,'package_unit':'개','display_unit':'4개'}):
+        assert normalize_catalog_package(changed,{},title)[1]

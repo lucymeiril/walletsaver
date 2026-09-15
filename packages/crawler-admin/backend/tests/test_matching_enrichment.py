@@ -32,6 +32,12 @@ def test_runtime_recovers_only_reviewed_count_only_eggs(title,count):
     assert _source_package({'name':title,'pack_qty':1,'pack_unit':'kg'})[1] is not None
 
 
+def test_runtime_recovers_reviewed_yogurt_measurement_and_rejects_change():
+    row={'name':'윌 오리지날 150mlX5개','package_quantity':5,'package_unit':'개','display_unit':'5개'}
+    assert _source_package(row)==((150,'ml',5),None)
+    assert _source_package({**row,'display_unit':'4개'})[1] is not None
+
+
 @pytest.mark.parametrize('changes', [
     {'package_quantity':50,'package_unit':'개'},
     {'attributes':{'package_quantity':2,'package_unit':'개'}},
