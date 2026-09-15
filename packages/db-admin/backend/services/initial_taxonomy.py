@@ -33,6 +33,7 @@ from services.initial_audited_costco_kimchi_forms import reviewed_costco_kimchi_
 from services.initial_audited_costco_beverages import reviewed_costco_beverage_leaf
 from services.initial_audited_costco_coffee_forms import reviewed_costco_coffee_form_leaf
 from services.initial_audited_costco_snack_forms import reviewed_costco_snack_form_leaf
+from services.initial_audited_emart_dairy import reviewed_emart_dairy_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -1645,6 +1646,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     costco_snack_form_leaf = reviewed_costco_snack_form_leaf(evidence)
     if costco_snack_form_leaf:
         homeplus_shelf_ids.add(costco_snack_form_leaf)
+    emart_dairy_leaf = reviewed_emart_dairy_leaf(evidence)
+    if emart_dairy_leaf:
+        homeplus_shelf_ids.add(emart_dairy_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

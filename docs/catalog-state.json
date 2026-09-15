@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260915-pass72",
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass73",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6503,
-  "unresolved": 2693,
-  "next_task": "Emart dairy shelf:33 pending titles inspected. Classify exact cheese, plain/topping/squeeze/drinking yogurt and explicit plain/flavoured milk forms; opaque size-only titles and promotion collections stay pending. Costco snack pass72 classified5 official-URL forms, added3; wholesale quantity holds remain.",
+  "included": 6527,
+  "unresolved": 2669,
+  "next_task": "Emart dairy pass73 classified29 observations and added24; five drink-yogurt titles retain corrupted structured quantity holds (10ml or count instead of 140/150ml). Next either design bounded exact repair using independent unit-price evidence for those5, or continue a fresh product-form shelf. Size-only and promotion titles stay pending.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }
