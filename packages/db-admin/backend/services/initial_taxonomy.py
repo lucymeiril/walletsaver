@@ -39,6 +39,7 @@ from services.initial_audited_costco_meat_contaminants import reviewed_costco_me
 from services.initial_audited_emart_organic import reviewed_emart_organic_leaf
 from services.initial_audited_emart_meals import reviewed_emart_meal_leaf
 from services.initial_audited_emart_health import reviewed_emart_health_leaf
+from services.initial_audited_homeplus_flavored_powders import reviewed_homeplus_flavored_powder_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -1689,6 +1690,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_health_leaf = reviewed_emart_health_leaf(evidence)
     if emart_health_leaf:
         homeplus_shelf_ids.add(emart_health_leaf)
+    homeplus_flavored_powder_leaf = reviewed_homeplus_flavored_powder_leaf(evidence)
+    if homeplus_flavored_powder_leaf:
+        homeplus_shelf_ids.add(homeplus_flavored_powder_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

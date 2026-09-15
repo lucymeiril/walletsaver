@@ -64,6 +64,7 @@ from services.initial_audited_costco_meat_contaminants import ENTRIES as COSTCO_
 from services.initial_audited_emart_organic import TITLES as EMART_ORGANIC_TITLES, reviewed_emart_organic_leaf
 from services.initial_audited_emart_meals import TITLES as EMART_MEAL_TITLES, reviewed_emart_meal_leaf
 from services.initial_audited_emart_health import TITLES as EMART_HEALTH_TITLES, reviewed_emart_health_leaf
+from services.initial_audited_homeplus_flavored_powders import PATH as HOMEPLUS_FLAVORED_PATH, TITLES as HOMEPLUS_FLAVORED_TITLES, reviewed_homeplus_flavored_powder_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -168,6 +169,22 @@ def test_emart_health_shelf_uses_exact_product_form(title, leaf):
 @pytest.mark.parametrize('title', ['서울우유 한끼식사 구수한 맛 190ml*18입', '건강식품 베스트 모음', '비타민과 화장품 혼합세트'])
 def test_emart_health_shelf_keeps_opaque_promotion_and_mixed_rows_pending(title):
     assert classify_record(_raw('emart', '건강식품', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', HOMEPLUS_FLAVORED_TITLES.items())
+def test_homeplus_misc_flavored_powder_uses_exact_form(title, leaf):
+    result = classify_record({'source_name': 'homeplus', 'source_title': title, 'source_category_path': list(HOMEPLUS_FLAVORED_PATH)})
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'homeplus', 'source_path_parts': list(HOMEPLUS_FLAVORED_PATH), 'source_title': title}
+    assert reviewed_homeplus_flavored_powder_leaf({**evidence, 'mart': 'emart'}) is None
+    assert reviewed_homeplus_flavored_powder_leaf({**evidence, 'source_path_parts': ['커피/차']}) is None
+    assert reviewed_homeplus_flavored_powder_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', ['티젠 애플사이다비니거 사과&배 30T(150G)', '가향분말 베스트 모음', '콤부차와 단백질 혼합세트'])
+def test_homeplus_misc_flavored_powder_keeps_vinegar_opaque_and_mixed_rows_pending(title):
+    row = {'source_name': 'homeplus', 'source_title': title, 'source_category_path': list(HOMEPLUS_FLAVORED_PATH)}
+    assert classify_record(row)['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
