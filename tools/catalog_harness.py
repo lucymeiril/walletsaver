@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 ROOT=Path(__file__).resolve().parents[1]
 TESTS=[
@@ -80,9 +81,23 @@ def code_hashes(root):
  paths += [root/p for p in TESTS]+[root/'docs/catalog-state.json']
  return {str(p.relative_to(root)):sha(p) for p in sorted(paths)}
 
+def execute_logged(command,root,log):
+ """Keep complete diagnostics on disk and bound console output."""
+ started=time.monotonic()
+ with log.open('x',encoding='utf-8') as stream:
+  result=subprocess.run(command,cwd=root,stdout=stream,stderr=subprocess.STDOUT)
+ if result.returncode:
+  from collections import deque
+  with log.open(encoding='utf-8',errors='replace') as stream:
+   print(''.join(deque(stream,maxlen=25))[-4000:],flush=True)
+  raise subprocess.CalledProcessError(result.returncode,command)
+ return {'seconds':round(time.monotonic()-started,2),'output_bytes':log.stat().st_size,'log':str(log.relative_to(root))}
+
 def run(run_id,root=ROOT):
  state,source,baseline,protected,decisions=preflight(root)
  out=output_path(root,run_id);fingerprints=code_hashes(root)
+ log_dir=safe_path(root,'.debug-artifacts/catalog-logs/'+run_id,'.debug-artifacts')
+ log_dir.mkdir(parents=True,exist_ok=False)
  commands=[
   [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short'],
   [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short'],
@@ -92,7 +107,11 @@ def run(run_id,root=ROOT):
   [sys.executable,'tools/verify_batch_runtime.py',run_id,'--save'],
  ]
  try:
-  for command in commands:subprocess.run(command,cwd=root,check=True)
+  metrics=[]
+  for index,command in enumerate(commands,1):
+   log=log_dir/f'{index:02d}.log'
+   print(f'STEP {index}/{len(commands)} log={log.relative_to(root)}',flush=True)
+   metrics.append(execute_logged(command,root,log))
   preflight(root)
   require(code_hashes(root)==fingerprints,'Code changed during run; results are stale')
   new=read(out/'catalog-bundle.json');old=read(baseline/'catalog-bundle.json')
@@ -105,10 +124,16 @@ def run(run_id,root=ROOT):
   certificate={'status':'checks_passed_not_published','baseline':state['baseline'],
    'run_id':run_id,'new_included_ids':added,'build_report':summary['build_report'],
    'code_sha256':fingerprints,'bundle_sha256':sha(out/'catalog-bundle.json'),
-   'staging_sha256':sha(out/'staging.sqlite'),'commands':commands}
+   'staging_sha256':sha(out/'staging.sqlite'),'commands':commands,'execution_metrics':metrics}
   # Exclusive create: a successful certificate must never be overwritten.
   with (out/'checks-passed.json').open('x',encoding='utf-8') as f:json.dump(certificate,f,ensure_ascii=False,indent=2)
-  print('CHECKS PASSED; added',len(added),'certificate:',out/'checks-passed.json')
+  report=summary['build_report'];runtime=read(out/'batch-runtime-check.json')
+  counts=report['entity_counts'];old_counts=old['build_report']['entity_counts']
+  print(json.dumps({'status':'passed','run_id':run_id,'added_observations':len(added),
+   'added_products':counts['products']-old_counts['products'],
+   'added_listings':counts['source_listings']-old_counts['source_listings'],
+   'included':report['included_observations'],'unresolved':report['unresolved_observations'],
+   'runtime':runtime,'logs':str(log_dir.relative_to(root))},ensure_ascii=False))
  finally:
   require(sha(source)==state['source_file_sha256'],'SOURCE CHANGED DURING RUN')
   require(sha(protected)==state['protected_db_sha256'],'OPERATING DB CHANGED DURING RUN')

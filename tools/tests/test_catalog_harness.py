@@ -59,6 +59,22 @@ def test_preflight_is_read_only(workspace):
  h.preflight(workspace)
  assert before=={p:h.sha(p) for p in workspace.rglob('*') if p.is_file()}
 
+def test_logged_success_retains_output_without_console_dump(tmp_path,capsys):
+ log=tmp_path/'success.log'
+ metrics=h.execute_logged([sys.executable,'-c','print("x" * 10000)'],tmp_path,log)
+ assert metrics['output_bytes']>=10000
+ assert metrics['seconds']>=0
+ assert capsys.readouterr().out==''
+
+def test_logged_failure_preserves_full_log_and_bounds_tail(tmp_path,capsys):
+ log=tmp_path/'failure.log'
+ with pytest.raises(subprocess.CalledProcessError) as caught:
+  h.execute_logged([sys.executable,'-c','print("x" * 10000); print("failure detail"); raise SystemExit(7)'],tmp_path,log)
+ output=capsys.readouterr().out
+ assert caught.value.returncode==7
+ assert 'failure detail' in output and len(output)<=4001
+ assert log.stat().st_size>10000
+
 def test_disappearing_or_duplicate_records_rejected():
  with pytest.raises(ValueError,match='disappeared'):h.compare_bundles(bundle(),bundle(('b',)))
  bad=bundle();bad['observation_accounting'].append(bad['observation_accounting'][0])
@@ -68,7 +84,7 @@ def test_disappearing_or_duplicate_records_rejected():
 def test_failed_command_never_certifies(workspace,monkeypatch):
  monkeypatch.setattr(h,'code_hashes',lambda root:{'code':'same'})
  def fail(*args,**kwargs):raise subprocess.CalledProcessError(1,['test'])
- monkeypatch.setattr(h.subprocess,'run',fail)
+ monkeypatch.setattr(h,'execute_logged',fail)
  with pytest.raises(subprocess.CalledProcessError):h.run('initial-catalog-fail',workspace)
  assert not list(workspace.rglob('checks-passed.json'))
 
@@ -76,11 +92,11 @@ def test_failed_command_never_certifies(workspace,monkeypatch):
 def test_new_batch_matching_failure_blocks_certificate_after_other_checks(workspace,monkeypatch):
  monkeypatch.setattr(h,'code_hashes',lambda root:{'code':'same'})
  calls=[]
- def execute(command,**kwargs):
+ def execute(command,*args,**kwargs):
   calls.append(command)
   if 'tools/verify_batch_runtime.py' in command:
    raise subprocess.CalledProcessError(1,command)
- monkeypatch.setattr(h.subprocess,'run',execute)
+ monkeypatch.setattr(h,'execute_logged',execute)
  with pytest.raises(subprocess.CalledProcessError):h.run('initial-catalog-batch-fail',workspace)
  assert any('tools/verify_reviewed_runtime.py' in command for command in calls)
  assert any('packages/crawler-admin/backend/tests/test_matching_enrichment.py' in command for command in calls)
