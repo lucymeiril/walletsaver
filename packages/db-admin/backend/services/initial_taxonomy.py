@@ -41,6 +41,7 @@ from services.initial_audited_emart_meals import reviewed_emart_meal_leaf
 from services.initial_audited_emart_health import reviewed_emart_health_leaf
 from services.initial_audited_homeplus_flavored_powders import reviewed_homeplus_flavored_powder_leaf
 from services.initial_audited_emart_pet import reviewed_emart_pet_leaf
+from services.initial_audited_emart_grains import reviewed_emart_grain_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -190,6 +191,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("barley", "보리", ""), ("millet", "기장", ""),
         ("chickpea", "병아리콩", ""), ("quinoa", "퀴노아", ""), ("farro", "파로", ""),
         ("soybean", "콩·서리태", ""),
+        ("chia", "치아씨드", ""),
     )),
     *_group("food.grains.nuts", ("식품", "곡물·견과", "견과류"), "견과|견과류|쌀/잡곡/견과류", (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),
@@ -1702,6 +1704,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     emart_pet_leaf = reviewed_emart_pet_leaf(evidence)
     if emart_pet_leaf:
         homeplus_shelf_ids.add(emart_pet_leaf)
+    emart_grain_leaf = reviewed_emart_grain_leaf(evidence)
+    if emart_grain_leaf:
+        homeplus_shelf_ids.add(emart_grain_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

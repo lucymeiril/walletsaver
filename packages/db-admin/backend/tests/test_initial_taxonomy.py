@@ -66,6 +66,7 @@ from services.initial_audited_emart_meals import TITLES as EMART_MEAL_TITLES, re
 from services.initial_audited_emart_health import TITLES as EMART_HEALTH_TITLES, reviewed_emart_health_leaf
 from services.initial_audited_homeplus_flavored_powders import PATH as HOMEPLUS_FLAVORED_PATH, TITLES as HOMEPLUS_FLAVORED_TITLES, reviewed_homeplus_flavored_powder_leaf
 from services.initial_audited_emart_pet import TITLES as EMART_PET_TITLES, reviewed_emart_pet_leaf
+from services.initial_audited_emart_grains import TITLES as EMART_GRAIN_TITLES, reviewed_emart_grain_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -204,6 +205,21 @@ def test_emart_pet_shelf_uses_exact_animal_and_product_form(title, leaf):
 ])
 def test_emart_pet_shelf_keeps_unknown_animal_or_opaque_forms_pending(title):
     assert classify_record(_raw('emart', '반려동물', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', EMART_GRAIN_TITLES.items())
+def test_emart_grain_shelf_uses_exact_product_form(title, leaf):
+    result = classify_record(_raw('emart', '쌀/잡곡/견과', title))
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'emart', 'source_path_parts': ['쌀/잡곡/견과'], 'source_title': title}
+    assert reviewed_emart_grain_leaf({**evidence, 'mart': 'lotte'}) is None
+    assert reviewed_emart_grain_leaf({**evidence, 'source_path_parts': ['과자']}) is None
+    assert reviewed_emart_grain_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', ['씻거나 불릴필요 없는 맛있는 우리 엄마 밥상 2kg', '유기농 단백질 블랙미숫가루 400g (20gx20입)', '쌀과 견과 혼합선물세트', '잡곡 베스트 모음'])
+def test_emart_grain_shelf_keeps_opaque_bundle_and_promotion_rows_pending(title):
+    assert classify_record(_raw('emart', '쌀/잡곡/견과', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
