@@ -20,6 +20,8 @@ TESTS=[
  'packages/db-admin/backend/tests/test_initial_taxonomy.py',
  'packages/db-admin/backend/tests/test_initial_reviewed_chat.py',
  'tools/tests/test_catalog_harness.py',
+ 'tools/tests/test_catalog_review.py',
+ 'packages/db-admin/backend/tests/test_numbered_reviews.py',
 ]
 
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
@@ -76,6 +78,8 @@ def code_hashes(root):
  paths=list((root/'packages/db-admin/backend/services').glob('*.py'))
  paths+=list((root/'packages/shared').rglob('*.py'))
  paths+=list((root/'packages/db-admin/backend/services').glob('reviewed_chat_batch*.json'))
+ paths+=list((root/'packages/db-admin/backend/services/numbered_reviews').glob('*.json'))
+ paths+=[root/'tools/catalog_review.py']
  paths += [root/'tools'/name for name in ('catalog_harness.py','prepare_initial_catalog.py','verify_initial_stage.py','verify_reviewed_runtime.py','verify_batch_runtime.py')]
  paths += [root/'packages/crawler-admin/backend/services/matching_enrichment.py', root/'packages/crawler-admin/backend/tests/test_matching_enrichment.py']
  paths += [root/p for p in TESTS]+[root/'docs/catalog-state.json']

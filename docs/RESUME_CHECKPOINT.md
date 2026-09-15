@@ -1,10 +1,7 @@
-# 재개점 — pass97
+# 재개점 — initial-catalog-20260915-pass98-workflow
 
-- 수치·경로·보호 해시는 `docs/catalog-state.json` 기준. pass97은 승인 전 사본이며 운영 DB에 적용하지 않았다.
-- 9,196관측 중 6,866 적재 / 2,330 미해결. 상품군 4,523, 판매 페이지 4,673. 분류 작업 미완료.
-- 최근: 이마트 정육·계란 12관측, 롯데마트 채소 23관측, 일반과자 13관측 추가. 관련 1,947개 + 수집기 79개 검사 통과, 원본·431개 결정 보존.
-- 다음: 아직 검토하지 않은 상품형 묶음을 선택한다. 보류 이력은 `docs/catalog-history-through-pass97.md`에서 해당 마트/선반만 검색한다. 전체 기록은 매번 읽지 않는다.
-- 비활성 원인은 offer/review issue에서 확인한다. 활성 여부만 보고 추정하지 않는다. pass96 단호박의 비활성 원인은 이전 설명이 추정이므로 확인 필요.
-- 하네스 출력 개선 후 새 DB를 만들지는 않았다. pass97 인증서는 당시 코드 결과다. 다음 분류 변경은 새 run-id로 인증한다.
-- 실행: 저장소 루트에서 `py tools/catalog_harness.py preflight`, 이어서 `run --run-id <새 이름>`. 전체 로그: `.debug-artifacts/catalog-logs/<run-id>/`.
-- 이 문서는 현재 상태·미완료·다음 행동만 20줄 이내로 유지한다. 과거 기록은 Git/이력 문서에 보존한다.
+- 인증 사본: `.debug-artifacts/initial-catalog-20260915-pass98-workflow/checks-passed.json`; 운영 DB 미적용·공개 미승인.
+- 적재 6866, 미해결 2330; 상품군 4523, 판매 페이지 4673.
+- 신규 관측 0; 검사 결과·실행 로그는 인증 사본과 catalog-logs 참조.
+- 다음: Use numbered prepare/decide on the next unreviewed shelf; workflow-smoke has 8 held forms (16 observations): jjolmyeon conflicts with source naengmyeon, broth needs a specific leaf. Verify pass96 pumpkin inactivity from offer evidence before explaining it.
+- 경로·보호 해시는 catalog-state.json 기준. 과거 보류는 numbered_reviews 및 이력 문서에서 해당 묶음만 검색.

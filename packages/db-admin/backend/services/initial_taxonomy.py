@@ -48,6 +48,7 @@ from services.initial_audited_emart_seafood import reviewed_emart_seafood_leaf
 from services.initial_audited_emart_meat_eggs import reviewed_emart_meat_egg_leaf
 from services.initial_audited_lotte_vegetables import reviewed_lotte_vegetable_leaf
 from services.initial_audited_lotte_general_snacks import reviewed_lotte_general_snack_leaf
+from services.initial_numbered_reviews import reviewed_numbered_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -1738,6 +1739,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     lotte_general_snack_leaf = reviewed_lotte_general_snack_leaf(evidence)
     if lotte_general_snack_leaf:
         homeplus_shelf_ids.add(lotte_general_snack_leaf)
+    numbered_leaf = reviewed_numbered_leaf(evidence)
+    if numbered_leaf:
+        homeplus_shelf_ids.add(numbered_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

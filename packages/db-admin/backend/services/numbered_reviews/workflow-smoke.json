@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass97",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "오뚜기 생 쫄면 2인분 452G",
+      "raw_record_ids": [
+        "ingestion:9:96",
+        "ingestion:59:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:96": "62015b3088d4622f2c06ab857faca4505fa891f6ea731b5cff58be6d442a1a25",
+        "ingestion:59:21": "5cb0b29dedea2023d7d1ec7a3d36151667b4c3f4123808ceb9d04604f6079db3"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "명시 쫄면과 원본 냉면 분류 충돌: 기존 충돌 규칙 유지, 후속 근거 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "씨제이 동치미 냉면육수 1인 300ML",
+      "raw_record_ids": [
+        "ingestion:10:69",
+        "ingestion:59:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:69": "eaff0be8b9a5f25b1871f50bf080b87f07318fd83a18d569a606f699f8ee989d",
+        "ingestion:59:69": "01abdb340e9e93f9acbe68aa205fb7d8926bf8bc103a4e6c2b5e8c7d6e4c877c"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "냉면육수 전용 리프 검토 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "풀무원 바로조리 생쫄면 2인분 460G",
+      "raw_record_ids": [
+        "ingestion:10:95",
+        "ingestion:59:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:95": "1e6df5dd3e89d86c2b1ced9d7b986afb8e608119d7b24a6938c8b20e9d5467c4",
+        "ingestion:59:66": "c95674f12c55ccbdc83d189e0929849ce5efec5f1e8d5c3a7e79c5bd7d2af7d8"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "명시 쫄면과 원본 냉면 분류 충돌: 기존 충돌 규칙 유지, 후속 근거 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "칠갑농산 냉면육수(5인분) 1500ML",
+      "raw_record_ids": [
+        "ingestion:11:15",
+        "ingestion:60:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:15": "b6b2c296e875e1963c7f377580349ae457fe72c9bab91c6bf8887ca12fbd09fb",
+        "ingestion:60:9": "ad6d20d5fb4f04f639e05b975e7ca1454fb1eade54394ca338daa9506f1f4880"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "냉면육수 전용 리프 검토 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "오뚜기 쫄면 4인분 904G",
+      "raw_record_ids": [
+        "ingestion:11:85",
+        "ingestion:61:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:85": "c1e07e800bf6ddd35b22d7b17381841adbabb555b8870aa2e7ec81fe11754f1a",
+        "ingestion:61:26": "e225aae62333647533abc22366ee15497d54837a298afad0a37b5e6622b1d577"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "명시 쫄면과 원본 냉면 분류 충돌: 기존 충돌 규칙 유지, 후속 근거 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "풀무원 저당 생쫄면 2인 460G",
+      "raw_record_ids": [
+        "ingestion:11:96",
+        "ingestion:61:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:96": "9d024f107ce3037e69d2bbadbcb8c8a18080201acf7ce33c6a0973084fd139b6",
+        "ingestion:61:38": "9ef8f59d21792f7408f6467394861cf72b8b5d9ac1ec64d1616050eb4d91289f"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "명시 쫄면과 원본 냉면 분류 충돌: 기존 충돌 규칙 유지, 후속 근거 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "대상 청정원 동치미 육수 1인분 300G",
+      "raw_record_ids": [
+        "ingestion:12:5",
+        "ingestion:61:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:5": "32e0bbc3479e49386cf318c193f6f377e85c968e7fa4649bf3a6aa44a82b1e10",
+        "ingestion:61:47": "dfb992c9efd57d48147e1b9f4956aab4d3ce376cb1dfbec2e9331b226e79213a"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "냉면육수 전용 리프 검토 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "냉면/소바",
+        "간편냉면&소바"
+      ],
+      "source_title": "칠갑농산 냉천골 부드러운 생쫄면 424G",
+      "raw_record_ids": [
+        "ingestion:12:16",
+        "ingestion:61:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:16": "175f59fe75055ab90a20451a461f5a0380c1cee2a6e8259c3db6639babc6462f",
+        "ingestion:61:58": "a8f00fbf6ae7b812005678cb7c4d6cc596da5ccca949cba84ef8a50e7eceabbe"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "명시 쫄면과 원본 냉면 분류 충돌: 기존 충돌 규칙 유지, 후속 근거 검토"
+    }
+  ],
+  "packet_sha256": "70a03d22b53b9802dcbccef3a33bea4ae7f83e205b2628fc27af65557dd0b410"
+}
