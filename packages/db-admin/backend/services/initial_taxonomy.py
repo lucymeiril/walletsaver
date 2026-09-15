@@ -36,6 +36,7 @@ from services.initial_audited_costco_snack_forms import reviewed_costco_snack_fo
 from services.initial_audited_emart_dairy import reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import reviewed_emart_coffee_tea_leaf
 from services.initial_audited_costco_meat_contaminants import reviewed_costco_meat_contaminant_leaf
+from services.initial_audited_emart_organic import reviewed_emart_organic_leaf
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -184,6 +185,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("glutinous", "찹쌀", ""), ("black", "흑미", ""),
         ("barley", "보리", ""), ("millet", "기장", ""),
         ("chickpea", "병아리콩", ""), ("quinoa", "퀴노아", ""), ("farro", "파로", ""),
+        ("soybean", "콩·서리태", ""),
     )),
     *_group("food.grains.nuts", ("식품", "곡물·견과", "견과류"), "견과|견과류|쌀/잡곡/견과류", (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),
@@ -351,7 +353,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("aloe", "알로에음료", "", ""),
     )),
     *_group("food.drinks.traditional", ("식품", "음료", "전통음료"), "", (
-        ("sikhye", "식혜", "", ""),
+        ("sikhye", "식혜", "", ""), ("sujeonggwa", "수정과", "", ""),
     )),
     *_group("food.drinks.non_alcoholic", ("식품", "음료", "무알코올음료"), "생수/음료|생수/음료/주류", (
         ("beer", "무알코올맥주", "", ""),
@@ -1661,6 +1663,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     costco_meat_contaminant_leaf = reviewed_costco_meat_contaminant_leaf(evidence)
     if costco_meat_contaminant_leaf:
         homeplus_shelf_ids.add(costco_meat_contaminant_leaf)
+    emart_organic_leaf = reviewed_emart_organic_leaf(evidence)
+    if emart_organic_leaf:
+        homeplus_shelf_ids.add(emart_organic_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)

@@ -61,6 +61,7 @@ from services.initial_audited_costco_snack_forms import ENTRIES as COSTCO_SNACK_
 from services.initial_audited_emart_dairy import TITLES as EMART_DAIRY_TITLES, reviewed_emart_dairy_leaf
 from services.initial_audited_emart_coffee_tea import TITLES as EMART_COFFEE_TEA_TITLES, reviewed_emart_coffee_tea_leaf
 from services.initial_audited_costco_meat_contaminants import ENTRIES as COSTCO_MEAT_CONTAMINANTS, reviewed_costco_meat_contaminant_leaf
+from services.initial_audited_emart_organic import TITLES as EMART_ORGANIC_TITLES, reviewed_emart_organic_leaf
 
 
 @pytest.mark.parametrize('title,leaf',EMART_DAIRY_TITLES.items())
@@ -120,6 +121,21 @@ def test_costco_meat_shelf_contaminants_need_exact_official_url(title, entry):
 ])
 def test_costco_meat_shelf_does_not_guess_grills_or_mixed_food_sets(title):
     assert classify_record(_raw('costco', '고기', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title,leaf', EMART_ORGANIC_TITLES.items())
+def test_emart_organic_shelf_uses_exact_leaf_level_form(title, leaf):
+    result = classify_record(_raw('emart', '친환경/유기농', title))
+    assert result['unified_category_id'] == leaf
+    evidence = {'mart': 'emart', 'source_path_parts': ['친환경/유기농'], 'source_title': title}
+    assert reviewed_emart_organic_leaf({**evidence, 'mart': 'costco'}) is None
+    assert reviewed_emart_organic_leaf({**evidence, 'source_path_parts': ['생활용품']}) is None
+    assert reviewed_emart_organic_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
+
+
+@pytest.mark.parametrize('title', ['친환경 인기상품 모음전', '유기농 500g', '유기농 우유와 요거트 혼합세트', '유기농 요구르트 500ml (100mlx5)'])
+def test_emart_organic_shelf_does_not_guess_promotions_size_only_or_mixed_forms(title):
+    assert classify_record(_raw('emart', '친환경/유기농', title))['unified_category_id'] is None
 
 
 @pytest.mark.parametrize('title,entry',COSTCO_SNACK_ENTRIES.items())
