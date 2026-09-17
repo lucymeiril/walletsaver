@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 TESTS=[
@@ -97,14 +98,38 @@ def execute_logged(command,root,log):
   raise subprocess.CalledProcessError(result.returncode,command)
  return {'seconds':round(time.monotonic()-started,2),'output_bytes':log.stat().st_size,'log':str(log.relative_to(root))}
 
+def test_profile(path):
+ """Compact per-module evidence; counts are cases, not unique contracts."""
+ modules={}
+ for case in ET.parse(path).iter('testcase'):
+  name=case.get('classname','unknown')
+  group=modules.setdefault(name,{'cases':0,'seconds':0.0,'failures':0,'skipped':0})
+  group['cases']+=1
+  group['seconds']+=float(case.get('time','0'))
+  group['failures']+=int(case.find('failure') is not None or case.find('error') is not None)
+  group['skipped']+=int(case.find('skipped') is not None)
+ for group in modules.values():group['seconds']=round(group['seconds'],4)
+ return modules
+
+def audit(root=ROOT):
+ state=read(root/'docs/catalog-state.json')
+ baseline=safe_path(root,state['baseline'],'.debug-artifacts')
+ certificate=read(baseline/'checks-passed.json')
+ metrics=certificate.get('execution_metrics',[])
+ labels=['catalog_tests','crawler_tests','build','stage_validation','reviewed_runtime','new_batch_runtime']
+ print(json.dumps({'baseline':state['baseline'],'steps':[
+  {'step':labels[i] if i<len(labels) else str(i+1),'seconds':m['seconds'],'log_bytes':m['output_bytes']}
+  for i,m in enumerate(metrics)],'test_profiles':certificate.get('test_profiles',{}),
+  'note':'Historical measurements; not a new certification or token measurement.'},ensure_ascii=False))
+
 def run(run_id,root=ROOT):
  state,source,baseline,protected,decisions=preflight(root)
  out=output_path(root,run_id);fingerprints=code_hashes(root)
  log_dir=safe_path(root,'.debug-artifacts/catalog-logs/'+run_id,'.debug-artifacts')
  log_dir.mkdir(parents=True,exist_ok=False)
  commands=[
-  [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short'],
-  [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short'],
+  [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short',f'--junitxml={log_dir/"catalog-tests.xml"}'],
+  [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short',f'--junitxml={log_dir/"crawler-tests.xml"}'],
   [sys.executable,'tools/prepare_initial_catalog.py','--db',str(source),'--out',str(out),'--run-id',run_id,'--review-decisions',str(decisions)],
   [sys.executable,'tools/verify_initial_stage.py',run_id],
   [sys.executable,'tools/verify_reviewed_runtime.py',run_id],
@@ -128,7 +153,8 @@ def run(run_id,root=ROOT):
   certificate={'status':'checks_passed_not_published','baseline':state['baseline'],
    'run_id':run_id,'new_included_ids':added,'build_report':summary['build_report'],
    'code_sha256':fingerprints,'bundle_sha256':sha(out/'catalog-bundle.json'),
-   'staging_sha256':sha(out/'staging.sqlite'),'commands':commands,'execution_metrics':metrics}
+   'staging_sha256':sha(out/'staging.sqlite'),'commands':commands,'execution_metrics':metrics,
+   'test_profiles':{name:test_profile(log_dir/name) for name in ('catalog-tests.xml','crawler-tests.xml')}}
   # Exclusive create: a successful certificate must never be overwritten.
   with (out/'checks-passed.json').open('x',encoding='utf-8') as f:json.dump(certificate,f,ensure_ascii=False,indent=2)
   report=summary['build_report'];runtime=read(out/'batch-runtime-check.json')
@@ -144,10 +170,11 @@ def run(run_id,root=ROOT):
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
- parser.add_argument('action',choices=['preflight','run'])
+ parser.add_argument('action',choices=['preflight','run','audit'])
  parser.add_argument('--run-id')
  args=parser.parse_args()
- if args.action=='preflight':
+ if args.action=='audit':audit()
+ elif args.action=='preflight':
   state,*_=preflight();print('PREFLIGHT PASSED',state['baseline'],state['included'],state['unresolved'])
  else:
   require(bool(args.run_id),'--run-id required');run(args.run_id)

@@ -7,6 +7,11 @@ import pytest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import catalog_harness as h
 
+def test_test_profile_counts_cases_failures_and_skips(tmp_path):
+ path=tmp_path/'tests.xml'
+ path.write_text('<testsuites><testsuite><testcase classname="module" name="a[1]" time="0.2"/><testcase classname="module" name="a[2]" time="0.3"><failure/></testcase><testcase classname="other" time="0"><skipped/></testcase></testsuite></testsuites>')
+ assert h.test_profile(path)=={'module':{'cases':2,'seconds':0.5,'failures':1,'skipped':0},'other':{'cases':1,'seconds':0.0,'failures':0,'skipped':1}}
+
 def put(path,value):
  path.parent.mkdir(parents=True,exist_ok=True)
  path.write_text(json.dumps(value),encoding='utf-8')
