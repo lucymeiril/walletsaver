@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260917-pass101",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "려강 속이꽉찬 고기순대 312G",
+      "raw_record_ids": [
+        "ingestion:9:72",
+        "ingestion:59:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:72": "4a804872d4a932b63431cc5e300b5e491afe55642d73ba360ae78b5b035a032f",
+        "ingestion:59:6": "c517cafed83af4faf19542afb2faa6cbe9e4dfe3ec124bd0e9ac1d41a43c5495"
+      },
+      "number": 1,
+      "leaf": "food.meat.processed.sundae",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "도드람 본래매운맛뼈찜 1KG",
+      "raw_record_ids": [
+        "ingestion:9:97",
+        "ingestion:60:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:97": "4a28909b1a25a3f15f2a346f820741bbfced97a955c5ac27ad8078a74a7aae27",
+        "ingestion:60:20": "66f04b88b7ef5c2e06bf707a2d92cff36b71dffe0ed1c1eeaa9d76339a0de91f"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "도드람 본래간장맛뼈찜 1KG",
+      "raw_record_ids": [
+        "ingestion:10:38",
+        "ingestion:60:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:38": "8cc01645b94f2e1a783b7c7775261db07a0090cd241167a45cabdb34e5ca3028",
+        "ingestion:60:21": "347e7f987b67c926e1a6440f9f8895db761f68ed6943f25b079619468a08c22a"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "무교동낙지볶음 300G*2",
+      "raw_record_ids": [
+        "ingestion:10:39",
+        "ingestion:59:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:39": "cb48ba8978faf577ff953506a609db1fa749b0365c85fbc2a74cf3761640f95d",
+        "ingestion:59:73": "b6801ae73572eb3bccb3dfc156d61f717bdb4486b894d216361fee43db6f9de7"
+      },
+      "number": 4,
+      "leaf": "food.meals.seafood.stir_fried",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "무교동쭈꾸미볶음 300G*2",
+      "raw_record_ids": [
+        "ingestion:10:74",
+        "ingestion:59:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:74": "bbc1b645cf520f618fd85a22a102634910b7056953908cedfa13ceb5e209377a",
+        "ingestion:59:72": "eee59c7dca4d7677cd8706d96397f603647f67a2a21d6d723df6eb088e2a330e"
+      },
+      "number": 5,
+      "leaf": "food.meals.seafood.stir_fried",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "홈밀 채소가득 닭볶음탕 870G",
+      "raw_record_ids": [
+        "ingestion:11:12",
+        "ingestion:59:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:12": "79fb792725cdc1f382bea677abc05e4802398fbee11bbfe1b791af115d246825",
+        "ingestion:59:85": "db18d341bf448f31591aafa5094a965f28f24add130e57ef83fbacd051597325"
+      },
+      "number": 6,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "볶음/찜"
+      ],
+      "source_title": "홈밀 돼지등뼈 김치찜 1300G",
+      "raw_record_ids": [
+        "ingestion:11:33",
+        "ingestion:60:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:33": "d26130c06b0ae17f5af75b1d9542170a24cde4b4c8b5e8986442d2a34a77589d",
+        "ingestion:60:71": "1135a633ec3bae5d91889393767928297cf86d392a0e6aef36229f871a56d7df"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "95e57e989466a2c6264a0341ae93a67fbc8a992f0443da81460e8d357d98bcaf"
+}

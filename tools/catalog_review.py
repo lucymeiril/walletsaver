@@ -119,11 +119,51 @@ def main():
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
     p = sub.add_parser('hold-draft'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--numbers',required=True); p.add_argument('--reason',required=True)
+    p = sub.add_parser('report'); p.add_argument('name'); p.add_argument('--numbers'); p.add_argument('--limit',type=int,default=20)
     args = parser.parse_args()
     if args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
     elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
+    elif args.action == 'report': report(args.name,args.numbers,args.limit)
     else: checkpoint(args.run_id,args.next)
+
+
+def observation_results(rows, decisions, bundle):
+    """Join by immutable observation IDs, never product titles."""
+    classifications={row['raw_record_id']:row for row in decisions}
+    accounting={row['raw_record_id']:row for row in bundle['observation_accounting']}
+    issues={}
+    for issue in bundle.get('review_issues',[]):
+        for rid in issue['raw_record_ids']:
+            issues.setdefault(rid,set()).update(issue.get('reasons',[]))
+    results=[]
+    for row in rows:
+        for rid in row['raw_record_ids']:
+            classification=classifications.get(rid,{})
+            account=accounting.get(rid,{})
+            results.append({'number':row['number'],'id':rid,'leaf':classification.get('unified_category_id'),
+                'status':account.get('status','missing'),'offer':account.get('offer_state'),
+                'reasons':sorted(set(account.get('reasons',[]))|issues.get(rid,set())),
+                'hold':row.get('hold_reason','')})
+    return results
+
+
+def report(name, numbers=None, limit=20, root=ROOT):
+    _, _, baseline, _, _=preflight(root)
+    require(1<=limit<=100,'Limit must be 1..100')
+    doc=read(named(root,name,REVIEWS))
+    rows=doc['rows']
+    if numbers:
+        selected={int(n) for n in numbers.split(',')}
+        require(selected<={row['number'] for row in rows},'Unknown number')
+        rows=[row for row in rows if row['number'] in selected]
+    certificate=read(baseline/'checks-passed.json')
+    require(certificate['bundle_sha256']==sha(baseline/'catalog-bundle.json'),'Certified bundle changed')
+    result=observation_results(rows,read(baseline/'classification-decisions.json'),read(baseline/'catalog-bundle.json'))
+    from collections import Counter
+    print(json.dumps({'observations':len(result),'status':dict(Counter(r['status'] for r in result))},ensure_ascii=False))
+    for row in result[:limit]: print(json.dumps(row,ensure_ascii=False))
+    if len(result)>limit: print(f'{len(result)-limit} more observations; select --numbers or increase --limit')
 
 
 def hold_draft(name, rule_sha, numbers, reason, root=ROOT):

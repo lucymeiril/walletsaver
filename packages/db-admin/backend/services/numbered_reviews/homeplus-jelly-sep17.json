@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260917-pass101",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "초콜릿/캔디/젤리/껌",
+        "젤리/푸딩"
+      ],
+      "source_title": "돌핀 폴라레티 후르트 400ML",
+      "raw_record_ids": [
+        "ingestion:18:13",
+        "ingestion:67:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:18:13": "d637d6c7dd042b5e2d325cc173af9f3c3a5bbf87f8fb6615a2a1b74767441260",
+        "ingestion:67:28": "303c5a43a38024b6a4056bdf5763f5a7d0af75e35ee9529215d5bee5896a515c"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "기존 검사에서 아이스디저트 및 기능성 젤리 형태 미확정; 독립 근거 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "초콜릿/캔디/젤리/껌",
+        "젤리/푸딩"
+      ],
+      "source_title": "돌핀 폴라레티 해피썸머 400ML",
+      "raw_record_ids": [
+        "ingestion:18:14",
+        "ingestion:67:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:18:14": "af9fef431c392082f45666efd58a098ea932867d01ffde408358e673ed2fba5a",
+        "ingestion:67:4": "92957a7d415ac832d862d9e0e25a4f50fb32ab52763bc75c92dbd43f4fcb5682"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "기존 검사에서 아이스디저트 및 기능성 젤리 형태 미확정; 독립 근거 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "초콜릿/캔디/젤리/껌",
+        "젤리/푸딩"
+      ],
+      "source_title": "돌핀 폴라레티 후르츠 바이오 400ML",
+      "raw_record_ids": [
+        "ingestion:18:90",
+        "ingestion:68:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:18:90": "917775d7b07078e8406e04bef08cb436aa085c89c24e0fdce1c72a0e80a3dbf4",
+        "ingestion:68:74": "df2a4a44933b9af2e459253beae02acda4e32a6ff6b11a652cdd13d809c25df9"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "기존 검사에서 아이스디저트 및 기능성 젤리 형태 미확정; 독립 근거 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "초콜릿/캔디/젤리/껌",
+        "젤리/푸딩"
+      ],
+      "source_title": "자임 콜라겐 애사비 젤리 210G",
+      "raw_record_ids": [
+        "ingestion:19:3",
+        "ingestion:69:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:19:3": "772c8f0ea41996127e2089e418a45ab783729a61d4abefb05f3d41cc162daaf4",
+        "ingestion:69:1": "1a2c8a8528e7736a0a6da8f9a4a5b95d0fd34c4c5d95bea82c49574e4f416058"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "기존 검사에서 아이스디저트 및 기능성 젤리 형태 미확정; 독립 근거 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "초콜릿/캔디/젤리/껌",
+        "젤리/푸딩"
+      ],
+      "source_title": "자임 콜라겐 레몬 젤리 210G",
+      "raw_record_ids": [
+        "ingestion:19:57",
+        "ingestion:69:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:19:57": "4fb31dd16dbc192edbb1d3da8c79b8122eaa2d6761de3b15b73ed5634e2a545b",
+        "ingestion:69:2": "dc1ce7a602b84c9e112c5298fdda762303bcdec0c059261b8fdd7c0685cf1ad1"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "기존 검사에서 아이스디저트 및 기능성 젤리 형태 미확정; 독립 근거 필요"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_homeplus_shelves.py",
+      "line": 42
+    },
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 639
+    }
+  ],
+  "packet_sha256": "02a2fbccc86f95ccb296329381a835d5067892408b900a31bccd8b58a4b1dd62"
+}

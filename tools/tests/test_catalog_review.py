@@ -6,6 +6,16 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import catalog_review as review
 
 
+def test_observation_report_does_not_join_same_title_or_infer_reason():
+    rows=[{'number':1,'raw_record_ids':['a','b'],'hold_reason':''},{'number':2,'raw_record_ids':['missing']}]
+    decisions=[{'raw_record_id':'a','source_title':'same','unified_category_id':'leaf'}, {'raw_record_id':'b','source_title':'same','unified_category_id':None}]
+    bundle={'observation_accounting':[{'raw_record_id':'a','status':'included','offer_state':'pending_review','reasons':[]},{'raw_record_id':'b','status':'unresolved','reasons':['unit_unresolved']}], 'review_issues':[{'raw_record_ids':['a'],'reasons':['promotion_unresolved']}]}
+    result=review.observation_results(rows,decisions,bundle)
+    assert result[0]['leaf']=='leaf' and result[0]['reasons']==['promotion_unresolved']
+    assert result[1]['leaf'] is None and result[1]['reasons']==['unit_unresolved']
+    assert result[2]['status']=='missing' and result[2]['reasons']==[]
+
+
 def test_contract_references_identify_exact_titles_without_classifying(tmp_path):
     path=tmp_path/'packages/db-admin/backend/tests/test_initial_example.py'
     path.parent.mkdir(parents=True)
