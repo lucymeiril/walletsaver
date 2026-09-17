@@ -496,6 +496,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("dishwasher", "식기세척기세제", "식기세척기 세제|식기세척기세제", "식기세척기세제|식기세척기 세제"),
         ("degreaser", "주방기름때세정제", ""),
         ("produce_wash", "과일·채소세정제", ""),
+        ("cloth_soap", "행주전용비누", ""),
     )),
     *_group("household.cleaning.bath", ("생활용품", "청소·세탁", "욕실청소"), "세탁/청소|청소/생활용품", (
         ("cleaner", "욕실세정제", "욕실세정제", "욕실세정제|욕실 세정제"),
@@ -505,6 +506,10 @@ LEAVES: tuple[Leaf, ...] = (
         ("chlorine", "염소계표백제", ""), ("glass", "유리세정제", ""), ("wipes", "청소용티슈", ""),
         ("dehumidifier", "제습제", ""), ("deodorizer", "탈취제", ""),
         ("multipurpose", "다목적세정제", ""),
+        ("citric_acid", "청소용구연산", ""),
+    )),
+    *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
+        ("brush", "청소솔", ""), ("squeegee", "물기제거기", ""),
     )),
     *_group("household.hygiene.feminine", ("생활용품", "위생용품", "생리용품"), "", (
         ("liner", "팬티라이너", ""), ("overnight", "오버나이트패드", ""),
