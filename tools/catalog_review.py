@@ -28,6 +28,18 @@ def named(root, name, prefix):
     return safe_path(root, f'{prefix}/{name}.json', prefix)
 
 
+def contract_references(rows, root=ROOT):
+    """Literal title references are review hints, never automatic decisions."""
+    files=sorted((root/'packages/db-admin/backend/tests').glob('test_initial*.py'))
+    references=[]
+    for path in files:
+        for line_number,line in enumerate(path.read_text(encoding='utf-8').splitlines(),1):
+            numbers=[row['number'] for row in rows if row['source_title'] in line]
+            if numbers:
+                references.append({'numbers':numbers,'file':path.relative_to(root).as_posix(),'line':line_number})
+    return references
+
+
 def prepare(name, mart, shelf, root=ROOT):
     state, _, baseline, _, _ = preflight(root)
     held = {rid for file in (root/REVIEWS).glob('*.json') for row in read(file)['rows'] for rid in row['raw_record_ids']}
@@ -41,11 +53,16 @@ def prepare(name, mart, shelf, root=ROOT):
         item['source_row_sha256'][row['raw_record_id']] = digest(row)
     rows = [dict(row, number=index) for index, row in enumerate(groups.values(), 1)]
     require(bool(rows), 'No unreviewed candidates')
-    packet = {'schema_version':1, 'baseline':state['baseline'], 'source_file_sha256':state['source_file_sha256'], 'rows':rows}
+    references=contract_references(rows,root)
+    packet = {'schema_version':1, 'baseline':state['baseline'], 'source_file_sha256':state['source_file_sha256'], 'rows':rows, 'contract_references':references}
     path = named(root, name, '.debug-artifacts/review-packets')
     write_new(path, packet)
     for row in rows:
         print(f"{row['number']} | {row['source_title']} | observations={len(row['raw_record_ids'])}")
+    for reference in references[:12]:
+        print(f"CHECK numbers={reference['numbers']} {reference['file']}:{reference['line']}")
+    if len(references)>12:
+        print(f'Additional contract references in packet: {len(references)-12}')
     print(f'packet={name} sha256={sha(path)}')
 
 

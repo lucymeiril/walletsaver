@@ -4,6 +4,8 @@
 
 1. `py tools/catalog_review.py prepare <새묶음명> --mart <마트> --shelf '<원본 경로>'`
 2. 출력된 상품을 읽고 결정한다. 같은 정확 제목·마트·경로의 여러 관측은 한 번호로 묶인다. 해당 선반의 기존 테스트·보류 이력을 먼저 검색한다. prepare는 과거 테스트 계약을 자동 수집하지 않는다.
+
+prepare의 `CHECK numbers=... 파일:줄`은 해당 제목이 그대로 등장하는 기존 검사 위치다. 전체 목록은 packet의 contract_references에 보존하며 화면에는 최대 12개만 표시한다. 문자열 검색이므로 보류/허용 의미를 판정하지 않고, 정규식·다른 띄어쓰기·다른 제목의 계약은 놓칠 수 있다. 위치를 읽고 판단한다.
 3. `py tools/catalog_review.py decide <묶음명> --packet-sha <출력해시> --set 'food.meals.noodles.jjolmyeon=1,3' --hold '종류 확인 필요=2'`
 4. 관련 묶음 검토 후 하네스 preflight와 새 run-id의 run을 실행한다.
 5. `py tools/catalog_review.py checkpoint <인증run-id> --next '<다음 행동>'`

@@ -6,6 +6,14 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import catalog_review as review
 
 
+def test_contract_references_identify_exact_titles_without_classifying(tmp_path):
+    path=tmp_path/'packages/db-admin/backend/tests/test_initial_example.py'
+    path.parent.mkdir(parents=True)
+    path.write_text('# 동일상품 100g\n# 다른상품\n',encoding='utf-8')
+    refs=review.contract_references([{'number':3,'source_title':'동일상품 100g'},{'number':4,'source_title':'동일상품 200g'}],tmp_path)
+    assert refs==[{'numbers':[3],'file':path.relative_to(tmp_path).as_posix(),'line':1}]
+
+
 def test_number_decisions_require_complete_unique_coverage():
     assert review.parse_assignments(['leaf=1,2'],['unclear=3'],3)=={1:('leaf',''),2:('leaf',''),3:(None,'unclear')}
     for sets,holds in [(['leaf=1'],[]),(['leaf=1,1'],[]),(['leaf=0,2'],[]),([],['=1,2'])]:

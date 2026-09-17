@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260915-pass100-numbered-eval",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트진로음료 테라 제로 (350ML)",
+      "raw_record_ids": [
+        "ingestion:28:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:61": "49a1aeebaebe9e79e1f8ad9721c1f8af99d9f2c4dad1a9b81e1e676648115448"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "제로만으로 무알코올 맥주 형태 확정 보류"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 무알콜 (350ML)",
+      "raw_record_ids": [
+        "ingestion:29:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:48": "839614b3fa254fbb9ca02d6b74e4f13349131d096bc6abecc94af024fe9394ca"
+      },
+      "number": 2,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "클라우드 논알콜릭 (500ML)",
+      "raw_record_ids": [
+        "ingestion:29:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:82": "50418e47c5f9d1e1f71e3bd382cf2998dd4e11a63b42be552e3b24c9cd26cb86"
+      },
+      "number": 3,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML)",
+      "raw_record_ids": [
+        "ingestion:29:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:87": "ade9624181251f3d12d2235e94c366885732a540d609ae997c9054da5b4773c7"
+      },
+      "number": 4,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "클라우드 논알콜릭 (350ML)",
+      "raw_record_ids": [
+        "ingestion:30:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:16": "f850be36fbf9b5f3fe515fe9d72d05b78fd7accc35fefa684a17f7b1e7ea3155"
+      },
+      "number": 5,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "버드와이저 제로 (330ML)",
+      "raw_record_ids": [
+        "ingestion:31:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:69": "61c44faaf551ce9fba81137a99f48537a774686a1680f88471074e4bffa68fc2"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "제로만으로 무알코올 맥주 형태 확정 보류"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 무알콜 (350ML * 6)",
+      "raw_record_ids": [
+        "ingestion:33:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:36": "c96b0eb80c680a5e7a774d1c32dc57c2a048a540b43cb16f501c73983025391a"
+      },
+      "number": 7,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 (무알콜)(캔) (500ML * 6)",
+      "raw_record_ids": [
+        "ingestion:33:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:40": "33367b067484eb8f945d6e56795a34ac821211a1fd9ae1443dead82952232377"
+      },
+      "number": 8,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "크라우스탈러 논알콜 (캔) (330ML)",
+      "raw_record_ids": [
+        "ingestion:33:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:82": "35c96c0edaad7063880b24591949f16923f534fd87d512304efe7d4152c8a7e6"
+      },
+      "number": 9,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이트 제로 0.00 포멜로 (350ML)",
+      "raw_record_ids": [
+        "ingestion:33:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:93": "9d5848a3dfc8796ace2223d1c50faf9df8bc20479cb966e229662f143e308610"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "제로만으로 무알코올 맥주 형태 확정 보류"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "하이네켄 넌 알콜릭 (330ML)",
+      "raw_record_ids": [
+        "ingestion:34:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:6": "4ea4fd235d4bf498b5287fd0dc297c4fac98ef8915d2aa64561007a48d88d3f8"
+      },
+      "number": 11,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "티젠 젠하이볼향 0.0 레몬 (350ML)",
+      "raw_record_ids": [
+        "ingestion:34:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:28": "43bb70c70ef0209363d957fac1fa51ee656eaec8c1a307529f7a8885d5d47d14"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "하이볼향 음료 별도 리프 검토"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "기네스 드래프트 넌 알콜릭 (440ML)",
+      "raw_record_ids": [
+        "ingestion:34:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:77": "34b228572121d3e92c80990ef1c0c8280202ff6ed4e2950446ea6fd0629f0368"
+      },
+      "number": 13,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "논알콜음료"
+      ],
+      "source_title": "오비맥주 카스 올제로 (350ML)",
+      "raw_record_ids": [
+        "ingestion:35:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:22": "da6c946934e8a5a265a3c3c66782742138d8fd88e8e55a2239a8ba3e96fa7339"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "제로만으로 무알코올 맥주 형태 확정 보류"
+    }
+  ],
+  "packet_sha256": "cffd46232423f2554208e4992096fa6f82b984124e65d0d9a5fa14707a840dfc"
+}
