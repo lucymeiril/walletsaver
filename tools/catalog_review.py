@@ -117,6 +117,7 @@ def main():
     sub = parser.add_subparsers(dest='action', required=True)
     p = sub.add_parser('shelves'); p.add_argument('--mart'); p.add_argument('--contains',default=''); p.add_argument('--limit',type=int,default=20)
     p = sub.add_parser('revise-path'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--reject',required=True); p.add_argument('--reason',required=True); p.add_argument('--set',action='append',required=True)
+    p.add_argument('--draft',action='store_true')
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
@@ -124,7 +125,7 @@ def main():
     p = sub.add_parser('report'); p.add_argument('name'); p.add_argument('--numbers'); p.add_argument('--limit',type=int,default=20)
     args = parser.parse_args()
     if args.action == 'shelves': shelves(args.mart,args.contains,args.limit)
-    elif args.action == 'revise-path': revise_path(args.name,args.rule_sha,args.reject,args.reason,args.set)
+    elif args.action == 'revise-path': revise_path(args.name,args.rule_sha,args.reject,args.reason,args.set,draft=args.draft)
     elif args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
     elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
@@ -132,13 +133,21 @@ def main():
     else: checkpoint(args.run_id,args.next)
 
 
-def revise_path(name, rule_sha, rejected, reason, specs, root=ROOT):
+def revision_input_allowed(certified_hash, rule_sha, doc, state, draft):
+    if certified_hash is not None:
+        require(certified_hash==rule_sha,'Certified rules changed')
+    else:
+        require(draft,'Revision requires currently certified rules or explicit --draft')
+        require(doc.get('baseline')==state['baseline'],'Stale draft')
+
+
+def revise_path(name, rule_sha, rejected, reason, specs, root=ROOT, draft=False):
     state, _, baseline, _, _=preflight(root)
     path=named(root,name,REVIEWS)
     require(sha(path)==rule_sha,'Rule file changed')
     certificate=read(baseline/'checks-passed.json')
-    require(certificate['code_sha256'].get(str(path.relative_to(root)))==rule_sha,'Revision requires currently certified rules')
     doc=read(path)
+    revision_input_allowed(certificate['code_sha256'].get(str(path.relative_to(root))),rule_sha,doc,state,draft)
     require(doc['source_file_sha256']==state['source_file_sha256'],'Source changed')
     require(bool(reason.strip()),'Review reason required')
     assignments=parse_assignments(specs,[],len(doc['rows']))

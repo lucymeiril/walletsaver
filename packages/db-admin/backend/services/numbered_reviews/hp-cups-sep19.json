@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass108",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 다회용투명컵 190ML*20개입",
+      "raw_record_ids": [
+        "ingestion:27:57",
+        "ingestion:77:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:57": "6c71063904f84f8c8d3c3d0d9da74e67dbcb37ccfa446946dba95280b97529e7",
+        "ingestion:77:17": "de9587c76e9cda6c3de5bbaa24a6c6709c335379c023b28e96c57b0507f4d891"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.consumables.multiuse_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 다회용투명소주컵65ML 25개입",
+      "raw_record_ids": [
+        "ingestion:27:58",
+        "ingestion:77:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:58": "1e015520b623267688f2316fd1a0e400ce5bf8eefd03640fd0559fa0c23ba16c",
+        "ingestion:77:18": "cef4dbbfd8e0764491a2a9a81951a67397f06399262bd6520bc526c84ce769ae"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.consumables.multiuse_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 테이크아웃아이스컵뚜껑 20P",
+      "raw_record_ids": [
+        "ingestion:27:63",
+        "ingestion:77:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:63": "6fff4782386f02e2a8fd2383d694e9d6ec19d038e7c755b1e9a75b63ebabb7c5",
+        "ingestion:77:20": "359be956df09d3069330656d5560c32144e7e1a178dd25dff9d142a005545a14"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "뚜껑 규격과 판매수량 구분 필요; 종이컵 본체로 매칭 금지"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 다회용투명컵 280ML*10개입",
+      "raw_record_ids": [
+        "ingestion:27:78",
+        "ingestion:77:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:78": "118aa7bd1610c2787d98407fd8a57914d5fecfb724c6831bac075600d224ef0b",
+        "ingestion:77:16": "f5a9bbd5d80f6f9a36004eec39d1fc1c48ed69b92b7e4cd32cab2c818f7156f6"
+      },
+      "number": 4,
+      "leaf": "household.kitchen.consumables.multiuse_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 테이크아웃종이컵뚜껑 473ML 25P",
+      "raw_record_ids": [
+        "ingestion:27:82",
+        "ingestion:77:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:82": "8f929335dcc7bef10ea5a6fbf42f27f185a58dc825b1c15be1b320c8518a2a0e",
+        "ingestion:77:19": "163e3ac729850e1bf774e940428f52f9a04066b48eee9bc0140280b047b2c64c"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "뚜껑 규격과 판매수량 구분 필요; 종이컵 본체로 매칭 금지"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "종이컵",
+        "컵류"
+      ],
+      "source_title": "simplus 테이크아웃종이컵뚜껑240ML 25P",
+      "raw_record_ids": [
+        "ingestion:27:83",
+        "ingestion:77:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:83": "cef6df89bede50e2b045e6b68c3fde70cd0d387d3f13d4f9a87c56e4fddd227c",
+        "ingestion:77:40": "ede2f0e3a5ccbc33df33ad8622f958619e1b8d23b72f84266b81ce7fb093a97f"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "뚜껑 규격과 판매수량 구분 필요; 종이컵 본체로 매칭 금지"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3c0afe3afa4c4d3a875bf8f3fa46bd69d407eb706f0c74de231481f3726b7fd1"
+}

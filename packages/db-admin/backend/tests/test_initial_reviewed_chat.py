@@ -20,7 +20,10 @@ PASS44_BLOCKED = {
                    'source_leaf_needs_name_corroboration'),
 }
 PASS45_BLOCKED = {
-    **dict.fromkeys(['112841891','070137671','141923001','112088334',
+    # 070137671: exact numbered review now discards only the liquid-shelf
+    # candidate already vetoed by the explicit capsule title. A replacement
+    # test verifies the original conflict returns without that path review.
+    **dict.fromkeys(['112841891','141923001','112088334',
                     '140583801','140583784','058706690','148605655','071275902'],
                    'conflicting_category_evidence'),
     '129081772':'dairy_ingredient_accessory_or_mixed_product',

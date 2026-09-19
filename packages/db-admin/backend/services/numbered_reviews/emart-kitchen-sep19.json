@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass108",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "하모니 에어프라이어 팟 사각 (대) 코코아그레이 WSK4184",
+      "raw_record_ids": [
+        "ingestion:100:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:0": "15e92c0217c63917248aebd51cb7506c1f5b3b36f1a87b3bd505637e2a7ba3f8"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "하모니 에어프라이어 팟 사각 (대) 오션그린 WSK4184",
+      "raw_record_ids": [
+        "ingestion:100:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:1": "a8af77dd2b7026c72402151cbfdebbf8aec4bdaa564672c406f195747964ede7"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "스텐 만능채칼&가위&도마&믹싱볼 외 BEST 주방용품 특가",
+      "raw_record_ids": [
+        "ingestion:100:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:8": "66f68eb6dc982449cb093319058c14b3edb91f4aaa85983695fdc80222860876"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "복수 상품 특가 배너"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "유니랩 실속형 위생장갑 200매+200매",
+      "raw_record_ids": [
+        "ingestion:100:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:12": "f126f1bf42f90c834adaf57eb8156241d3dfd98977e3bb88d34b8262ac90d381"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "동일 품목 합산 묶음 수량 검증 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "그립앤실 냉장 대형 50매",
+      "raw_record_ids": [
+        "ingestion:100:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:16": "d8c89e7f3275dc42d3525dcc03efa14dc62fe20717a5c8ee3a8e12e7f6d0bace"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "[쓱7클럽] 락앤락 티니핑 원터치 텀블러 400ml 하츄핑",
+      "raw_record_ids": [
+        "ingestion:100:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:20": "20ea76cf93b1ef7542368ed4c20db9e285c67a8dd40aa76f99b8dd338e101f72"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "[쓱7클럽] 락앤락 티니핑 밥용기 320ML 3P 하츄핑",
+      "raw_record_ids": [
+        "ingestion:100:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:24": "ab17e42cb2d11d9015f2837cd7dff787b0e6b779f2cbef20c65b13b67dae4195"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "그립앤실 냉장 소형 200매",
+      "raw_record_ids": [
+        "ingestion:100:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:25": "b2162d919487badbed5ef6320e0fc2f74b6fa70e63efdd67b8259accc6efdccb"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "에센셜 2 in 1 볶음스푼_핑크 클레이",
+      "raw_record_ids": [
+        "ingestion:100:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:26": "405825f50dae4df677a62e746159dada87ce1e91f995e038da30e0aaacf27060"
+      },
+      "number": 9,
+      "leaf": "household.kitchen.utensils.stirring_spoon",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "위생랩30cm*70m",
+      "raw_record_ids": [
+        "ingestion:100:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:30": "4e7cc3ed8116890a99631428ddad62aa23cc688fbc905c78023c82f779fe811b"
+      },
+      "number": 10,
+      "leaf": "household.kitchen.consumables.cling_film",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "프리십 710ml - 코스탈미스트",
+      "raw_record_ids": [
+        "ingestion:100:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:31": "ec07ba86db11c33498c6365184a2db144b211023b99d81e17b76ad7c33089fd1"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "ScrubDaddy 스펀지대디 4P",
+      "raw_record_ids": [
+        "ingestion:100:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:36": "006649da2b853bf8de4afb0c40b8d4f7baa80667bf10198a018ac520536dc58d"
+      },
+      "number": 12,
+      "leaf": "household.cleaning.tools.sponge",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "쿠킹호일 30cmx30m",
+      "raw_record_ids": [
+        "ingestion:100:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:41": "9c631e0341c06b52ef1af4a29ea396e15835dea70b1506656d8665848478d0af"
+      },
+      "number": 13,
+      "leaf": "household.kitchen.consumables.aluminum_foil",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "마레 페리 주물팬 IH 28WP",
+      "raw_record_ids": [
+        "ingestion:100:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:43": "c7f8e5731bb0c1d1f1908fa19075636dc0a279a77b4e01f920d79ce2a22615ae"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "원재료 용도 또는 판매 수량 확인 필요"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "주방용품"
+      ],
+      "source_title": "[1+1기획]뿌리또 에어프라이어 사각종이호일5L",
+      "raw_record_ids": [
+        "ingestion:100:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:100:47": "1ad850a9110f65dee98b6e46cb6bc4f43b7f9098332dcda355978f55d935b759"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "5L는 용기 용량 호환표시이며 수량 아님;1+1 조건 확인"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_product_forms.py",
+      "line": 79
+    }
+  ],
+  "packet_sha256": "7d1f2fcb48e8531793648a97e8ef149908ff267713f2cff070a91431a5d3730e"
+}

@@ -4,6 +4,19 @@ from services.initial_numbered_reviews import rules, reviewed_numbered_leaf
 from services.initial_taxonomy import classify_record
 
 
+def test_capsule_old_conflict_requires_explicit_path_review(monkeypatch):
+    raw={'source_name':'homeplus','source_record_key':'070137671',
+         'source_title':'LG생활건강 피지디나자임 캡슐세제 26입',
+         'source_category_path':['세탁/청소','세탁세제/섬유유연제','액체형 세제','액체 세탁세제']}
+    result=classify_record(raw)
+    assert result['unified_category_id']=='household.cleaning.laundry.capsule'
+    assert result['reviewed_rejected_path_category']=='household.cleaning.laundry.liquid'
+    monkeypatch.setattr(numbered,'path_reviews',lambda:{})
+    result=classify_record(raw)
+    assert result['unified_category_id'] is None
+    assert result['classification_reason']=='conflicting_category_evidence'
+
+
 def test_path_review_discards_only_vetoed_path_not_other_evidence(monkeypatch):
     import services.initial_taxonomy as taxonomy
     title='슈가버블 구연산 리필 1KG'

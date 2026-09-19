@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260919-pass108",
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6932,
-  "unresolved": 2264,
-  "next_task": "pass107/108 합계18상품24관측 추가. hp-liquid-sep19 캡슐1종 revise-path 후 다음 생활용품 묶음과 함께 인증. 변기세정제2관측 runtime miss는 promotion_unresolved 확인. 팽이버섯 분류-적재 불일치와 pass96 단호박 원인 확인 유지.",
+  "included": 6962,
+  "unresolved": 2234,
+  "next_task": "pass110:16상품30관측 추가,재수집30hit. emart-kitchen 9,10,13은 unit_unresolved 확인. 다음 주방 선반 계속; draft 경로검토 옵션은 단위검사 완료/실제 초안 적용 미평가. 팽이버섯 분류-적재 불일치와 pass96 단호박 원인 확인 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

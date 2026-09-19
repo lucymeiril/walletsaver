@@ -19,10 +19,20 @@
         "ingestion:76:7": "3e23c21bc9f066f24aed7df01f9bf279ed45dd31b81b934a06bf9a5be0c4e6b0"
       },
       "number": 1,
-      "leaf": null,
-      "hold_reason": "액체 세탁세제 경로와 캡슐 형태 충돌; 인증 후 revise-path 대상"
+      "leaf": "household.cleaning.laundry.capsule",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.laundry.liquid",
+        "reason": "상품명에 캡슐세제 명시; 기존 제형 검사에서 이미 거부된 액체세제 경로만 제외",
+        "previous_hold": "액체 세탁세제 경로와 캡슐 형태 충돌; 인증 후 revise-path 대상"
+      }
     }
   ],
   "contract_references": [],
-  "packet_sha256": "995d12cb89045924fdaa3678b27ceb5e098e8eeb7098f69093c85ae693a244ac"
+  "packet_sha256": "995d12cb89045924fdaa3678b27ceb5e098e8eeb7098f69093c85ae693a244ac",
+  "revision": {
+    "previous_sha256": "df2634f737ea33aa0ffb958824694246885d2db6192de278faf0843a7dc36f88",
+    "baseline": ".debug-artifacts/initial-catalog-20260919-pass108",
+    "reason": "상품명에 캡슐세제 명시; 기존 제형 검사에서 이미 거부된 액체세제 경로만 제외"
+  }
 }

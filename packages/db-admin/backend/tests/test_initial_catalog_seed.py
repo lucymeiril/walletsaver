@@ -37,6 +37,9 @@ LEAF = "food.dairy.milk.chocolate"
     ("두꺼운 종이컵 260ml / 40p", 260, 40),
     ("종이컵 180ml*450P", 180, 450),
     ("종이컵180ml*1000개", 180, 1000),
+    ("simplus 다회용투명컵 190ML*20개입", 190, 20),
+    ("simplus 다회용투명소주컵65ML 25개입", 65, 25),
+    ("simplus 다회용투명컵 280ML*10개입", 280, 10),
 ])
 def test_paper_cup_capacity_is_not_consumable_volume(title, capacity, count):
     package, issues = _package({"package_quantity": capacity, "package_unit": "ml"}, {}, title)
@@ -50,6 +53,8 @@ def test_paper_cup_capacity_is_not_consumable_volume(title, capacity, count):
     "종이컵 180ml", "종이컵뚜껑 473ML 25P", "종이컵 180ml 50개+50개",
     "종이컵 180ml 50개 세트", "종이컵 180ml*50개*2팩",
     "종이컵 180ml 50~60개", "종이컵 180ml 50-60개",
+    "다회용투명컵 180ml", "다회용투명컵 180ml 20개+20개", "다회용투명컵뚜껑 180ml 20개",
+    "다회용투명컵 180ml 20개 혼합세트", "다회용투명컵 180ml*20개*2팩",
 ])
 def test_ambiguous_cup_counts_and_mixed_products_remain_unresolved(title):
     package, issues = _package({"package_quantity": 180, "package_unit": "ml"}, {}, title)

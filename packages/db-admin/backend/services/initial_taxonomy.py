@@ -491,6 +491,16 @@ LEAVES: tuple[Leaf, ...] = (
         ("sheet", "시트세탁세제", ""), ("powder", "분말세탁세제", ""), ("stain", "얼룩제거제", ""),
         ("scent_booster", "세탁향기부스터", ""),
     )),
+    *_group("household.kitchen.consumables", ("생활용품", "주방용품", "주방소모품"), "", (
+        ("multiuse_cup", "다회용컵", ""), ("multiuse_spoon", "다회용스푼", ""),
+        ("paper_bowl", "종이공기", ""), ("paper_plate", "종이접시", ""),
+        ("foil_container", "은박도시락용기", ""), ("foil_plate", "은박접시", ""),
+        ("sauce_dish", "일회용소스종지", ""),
+        ("cling_film", "식품포장랩", ""), ("aluminum_foil", "알루미늄호일", ""),
+    )),
+    *_group("household.kitchen.utensils", ("생활용품", "주방용품", "조리도구"), "", (
+        ("stirring_spoon", "볶음스푼", ""),
+    )),
     *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "세탁/청소|청소/생활용품", (
         ("detergent", "주방세제", "일반 주방세제/퐁퐁|주방세제", "주방세제|주방 세제"),
         ("dishwasher", "식기세척기세제", "식기세척기 세제|식기세척기세제", "식기세척기세제|식기세척기 세제"),
@@ -511,6 +521,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
         ("brush", "청소솔", ""), ("squeegee", "물기제거기", ""),
+        ("sponge", "청소스펀지", ""),
     )),
     *_group("household.hygiene.feminine", ("생활용품", "위생용품", "생리용품"), "", (
         ("liner", "팬티라이너", ""), ("overnight", "오버나이트패드", ""),

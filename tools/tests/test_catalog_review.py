@@ -7,6 +7,14 @@ sys.path[:0]=[str(Path(__file__).resolve().parents[2]/p) for p in ('packages/sha
 import catalog_review as review
 
 
+def test_draft_revision_requires_explicit_current_baseline_and_cannot_bypass_certified_hash():
+    state={'baseline':'current'}
+    review.revision_input_allowed(None,'hash',state,state,True)
+    review.revision_input_allowed('hash','hash',{},state,False)
+    for args in [(None,'hash',state,state,False),(None,'hash',{'baseline':'old'},state,True),('old','hash',state,state,True)]:
+        with pytest.raises(ValueError): review.revision_input_allowed(*args)
+
+
 def test_path_revision_requires_current_certified_hash(tmp_path,monkeypatch):
     baseline=tmp_path/'baseline';baseline.mkdir()
     monkeypatch.setattr(review,'preflight',lambda root:({},None,baseline,None,None))

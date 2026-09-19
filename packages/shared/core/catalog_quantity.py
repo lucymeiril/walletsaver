@@ -15,7 +15,7 @@ from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CH
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
-    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or "종이컵" in title
+    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or bool(re.search(r'종이컵|다회용투명(?:소주)?컵', title))
             or "고무장갑" in title and bool(re.search(r"\d+\s*켤레", title))
             or bool(re.search(r"키친타[월올]|종이타[월올]|위생행주", title))
             and bool(re.search(r"\d+\s*매\s*[x×*]\s*\d+\s*롤", title, re.I)))
@@ -143,7 +143,7 @@ def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, An
     # A paper cup's ml label is vessel capacity, never edible contents.
     # Recover only one explicit sold count; retain original capacity in raw
     # evidence/display text. Lids, kits and incomplete multiplications wait.
-    if "종이컵" in title:
+    if re.search(r'종이컵|다회용투명(?:소주)?컵', title):
         counts = re.findall(r"(?<![\d.])(\d+)\s*(개입|개|[pP])(?![A-Za-z가-힣])", title)
         capacities = re.findall(r"(?<![\d.])(\d+(?:\.\d+)?)\s*ml(?![A-Za-z])", title, re.I)
         count = int(counts[0][0]) if len(counts) == 1 else 0
