@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260917-pass103",
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass106",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6900,
-  "unresolved": 2296,
-  "next_task": "생활용품8종 분류/3종 적재, 나머지5종 unit_unresolved 확인. 다른 생활용품 선반 검토. JUnit 빈 classname 계측 결함은 평가문서 참조. 팽이버섯 분류-적재 불일치와 pass96 단호박 실제 사유 확인 유지.",
+  "included": 6908,
+  "unresolved": 2288,
+  "next_task": "shelves로 다음 생활용품 묶음 선택. 46종 검토해7상품8관측 추가; 원본 경로 충돌12종은 별도 명시 검수 경로 필요. 체크포인트 반복/메모 갱신 실사용 검증 완료. 팽이버섯 분류-적재 불일치와 pass96 단호박 실제 사유 후속 확인 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

@@ -115,17 +115,41 @@ def decide(name, packet_sha, specs, holds, root=ROOT):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='action', required=True)
+    p = sub.add_parser('shelves'); p.add_argument('--mart'); p.add_argument('--contains',default=''); p.add_argument('--limit',type=int,default=20)
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
     p = sub.add_parser('hold-draft'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--numbers',required=True); p.add_argument('--reason',required=True)
     p = sub.add_parser('report'); p.add_argument('name'); p.add_argument('--numbers'); p.add_argument('--limit',type=int,default=20)
     args = parser.parse_args()
-    if args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
+    if args.action == 'shelves': shelves(args.mart,args.contains,args.limit)
+    elif args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
     elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
     elif args.action == 'report': report(args.name,args.numbers,args.limit)
     else: checkpoint(args.run_id,args.next)
+
+
+def shelf_counts(decisions, reviewed_ids, mart=None, contains=''):
+    groups={}
+    for row in decisions:
+        if row['unified_category_id'] is not None or row['raw_record_id'] in reviewed_ids:
+            continue
+        if (mart and row['mart'] != mart) or contains not in row['source_path']:
+            continue
+        key=(row['mart'],row['source_path'])
+        item=groups.setdefault(key,{'mart':key[0],'shelf':key[1],'titles':set(),'observations':0})
+        item['titles'].add(row['source_title']); item['observations']+=1
+    return sorted([dict(mart=r['mart'],shelf=r['shelf'],unique=len(r['titles']),observations=r['observations']) for r in groups.values()],key=lambda r:(-r['unique'],r['mart'],r['shelf']))
+
+
+def shelves(mart=None, contains='', limit=20, root=ROOT):
+    _, _, baseline, _, _=preflight(root)
+    require(1<=limit<=100,'Limit must be 1..100')
+    reviewed={rid for file in (root/REVIEWS).glob('*.json') for row in read(file)['rows'] for rid in row['raw_record_ids']}
+    rows=shelf_counts(read(baseline/'classification-decisions.json'),reviewed,mart,contains)
+    for row in rows[:limit]: print(json.dumps(row,ensure_ascii=False))
+    print(f'shelves={len(rows)}; shown={min(limit,len(rows))}; excludes numbered reviews/holds; not an approval or quantity check')
 
 
 def observation_results(rows, decisions, bundle):
@@ -195,15 +219,30 @@ def checkpoint(run_id, next_task, root=ROOT):
     out = safe_path(root,'.debug-artifacts/'+run_id,'.debug-artifacts')
     certificate = read(out/'checks-passed.json')
     require(certificate['status'] == 'checks_passed_not_published', 'Uncertified run')
-    require(certificate['baseline'] == state['baseline'], 'Unexpected baseline')
-    require(certificate['code_sha256'] == code_hashes(root), 'Code changed since certification')
+    target_baseline=out.relative_to(root).as_posix()
+    repeated=state['baseline']==target_baseline
+    require(repeated or certificate['baseline'] == state['baseline'], 'Unexpected baseline')
+    expected=dict(certificate['code_sha256']); current=code_hashes(root)
+    if repeated:
+        state_key=str(Path('docs/catalog-state.json'))
+        original=root/'.debug-artifacts/checkpoint-backups'/run_id/'catalog-state.json'
+        require(original.is_file() and expected.get(state_key)==sha(original), 'Original checkpoint state changed')
+        before=read(original)
+        mutable={'baseline','included','unresolved','next_task'}
+        require({k:v for k,v in state.items() if k not in mutable} == {k:v for k,v in before.items() if k not in mutable}, 'Protected state fields changed')
+        expected.pop(state_key); current.pop(state_key)
+    require(expected == current, 'Code changed since certification')
     require(certificate['bundle_sha256'] == sha(out/'catalog-bundle.json'), 'Bundle changed')
     require(certificate['staging_sha256'] == sha(out/'staging.sqlite'), 'Staging changed')
     report = certificate['build_report']
     updated = dict(state, baseline=str(out.relative_to(root)).replace('\\','/'), included=report['included_observations'], unresolved=report['unresolved_observations'], next_task=next_task)
     content = f"# 재개점 — {run_id}\n\n- 인증 사본: `{updated['baseline']}/checks-passed.json`; 운영 DB 미적용·공개 미승인.\n- 적재 {updated['included']}, 미해결 {updated['unresolved']}; 상품군 {report['entity_counts']['products']}, 판매 페이지 {report['entity_counts']['source_listings']}.\n- 신규 관측 {len(certificate['new_included_ids'])}; 검사 결과·실행 로그는 인증 사본과 catalog-logs 참조.\n- 다음: {next_task}\n- 경로·보호 해시는 catalog-state.json 기준. 과거 보류는 numbered_reviews 및 이력 문서에서 해당 묶음만 검색.\n"
     # Preserve recovery inputs before updating the two small human-facing files.
-    backup = root/'.debug-artifacts/checkpoint-backups'/run_id
+    if repeated and updated == state and (root/'docs/RESUME_CHECKPOINT.md').read_text(encoding='utf-8') == content:
+        print(f'Checkpoint unchanged: {run_id}')
+        return
+    import uuid
+    backup = root/'.debug-artifacts/checkpoint-backups'/(run_id if not repeated else run_id+'-note-'+uuid.uuid4().hex[:12])
     backup.mkdir(parents=True,exist_ok=False)
     for name in ('catalog-state.json','RESUME_CHECKPOINT.md'):
         (backup/name).write_bytes((root/'docs'/name).read_bytes())

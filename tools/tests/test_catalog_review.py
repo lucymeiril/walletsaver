@@ -3,7 +3,37 @@ from pathlib import Path
 import sys
 import pytest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path[:0]=[str(Path(__file__).resolve().parents[2]/p) for p in ('packages/shared','packages/db-admin/backend')]
 import catalog_review as review
+
+
+def test_shelves_count_titles_exclude_reviewed_and_filter():
+    def row(rid,title='same',mart='emart',leaf=None):
+        return dict(raw_record_id=rid,source_title=title,mart=mart,source_path='생활용품',unified_category_id=leaf)
+    rows=[row('a'),row('b'),row('held','hold'),row('done',leaf='leaf'),row('other',mart='costco')]
+    assert review.shelf_counts(rows,{'held'},'emart','생활')==[dict(mart='emart',shelf='생활용품',unique=1,observations=2)]
+    assert review.shelf_counts(rows,set(),contains='없는경로')==[]
+
+
+def test_checkpoint_repeat_and_note_update_preserve_backups(tmp_path,monkeypatch):
+    docs=tmp_path/'docs'; docs.mkdir()
+    state={'baseline':'old'}
+    (docs/'catalog-state.json').write_text(json.dumps(state))
+    (docs/'RESUME_CHECKPOINT.md').write_text('old')
+    monkeypatch.setattr(review,'preflight',lambda root:(review.read(docs/'catalog-state.json'),None,None,None,None))
+    state_key=str(Path('docs/catalog-state.json'))
+    monkeypatch.setattr(review,'code_hashes',lambda root:{state_key:review.sha(docs/'catalog-state.json')})
+    out=tmp_path/'.debug-artifacts/run';out.mkdir(parents=True)
+    (out/'catalog-bundle.json').write_text('{}');(out/'staging.sqlite').write_bytes(b'fixture')
+    review.write_new(out/'checks-passed.json',dict(status='checks_passed_not_published',baseline='old',code_sha256=review.code_hashes(tmp_path),bundle_sha256=review.sha(out/'catalog-bundle.json'),staging_sha256=review.sha(out/'staging.sqlite'),new_included_ids=['a'],build_report=dict(included_observations=1,unresolved_observations=2,entity_counts=dict(products=1,source_listings=1))))
+    review.checkpoint('run','next',tmp_path)
+    review.checkpoint('run','next',tmp_path)
+    assert len(list((tmp_path/'.debug-artifacts/checkpoint-backups').iterdir()))==1
+    review.checkpoint('run','revised',tmp_path)
+    assert len(list((tmp_path/'.debug-artifacts/checkpoint-backups').iterdir()))==2
+    assert review.read(docs/'catalog-state.json')['next_task']=='revised'
+    (out/'staging.sqlite').write_bytes(b'changed')
+    with pytest.raises(ValueError,match='Staging changed'): review.checkpoint('run','revised',tmp_path)
 
 
 def test_observation_report_does_not_join_same_title_or_infer_reason():

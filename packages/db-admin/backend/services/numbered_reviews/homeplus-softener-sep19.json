@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260917-pass103",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "섬유유연제",
+        "고농축 섬유유연제"
+      ],
+      "source_title": "LG 아우라 피톤치드 편백탈취제 숲속향 500ML",
+      "raw_record_ids": [
+        "ingestion:76:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:76:10": "6e842398a753cfb8b7efbe664137f14febd8947ec4300c20742e1bfb2ed197c1"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "섬유유연제",
+        "고농축 섬유유연제"
+      ],
+      "source_title": "LG 아우라 피톤치드 편백탈취제 은은한향 500ML",
+      "raw_record_ids": [
+        "ingestion:76:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:76:11": "01ef2221532276acbfc7962544cda357072a367f8ad8fcdd6db6a0401ee483dd"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "섬유유연제",
+        "고농축 섬유유연제"
+      ],
+      "source_title": "LG 아우라 편백탈취제 피톤치드 상쾌한향 500ML",
+      "raw_record_ids": [
+        "ingestion:76:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:76:12": "deaa8895bacf047d20cb122895cc21909765ca5cce6d0058a2f786709809ce88"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 879
+    }
+  ],
+  "packet_sha256": "2bc727f334d75118b7c93860b478e7967fd710beb2a0fa9ccdaf5bb33aa89f26"
+}

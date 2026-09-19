@@ -507,6 +507,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("dehumidifier", "제습제", ""), ("deodorizer", "탈취제", ""),
         ("multipurpose", "다목적세정제", ""),
         ("citric_acid", "청소용구연산", ""),
+        ("baking_soda", "청소용베이킹소다", ""),
     )),
     *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
         ("brush", "청소솔", ""), ("squeegee", "물기제거기", ""),

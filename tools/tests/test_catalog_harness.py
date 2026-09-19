@@ -7,6 +7,12 @@ import pytest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import catalog_harness as h
 
+def test_profile_empty_classname_uses_file_or_unknown(tmp_path):
+ path=tmp_path/'tests.xml'
+ path.write_text('<testsuite><testcase classname="" file="tests/a.py"/><testcase classname=""/></testsuite>')
+ assert set(h.test_profile(path))=={'tests/a.py','unknown'}
+
+
 def test_test_profile_counts_cases_failures_and_skips(tmp_path):
  path=tmp_path/'tests.xml'
  path.write_text('<testsuites><testsuite><testcase classname="module" name="a[1]" time="0.2"/><testcase classname="module" name="a[2]" time="0.3"><failure/></testcase><testcase classname="other" time="0"><skipped/></testcase></testsuite></testsuites>')

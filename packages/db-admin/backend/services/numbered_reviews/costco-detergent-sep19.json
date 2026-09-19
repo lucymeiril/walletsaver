@@ -1,0 +1,531 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260917-pass103",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "프로쉬 세탁세제 선물세트",
+      "raw_record_ids": [
+        "ingestion:49:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:54": "694f155b620522b322ca518d200d786ba29d82bcadd8bc4065556da28475cc03"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "비트세탁세제 7kg",
+      "raw_record_ids": [
+        "ingestion:49:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:56": "063647a9e81e2df7003d50eb980f53c8f0afac15a20a0285354473ed1d1d9fc2"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "기존 제형 미확인 또는 대량 구성 보류 계약"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "넬리 베이비 세탁세제 1Kg + 리필 726g",
+      "raw_record_ids": [
+        "ingestion:49:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:69": "800d7a8cbd546d25501ef633530a9ad24bc764a3b1d1273447ff57bc10391f4d"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "넬리 소다세제 1.5kg + 울드라이어볼x 4",
+      "raw_record_ids": [
+        "ingestion:49:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:79": "7446c99ef33b12d00ee3d6823e3d7ebce5a9e4a279f2a29520a943889e5d60fe"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "슈가버블 세제 6종 선물세트",
+      "raw_record_ids": [
+        "ingestion:49:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:80": "9dee0164a6954df9e957792c283249a17d9d6d7e4f6300e875838887bdab5af2"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "슈가버블 세제 6종 선물세트 x 6개",
+      "raw_record_ids": [
+        "ingestion:49:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:82": "3391d4091bdd3d2c9f7e3c0a2af3cacd9b1868aa8f5cb5013abb4e2cd8362061"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "파워브라이트캡슐세제 180개x 120",
+      "raw_record_ids": [
+        "ingestion:49:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:84": "ae4862c8182c94e7f2ad358369ddd4f7a6260e69919d26931681f13412e00733"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "기존 제형 미확인 또는 대량 구성 보류 계약"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "슈가버블베이킹소다 2kg x 3 + 500g 용기",
+      "raw_record_ids": [
+        "ingestion:49:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:97": "d0c02ee5ff4b1e0411cefbbe4d68ce83e5dea9b7c1a838c531a5dddad2461d5b"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "무아스 소프트 버블 & 젤 자동 디스펜서 2P",
+      "raw_record_ids": [
+        "ingestion:49:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:99": "17166dd79da8cd6787433e211fb598b8b6430125e4b647469a015667f5f330a3"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "암앤해머 베이킹 소다 6.12kg",
+      "raw_record_ids": [
+        "ingestion:50:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:5": "6b8c0ebb434b4c09016e0c488cd52513635a54ef7d30db533abc9a7f95694557"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "식용 청소용 구분에 원본 상세 경로 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "ARM & HAMMER 베이킹소다 6.12kg x 160",
+      "raw_record_ids": [
+        "ingestion:50:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:10": "19949ec18383064d47846176203a7e173e9ec30f138043d00ea412f2fe8e8bac"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "식용 청소용 구분에 원본 상세 경로 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "네일메드코세정제콤보(용기3개+세정용분말250포)",
+      "raw_record_ids": [
+        "ingestion:50:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:13": "dcb92422a4c2136034008672c3f8c84ceaaa08ce2dbbc0c6845eb7a1bb4413f4"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "네일메드코세정제리필세정용분말250포",
+      "raw_record_ids": [
+        "ingestion:50:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:14": "2cc9b2c8de613bb63aaf97da53d4a03d7f0a41a76de019b81d69716235d886b5"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "레고 시티 드라이브스루 세차장 60497",
+      "raw_record_ids": [
+        "ingestion:50:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:15": "d2f3850f48b0ce340f9ea914641de512793eb8ed9d42f7bdf7df048d678c74cb"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "연세 세브란스 케어 200ml x 30개",
+      "raw_record_ids": [
+        "ingestion:50:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:16": "485f02eaa0e05cc74919cff64e89772e4f10123c7f33a796ab62e207561334d6"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "펠로우즈 문서세단기 12C 19L (꽃가루형)",
+      "raw_record_ids": [
+        "ingestion:50:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:17": "4fd21f720c6526bbcdbc69e168266f142f95ea4afe738224a09d7e0ae521e9d0"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "소나텍 차량용 세차도구 4종 세트",
+      "raw_record_ids": [
+        "ingestion:50:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:18": "8e483327f111dbabef2e001f98d2054ee20f9794c2b775f06aa306766023e5bb"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "센소다인 딥클린 초미세모 칫솔 24개입",
+      "raw_record_ids": [
+        "ingestion:50:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:19": "a27df6047a27e8c0429bc1265f9d5f2f0959e5985105cece0052309ef127964d"
+      },
+      "number": 18,
+      "leaf": "beauty.personal.oral.toothbrush",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "펠로우즈 문서세단기 6M",
+      "raw_record_ids": [
+        "ingestion:50:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:20": "c893373862aee5d726a50528e3ccc5f57fbe6e8421699f059f6b0edf8a69b1ed"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "펠로우즈수동형 문서세단기2M",
+      "raw_record_ids": [
+        "ingestion:50:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:23": "5eae7c784b2d5cab69eed5d10e505cca296ffff6909c80d6b94e89c1dfd16664"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 정수필터 8PK",
+      "raw_record_ids": [
+        "ingestion:50:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:27": "9b19d0862617ba63519553e78a6008634103975c51f1868089a67ea46e657789"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "세제와 다른 기기 의료 식품 완구 등; 별도 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 대용량 멀티백 49L x 200",
+      "raw_record_ids": [
+        "ingestion:50:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:28": "c1a1a9696c323494bdc88c37e98821694715ff3f76cbf3d6a809c0d4e9e0aacc"
+      },
+      "number": 22,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 XL 멀티백 124L x 90",
+      "raw_record_ids": [
+        "ingestion:50:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:29": "28ca358199ca991fd0d61376c80ec37c931867134acaa6128d48866034ac1f85"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 주방용 랩 30cmx914M",
+      "raw_record_ids": [
+        "ingestion:50:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:30": "2a896552ecc54776b622a7d3ca5f8f97b238b07b7dd155b2ebbca4294599b2c3"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 주방용 랩 30cmx231Mx2",
+      "raw_record_ids": [
+        "ingestion:50:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:31": "007df248f79c60f5758add40a0e32f7fa86482482ce0cdf4ec6e5be90f824c22"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 알루미늄 호일 30cm x 304m",
+      "raw_record_ids": [
+        "ingestion:50:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:34": "dff7312dbe6f42d2826a9e828d1a61e1cc7fb252c7a0526c23c617b3733a99d5"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 진공 포장롤 세트",
+      "raw_record_ids": [
+        "ingestion:50:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:35": "a7f1cd8a64dced0a9f2030b927086e9dbea28b84014e0d5c282c50ba58907af2"
+      },
+      "number": 27,
+      "leaf": null,
+      "hold_reason": "세트 구성 및 혼합 수량 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "세제"
+      ],
+      "source_title": "커클랜드 시그니춰 다용도 장갑 대형 200장 x 2",
+      "raw_record_ids": [
+        "ingestion:50:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:50:37": "8394a1118c5a877ed5c930fccfa740dd40a38f1a526cb94bc60cabba351b677c"
+      },
+      "number": 28,
+      "leaf": null,
+      "hold_reason": "멀티백 용도 랩 호일 치수 장갑 재질 확인 및 별도 리프 검토"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        12
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_catalog_seed.py",
+      "line": 295
+    },
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 40
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 41
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 42
+    },
+    {
+      "numbers": [
+        8
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 43
+    },
+    {
+      "numbers": [
+        12
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 44
+    },
+    {
+      "numbers": [
+        9
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 45
+    },
+    {
+      "numbers": [
+        14,
+        16
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 575
+    },
+    {
+      "numbers": [
+        1,
+        13
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 576
+    },
+    {
+      "numbers": [
+        2,
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 577
+    }
+  ],
+  "packet_sha256": "9ea1652758e166adcbd4ffc50f027e925158032af2f2ee663c4ee2007c12d4de"
+}

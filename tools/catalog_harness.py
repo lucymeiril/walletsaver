@@ -102,7 +102,7 @@ def test_profile(path):
  """Compact per-module evidence; counts are cases, not unique contracts."""
  modules={}
  for case in ET.parse(path).iter('testcase'):
-  name=case.get('classname','unknown')
+  name=case.get('file') or case.get('classname') or 'unknown'
   group=modules.setdefault(name,{'cases':0,'seconds':0.0,'failures':0,'skipped':0})
   group['cases']+=1
   group['seconds']+=float(case.get('time','0'))
@@ -128,8 +128,8 @@ def run(run_id,root=ROOT):
  log_dir=safe_path(root,'.debug-artifacts/catalog-logs/'+run_id,'.debug-artifacts')
  log_dir.mkdir(parents=True,exist_ok=False)
  commands=[
-  [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short',f'--junitxml={log_dir/"catalog-tests.xml"}'],
-  [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short',f'--junitxml={log_dir/"crawler-tests.xml"}'],
+  [sys.executable,'-m','pytest',*TESTS,'-q','--disable-warnings','--tb=short','-o','junit_family=xunit1',f'--junitxml={log_dir/"catalog-tests.xml"}'],
+  [sys.executable,'-m','pytest','packages/crawler-admin/backend/tests/test_matching_enrichment.py','-q','--disable-warnings','--tb=short','-o','junit_family=xunit1',f'--junitxml={log_dir/"crawler-tests.xml"}'],
   [sys.executable,'tools/prepare_initial_catalog.py','--db',str(source),'--out',str(out),'--run-id',run_id,'--review-decisions',str(decisions)],
   [sys.executable,'tools/verify_initial_stage.py',run_id],
   [sys.executable,'tools/verify_reviewed_runtime.py',run_id],

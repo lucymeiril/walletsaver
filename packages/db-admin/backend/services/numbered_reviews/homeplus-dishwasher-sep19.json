@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass105",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "식기세척기용",
+        "식기세척기 전용 세제"
+      ],
+      "source_title": "LG생활건강 자연퐁 스팀워시 식기세척기 타블렛 세제 10G*55",
+      "raw_record_ids": [
+        "ingestion:26:32",
+        "ingestion:75:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:32": "97e4eee5419c4827bdf1ed74173f18e524cab1b6b1d98bae473d3892d41caf4b",
+        "ingestion:75:69": "2413c935dcfc42d7b015124cf77f143cbf6cff2f13f2635b6d343277d29a0f7c"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.kitchen.dishwasher",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "식기세척기용",
+        "식기세척기 전용 세제"
+      ],
+      "source_title": "LG생활건강 자연퐁 식기세척기용 액체세제 1L",
+      "raw_record_ids": [
+        "ingestion:75:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:82": "f3c11d41852073cfa84f73fe20245dedd57871b0733e5955291e26b48bdd386a"
+      },
+      "number": 2,
+      "leaf": "household.cleaning.kitchen.dishwasher",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "식기세척기용",
+        "식기세척기 전용 세제"
+      ],
+      "source_title": "LG생활건강 자연퐁 스팀워시 식세기용3X캡슐 30입",
+      "raw_record_ids": [
+        "ingestion:76:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:76:0": "88e9aab3214bfb133985646ccb6cc5c929ce8d200926953d2ae51725ec0d4ce4"
+      },
+      "number": 3,
+      "leaf": "household.cleaning.kitchen.dishwasher",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "cb0ccfda36ba6e4d47a10e8f8b58b5a25dccfe137d246e8c9a780aa8f4e807f1"
+}
