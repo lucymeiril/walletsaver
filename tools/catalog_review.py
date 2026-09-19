@@ -116,6 +116,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='action', required=True)
     p = sub.add_parser('shelves'); p.add_argument('--mart'); p.add_argument('--contains',default=''); p.add_argument('--limit',type=int,default=20)
+    p = sub.add_parser('revise-path'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--reject',required=True); p.add_argument('--reason',required=True); p.add_argument('--set',action='append',required=True)
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
@@ -123,11 +124,46 @@ def main():
     p = sub.add_parser('report'); p.add_argument('name'); p.add_argument('--numbers'); p.add_argument('--limit',type=int,default=20)
     args = parser.parse_args()
     if args.action == 'shelves': shelves(args.mart,args.contains,args.limit)
+    elif args.action == 'revise-path': revise_path(args.name,args.rule_sha,args.reject,args.reason,args.set)
     elif args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
     elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
     elif args.action == 'report': report(args.name,args.numbers,args.limit)
     else: checkpoint(args.run_id,args.next)
+
+
+def revise_path(name, rule_sha, rejected, reason, specs, root=ROOT):
+    state, _, baseline, _, _=preflight(root)
+    path=named(root,name,REVIEWS)
+    require(sha(path)==rule_sha,'Rule file changed')
+    certificate=read(baseline/'checks-passed.json')
+    require(certificate['code_sha256'].get(str(path.relative_to(root)))==rule_sha,'Revision requires currently certified rules')
+    doc=read(path)
+    require(doc['source_file_sha256']==state['source_file_sha256'],'Source changed')
+    require(bool(reason.strip()),'Review reason required')
+    assignments=parse_assignments(specs,[],len(doc['rows']))
+    sys.path[:0]=[str(root/'packages/shared'),str(root/'packages/db-admin/backend')]
+    from services.initial_taxonomy import LEAVES, classify_record, _suspicion_reason
+    leaves={leaf.id for leaf in LEAVES}
+    source={r['raw_record_id']:r for r in read(baseline/'classification-decisions.json')}
+    for row in doc['rows']:
+        require(row['leaf'] is None,'Only held rules can be revised')
+        leaf=assignments[row['number']][0]
+        require(leaf in leaves and rejected in leaves and leaf!=rejected,'Invalid leaf/rejected category')
+        for rid in row['raw_record_ids']:
+            raw=source[rid]
+            require((raw['mart'],raw['source_path_parts'],raw['source_title'])==(row['mart'],row['source_path_parts'],row['source_title']),'Source context changed')
+            require(raw['unified_category_id'] is None,'Already classified')
+        evidence=classify_record({'source_name':row['mart'],'source_title':row['source_title'],'source_category_path':row['source_path_parts']})
+        require(rejected in evidence['candidate_category_ids'] and _suspicion_reason(rejected,evidence)=='source_title_product_type_conflict','Existing product-form veto required')
+        row['leaf']=leaf
+        row['rejected_path_evidence']={'category_id':rejected,'reason':reason,'previous_hold':row['hold_reason']}
+        row['hold_reason']=''
+    backup=named(root,name+'-'+rule_sha[:12],'.debug-artifacts/review-revisions')
+    write_new(backup,read(path))
+    doc['revision']={'previous_sha256':rule_sha,'baseline':state['baseline'],'reason':reason}
+    temp=path.with_suffix('.json.tmp'); write_new(temp,doc); temp.replace(path)
+    print(f'Revised {len(doc["rows"])} held rules; previous version backed up; not DB-certified')
 
 
 def shelf_counts(decisions, reviewed_ids, mart=None, contains=''):

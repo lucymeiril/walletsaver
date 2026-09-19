@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "변기/싱크/배수구용",
+        "변기청정세제"
+      ],
+      "source_title": "LG생활건강 홈스타 변기 세정제 40G 4입",
+      "raw_record_ids": [
+        "ingestion:25:84",
+        "ingestion:74:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:84": "92b51bb4ea63dc655ea48eed931d5e3dc8185e01e54cec36b75d56943002a82b",
+        "ingestion:74:94": "39b48593f25bb7c429949eb70378eedc75ba3eea8f5ee0a1b65180e3f4fcf2c5"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.bath.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "변기/싱크/배수구용",
+        "변기청정세제"
+      ],
+      "source_title": "LG생활건강 홈스타 락스와 세제 시트러스 750ML",
+      "raw_record_ids": [
+        "ingestion:75:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:91": "15dcbbee01348ff1fd6f8537571b7133ffec669302279b573e15795e067bf53a"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "락스와 세제의 구체 용도/제형 상세 확인"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "주방/청소용 세제",
+        "변기/싱크/배수구용",
+        "변기청정세제"
+      ],
+      "source_title": "LG생활건강 홈스타 락스와 세제 파인 750ML",
+      "raw_record_ids": [
+        "ingestion:75:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:92": "979cad66822ad057559da3041fd50b61be7eafa65063d43dbc3adf1f702ced89"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "락스와 세제의 구체 용도/제형 상세 확인"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "0f84818b3dccb3c5ab64db74340005c25c4eb94f33dba72e3543cf532c487c5b"
+}

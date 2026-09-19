@@ -1746,8 +1746,17 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     if lotte_general_snack_leaf:
         homeplus_shelf_ids.add(lotte_general_snack_leaf)
     numbered_leaf = reviewed_numbered_leaf(evidence)
+    rejected_path_evidence = None
     if numbered_leaf:
         homeplus_shelf_ids.add(numbered_leaf)
+        from services.initial_numbered_reviews import reviewed_rejected_path
+        rejected=reviewed_rejected_path(evidence)
+        # Exact reviewed context can remove only a retail path candidate that
+        # the existing product-form veto already rejects. Name/URL evidence,
+        # valid contradictions, quantity and promotion checks remain intact.
+        if rejected in path_ids and _suspicion_reason(rejected,evidence) == 'source_title_product_type_conflict':
+            path_ids.discard(rejected)
+            rejected_path_evidence = rejected
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
@@ -1810,6 +1819,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         "proposed_path": None,
         "candidate_category_ids": sorted(all_ids),
         "url_taxonomy_hints": url_hints,
+        "reviewed_rejected_path_category": rejected_path_evidence,
     }
     if len(all_ids) > 1:
         result["classification_reason"] = "conflicting_category_evidence"

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "울세제/홈드라이",
+        "드라이세제"
+      ],
+      "source_title": "LG생활건강 테크 울드라이 리필 1.3L",
+      "raw_record_ids": [
+        "ingestion:75:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:87": "d7ca0677b69f047d7d6bfaf18673da8db8e2957610524ee7323643e7096cc755"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.laundry.liquid",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d98b90233e6daa38298d444c1f50ede096e5f1fbf3891ab5f038d3723058f38a"
+}

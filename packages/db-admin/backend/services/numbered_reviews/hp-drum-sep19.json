@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "친환경/기타 세제",
+        "드럼세탁세제"
+      ],
+      "source_title": "LG생활건강 피지 모락셀라 냄새제거 부스터 코튼향 26개입",
+      "raw_record_ids": [
+        "ingestion:75:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:95": "79d1b13dafc8040e61f342dd30bc322ae2bdd4238fe5217914de0b399356f911"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "냄새제거 부스터를 향기부스터나 일반 세제로 간주하지 않음; 용도별 리프 검토"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "친환경/기타 세제",
+        "드럼세탁세제"
+      ],
+      "source_title": "LG생활건강 피지 모락셀라 냄새제거부스터 26개입",
+      "raw_record_ids": [
+        "ingestion:75:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:96": "bde52f4de9f183804f23bfe2a5602d71ff38ab5899d5abecc2d8a87342b360e2"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "냄새제거 부스터를 향기부스터나 일반 세제로 간주하지 않음; 용도별 리프 검토"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "7444ce52b321d81b1a86da0c07f5b8ebcfe09a5cce9eb6452d68e3959af4061c"
+}

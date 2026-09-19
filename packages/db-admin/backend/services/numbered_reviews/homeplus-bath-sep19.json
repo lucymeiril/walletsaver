@@ -21,8 +21,13 @@
         "ingestion:75:13": "b1d27e159de4482f26cf2695e36548f6c5906fa501afe94bdcd155393715c2e1"
       },
       "number": 1,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.laundry.oxygen_bleach",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -42,8 +47,13 @@
         "ingestion:74:88": "f71e0062c8e4bc06cf28606ed8464447b0557bd063875f075034477e069588c9"
       },
       "number": 2,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.laundry.machine_cleaner",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -63,8 +73,13 @@
         "ingestion:75:26": "f0def42e8f4fc9d751e4cc6dae67df7804b2eea43a58f6acb3b97385b137927b"
       },
       "number": 3,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.general.baking_soda",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -84,8 +99,13 @@
         "ingestion:75:3": "4fd4de1d6c3253b1e5777270d7118acb81b6cb774760e92a59142afe93eec480"
       },
       "number": 4,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.general.citric_acid",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -105,8 +125,13 @@
         "ingestion:75:33": "a960e823b15baef9459baf6b1958b2ea8d6efbca30796d1b9e621b335c237163"
       },
       "number": 5,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.bath.drain",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -124,8 +149,13 @@
         "ingestion:75:83": "1ac5274c99aee8828c9d9a79b5296bf6da4289fe093185d9906def1da6f11d1a"
       },
       "number": 6,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.laundry.oxygen_bleach",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -143,8 +173,13 @@
         "ingestion:75:84": "f1a134bfa23815aae319943e9e469b0a0d7299b57f42c1a8a76e2c164a6943f4"
       },
       "number": 7,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.general.citric_acid",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -162,8 +197,13 @@
         "ingestion:75:86": "2986da7ed51673d33b21e652528144b830602f4497b99526cf672e77330e7483"
       },
       "number": 8,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.general.baking_soda",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     },
     {
       "mart": "homeplus",
@@ -181,10 +221,20 @@
         "ingestion:76:13": "dfb92a4af3a794a8edd8867479e29db888c9f373584b158939df0f2506606ca0"
       },
       "number": 9,
-      "leaf": null,
-      "hold_reason": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      "leaf": "household.cleaning.laundry.machine_cleaner",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.bath.cleaner",
+        "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지.",
+        "previous_hold": "실제 분류기가 원본 욕실세정제와 상품 용도 충돌로 거부; 자동 매칭 규칙 대신 명시 검수 경로 필요"
+      }
     }
   ],
   "contract_references": [],
-  "packet_sha256": "8c50b4db7b5fd7fc3538a3d5da892dc4bdf112ac0c0138d6a703aad212e6a0b1"
+  "packet_sha256": "8c50b4db7b5fd7fc3538a3d5da892dc4bdf112ac0c0138d6a703aad212e6a0b1",
+  "revision": {
+    "previous_sha256": "c95fac9644bb078f3510fa49af27acec2ed5b08fdf52ad13ff0a64fac3831f1d",
+    "baseline": ".debug-artifacts/initial-catalog-20260919-pass106",
+    "reason": "원본 욕실세정제 선반과 달리 상품명에 과탄산소다/세탁조/베이킹소다/구연산/배수관이 명시됨. 기존 제품형태 거부 판단으로 배제된 경로 증거만 제외하며 다른 증거 및 규격 검사는 유지."
+  }
 }

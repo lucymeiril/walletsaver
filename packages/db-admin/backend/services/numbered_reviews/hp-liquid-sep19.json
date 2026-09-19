@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "액체형 세제",
+        "액체 세탁세제"
+      ],
+      "source_title": "LG생활건강 피지디나자임 캡슐세제 26입",
+      "raw_record_ids": [
+        "ingestion:76:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:76:7": "3e23c21bc9f066f24aed7df01f9bf279ed45dd31b81b934a06bf9a5be0c4e6b0"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "액체 세탁세제 경로와 캡슐 형태 충돌; 인증 후 revise-path 대상"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "995d12cb89045924fdaa3678b27ceb5e098e8eeb7098f69093c85ae693a244ac"
+}

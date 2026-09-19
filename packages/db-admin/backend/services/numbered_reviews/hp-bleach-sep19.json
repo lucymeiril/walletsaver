@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "표백제"
+      ],
+      "source_title": "유한양행 유한젠 표백제 기획팩 1.4kg*2입",
+      "raw_record_ids": [
+        "ingestion:26:39",
+        "ingestion:75:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:39": "f9bc72a305f11582740ba392c6ff7a0ab4a696d21487c91d3a1d1fc7208eecce",
+        "ingestion:75:34": "9bbc265a9e4dbec9136f1d288fc8b90b58460e7d040658689d53ac396681cebd"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "브랜드명만으로 표백 성분 추정하지 않고 제품 상세 근거 확인"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "표백제"
+      ],
+      "source_title": "LG생활건강 테크산소크린액체용기 2.4L",
+      "raw_record_ids": [
+        "ingestion:75:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:77": "92dfa8d9ce14f764117a3451d25ae7d939923924f96b3aa30baa969ff17f8e31"
+      },
+      "number": 2,
+      "leaf": "household.cleaning.laundry.oxygen_bleach",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "표백제"
+      ],
+      "source_title": "LG생활건강 테크산소크린분말리필 2.4KG",
+      "raw_record_ids": [
+        "ingestion:75:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:75:78": "a49641186fc8d065df82504afc605c9e8ca08b134d5f5aa7de3fc35c44ccca29"
+      },
+      "number": 3,
+      "leaf": "household.cleaning.laundry.oxygen_bleach",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d2201917142039834a7abe9ac70895ab3d9bbeb47763e0507fd168036bed3728"
+}

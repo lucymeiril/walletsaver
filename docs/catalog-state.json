@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260919-pass106",
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass108",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6908,
-  "unresolved": 2288,
-  "next_task": "shelves로 다음 생활용품 묶음 선택. 46종 검토해7상품8관측 추가; 원본 경로 충돌12종은 별도 명시 검수 경로 필요. 체크포인트 반복/메모 갱신 실사용 검증 완료. 팽이버섯 분류-적재 불일치와 pass96 단호박 실제 사유 후속 확인 유지.",
+  "included": 6932,
+  "unresolved": 2264,
+  "next_task": "pass107/108 합계18상품24관측 추가. hp-liquid-sep19 캡슐1종 revise-path 후 다음 생활용품 묶음과 함께 인증. 변기세정제2관측 runtime miss는 promotion_unresolved 확인. 팽이버섯 분류-적재 불일치와 pass96 단호박 원인 확인 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

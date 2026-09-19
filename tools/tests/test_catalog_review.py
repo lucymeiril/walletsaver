@@ -7,6 +7,18 @@ sys.path[:0]=[str(Path(__file__).resolve().parents[2]/p) for p in ('packages/sha
 import catalog_review as review
 
 
+def test_path_revision_requires_current_certified_hash(tmp_path,monkeypatch):
+    baseline=tmp_path/'baseline';baseline.mkdir()
+    monkeypatch.setattr(review,'preflight',lambda root:({},None,baseline,None,None))
+    path=review.named(tmp_path,'sample',review.REVIEWS)
+    review.write_new(path,{'rows':[]})
+    review.write_new(baseline/'checks-passed.json',{'code_sha256':{}})
+    with pytest.raises(ValueError,match='Rule file changed'):
+        review.revise_path('sample','wrong','leaf','reason',[],tmp_path)
+    with pytest.raises(ValueError,match='currently certified'):
+        review.revise_path('sample',review.sha(path),'leaf','reason',[],tmp_path)
+
+
 def test_shelves_count_titles_exclude_reviewed_and_filter():
     def row(rid,title='same',mart='emart',leaf=None):
         return dict(raw_record_id=rid,source_title=title,mart=mart,source_path='생활용품',unified_category_id=leaf)

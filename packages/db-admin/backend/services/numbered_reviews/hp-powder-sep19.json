@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass107",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁세제/섬유유연제",
+        "분말형 세제",
+        "고농축분말세제"
+      ],
+      "source_title": "LG생활건강 테크 분말세제 일반드럼겸용 리필 4KG",
+      "raw_record_ids": [
+        "ingestion:26:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:34": "186de6f7e92cab2b54a084462e7203a8e71d5c0676b936bbacb8cb1003ed4df8"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.laundry.powder",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ee0208444837378218b05981c3ac6b6e78b9d72c7cb54055b96cf705652dca47"
+}

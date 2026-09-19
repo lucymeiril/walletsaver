@@ -19,8 +19,13 @@
         "ingestion:76:10": "6e842398a753cfb8b7efbe664137f14febd8947ec4300c20742e1bfb2ed197c1"
       },
       "number": 1,
-      "leaf": null,
-      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.laundry.softener",
+        "reason": "상품명에 편백탈취제 명시. 기존 제형 검사가 부정한 섬유유연제 경로 후보만 제외; 이름 URL 기타 유효 충돌은 유지.",
+        "previous_hold": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      }
     },
     {
       "mart": "homeplus",
@@ -38,8 +43,13 @@
         "ingestion:76:11": "01ef2221532276acbfc7962544cda357072a367f8ad8fcdd6db6a0401ee483dd"
       },
       "number": 2,
-      "leaf": null,
-      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.laundry.softener",
+        "reason": "상품명에 편백탈취제 명시. 기존 제형 검사가 부정한 섬유유연제 경로 후보만 제외; 이름 URL 기타 유효 충돌은 유지.",
+        "previous_hold": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      }
     },
     {
       "mart": "homeplus",
@@ -57,8 +67,13 @@
         "ingestion:76:12": "deaa8895bacf047d20cb122895cc21909765ca5cce6d0058a2f786709809ce88"
       },
       "number": 3,
-      "leaf": null,
-      "hold_reason": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "household.cleaning.laundry.softener",
+        "reason": "상품명에 편백탈취제 명시. 기존 제형 검사가 부정한 섬유유연제 경로 후보만 제외; 이름 URL 기타 유효 충돌은 유지.",
+        "previous_hold": "원본 섬유유연제와 탈취제 용도 충돌; 실제 분류기 거부 유지"
+      }
     }
   ],
   "contract_references": [
@@ -70,5 +85,10 @@
       "line": 879
     }
   ],
-  "packet_sha256": "2bc727f334d75118b7c93860b478e7967fd710beb2a0fa9ccdaf5bb33aa89f26"
+  "packet_sha256": "2bc727f334d75118b7c93860b478e7967fd710beb2a0fa9ccdaf5bb33aa89f26",
+  "revision": {
+    "previous_sha256": "b141a61ac71e3aa64dab611979f315bcdca1b6e66c3be85da91d5a7ab81dd7c9",
+    "baseline": ".debug-artifacts/initial-catalog-20260919-pass106",
+    "reason": "상품명에 편백탈취제 명시. 기존 제형 검사가 부정한 섬유유연제 경로 후보만 제외; 이름 URL 기타 유효 충돌은 유지."
+  }
 }
