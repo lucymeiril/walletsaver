@@ -1,0 +1,589 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass116",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "쌍계 애플사이다비니거 드링크 레몬 5g x 40입",
+      "raw_record_ids": [
+        "ingestion:41:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:99": "9a6ea9783d7b1ff875617e28e4d9997676974488d2a47fb220bcc333fe2ae4ea"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: apple cider vinegar drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "얼티브 프로틴 드링크 250ml x 18",
+      "raw_record_ids": [
+        "ingestion:42:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:0": "2f95de5c275925f417051298d9b9ffd1f044612826e383e746e5c6ed8713d5aa"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: protein drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "쌍계 애플사이다비니거 드링크 사과 5g x 40ct",
+      "raw_record_ids": [
+        "ingestion:42:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:4": "caf10aefa1bf549dde599e7b80562156c4862f513a40b9579f4648939e156eb9"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: apple cider vinegar drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "프리미어 단백질 드링크 325ml x 12팩",
+      "raw_record_ids": [
+        "ingestion:42:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:5": "7a8effc6c03fe8bd6d3d9e92732f52edb4c1d990f440dc015ca168468a72be7d"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: protein drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "탐스제로사과/파인애플 355ml x 24캔",
+      "raw_record_ids": [
+        "ingestion:42:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:6": "b8007814b62021f309b64a2a62149dec17e622f5c3c9f0d0297c1e425d7d060e"
+      },
+      "number": 5,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "칠성사이다250ml x 30 + 밀키스 250ml x 30 콤보팩",
+      "raw_record_ids": [
+        "ingestion:42:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:14": "b56fa676f89e1e1e1de057c7baae0a3f898693345baee292c9447d0a6f346a4c"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed beverage combo pack"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "칠성사이다 250ml x 30 + 펩시콜라 250ml x 30 콤보팩",
+      "raw_record_ids": [
+        "ingestion:42:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:15": "a59591051585e8bf7cdc3c2d24771a5e4004554cb22e064202ab753284168b8a"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed beverage combo pack"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "워터멜론 500ml x 24",
+      "raw_record_ids": [
+        "ingestion:42:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:22": "cb462600a24f7097c8345fcf75b079cf415fb46972dc1d8e1ea410da17938986"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: unspecified flavored beverage"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "뉴케어 당플랜 플러스 200ml X 24개입",
+      "raw_record_ids": [
+        "ingestion:42:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:23": "1dbf8facc485aeb3910e6a9895701179fb5345c3208070ff44988e632c07e97b"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: nutritional health drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "뉴케어 구수한맛 플러스 200ml x 24개입",
+      "raw_record_ids": [
+        "ingestion:42:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:24": "1178f06b3353e9671caddef9301d0441c514b772b80998898cae496518603cf8"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: nutritional health drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "뉴케어 검은깨 플러스 200ml x 24개입",
+      "raw_record_ids": [
+        "ingestion:42:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:25": "c05a18d01ad87bc82cdbd507ce18bf6574715b6114de14a76c303f266fdb62c6"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "new leaf: nutritional health drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "탐스쥬시오렌지/포도 355ml x 24캔",
+      "raw_record_ids": [
+        "ingestion:42:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:26": "19bbb75a3bf0269c372058edce8c8e069cb7b7ec0fbe333bda380faa31a00008"
+      },
+      "number": 12,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "랩노쉬 헤이워터 청사과/레몬/납작복숭아 5g x 40포",
+      "raw_record_ids": [
+        "ingestion:42:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:27": "a5a892b870805aaacdd040c9da0610128d1e5ebe25c9c64e3d2eb99592d173e9"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: flavored water drink mix"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "샤인머스켓500ml x 24",
+      "raw_record_ids": [
+        "ingestion:42:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:28": "81c9de8ec571b23b0d31fd19c7f95abcf9cb01711447d44ef6b26ac344ea9b8f"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: unspecified flavored beverage"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "Vonbee６년근 홍삼본 70ml x 30",
+      "raw_record_ids": [
+        "ingestion:42:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:30": "95d6a6de907833887e2304d693bfc5250a7bcdd0954167d3fad00c5b88225bcd"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: ginseng tonic"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "분다버그캔 250ML X 24",
+      "raw_record_ids": [
+        "ingestion:42:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:49": "c8308d0ad1dc748f892d20ae956b9c2ad9939f2207278479b858c6a425b864b8"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "브랜드와 캔 표기만으로 음료 형태 불명"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "나탈리스 레몬 착즙액 1L x 2 + 250ml x 4",
+      "raw_record_ids": [
+        "ingestion:42:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:52": "e9ef57ae11bdc841ffcd727cda64e2c0e6ed0e282d90e9813483108c348d0998"
+      },
+      "number": 17,
+      "leaf": "food.drinks.bases.lemon",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "청정원홍초 레몬&라임900ml x 3 (저당)",
+      "raw_record_ids": [
+        "ingestion:42:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:63": "3679eaee4980c62aba554d8c151f30715bdeabba3510fc004c6e00ff6fc0bb25"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: fruit vinegar drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "스타벅스피지오쿨라임400ml x 6 + 피치딸기 400ml x 6",
+      "raw_record_ids": [
+        "ingestion:42:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:65": "4ae0433056a968ea71ed1a8d3d1f43e28fa5576363fa75c1d15e3d10b1b391b1"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed beverage combo pack"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "Balance Grow 룩얼라이브 진저샷 20g x 30",
+      "raw_record_ids": [
+        "ingestion:42:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:70": "f1aa9efab67e1c00c6aaea4bbb6c9433677010a28f8faf0d8923a943c19f9a64"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: ginger shot"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "Balance Grow 블루베리 퓨레 20g x 40",
+      "raw_record_ids": [
+        "ingestion:42:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:71": "35ccfe0462323209177d25a8511e845367a7b43cc75c8df56c252d2d3316f1b9"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "new leaf: fruit puree"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "베트남 영코코넛 9입(7.5kg내외)",
+      "raw_record_ids": [
+        "ingestion:42:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:74": "a27f9e31793519d4db7d5f8dd0cfc494fdcc01e2b02e49a22722cc0e8a58e7c5"
+      },
+      "number": 22,
+      "leaf": null,
+      "hold_reason": "new leaf: fresh coconut"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "정관장 활기력 20ml x 16병",
+      "raw_record_ids": [
+        "ingestion:42:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:86": "8826309caabcdc3bfdd6fac600a8edaa6efc66502f3a4559354697babb034b30"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "new leaf: ginseng tonic"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "정관장 홍삼 원력 50ml x 30 x5",
+      "raw_record_ids": [
+        "ingestion:42:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:88": "93031e9fcf4f9677aa42d6267c750a289340c9aef7bb31a9d1ee8135088ed3b1"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "new leaf: ginseng tonic"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "정관장 홍삼원력 50ml x 30포",
+      "raw_record_ids": [
+        "ingestion:42:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:89": "4a2239f39747f70600d7c57b77ddd03eaaf388d44a637693fba9ab1416d07054"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "new leaf: ginseng tonic"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "이롬 1일 영양건강식 30g x 21",
+      "raw_record_ids": [
+        "ingestion:42:90"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:90": "ff4e1e564732cfd1f2d071a8034d81aaf7d01f3b0080e9ab1d98bd4899ccf2a2"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "new leaf: nutritional health food"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "자연원 오'클렌즈 원데이 180ml x 5 x 4",
+      "raw_record_ids": [
+        "ingestion:42:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:92": "e3a007cf62f4060c69f2fe867e25fef5db3cc68b15dfd07e9208fb99a0c99723"
+      },
+      "number": 27,
+      "leaf": null,
+      "hold_reason": "new leaf: cleansing drink"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "동원순백에코보리 무라벨",
+      "raw_record_ids": [
+        "ingestion:42:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:94": "8d2596f859b92f5e9ac98183040c4ea4bc2eed2352a77c21044a23bd4bed76e1"
+      },
+      "number": 28,
+      "leaf": "food.drinks.tea.barley",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "본비 유차청 2kg",
+      "raw_record_ids": [
+        "ingestion:42:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:42:97": "641a350b682cad395a3891eb4ed51a2405172a7fac30a8cc3c7e54dc32606478"
+      },
+      "number": 29,
+      "leaf": null,
+      "hold_reason": "유차청 원문 오기 여부 및 과일청차 형태 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "광동 보감쌍화진액 100ml x 18포",
+      "raw_record_ids": [
+        "ingestion:43:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:3": "bd5706665372afb999294658429996d64aa9ffbcda32d533e53407bb7388df4e"
+      },
+      "number": 30,
+      "leaf": null,
+      "hold_reason": "new leaf: herbal tonic"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+      "raw_record_ids": [
+        "ingestion:43:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:12": "f1c78ff8abe28cc9916e4756d1f6dd0c0d22e23c2bdc138cee357dfece989297"
+      },
+      "number": 31,
+      "leaf": null,
+      "hold_reason": "음료가 아닌 앰플 화장품 형태 검토 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "벤딕트 차량용 보냉 컵홀더 2개",
+      "raw_record_ids": [
+        "ingestion:43:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:17": "a1caa391518761fab0e29326d572d53a3a9c1ee679a50959adfbb5e894a0c8fc"
+      },
+      "number": 32,
+      "leaf": null,
+      "hold_reason": "new leaf: vehicle cup holder accessory"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        9,
+        19,
+        23,
+        31,
+        32
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 297
+    },
+    {
+      "numbers": [
+        22
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 953
+    },
+    {
+      "numbers": [
+        31
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 955
+    },
+    {
+      "numbers": [
+        32
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 956
+    },
+    {
+      "numbers": [
+        29
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 957
+    },
+    {
+      "numbers": [
+        25
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 958
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 959
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 960
+    },
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1022
+    }
+  ],
+  "packet_sha256": "71825a48710205b0043105d81bbb1636edd28eefb27f91e2a601270054691aa0"
+}

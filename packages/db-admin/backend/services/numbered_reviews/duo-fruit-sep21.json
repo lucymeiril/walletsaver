@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass116",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "델몬트 망고 로우슈거 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:80",
+        "ingestion:66:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:80": "a8f30785e696de309246b67054b39a7bf75c93ab9e2f039577dea4b0ad5454b8",
+        "ingestion:66:11": "131de68ad92c473a355547109d7cac8d482e1b0af775ae524d17cfb06501efac"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "롯데 델몬트 스테비아토마토 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:92",
+        "ingestion:66:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:92": "55829f7918cf62a2072f61abe3477e49ba1dbfce529fbf2cb4545f55a1dfa2fd",
+        "ingestion:66:12": "3c85d69169c6156eebe6624bbff2262a6b9beb37e17cf77da36c98797450d388"
+      },
+      "number": 2,
+      "leaf": "food.drinks.juice.vegetable_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "모구모구 파인애플맛 320ML",
+      "raw_record_ids": [
+        "ingestion:16:95",
+        "ingestion:66:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:95": "ae84cf1f36bffad18deb32ee3f08ca04e3f6806377dd5908d4c7094a799ea94c",
+        "ingestion:66:41": "dfcd659d42a04c2cb0de28813ebfb17956bf95395dcb426745e13651aafa2cc2"
+      },
+      "number": 3,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "모구모구 리치 320ML",
+      "raw_record_ids": [
+        "ingestion:16:96",
+        "ingestion:66:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:96": "262a86e94116df8d3d4c781ab79c0e39c54543d31f0e68a34fcc70f5953be950",
+        "ingestion:66:22": "2989888b83f05f0f41ba8481ce667b1afc9233df4850e9a927fd8f981540a77d"
+      },
+      "number": 4,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "모구모구 망고 320ML",
+      "raw_record_ids": [
+        "ingestion:17:1",
+        "ingestion:66:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:1": "4e6dba57cb056256d80fe28b42bc57e264fbd8256b2e0bd313318aa3a966112d",
+        "ingestion:66:40": "c81555166dbb384fef4436dfefbcf730d7ec2a101959035ee7e37213732a2657"
+      },
+      "number": 5,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "기타과일"
+      ],
+      "source_title": "모구모구 요거트맛 320ML",
+      "raw_record_ids": [
+        "ingestion:17:6",
+        "ingestion:66:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:6": "49f0ed6f46c9e0ae5b1b729957e48a0dbd0ad10636d06583eec6d401eae74737",
+        "ingestion:66:21": "cf26868aa3553191fb0b6d0b7a4c86e395d80cf69387b16b71c6622ac64eef0c"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: yogurt-flavored beverage"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "96d8c1ab310311134545e7d58a7350f1d987257ab41a90fd5cba7841118f7245"
+}

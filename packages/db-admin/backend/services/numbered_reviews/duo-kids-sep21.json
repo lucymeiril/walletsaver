@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass116",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "팔도 뽀로로 밀크 235ML",
+      "raw_record_ids": [
+        "ingestion:16:83",
+        "ingestion:66:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:83": "97fe5a171a9ed30a33bb6f0db5c6ac63295c4a77d8781802efcfaa043d33571a",
+        "ingestion:66:23": "49a1e50f773fab6287c791159dad20aa876464f8f416f1d153cc6581175ee6eb"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "밀크 표기만으로 흰우유 성분 확인 불가"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "팔도 뽀로로 딸기맛 235ML",
+      "raw_record_ids": [
+        "ingestion:16:84",
+        "ingestion:66:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:84": "439203330f6b7f25fcb193bda906d082cdf16253dacedfac98e8e5b95c732c8e",
+        "ingestion:66:25": "a44fa4b6a7113035570a2333ee41d7d2467dc73b3d33445af8cd255e16cf4870"
+      },
+      "number": 2,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "팔도 뽀로로 사과 235ML",
+      "raw_record_ids": [
+        "ingestion:16:89",
+        "ingestion:66:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:89": "e81577c4fa55bcd4bd5c49e38e6650043c994cea7120f91617345118aa30a232",
+        "ingestion:66:24": "40667a3f7e26f75b83fca74595b259becaca5ecf7599e742ddb3d780e0224cbf"
+      },
+      "number": 3,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "농심 카프리썬 오렌지 200ML*10",
+      "raw_record_ids": [
+        "ingestion:16:99",
+        "ingestion:66:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:99": "35f50c81e102fb4a24135779268f7f525626b749e84d25dfcfea51ea5ff5b036",
+        "ingestion:66:37": "17c70474b442eb5973ce60fcb92dc8ef073c717bfdb8c57a44fa06eb912fd73f"
+      },
+      "number": 4,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "농심 카프리썬 오렌지망고 200ML*10",
+      "raw_record_ids": [
+        "ingestion:17:7",
+        "ingestion:66:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:7": "8050c59b39a9cb3929b2fb3a85be57bd502c8f09fa6c0b53e8377dde7712c322",
+        "ingestion:66:33": "cc5bdddc5212ff86479fdaa8879b131850dfc7bdcafc345caf54bc23f2f1052b"
+      },
+      "number": 5,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "어린이음료"
+      ],
+      "source_title": "마일로 초코 200ML",
+      "raw_record_ids": [
+        "ingestion:17:9",
+        "ingestion:66:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:9": "6a5413b94df39cf646c21b461eda5811cae7b2ef9ecd978c8a4b37110b3d1d60",
+        "ingestion:66:45": "cf597adac7628786e3f9457265dc2da702f9e688d60d86f00f57baf646b82fec"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: chocolate malt beverage"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c09a90827a668c25123d2049a241b39463360c6f684f5111087a152829469d93"
+}
