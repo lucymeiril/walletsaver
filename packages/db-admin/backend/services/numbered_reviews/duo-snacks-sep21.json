@@ -1,0 +1,543 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass123",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "LOTTE 빼빼로 모음 644g / 15팩",
+      "raw_record_ids": [
+        "ingestion:40:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:66": "501a61923d3e9ba9949c6517178c2a90ae1e65bacd57e84a6c4f5f8ca0019d42"
+      },
+      "number": 1,
+      "leaf": "food.snacks.baked.biscuits",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "오리온 스낵 모음 780g / 26개입",
+      "raw_record_ids": [
+        "ingestion:40:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:67": "7839a049fc9363542335727f8ea2900f6ee21c74c93c4d07266819bd5f07ead7"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed snack assortment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "농심스낵모음 1,080g / 36개입",
+      "raw_record_ids": [
+        "ingestion:40:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:69": "8eb621855dca0081be1c10adcd6a8528f6051acc1585b42303f7925ccc4140c5"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed snack assortment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "덴로쿠스낵믹스1176g (294g x 4)",
+      "raw_record_ids": [
+        "ingestion:40:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:73": "82caab8a1dc7745f9063b451ba4f0aa9ea26f80fda199d7738f2e64d97a8d9ae"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Mama's Choice 바삭한 닭껍질후라이드 200g",
+      "raw_record_ids": [
+        "ingestion:40:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:79": "9ec88db81dd71c4d754c3e2f149271dbe1fb22131d4c3af656c51ef47eaa5cdf"
+      },
+      "number": 5,
+      "leaf": "food.snacks.savory.meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "오리온태양의 맛 썬 420g",
+      "raw_record_ids": [
+        "ingestion:40:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:82": "ecafd8187c84a2de2587b906a75eaf7e1b4d5388afed1d0212c38d5bee1726c9"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "말랑말랑꿀오랑오리지날480g (16g x 10 x 3pk)",
+      "raw_record_ids": [
+        "ingestion:40:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:89": "90749aada7dd5db0edfb8a08c8446eea2f622eb58983bb7a530e4899c278d6e8"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "디아토스타통밀 토스트 레귤러 1,800g",
+      "raw_record_ids": [
+        "ingestion:40:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:92": "411d2da0fda493c0b8c16d3525a72c7a998aca5d50272266ea61a23fa730d4e8"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: toast snack"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "말랑말랑꿀오랑780g (26g x 10 x 3pk)",
+      "raw_record_ids": [
+        "ingestion:40:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:96": "853ce0d9a28bb49af1cb73fdb951829fe2aee26ce4b101a355876f2255217158"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Excycle 바삭칩 믹스 360g x 2pk x 2",
+      "raw_record_ids": [
+        "ingestion:40:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:99": "34a123a3c3dd5cbce015c2165a71cf043c23c3530f8f3a55cd244b7fd08135bd"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "덴로쿠 아지노 코다와리 550g (110g X 5)",
+      "raw_record_ids": [
+        "ingestion:41:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:6": "cc0ececa7af9db7e597e213717a4a0ccc850edc9d8b35fe32f6771f437419116"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "unknown snack form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Arla 하바티 & 고다 스낵치즈 510g x 432ea",
+      "raw_record_ids": [
+        "ingestion:41:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:26": "9d98fb46eba5a2a80eed6e017b6c1ad01b28778aaf990d630bd9be08218bcee5"
+      },
+      "number": 12,
+      "leaf": "food.dairy.cheese.snack",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "닥터넛츠다크초콜릿3종900g / 30g x 30",
+      "raw_record_ids": [
+        "ingestion:41:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:31": "1a9ee7a698c96795a29feb35f6c3f2876f947dbe835b93d3719d101462967dca"
+      },
+      "number": 13,
+      "leaf": "food.snacks.sweets.chocolate",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "상하이 Style 쫀득 황치즈 버터떡빵 40g x 10 x 2",
+      "raw_record_ids": [
+        "ingestion:41:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:36": "78fc7e77ae563e9cf7be27ae82ddd5ca4767d73534e41af6bbd6b2c391f9b2b4"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: rice-cake bread"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "정새우 진짜 새우 3종 720g (60g x 12)",
+      "raw_record_ids": [
+        "ingestion:41:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:46": "e203cfc65981df534cd1c05f442d3486d054d59edb58071606d4ff9f3f517d2f"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "새우 3종의 건조·생물·스낵 형태 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "C-Weed 캔김 세트x 5",
+      "raw_record_ids": [
+        "ingestion:41:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:47": "907c105c1f1f6d12f3f6ba5ee88e86701cb9d4bcafe41c57cde8c7dbd872dd0f"
+      },
+      "number": 16,
+      "leaf": "food.seafood.seaweed.laver",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "C-Weed 캔김 세트",
+      "raw_record_ids": [
+        "ingestion:41:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:48": "5ef1a45e907a4f06c1b22b5115a0a5e34cc5826a4e21c93b3fed440514605329"
+      },
+      "number": 17,
+      "leaf": "food.seafood.seaweed.laver",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트",
+      "raw_record_ids": [
+        "ingestion:41:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:49": "6ae0f23937f3cb095895fb604455bd3afaec21d177e40e39802e8af86457c2ed"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: dessert play set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "해품은김과 김부각 세트 x 5",
+      "raw_record_ids": [
+        "ingestion:41:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:50": "e2e1a2ec926a0cc5ad9ae61c52edef525414994137bcce21978b1ee9013dd247"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed laver products"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "해품은김과 김부각 세트",
+      "raw_record_ids": [
+        "ingestion:41:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:51": "147bec5eeb429e7d47a74370e1161f3cad8e8f2c8c2150cd2d15ea4645014ed1"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed laver products"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "정직하개 애견용 소고기 육포 1kg",
+      "raw_record_ids": [
+        "ingestion:41:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:52": "556ed247536794896392ae3ed135e99ee30236df799b9ac40bec6db00272ca1c"
+      },
+      "number": 21,
+      "leaf": "pet.food.treats.meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Senoble 크렘브륄레 100g x 8",
+      "raw_record_ids": [
+        "ingestion:41:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:53": "7a28d68998ce76d7054e06ec54ab16221ee90b05afd44f966d434e3d7ce55ed3"
+      },
+      "number": 22,
+      "leaf": "food.snacks.sweets.pudding",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Delici 쿠키버터무스 76g x 6",
+      "raw_record_ids": [
+        "ingestion:41:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:54": "b03882cb76d84b3627ec7354196db75e0678979712b3ede0ced45d07aadd74fc"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "new leaf: mousse dessert"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "코어틴 단백질볼 20g x 20pk",
+      "raw_record_ids": [
+        "ingestion:41:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:72": "15623e85d0df2bfbbf44003d6ca8197bfc4d7639aa8ab19cbed8512635334114"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "new leaf: protein ball"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P",
+      "raw_record_ids": [
+        "ingestion:41:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:75": "3d69c4e24b1cb95cc0b499acc7d16f576b45270920ea6f9e0e6db1ec14838aac"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "new leaf: bottle"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "프리미엄 제철과일 선물세트 5.5KG 이상",
+      "raw_record_ids": [
+        "ingestion:41:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:77": "569e73cc00cca1c465bde3b49081d8cdb22581fe3180185c4396d601373b22b1"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "new leaf: fresh fruit assortment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+      "raw_record_ids": [
+        "ingestion:41:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:79": "8c3f7e263e79ff170bf9a42bb9e29a38a09f5e0199ce81e59a9d31a1dacc2e94"
+      },
+      "number": 27,
+      "leaf": null,
+      "hold_reason": "new leaf: fresh fruit assortment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "바로먹는감자 130g X 12ea",
+      "raw_record_ids": [
+        "ingestion:41:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:82": "63d4efb47a8ea76505ab617f2cac0340865310b9370a75854f7f5c7e73ed951b"
+      },
+      "number": 28,
+      "leaf": null,
+      "hold_reason": "new leaf: ready-to-eat potato"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "카스 초음파 야채 과일 세척기 4L",
+      "raw_record_ids": [
+        "ingestion:41:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:85": "97eb721128d1ed5fe7a102db40beca18fb2bda4d581656586e5849100366947f"
+      },
+      "number": 29,
+      "leaf": null,
+      "hold_reason": "new leaf: produce washer"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "블루베리",
+      "raw_record_ids": [
+        "ingestion:41:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:41:88": "2385f781883367d4649aea0cf80e8af0b7cce4eefe1d792483b749f186ac7bf2"
+      },
+      "number": 30,
+      "leaf": "food.produce.fruit.berry",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        21
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_product_forms.py",
+      "line": 66
+    },
+    {
+      "numbers": [
+        1,
+        7,
+        9,
+        18,
+        21,
+        25,
+        26,
+        29
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 242
+    },
+    {
+      "numbers": [
+        21,
+        27
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1061
+    },
+    {
+      "numbers": [
+        25,
+        29
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1062
+    },
+    {
+      "numbers": [
+        12,
+        18
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1063
+    },
+    {
+      "numbers": [
+        20,
+        23
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1065
+    }
+  ],
+  "packet_sha256": "04348d055cb18873be8ea74cf5ecd3b51944df30df04dcd9d15f2c8436f93718"
+}

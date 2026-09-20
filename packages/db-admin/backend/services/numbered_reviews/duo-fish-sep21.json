@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass123",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 생선구이 혼합 6팩",
+      "raw_record_ids": [
+        "ingestion:46:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:33": "dfb66953053da3d371840e8441be651f893fdf2597eda8cf81289eecc6f65420"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed fish"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 고등어구이 60g x 8",
+      "raw_record_ids": [
+        "ingestion:46:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:34": "4669e414d52768432822d788f1374fb92eb3b093cb022c06e2297264323c5a89"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.grilled_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 삼치구이 60g x 6",
+      "raw_record_ids": [
+        "ingestion:46:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:35": "81a39604e103a2ec198ee7137ac93065c1189479086fead8b269c2817d187c61"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.grilled_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "비비고 갈치구이 70g x 5",
+      "raw_record_ids": [
+        "ingestion:46:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:36": "dbba3a77b7c74e7760d2be1f02fa7bbdc5b939a50c856ce985a7508f04536a16"
+      },
+      "number": 4,
+      "leaf": "food.meals.prepared.grilled_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "알래스카손질대구살1kg x 2pack",
+      "raw_record_ids": [
+        "ingestion:46:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:37": "c1d64b7838739661c9dfdc523426a48ed3ba8d250620c94f517e70713926381c"
+      },
+      "number": 5,
+      "leaf": "food.seafood.fish.cod",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+      "raw_record_ids": [
+        "ingestion:46:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:38": "7220ba31ce74ff103393004b86f7e954a75cc35641a0f77a14ffdbeb4ce93d18"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: stew seasoning"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "촉촉한 반건조 열빙어1.2kg X 2pack",
+      "raw_record_ids": [
+        "ingestion:46:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:39": "18bed6c4b42eeff93ebaf16046422cf1fd0472d46c04a290de38b4201d771748"
+      },
+      "number": 7,
+      "leaf": "food.seafood.processed.dried_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "생선뼈 선인장 토분3팩",
+      "raw_record_ids": [
+        "ingestion:46:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:40": "14fde4d30f9c0ec785aa4e4e3445d2e02f972806bd18d87104450b7d53933720"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: flowerpot"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+      "raw_record_ids": [
+        "ingestion:46:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:41": "8fc78a8aa9f8fbc3d57664ebb5741edbf3cf4db74c3c050954670316853c1498"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "unknown pet species"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "삼진해물맛/야채맛모듬어묵1,968g",
+      "raw_record_ids": [
+        "ingestion:46:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:42": "d63a69f3bdb2df660b6d7330609b7e2af104c9315f88bdcda0a49f60ea55de54"
+      },
+      "number": 10,
+      "leaf": "food.seafood.processed.fishcake",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 볶음조림용소멸치1000g",
+      "raw_record_ids": [
+        "ingestion:46:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:43": "1803eb1e0097e94d15a8391d3750147f81a930d7a090945c61355bca03ad43e0"
+      },
+      "number": 11,
+      "leaf": "food.seafood.processed.anchovy",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "려강부추편육 300g x 2 + 순살족발400g",
+      "raw_record_ids": [
+        "ingestion:46:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:44": "f4262be206dfaf3b1fde91964a8de862ea504b2edc552d3187a7845b545b5d57"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared pork"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+      "raw_record_ids": [
+        "ingestion:46:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:45": "8435a27d8789dbe6a9f47de87ae043678107671f49ec336838e949e6f2b9bb78"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "unknown pet species"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+      "raw_record_ids": [
+        "ingestion:46:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:46": "22ff3cbc5094129598397606a8224d0bc3ed62dd8ca21d3b6cea31d2e6b43e7b"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "unknown pet species"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "려강부추편육300g +순살족발400g + 불족발 400g",
+      "raw_record_ids": [
+        "ingestion:46:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:47": "8b51245278123884d4e978b07ae2f4413d58e40430b628f2bcd6e3cc5c34baf5"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared pork"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+      "raw_record_ids": [
+        "ingestion:46:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:48": "dd917855ae9ec14e4c1590a089f7a81679c402119e5bfe90dd10c2d37fcdd98e"
+      },
+      "number": 16,
+      "leaf": "food.seafood.processed.dried_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "Fish Tree 국물용 멸치 1.3kg",
+      "raw_record_ids": [
+        "ingestion:46:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:49": "6992f85a4d797019f15a00e9205dd2b6d5c6869f23ddf0ee28a7071a76807bb2"
+      },
+      "number": 17,
+      "leaf": "food.seafood.processed.anchovy",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "3 컬러 오징어300g / 100g x 3",
+      "raw_record_ids": [
+        "ingestion:46:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:50": "bc2ba7101e3d085429a26f94e766274ab2e6d8c378ff71bf6ebe01483ffba864"
+      },
+      "number": 18,
+      "leaf": "food.seafood.molluscs.squid",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+      "raw_record_ids": [
+        "ingestion:46:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:51": "2d4584b573ad159ea7f0d0d48fc571c06439ab49b142173d0d41d69e2e00ea1a"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "unknown pet species"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+      "raw_record_ids": [
+        "ingestion:46:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:52": "2a6ef2b00a7dac973f4f9f27d88351ab8d99fd5e39f28ed1c5ed6dfe85be5ab5"
+      },
+      "number": 20,
+      "leaf": "food.seafood.seaweed.laver",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "해드림 한우선지해장국 2,260g",
+      "raw_record_ids": [
+        "ingestion:46:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:53": "b30b28f34084afff17eeb7c0872cfd08832a08f7f7220f65d7b903e74ece4158"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "new leaf: soup"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "동원참치회1kg (눈다랑어뱃살)",
+      "raw_record_ids": [
+        "ingestion:46:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:54": "330ae9adec972c460a38a7697bdca3632aeaba1fc6e9750fb1c2c6749c8c4fb7"
+      },
+      "number": 22,
+      "leaf": "food.seafood.fish.tuna",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "바다소리 참멸치 ２호 선물세트",
+      "raw_record_ids": [
+        "ingestion:46:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:55": "c5d9ceb659c3d6c02a95bb31454a99e383de4c694d207eda36ba40a1674eb562"
+      },
+      "number": 23,
+      "leaf": "food.seafood.processed.anchovy",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "생선"
+      ],
+      "source_title": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+      "raw_record_ids": [
+        "ingestion:46:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:56": "f9b8e81fd74ce93698cd0a408aa13e7576f994c0246e206243f46fe75bca10d5"
+      },
+      "number": 24,
+      "leaf": "pet.food.feed.dog",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "aca4b21ab7500a43bdd41f8c38dea2a334ac906e17d2f1f757383cf63060a8c7"
+}

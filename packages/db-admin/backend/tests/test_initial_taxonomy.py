@@ -239,7 +239,7 @@ def test_costco_snack_unusual_forms_require_official_product_url(title,entry):
     assert classify_record(_raw('costco','과자',title,canonical_url=url))['unified_category_id']==leaf
 
 
-@pytest.mark.parametrize('title',['정직하개 애견용 소고기 육포 1kg','산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L','LOTTE 빼빼로 모음 644g / 15팩','프리미엄 제철과일 선물세트 5.5KG 이상','말랑말랑꿀오랑오리지날480g (16g x 10 x 3pk)','말랑말랑꿀오랑780g (26g x 10 x 3pk)'])
+@pytest.mark.parametrize('title',['산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L','프리미엄 제철과일 선물세트 5.5KG 이상','말랑말랑꿀오랑오리지날480g (16g x 10 x 3pk)','말랑말랑꿀오랑780g (26g x 10 x 3pk)'])
 def test_costco_snack_url_audit_does_not_accept_pet_food_kits_or_tools(title):
     assert classify_record(_raw('costco','과자',title))['unified_category_id'] is None
 
@@ -1051,6 +1051,9 @@ def test_adjacent_bottle_count_waits_until_package_parser_supports_it():
     ("Dole 복숭아 과일컵 113g x 16", "food.produce.processed_fruit.cup"),
     ("100% 순수사과 동결건조 과일 30g x 10", "food.produce.processed_fruit.dried"),
     ("카프리썬 오렌지망고 주스 200ml x 20", "food.drinks.juice.fruit"),
+    ("LOTTE 빼빼로 모음 644g / 15팩", "food.snacks.baked.biscuits"),
+    ("정직하개 애견용 소고기 육포 1kg", "pet.food.treats.meat"),
+    ("Arla 하바티 & 고다 스낵치즈 510g x 432ea", "food.dairy.cheese.snack"),
 ])
 def test_audited_costco_snack_shelf_uses_explicit_product_form(title, leaf):
     result = classify_record(_raw("costco", "과자", title))
@@ -1058,9 +1061,9 @@ def test_audited_costco_snack_shelf_uses_explicit_product_form(title, leaf):
 
 
 @pytest.mark.parametrize("title", [
-    "정직하개 애견용 소고기 육포 1kg", "프리미엄 제철과일 선물세트 총 3.4kg이상",
+    "프리미엄 제철과일 선물세트 총 3.4kg이상",
     "락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P", "카스 초음파 야채 과일 세척기 4L",
-    "산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트", "Arla 하바티 & 고다 스낵치즈 510g x 432ea",
+    "산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트",
     "Snapik 화이트 마시멜로우 1kg x 176",
     "Delici 쿠키버터무스 76g x 6", "해품은김과 김부각 세트",
 ])

@@ -139,6 +139,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("portion", "포션·큐브치즈", "", ""),
         ("cheddar", "체다치즈", "", ""),
         ("spreadable", "스프레더블치즈", "", ""),
+        ("snack", "스낵치즈", "", ""),
     )),
     *_group("food.dairy.cream", ("식품", "유제품", "유크림"), "우유/유제품|유제품|dairy", (
         ("fresh", "생크림", "생크림"),
@@ -229,7 +230,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("mackerel", "고등어", "고등어"), ("salmon", "연어", "연어"), ("pollock", "명태", "명태|동태|생태"),
         ("flounder", "가자미", ""), ("spanish_mackerel", "삼치", ""),
         ("hairtail", "갈치", ""), ("croaker", "조기", ""), ("rockfish", "볼락", ""),
-        ("cod", "대구", ""), ("eel", "장어", ""),
+        ("cod", "대구", ""), ("eel", "장어", ""), ("tuna", "참치", ""),
     )),
     *_group("food.seafood.shellfish", ("식품", "수산물", "갑각·패류"), "수산물/건어물|수산물/건해산물|수산물", (
         ("shrimp", "새우", "냉동새우|새우"), ("crab", "게", "게/꽃게/대게"), ("abalone", "전복", "전복"),
@@ -335,7 +336,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("wheat", "밀가루스낵", "밀가루스낵"), ("popcorn", "팝콘", "팝콘"),
         ("grain", "곡물스낵", ""),
         ("vegetable", "채소스낵", ""), ("seaweed", "해조스낵", ""),
-        ("fruit", "과일칩", ""),
+        ("fruit", "과일칩", ""), ("meat", "육류스낵", ""),
     )),
     *_group("food.snacks.sweets", ("식품", "과자·간식", "단과자"), "과자/시리얼|과자/스낵/간식", (
         ("chocolate", "초콜릿", "바초콜릿|볼초콜릿|초콜릿"), ("jelly", "젤리", "젤리"),
@@ -538,6 +539,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("brush", "청소솔", ""), ("squeegee", "물기제거기", ""),
         ("sponge", "청소스펀지", ""),
     )),
+    *_group("household.cleaning.waste", ("생활용품", "청소·세탁", "폐기물관리"), "", (
+        ("bin", "휴지통", ""),
+    )),
     *_group("household.hygiene.feminine", ("생활용품", "위생용품", "생리용품"), "", (
         ("liner", "팬티라이너", ""), ("overnight", "오버나이트패드", ""),
         ("pants", "입는오버나이트", ""), ("tampon", "탐폰", ""),
@@ -547,6 +551,8 @@ LEAVES: tuple[Leaf, ...] = (
         ("kitchen", "키친타월", "키친타올|키친타월", "키친타월|키친타올"),
         ("facial", "미용티슈", "미용티슈", "미용티슈|각티슈"),
         ("wipes", "물티슈", "물티슈", "물티슈"),
+        ("dry_wipes", "건티슈", "", ""), ("napkin", "테이블냅킨", "", ""),
+        ("compressed", "압축티슈", "", ""),
     )),
     *_group("beauty.personal.shaving", ("뷰티·개인관리", "개인위생", "면도용품"), "뷰티|미용|면도/제모|shaving|shaving-hair-removal|personal-care", (
         ("razor", "면도기", "면도기|razors|mens-razors", "면도기|razor"),
