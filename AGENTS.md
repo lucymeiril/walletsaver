@@ -1,5 +1,8 @@
 # WalletSaver: resume and safety
 
+- Delegation: use the fixed `.codex/agents/catalog_classifier.toml` profile (Sol low) and a job path, not repeated long prompts; see `docs/catalog-agent-launch.md`. Optional exception reviewer only when needed, never a mandatory second pass. Do not claim profile auto-loading or OS isolation without verification.
+- Output economy: no per-batch essays or repeated plans; meaningful updates 1–2 sentences, final at most 5 lines unless a failure needs explanation. Reuse scripts for proposal application/checkpoints. Do not retype generated JSON or reread historical evaluation notes without a concrete need.
+
 - User-approved archive policy (2026-09-20): keep one live certified baseline; after checkpointing use `tools/catalog_archive.py` dry-run then `--apply` to archive old initial-catalog pass folders with verified byte preservation. Do not reuse pass IDs. Read `docs/catalog-retention.md` when compacting or retrieving history. This is separate from classification and never deletes original DBs or unique proposal/hold evidence.
 
 - Read `docs/RESUME_CHECKPOINT.md`, then `docs/catalog-state.json` before catalog work. Do not reconstruct current state from chat history or the largest/latest proposal file.
