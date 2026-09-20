@@ -1,5 +1,7 @@
 # 분류 위탁 운영
 
+현재 방침: 반복 벤치마크 없이 새 묶음을 Luna high→Sol medium으로 처리하고 적재한다(느리면 다음 묶음에서 medium). 2026-09-21 meals15종은 Sol 수정0; 부모가 새 김말이/탕수육 리프2개 추가. 주먹밥/김밥6종은 마트 볶음밥 경로 충돌로 pass118 실패 후 보류: `source_leaf_needs_name_corroboration`이므로 type-conflict 전용 revise-path --draft가 거부됨. 이 안전 계약을 우회하지 않고 나머지9종을 pass119에서 인증한다. 원제안/검수는 duo-meals-sep21 job/report 참조.
+
 ## Luna max → Sol medium 첫 시험 (2026-09-21)
 
 - job `duo-sep21`: 음료 관련44종. Luna 제안16배정/28보류 → Sol2배정 보류수정 → 부모1배정 추가보류 및 화장품 보류설명 수정. 최종13배정/31보류. 분류 판단과 실제 적재 수는 checkpoint를 따른다.

@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass117",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "글로벌밀키트"
+      ],
+      "source_title": "[밀키트] 홈밀 놀부 부대찌개 1042G",
+      "raw_record_ids": [
+        "ingestion:10:34",
+        "ingestion:59:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:34": "cc8a325b27ffa7e13f064a5f4ba45419997134a6e27dbf7484acd747f36b4720",
+        "ingestion:59:52": "42bb73cbc1ae7600d7d2d785df92535665fef5824a55173e457886157d67a599"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.meal_kit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "글로벌밀키트"
+      ],
+      "source_title": "[밀키트] 홈밀 푸짐한 밀푀유나베 1079G",
+      "raw_record_ids": [
+        "ingestion:10:83",
+        "ingestion:60:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:83": "5b3f8b659ed8f135d3d2ce4586b83fc347f4cac205df3ce83a6a374dfec6520b",
+        "ingestion:60:36": "92028dd4f97011676ab67e6aec0f1a60af57e5ed488ec4a46a3958e6cf5c894d"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.meal_kit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "글로벌밀키트"
+      ],
+      "source_title": "[밀키트] 불고기 쉬림프 월남쌈 850G",
+      "raw_record_ids": [
+        "ingestion:12:24",
+        "ingestion:61:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:24": "2e50f4f81675e09593d97b27a1b1463db25ee6b23324fb4c92961215fdf807bd",
+        "ingestion:61:66": "773703ebe15c127a028eda4b77768e32bf7afdbc1f10db2d1e92ce43d864aad8"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.meal_kit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "글로벌밀키트"
+      ],
+      "source_title": "[밀키트] 맛있어서 놀라지 마라탕 774G",
+      "raw_record_ids": [
+        "ingestion:12:27",
+        "ingestion:61:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:27": "a3b26158a15e4b97cf6c8b1d87d311eb9047eea10e456a8bc43d67d00402666e",
+        "ingestion:61:69": "3fe377d913e3d8eb784ece8279904c5563da83456b07e20d1a71bb3ef4d1e2b4"
+      },
+      "number": 4,
+      "leaf": "food.meals.prepared.meal_kit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "글로벌밀키트"
+      ],
+      "source_title": "[밀키트] 감바스 알하이요 602G",
+      "raw_record_ids": [
+        "ingestion:12:31",
+        "ingestion:61:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:31": "7e87f90cc035e30a52db14ca1c531cc37f07cdeec97adf379e79ede5d95e4093",
+        "ingestion:61:73": "d58eb2b329c4eb497432dfe4396b405f438eb8238239f4d6ac01c008bbec3908"
+      },
+      "number": 5,
+      "leaf": "food.meals.prepared.meal_kit",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "e558a85b0b90878311055bb0ebf41926816d3ae19544c7bad79307f2efdf48c5"
+}

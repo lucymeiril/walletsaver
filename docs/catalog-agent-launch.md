@@ -1,5 +1,7 @@
 # 짧은 위탁 호출
 
+현재 운영(2026-09-21): 새 미처리 묶음으로 Luna high → Sol medium을 사용한다. 동일 묶음 반복 벤치마크는 하지 않는다. 지침 수정은 새 작업에서 적용하고 검증된 결과를 적재한다. high도 지나치게 느리면 다음 새 묶음에서 medium을 시험한다. 기존 max 실험은 과거 기록이며 현재 기본값이 아니다.
+
 프로필: `.codex/agents/catalog_classifier.toml` (Sol low). 예외 검토 프로필은 독립 의견이 필요할 때만 호출한다. 매 묶음마다 두 명을 쓰지 않는다. 반영·해시·번호검증·문서 갱신은 기존 스크립트가 담당한다.
 
 분류 작업 JSON: `{"packets":[{"name":"묶음명","path":"입력 JSON 경로","sha256":"입력 해시","output":".debug-artifacts/review-proposals/묶음명.json","leaves":{"리프ID":"이름"}}],"constraints":[]}`.

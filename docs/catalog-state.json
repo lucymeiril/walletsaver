@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260921-pass117",
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass119",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7014,
-  "unresolved": 2182,
-  "next_task": "Luna max→Sol medium 44종시험:Sol2배정수정,부모1배정추가보류/앰플설명수정. 11상품20관측추가/20hit. 전량무감독은 보류; docs/catalog-delegation.md와 catalog-agent-launch.md 참조. 다음 제한묶음 재시험 또는 Sol low 비교. 팽이버섯/단호박 원인·draft 경로 실사용 검토 유지.",
+  "included": 7032,
+  "unresolved": 2164,
+  "next_task": "새15종 Luna high→Sol medium 수정0. 밀키트/튀김9상품18관측추가/18hit. 주먹밥김밥6종은 볶음밥 경로와 충돌 보류; name-corroboration 사유라 revise-path --draft 적용불가(pass118 실패기록 보존). 반복벤치마크 없이 새묶음 적재 우선. 팽이버섯/단호박 후속 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

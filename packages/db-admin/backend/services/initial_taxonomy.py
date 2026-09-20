@@ -298,6 +298,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sushi", "완성초밥", ""), ("kimbap", "김밥", ""), ("salad", "조리샐러드", ""),
         ("grilled_fish", "조리생선구이", ""),
         ("chicken_skewer", "닭꼬치", ""), ("fish_cutlet", "생선까스", ""),
+        ("gimmari", "김말이튀김", ""), ("tangsuyuk", "탕수육", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),

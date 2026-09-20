@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass117",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "돈까스/생선까스/탕수육/김말이/기타",
+        "탕수육/김말이"
+      ],
+      "source_title": "동원 양반 야채바삭 김말이 475G",
+      "raw_record_ids": [
+        "ingestion:9:93",
+        "ingestion:59:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:93": "8bbb668e1034e2438376ca758970d4c97ffb4be445edcfad7a4965b6454bd2dc",
+        "ingestion:59:32": "760357ea297dfdac077685e8624cf564767d38c9bb7217b2681e8d5c0ca88623"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.gimmari",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "돈까스/생선까스/탕수육/김말이/기타",
+        "탕수육/김말이"
+      ],
+      "source_title": "동원 양반 매콤바삭 김말이 475G",
+      "raw_record_ids": [
+        "ingestion:10:1",
+        "ingestion:59:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:1": "7b38102054c5bfbb46f8c20bbc13f65e4691a771a57d4ea28738b00ea4fdb78d",
+        "ingestion:59:79": "bb4cf1a2feff35efa9b39290bb257f9966db43d049986a0b570416143880c78f"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.gimmari",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "돈까스/생선까스/탕수육/김말이/기타",
+        "탕수육/김말이"
+      ],
+      "source_title": "씨제이 고메 흑백요리사 탕수육 390G",
+      "raw_record_ids": [
+        "ingestion:12:38",
+        "ingestion:61:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:38": "34238a4570c2d68b10c8b2feabf50025facfc97b8704a0eb7ffe0a254b1badc7",
+        "ingestion:61:78": "8a601c4168b9e971e421ad51f409861ab82b779832426e9a8e3db90bf610f13d"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.tangsuyuk",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "돈까스/생선까스/탕수육/김말이/기타",
+        "탕수육/김말이"
+      ],
+      "source_title": "simplus 김말이튀김 700G",
+      "raw_record_ids": [
+        "ingestion:12:59",
+        "ingestion:61:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:59": "9b82a89ab4861ae7c4aa1c8ce21a4b0e99be4383e0a5493cde80918571b2914f",
+        "ingestion:61:99": "173dd6ea9f4f19c11002fcd958b0088581b0d4094b4f534f8e8a7bfa1d85febc"
+      },
+      "number": 4,
+      "leaf": "food.meals.prepared.gimmari",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c2aa81978e3e2bab2923606e802655d618b552f0cbda8a1f4aa4eb7ab1985433"
+}
