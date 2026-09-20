@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "빨대/일회용기/기타",
+        "주거잡화"
+      ],
+      "source_title": "simplus 향 1입",
+      "raw_record_ids": [
+        "ingestion:27:40",
+        "ingestion:77:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:40": "b36db36d860a56dbe3c108e354a97e91bddf276c019ff1f91d31c12fc3e9d034",
+        "ingestion:77:9": "c9ae54074bcebdc56c0b91b8c5613337388f67139948b6e6fb8ecfffec86c84d"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "향의 구체 용도와 형태 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "빨대/일회용기/기타",
+        "주거잡화"
+      ],
+      "source_title": "simplus 국물팩(소) 50매입",
+      "raw_record_ids": [
+        "ingestion:27:79",
+        "ingestion:77:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:79": "ef0a4df804025046075d685b35cd6116469a4e0b8e84e4b6cc423cb263bf550f",
+        "ingestion:77:34": "ea4aadf6595e78e82fbac9086c8cc9611f31b507fe41729b3411ae10e35c642a"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.consumables.stock_bag",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "18ca51f3026ef649dc32a49573a49038e6bd31f09eff64d10f850e3df8658e61"
+}

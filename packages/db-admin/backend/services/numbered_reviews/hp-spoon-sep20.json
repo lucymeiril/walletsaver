@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass111",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "국자/집개/주방 소도구",
+        "볶음스푼"
+      ],
+      "source_title": "simplus 올스텐 요리스푼 중",
+      "raw_record_ids": [
+        "ingestion:27:22",
+        "ingestion:77:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:22": "70ded09c20061811947ca7b79a3319ec6d4426918f8897e6cf5fc98b096ec253",
+        "ingestion:77:15": "b9d1e8ec634e69b19a50a1c8292085c3ef303ced2da95c6cf2104eb6f6af6be7"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.stirring_spoon",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "국자/집개/주방 소도구",
+        "볶음스푼"
+      ],
+      "source_title": "simplus 올스텐 요리스푼 소",
+      "raw_record_ids": [
+        "ingestion:27:55",
+        "ingestion:77:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:55": "924003fb55adf3f30ad76e5eb92ad1b81173884a1a0c5f4b245a600adde47859",
+        "ingestion:77:27": "d06c7a638fc71a47a6de949b89fa3e0c9b7dd992a7a5f5f219205d75f5aee6b1"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.utensils.stirring_spoon",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2f73db60e1696818eb3593dc042c8117b2be4dce8fd5af244e1f75dd899e1239"
+}

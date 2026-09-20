@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "백/팩"
+      ],
+      "source_title": "뉴랩 뉴백 17CM*25CM 100매",
+      "raw_record_ids": [
+        "ingestion:27:20",
+        "ingestion:76:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:20": "3374e3c755b576fe225f2f4a8fd1a9fce06d31b8b7daa1ba7e5b660c9273989f",
+        "ingestion:76:79": "57dcd7f380e69789179d77fe46be74ed517cd08670ebf12f613409813ed098db"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "백/팩"
+      ],
+      "source_title": "뉴랩 뉴백 30CM*45CM 100매",
+      "raw_record_ids": [
+        "ingestion:27:23",
+        "ingestion:76:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:23": "9bd7e93918bc182eb77c3a5c0779f8d2188a619f7f4448d80f4cfb0b1c55d3a6",
+        "ingestion:76:78": "d61b9550563bfe60675fc9767f63d708a6df71adf2cf841a1262e58a1996d3ee"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b047bb95865d817bd5661b4790707bbdcc9648a05842a8bd27d51a3c9f60a497"
+}

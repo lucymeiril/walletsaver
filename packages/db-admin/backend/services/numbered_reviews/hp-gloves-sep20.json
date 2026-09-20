@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "위생장갑"
+      ],
+      "source_title": "뉴랩 뉴장갑 100매",
+      "raw_record_ids": [
+        "ingestion:27:19",
+        "ingestion:76:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:19": "7e6c10ad4414f27078605de98114b6fce4b24d3073764b1c3cf302a9d244b7cd",
+        "ingestion:76:86": "805b2542d9c76c93bf653eae0074040b2a832c442ca703190fa9ded10a086bb4"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.gloves.hygiene",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a7dd634b1e1a4096623ed7ff8f62ddf1ebea1ea275dc5844c68e7b920cc7726a"
+}

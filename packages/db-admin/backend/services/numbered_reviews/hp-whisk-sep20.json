@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass111",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "국자/집개/주방 소도구",
+        "거품기"
+      ],
+      "source_title": "simplus 올스텐 미니거품기",
+      "raw_record_ids": [
+        "ingestion:27:54",
+        "ingestion:77:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:54": "fef4ed4eded13a780dff8085159c2706c4f0c358d5a0b7adff2a2fc496be1669",
+        "ingestion:77:26": "e49fcb67ebade4fbae17367cc1d9e3e7a9c60a19d5c9112146589525449efa70"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.whisk",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f5d651747ac0434875c9474ade1d4e077a128389b35635fb6f7cd59fd46c5897"
+}

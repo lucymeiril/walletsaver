@@ -1,5 +1,7 @@
 # WalletSaver: resume and safety
 
+- User-approved archive policy (2026-09-20): keep one live certified baseline; after checkpointing use `tools/catalog_archive.py` dry-run then `--apply` to archive old initial-catalog pass folders with verified byte preservation. Do not reuse pass IDs. Read `docs/catalog-retention.md` when compacting or retrieving history. This is separate from classification and never deletes original DBs or unique proposal/hold evidence.
+
 - Read `docs/RESUME_CHECKPOINT.md`, then `docs/catalog-state.json` before catalog work. Do not reconstruct current state from chat history or the largest/latest proposal file.
 - Catalog rebuilds MUST use `py tools/catalog_harness.py preflight` then `py tools/catalog_harness.py run --run-id <new-name>`. Never pass the operating `.walletsavior/admin.sqlite` to a build/import tool. Never overwrite a previous run. The harness is a workflow guard, not an OS sandbox; do not bypass it.
 - Current priority: finish real initial classification, not polish external AI reports. Reuse existing evidence. Work on one product-form batch; add positive, negative, mixed-package and wrong-context tests before rebuilding. Do not weaken existing conflicts/price/quantity rules to reduce pending counts.

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "빨대/일회용기/기타",
+        "행주/수세미"
+      ],
+      "source_title": "ScrubDaddy 스펀지캐디 1입",
+      "raw_record_ids": [
+        "ingestion:27:77",
+        "ingestion:77:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:77": "40f51bfa87f89c2531ffd9eca829b368353c8f53f92238e74ba8b5ee18118bfe",
+        "ingestion:77:33": "db5c332299c356e1ae764eeb7f6b4fa61c1453661711dded33358b2612e2f695"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "스펀지캐디는 스펀지 보관 부속품; 스펀지 본체로 분류하지 않음"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "7e19b5ff2fa77f69152ef3dbf98541b71edf4b18d6cf0e6c82077a3c930933d1"
+}

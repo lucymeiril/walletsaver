@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "랩"
+      ],
+      "source_title": "뉴랩 뉴커터랩 (중) 20CM*100M",
+      "raw_record_ids": [
+        "ingestion:27:24",
+        "ingestion:76:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:24": "a9f15be5efa7e0392cb8c7c1fbdeda3cfcb472c1c98393711ed15bc19072cd96",
+        "ingestion:76:84": "c06da120476d76c46cbfe78fbd0ed002a0dd638f037e72efad6d4db39b330d76"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.consumables.cling_film",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "랩"
+      ],
+      "source_title": "뉴랩 뉴커터랩 (대) 30CM*100M",
+      "raw_record_ids": [
+        "ingestion:27:31",
+        "ingestion:76:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:31": "9ab164806a5432433551b4cf4c386b3573180bc01d670394fab6fa5d89c5df17",
+        "ingestion:76:94": "fdd780fdd94673fcdcdfd6292ff8dc5f71864702e270c838e7d36a9d30c3c4df"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.consumables.cling_film",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "6308c7c70b431860fe5a3b8eb9dbfbb63627544b4fd568ecf09b83d9ef42ae89"
+}

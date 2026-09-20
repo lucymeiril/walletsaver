@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass111",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "프라이팬"
+      ],
+      "source_title": "로얄블루 인덕션가능 프라이팬 28CM",
+      "raw_record_ids": [
+        "ingestion:27:41",
+        "ingestion:77:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:41": "dc5e3a75a45f0101921ee9854d366abb6bef2ac41b3efe76a480c51ab4e2a5b3",
+        "ingestion:77:4": "f1b9f1ba886e27eef22cf9b1f6e8f6e8ea92afc6a1704211f0899568566a0f58"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.cookware.frying_pan",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "프라이팬"
+      ],
+      "source_title": "simplus 통3중 스텐 프라이팬 30CM",
+      "raw_record_ids": [
+        "ingestion:27:65",
+        "ingestion:77:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:65": "cd265652e754f7f609417d6363160a96dfcf7062869e830987bc0523345ae584",
+        "ingestion:77:10": "aaca2f7bd076418fdbc3b7a590a65cfe60306f25449fac414cd1707eadfbe2a5"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.cookware.frying_pan",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "프라이팬"
+      ],
+      "source_title": "simplus 통3중 스텐 프라이팬 28CM",
+      "raw_record_ids": [
+        "ingestion:27:66",
+        "ingestion:76:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:66": "7af95ea0068f5bf14d31a361646675a334d3af4b1caabafb6ca4c747249fc335",
+        "ingestion:76:81": "cc7906fe16b9c7fc01797deec7a6044c826748a8cc9b1f25b963854bc7ffc0e0"
+      },
+      "number": 3,
+      "leaf": "household.kitchen.cookware.frying_pan",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "164c77fb942d300aa012c93118583c68de6db166e6e0a95b1104177aaae5ec23"
+}

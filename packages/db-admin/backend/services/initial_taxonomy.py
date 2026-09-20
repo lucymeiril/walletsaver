@@ -497,9 +497,17 @@ LEAVES: tuple[Leaf, ...] = (
         ("foil_container", "은박도시락용기", ""), ("foil_plate", "은박접시", ""),
         ("sauce_dish", "일회용소스종지", ""),
         ("cling_film", "식품포장랩", ""), ("aluminum_foil", "알루미늄호일", ""),
+        ("stock_bag", "육수용필터백", ""),
+    )),
+    *_group("household.kitchen.gloves", ("생활용품", "주방용품", "주방장갑"), "", (
+        ("hygiene", "위생장갑", ""),
     )),
     *_group("household.kitchen.utensils", ("생활용품", "주방용품", "조리도구"), "", (
         ("stirring_spoon", "볶음스푼", ""),
+        ("whisk", "거품기", ""), ("ladle", "국자", ""),
+    )),
+    *_group("household.kitchen.cookware", ("생활용품", "주방용품", "조리용기"), "", (
+        ("frying_pan", "프라이팬", ""),
     )),
     *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "세탁/청소|청소/생활용품", (
         ("detergent", "주방세제", "일반 주방세제/퐁퐁|주방세제", "주방세제|주방 세제"),

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260919-pass110",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 30CM*30M(대)",
+      "raw_record_ids": [
+        "ingestion:27:46",
+        "ingestion:77:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:46": "eb3dae4762cd7fa3f0689e36731c29bdebaa1560af0404243074d9091bdd6934",
+        "ingestion:77:3": "ea37d8f290a509505622c22527d5eda9d95835ef25cc54d6a3630594d15cca89"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.consumables.aluminum_foil",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "주방/일회용품",
+        "고무장갑/랩/팩",
+        "호일"
+      ],
+      "source_title": "simplus 쿠킹호일 25CM*30M(중)",
+      "raw_record_ids": [
+        "ingestion:27:47",
+        "ingestion:77:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:47": "e64562482511bb1891e25f3066a0b9896efc307889b05caba3313c302ab79c72",
+        "ingestion:77:13": "79734cc6ec13f1dcc785daf4e40ac9b05cf618bdd3df3094ef14b7e94cf7815f"
+      },
+      "number": 2,
+      "leaf": "household.kitchen.consumables.aluminum_foil",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "745c58f3269cca5953e19b61d50249412a23bbadb1ddaae9cf8082508ab87d2f"
+}
