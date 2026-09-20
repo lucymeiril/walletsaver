@@ -419,6 +419,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("dressing", "샐러드드레싱", "", ""), ("chili", "칠리·핫소스", "", ""),
         ("spring_roll", "월남쌈소스", "", ""), ("cho_gochujang", "초고추장", "", ""),
         ("bibim", "비빔장", "", ""),
+        ("seafood_stir_fry", "해물볶음양념", ""),
+        ("tteok_skewer", "떡꼬치양념", ""),
+        ("balsamic_glaze", "발사믹글레이즈", ""),
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
@@ -482,6 +485,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.seasonings.powders", ("식품", "양념·소스", "분말조미료"), "장류/양념/제빵|양념/오일/분말류", (
         ("curry", "카레가루", ""),  # Reviewed powder products only; instant curry stays separate.
+        ("black_bean", "짜장분말", ""),
     )),
     *_group("household.cleaning.laundry", ("생활용품", "청소·세탁", "세탁용품"), "세탁/청소|청소/생활용품", (
         ("liquid", "액체세탁세제", "액체 세탁세제|액체세탁세제", "액체세탁세제|액체 세탁세제"),

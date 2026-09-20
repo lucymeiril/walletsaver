@@ -31,6 +31,32 @@ CATEGORIES = [
 LEAF = "food.dairy.milk.chocolate"
 
 
+@pytest.mark.parametrize("payload,attrs", [({}, {}), ({"package_quantity": 50, "package_unit": "매입"}, {}), ({}, {"display_unit": "50매"})])
+def test_reviewed_stock_bag_count(payload, attrs):
+    from core.catalog_quantity import uses_reviewed_quantity_rules
+    title = "simplus 국물팩(소) 50매입"
+    package, issues = _package(payload, attrs, title)
+    assert issues == []
+    assert (package["package_quantity"], package["package_unit"], package["bundle_count"]) == (50, "개", 1)
+    assert package["standard_unit"] is None
+    assert uses_reviewed_quantity_rules(title)
+
+
+@pytest.mark.parametrize("bad", [{"package_quantity": 20}, {"package_unit": "ml"}, {"bundle_count": 2}, {"bundle_count": "invalid"}, {"display_unit": "50매+50매"}, {"unit": "100개"}])
+def test_reviewed_stock_bag_does_not_hide_either_layer_conflicts(bad):
+    for payload, attrs in [(bad, {}), ({"package_quantity": 50, "package_unit": "개"}, bad)]:
+        package, issues = _package(payload, attrs, "simplus 국물팩(소) 50매입")
+        assert package is None and issues
+
+
+@pytest.mark.parametrize("title", ["simplus 국물팩(소) 50매입+50매입", "simplus 국물팩(소) 50매입 x2", "simplus 국물팩(소) 50매입 혼합세트", "simplus 국물팩(소)", "정체불명 50매입"])
+def test_stock_bag_repair_is_not_a_generic_quantity_guess(title):
+    from core.catalog_quantity import uses_reviewed_quantity_rules
+    assert not uses_reviewed_quantity_rules(title)
+    package, issues = _package({}, {}, title)
+    assert package is None and issues
+
+
 @pytest.mark.parametrize("title,capacity,count", [
     ("종이컵180ml*50개", 180, 50),
     ("테이크아웃 종이컵 380ml 100개입", 380, 100),

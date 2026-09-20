@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260920-pass113",
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass115",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6968,
-  "unresolved": 2228,
-  "next_task": "pass112 실패 복구/조리도구7종 분류 인증,수량 및 일부 할인 미확인으로 적재증가0. 과거579파일 ZIP2개 보관; 최신 전체사본 하나 유지(catalog-retention.md). 다음 국물팩50매입 수량 해석부터 검토. 팽이버섯/단호박 원인 및 draft 경로검토 실사용 후속 확인.",
+  "included": 6984,
+  "unresolved": 2212,
+  "next_task": "Sol low 좁은리프 위탁14종:7종적재/7종보류,떡꼬치 오배정 수정. pass114~115 총8상품16관측 추가/재수집16hit. docs/catalog-delegation.md 지침으로 후속 위탁; 미반영 coffee/meat/kimchi/eggs는 구packet 재사용금지. 팽이버섯/단호박 원인과 draft 경로 실사용 검토 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

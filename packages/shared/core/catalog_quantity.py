@@ -15,7 +15,7 @@ from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CH
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
-    return (title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or bool(re.search(r'종이컵|다회용투명(?:소주)?컵', title))
+    return (title == "simplus 국물팩(소) 50매입" or title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or bool(re.search(r'종이컵|다회용투명(?:소주)?컵', title))
             or "고무장갑" in title and bool(re.search(r"\d+\s*켤레", title))
             or bool(re.search(r"키친타[월올]|종이타[월올]|위생행주", title))
             and bool(re.search(r"\d+\s*매\s*[x×*]\s*\d+\s*롤", title, re.I)))
@@ -105,6 +105,23 @@ def _sheet_roll_package(payload: Mapping[str, Any], attrs: Mapping[str, Any], ti
 
 def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -> tuple[dict[str, Any] | None, list[str]]:
     title = _text(title)
+    # Exact reviewed count, not a generic interpretation of Korean 매입 or
+    # an assumed singleton. Inspect both layers so conflicting attrs cannot hide.
+    if title == "simplus 국물팩(소) 50매입":
+        for layer in (payload, attrs):
+            for key in ("package_quantity", "pack_qty"):
+                if layer.get(key) not in (None, "") and _number(layer[key]) != 50:
+                    return None, ["unit_reviewed_count_conflict"]
+            for key in ("package_unit", "pack_unit"):
+                if _text(layer.get(key)).casefold() not in {"", "매", "매입", "개", "ea"}:
+                    return None, ["unit_reviewed_count_conflict"]
+            if layer.get("bundle_count") not in (None, "") and _number(layer["bundle_count"]) != 1:
+                return None, ["bundle_count_conflict"]
+            for key in ("display_unit", "unit"):
+                if _text(layer.get(key)) not in {"", title, "50매입", "50매", "50개"}:
+                    return None, ["unit_text_conflict"]
+        return {"package_quantity": 50.0, "package_unit": "개", "bundle_count": 1,
+                "standard_unit": None, "display_unit": title}, []
     if (sheet_roll := _sheet_roll_package(payload, attrs, title)) is not None:
         return sheet_roll
     issues: list[str] = []

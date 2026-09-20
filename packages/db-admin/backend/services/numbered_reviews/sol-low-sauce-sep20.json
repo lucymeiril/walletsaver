@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass114",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "삼양 불닭 소스 200G",
+      "raw_record_ids": [
+        "ingestion:23:64",
+        "ingestion:73:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:64": "6220bb1d256ce217d4c4136eba1a91c13218c414a36437415196ffbcd72f650f",
+        "ingestion:73:27": "2c858b057c06d5148310bb73c5009fc808c457bb097017dff8cd46e2256295c2"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.chili",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "J-LEK 스리라차소스 225ML",
+      "raw_record_ids": [
+        "ingestion:23:67",
+        "ingestion:72:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:67": "a7c46a789ab8e641dd7d858f364a7b8ec99aa025b49579418da4bd26e35a8024",
+        "ingestion:72:84": "95875756b2e9767735af88dfee72e9cd81b5d7f2d6b17e2cb36a5c70601df02f"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.chili",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "피오디 레몬쥬스 200ML",
+      "raw_record_ids": [
+        "ingestion:24:2",
+        "ingestion:73:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:2": "d90ecc53ce8c04d9bdafc3c2ac526b36dd6a5b23f22a139c0a6a329767d50b75",
+        "ingestion:73:45": "0f185d7e8eba3d8716b5a1af77399ed9530666325c6a6de891b013400ebbeffa"
+      },
+      "number": 3,
+      "leaf": "food.drinks.bases.lemon",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "샘표 무교동 오징어 낙지 볶음 양념 130G",
+      "raw_record_ids": [
+        "ingestion:24:92",
+        "ingestion:74:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:92": "67e59d6ab8654085aa9dfec69dd82717c57563789182210c614c3ac11b7f0c45",
+        "ingestion:74:21": "ff32bb2b4a03e577523c0c5374878d63c6bff79c25418312d2c511040c76e22f"
+      },
+      "number": 4,
+      "leaf": "food.seasonings.sauces.seafood_stir_fry",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "샘표 발라먹고 찍어먹는 떡 꼬치 양념 105G",
+      "raw_record_ids": [
+        "ingestion:25:25",
+        "ingestion:74:60"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:25": "3eeec17e309ffaa6607d67e4210732664b1b92026ee3217f58390a55566a78af",
+        "ingestion:74:60": "1ce74a66f96de2ad66c4963f84fbd702f6a9e1daff1a29742fb02ce2ca73dca8"
+      },
+      "number": 5,
+      "leaf": "food.seasonings.sauces.tteok_skewer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소스",
+        "즉석요리소스/장국"
+      ],
+      "source_title": "모니니 아세토발사믹글레이즈 250G",
+      "raw_record_ids": [
+        "ingestion:25:52",
+        "ingestion:74:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:52": "40051bdbd389618a84015f6f7a0c4db415a93c344d74c1a95f871ab76eab8112",
+        "ingestion:74:33": "15b7aed1b9e4a3df3f9d4dfa395ad709919143793b918fb01441a941e94baf00"
+      },
+      "number": 6,
+      "leaf": "food.seasonings.sauces.balsamic_glaze",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "954675072613f1de97a4f5a66d78e72d192cbfe6e5342b4a455926abd53dceaa"
+}

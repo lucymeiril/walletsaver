@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass114",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "오뚜기 카레 순한맛 100G",
+      "raw_record_ids": [
+        "ingestion:20:70",
+        "ingestion:69:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:70": "4a0dc8b92cd1f8031d1f639fc467f76a7d30d58c739c771d11f139bcb1148bce",
+        "ingestion:69:87": "7442bce9279d0aad3885d0c6c0336ec2795fab2b2f7c5c7e11cd6e82db993a85"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "오뚜기 카레 약간매운맛 100G",
+      "raw_record_ids": [
+        "ingestion:21:10",
+        "ingestion:70:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:10": "6555c818f1ba1fa311c4413965deb3340cabfd8cddbfa74243654a775a0e20fb",
+        "ingestion:70:16": "6cf3793c97102885111987dc1dbb9ae636698ce18efa03d54ac9ce165cc371f3"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "대상 청정원 카레여왕 구운 마늘 & 양파 108G",
+      "raw_record_ids": [
+        "ingestion:21:28",
+        "ingestion:70:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:28": "a77f36616ccc8cbbad937e3f26dc641da63a8ffdfa268eefeabcca127bcdc3b8",
+        "ingestion:70:0": "5125f7e3d56ec70a96cac30c0b4b2161c127c6c6b72409d7c8f2205ab5333d85"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "오뚜기 백세카레 매운맛 100G",
+      "raw_record_ids": [
+        "ingestion:21:50",
+        "ingestion:70:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:50": "236be7b145d700ddf6e94c5d0c48f9995ac8892cfb1f04f2d5971f4549bc9e06",
+        "ingestion:70:33": "6c2580d8a4b0b864d8563be9196c18e31faab7c7de46b5366098054c1ddf7129"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "농심 하우스 바몬드카레 중간맛 115G",
+      "raw_record_ids": [
+        "ingestion:21:54",
+        "ingestion:70:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:54": "96959e2674a9d5ee9a0d55de58028cb20d0db9ed2cfd6b2fe5afcd97c854182e",
+        "ingestion:70:27": "43f008808e27afabdec27042416434cbba355b71ac9d0b4f0de114681211c7ef"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "오뚜기 짜장 분말100G",
+      "raw_record_ids": [
+        "ingestion:21:72",
+        "ingestion:70:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:72": "7078b0dee4274ab405c8fe4f55c845dbe9f121b3b9eeb046e22de7cd116540f3",
+        "ingestion:70:26": "bc20ec127b49b2db0e7fc3c134ef83b81ba35ead1f94a0f819c4516a96c95ad4"
+      },
+      "number": 6,
+      "leaf": "food.seasonings.powders.black_bean",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "대상 청정원 카레여왕 치즈&코코넛 108G",
+      "raw_record_ids": [
+        "ingestion:21:90",
+        "ingestion:71:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:90": "665299d57c7230a4cab9733a05ad6ea67b4c68286ef259cfb91c875e2f30aee7",
+        "ingestion:71:62": "c906b44c151181b4e7198dfcc2071dbadd2ed9a8c21479d36b231b7381efc9cf"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "카레/짜장",
+        "카레/짜장/밥양념",
+        "카레/짜장"
+      ],
+      "source_title": "대상 청정원 카레여왕 망고 & 바나나 108G",
+      "raw_record_ids": [
+        "ingestion:22:38",
+        "ingestion:71:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:22:38": "82973e98cc78833deb88a0a725afc5c55c4e59b35509e5e52216c1fffc78498c",
+        "ingestion:71:10": "4a3c86e3382bc6bd8c4f1038d10505554cc5a0bdfa931842b4b6ec2a7318a71e"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "카레 분말 고형 액상 형태 원문 확인 필요"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f188b6450e58807a8d7fe1f1172db3507c8387dbe8b477bbcac1b756cdf4fb65"
+}
