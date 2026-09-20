@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass119",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "상하치즈 유기농 체다치즈 180g x 12",
+      "raw_record_ids": [
+        "ingestion:44:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:47": "d128b748224a2aa72b4a2aa27abd366d17398c9a2ca2b5d85fed35a0cb15ddd8"
+      },
+      "number": 1,
+      "leaf": "food.dairy.cheese.cheddar",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "덴마크 짜지않은 치즈 고칼슘&비타민 252g x 10",
+      "raw_record_ids": [
+        "ingestion:44:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:48": "ee207b8ceb774a81e9b8f98bc6cc8850d74c92fab34d8ba6c7b4adaf29c22db7"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "치즈 형태 확인 필요"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "네추럴코어 애견 치즈 컷트 간식 23g x 10",
+      "raw_record_ids": [
+        "ingestion:44:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:49": "67e0994e1376bb969991ea088aa4657afaa7b62a0c2b1100beb96f01c402dbb3"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치즈 선물세트 A 1,210g",
+      "raw_record_ids": [
+        "ingestion:44:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:52": "0572f2d855df8f194591d326bdafe4171d11a0cfa7d2143ca5d6b279e3d427ce"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed cheese gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "덴마크 구워먹는치즈 500g x 2",
+      "raw_record_ids": [
+        "ingestion:44:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:53": "c1315544ce376298fd91d3a4192fd9a6f2e225e57781184fd929ee410a3017d6"
+      },
+      "number": 5,
+      "leaf": "food.dairy.cheese.grilling",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치즈 & 하몽 선물세트 C",
+      "raw_record_ids": [
+        "ingestion:44:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:54": "45db50e403cd3dad5f467a39730f9f557f14684cfe277b547644150d5c2af2b8"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: cheese and cured meat gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치즈 & 하몽 선물세트 B 1,285g",
+      "raw_record_ids": [
+        "ingestion:44:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:55": "1943f3ca73296fcf4693c52af1641e7bd1170d4b472758914e9c36b2da0a5ec9"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: cheese and cured meat gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치즈 & 하몽선물세트D",
+      "raw_record_ids": [
+        "ingestion:44:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:56": "377dc0697f9db0ec2b483a1545416d2c5012135d02dab09de76450d576e25228"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: cheese and cured meat gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치즈 & 하몽선물세트E",
+      "raw_record_ids": [
+        "ingestion:44:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:57": "3c7c30b8889805d5c92e1e47119bc8460356b937dd0e65a492837d137f1fce2e"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: cheese and cured meat gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "구르메 치즈 & 초리조선물세트 875g",
+      "raw_record_ids": [
+        "ingestion:44:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:58": "4551772f2e6242073fa14a86c235ab655dce46e4d686e108d29b0725556481b9"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: cheese and cured meat gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "프레지덩스프레더블치즈 140g x 6",
+      "raw_record_ids": [
+        "ingestion:44:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:59": "08ce70ebd66bbef8614fcbbe38c9873f4f2f2b5d005f191365369a75c5b2661a"
+      },
+      "number": 11,
+      "leaf": "food.dairy.cheese.spreadable",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "네추럴코어 치즈브림 요구르트 애견용 간식 27g x 10",
+      "raw_record_ids": [
+        "ingestion:44:76"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:76": "aab2d12221fa085c8631cef4db2738a083e0fcf656d02903a533fdd3ff367a9e"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "쿠진아트 듀얼 필러 & 가위 세트",
+      "raw_record_ids": [
+        "ingestion:44:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:88": "e0ab8d386a44bfc32ad33cdbf1e4febf580e3ab377a5088a44f9652747012570"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: kitchen tools"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "쿠진아트 미니 중식도 & 강판 세트",
+      "raw_record_ids": [
+        "ingestion:44:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:89": "88623a257d5b53766d083c9bd52399ee73eba14c15eaa3cc5f59962b6423685c"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: kitchen tools"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "고마워 치즈야 치즈볼 애견 간식 150g x 10봉",
+      "raw_record_ids": [
+        "ingestion:45:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:3": "5d7235cb11dbac83152d11e278909c75bac6839f25628ba82d0107c5e3f10645"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "타카쇼 로즈아치",
+      "raw_record_ids": [
+        "ingestion:45:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:4": "120e078c5aa463d994159ea9adc4f90ea86c75f9ff178be5b7a973ef8fdf59d8"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "new leaf: garden arch"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "치자 2개입",
+      "raw_record_ids": [
+        "ingestion:45:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:5": "ef6d72842605badf5c035fbae79c94de58862902b8308a2adb79800e9f4bf220"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "치자 표기만으로 식물·열매·건재료 등 형태 확인 불가"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "설성목장 닭가슴살 로제 토마토 소스 100g x 8",
+      "raw_record_ids": [
+        "ingestion:45:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:6": "3040bd44f0894ba2d15113d1aa2d86da9e4cf2ec30ab42f21677d2fd658f8d74"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared meat meals"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "하인즈프라이드치킨소스295ml x 3",
+      "raw_record_ids": [
+        "ingestion:45:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:7": "aacd8e98bd23240478ac60f8b17b6ee9b965110e09c07ff0e7ad2caf9012a209"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: savory sauces"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "딩고 애견 치킨껌 2개 x 10봉",
+      "raw_record_ids": [
+        "ingestion:45:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:8": "6784375d9b924894f0eee03142c32a00cd182c5653b86a98e1ee1b044859d117"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "주비푸드 치킨 디핑 소스 100g x 8 /최소구매 2",
+      "raw_record_ids": [
+        "ingestion:45:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:10": "f9fd712ca32dcf036e0dae684b1883bfcbfcb3e2c06d2b320007f6455bee8327"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "new leaf: savory sauces"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "딩고 애견 치킨껌 5개 x 10봉",
+      "raw_record_ids": [
+        "ingestion:45:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:12": "ce27f30f0c65fb55d9a8f826b47bdbef02c74b4967a84cc03cf364b1aa68fc3a"
+      },
+      "number": 22,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+      "raw_record_ids": [
+        "ingestion:45:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:27": "5afdf65350d2a1fb421804164522f6a851594c912851c138201f672038dbfb52"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared meat meals"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "궁 소문난돼지불백 400G x 5 x 2",
+      "raw_record_ids": [
+        "ingestion:45:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:37": "d00857aa806b9577948ad1f17fbb67d71a98f3eb1a6239beea78c5e50828de0a"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared meat meals"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        5,
+        20
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1137
+    },
+    {
+      "numbers": [
+        10,
+        16
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1138
+    },
+    {
+      "numbers": [
+        14,
+        17
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1139
+    }
+  ],
+  "packet_sha256": "705589f013f7f660003e2bd2eefbeae9717e0e49f72d02e7174882f44d99baea"
+}

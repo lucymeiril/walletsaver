@@ -1127,6 +1127,7 @@ def test_audited_costco_noodle_shelf_contaminants_stay_pending(title):
     ("오마뎅 진짜 부산 떡볶이 352g x 5", "food.meals.prepared.tteokbokki"),
     ("천하장사 더블링 콰트로치즈 25g X 40", "food.meat.processed.sausage"),
     ("Scoiattolo 트러플파마지아노라비올리 908g", "food.meals.noodles.ravioli"),
+    ("덴마크 구워먹는치즈 500g x 2", "food.dairy.cheese.grilling"),
 ])
 def test_audited_costco_cheese_shelf_uses_explicit_product_form(title, leaf):
     result = classify_record(_raw("costco", "치즈", title))
@@ -1134,13 +1135,21 @@ def test_audited_costco_cheese_shelf_uses_explicit_product_form(title, leaf):
 
 
 @pytest.mark.parametrize("title", [
-    "딩고 애견 치킨껌 2개 x 10봉", "덴마크 구워먹는치즈 500g x 2",
+    "딩고 애견 치킨껌 2개 x 10봉",
     "구르메 치즈 & 초리조선물세트 875g", "타카쇼 로즈아치",
     "쿠진아트 미니 중식도 & 강판 세트", "치자 2개입",
 ])
 def test_audited_costco_cheese_shelf_ambiguous_and_nonfood_items_stay_pending(title):
     result = classify_record(_raw("costco", "치즈", title))
     assert result["unified_category_id"] is None
+
+
+def test_reviewed_ghee_is_butter_but_mixed_and_wrong_context_stay_pending():
+    title = "ORGANIC VALLEY기버터 368G"
+    assert classify_record(_raw("costco", "우유", title))["unified_category_id"] == "food.dairy.cheese.butter"
+    assert classify_record(_raw("emart", "우유/유제품", title))["unified_category_id"] == "food.dairy.cheese.butter"
+    assert classify_record(_raw("costco", "우유", title + " 쿠키 혼합세트"))["unified_category_id"] is None
+    assert classify_record(_raw("costco", "자동차", title))["unified_category_id"] is None
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
@@ -1256,7 +1265,7 @@ def test_reviewed_costco_dairy_uses_official_context_and_explicit_type(title, se
     "고마워 치즈야 치즈볼 애견간식", "치즈브림요구르트 애견간식",
     "유기농 우유 반려견 간식", "필라델피아 크림치즈 케이크500g",
     "마스카르포네 파스타소스500g", "스키피땅콩버터크리미462g",
-    "ORGANIC VALLEY기버터368G", "인기 치즈/버터 모음전 최대50%행사",
+    "인기 치즈/버터 모음전 최대50%행사",
     "서울우유 카페라떼300ml", "연세우유 바닐라딜라이트300ml",
     "할리스 바닐라딜라이트300ml", "커피포리200ml*4입",
     "목장의 신선함이 살아 있는 저지방1L", "1000ml 나100%",

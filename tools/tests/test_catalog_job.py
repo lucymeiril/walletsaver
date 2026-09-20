@@ -18,7 +18,7 @@ def test_job_copies_packet_hash_and_rejects_overwrite_stale_and_duplicates(tmp_p
     job.main()
     result=job.read(tmp_path/'.debug-artifacts/review-jobs/example.json')
     assert result['packets'][0]['sha256']==job.sha(packet)
-    assert result['packets'][0]['leaves']
+    assert result['leaves'] and 'leaves' not in result['packets'][0]
     with pytest.raises(FileExistsError): job.main()
     monkeypatch.setattr(sys,'argv',argv+['--packet','sample'])
     with pytest.raises(ValueError,match='Duplicate'): job.main()

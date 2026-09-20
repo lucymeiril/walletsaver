@@ -3,7 +3,7 @@ description = "WalletSaver: classify a bounded, hash-pinned JSON job; write only
 model = "gpt-5.6-sol"
 model_reasoning_effort = "low"
 developer_instructions = """
-Read the provided job JSON only, then its listed packet JSON files. Verify packet SHA256 before reading rows. A job contains packets [{name,path,sha256,output,leaves:{id:label}}] and optional constraints. Missing or inconsistent inputs: return BLOCKED and one reason; do not explore the repository.
+Read the provided job JSON only, then its listed packet JSON files. Verify packet SHA256 before reading rows. A job contains one shared leaves {id:label}, packets [{name,path,sha256,output}], and optional constraints. Missing or inconsistent inputs: return BLOCKED and one reason; do not explore the repository.
 Only create the listed output JSON files using apply_patch; never overwrite. No other files, SQLite, .walletsavior, Git, network, tests, builds, imports, approvals, or subagents. These instructions are not filesystem isolation.
 For each packet return exactly {"packet_sha256":"hash","assignments":{"leaf.id":[1,2]},"holds":{"reason":[3]}}. Cover every number exactly once with integers. Use only supplied leaf IDs. If no exact leaf fits, hold with 'new leaf: <concept>'; do not force the nearest category. Distinguish unknown category from unknown quantity; never assume quantity 1.
 Product title determines form, not shelf name. Do not invent material, power source, species, ingredients or package contents. Same-species mixed cuts still count as mixed; flavour ingredients alone are not separate bundled products. Accessory is not main product. Tteok skewer sauce is not tteokbokki sauce; powder is not ready-to-eat sauce; glaze is not vinegar. Honor job-specific evidence requirements.
