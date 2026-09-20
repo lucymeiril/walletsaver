@@ -78,7 +78,7 @@ def parse_assignments(specs, holds, total):
     return result
 
 
-def decide(name, packet_sha, specs, holds, root=ROOT):
+def decide(name, packet_sha, specs, holds, root=ROOT, apply=True):
     state, _, baseline, _, _ = preflight(root)
     path = named(root, name, '.debug-artifacts/review-packets')
     require(sha(path) == packet_sha, 'Packet hash changed')
@@ -108,8 +108,43 @@ def decide(name, packet_sha, specs, holds, root=ROOT):
     for row in rows:
         key = (row['mart'],tuple(row['source_path_parts']),row['source_title'])
         require(key not in existing, 'Previously reviewed context; explicit revision required')
+    require(not destination.exists(), 'Decision file already exists')
+    if not apply:
+        print(json.dumps({'name':name, 'assignments':specs, 'holds':holds, 'decisions':len(rows), 'applied':False}, ensure_ascii=False))
+        return
     write_new(destination, document)
     print(f'Created {destination.relative_to(root)}; decisions={len(rows)}; not DB-certified')
+
+
+def proposal_specs(document):
+    require(isinstance(document, dict) and set(document)=={'packet_sha256','assignments','holds'}, 'Invalid proposal fields')
+    require(isinstance(document['packet_sha256'],str) and bool(re.fullmatch('[0-9a-f]{64}',document['packet_sha256'])), 'Invalid packet hash')
+    output=[]
+    for field in ('assignments','holds'):
+        groups=document[field]
+        require(isinstance(groups,dict), 'Expected numbered groups')
+        specs=[]
+        for label,numbers in groups.items():
+            require(isinstance(label,str) and bool(label.strip()) and '=' not in label, 'Invalid group label')
+            require(isinstance(numbers,list) and bool(numbers) and all(type(n) is int for n in numbers), 'Expected integer numbers')
+            specs.append(label+'='+','.join(map(str,numbers)))
+        output.append(specs)
+    return output
+
+
+def proposal(name, proposal_sha, apply=False, root=ROOT):
+    path=named(root,name,'.debug-artifacts/review-proposals')
+    data=path.read_bytes()
+    require(hashlib.sha256(data).hexdigest()==proposal_sha, 'Proposal hash changed')
+    def unique(pairs):
+        result={}
+        for key,value in pairs:
+            require(key not in result, 'Duplicate JSON key')
+            result[key]=value
+        return result
+    document=json.loads(data,object_pairs_hook=unique)
+    specs,holds=proposal_specs(document)
+    decide(name,document['packet_sha256'],specs,holds,root,apply=apply)
 
 
 def main():
@@ -120,6 +155,7 @@ def main():
     p.add_argument('--draft',action='store_true')
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
+    p = sub.add_parser('proposal'); p.add_argument('name'); p.add_argument('--proposal-sha',required=True); p.add_argument('--apply',action='store_true')
     p = sub.add_parser('checkpoint'); p.add_argument('run_id'); p.add_argument('--next',required=True)
     p = sub.add_parser('hold-draft'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--numbers',required=True); p.add_argument('--reason',required=True)
     p = sub.add_parser('report'); p.add_argument('name'); p.add_argument('--numbers'); p.add_argument('--limit',type=int,default=20)
@@ -128,6 +164,7 @@ def main():
     elif args.action == 'revise-path': revise_path(args.name,args.rule_sha,args.reject,args.reason,args.set,draft=args.draft)
     elif args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
+    elif args.action == 'proposal': proposal(args.name,args.proposal_sha,args.apply)
     elif args.action == 'hold-draft': hold_draft(args.name,args.rule_sha,args.numbers,args.reason)
     elif args.action == 'report': report(args.name,args.numbers,args.limit)
     else: checkpoint(args.run_id,args.next)

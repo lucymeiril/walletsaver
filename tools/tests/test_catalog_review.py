@@ -7,6 +7,28 @@ sys.path[:0]=[str(Path(__file__).resolve().parents[2]/p) for p in ('packages/sha
 import catalog_review as review
 
 
+def test_proposal_hash_dry_run_apply_and_duplicate_keys(tmp_path,monkeypatch):
+    path=review.named(tmp_path,'sample','.debug-artifacts/review-proposals')
+    review.write_new(path,{'packet_sha256':'a'*64,'assignments':{'leaf':[1]},'holds':{'unclear':[2]}})
+    calls=[]
+    monkeypatch.setattr(review,'decide',lambda *args,**kwargs:calls.append((args,kwargs)))
+    with pytest.raises(ValueError,match='hash changed'): review.proposal('sample','bad',root=tmp_path)
+    assert not calls
+    review.proposal('sample',review.sha(path),root=tmp_path)
+    assert calls[-1][0][2:4]==(['leaf=1'],['unclear=2'])
+    assert calls[-1][1]['apply'] is False
+    review.proposal('sample',review.sha(path),True,tmp_path)
+    assert calls[-1][1]['apply'] is True
+    path.write_text('{"assignments":{},"assignments":{}}',encoding='utf-8')
+    with pytest.raises(ValueError,match='Duplicate JSON key'): review.proposal('sample',review.sha(path),root=tmp_path)
+
+
+@pytest.mark.parametrize('groups',[{'leaf':[True]},{'leaf':['1']},{'leaf':[]},{'bad=label':[1]},[]])
+def test_proposal_rejects_coercible_or_ambiguous_numbers(groups):
+    with pytest.raises(ValueError):
+        review.proposal_specs({'packet_sha256':'a'*64,'assignments':groups,'holds':{}})
+
+
 def test_draft_revision_requires_explicit_current_baseline_and_cannot_bypass_certified_hash():
     state={'baseline':'current'}
     review.revision_input_allowed(None,'hash',state,state,True)
@@ -106,6 +128,8 @@ def test_prepare_decide_roundtrip_copies_context_and_skips_holds(tmp_path,monkey
     monkeypatch.setattr(review,'preflight',lambda root:(state,None,baseline,None,None))
     review.prepare('sample','emart','과자/간식',tmp_path)
     packet=review.named(tmp_path,'sample','.debug-artifacts/review-packets')
+    review.decide('sample',review.sha(packet),[],['inspect=1'],tmp_path,apply=False)
+    assert not (tmp_path/review.REVIEWS/'sample.json').exists()
     review.decide('sample',review.sha(packet),[],['inspect=1'],tmp_path)
     saved=review.read(tmp_path/review.REVIEWS/'sample.json')['rows'][0]
     assert saved['source_title']==row['source_title'] and saved['raw_record_ids']==['r1']

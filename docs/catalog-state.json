@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260920-pass115",
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass116",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 6984,
-  "unresolved": 2212,
-  "next_task": "Sol low 좁은리프 위탁14종:7종적재/7종보류,떡꼬치 오배정 수정. pass114~115 총8상품16관측 추가/재수집16hit. docs/catalog-delegation.md 지침으로 후속 위탁; 미반영 coffee/meat/kimchi/eggs는 구packet 재사용금지. 팽이버섯/단호박 원인과 draft 경로 실사용 검토 유지.",
+  "included": 6994,
+  "unresolved": 2202,
+  "next_task": "proposal 파일→dry-run→--apply 실사용 통과. Sol 국수6종 무수정채택:5상품10관측 추가/10hit,마라탕면1종보류. 다음 홈플러스 냉동밥/덥밥류와 관련 선반을 묶어 위탁, 한 번 인증. docs/catalog-delegation.md 참고. 팽이버섯/단호박 원인과 draft 경로 실사용 검토 유지.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

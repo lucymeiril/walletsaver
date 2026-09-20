@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260920-pass115",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "씨제이 백설 생칼국수 550G",
+      "raw_record_ids": [
+        "ingestion:10:13",
+        "ingestion:59:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:13": "ce931b4d14769ca0c8712fafc6c10dd76fffabfad6175c104e0b2fff0ba8695b",
+        "ingestion:59:51": "a0c852a2dda0e75ddde7331c34a61c7de037bdd606d5778d70506d522a5fa0a7"
+      },
+      "number": 1,
+      "leaf": "food.meals.noodles.kalguksu",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "씨제이 비비고 들기름 막국수 2인 377G",
+      "raw_record_ids": [
+        "ingestion:10:23",
+        "ingestion:60:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:23": "584b0d13c638ed65ba5a19d806b35fa8bbe3332821e84465443d61ff36b2d5c4",
+        "ingestion:60:47": "75d9caee55fb61886ab4249537ac187808731e117092a80d478134e8171ed972"
+      },
+      "number": 2,
+      "leaf": "food.meals.noodles.makguksu",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "씨제이 베트남 쌀국수 375G",
+      "raw_record_ids": [
+        "ingestion:11:39",
+        "ingestion:60:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:39": "ae62cad23e0fd9dbc1441904321421c251cb1ee738bd2e24cbaf7bf79feae239",
+        "ingestion:60:77": "8ecc44dfeeb7ad28cc044cca93b9a024ac5be016a5ae4aad3216bfaf595e636d"
+      },
+      "number": 3,
+      "leaf": "food.meals.noodles.rice_noodle",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "씨제이 사천 마라탕면 2인분 434G",
+      "raw_record_ids": [
+        "ingestion:11:40",
+        "ingestion:60:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:40": "d26393816cc18a8e4792967e860753247d317aa828d2f60ec0e11d0eee0bcf74",
+        "ingestion:60:78": "4aba1bc787581438b73af223ba4768c15af6df9da53e9beb1a01baae72ff87a1"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "신규 리프 필요: 마라탕면"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "칠갑농산 냉천골 들기름막국수 2인분 440G",
+      "raw_record_ids": [
+        "ingestion:11:98",
+        "ingestion:61:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:98": "a50eb7cb1edcce035de2ef2d6af58f1ae22eccd960836e71f5c281ed4a971494",
+        "ingestion:61:40": "9b06f0aa0f87592e929445a4723e89d981ba59dfd5094331b47ca17405128493"
+      },
+      "number": 5,
+      "leaf": "food.meals.noodles.makguksu",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "간편국수"
+      ],
+      "source_title": "simplus 바지락칼국수 328G",
+      "raw_record_ids": [
+        "ingestion:12:33",
+        "ingestion:61:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:33": "8f73b4d3a2b2f2a5d8e713e474be7ce944e21958e4701dfdef964d330fa331f3",
+        "ingestion:61:75": "e81da01b47aa140e7ebf9a3b1d63b0cd3790b2cf0fd021683e5b3e0780dd7866"
+      },
+      "number": 6,
+      "leaf": "food.meals.noodles.kalguksu",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3b6c6dc4b2f1e0c2636036b3cd8d7d78450ab811f19805074e109c500b529099"
+}
