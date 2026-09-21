@@ -5,3 +5,4 @@
 - 신규 관측 2; 검사 결과·실행 로그는 인증 사본과 catalog-logs 참조.
 - 다음: Continue from pass135 with one bounded unreviewed shelf; prefer Emart household/tool or baby/toy forms, preserving promotion and opaque-title holds.
 - 경로·보호 해시는 catalog-state.json 기준. 과거 보류는 numbered_reviews 및 이력 문서에서 해당 묶음만 검색.
+- 효율 시험 완료: `efficiency-pilot-sep21` 86제목, 제안/manifest/검수 보고서 보존. 규칙·DB 미반영. 검수 수정 13건을 반영하고 누락 리프/추가 근거 해결 후 인증할 것. `docs/catalog-efficiency-pilot.md` 참조.
