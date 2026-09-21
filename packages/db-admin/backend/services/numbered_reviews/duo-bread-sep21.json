@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass127",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 408시간 주종발효 단팥크림빵 115g x 20",
+      "raw_record_ids": [
+        "ingestion:48:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:6": "9a5ab6cda6f6ae02a9f8724c7deac1847d21819fa6f2779e8dc2ab615efb1038"
+      },
+      "number": 1,
+      "leaf": "food.bakery.bread.filled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 단팥빵 85g x 20",
+      "raw_record_ids": [
+        "ingestion:48:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:7": "89a70e080dd9e488686fe4d9bb87fcba857279ec34aa7d8c04937dfd66884cd8"
+      },
+      "number": 2,
+      "leaf": "food.bakery.bread.filled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립보름달 케이크 80g x 20입",
+      "raw_record_ids": [
+        "ingestion:48:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:8": "826140796c5d0806c4bba349dae48c9c8e8329745b325953821ec4536a0d9d53"
+      },
+      "number": 3,
+      "leaf": "food.bakery.dessert.cake",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 옛날 꿀호떡 1120g x 4",
+      "raw_record_ids": [
+        "ingestion:48:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:9": "3acabf1553caaa84365962a37b19b0066ebe49ea537a3708cef3a7d26a289680"
+      },
+      "number": 4,
+      "leaf": "food.bakery.bread.filled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Sennenya 바움쿠헨 50g x 16",
+      "raw_record_ids": [
+        "ingestion:48:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:10": "d1cb2e8d1669acaa91022e697bc77eb9f9bcd60a08055c4449b79203637de976"
+      },
+      "number": 5,
+      "leaf": "food.bakery.dessert.cake",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 미니생크림파운드 360g x 3",
+      "raw_record_ids": [
+        "ingestion:48:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:11": "44aee0a209d90eede0721cd0d272102c0b9e3a992bb690c78292818fa4e2a666"
+      },
+      "number": 6,
+      "leaf": "food.bakery.dessert.cake",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 정통 보름달 88g x 20",
+      "raw_record_ids": [
+        "ingestion:48:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:12": "a10b5c5a8a47c91eebf4faccd71205efed4c947551425b749ddf8bd3378f5fe0"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "product form not explicit in title"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "레꼴뜨 샌드위치 메이커 플래드",
+      "raw_record_ids": [
+        "ingestion:48:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:13": "482f71288e0efcdb86b86f5df07d330a43e217079f42125323a18c2beeab9d83"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: sandwich maker appliance"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Dessertine 초콜릿무스 100g x 6",
+      "raw_record_ids": [
+        "ingestion:48:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:14": "bfc04959bbb855fe8e2906f4980313cdfd8181cbb4bcc538bb8f1449bb7580ea"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: mousse dessert"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "큐원 와플믹스 500g",
+      "raw_record_ids": [
+        "ingestion:48:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:15": "7af6f20686b6661c69644aec47cba7690fd35cdf8ad35a55b2ebf07249c3c6cc"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: waffle mix"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "삼립 408시간 주종발효 카스타드 소보루 130g x 20",
+      "raw_record_ids": [
+        "ingestion:48:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:16": "c86c049fa8a16c4cb4f54a25f1b0302e6dbcbee6e61342384d6d493abc99c190"
+      },
+      "number": 11,
+      "leaf": "food.bakery.bread.filled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "곰표 와플믹스 1kg x 4",
+      "raw_record_ids": [
+        "ingestion:48:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:17": "7308a0231b2902a2559a26df40336d6d20b0818165feb808fa472f948301eab3"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: waffle mix"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "커클랜드 시그니춰 아몬드가루 1.36kg",
+      "raw_record_ids": [
+        "ingestion:48:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:18": "83e82d4dfada36684b0f11142c57546d9c69e143f47eae548e0ed9b8dc928bbc"
+      },
+      "number": 13,
+      "leaf": "food.seasonings.baking.almond_flour",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "빵"
+      ],
+      "source_title": "Dessert Factory Belgian 초콜릿케이크 454g",
+      "raw_record_ids": [
+        "ingestion:48:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:19": "51a981291fb30663a37ae20e2ae5db6d4eebeb2949c4208d2fe0234e39af7a15"
+      },
+      "number": 14,
+      "leaf": "food.bakery.dessert.cake",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "0e41f74aa00086116a77df4e8bba435d141139c11ac4e636774f8ed6b650ab95"
+}

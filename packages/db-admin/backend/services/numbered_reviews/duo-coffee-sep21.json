@@ -1,0 +1,803 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass127",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 354ml x 80개",
+      "raw_record_ids": [
+        "ingestion:43:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:18": "6f89ec0fda2dff32b00eabad7e95e8e72dcf9ea1e47eff1cf153420950a11351"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.consumables.paper_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쏘울핸드 커피 그라인더",
+      "raw_record_ids": [
+        "ingestion:43:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:20": "a764cadf0638192096401d71f22b76a42b2a7de7b6c4571e99cdf869c297c260"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee grinder with unspecified power source"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아소부 뉴 콜드브루 커피메이커",
+      "raw_record_ids": [
+        "ingestion:43:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:22": "9641def7116504af8ce547035d80a1da242ba9bb1a01d3b3710e73079976c59c"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: cold brew coffee maker"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+      "raw_record_ids": [
+        "ingestion:43:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:23": "4306193fb49da4fb2b73d966ca54cd4f53b8777089d8532b13eba840adc0bf5f"
+      },
+      "number": 4,
+      "leaf": "household.kitchen.consumables.paper_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+      "raw_record_ids": [
+        "ingestion:43:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:25": "414bba047ecacf3917876f48f9b88ce5a1264ffdfd60bfac8d0faf8bb05071a0"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "new leaf: electric coffee grinder"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "위즈웰 분리형 커피 그라인더 WSG-9100",
+      "raw_record_ids": [
+        "ingestion:43:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:27": "3549391b353ea86f16626b46204929c622ca47b09fe73e7518e799bbb7d616bc"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee grinder with unspecified power source"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+      "raw_record_ids": [
+        "ingestion:43:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:29": "a4314488ab7a4c08ae5b9e90fffb627659e3ecc5ef89efab6375f729cb98624e"
+      },
+      "number": 7,
+      "leaf": "household.kitchen.consumables.paper_cup",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 V60 크래프트 커피메이커",
+      "raw_record_ids": [
+        "ingestion:43:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:33": "277108b0cf4eabb080f57658df3cd5d206eb2d08d327f422528fe3b95641836e"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: pour-over coffee maker set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+      "raw_record_ids": [
+        "ingestion:43:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:35": "79598648d0ca824d79d186f673dd6b3692e209552e4dcf8278d77581a03330cd"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: capsule coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+      "raw_record_ids": [
+        "ingestion:43:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:36": "0815422ea5538328a07ef9dec82b3eb1c1a81bda8f460c09948c778190dcc408"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: capsule coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+      "raw_record_ids": [
+        "ingestion:43:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:45": "a0b384f34c5a189aea1c47b5ab7c9d5efd8293adb56741573b35d7f0b6f77ec2"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "룰리커피클레버커피드립 세트",
+      "raw_record_ids": [
+        "ingestion:43:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:50": "ea08cedfc1b63ae5dfb4d7a34f9b6138227b334bbf4a8f0f39801ad284895cf8"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "mixed-package review: coffee and brewing equipment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카피탈리 시스템 캡슐커피머신 꼬모 S18",
+      "raw_record_ids": [
+        "ingestion:43:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:65": "c83e846b61168575289646c9808a5b48f011d4060824bb8bb13e0061629ea397"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: capsule coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "이디야 커피 50,000원 상품권 / 최소구매2",
+      "raw_record_ids": [
+        "ingestion:43:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:67": "d921e1ccb8370876e0d8a6f5531ad0885dba04d6b7c8a2e085ba6258409977ff"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: gift card"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "메종오브제 몬즈 카페 에스프레소잔 110ml 8P",
+      "raw_record_ids": [
+        "ingestion:43:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:81": "fdbd2d2480979011ef22c5bcecebec90cc5c054d312cdcdcc84f2b09ff37ed82"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "내셔널 헤리티지 명화커피잔 4인조 8P",
+      "raw_record_ids": [
+        "ingestion:43:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:84": "c181a8fd6a2520b5fbf44742a29061f25392388f12da443a60eb96a5ea32163a"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 V60 세라믹 드리퍼 세트",
+      "raw_record_ids": [
+        "ingestion:43:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:88": "976ac367a7f9a824a3987383aeffb09fcec8fd6f16b57c28ddbe2c1957552e61"
+      },
+      "number": 17,
+      "leaf": "household.kitchen.coffee.dripper",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 V60 드리퍼 어시스트 세트",
+      "raw_record_ids": [
+        "ingestion:43:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:89": "b71fc80cd9e9844b0e3da9f19d7783b3659f9dcedee6763f97eba62f33450c72"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee dripper accessory set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "프리파라 푸어오버 핸드 드립 세트",
+      "raw_record_ids": [
+        "ingestion:43:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:92": "03b98ba0830a9efd6fa897a32ffbb330e5b6f5f8cb0d0f50d76c9387cc3ba47c"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: pour-over coffee maker set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아소부 얼티미트 머그 360ml 2P",
+      "raw_record_ids": [
+        "ingestion:43:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:43:98": "19323e1d3b5ab10fcb9336959f298b38ca519b6d6b76d028dbb181613a3375ab"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "스타벅스 아메리카노 & 드립백커피 선물세트",
+      "raw_record_ids": [
+        "ingestion:44:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:0": "c66bbbd59ffd32a8692b0892eed6a0e3f708e869bebecbf1978b3e3546756033"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "mixed-package review: multiple coffee forms"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "오르조 유기농 보리차세트",
+      "raw_record_ids": [
+        "ingestion:44:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:1": "6fc5e204a11a6a0be447f7616932d79e3889ecfcd49f74dd070b86524982653a"
+      },
+      "number": 22,
+      "leaf": "food.drinks.tea.barley",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "이디야 스페셜 아로마블렌드 헤이즐넛향 400ct x 60",
+      "raw_record_ids": [
+        "ingestion:44:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:3": "efb76ea8a1206a189acd56a5c548110e951c7d392061acb9263ab51357d51824"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee with unknown product form"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "폴바셋 x 오덴세 홈카페 선물세트",
+      "raw_record_ids": [
+        "ingestion:44:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:5": "79476e5ffdbe92a32c2721cd0688356af001f8f3fdeaf6b8a2172d849ab8d507"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "mixed-package review: coffee and brewing equipment"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "프리파라 네스프레소 버츄오 캡슐 홀더",
+      "raw_record_ids": [
+        "ingestion:44:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:6": "3368ebb21328c4234003fa275377f8dbf60a116046a63a6f9baa69d6a58a35e0"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee capsule holder"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "메종오브제 몬즈 플리츠 글라스270+380ml 8P",
+      "raw_record_ids": [
+        "ingestion:44:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:10": "9428acc89370f675551c34f7c870bcc613147b0a529a8faae2fafca4bd782550"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "써모플라스크 보온보냉병 2PK (950ml)",
+      "raw_record_ids": [
+        "ingestion:44:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:16": "f0fb95c909dce01d0b6f5ac637b5ef5333eb74f460a47fba483dc97420b3e5ce"
+      },
+      "number": 27,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아소부 보온/보냉 핸들서버 1L",
+      "raw_record_ids": [
+        "ingestion:44:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:17": "9e60b936b53a21a9b760ddc5bfa92471359a02e6c2f7b9b3fe120d65e5050ddc"
+      },
+      "number": 28,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "블렌텍 토탈 블렌더 2.6L",
+      "raw_record_ids": [
+        "ingestion:44:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:19": "7a0dc2d9613b142e095a17b84b7e47691b4fec936c93f7f5f15ae30a0b9eafb9"
+      },
+      "number": 29,
+      "leaf": null,
+      "hold_reason": "new leaf: blender"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 V60 바리스타 서버 600ml",
+      "raw_record_ids": [
+        "ingestion:44:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:20": "128e64be424314f7861cc72169d981ffa91ac222b4176768a0bebd0f82c4bc4e"
+      },
+      "number": 30,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 세라믹 코팅 보온보냉 포트 600ml 2PK",
+      "raw_record_ids": [
+        "ingestion:44:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:21": "bce54554380a2b4de9bfdc8209909f9f4dc3b527f1fe5cde07b93d6d494a43ed"
+      },
+      "number": 31,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "더리치 90 양면 세라믹 4인 식탁 세트 1400",
+      "raw_record_ids": [
+        "ingestion:44:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:22": "fee30a34d74e8803ca4ef047a99d019b166a5b2baabd4da56d8e743253e09933"
+      },
+      "number": 32,
+      "leaf": null,
+      "hold_reason": "new leaf: dining table set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "더리치 90 양면 세라믹 4인 식탁 세트 1600",
+      "raw_record_ids": [
+        "ingestion:44:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:23": "880bb6d053a1e23ddf13789c9b2e9eb52c12534b75cd0239e1c01eadd8fca5b5"
+      },
+      "number": 33,
+      "leaf": null,
+      "hold_reason": "new leaf: dining table set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "메종오브제 몬즈 더블월 누볼라 유리머그 330ml 4P",
+      "raw_record_ids": [
+        "ingestion:44:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:25": "9c339c836e88d80f93e19d4239fee9c78910b648f1388988d6f0c64626208cfa"
+      },
+      "number": 34,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "라이즈루첸 리프트업 소파테이블",
+      "raw_record_ids": [
+        "ingestion:44:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:28": "ec2a3aad5e94262faa85fd510bcdf0cbb1edd30e322f190f5faf3f3ed53539ce"
+      },
+      "number": 35,
+      "leaf": null,
+      "hold_reason": "new leaf: lift-top table"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "러셀 홉스 글라스 케틀 1.7L",
+      "raw_record_ids": [
+        "ingestion:44:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:31": "b70a5ae2442d24e1f1f39990f34df1e59830de6032b394df830d749c7d68acab"
+      },
+      "number": 36,
+      "leaf": null,
+      "hold_reason": "new leaf: electric kettle"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "콩순이 시리얼 카페",
+      "raw_record_ids": [
+        "ingestion:44:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:34": "51873a79aa06b6d379f65aca7940476c72ee07bed19f3ea7ccfd0191e1e2d332"
+      },
+      "number": 37,
+      "leaf": null,
+      "hold_reason": "new leaf: toy cafe playset"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "네스카페 돌체구스토 캡슐 커피머신 지니오 S 쉐어",
+      "raw_record_ids": [
+        "ingestion:44:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:36": "c9e7257bc3788aaba7637e63f84821ac4a834e1555798396dca274f972923e3a"
+      },
+      "number": 38,
+      "leaf": null,
+      "hold_reason": "new leaf: capsule coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "레벤호프 스테인리스 스틸 주전자 3.5L",
+      "raw_record_ids": [
+        "ingestion:44:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:37": "0f5392aabe74aed0b936af01b30caeb0cafa96a427a8c75a2a0a35d11de5b0ac"
+      },
+      "number": 39,
+      "leaf": null,
+      "hold_reason": "new leaf: stovetop kettle"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 차차큐수 마루 티포트 450ml",
+      "raw_record_ids": [
+        "ingestion:44:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:38": "7aff6cd2627f08aa76d33e840793ae64596bb9768e90b8eaaa4649ef0a22efb5"
+      },
+      "number": 40,
+      "leaf": null,
+      "hold_reason": "new leaf: teapot"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쏘울핸드 핸드드립 케틀1.5L",
+      "raw_record_ids": [
+        "ingestion:44:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:39": "f206a535fc421129e83e600d9c7ba05acf557a71bc4e8433fc2c3e2d5c8b6e1c"
+      },
+      "number": 41,
+      "leaf": null,
+      "hold_reason": "new leaf: pour-over kettle"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "프리파라 네스프레소 전용 캡슐홀더",
+      "raw_record_ids": [
+        "ingestion:44:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:40": "4abcd5a610366a76268b19111f0cd898aad157a114542b9f9441cc1d0dbcc108"
+      },
+      "number": 42,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee capsule holder"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+      "raw_record_ids": [
+        "ingestion:44:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:41": "9fd4b230a3ce4a19779b37fe0b029bd2765250ab3a466ad9638387df578c44f9"
+      },
+      "number": 43,
+      "leaf": null,
+      "hold_reason": "new leaf: automatic coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쓰임 스테이블 커피잔 세트 4인조",
+      "raw_record_ids": [
+        "ingestion:44:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:42": "55a17351dd02b64e3bb40b40e9b4a4043391d37aee893e41677ef7f5694f82fd"
+      },
+      "number": 44,
+      "leaf": null,
+      "hold_reason": "new leaf: drinkware"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+      "raw_record_ids": [
+        "ingestion:44:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:43": "1b98ea55f49a250bf1fa2a5e09785820e6820d6c3ac34e59e234eae996942168"
+      },
+      "number": 45,
+      "leaf": null,
+      "hold_reason": "new leaf: capsule coffee machine"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+      "raw_record_ids": [
+        "ingestion:44:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:44:44": "1bcfdcc0abf9a11a5905f102c40cb5599831888aad40356684bc92ccf69cbd2c"
+      },
+      "number": 46,
+      "leaf": null,
+      "hold_reason": "new leaf: coffee machine cleaning capsule"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        17
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_product_forms.py",
+      "line": 63
+    },
+    {
+      "numbers": [
+        21
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 277
+    },
+    {
+      "numbers": [
+        22
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 278
+    },
+    {
+      "numbers": [
+        24
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 279
+    },
+    {
+      "numbers": [
+        46
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 280
+    },
+    {
+      "numbers": [
+        42
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 908
+    },
+    {
+      "numbers": [
+        2,
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 909
+    },
+    {
+      "numbers": [
+        21
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 921
+    }
+  ],
+  "packet_sha256": "e4b0c309b9e4125e5d636fc48a421a1d12ebe99140aa40db441f96fe11f59636"
+}

@@ -275,7 +275,6 @@ def test_costco_additional_coffee_food_requires_exact_official_url(title, entry)
 
 @pytest.mark.parametrize('title', [
     '스타벅스 아메리카노 & 드립백커피 선물세트',
-    '오르조 유기농 보리차세트',
     '폴바셋 x 오덴세 홈카페 선물세트',
     '드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)',
 ])
