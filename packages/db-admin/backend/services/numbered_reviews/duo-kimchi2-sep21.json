@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass125",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "새미네부엌 김치양념 9개",
+      "raw_record_ids": [
+        "ingestion:48:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:66": "4a3bd3080a015867e837fd79b9068d4fb7b7fe6f948f815166cde02f5673f1a1"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi seasoning"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "아워홈김장김치(중부식) 10kg x1",
+      "raw_record_ids": [
+        "ingestion:48:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:69": "607a1273862e190237f8ed3383344d2b53c6b204ce558bf89378690d886b1930"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: kimjang kimchi"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "아워홈김장김치 (남도식)10kg x1",
+      "raw_record_ids": [
+        "ingestion:48:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:70": "b0a4449166fef7ffb796951579e42781327ad72f9376568519dc85256637227e"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: kimjang kimchi"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가 포기김치1kg x 2열무김치900g x 1혼합팩",
+      "raw_record_ids": [
+        "ingestion:48:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:73": "18ec2cb8c61a1a6c70f97a8820af340d84633106f66e31ad07efef1ab27b3751"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed kimchi varieties"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "농협선장김치5kg x 2",
+      "raw_record_ids": [
+        "ingestion:48:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:75": "557ad96c1d317afee20338ee0d5e3ce3b1f2f3fb82f6a990e1b97a9386cfbb56"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "new leaf: unspecified kimchi"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 오브제 김치톡톡 Fit & Max 324L- 글라스 베이지",
+      "raw_record_ids": [
+        "ingestion:48:76"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:76": "41e66193a5d8905ffdc3d86e5f23182e8b4631ebb2246e0ea05cf23ab0403440"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 오브제 김치톡톡 Fit & Max 480L- 글라스 베이지",
+      "raw_record_ids": [
+        "ingestion:48:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:77": "de5099e3142a9e5cfb77ec0619f65941cec51f110a5fd91deb0c9be2a8edde8b"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가 나박김치 1.2kg + 동치미 1.2kg",
+      "raw_record_ids": [
+        "ingestion:48:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:79": "0bcf11b2465b8aca12afabd628b8bf49aa694dead7aa5686bbe5a133f742010b"
+      },
+      "number": 8,
+      "leaf": "food.preserved.kimchi.water",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가 김치공방 보쌈김치 1kg + 겉절이 1kg",
+      "raw_record_ids": [
+        "ingestion:48:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:80": "35676b8efe0b7ecc743c59e2cd647edaa54d35efda24684aee00b1a1365fc814"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed kimchi varieties"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가 백열무김치 1.2kg & 동치미 1.2kg",
+      "raw_record_ids": [
+        "ingestion:48:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:81": "3c16fa778fdd06b2cee5dbe2a613fea0bdba118d5534543aa516e1b00dfff516"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed kimchi varieties"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "아워홈 갈치김치 800 g x 4",
+      "raw_record_ids": [
+        "ingestion:48:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:83": "d2d2cf9609044c2433a9961150fe4afbadf10595b825f91127cbcfbf624d1f01"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "new leaf: fish kimchi"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 오브제컬렉션 김치톡톡 505L- 메탈크림화이트",
+      "raw_record_ids": [
+        "ingestion:48:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:85": "0a379edcc316fde24e8b96df2c2bbf695b7898291707f72e490e907b958d9261"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "왕애밥상 매운 실비김치 550g X 2",
+      "raw_record_ids": [
+        "ingestion:48:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:86": "6a2ec6824acc2488827659e34d6266e8df35c74610781659d3ee026054b9e905"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: unspecified kimchi"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 오브제 김치톡톡 327L- 메탈 베이지",
+      "raw_record_ids": [
+        "ingestion:48:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:88": "9a888eb55327a69110d1135e2271c0d75fc45ae9707508cdf8627f24ab764a97"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "키친플라워 스테인리스 스틸 저장용기 5.9L 2PK",
+      "raw_record_ids": [
+        "ingestion:48:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:89": "2aa060d3d77812811ac87b1b98dadfbe092a03741dbf0153132a0f0cc1fb603f"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: food storage container"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 메탈베이지",
+      "raw_record_ids": [
+        "ingestion:48:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:91": "b1d43d0c817f1966f4a85f32e6245816a530e0b2d8c6108faa347f57dca49fa4"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 린넨화이트",
+      "raw_record_ids": [
+        "ingestion:48:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:93": "ab131548447ed7e7527982194f3c449ac974a3f08cdcc35ed76bb1e98aab3ad9"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 김치톡톡 217L- 메탈 샤이니퓨어",
+      "raw_record_ids": [
+        "ingestion:48:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:94": "2e4c592b31688c8bfe60ae30714c47d772c038f47cfd53a22d7e943dea55ee19"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "아워홈 갓석박지 1.5kg x 2",
+      "raw_record_ids": [
+        "ingestion:48:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:95": "f60d6322d72b0c6ede4721d6e2bf6ba0e5fb92e0e8eb1722f52219b800d5d238"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: mustard seokbakji"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "청정원 아삭 장아찌 1.6kg (3종 혼합팩)",
+      "raw_record_ids": [
+        "ingestion:48:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:97": "c9bf547c828e387e03acd4fb2a0dd548ef54c51c1a97d27105da3f302574433d"
+      },
+      "number": 20,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가집 포기 배추김치1kg x 2총각김치 850g x 1혼합팩",
+      "raw_record_ids": [
+        "ingestion:48:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:99": "6066349d7cc2bb91bcbf40a9f4c87dcaf1d5f7c9b6585cb880256b557a2a8e9e"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed kimchi varieties"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "종가집 총각김치850g열무김치900g혼합팩",
+      "raw_record_ids": [
+        "ingestion:49:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:0": "f489a54193b3cff4adb0f38f5ce58071700eda6edd45bdf3046aa5660bd6b9e2"
+      },
+      "number": 22,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed kimchi varieties"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "백제 김치볶음밥 누룽지 22g x 36",
+      "raw_record_ids": [
+        "ingestion:49:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:5": "b5647b507a20508fcb252161cd8e5d527f2dc25c6153d573b8905e974dc73e35"
+      },
+      "number": 23,
+      "leaf": "food.meals.rice.nurungji",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션김치톡톡 491L -에센스화이트",
+      "raw_record_ids": [
+        "ingestion:49:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:6": "71c5d10d737ff65f8578b36b8a39cc548383636fe9e40db51ed02e4c996d4e12"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L- 토프아몬드",
+      "raw_record_ids": [
+        "ingestion:49:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:7": "d81c1c80ec10e7d53b4e74de503fa5781763828412e443e09b359a2a39ba699b"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "김치"
+      ],
+      "source_title": "LG 디오스 AI 오브제컬렉션 김치톡톡 491L-에센스화이트",
+      "raw_record_ids": [
+        "ingestion:49:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:49:8": "5d09184406fb03bfabc21999539f6edc7323dba72a18028acb4c1e51d33161e9"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "new leaf: kimchi refrigerator"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        4,
+        5,
+        9,
+        11,
+        17
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 320
+    }
+  ],
+  "packet_sha256": "d643a6285d23137dffe6b6c744868a22c67237679e4f984495a7276add114574"
+}

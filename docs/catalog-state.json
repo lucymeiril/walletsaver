@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260921-pass125",
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass127",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7066,
-  "unresolved": 2130,
-  "next_task": "Luna high→Sol medium 생선과자휴지84종:Sol1배정수정,부모 조리생선3·기존/신규리프 보완. 25상품25관측추가/25hit,미해결2130. pass124 실패기록 보존. 다음 새40~100종 묶음.",
+  "included": 7071,
+  "unresolved": 2125,
+  "next_task": "Prepare the next bounded product-form packet from the certified pass127 baseline; use catalog_job with Luna high classifier and Sol medium reviewer, then certify once.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

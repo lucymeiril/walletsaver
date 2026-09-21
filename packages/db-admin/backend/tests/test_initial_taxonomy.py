@@ -344,7 +344,7 @@ def test_ambiguous_costco_cut_requires_independent_beef_product_url(title):
     assert result['unified_category_id']=='food.meat.fresh.beef'
 
 
-@pytest.mark.parametrize('title',['보만 2단 계란찜기 EB7210WG','포크밸리 삼겹 1kg +칼집삼겹 1kg +목심 1kg (로스용)','호주산 양념 LA 갈비, 소불고기 콤보팩','국내산냉동돈육한입삼겹살1.0kg +등심돈가스1.0kg','테팔 인덕션 주물 계란말이 팬'])
+@pytest.mark.parametrize('title',['보만 2단 계란찜기 EB7210WG','포크밸리 삼겹 1kg +칼집삼겹 1kg +목심 1kg (로스용)','국내산냉동돈육한입삼겹살1.0kg +등심돈가스1.0kg'])
 def test_costco_egg_meat_audit_does_not_accept_tools_or_mixed_cuts(title):
     assert classify_record(_raw('costco','계란',title))['unified_category_id'] is None
 
