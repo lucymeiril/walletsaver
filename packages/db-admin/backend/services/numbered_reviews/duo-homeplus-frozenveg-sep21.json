@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass133",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "편이채소",
+        "냉동간편채소"
+      ],
+      "source_title": "그린피아 만능찌개용 채소믹스 500G",
+      "raw_record_ids": [
+        "ingestion:3:53",
+        "ingestion:52:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:53": "85c23fae88e2ee12b000d8e4e83423353c5604d97edfd7789ea62053c4ec08fa",
+        "ingestion:52:74": "e61d8d3a88762c2b6071d5523cc544a81edfa63a34af5518b6d521a3e1c11c1a"
+      },
+      "number": 1,
+      "leaf": "food.produce.processed_vegetables.frozen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "편이채소",
+        "냉동간편채소"
+      ],
+      "source_title": "한끼채소 찌개용 360G",
+      "raw_record_ids": [
+        "ingestion:3:55",
+        "ingestion:52:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:55": "6ad83491729d7ba9ed06e475d97487a8b40cb0866cfa1acf13368bbca1376b3f",
+        "ingestion:52:78": "5657ff3bc37e49aaa29dbf4a9088827dc23c3af48a54029e14f0c1ae0f110bd1"
+      },
+      "number": 2,
+      "leaf": "food.produce.processed_vegetables.frozen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "편이채소",
+        "냉동간편채소"
+      ],
+      "source_title": "한끼채소 카레짜장용 360G",
+      "raw_record_ids": [
+        "ingestion:3:56",
+        "ingestion:52:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:56": "6802097bf320eef4b45f810d0bf566977ec26db908ea44c1e98e642cf62cf71c",
+        "ingestion:52:79": "4fe22ce5a8b3ac029d2df4a66a19468f9e91d893d968bf8df1293be33cbf1d67"
+      },
+      "number": 3,
+      "leaf": "food.produce.processed_vegetables.frozen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "편이채소",
+        "냉동간편채소"
+      ],
+      "source_title": "한끼채소 볶음밥용 360G",
+      "raw_record_ids": [
+        "ingestion:3:57",
+        "ingestion:52:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:57": "b1437be5a0b2ba19b8f38c0225e791bc76bfa4d103254988de8b2fa10a71c2cb",
+        "ingestion:52:80": "5eb9c5a1d6d7f6eb99ac97567c4426e48f103e07c4de4b5b770b2f0e6504690e"
+      },
+      "number": 4,
+      "leaf": "food.produce.processed_vegetables.frozen",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c90225eaec75caf2b56a55def43e8f2a0258f2cb4ce0697ac7c90739288d7301"
+}

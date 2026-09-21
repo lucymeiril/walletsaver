@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass133",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "간편/냉동수산물",
+        "수산간편식",
+        "소스류"
+      ],
+      "source_title": "홀스래디쉬 소스 210G",
+      "raw_record_ids": [
+        "ingestion:4:78",
+        "ingestion:53:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:78": "149d18f262b4464316f6f17c2f9ca05ff0f38b41cd0069de565936064700c146",
+        "ingestion:53:89": "2abe803cac8243c33e13b33a8ef64011c3be0b97235831cacf562be54a157bb8"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: horseradish sauce"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "간편/냉동수산물",
+        "수산간편식",
+        "소스류"
+      ],
+      "source_title": "초데리소스 260G",
+      "raw_record_ids": [
+        "ingestion:4:93",
+        "ingestion:54:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:93": "28f759304427966839145787293784b11f1080127cd3d3c16f5e522b8fd97273",
+        "ingestion:54:19": "2fac92cc3631672b86347ba0cc275cd6e2f153115409e115462da87262993be3"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: sushi seasoning sauce"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "간편/냉동수산물",
+        "수산간편식",
+        "소스류"
+      ],
+      "source_title": "속초식물회소스 500G(팩)",
+      "raw_record_ids": [
+        "ingestion:5:2",
+        "ingestion:54:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:2": "33b39f8d410dc99701976b3c6d7b44b27d63cf89fec9fca6ced97ae3a8fdbfbc",
+        "ingestion:54:47": "50e26818872995a7624761faae7ce75a1e4cec550d43d38d107face430bd81c6"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: mulhoe sauce"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "간편/냉동수산물",
+        "수산간편식",
+        "소스류"
+      ],
+      "source_title": "케이퍼 & 홀스래디쉬 소스 60G",
+      "raw_record_ids": [
+        "ingestion:5:17",
+        "ingestion:54:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:17": "61fb08f775af7085ea74832db485799220e637e36dd2b84987dc16e4d5881e0a",
+        "ingestion:54:33": "0f52f5380336d0c6c5dbf589c0c6fde1a30964946e2688f9444a6a5a4c62b530"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: caper and horseradish sauce"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 595
+    }
+  ],
+  "packet_sha256": "496655c214923c8f0c26764200f4b5dd6cde55228a7b62f3f5d6f6edba46b64f"
+}

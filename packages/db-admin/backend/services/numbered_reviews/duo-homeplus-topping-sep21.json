@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass133",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "토핑"
+      ],
+      "source_title": "브레드가든 아이싱 칼라 56G",
+      "raw_record_ids": [
+        "ingestion:25:29",
+        "ingestion:74:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:29": "a3132a8a15070bac28f4c2a3040c25778c4d58f97af9d5373efc6a817066586c",
+        "ingestion:74:65": "9b6f7da8034fc5b21b5e821458d64173298e4b61ba2df61ebf2cdfdf95b699dd"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: icing color"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "토핑"
+      ],
+      "source_title": "브레드가든스프링클 레인보우 25G",
+      "raw_record_ids": [
+        "ingestion:25:37",
+        "ingestion:74:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:37": "f9aa147772cce94f16450695f1a209a0667b573f6ced79df45c3c88236601897",
+        "ingestion:74:70": "2bc7d07091c0cf8eeaebc269c81d18d802ca037472748b5447797652c162c62c"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: baking sprinkles"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "토핑"
+      ],
+      "source_title": "브레드가든스프링클 파스텔 미니 하트 25G",
+      "raw_record_ids": [
+        "ingestion:25:38",
+        "ingestion:74:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:38": "549e0f7da318876d0b9a2b01f5485f8a75ae2f6279a0925a792bb47326850efe",
+        "ingestion:74:71": "8980aaf6a16d1aca1a90ee2309ce494ae61e106becb3f76d4cca71b2494bdce0"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: baking sprinkles"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "토핑"
+      ],
+      "source_title": "브레드가든 초코펜 3종 세트 80G",
+      "raw_record_ids": [
+        "ingestion:25:39",
+        "ingestion:74:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:39": "33d392dab78dd2e0dc526194ddf4c1390a6c28262a349d7881885197b5a9260f",
+        "ingestion:74:72": "0f2875db0a56c4f0715bcf696ebc447c9ecfef80da30e6f490a73375503a3c61"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: chocolate decorating pen"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "012cbcbcbc2b0bb328fd8274a8bf5eb96cc84aa99c0cc99f98b27a690df0bce2"
+}

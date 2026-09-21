@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass133",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "유부초밥/김밥재료",
+        "김밥재료"
+      ],
+      "source_title": "한성 김밥준비한번에OK 505G",
+      "raw_record_ids": [
+        "ingestion:13:30",
+        "ingestion:62:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:30": "003a4fe52f62474752526d873215fd4c6c5e503a411809afae93ff121ede5bb4",
+        "ingestion:62:69": "707e6989f06910938b0b228f598e4b13a5f6f8b1767f5d854a27628912644f80"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: gimbap ingredient set"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "유부초밥/김밥재료",
+        "김밥재료"
+      ],
+      "source_title": "한성 프리미엄 김밥 세트 440G",
+      "raw_record_ids": [
+        "ingestion:13:36",
+        "ingestion:62:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:36": "b196864beb565ffbf50100fcbc84cf1a3d087650d69002b9b55228cbeb46b43b",
+        "ingestion:62:75": "6163734a7084e6a428ffd2971929cd4d96ed4f1e129e54ef04f9c3f1c30ab6e1"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: gimbap ingredient set"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "유부초밥/김밥재료",
+        "김밥재료"
+      ],
+      "source_title": "simplus 김밥용 우엉 150G",
+      "raw_record_ids": [
+        "ingestion:14:1",
+        "ingestion:63:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:1": "521f496bafb978b30d11e99c24ac815d7d9c14ecfd2f5f986fd706a283840c92",
+        "ingestion:63:11": "a974696c75bdffebd5e6153442dacb203a378db373232e6f648b76ccc4b59fb5"
+      },
+      "number": 3,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "유부초밥/김밥재료",
+        "김밥재료"
+      ],
+      "source_title": "사조대림 명품 김밥 세트 520G",
+      "raw_record_ids": [
+        "ingestion:14:15",
+        "ingestion:64:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:15": "d7e1cb823be073e66b86f93f0c9fbcc09688824dacc603fabd5c11b4f3f07829",
+        "ingestion:64:17": "b702bd9bf74fb3caaf1e35a1fffb92594e92dc81195fb9e83a957030996d1aa6"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: gimbap ingredient set"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "유부초밥/김밥재료",
+        "김밥재료"
+      ],
+      "source_title": "씨제이 하선정치자단무지와우엉 220G",
+      "raw_record_ids": [
+        "ingestion:15:27",
+        "ingestion:64:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:27": "aeec8328db84e56e485aac0c4bc6132cb114e03414398de9f1334dd076987a62",
+        "ingestion:64:65": "125ca0cc7657adb8a0616a82e0b98ff4f294fcbf6950355b0cba2f1844e20775"
+      },
+      "number": 5,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "28544a2e3b0c8f7bebb31e733b67f24b09392a4109d28c8fef112c22c6b36be2"
+}
