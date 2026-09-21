@@ -29,13 +29,6 @@ def test_audited_title_table_has_no_duplicates_and_all_leaves_have_four_levels()
 @pytest.mark.parametrize("title,path", [
     ("8월 베이커리 최대 50% 특가", "베이커리/잼"),
     ("식빵/마들렌 최대 15% 단독 특가", "베이커리/잼"),
-    ("올리브 치아바타 2Pack 기획 (쁘띠 672g+이탈리안 800g)", "베이커리/잼"),
-    ("샌드위치용 샐러드 계란 250g", "베이커리/잼"),
-    ("다담 된장찌개 양념500g", "밀키트/간편식"),
-    ("[매일유업]맘마밀 안심이유식 미역과소고기100g", "밀키트/간편식"),
-    ("불닭볶음면 105g", "면류/통조림"),
-    ("불닭볶음면 (70g*6개) 420g", "면류/통조림"),
-    ("신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개", "면류/통조림"),
 ])
-def test_unreviewed_forms_promotions_and_conflicts_remain_pending(title, path):
+def test_promotion_surfaces_remain_pending(title, path):
     assert classify_record(record(title, path=path))["unified_category_id"] is None

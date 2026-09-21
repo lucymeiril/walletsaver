@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass131",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "오늘 사과해 100ml",
+      "raw_record_ids": [
+        "ingestion:87:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:4": "ad233a4dfcb00e0308d60518c8e926dcb0131ab743c60ed880faab72f8b0b941"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "루솔 모과품은 배도라지즙 100ml",
+      "raw_record_ids": [
+        "ingestion:87:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:5": "ce7aad69c828ed5007e4f873460a5f2d66815134dc8a66937a88173cd34e1a37"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "베베 끙아 씨",
+      "raw_record_ids": [
+        "ingestion:87:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:6": "0e42e701be9a315aaa5f6dda3222173e05d8588ee120ce59bc71d84d97adc7e8"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: baby drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "처음먹는 배도라지",
+      "raw_record_ids": [
+        "ingestion:87:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:7": "4ec19a5b44c941c2d54922cb32d3a3e940d81435c9f8323b6787bc627316d518"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "엘빈즈 매일매일 건강한 습과 사과매실푸룬 100ml",
+      "raw_record_ids": [
+        "ingestion:87:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:8": "d288c8da3cbf0961ea5828835b4493f310083c64bcdd6f9a9c6112b9beab9519"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "[매일유업]맘마밀 이유식 퓨레 바나나와 단호박 100g",
+      "raw_record_ids": [
+        "ingestion:87:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:11": "89779b4d14825bf26a67aa070c3ce681595dc3239176fccc167ff86e022d39fb"
+      },
+      "number": 6,
+      "leaf": "food.meals.baby.puree",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "[매일유업]맘마밀 이유식 퓨레 사과와고구마 100g",
+      "raw_record_ids": [
+        "ingestion:87:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:12": "ba216a67dd70cbcf7513f0c1944f0c28d37ebd2202bf158007e8857874cc0f5e"
+      },
+      "number": 7,
+      "leaf": "food.meals.baby.puree",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "처음먹는 평창감자 퓨레 80g",
+      "raw_record_ids": [
+        "ingestion:87:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:13": "f3ece8545f0e35a52c54ce575e8bf4cbee8de91c0050aa2fd2fb6bfe27f10a6e"
+      },
+      "number": 8,
+      "leaf": "food.meals.baby.puree",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "처음먹는 고구마 퓨레",
+      "raw_record_ids": [
+        "ingestion:87:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:14": "eaaa0ae7e45e3f1063b8f8132f09cc1f78205a0d0dfd53e7853b75030b2e0249"
+      },
+      "number": 9,
+      "leaf": "food.meals.baby.puree",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "처음먹는 단호박 퓨레",
+      "raw_record_ids": [
+        "ingestion:87:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:15": "e77e066f31aad0109c727913a6f71e2a3c7acfed9f90676b7c0e3aa7a70f5baa"
+      },
+      "number": 10,
+      "leaf": "food.meals.baby.puree",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "[논알콜] 클라우드 논알콜릭 350캔",
+      "raw_record_ids": [
+        "ingestion:87:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:29": "bdd87dc60addfee54b2265c567a3c316727b2a1d191e3fb1a01061167704603d"
+      },
+      "number": 11,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "오트몬드 프로틴 고소한맛 250ml",
+      "raw_record_ids": [
+        "ingestion:87:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:33": "3f18811d736c55e898fb14e79d7c6fa2651d295b5eef007cf9bb55f9229cc642"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: plant drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "비타500 100ml*20입",
+      "raw_record_ids": [
+        "ingestion:87:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:34": "aaedd38463dac5aac0930fb820d57774fedd6b96d907d1d5615ebe276154b3a8"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: vitamin drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "[논알콜] 클라우드 논알콜릭 500캔",
+      "raw_record_ids": [
+        "ingestion:87:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:37": "511a6c841e4e460aab816760926048bc83fc77e37f5d52719de39863c77c2157"
+      },
+      "number": 14,
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "제주 삼다수 그린(무라벨) 500ml 40병 (유라벨/무라벨 랜덤발송)",
+      "raw_record_ids": [
+        "ingestion:87:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:40": "5d409783dbbd92c4c8a544299e064c0e424074497cc5ed4cf3cec40337e38074"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "random label variant triggers product-type conflict"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "고칼슘 오렌지 1.5L",
+      "raw_record_ids": [
+        "ingestion:87:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:41": "3c719e0c44cc2b2b6d29fb79e74822e682ecd905ce24d1acfa2a72b7620329f2"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "오트몬드 프로틴 초코 250ml",
+      "raw_record_ids": [
+        "ingestion:87:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:45": "5920110366140508387a5edc3526a537837a7a384d9b13b97eb411ae7e9be871"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "new leaf: plant drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "미에로 화이바 (100ml ×10병)",
+      "raw_record_ids": [
+        "ingestion:87:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:51": "a14d9f09f2165750df28a3485ca4397b2fc1f872015c20b85b461d0c3dff9beb"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "new leaf: dietary fiber drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "오트몬드 프로틴 쿠키앤크림 250ml",
+      "raw_record_ids": [
+        "ingestion:87:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:63": "a9ccef36a73da0c0566fe5b391587258c82c8bcae575962f4cc4f39d7512e934"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: plant drink"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "따옴 오렌지 730ml",
+      "raw_record_ids": [
+        "ingestion:87:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:65": "f932b04b5672c3631f256a44966d93194124f90c2616bdd13b5b66b9f5931f12"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "beverage form or purity not explicit in title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "1.8L*2입",
+      "raw_record_ids": [
+        "ingestion:87:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:87:67": "87f6f20ea32d2d0df4c5d5b6edb8af818a64ffeceb37cdba90eeeeb726bcddc0"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "not a product: bare size-only title"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        21
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 977
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 998
+    },
+    {
+      "numbers": [
+        8
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 999
+    },
+    {
+      "numbers": [
+        21
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1000
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1001
+    },
+    {
+      "numbers": [
+        17
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1002
+    },
+    {
+      "numbers": [
+        14
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1003
+    }
+  ],
+  "packet_sha256": "e4e4e0dec8510fd239875b8d504c7629ceddda6dd49c799ac678b47f2aab6f29"
+}

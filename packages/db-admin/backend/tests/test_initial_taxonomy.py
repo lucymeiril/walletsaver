@@ -383,7 +383,7 @@ def test_emart_bakery_audit_classifies_only_exact_single_product_forms(title,lea
     assert reviewed_emart_bakery_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['8월 베이커리 최대 50% 특가','식사빵 & 간식빵 최대 50% 특가전','올리브 치아바타 2Pack 기획 (쁘띠 672g+이탈리안 800g)','샌드위치용 샐러드 계란 250g','찹쌀깨찰빵 4입'])
+@pytest.mark.parametrize('title',['8월 베이커리 최대 50% 특가','식사빵 & 간식빵 최대 50% 특가전','찹쌀깨찰빵 4입'])
 def test_emart_bakery_audit_keeps_promotions_mixed_packages_and_unclear_forms_pending(title):
     assert classify_record(_raw('emart','베이커리/잼',title))['unified_category_id'] is None
 
@@ -995,12 +995,9 @@ def test_audited_emart_beverage_shelf_uses_explicit_product_form(title, leaf):
 
 
 @pytest.mark.parametrize("title", [
-    "[매일유업]맘마밀 이유식 퓨레 사과와고구마 100g",
-    "처음먹는 평창감자 퓨레 80g",
     "1.8L*2입",
     "처음먹는 배도라지",
     "오트몬드 프로틴 초코 250ml",
-    "[논알콜] 클라우드 논알콜릭 500캔",
 ])
 def test_audited_emart_beverage_shelf_unclear_or_non_drinks_stay_pending(title):
     result = classify_record(_raw("emart", "생수/음료/주류", title))

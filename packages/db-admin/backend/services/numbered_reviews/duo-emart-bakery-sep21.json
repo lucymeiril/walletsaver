@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass131",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "츄러스&소보로미니크라상22입",
+      "raw_record_ids": [
+        "ingestion:93:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:12": "72c09eddf614c4423c1e0d70a897e820ba73e94b322a4033ca5e7e154d9a4e08"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: mixed bakery assortment"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "8월 베이커리 최대 50% 특가",
+      "raw_record_ids": [
+        "ingestion:93:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:15": "09e4a060da9abf402f647528481b4ae5dc82e8a0b97dcd659d4b4908067775d9"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "고소한유산균쌀호밀빵6입",
+      "raw_record_ids": [
+        "ingestion:93:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:16": "1efab98f5870ba9ceb670c16d86a038ae8b3a3ce8da7bf110552e36349c06d0e"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: rye bread"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "식빵/마들렌 최대 15% 단독 특가",
+      "raw_record_ids": [
+        "ingestion:93:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:22": "fc13d95a06a4a37773367a2109bd1630fb2c692d08b124a0d925c58ab82930b3"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "식사빵 & 간식빵 최대 50% 특가전",
+      "raw_record_ids": [
+        "ingestion:93:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:23": "59fadf48496f6c693a4fe13a823fad329a7f45fdefed5b86b6eb5d94d5db56ec"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "베이커리/디저트/간편식 ~20% 특가",
+      "raw_record_ids": [
+        "ingestion:93:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:29": "a390aa9141ed515070b87c161c1ae936e771799f10ce04af725db158378f6eaf"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "찹쌀깨찰빵 4입",
+      "raw_record_ids": [
+        "ingestion:93:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:40": "c635376e259bd4e5402fb8af5fd567f9f02aab0d1376a477b8f32ec4c0c28777"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: glutinous rice bread"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "샌드위치용 샐러드 계란 250g",
+      "raw_record_ids": [
+        "ingestion:93:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:41": "fc27c4050a7ca0269ee67da15df1a73d3a02b5d4402d02e3affd508a5041e94f"
+      },
+      "number": 8,
+      "leaf": "food.meals.prepared.salad",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "올리브 치아바타 2Pack 기획 (쁘띠 672g+이탈리안 800g)",
+      "raw_record_ids": [
+        "ingestion:93:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:54": "df28e35f487a8473b772240a7b3bba0431d5e78cec3f98b674348b5742368f44"
+      },
+      "number": 9,
+      "leaf": "food.bakery.bread.hard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "달콤한 디저트 할인전 ~50%",
+      "raw_record_ids": [
+        "ingestion:93:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:57": "1d7652eda23d20856b7f674f2a504e71af9c9d85b0a025f6b43b9670b53e59e7"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베이커리/잼"
+      ],
+      "source_title": "식사빵 최대 30% 특가전",
+      "raw_record_ids": [
+        "ingestion:93:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:93:64": "2eaff65471a9099192e31ef303c6d7b8e728ab2d35e827aeb5c79207c82e2217"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "not a product: promotion title"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_food.py",
+      "line": 30
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_food.py",
+      "line": 31
+    },
+    {
+      "numbers": [
+        9
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_food.py",
+      "line": 32
+    },
+    {
+      "numbers": [
+        8
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_food.py",
+      "line": 33
+    },
+    {
+      "numbers": [
+        2,
+        5,
+        7,
+        8,
+        9
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 386
+    }
+  ],
+  "packet_sha256": "cd145b0bf5bf8e57fd08dabec8d4d059b15985755d4d04529f8a67380fc58dc7"
+}
