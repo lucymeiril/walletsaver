@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass134",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "티트리 앤 라임 비건 탈모 딥클렌징 지성케어 두피 워터 스케일러 500ml",
+      "raw_record_ids": [
+        "ingestion:97:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:10": "cbafc8cf7d73ea45939cd7f51d0c2d10e8f40e88af16c66a3b5a42e79dfe74af"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: scalp scaler"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "종이면봉 300입",
+      "raw_record_ids": [
+        "ingestion:97:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:21": "4938cdb603cae52700a6e40ef56d78b5281b79411f9dcdb68f62c1d1e1ec6005"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: cotton swab"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "거품형 순 용기 250ml",
+      "raw_record_ids": [
+        "ingestion:97:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:22": "8b63ec9711c7a84a5197c29959e1e2893ceae4622cc43b83537e8e4e66e5bdca"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: empty foaming container"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "에센셜 포밍클렌져 150mL",
+      "raw_record_ids": [
+        "ingestion:97:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:26": "7ed061fd9c6c333c9a5e0dc8a0a356117d4dbf8f80fc56d84ad83bfa2e8a9ea8"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: facial cleanser"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "내추럴 발효 동백 오일 100% 카멜리아 페이스 비건 오일",
+      "raw_record_ids": [
+        "ingestion:97:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:41": "9afe6ac91acd60337930bf0b45f57c5a3337894d410c437b4c13538e012c2de9"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "new leaf: face oil"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "3000시리즈 헤어드라이어 BHD321/09",
+      "raw_record_ids": [
+        "ingestion:97:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:44": "05ad5bae8ea186547d59825ad2af5842aff1ebbda22536651b11c938cf8d5d70"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: hair dryer"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "헤어/바디/뷰티"
+      ],
+      "source_title": "에어리라이트 드라이기 ODRY-006WH",
+      "raw_record_ids": [
+        "ingestion:97:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:97:57": "d23dad7342161a0012ef3df4f0c9a6acf0296f39643cec3079d42c1059e440bc"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: hair dryer"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_household.py",
+      "line": 29
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_household.py",
+      "line": 30
+    }
+  ],
+  "packet_sha256": "7168d9d9e38e476fe004e2ccd9bd82f7a8a4a20a32bdcdbf32d3aa8100329639"
+}
