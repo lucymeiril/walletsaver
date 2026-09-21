@@ -1,0 +1,826 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass128",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "설성목장 한우불고기 덮밥소스100g x 8",
+      "raw_record_ids": [
+        "ingestion:45:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:62": "c692000c577194ccea9028e383b1fad1ac07776cb3366ad7036b04906f8fd0c2"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: prepared beef rice-topping sauce"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "마이셰프X EBS 산더미소고기콩불830g x 2",
+      "raw_record_ids": [
+        "ingestion:45:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:63": "b7ae7aa13c85304b540f20d8d77961d02e576f894eb08e9940c04dc0664d8c0d"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "product form not explicit in title"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "안방그릴 울트라 AB1107CO",
+      "raw_record_ids": [
+        "ingestion:45:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:69": "ab8ee8355750680872713dae36939ab78d0402c67433530224ece49a33f877f7"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "부추고기순대500Gx3 족발슬라이스 960g",
+      "raw_record_ids": [
+        "ingestion:45:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:70": "6b24f43590aa5fc7460dc4f273a1e9f3edf1152d9dbaa2f9ed2e632bb155bc74"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "해드림 순대 돼지국밥 1.25kg x 2 + 찰순대 1kg",
+      "raw_record_ids": [
+        "ingestion:45:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:72": "514ac26efb1eb3b928067457844c30152a85d9bcd14a054c6ca12009c8ae51b7"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "파이어폭스 BBQ 석쇠 5개입 / 최소구매 2",
+      "raw_record_ids": [
+        "ingestion:45:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:73": "410d650fc45cc65402985ccea85d3f313c66e6e1915d240d95b78429679d6e1f"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue grill grate or tray"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "넥스그릴 57cm 차콜 케틀 그릴",
+      "raw_record_ids": [
+        "ingestion:45:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:74": "ae66dbff198d1aef166ad55d68c759a155aea12cab995494d2a02ce4a17eddf6"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "다닥 휴대용 그릴 L",
+      "raw_record_ids": [
+        "ingestion:45:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:75": "f7d59ff5c60442c5552b5ee55ef5d81c43507cd2f7647e7a726826db8fae614c"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "마스터빌트 왜건 차콜 그릴",
+      "raw_record_ids": [
+        "ingestion:45:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:77": "fbdad1c00a28ccac4d6b2b45acffb21bdefd3e4c31c67f9335b5122162610203"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "오크우드 장작 15kg",
+      "raw_record_ids": [
+        "ingestion:45:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:78": "047d851319192816885e985d521dd7e4344c03bad6bd518c356561c82d0324b0"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: firewood"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "스테츠 그릴 트레이 일회용 석쇠 10pc",
+      "raw_record_ids": [
+        "ingestion:45:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:79": "dc59f5583cd04d57f0684c37dfa75e1b27f717942f2d22d2a19d3ef02394dd1f"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue grill grate or tray"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 라이터큐브 2PK",
+      "raw_record_ids": [
+        "ingestion:45:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:81": "cd57a71356ba9665f271f890ca73b67e8835b3ed0462d654ddde0156a7296609"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: fire starter"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 43cm 슬레이트 가스 그릴",
+      "raw_record_ids": [
+        "ingestion:45:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:82": "22985ff445153a5c65e2455e14bb3c88c5a7e94ad7700b25f8dfcdda8778bd65"
+      },
+      "number": 13,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 루민 전기 그릴 (스탠드 포함)",
+      "raw_record_ids": [
+        "ingestion:45:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:83": "dcb6f3cdbaeeac1df6b888edf2960b6956da6b04ccc3d301db0a074339003577"
+      },
+      "number": 14,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 Q2200N 가스 그릴 (카트 포함)",
+      "raw_record_ids": [
+        "ingestion:45:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:84": "0fe7dc398635ae3e88e56ac63c3087ec010edbb8ad4969d33f5a2441a9957dc2"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 그릴 프리미엄57 커버",
+      "raw_record_ids": [
+        "ingestion:45:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:85": "6b775a57b38263794fbd1ae27dfd16a2df2892aac180a683581e5c3ca9109daf"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 매콤한 쪽갈비 800g x 2 + 떡 140g x 2 x 2팩",
+      "raw_record_ids": [
+        "ingestion:45:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:86": "c6e3012a8235bbbdd495b61300ae6d1d3e0fb214a59e7f3647bb01482cc74dd4"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁한우나주식곰탕500gx3 +소스+ 갈비찜1kgx2 +당면",
+      "raw_record_ids": [
+        "ingestion:45:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:87": "58fb45914ad554befae22bea9ba142aa63538f63d4a381e34fa532747f9c1c0e"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 76cm 슬레이트 가스 그릴",
+      "raw_record_ids": [
+        "ingestion:45:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:88": "b84e4dfa251675e882a70eec792bbc362ade0ec0b26088b7826a56651a313acd"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "파이어폭스맹그로브참숯10kg",
+      "raw_record_ids": [
+        "ingestion:45:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:91": "165ae143dc88ed256ad31397b31a6b6c1fd1f57ae9a8c3d815cb2cf4773556f9"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: charcoal"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 컴팩트 침니스타터 패키지 S",
+      "raw_record_ids": [
+        "ingestion:45:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:92": "29cd4acda7036782f3dd829287948c9a52e67004095c721140565ae239ae49bf"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "new leaf: charcoal chimney starter"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 안동식 한우국밥 800g x 2 + 도가니탕 510g x 3",
+      "raw_record_ids": [
+        "ingestion:45:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:93": "abe2275f3f30513b56d9d4d6758f668830056bbbfb6b13432103cfb9477dd5a6"
+      },
+      "number": 22,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 트래블러 가스 그릴 액세서리 패키지",
+      "raw_record_ids": [
+        "ingestion:45:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:94": "34d43da80bce35a83372a1c1e977af3ffb2f49945057fa70834a756206d79865"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue grill accessory kit"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "해마루 와이드 그릴 HM-R5400",
+      "raw_record_ids": [
+        "ingestion:45:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:95": "daf62eb67705f588c1984c90f9654cdd30164e2f49c81b767b42d574989bb3bf"
+      },
+      "number": 24,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "스테츠 램파이어 360 스테인레스 화로대",
+      "raw_record_ids": [
+        "ingestion:45:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:98": "c3275741ad6d2f8bfd67facac0c534acca34af0ee0b675104008e8d70a7109b9"
+      },
+      "number": 25,
+      "leaf": null,
+      "hold_reason": "new leaf: fire pit"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "스테츠 램파이어 500 스테인레스 화로대",
+      "raw_record_ids": [
+        "ingestion:45:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:45:99": "7ed3c8bbb5550abd6443f7ca9f45d556004cf524bff84043d79cc4e208fa88c6"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "new leaf: fire pit"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "불쏘시개 젤타입 파이어 스타터50g x 12 x 2 팩",
+      "raw_record_ids": [
+        "ingestion:46:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:0": "e056d2b938134c96ba33911e7feb493087b22ac6ebbf08dfa2f214e2384d7c97"
+      },
+      "number": 27,
+      "leaf": null,
+      "hold_reason": "new leaf: fire starter"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 왕갈비탕 1kgx2 +당면+양념소갈비찜 1kgx2+당면",
+      "raw_record_ids": [
+        "ingestion:46:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:2": "4756a25d5192d8ea83b5c6abde55d136b5d0e1ecf621378c0073911bf4064c4b"
+      },
+      "number": 28,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "꾸버스 카고 차콜 그릴",
+      "raw_record_ids": [
+        "ingestion:46:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:3": "4ebb61894e4dbd6a9566501a134d7e05030c92103a8f2100dabbc6aebc187bb7"
+      },
+      "number": 29,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "스테츠 바베큐 내열매트",
+      "raw_record_ids": [
+        "ingestion:46:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:4": "8f5cb6643df6644fe94e70af8d4c76d517bd56d0237483b4fc3116f0bcf6c4a3"
+      },
+      "number": 30,
+      "leaf": null,
+      "hold_reason": "new leaf: heat-resistant barbecue mat"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "지라프 가스 바베큐그릴,중형",
+      "raw_record_ids": [
+        "ingestion:46:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:5": "9ad5d856c2dbbdb4ed95391ff8dded848c6a778fa95ddcb7b0f6f50fc0d940ad"
+      },
+      "number": 31,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "웨버 고 애니웨어 그릴 커버",
+      "raw_record_ids": [
+        "ingestion:46:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:6": "c041846592cf0999e460c6989d3febc65d05fa1aff72eea337fab4903f3b5b0a"
+      },
+      "number": 32,
+      "leaf": null,
+      "hold_reason": "new leaf: grill cover"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "꾸버스 하이엔드 43 애플 차콜 그릴",
+      "raw_record_ids": [
+        "ingestion:46:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:7": "2ca012f1c58a2ebd97d84fecacdfc0e10ab765969f2a032bbb2a9bfd20a4e09a"
+      },
+      "number": 33,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "꾸버스 하이엔드 47 애플 차콜 그릴",
+      "raw_record_ids": [
+        "ingestion:46:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:8": "c50af35e2b6b6a73156d485e3b0b2f26eefd727d87793bbc647bd9f11087482a"
+      },
+      "number": 34,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "스테츠 시어 EV3 대형 전기 바베큐그릴 패키지",
+      "raw_record_ids": [
+        "ingestion:46:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:9": "a62398029c5b14381d5e7d23cecb25f7b58a4cef5af9637aada9f83f91cb6e99"
+      },
+      "number": 35,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "에버듀어 큐브 휴대용 차콜 바베큐 그릴",
+      "raw_record_ids": [
+        "ingestion:46:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:10": "1a4db17a035a658774d1654cc55153d966a9367b980977858b9721f302b63225"
+      },
+      "number": 36,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "에버듀어 큐브360 휴대용 차콜 바베큐 그릴",
+      "raw_record_ids": [
+        "ingestion:46:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:11": "1534cf04b4c02fc5b54b44845c40cdb12839e5f146c42b06b2b8e1e3b1352f57"
+      },
+      "number": 37,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 한우도가니탕500GX3+10GX3",
+      "raw_record_ids": [
+        "ingestion:46:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:12": "0f9b40f49f06409c36f74741b5ebfd2be2f2905d3160ab89c0a5feeddd13f3d9"
+      },
+      "number": 38,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "해마루 엑스트라 라지 와이드 그릴 RSF-G9900",
+      "raw_record_ids": [
+        "ingestion:46:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:13": "35d15a0e1cec7a368ab42c68ab2b54004612944ea8b3ca8b3b4118ab740b689b"
+      },
+      "number": 39,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "랭글러 차콜 그릴",
+      "raw_record_ids": [
+        "ingestion:46:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:14": "09feb3190c0910061f4e221f94007d36ff8b65da0ec25f977af31147e6ac6846"
+      },
+      "number": 40,
+      "leaf": null,
+      "hold_reason": "new leaf: barbecue or cooking grill"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "꾸버스 윈디 슬라이더",
+      "raw_record_ids": [
+        "ingestion:46:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:15": "a2aee091c5739e493f88951922ac65a01aa438bf182cf61455c272e36a09b9a1"
+      },
+      "number": 41,
+      "leaf": null,
+      "hold_reason": "unknown category"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 안동식 한우국밥 800g x 2 + 나주식곰탕 510g x 3",
+      "raw_record_ids": [
+        "ingestion:46:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:19": "87c3ad1f8f881c59c45b5f6f1e8c4d42c56ced1f1e05e6c48aee7eb1aca20a8e"
+      },
+      "number": 42,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 안동식 한우국밥 800g x 2+양념소갈비찜 1,020g x 2",
+      "raw_record_ids": [
+        "ingestion:46:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:20": "9f63946c16e6be21c4b7581dbc4a1eda355c42e005da68a335d052f1c55935cb"
+      },
+      "number": 43,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 안동식 한우국밥 800g x 2+매콤한 쪽갈비 940g x 2",
+      "raw_record_ids": [
+        "ingestion:46:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:21": "2591a8f035e993e20e91ffc4953ee89202d5d96d23da55c72620db36d5f859ff"
+      },
+      "number": 44,
+      "leaf": null,
+      "hold_reason": "mixed-package review"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "궁 안동식 한우국밥 800g x 2 + 왕갈비탕 1,020g x 2",
+      "raw_record_ids": [
+        "ingestion:46:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:22": "5d2e1e29911705f6a23fd403f05c40c4a8eb8a145bc6624cb13653ec4ac9639f"
+      },
+      "number": 45,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "해마루 다이아몬드 잔치팬 TC-3000",
+      "raw_record_ids": [
+        "ingestion:46:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:23": "280212681061289f663b40f8e043ccd082f90a411a2d804f8d93d96638e55507"
+      },
+      "number": 46,
+      "leaf": null,
+      "hold_reason": "new leaf: electric griddle"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "고기"
+      ],
+      "source_title": "갤럭시 생선구이 오븐 COF-150K",
+      "raw_record_ids": [
+        "ingestion:46:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:46:31": "55a0cb9495d646b140fb71016c8b306c88a923ba5c301581919efc9bd0aeb077"
+      },
+      "number": 47,
+      "leaf": null,
+      "hold_reason": "new leaf: countertop fish-grilling oven"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 127
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 128
+    },
+    {
+      "numbers": [
+        18
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 129
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 130
+    },
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 131
+    },
+    {
+      "numbers": [
+        3,
+        10
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1190
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1193
+    },
+    {
+      "numbers": [
+        42
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1194
+    },
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1195
+    }
+  ],
+  "packet_sha256": "ce734b5be4da1a6d9184117d0e58c6b9fa5a341877493568c6005987f88d8893"
+}

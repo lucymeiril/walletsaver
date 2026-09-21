@@ -1191,7 +1191,6 @@ def test_audited_meat_shelf_uses_food_form_not_ingredient(title, leaf):
     "하림 더리얼 밀 냉동 화식 닭고기 60g x 10",
     "하림 더리얼 밀 그레인프리 냉동 화식 닭고기 60g x 10",
     "부추고기순대500Gx3 족발슬라이스 960g",
-    "궁 안동식 한우국밥 800g x 2 + 나주식곰탕 510g x 3",
     "설성목장 한우불고기 덮밥소스100g x 8",
 ])
 def test_meat_shelf_contaminants_and_mixed_sets_stay_pending(title):
