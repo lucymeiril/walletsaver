@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass129",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "마이어 라면 조리기",
+      "raw_record_ids": [
+        "ingestion:39:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:39:61": "6321f25c2396ef4806e3d0094136ffb8c148f434fd37a77218104395fc3daf87"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: ramen cooker"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "오뚜기 뿌셔뿌셔 불고기맛 1.52kg / 95g x 16",
+      "raw_record_ids": [
+        "ingestion:40:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:0": "6e01776a5886dd2fde2b3e927f88e93dd47049d1e34f445fc5dddb69f25a1388"
+      },
+      "number": 2,
+      "leaf": "food.snacks.savory.wheat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "동원 짜장 라볶이482g x 3",
+      "raw_record_ids": [
+        "ingestion:40:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:3": "21e5ce28f96ae74c972d841daea59f04559974cb004e84f51173253bfc34e78e"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "new leaf: black-bean rabokki"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "코렐 더블링 라떼 면기 세트 4P",
+      "raw_record_ids": [
+        "ingestion:40:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:7": "2a29ca06009b0aab26b0939b790739851bf2e7c041f19d4091faa55ff9e3ad78"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "new leaf: serving bowl"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "오뚜기 진밀면 135g x 20",
+      "raw_record_ids": [
+        "ingestion:40:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:9": "d10622ddf926bf812a616309e21aa25f2fa44a37533d2a765ba092196b12ce5d"
+      },
+      "number": 5,
+      "leaf": "food.meals.noodles.wheat_noodle",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "동원 면발의신 마라탕면 85g x 6",
+      "raw_record_ids": [
+        "ingestion:40:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:10": "732c65dfc4b72921db8a5fcab07702156449bf43fa5d344056d2fe8bcf697812"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "new leaf: mala soup noodles"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "냉동 손질 오징어 1.5kg X 2pack",
+      "raw_record_ids": [
+        "ingestion:40:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:21": "177dbd8483d112eea701e1e32c1a7b6cbcfe783504e8608747ea86870f2413d0"
+      },
+      "number": 7,
+      "leaf": "food.seafood.molluscs.squid",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "다담 떡볶이 양념 150g x 20",
+      "raw_record_ids": [
+        "ingestion:40:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:24": "fae6a4642ca9f25d31dfe27eb4be611298d86f6101c7d090346f155f715518c5"
+      },
+      "number": 8,
+      "leaf": "food.seasonings.sauces.tteokbokki",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "가지 2봉 (7개x 2봉)",
+      "raw_record_ids": [
+        "ingestion:40:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:25": "6b7758d7b157263aabfa190c4a8d2daeddd61dbc1e655ba5de26fee36b01a1a2"
+      },
+      "number": 9,
+      "leaf": "food.produce.vegetables.eggplant",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "설성목장한우사골 곰탕 스틱 14g x 10 x 4",
+      "raw_record_ids": [
+        "ingestion:40:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:26": "63c2358892e26bab9468a706305318350a5a0491b8004f2f5fdbbf68c9f9207b"
+      },
+      "number": 10,
+      "leaf": "food.seasonings.baking.stock",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "절단꽃게 1.2kg X 2pack",
+      "raw_record_ids": [
+        "ingestion:40:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:27": "075bc997b370091edd17fb8e67f8e78c6649ece149afaa99af35ec6c715b3927"
+      },
+      "number": 11,
+      "leaf": "food.seafood.shellfish.crab",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "Mama's Choice 오징어소면 300g",
+      "raw_record_ids": [
+        "ingestion:40:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:32": "d3987c9a3f509cc64a2ef25c54b14302dc1a71494d1bc1ca3d360ede45363f8d"
+      },
+      "number": 12,
+      "leaf": "food.seafood.processed.squid_shreds",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "고메 고기짜장 1,360g x 2개",
+      "raw_record_ids": [
+        "ingestion:40:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:43": "cdd9f993f8e7b17423bb5d39b946a5081705009064dab927a8c48d26f010b338"
+      },
+      "number": 13,
+      "leaf": "food.seasonings.sauces.black_bean",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "라면"
+      ],
+      "source_title": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+      "raw_record_ids": [
+        "ingestion:40:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:40:62": "1da3f785740aaccdae7665aae628ec503edf8bd71cb544af04606c4c1c41e83c"
+      },
+      "number": 14,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        4,
+        7
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1101
+    },
+    {
+      "numbers": [
+        8,
+        9,
+        11
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1102
+    },
+    {
+      "numbers": [
+        10,
+        12
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1103
+    }
+  ],
+  "packet_sha256": "4d5806905b9c211ccbb70317ab75b3150cfb292483a9ae96e1485bb459553888"
+}

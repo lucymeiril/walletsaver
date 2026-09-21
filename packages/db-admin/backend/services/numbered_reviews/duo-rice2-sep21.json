@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass129",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "익산농협 쌀이보배10kg x 2",
+      "raw_record_ids": [
+        "ingestion:48:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:25": "ee190fc2f2557da9cb2b70615aa203c8411aabb621c73b8e4117dadba8ed2ad4"
+      },
+      "number": 1,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "대구농산 쌀가루 2.5kg",
+      "raw_record_ids": [
+        "ingestion:48:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:26": "e0138b456447b16e1c3689c5dc3a8ad750f83bf1c20c73cd4e826ef9cf3fb139"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "new leaf: non-glutinous rice flour"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "푸른들판 유기농 골든퀸 3kg x 3",
+      "raw_record_ids": [
+        "ingestion:48:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:33": "ddbaf1611a04cd7caa9691feadc80c4ba6144811250e6bbbfd67dcdf922c874d"
+      },
+      "number": 3,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "수향미 골든퀸３호 10kg",
+      "raw_record_ids": [
+        "ingestion:48:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:34": "83afa7f68c4cdaa384378a8917dd5ee41987dcfefedea7b35107be3d2f92dbff"
+      },
+      "number": 4,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "익산청결미 20kg",
+      "raw_record_ids": [
+        "ingestion:48:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:36": "d41f08e2521a5ccc67167df152ac465dd255bfe167e2d6f2c17f81d0d6692be0"
+      },
+      "number": 5,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "다담정 우리쌀로 만든 전병 648g x 5세트",
+      "raw_record_ids": [
+        "ingestion:48:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:57": "fd6577069a5acf1444063c14cea0d4e4d5ad43d7f1f9d024178975de6f163b68"
+      },
+      "number": 6,
+      "leaf": "food.snacks.traditional.hangwa",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "다담정 우리쌀로 만든 전병 648g x 10세트",
+      "raw_record_ids": [
+        "ingestion:48:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:58": "add59bf657eaf7349fdfba256d9a0b9c8aa2e2a5c5c36438728e6149a17a446d"
+      },
+      "number": 7,
+      "leaf": "food.snacks.traditional.hangwa",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "세계인의 건강곡물 선물세트 1.54kg x 10세트",
+      "raw_record_ids": [
+        "ingestion:48:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:59": "7267959eb37b88353f54ee4a1053088aafff66a9d587901bef3b4326ed880372"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "mixed grain gift-set configuration is ambiguous"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "쌀"
+      ],
+      "source_title": "세계인의 건강 곡물 선물세트 1.54kg",
+      "raw_record_ids": [
+        "ingestion:48:60"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:60": "e9d0ca46f98ec22b73a98e6a118b0cb445e3f73baacacb4d464af9f060b434a3"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "mixed grain gift-set configuration is ambiguous"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        6,
+        8,
+        9
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 483
+    }
+  ],
+  "packet_sha256": "faee57e8a5a16d7a02933684a85a5411a2ec677e30a034c03a83fb0c69d2ef4a"
+}

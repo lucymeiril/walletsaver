@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass129",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "옥소 소프트웍스 야채 탈수기",
+      "raw_record_ids": [
+        "ingestion:47:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:66": "4745c56017d6035b27fabdedd93409d08401b208b7f45666fbe2b48fb9cb9e21"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "new leaf: salad spinner"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "유러피언 쌈채소 5종(440g)",
+      "raw_record_ids": [
+        "ingestion:47:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:67": "3cc1ee0662cc467acad85d969ddd8f8f508d4515b5cfd09ff1ed16e0c43007a3"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.leaf",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 솥밥용 버섯채소모둠200g",
+      "raw_record_ids": [
+        "ingestion:47:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:68": "8c6bc45976f021368ac164aaf8fa0cd8e43b5e0f6125d7344bd82035a4d8a944"
+      },
+      "number": 3,
+      "leaf": "food.produce.vegetables.mixed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "마이크로플레인스파이럴커터",
+      "raw_record_ids": [
+        "ingestion:47:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:71": "fe3888a31f9bea32ab3de2ac9fd8c8e7c67b3b4c55f4d5d263b5820d68224cbc"
+      },
+      "number": 4,
+      "leaf": "household.kitchen.utensils.slicer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "백오이 2봉 (10개 x 2봉)",
+      "raw_record_ids": [
+        "ingestion:47:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:72": "cc851583352282e63831f356f587d557d16fce1a1f4c2cf0390912724fb933a0"
+      },
+      "number": 5,
+      "leaf": "food.produce.vegetables.cucumber",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+      "raw_record_ids": [
+        "ingestion:47:76"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:76": "4d49fe83c05abe46bb94efc47ebcc97fc64e7430cd85314157b1e6d3bbbbd3ec"
+      },
+      "number": 6,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "루꼴라샐러드 500g x 2입",
+      "raw_record_ids": [
+        "ingestion:47:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:77": "c666325f15b0b587d5462a45f89e92ac14f1b6cc6ddc9a9f4ac54494deaa81b2"
+      },
+      "number": 7,
+      "leaf": "food.produce.vegetables.salad",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+      "raw_record_ids": [
+        "ingestion:47:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:79": "3bad88393cc1728dbcf11e2b377fb9b91ac0b04a69937be0470558595462597b"
+      },
+      "number": 8,
+      "leaf": "food.produce.vegetables.lettuce",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+      "raw_record_ids": [
+        "ingestion:47:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:85": "7471b3ec2157fc47e2c0aeb532e28f95ad9186c39f23b9388cd2b9f58774b74c"
+      },
+      "number": 9,
+      "leaf": "food.produce.processed_vegetables.dried",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "뉴트리플랜 동결건조 야채트릿 200g",
+      "raw_record_ids": [
+        "ingestion:47:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:87": "50741f7d9e4e7d0f849f4d208d707c81de8d2ace88c3bdb6c0450c46b3f30762"
+      },
+      "number": 10,
+      "leaf": null,
+      "hold_reason": "new leaf: pet treats"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "타카쇼 우드 플랜터 600 2PK",
+      "raw_record_ids": [
+        "ingestion:47:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:88": "90928cef13a9b1e5fb8f0ccc44959ca913e8b38adc8d41855ec29deddb223692"
+      },
+      "number": 11,
+      "leaf": null,
+      "hold_reason": "new leaf: planter"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 2호",
+      "raw_record_ids": [
+        "ingestion:47:90"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:90": "4d0439538f1db6065f1be6729167a42d3d2712983bd14d8f1f0ccba92dba8111"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "new leaf: mushroom gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 건표고 혼합세트 2호 x 10세트",
+      "raw_record_ids": [
+        "ingestion:47:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:91": "0c8adc8e70813fc27a4d55910f966fb6a145ee55b18c3ad60f14661d9115181b"
+      },
+      "number": 13,
+      "leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 건표고 혼합세트 2호",
+      "raw_record_ids": [
+        "ingestion:47:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:92": "5987be44eefd63790829b16edb4f967474f1c5488424ce9120bcfaca27cc1061"
+      },
+      "number": 14,
+      "leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 1호",
+      "raw_record_ids": [
+        "ingestion:47:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:94": "c880c4d9609c11d6b7359c2717b08f5973367034e3758afc6d7e4f0138751630"
+      },
+      "number": 15,
+      "leaf": null,
+      "hold_reason": "new leaf: mushroom gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "일품채 상황영지 모둠세트 1호x 10",
+      "raw_record_ids": [
+        "ingestion:47:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:95": "ac903034765d433250b89fc17abc1694f62cd78104e1e2883be140ad1b86bb71"
+      },
+      "number": 16,
+      "leaf": null,
+      "hold_reason": "new leaf: mushroom gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "바다소리 독거도 명품 돌미역 선물세트",
+      "raw_record_ids": [
+        "ingestion:47:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:47:97": "8994eb31afe2c050c82b85991614d7fedd6445e32dd038c4f07f77a61169296b"
+      },
+      "number": 17,
+      "leaf": "food.seafood.seaweed.miyeok",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+      "raw_record_ids": [
+        "ingestion:48:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:3": "248fa06ff025f2db13d1526522c19cdbbdaf569b837fdf513cf633e3fa62a967"
+      },
+      "number": 18,
+      "leaf": "pet.food.feed.cat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+      "raw_record_ids": [
+        "ingestion:48:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:4": "94e44e2b4c9d66dfb7cb2d3251c1369244d2a8159d7c9b696da917c3005de20a"
+      },
+      "number": 19,
+      "leaf": null,
+      "hold_reason": "new leaf: guacamole"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "채소"
+      ],
+      "source_title": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+      "raw_record_ids": [
+        "ingestion:48:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:48:5": "ad0cec862eeda633e16a020fb578a8177fd5ebe7e86bea36e79e687536614929"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "new leaf: berry blend with unspecified form"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        10
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1365
+    }
+  ],
+  "packet_sha256": "13a800c043928a29906779bbc4113c3356e3a199f33d0cd83e903968b58c515a"
+}

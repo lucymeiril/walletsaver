@@ -61,6 +61,7 @@ def test_cosmetic_fullwidth_identity_is_shared_but_real_name_or_pack_changes_are
 
 
 @pytest.mark.parametrize('title,quantity,count', [
+    ('설성목장한우사골 곰탕 스틱 14g x 10 x 4',14,40),
     ('카누 라떼 커피 13.5g x 50스틱 x 2박스',13.5,100),
     ('봉하쌀영양찰밥230g x 6 x 2',230,12),
     ('델몬트 스퀴즈 사과/오렌지 에이드 240ml x 30 x 2팩',240,60),

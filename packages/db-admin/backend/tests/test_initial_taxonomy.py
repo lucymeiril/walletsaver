@@ -480,7 +480,7 @@ def test_costco_rice_shelf_declared_grains_and_prepared_food_are_separate(title,
     assert reviewed_costco_rice_form_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['세계인의 건강곡물 선물세트 1.54kg x 10세트','세계인의 건강 곡물 선물세트 1.54kg','다담정 우리쌀로 만든 전병 648g x 5세트','푸른들판 유기농 골든퀸 3kg x 3','익산농협 쌀이보배10kg x 2','대구농산 쌀가루 2.5kg'])
+@pytest.mark.parametrize('title',['세계인의 건강곡물 선물세트 1.54kg x 10세트','세계인의 건강 곡물 선물세트 1.54kg','대구농산 쌀가루 2.5kg'])
 def test_costco_rice_form_audit_does_not_guess_opaque_or_mixed_goods(title):
     assert classify_record(_raw('costco','쌀',title))['unified_category_id'] is None
 
@@ -1098,9 +1098,7 @@ def test_audited_costco_noodle_shelf_uses_explicit_noodle_form(title, leaf):
 
 
 @pytest.mark.parametrize("title", [
-    "마이어 라면 조리기", "코렐 더블링 라떼 면기 세트 4P", "냉동 손질 오징어 1.5kg X 2pack",
-    "절단꽃게 1.2kg X 2pack", "가지 2봉 (7개x 2봉)", "다담 떡볶이 양념 150g x 20",
-    "설성목장한우사골 곰탕 스틱 14g x 10 x 4", "Mama's Choice 오징어소면 300g",
+    "마이어 라면 조리기", "코렐 더블링 라떼 면기 세트 4P",
     "오뚜기 뿌셔뿌셔 불고기맛 95g x 16",
 ])
 def test_audited_costco_noodle_shelf_contaminants_stay_pending(title):
