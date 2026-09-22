@@ -164,6 +164,7 @@ LEAVES: tuple[Leaf, ...] = (
         # Exact reviewed listings only: fruit-name mentions do not prove form.
         ("avocado", "아보카도", ""), ("mango", "망고", ""), ("jujube", "대추", ""),
         ("lime", "라임", ""), ("grapefruit", "자몽", ""), ("dragon_fruit", "용과", ""),
+        ("fig", "무화과", ""),
     )),
     *_group("food.produce.processed_fruit", ("식품", "농산물", "가공과일"), "과일|쌀/잡곡/견과류", (
         ("frozen", "냉동과일", "냉동과일", "냉동과일|냉동 과일"),
@@ -296,7 +297,8 @@ LEAVES: tuple[Leaf, ...] = (
         ("pizza", "피자", "피자"), ("hotdog", "핫도그", "핫도그"), ("tteokgalbi", "떡갈비", "떡갈비"),
         ("sandwich", "샌드위치", "샌드위치"), ("meal_kit", "밀키트", "한식밀키트|일식|아시안식"),
         ("cheese_ball", "치즈볼", ""), ("vegetable_fritter", "채소튀김", ""),
-        ("meat_patty", "동그랑땡", ""), ("rice_cake", "떡", ""),
+        ("meat_patty", "동그랑땡", ""), ("hamburger_steak", "함박스테이크", ""),
+        ("rice_cake", "떡", ""),
         ("japchae", "조리잡채", ""), ("seasoned_meat", "양념육", ""),
         ("sushi", "완성초밥", ""), ("kimbap", "김밥", ""), ("salad", "조리샐러드", ""),
         ("grilled_fish", "조리생선구이", ""),
@@ -354,7 +356,10 @@ LEAVES: tuple[Leaf, ...] = (
         ("calcium", "칼슘", ""), ("zinc", "아연", ""), ("probiotics", "유산균", ""),
         ("red_ginseng", "홍삼", ""), ("vitamin_c", "비타민C", ""), ("lutein", "루테인", ""),
         ("omega3", "오메가3", ""), ("multivitamin", "종합비타민", ""), ("biotin", "비오틴", ""),
-        ("collagen", "콜라겐", ""),
+        ("collagen", "콜라겐", ""), ("black_ginseng", "흑삼", ""),
+        ("evening_primrose", "달맞이꽃종자유", ""), ("vitamin_d", "비타민D", ""),
+        ("vitamin_b", "비타민B", ""), ("chondroitin", "콘드로이친", ""),
+        ("propolis", "프로폴리스", ""), ("balanced_drink", "균형영양음료", ""),
     )),
     *_group("food.supplements.protein", ("식품", "건강식품", "단백질보충식품"), "", (
         ("powder", "단백질분말", ""), ("drink", "단백질음료", ""),
@@ -708,6 +713,93 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("household.organization.basket", ("생활용품", "수납·정리", "바구니"), "", (
         ("general", "수납바구니", ""),
+    )),
+    *_group("household.utilities.batteries", ("생활용품", "전기용품", "건전지"), "", (
+        ("lithium", "리튬일차전지", ""),
+    )),
+    *_group("household.bedding.quilt", ("생활용품", "침구용품", "이불"), "", (
+        ("summer", "여름이불", ""),
+    )),
+    *_group("household.bedding.pad", ("생활용품", "침구용품", "침대패드"), "", (
+        ("cooling", "냉감침대패드", ""),
+    )),
+    *_group("household.bedding.cover", ("생활용품", "침구용품", "침구커버"), "", (
+        ("pillow", "베개커버", ""),
+    )),
+    *_group("household.pest_control.electronic", ("생활용품", "해충관리", "전자퇴치기"), "", (
+        ("repeller", "전자해충퇴치기", ""),
+    )),
+    *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
+        ("lint_roller_refill", "테이프클리너리필", ""),
+    )),
+    *_group("household.outdoor.furniture", ("생활용품", "야외용품", "캠핑가구"), "", (
+        ("chair", "캠핑의자", ""),
+    )),
+    *_group("beauty.sun.protection", ("뷰티·개인관리", "선케어", "자외선차단"), "", (
+        ("patch", "선패치", ""),
+    )),
+    *_group("beauty.foot.care", ("뷰티·개인관리", "풋케어", "발관리"), "", (
+        ("peeling_mask", "발필링마스크", ""),
+    )),
+    *_group("beauty.face.skincare", ("뷰티·개인관리", "얼굴관리", "스킨케어"), "", (
+        ("moisturizing_cream", "보습크림", ""), ("soothing_gel", "수딩젤", ""),
+    )),
+    *_group("beauty.face.cleansing", ("뷰티·개인관리", "얼굴관리", "세안용품"), "", (
+        ("foam", "클렌징폼", ""),
+    )),
+    *_group("beauty.eye.contact", ("뷰티·개인관리", "눈관리", "콘택트렌즈용품"), "", (
+        ("solution", "렌즈관리용액", ""),
+    )),
+    *_group("clothing.adult.tops", ("패션", "성인의류", "상의"), "", (
+        ("tshirt", "반소매티셔츠", ""),
+    )),
+    *_group("clothing.children.tops", ("패션", "아동의류", "상의"), "", (
+        ("tshirt", "아동반소매티셔츠", ""),
+    )),
+    *_group("clothing.children.outerwear", ("패션", "아동의류", "아우터"), "", (
+        ("windbreaker", "아동바람막이", ""),
+    )),
+    *_group("clothing.adult.knit", ("패션", "성인의류", "니트"), "", (
+        ("pullover", "니트풀오버", ""), ("cardigan", "가디건", ""),
+    )),
+    *_group("clothing.adult.bottoms", ("패션", "성인의류", "하의"), "", (
+        ("pants", "긴바지", ""), ("shorts", "반바지", ""),
+    )),
+    *_group("clothing.adult.outerwear", ("패션", "성인의류", "아우터"), "", (
+        ("down_jacket", "다운재킷", ""),
+    )),
+    *_group("clothing.adult.accessories", ("패션", "성인의류", "패션소품"), "", (
+        ("arm_sleeves", "팔토시", ""),
+    )),
+    *_group("clothing.adult.sleepwear", ("패션", "성인의류", "잠옷"), "", (
+        ("pajama_set", "파자마세트", ""),
+    )),
+    *_group("clothing.women.underwear", ("패션", "여성의류", "속옷"), "", (
+        ("panties", "여성팬티", ""), ("bra", "여성브라", ""),
+    )),
+    *_group("clothing.men.underwear", ("패션", "남성의류", "속옷"), "", (
+        ("sleeveless", "남성민소매속옷", ""),
+    )),
+    *_group("footwear.adult.court", ("패션", "신발", "코트화"), "", (
+        ("shoes", "성인코트화", ""),
+    )),
+    *_group("appliances.kitchen.egg_cooker", ("가전", "주방가전", "계란조리기"), "", (
+        ("electric", "전기계란찜기", ""),
+    )),
+    *_group("food.snacks.chestnut", ("식품", "과자·간식", "밤간식"), "", (
+        ("roasted", "구운밤", ""),
+    )),
+    *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "", (
+        ("fried_squid", "오징어튀김", ""),
+    )),
+    *_group("food.preserved.meat", ("식품", "반찬·저장식품", "육류반찬"), "", (
+        ("jangjorim", "장조림", ""),
+    )),
+    *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "", (
+        ("stir_fried", "볶음김치", ""),
+    )),
+    *_group("food.produce.prepared", ("식품", "농산물", "간편농산물"), "", (
+        ("cooked_sweet_potato", "조리고구마", ""),
     )),
 )
 

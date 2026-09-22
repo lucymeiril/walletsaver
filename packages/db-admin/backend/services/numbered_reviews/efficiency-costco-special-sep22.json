@@ -1,0 +1,2201 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass137",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "질레트 프로쉴드 파워 면도기세트 기1 + 날 9",
+      "raw_record_ids": [
+        "ingestion:37:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:0": "25aa22131a8c0e9b1f6d979f57c10fd06c3f63ef4de1962aa11fee88fbfcb343"
+      },
+      "number": 1,
+      "leaf": "beauty.personal.shaving.razor",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "제스프리 골드키위 5.7kg(37~41입)",
+      "raw_record_ids": [
+        "ingestion:37:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:1": "02490a006ac50c763c11d306082bcd54165f22b906563c19639694c028cf445b"
+      },
+      "number": 2,
+      "leaf": "food.produce.fruit.kiwi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "블랙포레 루트파워 쿨&딥클린 탈모완화샴푸 1,050ml",
+      "raw_record_ids": [
+        "ingestion:37:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:2": "a0aef88764684e7269594ce251e390ed0d6db7b2f6a67d08fa89e204d101393a"
+      },
+      "number": 3,
+      "leaf": "beauty.personal.hair.shampoo",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "스타벅스 네스프레소 캡슐커피 60개",
+      "raw_record_ids": [
+        "ingestion:37:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:3": "bbef04aabfc9df13b0bef544c80c75b7a8ad7ed9cf5f194570a23a76235ca247"
+      },
+      "number": 4,
+      "leaf": "food.drinks.coffee.capsule",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "센소다인 엑스트라 화이트 치약 120g x 6개",
+      "raw_record_ids": [
+        "ingestion:37:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:4": "41b25049c757bd4c59bd765681151f90cc2a8ea80a95b8f59da2dcefd705b4b4"
+      },
+      "number": 5,
+      "leaf": "beauty.personal.oral.toothpaste",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "에너자이저 리튬건전지 AA 20개",
+      "raw_record_ids": [
+        "ingestion:37:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:5": "11bc51de056e0020c7b3f85d65e3480aa9cd8d9aa50065b407c1dbe7f90b1c34"
+      },
+      "number": 6,
+      "leaf": "household.utilities.batteries.lithium",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "커클랜드 시그니춰 다용도 타월 324장/박스-파랑",
+      "raw_record_ids": [
+        "ingestion:37:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:6": "06691978317b5035c16de31759c579daaa67372410a3249647fd43cbe21fd55b"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "로트벡쉔 그로우업 샷 60ml x 30병",
+      "raw_record_ids": [
+        "ingestion:37:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:7": "79983c027215377b93252ac7788e71ff09e4090b623e53c15cecfc420a82f7c4"
+      },
+      "number": 8,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "센타스타 썸머 딜라이트 프리미엄 이불 - 퀸",
+      "raw_record_ids": [
+        "ingestion:37:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:8": "31dbfcf34238e9c4a59ff9d577782c49416101afe026a52d560a83afec8618f6"
+      },
+      "number": 9,
+      "leaf": "household.bedding.quilt.summer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "센타스타 썸머 딜라이트 프리미엄 이불 - 싱글",
+      "raw_record_ids": [
+        "ingestion:37:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:9": "5de9225208fffa0d03e705232f623b12e80ea8e5723b285b2325d6cd6ec7a4ec"
+      },
+      "number": 10,
+      "leaf": "household.bedding.quilt.summer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "오드앵글 18L 제습기 CT-DH1800WH",
+      "raw_record_ids": [
+        "ingestion:37:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:10": "5a6f903a6c3d5e50f0d8ec0957f84d86cfe59e830103b6af913f19c6dbf63511"
+      },
+      "number": 11,
+      "leaf": "appliances.climate.dehumidifier.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "긱 스마트 해충 퇴치기",
+      "raw_record_ids": [
+        "ingestion:37:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:11": "92be954760de5ef1af35a6d30ba4ea76115115116f8d659ff3ca471926b224ad"
+      },
+      "number": 12,
+      "leaf": "household.pest_control.electronic.repeller",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "깨끗한나라 촉앤감 로얄화이트화장지40m x 30롤 x 2팩",
+      "raw_record_ids": [
+        "ingestion:37:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:12": "f8534ea81a6497b6728b57f7e1b1023e156f0984aa40c6d4d1ca5a7c06002ba3"
+      },
+      "number": 13,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "크리넥스 데코&소프트 3겹 화장지 40m x 30롤 x 2",
+      "raw_record_ids": [
+        "ingestion:37:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:13": "1c270df8d494f0547d3de93f91fbade481d7a3a7b48310ceb4c4f2ac9f848c38"
+      },
+      "number": 14,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "AHC 마스터즈 선패치 5회분 x 3",
+      "raw_record_ids": [
+        "ingestion:37:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:14": "57efd8026dd7df42b1bbf15035eb30154a8d3caf8d0987fdf0d160b3c480dced"
+      },
+      "number": 15,
+      "leaf": "beauty.sun.protection.patch",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "깨끗한나라 순수 프리미엄 슈퍼롱 40m x 30롤 x 2",
+      "raw_record_ids": [
+        "ingestion:37:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:15": "c7b71b7825ac186beb449ad337639502cd50443a105d466fe44dbd67f81c49ab"
+      },
+      "number": 16,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "정관장 홍삼원 50ml x 60포 x 5",
+      "raw_record_ids": [
+        "ingestion:37:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:18": "681f8939d92dd68f3b6ce90e22f38bfd320ba4090d0e0c972ce5fc79e4e33804"
+      },
+      "number": 17,
+      "leaf": null,
+      "hold_reason": "quantity: normalized variant conflicts with an existing product during real rebuild"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "자미에슨 프로바이오틱스 370mg x 90캡슐 x 2병",
+      "raw_record_ids": [
+        "ingestion:37:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:21": "037ecc7224612c8e09fd605b12a048ae3d4f2413d3721ed68295d0cec554b564"
+      },
+      "number": 18,
+      "leaf": "food.supplements.functional.probiotics",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 왕교자 1.925kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:22": "07a728bb394a9ab5ba77d6002ceecfc67c1e1dc35d793e0c9e9b924ffd402cde"
+      },
+      "number": 19,
+      "leaf": "food.meals.dumplings.gyoza",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "테디베어 선염 세면타월 5P",
+      "raw_record_ids": [
+        "ingestion:37:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:23": "049e94985e29c2c05b62b849280475d8a6721093123e10651068e5c0df65c6f3"
+      },
+      "number": 20,
+      "leaf": "household.bath.textiles.towel",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "미즈노 남성 쿨 크루넥 티셔츠 3매",
+      "raw_record_ids": [
+        "ingestion:37:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:24": "948a1efc401f54cb5800e6550ad1c3b707dc66faea95c26c0c44dab3c3191575"
+      },
+      "number": 21,
+      "leaf": null,
+      "hold_reason": "evidence: sleeve length not established"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "지퍼락 냉장용 지퍼백 대형 160매",
+      "raw_record_ids": [
+        "ingestion:37:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:25": "9d3954d0a85b692cec68cc9ff6002ea74e17c9b4f02aca2c508a1a68dc1af938"
+      },
+      "number": 22,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "스팸 선물세트 6호",
+      "raw_record_ids": [
+        "ingestion:37:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:26": "13cbc9b1cb9e2bc8431c538a7a55a308601f02e6d35b054af9eb97bd9c772d95"
+      },
+      "number": 23,
+      "leaf": "food.preserved.canned.ham",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "동원 고추참치 100g x 12",
+      "raw_record_ids": [
+        "ingestion:37:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:27": "6b6cd55e4f0db5195f9efa62848df9ff18563e5db022aebde898a3523c062769"
+      },
+      "number": 24,
+      "leaf": "food.preserved.canned.tuna",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "엔젯오리진 코랄칼슘 마그네슘 비타민D 아연120정",
+      "raw_record_ids": [
+        "ingestion:37:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:28": "688cc79ed327b1d8177271f41587bd738e0f75056a49dc93a819d63cbaca1de0"
+      },
+      "number": 25,
+      "leaf": "food.supplements.functional.calcium",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "AHC 마스터즈 선스틱22g x 2 + 선크림 10g x 2",
+      "raw_record_ids": [
+        "ingestion:37:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:29": "07ca28abf3e7b52010458f9f9fba8d3281d51a5738b891561ed4855a5c9e2854"
+      },
+      "number": 26,
+      "leaf": null,
+      "hold_reason": "mixed-package: sun stick and sun cream"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고로고로 테이프클리너 리필 6EA",
+      "raw_record_ids": [
+        "ingestion:37:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:30": "7a5c9ca3e59e6ec9c685ffb8946cb9a0b650c8e641146468f36f7143b96d0431"
+      },
+      "number": 27,
+      "leaf": "household.cleaning.tools.lint_roller_refill",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "네츄럴라이프 칼슘 마그네슘 비타민D&K 893mg x 324ct",
+      "raw_record_ids": [
+        "ingestion:37:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:31": "029a355fcb722d48ce0d0394ea2aecbe13a0a8ac55a7aefb336fb842c7622667"
+      },
+      "number": 28,
+      "leaf": "food.supplements.functional.calcium",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "히말라야 너리싱 스페셜 기프트 세트",
+      "raw_record_ids": [
+        "ingestion:37:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:32": "becbebfa6e19b6f155775aedc5a1c8cb429d93d216474aa74790c7a39693de31"
+      },
+      "number": 29,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "기라로쉬 프리미엄 코마사 세면타월 12P",
+      "raw_record_ids": [
+        "ingestion:37:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:33": "59fb1abbd3209c94e34390d72b7136c6480588f6a6af27fd0d0fd82f2810bd2f"
+      },
+      "number": 30,
+      "leaf": "household.bath.textiles.towel",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "종근당건강 6년근 홍삼골드70ml x 30포x 2세트",
+      "raw_record_ids": [
+        "ingestion:37:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:34": "390935119d1e6a118693901ec5adf09261c7b675689f47b341a7b44e175d529b"
+      },
+      "number": 31,
+      "leaf": "food.supplements.functional.red_ginseng",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "종근당건강 알로에베라겔 골드 1000ml x 2병",
+      "raw_record_ids": [
+        "ingestion:37:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:35": "fe4991724979acaede5f90993a128895d3a262d4a3a1cfb54a9828cb2ea7d7cb"
+      },
+      "number": 32,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고메 돈카츠 골라담기450g x 4",
+      "raw_record_ids": [
+        "ingestion:37:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:36": "9cd2370fa1527cafe03b27758647f9f428188cd61388cf7a02307b4295d942b6"
+      },
+      "number": 33,
+      "leaf": "food.meals.prepared.pork_cutlet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고메 소바바 소이허니 순살 1100g x 2",
+      "raw_record_ids": [
+        "ingestion:37:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:37": "ef90fe5a8c639d822b0bea480b13074aabd6e5d16380782d26408c09e650a090"
+      },
+      "number": 34,
+      "leaf": "food.meals.prepared.chicken",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비첸향 골드코인260g",
+      "raw_record_ids": [
+        "ingestion:37:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:38": "9ef5688276f651e8e9bf4556f863806c6dd4445964494eb14a312b28734722a4"
+      },
+      "number": 35,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비지트 인 뉴욕 여성 레이어드 룩 풀오버 니트",
+      "raw_record_ids": [
+        "ingestion:37:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:39": "2ba77c4dcd0a738cc2564fcda72278841fcb5b780393efba36262ccf287b30e3"
+      },
+      "number": 36,
+      "leaf": "clothing.adult.knit.pullover",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "유기농 귀리 1kg x 3",
+      "raw_record_ids": [
+        "ingestion:37:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:40": "1b746b4be0c18bc0854ca88991dc981d46f73472422cde6f3be85f4b642dc017"
+      },
+      "number": 37,
+      "leaf": "food.grains.rice.oat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "크리넥스 보습소프트 3겹티슈 160매 x 8 x 2팩",
+      "raw_record_ids": [
+        "ingestion:37:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:41": "47458a3d5c739c3eca149030879110faba6350502f687bc3bb1f3892abf44a86"
+      },
+      "number": 38,
+      "leaf": "household.hygiene.paper.facial",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "엔젯오리진 달맞이꽃 종자유 1,001mg x 180캡슐",
+      "raw_record_ids": [
+        "ingestion:37:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:42": "a7578970e5fb609aaeae25d1f3b426e6c435a337d19ce42aa227117b2c97efa9"
+      },
+      "number": 39,
+      "leaf": "food.supplements.functional.evening_primrose",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "프로쉬 코튼블라썸 섬유유연제3L x 2",
+      "raw_record_ids": [
+        "ingestion:37:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:43": "cc03b8bbeb3b60ff419e138c3cdda4db4c5cfaad7d3f172b34f19604819cbe52"
+      },
+      "number": 40,
+      "leaf": "household.cleaning.laundry.softener",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ한뿌리녹용흑삼스틱 8ml x 60",
+      "raw_record_ids": [
+        "ingestion:37:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:44": "8d6beac89a076dc89c3e3ceea591ab2494eca411044dc18b40a8c1fdbba89c29"
+      },
+      "number": 41,
+      "leaf": "food.supplements.functional.black_ginseng",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "햇반 김치치즈 주먹밥 100g X 12 X 2",
+      "raw_record_ids": [
+        "ingestion:37:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:45": "ceb1ebf2f8416ad33b7b9d1bbc5ff38b7137b7199a47fc7c8eb813cfa9970635"
+      },
+      "number": 42,
+      "leaf": null,
+      "hold_reason": "quantity: normalized variant conflicts with an existing product during real rebuild"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "동원EPA 참치150g x 10",
+      "raw_record_ids": [
+        "ingestion:37:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:46": "47069ff8dff4a012a15d38e348cdf202cf253fe6e56b258f1a78d34a6f4173a2"
+      },
+      "number": 43,
+      "leaf": "food.preserved.canned.tuna",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "자미에슨츄어블비타민 D 2500IU 700mg X 75정X 2병",
+      "raw_record_ids": [
+        "ingestion:37:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:47": "9c05d3b7ecc452d3931f788666915801abda5ed72a0f008ab1288aa7d344b7ad"
+      },
+      "number": 44,
+      "leaf": "food.supplements.functional.vitamin_d",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "종근당건강프로메가오메가3 트리플/654mg x 60캡슐x 2",
+      "raw_record_ids": [
+        "ingestion:37:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:48": "9c9cae8c16c0f06e663a0d5ced4e6cbc22ed2409b023d95fbeebc147028b56ef"
+      },
+      "number": 45,
+      "leaf": "food.supplements.functional.omega3",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "SOUP 여성 크루넥 가디건",
+      "raw_record_ids": [
+        "ingestion:37:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:49": "c91b393138403a7cf6cfa191b0e1f2b2eceb9d525ee7d043f23a9771798e4159"
+      },
+      "number": 46,
+      "leaf": "clothing.adult.knit.cardigan",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고수제한섬만두1408g x 2",
+      "raw_record_ids": [
+        "ingestion:37:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:50": "8d1d497b9cd88805b52555098889aa641244cae28c40f846b5ea2eea6a9b15f6"
+      },
+      "number": 47,
+      "leaf": "food.meals.dumplings.assorted",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 유기농맛밤 42g x 17pk",
+      "raw_record_ids": [
+        "ingestion:37:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:51": "5876f378288a32da7a6de511b1c480d7531148a73a62106ef8ae111a596b9629"
+      },
+      "number": 48,
+      "leaf": "food.snacks.chestnut.roasted",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "프라임헬스 비타민 B 컴플렉스 90정 x 2",
+      "raw_record_ids": [
+        "ingestion:37:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:52": "0f3494ba506115708dbc5c236f6350743ccda116c664adbed9a4e5f6fa53f6d4"
+      },
+      "number": 49,
+      "leaf": "food.supplements.functional.vitamin_b",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "스팸 선물세트 12호",
+      "raw_record_ids": [
+        "ingestion:37:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:53": "175b4370f37efc564d5fcf350d12aceb56bcb5482ed188b4ba9857d357e8c618"
+      },
+      "number": 50,
+      "leaf": "food.preserved.canned.ham",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "바디블루 여성 팬티 세트 5P",
+      "raw_record_ids": [
+        "ingestion:37:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:54": "8519b4395737e8c6aec106046ee3be3f4f3c94cb9638b34631ad296d5586e647"
+      },
+      "number": 51,
+      "leaf": "clothing.women.underwear.panties",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고메 소바바 양념순살 1.1kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:55": "04f9135518e23325b935253fa32c26723b25c11605017f41a37de784853c4558"
+      },
+      "number": 52,
+      "leaf": "food.meals.prepared.chicken",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "무한타올 스마일 핸드 타월 6P",
+      "raw_record_ids": [
+        "ingestion:37:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:56": "972514feaf17cb85b3dac5af37cadacaa6d927a52d3deadac4f4fa285152207d"
+      },
+      "number": 53,
+      "leaf": "household.bath.textiles.towel",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고메 핫도그 크리스피 1.04Kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:57": "789f2ed3f9751fda8a4992dde43d957ab116743497961b550de9d52d0507ea22"
+      },
+      "number": 54,
+      "leaf": "food.meals.prepared.hotdog",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "햇반 파로 통곡물밥 190g x 12",
+      "raw_record_ids": [
+        "ingestion:37:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:58": "1568ec22966a0970672e99c1ec1f3fa9f8d284edc3e08bd93f4a63e9422dec96"
+      },
+      "number": 55,
+      "leaf": "food.meals.rice.instant",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "에이프릴앳홈 리플 누비 이불 - 싱글",
+      "raw_record_ids": [
+        "ingestion:37:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:59": "1f719b13e6f2b69d781ea0fa9aef5f842e1da7cd176b2071a78bda56b18a66c3"
+      },
+      "number": 56,
+      "leaf": "household.bedding.quilt.summer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "고메 함박스테이크 810g x 3",
+      "raw_record_ids": [
+        "ingestion:37:60"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:60": "017a03f98e2cc6b5f9f1feb9b4ea1ec7d67c23c41ac4b552cb2250572146600f"
+      },
+      "number": 57,
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "소프리스 발 뒤꿈치 필링 마스크 8매",
+      "raw_record_ids": [
+        "ingestion:37:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:61": "5e8afffb0ee76bdc0a17ba834e674363ac6dc147816a10b7dd0ba5091a0d40c4"
+      },
+      "number": 58,
+      "leaf": "beauty.foot.care.peeling_mask",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "코튼클럽 남성 80수 탱크 3매",
+      "raw_record_ids": [
+        "ingestion:37:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:62": "c64bb9ece1b80fd615b3fae8eee9062f499b64fd685fc584ffd28d03efde16b2"
+      },
+      "number": 59,
+      "leaf": "clothing.men.underwear.sleeveless",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "질레트 퓨전5면도날 20개",
+      "raw_record_ids": [
+        "ingestion:37:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:63": "e5f026fbd2cfdd5e92743d75ef87503cbc6488225e64917f626231b889daf460"
+      },
+      "number": 60,
+      "leaf": "beauty.personal.shaving.blades",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 바지락 칼국수 642g x 4",
+      "raw_record_ids": [
+        "ingestion:37:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:64": "65c66fc135dba4991c58f111d62057c0d71539bdc7dd712853e262d01ebcb7e5"
+      },
+      "number": 61,
+      "leaf": "food.meals.noodles.kalguksu",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "홈스타 욕실용 클리너 750ml x 4개",
+      "raw_record_ids": [
+        "ingestion:37:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:65": "9e4bb3098d8e0c5d0998b0cf89479cdeb34a746d116b97c24bd367d4af0ea72e"
+      },
+      "number": 62,
+      "leaf": "household.cleaning.bath.cleaner",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 비비고 진국 육수 소고기양지 500g x 10",
+      "raw_record_ids": [
+        "ingestion:37:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:66": "bdfd858c202c4569268321594bfc7f617ae5b42d8270e8537647361c1402ac68"
+      },
+      "number": 63,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "콴첼 MBP 비타민 D 500mg x 120 정",
+      "raw_record_ids": [
+        "ingestion:37:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:67": "e5d0f86bf14d727e0f8640c3011f5bb703354b6bb8313154453c73c80be5b81d"
+      },
+      "number": 64,
+      "leaf": "food.supplements.functional.vitamin_d",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 유기농 맛밤 42g X 17pk x2",
+      "raw_record_ids": [
+        "ingestion:37:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:68": "5824615713c80ddb445bc47ab0d336f828ff7ff56bec4042393fd5311641de9f"
+      },
+      "number": 65,
+      "leaf": null,
+      "hold_reason": "quantity: normalized variant conflicts with an existing product during real rebuild"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "푸마 성인 코트화",
+      "raw_record_ids": [
+        "ingestion:37:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:69": "8a4828a249fe52f6ff938a6191c9ebe871240571bcd9cd79bb058d1304b0cf42"
+      },
+      "number": 66,
+      "leaf": "footwear.adult.court.shoes",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "이지엔 실리콘 지퍼백 세트 6P (Sx2, Mx2, Lx1, XLx1)",
+      "raw_record_ids": [
+        "ingestion:37:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:70": "3222f46067eb5513735e189f330e15b003ba9dae4fa913ecfe3fd19b44487266"
+      },
+      "number": 67,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 깻잎고기만두 1.6kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:71": "bc28ce779ee85781c735321bb69eb35925992c1bc50ab3c4357e3e1958ece039"
+      },
+      "number": 68,
+      "leaf": "food.meals.dumplings.assorted",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "컬럼비아 유니버시티 키즈 반소매 티셔츠",
+      "raw_record_ids": [
+        "ingestion:37:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:72": "f6e2b02a1672721746651a45cdd0268452ea6d6a3ac3a5c2c2ef54e94f3d4840"
+      },
+      "number": 69,
+      "leaf": "clothing.children.tops.tshirt",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "호주 카라카라 오렌지 30입 (7kg내외)",
+      "raw_record_ids": [
+        "ingestion:37:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:73": "b9ed4621a9b3a34036a3cf8fb9009bfce917859f27536255c069a6a25cfff420"
+      },
+      "number": 70,
+      "leaf": "food.produce.fruit.citrus",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "코데즈 컴바인 여성 와이드 팬츠",
+      "raw_record_ids": [
+        "ingestion:37:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:74": "9474c2bdc3cbb89faa20f66f7c912d77ad7820bf357a234ffcc31c4a842b0659"
+      },
+      "number": 71,
+      "leaf": "clothing.adult.bottoms.pants",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "한미양행 콘드로이친 1200 1,000mg x 180정",
+      "raw_record_ids": [
+        "ingestion:37:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:75": "6cd6cef5e6fa7f9257447f8b5950958582723d5aef0abc7f914698a26bb17e63"
+      },
+      "number": 72,
+      "leaf": "food.supplements.functional.chondroitin",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "프로메가식물성rTG 츄어블오메가3 키즈 700mg x 120",
+      "raw_record_ids": [
+        "ingestion:37:76"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:76": "9edd2f98104af5252a0d9c22530f71d7743bc2813e1b8b5b3ce9fc1af9bd3b49"
+      },
+      "number": 73,
+      "leaf": "food.supplements.functional.omega3",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "트라이엄프 노와이어 인견 쿨브라 2매",
+      "raw_record_ids": [
+        "ingestion:37:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:77": "7d2105ad12c401dd9b6a0a6c68014a941addfed74227faf25ad98fd097b902b2"
+      },
+      "number": 74,
+      "leaf": "clothing.women.underwear.bra",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "스팸 선물세트 1호",
+      "raw_record_ids": [
+        "ingestion:37:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:78": "bce5c854f570195ca4b97da8bf7ba1b5b02824a03ac43e1512bc068c3f788147"
+      },
+      "number": 75,
+      "leaf": "food.preserved.canned.ham",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "사옹원튀김공방 오징어 튀김 1kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:79": "5361adb7b695b0e8f54a2475573b81b83e9acb7b715204fba079f568f0b4eea5"
+      },
+      "number": 76,
+      "leaf": "food.meals.prepared.fried_squid",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "사옹원 바삭 김치전 1.3kg x 2",
+      "raw_record_ids": [
+        "ingestion:37:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:80": "ac426b4ec8aa5c44262cb11052e48cff50089bdf3add2468c4e250d76cd071d6"
+      },
+      "number": 77,
+      "leaf": "food.meals.prepared.pancake",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "알티지 울트라 오메가3 / 1,150mg x 140캡슐",
+      "raw_record_ids": [
+        "ingestion:37:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:81": "063bb1ea41dd29a63e6da5e8680591d9754f3f71d6e7373c861369ddb74ca645"
+      },
+      "number": 78,
+      "leaf": "food.supplements.functional.omega3",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "메디포포 레미디얼 크림 100g X 2",
+      "raw_record_ids": [
+        "ingestion:37:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:82": "7d81a24480035e63b7004cb2d8d008c079133a069786e504e2bf0e2c66df3e5e"
+      },
+      "number": 79,
+      "leaf": "beauty.face.skincare.moisturizing_cream",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "위즈웰 올스텐 2단 계란찜기 WSE6410",
+      "raw_record_ids": [
+        "ingestion:37:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:83": "7b0c058584ed61f4ebdb4427d33ee06b2234a447372cd55a9ac22e4d4f5b03c0"
+      },
+      "number": 80,
+      "leaf": "appliances.kitchen.egg_cooker.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "벨레다 슈퍼푸드 너리싱 크림 40ml x 2",
+      "raw_record_ids": [
+        "ingestion:37:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:84": "b2fb654ac759030097ab701f8a496943d0c9f0c68da21183d65367630c97c55e"
+      },
+      "number": 81,
+      "leaf": "beauty.face.skincare.moisturizing_cream",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "알러텍트 아이스 패드 - 킹",
+      "raw_record_ids": [
+        "ingestion:37:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:85": "588214af78251ba9828cd4907a369df7de26ebb031b7b9035e88f8b4da9044c1"
+      },
+      "number": 82,
+      "leaf": "household.bedding.pad.cooling",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "휠라 아동 바람막이",
+      "raw_record_ids": [
+        "ingestion:37:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:86": "41d0e1d6212e5a6ea7dea4b5ae92287c2aa10e2dda54e80ac6647d6d40483a67"
+      },
+      "number": 83,
+      "leaf": "clothing.children.outerwear.windbreaker",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "컬럼비아 유니버시티 남성 테리 반바지",
+      "raw_record_ids": [
+        "ingestion:37:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:87": "e147cf950b29e7bd812c81e2febba31c44fc0111ed33325a9811e6dbe777ed9c"
+      },
+      "number": 84,
+      "leaf": "clothing.adult.bottoms.shorts",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 김치볶음 150g x 10",
+      "raw_record_ids": [
+        "ingestion:37:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:88": "ba64c6ab333c7c0ad35407498809195f98089c3ced21464990182886787114e8"
+      },
+      "number": 85,
+      "leaf": "food.preserved.kimchi.stir_fried",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "자미에슨 비오틴 230mg x 60정 x 2병",
+      "raw_record_ids": [
+        "ingestion:37:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:89": "d2b12c7c744ee5400305608175468ca51dcc5c7eed3741a92837b0700e8fc229"
+      },
+      "number": 86,
+      "leaf": "food.supplements.functional.biotin",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "본죽 쇠고기 장조림 170g x 4",
+      "raw_record_ids": [
+        "ingestion:37:90"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:90": "df50d390b68067067d0e3f969d81ac178f28a55d79ea16d610f747ff9ba4da1e"
+      },
+      "number": 87,
+      "leaf": "food.preserved.meat.jangjorim",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "FiJi 모락셀라냄새제거부스터 65개",
+      "raw_record_ids": [
+        "ingestion:37:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:91": "750ca2d6c1f3afd4a95158c09051df2f3db8a73f204e1bfa6b6f9a0a1e00b3a4"
+      },
+      "number": 88,
+      "leaf": null,
+      "hold_reason": "evidence: laundry scent-booster form not established"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 남도떡갈비 900g x 3",
+      "raw_record_ids": [
+        "ingestion:37:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:92": "702642ffd084d37bf8b99017ca531ea8677cda03434054bf24bbc0feb70e4981"
+      },
+      "number": 89,
+      "leaf": "food.meals.prepared.tteokgalbi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "커클랜드 시그니춰 다목적 렌즈 관리용액 473ml x 3",
+      "raw_record_ids": [
+        "ingestion:37:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:93": "75d5936ffd9c0117e9038f34898acfde76c112fce71fa141d40c6c1c1bf6c5e6"
+      },
+      "number": 90,
+      "leaf": "beauty.eye.contact.solution",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "커클랜드 시그니춰 여성 라운지 반바지",
+      "raw_record_ids": [
+        "ingestion:37:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:94": "5deeae547aad0f997165084868a8dee23ebc72e7314a1f285de9ddf063e481d5"
+      },
+      "number": 91,
+      "leaf": "clothing.adult.bottoms.shorts",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "크레송 여성 슬림핏 밴딩 팬츠",
+      "raw_record_ids": [
+        "ingestion:37:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:95": "a08793dda896d7310f18881e77469a592a10e2e1dee44e7e4fab92097dcfeae1"
+      },
+      "number": 92,
+      "leaf": "clothing.adult.bottoms.pants",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "동원 튜나리챔11호x 6",
+      "raw_record_ids": [
+        "ingestion:37:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:96": "4947c5b92e914a3d7c8050b9e0e8c2f5a82c47f9a01646a375aa10c11d169e85"
+      },
+      "number": 93,
+      "leaf": null,
+      "hold_reason": "mixed-package: tuna and canned ham gift set"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 감태 캔 김 선물세트",
+      "raw_record_ids": [
+        "ingestion:37:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:97": "f69f2b5acaef4174ea6a6376b05f63b628a01b504b4a465ae39bef3ed0c8d9e4"
+      },
+      "number": 94,
+      "leaf": "food.seafood.seaweed.laver",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "실크테라피 헤어 밀크 120ml x 2개",
+      "raw_record_ids": [
+        "ingestion:37:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:37:98": "916917e65765140821a6814cd2ad12e4678cb09dcbe620ab294ce4451ae60c1d"
+      },
+      "number": 95,
+      "leaf": "beauty.personal.hair.treatment",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "골든벨 나무수저 4 인 세트",
+      "raw_record_ids": [
+        "ingestion:38:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:0": "b6de41dfeee8bf3ec9ebdc120eb23d044ce0d613341d18a8ee1dbcec3c2ff0f4"
+      },
+      "number": 96,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "트루블루 프로폴리스포르테 590mg x 350캡슐",
+      "raw_record_ids": [
+        "ingestion:38:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:1": "3f57be0066de5b2633556c0b89fa44972895fd3e9c67cb458173ac7f626711a8"
+      },
+      "number": 97,
+      "leaf": "food.supplements.functional.propolis",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "베트남 용과 4입(2kg）",
+      "raw_record_ids": [
+        "ingestion:38:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:2": "87bd04c5f8ab6dda5acfbec4ba72ddc8b7724ce1ca61ed0d7e6dae5a0a1da1a2"
+      },
+      "number": 98,
+      "leaf": "food.produce.fruit.dragon_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "칠레산 레몬 8.4kg",
+      "raw_record_ids": [
+        "ingestion:38:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:3": "701fa9982e2e2f0b2d1677bd1f8219576b76b49288abc20b5d52c49e5200a81b"
+      },
+      "number": 99,
+      "leaf": "food.produce.fruit.citrus",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 햇반베이컨계란볶음밥1.5kg x 2",
+      "raw_record_ids": [
+        "ingestion:38:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:4": "a71da1364ff1268b15fb2a727eadbb6bb343a5c77d03857211e42ff882e0155f"
+      },
+      "number": 100,
+      "leaf": "food.meals.rice.fried",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "바로먹는 고구마 130g X 12ea",
+      "raw_record_ids": [
+        "ingestion:38:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:5": "d5bf995f4e28fa3e306da2f9db5d270b204e68f64e1011a2a7d1722f4fa5dc40"
+      },
+      "number": 101,
+      "leaf": "food.produce.prepared.cooked_sweet_potato",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고통새우만두200g x 6",
+      "raw_record_ids": [
+        "ingestion:38:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:6": "1f93afde598dd5cfaaecb7307a7189652252a54ade82e9656f975fe6aff8844d"
+      },
+      "number": 102,
+      "leaf": "food.meals.dumplings.assorted",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 한입떡갈비 490g x 4",
+      "raw_record_ids": [
+        "ingestion:38:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:7": "1019e16b4e76766aae6ca8b2a1d7558fa63fb0f10441d8cc32ae940c948c2364"
+      },
+      "number": 103,
+      "leaf": "food.meals.prepared.tteokgalbi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "관절엔(N)리프리놀 160mg x 100캡슐",
+      "raw_record_ids": [
+        "ingestion:38:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:8": "1367908fc6d2e250543b491cb5a697884f1ec5ffd7768ae5f9b1865f646f22f2"
+      },
+      "number": 104,
+      "leaf": null,
+      "hold_reason": "evidence: ingredient not established"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "컬럼비아 유니버시티 성인 반소매 티셔츠",
+      "raw_record_ids": [
+        "ingestion:38:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:9": "c19ec297ee1cad3982b8e2bede76c58011cf5d9a0b771c80de0696e97864489f"
+      },
+      "number": 105,
+      "leaf": "clothing.adult.tops.tshirt",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "BNR17 다이어트 유산균 비에날씬에스 55캡슐",
+      "raw_record_ids": [
+        "ingestion:38:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:10": "cb30035d44b580628d2a9ebbf4ac2437c7971954e6312c6fe42ae809a0dd422a"
+      },
+      "number": 106,
+      "leaf": "food.supplements.functional.probiotics",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "에이프릴앳홈 순면 리플 겹이불 - 싱글",
+      "raw_record_ids": [
+        "ingestion:38:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:11": "c2d7e9e9ae79b416f0ce922493b830c770a62386606b430b96b4dcdf0f55386a"
+      },
+      "number": 107,
+      "leaf": "household.bedding.quilt.summer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "헤라 리프레싱 클렌징폼 160g + 50g x 2",
+      "raw_record_ids": [
+        "ingestion:38:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:12": "8e688c8801d26fd4e74e43616772fee4665f77a48ab5f1ed26a1956423c45db7"
+      },
+      "number": 108,
+      "leaf": "beauty.face.cleansing.foam",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 햇반 솥반 꿀약밥 210g x 8",
+      "raw_record_ids": [
+        "ingestion:38:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:13": "50ceb2791d29293e7cbc837944ace6fc991beb4c45c1b4a6933512311c5e84d3"
+      },
+      "number": 109,
+      "leaf": "food.meals.rice.sticky",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "컬럼비아 쿨토시 2쌍 세트",
+      "raw_record_ids": [
+        "ingestion:38:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:14": "10ab93058f13aed1bee5102c29eb4a0d0d337e0b3f9bf643552faf11c6e9b6f5"
+      },
+      "number": 110,
+      "leaf": "clothing.adult.accessories.arm_sleeves",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "Balance Grow 제주감귤 주스 2L x 2",
+      "raw_record_ids": [
+        "ingestion:38:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:15": "523ebc064afd82189c0f3352107181793e8a0a41bf086cdf35ba33116e390ec1"
+      },
+      "number": 111,
+      "leaf": "food.drinks.juice.fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "크리넥스 수프림소프트 3겹 화장지37m x 30롤x 2팩",
+      "raw_record_ids": [
+        "ingestion:38:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:16": "499c2880c81d6ef95940f0fcb340f0fa5b92e2667226932970f3043841edd2e0"
+      },
+      "number": 112,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "Dorly 제주감귤과즐 660g / 22g x 30",
+      "raw_record_ids": [
+        "ingestion:38:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:17": "fa4076f7d651e494b7ff7e3e5f648977e6afc93407795ce411d10c1d223d7929"
+      },
+      "number": 113,
+      "leaf": "food.snacks.traditional.hangwa",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "크레송 여성 배색 카라 라이트 덕다운 재킷",
+      "raw_record_ids": [
+        "ingestion:38:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:18": "6c4f06497c826ca38213b96b550d8281c48523a16dd7354d3911fc5407903f31"
+      },
+      "number": 114,
+      "leaf": "clothing.adult.outerwear.down_jacket",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "라브아퍼퓸섬유탈취제아이리스&피오니500ml x 3",
+      "raw_record_ids": [
+        "ingestion:38:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:19": "144e4f790858112af36be7b5dc0e73054ea0737e7f70b24dba68f50865f9f5c4"
+      },
+      "number": 115,
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 한뿌리 흑삼 아르기닌 100ml x 14",
+      "raw_record_ids": [
+        "ingestion:38:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:21": "f0356e0b5a123fc28daca42c3198a222a78ecd807bdf8b50a6d9391ca430a55b"
+      },
+      "number": 116,
+      "leaf": "food.supplements.functional.black_ginseng",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "호주산 양념 소불고기 2.7kgx 2",
+      "raw_record_ids": [
+        "ingestion:38:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:23": "ee5a4fdffc1b406239f64a897c228246242a1400249c48a9d49f101e0a5825e6"
+      },
+      "number": 117,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "바디블루 밴드없는 브라렛 2매",
+      "raw_record_ids": [
+        "ingestion:38:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:24": "3a1eb4072aabd2e770b9e01fd635e3f8c4162540f9e8e8db770e3ec4066cfdb8"
+      },
+      "number": 118,
+      "leaf": "clothing.women.underwear.bra",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "벨레다 슈퍼푸드 라이트 크림 75ml x 2",
+      "raw_record_ids": [
+        "ingestion:38:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:25": "35632f5d107c844a6b408c939b0c63542b150ca03d056b3daf06466a8a928b3e"
+      },
+      "number": 119,
+      "leaf": "beauty.face.skincare.moisturizing_cream",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "디오프러스 쿨링 알로에 수딩 젤 250g x 3",
+      "raw_record_ids": [
+        "ingestion:38:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:26": "ed63ce1e511a18a4ada53cc8a8d6105882855e7ddcd1bcc0c79d6210c1f2a5fc"
+      },
+      "number": 120,
+      "leaf": "beauty.face.skincare.soothing_gel",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "비비고 수제진한 김치만두 1600g x 2",
+      "raw_record_ids": [
+        "ingestion:38:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:27": "e3e92e2f21b0d0f8eb7917fc22b3358c9f4d892171ecc790cc425fb64a992584"
+      },
+      "number": 121,
+      "leaf": "food.meals.dumplings.assorted",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "뉴오리진 이너플로라 선물세트 30캡슐 x 3",
+      "raw_record_ids": [
+        "ingestion:38:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:28": "406998f336e3abca436f0d59181af0c4f11d6c529d45dfb0084cb0e902e2a0f6"
+      },
+      "number": 122,
+      "leaf": "food.supplements.functional.probiotics",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "이지엔 슬라이더 스탠딩백 145매",
+      "raw_record_ids": [
+        "ingestion:38:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:29": "9c475538ed4238f4cea7eeb0d49c8a0b727e07eb80942e4ecaad56117d6f557c"
+      },
+      "number": 123,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 비비고 갈비탕 400g x 6",
+      "raw_record_ids": [
+        "ingestion:38:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:30": "d0efb705c9f8c341e9ecde2da7cdc06b18ac77915f6bc92b81cd638b4a1e2579"
+      },
+      "number": 124,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "스타벅스 돌체구스토 캡슐커피 60개",
+      "raw_record_ids": [
+        "ingestion:38:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:31": "18c0fa67866a67fe95a31714721798116f44b9b88a0fbc1bedfe6a3c574246fa"
+      },
+      "number": 125,
+      "leaf": "food.drinks.coffee.capsule",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "알러텍트 아이스 베개 커버 2P",
+      "raw_record_ids": [
+        "ingestion:38:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:32": "43cd573eb89ae85f482a40005d40fc98a523d3cfc987369c05a63cabb31a1a9b"
+      },
+      "number": 126,
+      "leaf": "household.bedding.cover.pillow",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "써드라인 맥스빅팬 YS57-25072 (2개입)",
+      "raw_record_ids": [
+        "ingestion:38:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:33": "73ddfddb80a7ca8b6aa49bc5a2f95ea2d2b7bf8644a7b1e35d4dabcbf7b587ab"
+      },
+      "number": 127,
+      "leaf": null,
+      "hold_reason": "evidence: missing fact"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "이지엔 실리콘 지퍼백 세트 6P (Sx2, Mx2, Lx2)",
+      "raw_record_ids": [
+        "ingestion:38:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:34": "ef4c6d6c5b0c813b20fab90e5344168a7fe6f3a29223b5e13236b75935bb5f80"
+      },
+      "number": 128,
+      "leaf": "household.kitchen.storage.bag",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "삼육케어 당밸런스 호두맛 200ml x 24개",
+      "raw_record_ids": [
+        "ingestion:38:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:35": "c528f1f5a1fe4eea4fb22ae5177ce68a173b6df0ba23904ef0d9703b75227aed"
+      },
+      "number": 129,
+      "leaf": "food.supplements.functional.balanced_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "라파스 경량 캠핑 의자",
+      "raw_record_ids": [
+        "ingestion:38:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:36": "8e4f22847f23d523cfdc5f68e73b5b88c10680d19695a8bfb06093bd7d0f8b1c"
+      },
+      "number": 130,
+      "leaf": "household.outdoor.furniture.chair",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "디펜드 스타일 라이너 롱 향 28개 x 4팩",
+      "raw_record_ids": [
+        "ingestion:38:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:37": "cbf09730c032b1c3629778371234d78e81b1522209a1475698837b38ff0361c3"
+      },
+      "number": 131,
+      "leaf": null,
+      "hold_reason": "evidence: liner use not established"
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "CJ 햇반 솥반 뿌리채소 영양밥 200g x 8",
+      "raw_record_ids": [
+        "ingestion:38:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:38": "2f2ed99770818fbc69012f547989ab3ead8ac04016ec88fa5366eb61dcd2186c"
+      },
+      "number": 132,
+      "leaf": "food.meals.rice.instant",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "삼육케어 영양밸런스 구수한맛 200ml x 24개",
+      "raw_record_ids": [
+        "ingestion:38:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:39": "accf1616b72e1284c1005465bedcb5977463c082a9316fd74433c96d44e6eb85"
+      },
+      "number": 133,
+      "leaf": "food.supplements.functional.balanced_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "삼립 궁중 꿀약과 1.5kg",
+      "raw_record_ids": [
+        "ingestion:38:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:40": "e24760ecc10a53e3a9161750045e2fd730de922b51161b3b2a5c975b1ef5647a"
+      },
+      "number": 134,
+      "leaf": "food.snacks.traditional.hangwa",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "제스프리 그린키위 10kg (65~78입)",
+      "raw_record_ids": [
+        "ingestion:38:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:41": "2ccc4fc986ad83f4c3b1aa94c6aba033feb2b3c2f3415afa34776c626811d148"
+      },
+      "number": 135,
+      "leaf": "food.produce.fruit.kiwi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "쿨트 남성 면 바지 (쿨맥스)",
+      "raw_record_ids": [
+        "ingestion:38:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:42": "b8ced4b68fefacadaf2ceff354af41d1fe580a569104a1f3434c55aadca2063a"
+      },
+      "number": 136,
+      "leaf": "clothing.adult.bottoms.pants",
+      "hold_reason": ""
+    },
+    {
+      "mart": "costco",
+      "source_path_parts": [
+        "SpecialPriceOffers"
+      ],
+      "source_title": "트라이엄프 여성 면 리플 파자마 세트",
+      "raw_record_ids": [
+        "ingestion:38:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:38:43": "7860b7c9db2dda5098302d914cb99218a3311579e77e28f13dd1c3d0520e29b6"
+      },
+      "number": 137,
+      "leaf": "clothing.adult.sleepwear.pajama_set",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "801c41e92ebb3a40034c908ef01999346f1d5ab8bbf63eff4541b6bebbc4675d"
+}

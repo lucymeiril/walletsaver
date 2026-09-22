@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass137",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]GAP 영암 무화과 1.2kg (13~18입) 박스",
+      "raw_record_ids": [
+        "ingestion:1:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:34": "fc1284d13063f3805e7f117da1555c42068294d4cdd0eeed4bedf3a919007e47"
+      },
+      "number": 1,
+      "leaf": "food.produce.fruit.fig",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "굿모닝 굿밀크 1L",
+      "raw_record_ids": [
+        "ingestion:1:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:35": "39f4d672367c340782575bc4913d225834edc9b2b5ddd097ad0117a2bc4a7b8d"
+      },
+      "number": 2,
+      "leaf": "food.dairy.milk.plain",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]대추방울토마토 1kg 팩",
+      "raw_record_ids": [
+        "ingestion:1:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:36": "9693dbb54a867c0e262705a94a13fd4aab53ebb34d2a3e3180ed03fcb36be081"
+      },
+      "number": 3,
+      "leaf": "food.produce.fruit.tomato",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]샤인머스캣 1.5kg 박스",
+      "raw_record_ids": [
+        "ingestion:1:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:38": "3c3ef0cb3d8f3b584af59905bec4c19c9fa5c24920347a3cddf945ee7dd8459e"
+      },
+      "number": 4,
+      "leaf": "food.produce.fruit.grape",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "팽이버섯 (봉)",
+      "raw_record_ids": [
+        "ingestion:1:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:39": "5f7dc0b4ef7ba28e6b92e56ac355b0b0db104dd84e69c9be3f9eedd46a9ca36a"
+      },
+      "number": 5,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드] 난이생생 계란 15구 (왕란, 1020g)",
+      "raw_record_ids": [
+        "ingestion:1:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:41": "86bfff76ba7caede49bf0e9910d0da066ef31c1a24cd3c0edf6bb0c7d993ece0"
+      },
+      "number": 6,
+      "leaf": "food.meat.eggs.chicken",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "1등급 30구 (특란, 1800g)",
+      "raw_record_ids": [
+        "ingestion:1:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:42": "4604b9acad8b259ab6577407f906068a234becd1b49d737f21f9a778ab877b3f"
+      },
+      "number": 7,
+      "leaf": "food.meat.eggs.chicken",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "뉴질랜드산 골드키위 (팩)",
+      "raw_record_ids": [
+        "ingestion:1:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:43": "e831497e61ec3cae3c969d6de6d63dec764c7f1498555f2e0e35ba8ae699ba81"
+      },
+      "number": 8,
+      "leaf": "food.produce.fruit.kiwi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "신라면 5입 600g (120gx5입)",
+      "raw_record_ids": [
+        "ingestion:1:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:44": "c98bed82026ea4af1a9c522d5482c6dd6aca65b7087fcdda8018ee77632a0862"
+      },
+      "number": 9,
+      "leaf": null,
+      "hold_reason": "quantity: normalized variant conflicts with an existing product during real rebuild"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]햇사과 1.3.kg (3~8입) 봉",
+      "raw_record_ids": [
+        "ingestion:1:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:46": "43a37e88c6036618a7580ffad765e911502e0f5fdee1f441721f5cac0ec9c7a5"
+      },
+      "number": 10,
+      "leaf": "food.produce.fruit.apple",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "맛있는 두부 400g",
+      "raw_record_ids": [
+        "ingestion:1:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:47": "e911fc38582c627791b1876eee81b27657127ed185fd46087daa9193be1cd496"
+      },
+      "number": 11,
+      "leaf": "food.plant.soy.tofu",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "1000ml 나100%",
+      "raw_record_ids": [
+        "ingestion:1:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:48": "b0414d9db0ece6006bd63391b16a436d13e0a969e9acd2919713a77c9f489b70"
+      },
+      "number": 12,
+      "leaf": null,
+      "hold_reason": "evidence: missing product form"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "냉장 국내산 삼겹살 구이용 (100g)",
+      "raw_record_ids": [
+        "ingestion:1:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:49": "5b4eaca69a652796c986c9701750fd2b299491b6cba47509789892545b9c791f"
+      },
+      "number": 13,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "에콰도르산 달콤 바나나 1kg",
+      "raw_record_ids": [
+        "ingestion:1:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:51": "4d5f9aa0872288cea21c2b99236f839336f4f878e4be82679e181ba3a21d5b4b"
+      },
+      "number": 14,
+      "leaf": "food.produce.fruit.banana",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[전국택배][냉장][국산] 가을 서해 꽃게 (3kg, 얼음포장)",
+      "raw_record_ids": [
+        "ingestion:1:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:52": "db30e8eb8901950bda97a7be2754dbeadc7b05aa0a9f9fc1b34031eb1d83c01f"
+      },
+      "number": 15,
+      "leaf": "food.seafood.shellfish.crab",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "흙대파 (봉)",
+      "raw_record_ids": [
+        "ingestion:1:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:53": "1902ab530d9c59fba631ba96bd9cf3d6eed5c2414ff22264daa7ced74f827eac"
+      },
+      "number": 16,
+      "leaf": "food.produce.vegetables.scallion",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "내츄럴미네랄워터 2L*6입 (무라벨)",
+      "raw_record_ids": [
+        "ingestion:1:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:54": "bcede68f4641c7ae496a510e02d56d40601e1b0b71bace71f1fde5f75b20fc46"
+      },
+      "number": 17,
+      "leaf": "food.drinks.water_soda.water",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "올리브 짜파게티 (140gx5입)",
+      "raw_record_ids": [
+        "ingestion:1:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:55": "96ddf586258ec2a7bdab98b375923e7048f2c03c2639c784978024022fea504c"
+      },
+      "number": 18,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]햇 밤고구마 700g 봉",
+      "raw_record_ids": [
+        "ingestion:1:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:56": "7d28c75485abb0aa780b42cea0e3f28433e34ca30248948c943d1a2dc254b5e5"
+      },
+      "number": 19,
+      "leaf": "food.produce.vegetables.sweet_potato",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "2.3L",
+      "raw_record_ids": [
+        "ingestion:1:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:57": "70a1147b6cd728ed3ee8b71cb51ac1cce6e6597027799326209111cf035555c9"
+      },
+      "number": 20,
+      "leaf": null,
+      "hold_reason": "evidence: missing product form"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[냉동] 삼겹살 바로구이 (1,000g)",
+      "raw_record_ids": [
+        "ingestion:1:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:58": "b9fecfed139bfb07f7a9d27a7f1f95fe73111fc850169cbefa4ff80aa141c585"
+      },
+      "number": 21,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "소소한 하루 깻잎",
+      "raw_record_ids": [
+        "ingestion:1:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:59": "50c28001b532ea9c5cfb2c285be309c51c066d75b9c5d4450297ada4c3499857"
+      },
+      "number": 22,
+      "leaf": "food.produce.vegetables.leaf",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "얼큰한 너구리 (120gx5입)",
+      "raw_record_ids": [
+        "ingestion:1:60"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:60": "38a0c5ca1466fb22dcfcf87d36d7ab79adc56a69d186d9f8badfaeae0f244fb3"
+      },
+      "number": 23,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]강원 백오이 (5입) 봉",
+      "raw_record_ids": [
+        "ingestion:1:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:61": "3af5f5a0e29b79be5273ae271e4bd8ca13dae21faeb20a8d639a663eb0c8eb2d"
+      },
+      "number": 24,
+      "leaf": "food.produce.vegetables.cucumber",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[쓱배송][냉장][국산] 가을 서해 꽃게 (3kg, 얼음포장)",
+      "raw_record_ids": [
+        "ingestion:1:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:62": "a414ae8c721e70edb4700a9fd30d4f2b5312dc6be9d8f2834ae8fa4bde8619ca"
+      },
+      "number": 25,
+      "leaf": "food.seafood.shellfish.crab",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "[농할 20% 할인쿠폰 다운로드]달콤이 양배추 (통)",
+      "raw_record_ids": [
+        "ingestion:1:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:64": "71ba82abe33aa41670ad376b8fcc199bef8784e58fd15c1ddf6047af18319a1b"
+      },
+      "number": 26,
+      "leaf": "food.produce.vegetables.cabbage",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "소소한 하루 청양고추(봉)",
+      "raw_record_ids": [
+        "ingestion:1:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:65": "7475f4b03d5e59eea54a97d4befe8686c3cb0ccb37d8e3f251f98dd96849e40d"
+      },
+      "number": 27,
+      "leaf": "food.produce.vegetables.pepper",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "3겹 화장지 33m X 30롤",
+      "raw_record_ids": [
+        "ingestion:1:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:66": "b6718472aaa0e4901d1710966b293ec3d1452fcd67efe1d73ebc1e3a33e42eb9"
+      },
+      "number": 28,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "고메함박스테이크152g",
+      "raw_record_ids": [
+        "ingestion:1:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:67": "0213fb2caca0511aa7b9499f1009a92328f0fa682dd0ec877e4d1a9f23a68bce"
+      },
+      "number": 29,
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "3겹 컴포트소프트 호호바 30+3M-30롤",
+      "raw_record_ids": [
+        "ingestion:1:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:68": "2ba71094e8ca4f6d9ef1d71f81ec192cab868f57dbd5e07185e3fa5525472273"
+      },
+      "number": 30,
+      "leaf": "household.hygiene.paper.toilet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "국내산 앞다리 불고기용 (100g)",
+      "raw_record_ids": [
+        "ingestion:1:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:69": "138abb339327039dc3e6ccb708ac2fd51d53f5c9d20ce9d328e858cc88ef680c"
+      },
+      "number": 31,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "아삭한숙주 380g",
+      "raw_record_ids": [
+        "ingestion:1:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:70": "2133e0d24f1ce186d167192b131e5a298e53af03a213e1efa76554b7a918ab54"
+      },
+      "number": 32,
+      "leaf": "food.produce.vegetables.sprouts",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "베스트"
+      ],
+      "source_title": "NEW 송탄식 부대찌개 1.467kg",
+      "raw_record_ids": [
+        "ingestion:1:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:1:71": "a93e0de7477ffb66b9e5cbf93ce8f9031f611a0f6d22bf9124b275b981e67b4c"
+      },
+      "number": 33,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        12
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 153
+    },
+    {
+      "numbers": [
+        31
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 499
+    },
+    {
+      "numbers": [
+        12
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1332
+    }
+  ],
+  "packet_sha256": "36db98bc23bb9f941f35dff7882d176a2178c5cf709d974d16d256097325a47a"
+}

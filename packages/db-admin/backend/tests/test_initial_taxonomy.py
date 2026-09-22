@@ -71,8 +71,50 @@ def _raw(mart, path, name="검수할 상품", **extra):
     ("furniture.dining.table.standard", ("가구·인테리어", "식당가구", "식탁", "식탁")),
     ("household.bedding.cushion.body", ("생활용품", "침구용품", "쿠션", "바디쿠션")),
     ("household.organization.basket.general", ("생활용품", "수납·정리", "바구니", "수납바구니")),
+    ("food.produce.fruit.fig", ("식품", "농산물", "신선과일", "무화과")),
+    ("food.meals.prepared.hamburger_steak", ("식품", "간편식·면", "조리식품", "함박스테이크")),
+    ("household.utilities.batteries.lithium", ("생활용품", "전기용품", "건전지", "리튬일차전지")),
+    ("household.bedding.quilt.summer", ("생활용품", "침구용품", "이불", "여름이불")),
+    ("household.bedding.pad.cooling", ("생활용품", "침구용품", "침대패드", "냉감침대패드")),
+    ("household.bedding.cover.pillow", ("생활용품", "침구용품", "침구커버", "베개커버")),
+    ("household.pest_control.electronic.repeller", ("생활용품", "해충관리", "전자퇴치기", "전자해충퇴치기")),
+    ("household.cleaning.tools.lint_roller_refill", ("생활용품", "청소·세탁", "청소도구", "테이프클리너리필")),
+    ("household.outdoor.furniture.chair", ("생활용품", "야외용품", "캠핑가구", "캠핑의자")),
+    ("beauty.sun.protection.patch", ("뷰티·개인관리", "선케어", "자외선차단", "선패치")),
+    ("beauty.foot.care.peeling_mask", ("뷰티·개인관리", "풋케어", "발관리", "발필링마스크")),
+    ("beauty.face.skincare.moisturizing_cream", ("뷰티·개인관리", "얼굴관리", "스킨케어", "보습크림")),
+    ("beauty.face.skincare.soothing_gel", ("뷰티·개인관리", "얼굴관리", "스킨케어", "수딩젤")),
+    ("beauty.face.cleansing.foam", ("뷰티·개인관리", "얼굴관리", "세안용품", "클렌징폼")),
+    ("beauty.eye.contact.solution", ("뷰티·개인관리", "눈관리", "콘택트렌즈용품", "렌즈관리용액")),
+    ("clothing.adult.tops.tshirt", ("패션", "성인의류", "상의", "반소매티셔츠")),
+    ("clothing.children.tops.tshirt", ("패션", "아동의류", "상의", "아동반소매티셔츠")),
+    ("clothing.children.outerwear.windbreaker", ("패션", "아동의류", "아우터", "아동바람막이")),
+    ("clothing.adult.knit.pullover", ("패션", "성인의류", "니트", "니트풀오버")),
+    ("clothing.adult.knit.cardigan", ("패션", "성인의류", "니트", "가디건")),
+    ("clothing.adult.bottoms.pants", ("패션", "성인의류", "하의", "긴바지")),
+    ("clothing.adult.bottoms.shorts", ("패션", "성인의류", "하의", "반바지")),
+    ("clothing.adult.outerwear.down_jacket", ("패션", "성인의류", "아우터", "다운재킷")),
+    ("clothing.adult.accessories.arm_sleeves", ("패션", "성인의류", "패션소품", "팔토시")),
+    ("clothing.adult.sleepwear.pajama_set", ("패션", "성인의류", "잠옷", "파자마세트")),
+    ("clothing.women.underwear.panties", ("패션", "여성의류", "속옷", "여성팬티")),
+    ("clothing.women.underwear.bra", ("패션", "여성의류", "속옷", "여성브라")),
+    ("clothing.men.underwear.sleeveless", ("패션", "남성의류", "속옷", "남성민소매속옷")),
+    ("footwear.adult.court.shoes", ("패션", "신발", "코트화", "성인코트화")),
+    ("appliances.kitchen.egg_cooker.electric", ("가전", "주방가전", "계란조리기", "전기계란찜기")),
+    ("food.snacks.chestnut.roasted", ("식품", "과자·간식", "밤간식", "구운밤")),
+    ("food.meals.prepared.fried_squid", ("식품", "간편식·면", "조리식품", "오징어튀김")),
+    ("food.preserved.meat.jangjorim", ("식품", "반찬·저장식품", "육류반찬", "장조림")),
+    ("food.preserved.kimchi.stir_fried", ("식품", "반찬·저장식품", "김치", "볶음김치")),
+    ("food.produce.prepared.cooked_sweet_potato", ("식품", "농산물", "간편농산물", "조리고구마")),
+    ("food.supplements.functional.black_ginseng", ("식품", "건강식품", "건강보조식품", "흑삼")),
+    ("food.supplements.functional.evening_primrose", ("식품", "건강식품", "건강보조식품", "달맞이꽃종자유")),
+    ("food.supplements.functional.vitamin_d", ("식품", "건강식품", "건강보조식품", "비타민D")),
+    ("food.supplements.functional.vitamin_b", ("식품", "건강식품", "건강보조식품", "비타민B")),
+    ("food.supplements.functional.chondroitin", ("식품", "건강식품", "건강보조식품", "콘드로이친")),
+    ("food.supplements.functional.propolis", ("식품", "건강식품", "건강보조식품", "프로폴리스")),
+    ("food.supplements.functional.balanced_drink", ("식품", "건강식품", "건강보조식품", "균형영양음료")),
 ])
-def test_review_only_household_and_baby_leaves_have_exact_four_level_paths(leaf_id, path):
+def test_review_only_new_leaves_have_exact_four_level_paths(leaf_id, path):
     leaf = next(item for item in LEAVES if item.id == leaf_id)
     assert leaf.path == path
 
@@ -86,8 +128,14 @@ def test_review_only_household_and_baby_leaves_have_exact_four_level_paths(leaf_
     ("디지털/가전/렌탈", "로봇청소기"),
     ("가구/인테리어", "퀸 매트리스"),
     ("가구/인테리어", "4인용 소파"),
+    ("베스트", "GAP 무화과 1.2kg"),
+    ("베스트", "고메 함박스테이크 152g"),
+    ("SpecialPriceOffers", "비타민D 120정"),
+    ("SpecialPriceOffers", "여성 가디건"),
+    ("SpecialPriceOffers", "클렌징폼 160g"),
+    ("SpecialPriceOffers", "여름 이불 퀸"),
 ])
-def test_review_only_household_and_baby_leaves_do_not_guess_unreviewed_titles(path, title):
+def test_review_only_new_leaves_do_not_guess_unreviewed_titles(path, title):
     assert classify_record(_raw("emart", path, title))["unified_category_id"] is None
 
 
