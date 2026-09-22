@@ -506,6 +506,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sauce_dish", "일회용소스종지", ""),
         ("cling_film", "식품포장랩", ""), ("aluminum_foil", "알루미늄호일", ""),
         ("stock_bag", "육수용필터백", ""),
+        ("straw", "빨대", ""), ("food_skewer", "요리용꼬치", ""),
     )),
     *_group("household.kitchen.gloves", ("생활용품", "주방용품", "주방장갑"), "", (
         ("hygiene", "위생장갑", ""),
@@ -523,6 +524,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("degreaser", "주방기름때세정제", ""),
         ("produce_wash", "과일·채소세정제", ""),
         ("cloth_soap", "행주전용비누", ""),
+        ("bottle_tablet", "물병·텀블러세정제", ""),
     )),
     *_group("household.cleaning.bath", ("생활용품", "청소·세탁", "욕실청소"), "세탁/청소|청소/생활용품", (
         ("cleaner", "욕실세정제", "욕실세정제", "욕실세정제|욕실 세정제"),
@@ -574,6 +576,138 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("baby.hygiene.diapering", ("유아동", "유아위생", "배변용품"), "기저귀|유아동/완구|유아용품", (
         ("diapers", "유아기저귀", "하기스|마미포코|팸퍼스|보솜이|유아기저귀", "유아기저귀|아기기저귀"),
         ("wipes", "유아물티슈", "유아물티슈|아기물티슈", "유아물티슈|아기물티슈"),
+    )),
+    # Review-only forms discovered in the September household/baby shelves.
+    # Empty aliases deliberately prevent these leaves from becoming broad title rules.
+    *_group("household.maintenance.window", ("생활용품", "집수리", "방충망용품"), "", (
+        ("screen_material", "방충망보수·틈새차단재", ""),
+        ("screen_roller", "방충망작업밀대", ""),
+    )),
+    *_group("household.maintenance.drain", ("생활용품", "집수리", "배수구보수"), "", (
+        ("strainer", "배수구방충거름망", ""),
+    )),
+    *_group("household.pest_control.traps", ("생활용품", "해충관리", "해충트랩"), "", (
+        ("sticky", "해충끈끈이트랩", ""),
+    )),
+    *_group("household.storage.transport", ("생활용품", "수납·이동", "운반용품"), "", (
+        ("rolling_tote", "롤링토트카트", ""),
+    )),
+    *_group("household.utilities.batteries", ("생활용품", "전기용품", "건전지"), "", (
+        ("alkaline", "알카라인건전지", ""),
+    )),
+    *_group("household.security.storage", ("생활용품", "보안용품", "금고"), "", (
+        ("safe", "가정용금고", ""),
+    )),
+    *_group("household.outdoor.bags", ("생활용품", "야외용품", "보냉용품"), "", (
+        ("cooler_tote", "보냉토트백", ""),
+    )),
+    *_group("household.maintenance.sealants", ("생활용품", "집수리", "실란트"), "", (
+        ("silicone", "실리콘실란트", ""),
+    )),
+    *_group("household.safety.childproofing", ("생활용품", "안전용품", "유아안전"), "", (
+        ("outlet_cover", "콘센트안전커버", ""),
+    )),
+    *_group("household.outdoor.cooking", ("생활용품", "야외용품", "휴대조리"), "", (
+        ("portable_gas_stove", "휴대용가스버너", ""),
+    )),
+    *_group("household.packaging.cord", ("생활용품", "포장용품", "결속용품"), "", (
+        ("binding_twine", "포장노끈", ""),
+    )),
+    *_group("household.workwear.gloves", ("생활용품", "작업용품", "작업장갑"), "", (
+        ("work", "작업용장갑", ""),
+    )),
+    *_group("household.maintenance.adhesives", ("생활용품", "집수리", "접착제"), "", (
+        ("instant", "순간접착제", ""),
+    )),
+    *_group("baby.toys.construction", ("유아동", "완구", "조립완구"), "", (
+        ("set", "블록조립세트", ""),
+    )),
+    *_group("baby.toys.educational", ("유아동", "완구", "교육완구"), "", (
+        ("computer", "학습용컴퓨터", ""),
+    )),
+    *_group("baby.toys.figures", ("유아동", "완구", "피규어"), "", (
+        ("character", "캐릭터피규어", ""),
+    )),
+    *_group("baby.clothing.underwear", ("유아동", "의류", "속옷"), "", (
+        ("panty", "아동팬티", ""),
+    )),
+    *_group("beauty.personal.hand", ("뷰티·개인관리", "개인위생", "손위생"), "", (
+        ("sanitizer", "손소독제", ""),
+    )),
+    *_group("baby.feeding.tableware", ("유아동", "수유·식사", "식기"), "", (
+        ("compartment_tray", "칸식판", ""),
+    )),
+    *_group("appliances.climate.dehumidifier", ("가전", "계절·환경가전", "제습기"), "", (
+        ("electric", "전기제습기", ""),
+    )),
+    *_group("appliances.laundry.washer", ("가전", "세탁가전", "세탁기"), "", (
+        ("standard", "일반세탁기", ""),
+    )),
+    *_group("appliances.laundry.combo", ("가전", "세탁가전", "세탁건조기"), "", (
+        ("integrated", "세탁건조일체형", ""),
+    )),
+    *_group("appliances.laundry.dryer", ("가전", "세탁가전", "건조기"), "", (
+        ("standard", "의류건조기", ""),
+    )),
+    *_group("appliances.laundry.tower", ("가전", "세탁가전", "워시타워"), "", (
+        ("integrated", "세탁건조타워", ""),
+    )),
+    *_group("appliances.kitchen.refrigerator", ("가전", "주방가전", "냉장고"), "", (
+        ("standard", "일반냉장고", ""),
+    )),
+    *_group("appliances.kitchen.kimchi_refrigerator", ("가전", "주방가전", "김치냉장고"), "", (
+        ("standard", "김치냉장고", ""),
+    )),
+    *_group("appliances.kitchen.cooktop", ("가전", "주방가전", "전기레인지"), "", (
+        ("induction", "인덕션", ""),
+    )),
+    *_group("appliances.floorcare.vacuum", ("가전", "생활가전", "진공청소기"), "", (
+        ("standard", "진공청소기", ""),
+    )),
+    *_group("appliances.floorcare.robot", ("가전", "생활가전", "로봇청소기"), "", (
+        ("vacuum", "로봇진공청소기", ""),
+    )),
+    *_group("appliances.wellness.massage", ("가전", "건강가전", "안마기기"), "", (
+        ("chair", "안마의자", ""),
+    )),
+    *_group("health.medical.thermal", ("건강·의료", "의료기기", "온열기기"), "", (
+        ("spine", "척추온열의료기기", ""),
+    )),
+    *_group("electronics.video.television", ("디지털", "영상가전", "텔레비전"), "", (
+        ("standard", "TV", ""),
+    )),
+    *_group("furniture.bedroom.mattress", ("가구·인테리어", "침실가구", "매트리스"), "", (
+        ("standard", "매트리스", ""),
+    )),
+    *_group("furniture.bedroom.frame", ("가구·인테리어", "침실가구", "침대프레임"), "", (
+        ("bed", "침대프레임", ""),
+    )),
+    *_group("furniture.storage.drawers", ("가구·인테리어", "수납가구", "서랍장"), "", (
+        ("chest", "서랍장", ""),
+    )),
+    *_group("furniture.storage.bookcase", ("가구·인테리어", "수납가구", "책장"), "", (
+        ("rotating", "회전책장", ""),
+    )),
+    *_group("furniture.storage.wardrobe", ("가구·인테리어", "수납가구", "옷장"), "", (
+        ("built_in", "붙박이장", ""),
+    )),
+    *_group("furniture.living.sofa", ("가구·인테리어", "거실가구", "소파"), "", (
+        ("standard", "소파", ""),
+    )),
+    *_group("furniture.children.desk", ("가구·인테리어", "아동가구", "책상"), "", (
+        ("set", "책상·의자세트", ""),
+    )),
+    *_group("furniture.seating.chair", ("가구·인테리어", "의자", "일반의자"), "", (
+        ("armchair", "암체어", ""),
+    )),
+    *_group("furniture.dining.table", ("가구·인테리어", "식당가구", "식탁"), "", (
+        ("standard", "식탁", ""),
+    )),
+    *_group("household.bedding.cushion", ("생활용품", "침구용품", "쿠션"), "", (
+        ("body", "바디쿠션", ""),
+    )),
+    *_group("household.organization.basket", ("생활용품", "수납·정리", "바구니"), "", (
+        ("general", "수납바구니", ""),
     )),
 )
 

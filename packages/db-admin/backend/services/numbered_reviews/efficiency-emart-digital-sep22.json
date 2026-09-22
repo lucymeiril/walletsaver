@@ -1,0 +1,827 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260921-pass135",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "25L 휘센 오브제컬렉션 제습기 DQ256MWGA",
+      "raw_record_ids": [
+        "ingestion:107:0",
+        "ingestion:107:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:0": "77a763250480dcaf9ecd70a3b509363c11db7d94ffd15c96ce367cea004457aa",
+        "ingestion:107:22": "65b66f8fd6a4f7e1c6735a1f5534b4c636c3011ebc2c6d89fb4aae48875358c0"
+      },
+      "number": 1,
+      "leaf": "appliances.climate.dehumidifier.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 AI WD90H25AHS 콤보 세탁 25kg 건조 20kg / KN",
+      "raw_record_ids": [
+        "ingestion:107:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:1": "2333365d7cdca885550d06585eda883e68911960b78853475f755e81eca5c230"
+      },
+      "number": 2,
+      "leaf": "appliances.laundry.combo.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 냉장고 4도어 Max 640L 코타화이트 RM70F63R2A",
+      "raw_record_ids": [
+        "ingestion:107:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:2": "4981eec93293c9aa9e15b9c350fabc251f27d97c27084821cf43a2fa59290b54"
+      },
+      "number": 3,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 휘센 제습기 DQ205PSVA 20L 실버",
+      "raw_record_ids": [
+        "ingestion:107:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:3": "2fce3ad688e5cfa59cce2c42d3f02727c861bb5bb0ffeeea254782b55ddb0913"
+      },
+      "number": 4,
+      "leaf": "appliances.climate.dehumidifier.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "AI 세탁기 WF25DG8250BW + AI 건조기 DV21DG8200BW 세트명[WF25DG8250BW2T]",
+      "raw_record_ids": [
+        "ingestion:107:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:4": "6ade223c287768f34460587c3a25e7411f474830af6f8c9f66384e56d6a722be"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "mixed-package: separate washer and dryer"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "10인용 IH CRP-FHTS1010FB",
+      "raw_record_ids": [
+        "ingestion:107:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:5": "22a06be49d7ed6b430d52e55a1572ae6a0368312016b64e9928f05816dca06ac"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "evidence: title does not establish rice cooker product form"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "(J)LG 트롬 오브제컬렉션 워시콤보 + 미니워시 FH25GSX 네이처 그린",
+      "raw_record_ids": [
+        "ingestion:107:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:6": "0d465ac1b1cd35af8b09e4b6124d6a46e43262cd1386069debe155886ef860a5"
+      },
+      "number": 7,
+      "leaf": null,
+      "hold_reason": "mixed-package: washer-dryer combo with auxiliary washer"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[+]삼성 그랑데 WF21T6000KW 드럼세탁기 21kg",
+      "raw_record_ids": [
+        "ingestion:107:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:7": "3dcfdd8f6397807a0df2fe32ae4c53114de3efdc6b34839d72f76b634b18e547"
+      },
+      "number": 8,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 코드제로 A5 AS520WA 청소기",
+      "raw_record_ids": [
+        "ingestion:107:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:8": "2287e36e0f0631cda2e10823ed0e5f4bff2434c54f04fad2639db980645ba174"
+      },
+      "number": 9,
+      "leaf": "appliances.floorcare.vacuum.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[K]삼성전자 일반냉장고 RT62A7049S9 615L",
+      "raw_record_ids": [
+        "ingestion:107:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:9": "d123236c7a3fb991a351596d71590e1a9360e1394bef2655e3931078e5d4d9fb"
+      },
+      "number": 10,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "디오스 냉장고 T876MEE011 베이지 870L",
+      "raw_record_ids": [
+        "ingestion:107:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:10": "3193f293e1786df09f78efa020919eef732ae7981dc5f54820b462e5cf5ffa3b"
+      },
+      "number": 11,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 RK70F49F1DD AI 김치플러스 김치냉장고 4도어 490L 냄새케어 김치통 / KN",
+      "raw_record_ids": [
+        "ingestion:107:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:11": "1c0327c29c291348d25038998b468a181ee957c5287c98a81417276741748801"
+      },
+      "number": 12,
+      "leaf": "appliances.kitchen.kimchi_refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "S][LG전자 직영] LG 인덕션 전기레인지 BEI3ANHLOE (빌트인전용)",
+      "raw_record_ids": [
+        "ingestion:107:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:12": "6b1985ee5f2b71b8bc94028b83f1715c46f1f497e975d22f309da4b6833cd5fd"
+      },
+      "number": 13,
+      "leaf": "appliances.kitchen.cooktop.induction",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "S][LG전자 직영] LG 트롬 드럼세탁기 F17ITPR (17kg)",
+      "raw_record_ids": [
+        "ingestion:107:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:13": "a5e037b260342e9106cb01acc422e9d79e5085db87ddb8e65184a78fdf4854f7"
+      },
+      "number": 14,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[쓱설치][LG전자 직영] LG 통돌이 세탁기 T21MX9A (21kg)(희망일)",
+      "raw_record_ids": [
+        "ingestion:107:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:14": "d1decef6d328476dd7c7d3f113dff6d683c00a2e411d6b0f741154b1b0a220c5"
+      },
+      "number": 15,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "NEW 세라젬 V7 2027 마스터 척추온열 의료기기",
+      "raw_record_ids": [
+        "ingestion:107:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:15": "0def2d9f348f8eb966991843d3546419c5ba04806085ad5fd1c9c1a8e300fff1"
+      },
+      "number": 16,
+      "leaf": "health.medical.thermal.spine",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 오브제컬렉션 무선청소기 AX920BWE 무료배송상품",
+      "raw_record_ids": [
+        "ingestion:107:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:16": "e33ba37a188fea7a47ec932e1889183dc6125255659542428ce87a55978ef02a"
+      },
+      "number": 17,
+      "leaf": "appliances.floorcare.vacuum.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "일렉맨 쿠쿠 10인용 IH CRP-HUF1080BE",
+      "raw_record_ids": [
+        "ingestion:107:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:17": "b2e1718e5018f74876f3f5eb4dfc5b7a158446e09c266a41274b0184e9088e62"
+      },
+      "number": 18,
+      "leaf": null,
+      "hold_reason": "evidence: title does not establish rice cooker product form"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[적립금10만] 팔콘i 안마의자 헬스케어로봇 무상AS 5년",
+      "raw_record_ids": [
+        "ingestion:107:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:18": "2c0edca5b9974396c4e9b3ca76372588e02a43371b9282601e6dca31956bad8f"
+      },
+      "number": 19,
+      "leaf": "appliances.wellness.massage.chair",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "통버블 일반세탁기 WA10CG5441BW",
+      "raw_record_ids": [
+        "ingestion:107:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:19": "0a8815a15ab7965fb80bc6a85b8883a5c46bf3776c0462eb3848fa5eb4707c1c"
+      },
+      "number": 20,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 RM90H64P2W AI 패밀리허브 냉장고 4도어 키친핏 Max 602L / KN",
+      "raw_record_ids": [
+        "ingestion:107:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:20": "4e2e6ecfc28e2d29a7cc2eb1f0ed625581d6cbc103057d15d950afad24ecacd1"
+      },
+      "number": 21,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 LG 통돌이 세탁기 T21MX9A (21kg) /JWT /지역수량한정",
+      "raw_record_ids": [
+        "ingestion:107:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:21": "0e2cb51520239f046e396b706860fc562c2ec57d682539ed1201a52d2491b928"
+      },
+      "number": 22,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "6인용 IH CRP-FHTS0610FB",
+      "raw_record_ids": [
+        "ingestion:107:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:23": "6fc994dd7ecbccefe12e38c14885ef358f89dc891ccfd0145267291210c8286b"
+      },
+      "number": 23,
+      "leaf": null,
+      "hold_reason": "evidence: title does not establish rice cooker product form"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "삼성 비스포크 AI 콤보 25/20kg (177.8mm LCD)+수납함 그레이지 WD90H25AHYN1",
+      "raw_record_ids": [
+        "ingestion:107:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:24": "1814929c745df1ccb25300d61d316572e7a4657494ff831ce8b86c2d3c70483b"
+      },
+      "number": 24,
+      "leaf": "appliances.laundry.combo.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[O] 삼성 비스포크 AI 냉장고 905L RM70F90R1ZD",
+      "raw_record_ids": [
+        "ingestion:107:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:25": "4919f0a972508a55c41538a054abb080b301f3002ec1d9ef6fcf4300f676bf59"
+      },
+      "number": 25,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "S][LG전자 직영] LG 트롬 드럼세탁기 F21VDSKR (21kg)",
+      "raw_record_ids": [
+        "ingestion:107:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:26": "4b0924d90710326b9489db4158cfa57443fb57578038fa38a4c3f8ee30c4a5b3"
+      },
+      "number": 26,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[K] LG전자 투도어 소형 일반형 냉장고 189리터 B182W13",
+      "raw_record_ids": [
+        "ingestion:107:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:27": "a55ab2f756e15566e591f5c2dac3a58e858818e7c673ae8537c0cce6c92c681d"
+      },
+      "number": 27,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[LG전자 직영] LG 코드제로 R5 올인원타워 로봇청소기 R585WKA1",
+      "raw_record_ids": [
+        "ingestion:107:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:28": "23d798b28c9db3df0f70c019a2a4a52b16b1a5dd363142df8ea3bafa1c57c006"
+      },
+      "number": 28,
+      "leaf": "appliances.floorcare.robot.vacuum",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "더 프레임 Pro Neo QLED TV 214cm KQ85LSF03WFXKR",
+      "raw_record_ids": [
+        "ingestion:107:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:29": "b994b06795e29723e241dde54adfc7a1428dfabed1465a0eb182592fc87cea3f"
+      },
+      "number": 29,
+      "leaf": "electronics.video.television.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "P][LG전자 직영] LG 통돌이 세탁기 T21MX9A (21kg)",
+      "raw_record_ids": [
+        "ingestion:107:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:30": "d1101ad6563b884752e5001c9e884da22e8f0345c2cbca7c42c9c8ae2e869921"
+      },
+      "number": 30,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전기레인지 인덕션 더 플레이트 NZ31DG200CFH",
+      "raw_record_ids": [
+        "ingestion:107:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:31": "b69d94277db0e27a1b7fae3b264ae62f6a22112e190bc51a83652a1b9047479c"
+      },
+      "number": 31,
+      "leaf": "appliances.kitchen.cooktop.induction",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "가전 휘센 제습기 DQ205PSVA / 20L",
+      "raw_record_ids": [
+        "ingestion:107:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:32": "b317a159dadf9e9fdae035895fba1af204ea983109d1c98c04229b5ff8ff6842"
+      },
+      "number": 32,
+      "leaf": "appliances.climate.dehumidifier.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[LG전자 직영] LG 일반냉장고 B502W33 (507L)",
+      "raw_record_ids": [
+        "ingestion:107:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:33": "8ccc55fbcb6b60661724fd19e533bc5bcdf2a176de3ad948182e9051540df2da"
+      },
+      "number": 33,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "가전 인공지능 세탁기 DD모터 T19MX8A [19kg]",
+      "raw_record_ids": [
+        "ingestion:107:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:34": "cd412154f2d9f972f6f88a53f54cda9808dfdfd8c91dac05b6c5cb53008ac36d"
+      },
+      "number": 34,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "가전 디오스 김치톡톡 뚜껑형 김치냉장고 K225LW121 [217L]",
+      "raw_record_ids": [
+        "ingestion:107:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:35": "c4b0d358e995d9f3fc3d28bbf439b00bb1e762c85006979c8da963437ad72dfb"
+      },
+      "number": 35,
+      "leaf": "appliances.kitchen.kimchi_refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 디오스 AI 냉장고 매직스페이스 652L 화이트 S656MQQ143 기사설치",
+      "raw_record_ids": [
+        "ingestion:107:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:36": "c1902a7ee2c9b95c5723d63747abedb06adc1cdb96008d0b4b06c5ccf75dc3fd"
+      },
+      "number": 36,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "통돌이 세탁기 TR13WV4 화이트 13kg",
+      "raw_record_ids": [
+        "ingestion:107:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:37": "8d1bf46a11ed783427f134dba36b14712936a8230e093adf9d30629a2754dc3f"
+      },
+      "number": 37,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "전자 AI 21+21kg 세탁기+건조기 WF21DG6650BE2T(WF21DG6650BE+DV21DG8600BE)",
+      "raw_record_ids": [
+        "ingestion:107:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:38": "841ee21a85faf43b706d6f29a759534963edd060141095df107c2b9804f6df3b"
+      },
+      "number": 38,
+      "leaf": null,
+      "hold_reason": "mixed-package: separate washer and dryer"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "트롬 AI 오브제컬렉션 워시타워 25/25kg WA2525EGHF",
+      "raw_record_ids": [
+        "ingestion:107:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:39": "f4765d68662548062a557d11c3f00b567cf144e61109d119d0d5ab2bdedb3ded"
+      },
+      "number": 39,
+      "leaf": "appliances.laundry.tower.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "디오스 오브제컬렉션 김치냉장고 505L Z509MPSF13",
+      "raw_record_ids": [
+        "ingestion:107:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:40": "4e089235cb21051a74f11868630941193a6508de019c6029e5725c2c8394c892"
+      },
+      "number": 40,
+      "leaf": "appliances.kitchen.kimchi_refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 RM70F90R2D AI 냉장고 4도어 905L / KN",
+      "raw_record_ids": [
+        "ingestion:107:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:41": "df121592daee28db25ec209df39b02fcbd1856ac0d461e7c6a79ec1ad0ee6f98"
+      },
+      "number": 41,
+      "leaf": "appliances.kitchen.refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "WD80H25BHB 비스포크 AI콤보 세탁기건조기 일체형 25kg+18kg",
+      "raw_record_ids": [
+        "ingestion:107:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:42": "d81bbdf6ebae4c735f26e4173041b61d8074605c2eae3b77362efc8e8d651289"
+      },
+      "number": 42,
+      "leaf": "appliances.laundry.combo.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "(J)LG 트롬 오브제컬렉션 워시타워 WA2525YMHF 네이비/크림그레이",
+      "raw_record_ids": [
+        "ingestion:107:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:43": "745e53272f0a37abf77da24fd291efa6b937f2673af1d856439d6188d7a3d4c4"
+      },
+      "number": 43,
+      "leaf": "appliances.laundry.tower.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "(J)LG 트롬 오브제컬렉션 워시타워 WA2525GGHF 네이처 그린 네이처 그린",
+      "raw_record_ids": [
+        "ingestion:107:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:44": "186e82c98adbeb767211032666a8ddde36c238ff9b840af648648ffd7a718665"
+      },
+      "number": 44,
+      "leaf": "appliances.laundry.tower.integrated",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "트롬 오브제 컬렉션 건조기 19kg RG19EN",
+      "raw_record_ids": [
+        "ingestion:107:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:45": "243ded0ee97d4b3f64eafca3ad290f60d3c7d412ae08ba99c87a18fdd37cdc7d"
+      },
+      "number": 45,
+      "leaf": "appliances.laundry.dryer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "로봇청소기 VR90F01AAG 무료배송",
+      "raw_record_ids": [
+        "ingestion:107:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:46": "54e258b3fb5c261588141aafbb59f0afb707a959ff18addde7ae4080464b811c"
+      },
+      "number": 46,
+      "leaf": "appliances.floorcare.robot.vacuum",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "[O] 삼성 그랑데 AI 드럼 세탁기 25kg WF25DG8650BV",
+      "raw_record_ids": [
+        "ingestion:107:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:47": "535c34fb74ce519c9e01b0cfc078364d4f77789e3c34820c14de0a394c04c7b5"
+      },
+      "number": 47,
+      "leaf": "appliances.laundry.washer.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "김치냉장고 RQ49DB9411APW6 배송무료",
+      "raw_record_ids": [
+        "ingestion:107:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:48": "e84a97715ac0f33c67b61673c6f70c01084278c82d45ad7bbe80d3f74428190c"
+      },
+      "number": 48,
+      "leaf": "appliances.kitchen.kimchi_refrigerator.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "S][LG전자 직영] LG 휘센 제습기 DQ205PSVA",
+      "raw_record_ids": [
+        "ingestion:107:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:49": "392d1fc1eefc62b313f7fa67f75358e7c69b3f8f3d5d9d7971b1347313130a67"
+      },
+      "number": 49,
+      "leaf": "appliances.climate.dehumidifier.electric",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "UHD TV KU85UH8000FXKR 스탠드형 물류배송DB",
+      "raw_record_ids": [
+        "ingestion:107:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:50": "019ff40a9fa23b30c3bf0a6ec31d419341ac5c584f91b0b27b2f1fd3b1643719"
+      },
+      "number": 50,
+      "leaf": "electronics.video.television.standard",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "디지털/가전/렌탈"
+      ],
+      "source_title": "비스포크 김치플러스 김치냉장고 313L 코타화이트 RQ33DB74D2AP01",
+      "raw_record_ids": [
+        "ingestion:107:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:107:51": "4937eecc8e2f3690442e875448662fbe017efea0efa28eb5694d878f3cf91f00"
+      },
+      "number": 51,
+      "leaf": "appliances.kitchen.kimchi_refrigerator.standard",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "dafccffe1177aea6d62273350915626d783761d254ea06a4bb9f5155e95881f6"
+}

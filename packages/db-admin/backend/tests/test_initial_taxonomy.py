@@ -26,6 +26,71 @@ def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
 
 
+@pytest.mark.parametrize("leaf_id,path", [
+    ("household.maintenance.window.screen_material", ("생활용품", "집수리", "방충망용품", "방충망보수·틈새차단재")),
+    ("household.maintenance.window.screen_roller", ("생활용품", "집수리", "방충망용품", "방충망작업밀대")),
+    ("household.maintenance.drain.strainer", ("생활용품", "집수리", "배수구보수", "배수구방충거름망")),
+    ("household.pest_control.traps.sticky", ("생활용품", "해충관리", "해충트랩", "해충끈끈이트랩")),
+    ("household.storage.transport.rolling_tote", ("생활용품", "수납·이동", "운반용품", "롤링토트카트")),
+    ("household.utilities.batteries.alkaline", ("생활용품", "전기용품", "건전지", "알카라인건전지")),
+    ("household.security.storage.safe", ("생활용품", "보안용품", "금고", "가정용금고")),
+    ("household.outdoor.bags.cooler_tote", ("생활용품", "야외용품", "보냉용품", "보냉토트백")),
+    ("household.maintenance.sealants.silicone", ("생활용품", "집수리", "실란트", "실리콘실란트")),
+    ("household.safety.childproofing.outlet_cover", ("생활용품", "안전용품", "유아안전", "콘센트안전커버")),
+    ("household.outdoor.cooking.portable_gas_stove", ("생활용품", "야외용품", "휴대조리", "휴대용가스버너")),
+    ("household.packaging.cord.binding_twine", ("생활용품", "포장용품", "결속용품", "포장노끈")),
+    ("household.workwear.gloves.work", ("생활용품", "작업용품", "작업장갑", "작업용장갑")),
+    ("household.maintenance.adhesives.instant", ("생활용품", "집수리", "접착제", "순간접착제")),
+    ("baby.toys.construction.set", ("유아동", "완구", "조립완구", "블록조립세트")),
+    ("baby.toys.educational.computer", ("유아동", "완구", "교육완구", "학습용컴퓨터")),
+    ("baby.toys.figures.character", ("유아동", "완구", "피규어", "캐릭터피규어")),
+    ("baby.clothing.underwear.panty", ("유아동", "의류", "속옷", "아동팬티")),
+    ("beauty.personal.hand.sanitizer", ("뷰티·개인관리", "개인위생", "손위생", "손소독제")),
+    ("baby.feeding.tableware.compartment_tray", ("유아동", "수유·식사", "식기", "칸식판")),
+    ("appliances.climate.dehumidifier.electric", ("가전", "계절·환경가전", "제습기", "전기제습기")),
+    ("appliances.laundry.washer.standard", ("가전", "세탁가전", "세탁기", "일반세탁기")),
+    ("appliances.laundry.combo.integrated", ("가전", "세탁가전", "세탁건조기", "세탁건조일체형")),
+    ("appliances.laundry.dryer.standard", ("가전", "세탁가전", "건조기", "의류건조기")),
+    ("appliances.laundry.tower.integrated", ("가전", "세탁가전", "워시타워", "세탁건조타워")),
+    ("appliances.kitchen.refrigerator.standard", ("가전", "주방가전", "냉장고", "일반냉장고")),
+    ("appliances.kitchen.kimchi_refrigerator.standard", ("가전", "주방가전", "김치냉장고", "김치냉장고")),
+    ("appliances.kitchen.cooktop.induction", ("가전", "주방가전", "전기레인지", "인덕션")),
+    ("appliances.floorcare.vacuum.standard", ("가전", "생활가전", "진공청소기", "진공청소기")),
+    ("appliances.floorcare.robot.vacuum", ("가전", "생활가전", "로봇청소기", "로봇진공청소기")),
+    ("appliances.wellness.massage.chair", ("가전", "건강가전", "안마기기", "안마의자")),
+    ("health.medical.thermal.spine", ("건강·의료", "의료기기", "온열기기", "척추온열의료기기")),
+    ("electronics.video.television.standard", ("디지털", "영상가전", "텔레비전", "TV")),
+    ("furniture.bedroom.mattress.standard", ("가구·인테리어", "침실가구", "매트리스", "매트리스")),
+    ("furniture.bedroom.frame.bed", ("가구·인테리어", "침실가구", "침대프레임", "침대프레임")),
+    ("furniture.storage.drawers.chest", ("가구·인테리어", "수납가구", "서랍장", "서랍장")),
+    ("furniture.storage.bookcase.rotating", ("가구·인테리어", "수납가구", "책장", "회전책장")),
+    ("furniture.storage.wardrobe.built_in", ("가구·인테리어", "수납가구", "옷장", "붙박이장")),
+    ("furniture.living.sofa.standard", ("가구·인테리어", "거실가구", "소파", "소파")),
+    ("furniture.children.desk.set", ("가구·인테리어", "아동가구", "책상", "책상·의자세트")),
+    ("furniture.seating.chair.armchair", ("가구·인테리어", "의자", "일반의자", "암체어")),
+    ("furniture.dining.table.standard", ("가구·인테리어", "식당가구", "식탁", "식탁")),
+    ("household.bedding.cushion.body", ("생활용품", "침구용품", "쿠션", "바디쿠션")),
+    ("household.organization.basket.general", ("생활용품", "수납·정리", "바구니", "수납바구니")),
+])
+def test_review_only_household_and_baby_leaves_have_exact_four_level_paths(leaf_id, path):
+    leaf = next(item for item in LEAVES if item.id == leaf_id)
+    assert leaf.path == path
+
+
+@pytest.mark.parametrize("path,title", [
+    ("가구/인테리어", "방충망 보수테이프"),
+    ("디지털/가전/렌탈", "알카라인 건전지 AA"),
+    ("유아동/완구", "레고 조립세트"),
+    ("헤어/바디/뷰티", "손소독제 겔"),
+    ("디지털/가전/렌탈", "일반냉장고 600L"),
+    ("디지털/가전/렌탈", "로봇청소기"),
+    ("가구/인테리어", "퀸 매트리스"),
+    ("가구/인테리어", "4인용 소파"),
+])
+def test_review_only_household_and_baby_leaves_do_not_guess_unreviewed_titles(path, title):
+    assert classify_record(_raw("emart", path, title))["unified_category_id"] is None
+
+
 @pytest.mark.parametrize('title,entry', CLEANING_URL_ENTRIES.items())
 def test_additional_costco_cleaning_forms_require_exact_official_url(title, entry):
     leaf, marker = entry
