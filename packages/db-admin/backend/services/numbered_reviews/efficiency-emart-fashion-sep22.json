@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass141",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "패션/언더웨어"
+      ],
+      "source_title": "면100% 팬티_미디5매",
+      "raw_record_ids": [
+        "ingestion:104:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:104:0": "e7ed3fa98461afcb2351b672613a109326cb3ef80ae88ffd18506cb2c669137d"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: intended wearer unspecified for gendered underwear leaf"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "패션/언더웨어"
+      ],
+      "source_title": "트라이 남성 민소매런닝 5매입",
+      "raw_record_ids": [
+        "ingestion:104:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:104:1": "676050901ee03804da30a7e76b4ee2b1947aa23b8abef2e332d5c4fa1323cf32"
+      },
+      "number": 2,
+      "leaf": "clothing.men.underwear.sleeveless",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "패션/언더웨어"
+      ],
+      "source_title": ")면100% 런닝",
+      "raw_record_ids": [
+        "ingestion:104:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:104:2": "dc8615b27c774a9275454f1801fe1272d58a4631370228570520b191372e25dc"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: intended wearer unspecified for gendered underwear leaf"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "패션/언더웨어"
+      ],
+      "source_title": "오가닉 여미디 헴팬티3매",
+      "raw_record_ids": [
+        "ingestion:104:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:104:3": "4e801fecc294ecbfc0e2892c2c6d7a95e967ba53a2328618618ff2067c85b917"
+      },
+      "number": 4,
+      "leaf": "clothing.women.underwear.panties",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "패션/언더웨어"
+      ],
+      "source_title": "선염트렁크3매",
+      "raw_record_ids": [
+        "ingestion:104:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:104:4": "2e0867316478e3f4abc54c2f84f00e7a3bfb7451d06b602b73e6a9f4a1ec83e0"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "evidence: intended wearer unspecified for gendered underwear leaf"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "579cfac5d62162c690f3fd4f5938b106c047982ec0036ca8857fe9e35d543956"
+}

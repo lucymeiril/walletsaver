@@ -1,6 +1,6 @@
 # WalletSaver: resume and safety
 
-- Delegation: use fixed profiles and job paths; see `docs/catalog-agent-launch.md`. Current efficiency pilot uses catalog_classifier (Sol low) and catalog_duo_reviewer (Sol medium). Optional exception reviewer is separate, never mandatory. Do not claim profile auto-loading or OS isolation without verification.
+- Delegation: use fixed profiles and job paths; see `docs/catalog-agent-launch.md`. Current pilot uses one GPT-6 Sol low classifier followed by main-agent semantic review; no routine second classifier/reviewer model. Optional exception reviewer is separate, never mandatory. Do not claim profile auto-loading or OS isolation without verification.
 - Output economy: no per-batch essays or repeated plans; meaningful updates 1–2 sentences, final at most 5 lines unless a failure needs explanation. Reuse scripts for proposal application/checkpoints. Do not retype generated JSON or reread historical evaluation notes without a concrete need.
 
 - User-approved archive policy (2026-09-20): keep one live certified baseline; after checkpointing use `tools/catalog_archive.py` dry-run then `--apply` to archive old initial-catalog pass folders with verified byte preservation. Do not reuse pass IDs. Read `docs/catalog-retention.md` when compacting or retrieving history. This is separate from classification and never deletes original DBs or unique proposal/hold evidence.

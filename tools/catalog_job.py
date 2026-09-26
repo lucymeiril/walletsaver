@@ -17,6 +17,8 @@ def main():
     known={x.id:' > '.join(x.path) for x in LEAVES}
     unknown=set(args.leaf)-set(known)
     if unknown: raise ValueError(f'Unknown leaves: {sorted(unknown)}')
+    unmatched=[p for p in args.leaf_prefix if not any(key.startswith(p) for key in known)]
+    if unmatched: raise ValueError(f'Unmatched leaf prefixes: {sorted(unmatched)}')
     leaves={key:value for key,value in known.items() if key in args.leaf or any(key.startswith(p) for p in args.leaf_prefix)}
     if not leaves: raise ValueError('No matching leaves')
     if len(set(args.packet)) != len(args.packet): raise ValueError('Duplicate packet')

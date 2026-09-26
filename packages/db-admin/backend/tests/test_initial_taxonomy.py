@@ -119,6 +119,24 @@ def test_review_only_new_leaves_have_exact_four_level_paths(leaf_id, path):
     assert leaf.path == path
 
 
+@pytest.mark.parametrize("path,title,expected", [
+    ("문구/취미/도서", "프레일 북엔드", "stationery.office.organizers.bookend"),
+    ("문구/취미/도서", "프레일 북엔드 신상품", None),
+    ("문구/취미/도서", "프레일 북엔드 + 노트 세트", None),
+    ("식품", "프레일 북엔드", None),
+    ("스포츠/여행/자동차", "미쉐린_라디우스스탠다드와이퍼350mm", "automotive.maintenance.wipers.standard"),
+    ("스포츠/여행/자동차", "미쉐린_F라디우스하이브리드와이퍼350mm", "automotive.maintenance.wipers.hybrid"),
+    ("스포츠/여행/자동차", "보쉬 V4 클리어비젼 350mm", None),
+    ("패션/언더웨어", "면100% 팬티_미디5매", None),
+    ("수산물/건해산", "[냉동] 해물모둠 600g", "food.seafood.assortments.frozen"),
+    ("수산물/건해산", "[냉동][베트남] 슈림프링 (453g/팩)", None),
+    ("커피/원두/차", "[오설록] 티 에디션 허브 4종 (16입)", "food.drinks.tea.herbal"),
+    ("커피/원두/차", "[립톤] 아이스티 복숭아 120X14G", "food.drinks.tea.black"),
+])
+def test_general_merchandise_review_boundaries(path, title, expected):
+    assert classify_record(_raw("emart", path, title))["unified_category_id"] == expected
+
+
 @pytest.mark.parametrize("path,title", [
     ("가구/인테리어", "방충망 보수테이프"),
     ("디지털/가전/렌탈", "알카라인 건전지 AA"),
@@ -214,10 +232,8 @@ def test_emart_coffee_tea_shelf_uses_exact_product_form(title, leaf):
 
 
 @pytest.mark.parametrize('title', [
-    '[오설록] 티 에디션 허브 4종 (16입)',
     '티 에디션 아일랜드 6종 (18입)',
     '러블리 티박스 4종 (12입)',
-    '[립톤] 아이스티 복숭아 120X14G',
     '트루 레몬즙 14입',
     '오리지널 리필 170g',
 ])
@@ -528,7 +544,9 @@ def test_emart_seafood_audit_classifies_exact_single_seafood_forms(title,leaf):
     assert reviewed_emart_seafood_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동] 해물모둠 600g','[냉동][베트남] 슈림프링 (453g/팩)','건조 황태채 ~20%','볶음/국물용 멸치 ~40% 할인','국산 참기름 들기름 만전재래김 4g*20봉'])
+# Explicit frozen assortments now have their own reviewed leaf; opaque prepared
+# foods and marketing events still lack sufficient product-form evidence.
+@pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동][베트남] 슈림프링 (453g/팩)','건조 황태채 ~20%','볶음/국물용 멸치 ~40% 할인','국산 참기름 들기름 만전재래김 4g*20봉'])
 def test_emart_seafood_audit_keeps_promotions_mixed_and_unclear_preparations_pending(title):
     assert classify_record(_raw('emart','수산물/건해산',title))['unified_category_id'] is None
 

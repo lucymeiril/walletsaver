@@ -102,6 +102,55 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    *_group("food.seafood.assortments", ("식품", "수산물", "수산물모둠"), "", (
+        ("frozen", "냉동해물모둠", ""),
+    )),
+    # Review-only forms: broad merchandising shelves never establish these.
+    *_group("stationery.office.organizers", ("문구", "사무용품", "정리용품"), "", (
+        ("bookend", "북엔드", ""), ("memo_board", "메모보드", ""),
+        ("pencil_case", "필통", ""), ("file", "서류파일", ""),
+    )),
+    *_group("stationery.office.paper", ("문구", "사무용품", "종이용품"), "", (
+        ("notebook", "노트", ""), ("copy", "복사용지", ""), ("sticky_note", "점착메모지", ""),
+    )),
+    *_group("stationery.office.tools", ("문구", "사무용품", "사무도구"), "", (
+        ("scissors", "사무용가위", ""), ("glue_stick", "고체풀", ""),
+        ("geometry_set", "자·각도기세트", ""),
+    )),
+    *_group("stationery.writing.pens", ("문구", "필기용품", "필기구"), "", (
+        ("mechanical_pencil", "샤프", ""), ("pencil", "연필", ""),
+        ("ballpoint", "유성볼펜", ""),
+    )),
+    *_group("stationery.art.colored_pencils", ("문구", "미술용품", "색연필"), "", (
+        ("mechanical", "샤프식색연필", ""), ("set", "색연필세트", ""),
+    )),
+    *_group("household.packaging.tape", ("생활용품", "포장용품", "포장테이프"), "", (
+        ("general", "포장용테이프", ""),
+    )),
+    *_group("automotive.maintenance.wipers", ("자동차용품", "차량관리", "와이퍼"), "", (
+        ("standard", "일반형와이퍼", ""), ("hybrid", "하이브리드와이퍼", ""),
+    )),
+    *_group("household.outdoor.fuel", ("생활용품", "야외용품", "휴대연료"), "", (
+        ("butane", "부탄가스", ""),
+    )),
+    *_group("sports.fitness.cardio", ("스포츠", "운동기구", "유산소기구"), "", (
+        ("treadmill", "러닝머신", ""),
+    )),
+    *_group("sports.cycling.electric", ("스포츠", "자전거", "전기자전거"), "", (
+        ("city", "시티전기자전거", ""), ("folding", "접이식전기자전거", ""),
+    )),
+    *_group("sports.golf.balls", ("스포츠", "골프", "골프공"), "", (
+        ("general", "골프공", ""),
+    )),
+    *_group("clothing.women.socks", ("패션", "여성의류", "양말"), "", (
+        ("ankle", "여성단목양말", ""),
+    )),
+    *_group("clothing.men.socks", ("패션", "남성의류", "양말"), "", (
+        ("ankle", "남성단목양말", ""),
+    )),
+    *_group("fashion.accessories.hair", ("패션", "패션잡화", "헤어소품"), "", (
+        ("elastic", "머리고무줄", ""),
+    )),
     *_group("food.dairy.milk", ("식품", "유제품", "우유"), "우유/유제품|유제품|dairy|우유|milk", (
         # Fat percentage/sterilization are attributes, not siblings of flavour.
         ("plain", "흰우유", "흰우유|멸균흰우유|일반우유|저지방우유|plain milk", "흰우유|일반우유|저지방우유|저지방 우유|무지방 우유|plain milk"),
@@ -406,6 +455,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("kombucha", "콤부차", "", ""),
     )),
     *_group("food.frozen.dessert", ("식품", "냉동식품", "아이스디저트"), "", (
+        ("tube", "튜브형아이스디저트", ""),
         ("ice_bar", "아이스바", ""),
         ("ice_cream", "아이스크림·젤라또", ""),
     )),

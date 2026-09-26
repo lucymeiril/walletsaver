@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass141",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "잡화/명품"
+      ],
+      "source_title": "(F)GU여성단목5족",
+      "raw_record_ids": [
+        "ingestion:105:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:105:0": "d0ab7e4465679ac06a39f321aa56e6a3ed2c15c6e4c122df5f0f31aa0df92109"
+      },
+      "number": 1,
+      "leaf": "clothing.women.socks.ankle",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "잡화/명품"
+      ],
+      "source_title": "행)푸마남성단목5족",
+      "raw_record_ids": [
+        "ingestion:105:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:105:1": "84ff758bd4b8a109566946dad2ce3be2c2c722a8a22bf3126dc34e52705c19d5"
+      },
+      "number": 2,
+      "leaf": "clothing.men.socks.ankle",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "잡화/명품"
+      ],
+      "source_title": "베이직 무팁고무줄(소)_15p",
+      "raw_record_ids": [
+        "ingestion:105:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:105:2": "48a30d5d9ca84c8f56c5dfc21b057086c1359d4e6e98902152012328f3d778ce"
+      },
+      "number": 3,
+      "leaf": "fashion.accessories.hair.elastic",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b99c635bfdce11e4b292c969bc08022e3965a874b9149ad08d54c42830a60835"
+}

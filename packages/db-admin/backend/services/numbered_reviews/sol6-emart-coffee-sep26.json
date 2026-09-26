@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass141",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[오설록] 티 에디션 허브 4종 (16입)",
+      "raw_record_ids": [
+        "ingestion:88:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:0": "b9ad62cce75f5259b731184521efe973936db3d90c4cbbd1913432ef7b5a1979"
+      },
+      "number": 1,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "티 에디션 아일랜드 6종 (18입)",
+      "raw_record_ids": [
+        "ingestion:88:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:1": "60c7e7a1730eb4cc568f11cfe989cb36d39a381de528be872c7a591632efc517"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: assortment contents unspecified"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "러블리 티박스 4종 (12입)",
+      "raw_record_ids": [
+        "ingestion:88:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:2": "eb9289103668604d44cad74d681a65d33c04f78a21bbe03786deddd567188bf1"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: assortment contents unspecified"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "[립톤] 아이스티 복숭아 120X14G",
+      "raw_record_ids": [
+        "ingestion:88:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:26": "348418a0accbc7351809f44e06aadc9f4c7e29e966a897ccffcaa063357b7509"
+      },
+      "number": 4,
+      "leaf": "food.drinks.tea.black",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "트루 레몬즙 14입",
+      "raw_record_ids": [
+        "ingestion:88:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:44": "30ff6d7441687d836e5a61d4bf4dfabca1b603f627691bb58aacd0c26e2f0a72"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "evidence: lemon juice physical form unclear"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "커피/원두/차"
+      ],
+      "source_title": "오리지널 리필 170g",
+      "raw_record_ids": [
+        "ingestion:88:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:88:56": "f26e0a0c5be80eca2498dadfc762defcb1441baaf903b4c8ce1577f8f0731cde"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "evidence: product form missing"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 217
+    },
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 218
+    },
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 219
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 220
+    },
+    {
+      "numbers": [
+        5
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 221
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 222
+    }
+  ],
+  "packet_sha256": "32efae1c29e02fca26ee1a6395ca9d03d81425126e31a650c94e818a29a5b5d1"
+}

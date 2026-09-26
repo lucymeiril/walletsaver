@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260922-pass141",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "국산 참기름 들기름 만전재래김 4g*20봉",
+      "raw_record_ids": [
+        "ingestion:82:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:8": "f8535e27876f28c21fba0a60bd18cd42917571c7f98b204dc86101112140afe7"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: oil and laver category conflict requires reviewed conflict resolution"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "싱싱 생선회&조개류 ~50%할인",
+      "raw_record_ids": [
+        "ingestion:82:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:12": "ce7158291bf1b6b386fb22f15941e768006c3e2f3bca3e8537987fbc58628736"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "non-product: promotion/event"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "[냉동] 해물모둠 600g",
+      "raw_record_ids": [
+        "ingestion:82:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:27": "b44e0923015873c8632b43f1ebd79689cc38f2c4a40e83647917a36f9adb189a"
+      },
+      "number": 3,
+      "leaf": "food.seafood.assortments.frozen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "건조 황태채 ~20%",
+      "raw_record_ids": [
+        "ingestion:82:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:41": "2b7ce171b50b79e416f087d986d48e2c64b8664b8d8d4542e897dfa32e047cca"
+      },
+      "number": 4,
+      "leaf": null,
+      "hold_reason": "non-product: promotion/event"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "[냉동][베트남] 슈림프링 (453g/팩)",
+      "raw_record_ids": [
+        "ingestion:82:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:49": "60046de1a5700f94592b2dbd8d105eac06dab3b4927e642c8c070d19329807f0"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "evidence: shrimp ring preparation and contents unspecified"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "수산물/건해산"
+      ],
+      "source_title": "볶음/국물용 멸치 ~40% 할인",
+      "raw_record_ids": [
+        "ingestion:82:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:82:57": "7c276f57779bb4bd3b95c27d24cefcc3cab1daa97d55ddd005969afe98836b29"
+      },
+      "number": 6,
+      "leaf": null,
+      "hold_reason": "non-product: promotion/event"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2,
+        3,
+        4
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_emart_fresh.py",
+      "line": 19
+    },
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 531
+    }
+  ],
+  "packet_sha256": "babd7033d66716d2e3071a4e6ccd1c6ef111fdfa816bb4b373f34a138cc3d381"
+}

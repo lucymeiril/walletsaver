@@ -1,11 +1,12 @@
 # 분류와 실행 위탁
 
-현재 효율 시험: 고정 `catalog_classifier` (Sol low) → `catalog_duo_reviewer` (Sol medium). 이전 Luna high 시험과 구분한다. `fork_turns=none`, 호출문은 job/report 경로만 사용한다. 지침 변경 직후에는 프로필 재읽기도 명시한다. 등록된 역할은 실제 도구에서 확인한다.
+현재 효율 시험: GPT-6 Sol low 분류 1회 → 주 에이전트 의미 검토. Luna 분류나 Sol 검수자를 기본으로 추가 호출하지 않는다. `fork_turns=none`을 사용한다. 등록된 `catalog_classifier`가 아직 GPT-5.6 Sol로 표시되면 기본 역할에 `model=gpt-6-sol`, `reasoning_effort=low`를 명시하고 `.codex/agents/catalog_classifier.toml`의 작업 지침을 읽게 한다. 파일 변경만으로 실행 중 역할 설정이 갱신됐다고 주장하지 않는다.
 
 분류 job은 40–100개 후보와 관련 리프 목록 하나를 공유한다. 관련 job을 합쳐 150–300개 검토 후 인증 1회가 목표이며 크기를 강제하지 않는다.
 
 1. `catalog_review.py shelves/prepare`로 새 후보를 만든다. prepare 출력은 로그로 보낸다.
 2. `catalog_job.py <name> --packet <name> --leaf-prefix <prefix>`로 문맥을 공유한다. 반복 가능한 `--leaf`로 필요한 예외 리프를 보충한다.
+   원본 선반명과 내부 접두사는 다르다. 음식 묶음에는 제목을 보고 `food.drinks`, `food.frozen`, `food.seasonings` 같은 교차 품목도 포함한다. 존재하지 않는 접두사나 누락 리프 때문에 생긴 보류를 모델의 분류 실패로 집계하지 않는다.
 3. 분류자는 번호별 배정/보류만, 검수자는 변경점과 입력 해시만 쓴다. 제목과 구체적 경로를 함께 판단한다.
 4. `py tools/catalog_batch.py inspect --job <job> --save <new-manifest>`로 전체 형식·해시·적용 가능성을 확인한다. manifest는 의미 검토나 승인서가 아니다.
 5. 부모 의미 검토 후 `py tools/catalog_batch.py apply --job <job> --manifest <manifest>`로 규칙을 생성한다. 원본 제안을 보존한다. 사전 검증은 전체에 적용하지만 다중 파일 쓰기는 원자적이지 않다. 중단 시 생성 파일을 확인한다.
@@ -16,3 +17,5 @@
 보류는 `new leaf: 구체적 형태`, `evidence: 필요한 정보`, `quantity: 이유`, `non-product: 이유`로 구분한다. 없는 리프가 반복되면 부모가 트리를 보완한다. 보류를 완료 실적으로 세지 않는다.
 
 측정은 호출 수, 출력 크기, 검토/확정 제목 수, 실제 상품/관측 증가로 한다. 이를 토큰·할당량 절감률로 환산하지 않는다. 전체 이력이나 taxonomy를 반복 전달하지 않는다.
+
+2026-09-26 GPT-6 Sol low 첫 시험: 신규 식품 37건, 최초 배정 2·보류 35. 입력에서 `food.drinks`, `food.frozen`, `food.seasonings`가 누락됐으므로 모델 성능 비교 자료로는 부적절하다. 분류자 원본은 proposal 옆 `.original-sep26`에 보존했다. 부모 검토에서 슈림프링의 일반 새우 배정을 보류로 수정했고, 김 배정은 실제 분류기 충돌로 보류했다. 다음 새 묶음에서 올바른 리프 목록으로 평가한다. 일반상품 60건은 이전 모델 작업이므로 이번 모델 성과에 합산하지 않는다.
