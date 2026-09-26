@@ -102,6 +102,27 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    *_group("food.produce.assortments", ("식품", "농산물", "농산물모둠"), "", (
+        ("fresh_fruit", "혼합신선과일", ""),
+    )),
+    *_group("food.produce.leafy", ("식품", "농산물", "잎채소"), "", (
+        ("bok_choy", "청경채", ""), ("perilla_sprouts", "깻순", ""),
+        ("pumpkin_leaves", "호박잎", ""), ("chamnamul", "참나물", ""),
+        ("chwinamul", "취나물", ""),
+    )),
+    *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "", (
+        ("durum_wheat", "듀럼밀", ""),
+    )),
+    *_group("food.snacks.assortments", ("식품", "과자·간식", "혼합간식"), "", (
+        ("nuts_pretzels", "견과·프레첼혼합", ""),
+    )),
+    *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
+        ("pickling_soy", "장아찌간장소스", ""), ("garlic_dip", "갈릭디핑소스", ""),
+        ("tofu_stir_fry", "두부두루치기양념", ""),
+    )),
+    *_group("food.seasonings.oils", ("식품", "양념·소스", "식용유"), "", (
+        ("rice_bran", "현미유", ""),
+    )),
     *_group("food.seafood.assortments", ("식품", "수산물", "수산물모둠"), "", (
         ("frozen", "냉동해물모둠", ""),
     )),

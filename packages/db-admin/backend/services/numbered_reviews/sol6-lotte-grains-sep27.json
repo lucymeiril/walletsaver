@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "고구마 스틱 (300G)",
+      "raw_record_ids": [
+        "ingestion:35:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:96": "fc9373ac4f0ee3c83ce38e8366d275e44b952ee333cbf6e72c0a102a0d57f148"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: sweet potato preparation unclear"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "바프 HBAF 허니버터아몬드&땅콩 (280G)",
+      "raw_record_ids": [
+        "ingestion:36:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:36:10": "ab38c004116099f7f8b52207e96aaa77fb2af1f776213bc3b06ec5e6b5f540ee"
+      },
+      "number": 2,
+      "leaf": "food.grains.nuts.mixed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "명인부각 누룽지 (180G)",
+      "raw_record_ids": [
+        "ingestion:36:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:36:16": "72a7fa25ef730db0012702dd137e3007f13ce12c0aac090aeac7ce5abde45f2b"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: nurungji versus bugak snack form unclear"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "듀럼밀 (1.5KG)",
+      "raw_record_ids": [
+        "ingestion:36:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:36:24": "8b63be8c9a5f23f7dacd7b2a47f6906a1692b9cd0c482a1ff9f4a6badd3d0dfa"
+      },
+      "number": 4,
+      "leaf": "food.grains.rice.durum_wheat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "바프 HBAF 와사비맛아몬드&땅콩 (280G)",
+      "raw_record_ids": [
+        "ingestion:36:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:36:25": "e420b0d3dfc01ffe1d27bcd99cda1c30e2d29ce35fc5e7cad34967f6b157bcac"
+      },
+      "number": 5,
+      "leaf": "food.grains.nuts.mixed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류"
+      ],
+      "source_title": "HBAF 카라멜 아몬드 앤 프레첼 (120G)",
+      "raw_record_ids": [
+        "ingestion:36:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:36:27": "ab78ec55d7b9859514935debb568591e7740b32592e99373826be8a8f394e081"
+      },
+      "number": 6,
+      "leaf": "food.snacks.assortments.nuts_pretzels",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 646
+    }
+  ],
+  "packet_sha256": "d9c250b7034e35494f1cef48049aa9f64e38eda252a17bd664e13ae5bd47cc75"
+}

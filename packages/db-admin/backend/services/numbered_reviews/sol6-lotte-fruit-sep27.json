@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "프라임 사과, 배 (사과4입, 배6입)",
+      "raw_record_ids": [
+        "ingestion:35:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:51": "d26b923601ec9629946269c40fab21f8b9cc1a19645c6ba3dfbc85f21373c83a"
+      },
+      "number": 1,
+      "leaf": "food.produce.assortments.fresh_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "한가득 정성담은 샤인 혼합과일 (4KG/박스)",
+      "raw_record_ids": [
+        "ingestion:35:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:58": "f95a5f4c0afd8ca35858f02f90842852c84f508e4fb21ff7d3a59c41c5d5650e"
+      },
+      "number": 2,
+      "leaf": "food.produce.assortments.fresh_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "한가득 정성담은 혼합과일 11종 (4KG/박스)",
+      "raw_record_ids": [
+        "ingestion:35:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:62": "8a26a2d2c3bb938b0feed4b461105d5e6f26b21cd96f069bf5c36cab04c6ef78"
+      },
+      "number": 3,
+      "leaf": "food.produce.assortments.fresh_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "나주하우스배 충주사과 (사과8입, 배6입)",
+      "raw_record_ids": [
+        "ingestion:35:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:63": "4ebfcb980b2d81a8f45937ff6500db8810eef10eded9beb3ade811646f97fca9"
+      },
+      "number": 4,
+      "leaf": "food.produce.assortments.fresh_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "한가득 정성담은 혼합과일 5종 (4KG/박스)",
+      "raw_record_ids": [
+        "ingestion:35:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:65": "16058e0db9625590c103b7a1a9167d097bc96289d4d58b205e1ab5242762f54b"
+      },
+      "number": 5,
+      "leaf": "food.produce.assortments.fresh_fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일"
+      ],
+      "source_title": "망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)",
+      "raw_record_ids": [
+        "ingestion:35:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:67": "da9941ed773bfcf80ec7fe55e13f21079c66f520ba6b3290b36a0236693f8cad"
+      },
+      "number": 6,
+      "leaf": "food.produce.fruit.mango",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 680
+    },
+    {
+      "numbers": [
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 681
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 682
+    }
+  ],
+  "packet_sha256": "12ed7339f567edd01ba3dddae63d977410062c8fdf94a23e03be8f4444379c11"
+}

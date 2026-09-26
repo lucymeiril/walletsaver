@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "생나물"
+      ],
+      "source_title": "청경채(봉)",
+      "raw_record_ids": [
+        "ingestion:3:23",
+        "ingestion:52:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:23": "aa8302da7eb4b1a8efdc079a7c3c2198d79e179b7647cf371a74d17998763ad8",
+        "ingestion:52:36": "26c78508d30d75dcc160654ed7259756a79c18bde5d6bac0c254622ec0e88885"
+      },
+      "number": 1,
+      "leaf": "food.produce.leafy.bok_choy",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "생나물"
+      ],
+      "source_title": "깻순(봉)",
+      "raw_record_ids": [
+        "ingestion:52:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:27": "2e2ee1e3c672255655d077c00dc71f36925b37c307692f00afc640f86e8c6219"
+      },
+      "number": 2,
+      "leaf": "food.produce.leafy.perilla_sprouts",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "생나물"
+      ],
+      "source_title": "호박잎(봉)",
+      "raw_record_ids": [
+        "ingestion:52:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:45": "637ef1e5b1310f1412f4b938b7687bf6335a1e4149152be95b02afedc63dc4c5"
+      },
+      "number": 3,
+      "leaf": "food.produce.leafy.pumpkin_leaves",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "생나물"
+      ],
+      "source_title": "참나물(봉)",
+      "raw_record_ids": [
+        "ingestion:52:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:59": "eec24dd37c75c6b63b808431b322135f51fc5743c97ac2ff1632a7f386a97274"
+      },
+      "number": 4,
+      "leaf": "food.produce.leafy.chamnamul",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "생나물"
+      ],
+      "source_title": "취나물(봉)",
+      "raw_record_ids": [
+        "ingestion:52:72"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:72": "205a504fe525042ecccb1548d508184cbc0c1e4dd8d7e72464c7c0217c2ca93a"
+      },
+      "number": 5,
+      "leaf": "food.produce.leafy.chwinamul",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "215def9ee8f331d7a3ef9a5d2cff44ffc9f3ee0eb3fe621d0a8f8157522709ec"
+}

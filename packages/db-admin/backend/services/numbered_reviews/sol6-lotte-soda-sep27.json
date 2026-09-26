@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "코카콜라 제로 (1.2L)",
+      "raw_record_ids": [
+        "ingestion:28:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:91": "8ab31295eb0b2289199fd88e9d4329c69f78b8ac6f350902a1370bba0afb5e91"
+      },
+      "number": 1,
+      "leaf": "food.drinks.water_soda.cola",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "맥콜 (1.25L)",
+      "raw_record_ids": [
+        "ingestion:29:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:17": "3dc4cc8254d99b99dc10834d41a1aff4b9b8407f7868c1e539fd4ce804e9d050"
+      },
+      "number": 2,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "칠성 사이다제로 (1.25L)",
+      "raw_record_ids": [
+        "ingestion:29:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:37": "c58b10f191a5981fef97a11c1071ebefaf178a35eb286040bb95cab7562ddbe8"
+      },
+      "number": 3,
+      "leaf": "food.drinks.water_soda.cider",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "웰치 포도 캔 (355ML * 6)",
+      "raw_record_ids": [
+        "ingestion:33:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:32": "7c628c696b09b510bb2eb2be81017d181d137b50842c6e15aa31bfda4e7ceade"
+      },
+      "number": 4,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "웰치포도 제로 (355ML * 6)",
+      "raw_record_ids": [
+        "ingestion:35:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:9": "9b09b31766fc666d7dfffe461bbb0655ea1cf7965a58f18098d25cf30c153faf"
+      },
+      "number": 5,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "33607d94835e4626a870d1a74695ff2ed91cd4ebdbd42d1a4184ddc1597d8677"
+}

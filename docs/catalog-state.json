@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7316,
-  "unresolved": 1880,
-  "next_task": "Continue GPT-6 Sol low single-classifier pilot on new food shelves with verified relevant leaf prefixes; main reviews proposals. Sep26 batch: 97 reviewed, 67 classified, 37 products/observations added; 30 holds. Original classifier proposals preserved as .original-sep26. Quantity conflict rows from pass141 remain pending.",
+  "included": 7346,
+  "unresolved": 1850,
+  "next_task": "Continue GPT-6 Sol low single-classifier with main semantic review on new shelves. Two pilots completed; do not repeat sep26/27 packets. Weight units do not establish powder/liquid, ambiguous prepared foods stay held. Next remaining food shelves: homeplus noodles/soups/marinated poultry and lottemart children drinks/laver snacks/curry/sausages. pass141 quantity conflicts remain pending.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

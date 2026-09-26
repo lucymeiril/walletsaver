@@ -643,7 +643,7 @@ def test_lotte_nuts_and_chips_are_not_assumed_raw_grains(title,leaf):
     assert reviewed_lotte_nut_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['바프 HBAF 허니버터아몬드&땅콩 (280G)','바프 HBAF 와사비맛아몬드&땅콩 (280G)','HBAF 카라멜 아몬드 앤 프레첼 (120G)','고구마 스틱 (300G)','명인부각 누룽지 (180G)','듀럼밀 (1.5KG)'])
+@pytest.mark.parametrize('title',['고구마 스틱 (300G)','명인부각 누룽지 (180G)'])
 def test_lotte_mixed_nut_kits_and_unclear_product_forms_remain_pending(title):
     assert classify_record(_raw('lottemart','쌀ㆍ잡곡ㆍ견과류',title))['unified_category_id'] is None
 
@@ -659,9 +659,28 @@ def test_emart_pantry_exact_forms_reuse_leaves_without_shelf_guessing(title,leaf
     assert reviewed_seasoning_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['백설 알룰로스 700g','현미유1L','백설 멸치디포리가득 육수에는 1분링 80g','데일리갈릭디핑소스315g','장아찌간장소스 1.7L'])
+@pytest.mark.parametrize('title',['백설 알룰로스 700g'])
 def test_emart_pantry_does_not_guess_unspecified_form_or_opaque_sauce(title):
     assert classify_record(_raw('emart','양념/오일',title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('mart,path,title,leaf', [
+    ('lottemart','과일','프라임 사과, 배 (사과4입, 배6입)','food.produce.assortments.fresh_fruit'),
+    ('lottemart','과일','한가득 정성담은 혼합과일 11종 (4KG/박스)','food.produce.assortments.fresh_fruit'),
+    ('lottemart','과일','망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)','food.produce.fruit.mango'),
+    ('emart','양념/오일','현미유1L','food.seasonings.oils.rice_bran'),
+    ('emart','양념/오일','백설 멸치디포리가득 육수에는 1분링 80g','food.seasonings.sauces.broth'),
+    ('emart','양념/오일','데일리갈릭디핑소스315g','food.seasonings.sauces.garlic_dip'),
+    ('emart','양념/오일','장아찌간장소스 1.7L','food.seasonings.sauces.pickling_soy'),
+    ('lottemart','쌀ㆍ잡곡ㆍ견과류','바프 HBAF 허니버터아몬드&땅콩 (280G)','food.grains.nuts.mixed'),
+    ('lottemart','쌀ㆍ잡곡ㆍ견과류','바프 HBAF 와사비맛아몬드&땅콩 (280G)','food.grains.nuts.mixed'),
+    ('lottemart','쌀ㆍ잡곡ㆍ견과류','듀럼밀 (1.5KG)','food.grains.rice.durum_wheat'),
+    ('lottemart','쌀ㆍ잡곡ㆍ견과류','HBAF 카라멜 아몬드 앤 프레첼 (120G)','food.snacks.assortments.nuts_pretzels'),
+])
+def test_sep27_explicit_forms_replace_missing_leaf_holds(mart,path,title,leaf):
+    assert classify_record(_raw(mart,path,title))['unified_category_id'] == leaf
+    assert classify_record(_raw(mart,'가전',title))['unified_category_id'] is None
+    assert classify_record(_raw(mart,path,title+' + 다른상품 혼합세트'))['unified_category_id'] != leaf
 
 
 @pytest.mark.parametrize("mart,title,leaf", [(mart, title, leaf) for mart, titles in FRUIT_TITLES.items() for title, leaf in titles.items()])
@@ -677,9 +696,6 @@ def test_reviewed_single_fruit_titles_reuse_existing_leaves_without_approval(mar
 
 
 @pytest.mark.parametrize("mart,title", [
-    ("lottemart", "프라임 사과, 배 (사과4입, 배6입)"),
-    ("lottemart", "한가득 정성담은 혼합과일 11종 (4KG/박스)"),
-    ("lottemart", "망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)"),
     ("emart", "부드러운 복숭아 1.25kg 내외 (4~6입)/팩"),
     ("emart", "까망 애플수박 1.5kg미만"),
     ("emart", "친환경 신선 행사 모음전"),

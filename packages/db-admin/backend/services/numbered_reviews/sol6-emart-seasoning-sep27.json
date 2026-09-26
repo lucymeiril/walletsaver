@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "양념/오일"
+      ],
+      "source_title": "장아찌간장소스 1.7L",
+      "raw_record_ids": [
+        "ingestion:91:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:91:4": "5d9a6f001eb4d16bd859bed3c01d34f3a114e89fa79475e13729425961311993"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.pickling_soy",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "양념/오일"
+      ],
+      "source_title": "백설 멸치디포리가득 육수에는 1분링 80g",
+      "raw_record_ids": [
+        "ingestion:91:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:91:9": "bbfca311daacc3750342473321329bdf85b9720ca79ed3f6af37c8d22acc9022"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "양념/오일"
+      ],
+      "source_title": "데일리갈릭디핑소스315g",
+      "raw_record_ids": [
+        "ingestion:91:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:91:61": "353c2c8ba60a779abbc491617dc98643c582335d231ab8fad43a2dd256122798"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.sauces.garlic_dip",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "양념/오일"
+      ],
+      "source_title": "현미유1L",
+      "raw_record_ids": [
+        "ingestion:91:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:91:64": "69aa7ac0fcca1f0ca82f000dea0b302e70272b268a0955da54f9bfcdc6e8ef39"
+      },
+      "number": 4,
+      "leaf": "food.seasonings.oils.rice_bran",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "양념/오일"
+      ],
+      "source_title": "백설 알룰로스 700g",
+      "raw_record_ids": [
+        "ingestion:91:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:91:65": "bcaf02d0ee14bc6a255fded45a38606e53fa3b89aba3b4754acdedff4b1a66f6"
+      },
+      "number": 5,
+      "leaf": null,
+      "hold_reason": "evidence: weight does not establish liquid versus powder allulose"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 662
+    }
+  ],
+  "packet_sha256": "817fd0fa27d6e3281a6472b2af286051c552e39b687926da95eca74585a588d4"
+}

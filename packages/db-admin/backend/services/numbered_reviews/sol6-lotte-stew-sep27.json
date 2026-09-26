@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260926-pass143",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 바지락순두부찌개 양념 (140G)",
+      "raw_record_ids": [
+        "ingestion:30:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:58": "b9ded6760bb0404a1527d3429bc5725f6d725f98d982311fba1a9740612a6a05"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 두부두루치기 양념 (140G)",
+      "raw_record_ids": [
+        "ingestion:32:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:66": "9fd5a4aade276d6bf82f32ac36f17aa9e3a262d40382c4f3d79cbfe9674bde0c"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.tofu_stir_fry",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 직화제육볶음 양념 (150G)",
+      "raw_record_ids": [
+        "ingestion:33:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:81": "aba3c23c61eb670350d9f73b88890f82850485592685d6e28495e3b509dfae33"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.sauces.meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "오늘좋은 순두부찌개양념 (130G)",
+      "raw_record_ids": [
+        "ingestion:34:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:14": "ce60cc6e5221c8b4add7d2c8ccf5ba8813b2ac341212e4087e358da93984de06"
+      },
+      "number": 4,
+      "leaf": "food.seasonings.sauces.stew",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "국ㆍ찌개양념"
+      ],
+      "source_title": "풀무원 반듯한식 국물떡볶이 양념 (150G)",
+      "raw_record_ids": [
+        "ingestion:34:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:89": "0b18cc71b4bf56df25d4392e04066bfb0f9ae5b3e65e96c94736fc07efca006e"
+      },
+      "number": 5,
+      "leaf": "food.seasonings.sauces.tteokbokki",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4f45bb9fc657505c011bd7b32ecab55d73c7cbc522ad13f36c5764e7aff800ae"
+}
