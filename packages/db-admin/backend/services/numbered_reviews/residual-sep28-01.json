@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "섬유 탈취제",
+        "기타섬유탈취제"
+      ],
+      "source_title": "피죤 스프레이 블루비앙카 430ML",
+      "raw_record_ids": [
+        "ingestion:26:13",
+        "ingestion:75:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:13": "bd7e61928fccdc568d4acc431c1d9d0f8a62da7abac1ab49b4bcd54e8bc1023f",
+        "ingestion:75:48": "daecacc64c4faaf723bd7c8a9f6d4703403f75b57cc37f59407d5568bf127781"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "섬유 탈취제",
+        "기타섬유탈취제"
+      ],
+      "source_title": "피죤 스프레이 옐로 미모사 430ML",
+      "raw_record_ids": [
+        "ingestion:26:36",
+        "ingestion:75:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:36": "bb42572a03c7553f4ef410c1b27b9c3b73e5c5c9b1bd66ffd08b8a7693bcd5cc",
+        "ingestion:75:62": "6a1622b79fb758945d91384c13c39a38808fecde450ba8580f76cc17f75ee918"
+      },
+      "number": 2,
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "섬유 탈취제",
+        "기타섬유탈취제"
+      ],
+      "source_title": "피죤 스프레이 핑크 로즈 430ML",
+      "raw_record_ids": [
+        "ingestion:26:37",
+        "ingestion:75:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:37": "38751f9dffe6a39b35bb589414e110d1df8cafa99afece4e5b676c7918600d4e",
+        "ingestion:75:63": "914a93a33a7afb36266d2634da100a00425247979dea84d2b807aa4780dc7d46"
+      },
+      "number": 3,
+      "leaf": "household.cleaning.general.deodorizer",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c6046ba0c5f836a9a72091b4300b925e4eaf164559e39e2393d8ec440783afe0"
+}

@@ -936,6 +936,26 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
         ("lint_roller_refill", "테이프클리너리필", ""),
     )),
+    # Exact reviewed source rows only; no title or path aliases.
+    *_group("household.bath.fixtures", ("생활용품", "욕실용품", "샤워기·수전"), "", (
+        ("shower_hose", "샤워호스", ""),
+    )),
+    *_group("household.bath.footwear", ("생활용품", "욕실용품", "욕실화"), "", (
+        ("slippers", "욕실슬리퍼", ""),
+    )),
+    *_group("household.cleaning.laundry", ("생활용품", "청소·세탁", "세탁용품"), "", (
+        ("washing_ball", "세탁볼", ""),
+    )),
+    *_group("household.cleaning.tools", ("생활용품", "청소·세탁", "청소도구"), "", (
+        ("refillable_sprayer", "분무기", ""), ("mop", "막대걸레", ""),
+    )),
+    *_group("beauty.personal.body", ("뷰티·개인관리", "개인위생", "바디케어"), "", (
+        ("cream", "바디크림", ""),
+    )),
+    *_group("household.kitchen.utensils", ("생활용품", "주방용품", "조리도구"), "", (
+        ("skimmer", "건지개", ""), ("peeler", "채소필러", ""),
+        ("scale", "주방저울", ""),
+    )),
     *_group("household.outdoor.furniture", ("생활용품", "야외용품", "캠핑가구"), "", (
         ("chair", "캠핑의자", ""),
     )),

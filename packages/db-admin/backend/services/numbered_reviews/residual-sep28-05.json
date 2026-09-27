@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "건강/다이어트/의약외품",
+        "유아/어린이 건강식품",
+        "어린이 식이섬유/유산균"
+      ],
+      "source_title": "푸응 나이트 버닝 프로 601MG*10캡슐",
+      "raw_record_ids": [
+        "ingestion:26:65",
+        "ingestion:76:23"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:65": "d35df38625fe43d5d5ac4b7d57e92397701db93cda9ab20195191174f56dc1ea",
+        "ingestion:76:23": "7964a8d95d7eba2c590bb2b125a5d9eb06aa21cc8515d0ca67393677c268c0d0"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: ingredients and product type not established by burn branding"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "건강/다이어트/의약외품",
+        "유아/어린이 건강식품",
+        "어린이 식이섬유/유산균"
+      ],
+      "source_title": "푸응 팻버닝 600MG*30캡슐",
+      "raw_record_ids": [
+        "ingestion:26:66",
+        "ingestion:76:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:66": "10d8ea22759bd34a88cbc58860f167eaacece2c1456188fc91434c861f63f156",
+        "ingestion:76:24": "7dc97eb364edda687635537cdd3c5bdd2e14f6b40eee9ac7720e62b943891c70"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: ingredients and product type not established by burn branding"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "7f417a7105ec96e58de84176c3dde9a87c30b1f84d4202405fb899ba5d662ff2"
+}

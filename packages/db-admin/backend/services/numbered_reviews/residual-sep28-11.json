@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "면류/통조림"
+      ],
+      "source_title": "삼양 1963 우지 파개장 115g",
+      "raw_record_ids": [
+        "ingestion:90:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:90:3": "e572881dd3fbe358a03f056ca501a8d82062bcecff2b5fe1a9ddf149d49e3fbe"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: noodle or soup form and packaging unidentified"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 602
+    }
+  ],
+  "packet_sha256": "1a3342c97930a1dc8c7d281863beb5d94e43ffa96296b474cc3fe8807188cd3f"
+}

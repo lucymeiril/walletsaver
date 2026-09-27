@@ -15,7 +15,7 @@ from core.reviewed_content_quantities import COUNTED_CONTENT_TITLES, REVIEWED_CH
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
-    return (title == "simplus 국물팩(소) 50매입" or title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or bool(re.search(r'종이컵|다회용투명(?:소주)?컵', title))
+    return (title in {"simplus 국물팩(소) 50매입", "유기농 단백질 블랙미숫가루 400g (20gx20입)"} or title in COUNTED_CONTENT_TITLES or title in REVIEWED_CHAIN_TITLES or title in REVIEWED_COUNT_ONLY or title in REVIEWED_CORRUPTED_MEASURED or bool(re.search(r'종이컵|다회용투명(?:소주)?컵', title))
             or "고무장갑" in title and bool(re.search(r"\d+\s*켤레", title))
             or bool(re.search(r"키친타[월올]|종이타[월올]|위생행주", title))
             and bool(re.search(r"\d+\s*매\s*[x×*]\s*\d+\s*롤", title, re.I)))

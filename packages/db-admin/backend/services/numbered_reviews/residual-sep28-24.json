@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "칼/가위/도마",
+        "가위/슬라이서",
+        "주방가위"
+      ],
+      "source_title": "simplus 바베큐 가위",
+      "raw_record_ids": [
+        "ingestion:27:48",
+        "ingestion:76:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:48": "549b0d2c0a8fa51710a928fd6dac357d70097f828478a6b7c7956305c8bfaa45",
+        "ingestion:76:83": "46374e419ecfca2421feb1ff855cb7060e7965c37f7e5690b860c825d11bbf77"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.scissors",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f2d4bb603c82519ec16946b3941025c174d5484a1c684ddfcc37d1d0d654484e"
+}

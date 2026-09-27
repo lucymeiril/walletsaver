@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "제빵/기타용품",
+        "주방저울"
+      ],
+      "source_title": "simplus 주방용 전자저울",
+      "raw_record_ids": [
+        "ingestion:27:52",
+        "ingestion:76:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:52": "d81b55a4665aa758f8d3ccea1ab7adb62c1e71cbdafbf6486de92f5b93cd74ff",
+        "ingestion:76:96": "751f4107b047fffc3ab07372aaef93b4a0e94bcee02198c27d54626e6219d165"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.scale",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ef971772f2fe31288636fa897d981ba030b2a960381cb82c1ae637b41c214ba1"
+}

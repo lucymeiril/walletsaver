@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "밀키트/간편식"
+      ],
+      "source_title": "우엉절임과 김밥단무지 220g",
+      "raw_record_ids": [
+        "ingestion:84:29",
+        "ingestion:85:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:84:29": "cf4cc98f708212c80eb38375d98d86f91b1360ffbe961607ae8d8f9adf41b64e",
+        "ingestion:85:29": "74eb4f2800eb4b78f3c8f02ff6d72a8d8152609374b2cf2416ec2a52ac9a9df2"
+      },
+      "number": 1,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "밀키트/간편식"
+      ],
+      "source_title": "딱 한끼(순한맛) 308g",
+      "raw_record_ids": [
+        "ingestion:84:68",
+        "ingestion:85:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:84:68": "2b0cb635f4589ac247d4d38572ad9aa6c5f661c94627c8573f6e61a6874e4cf2",
+        "ingestion:85:68": "6b098004e840f313c44aa4d020e7d2d358e86e41f548a090bb1c34a9fd344f60"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: product form unidentified"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 355
+    }
+  ],
+  "packet_sha256": "a0557285898b4b651cc5ec8d8cec20c8f21a3fce4d7546afb6aaac661b246544"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "국자/집개/주방 소도구",
+        "건지개"
+      ],
+      "source_title": "simplus 올스텐 미니 거품건지기",
+      "raw_record_ids": [
+        "ingestion:27:72",
+        "ingestion:76:85"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:72": "f5c00453e4c4256590f3a99e8b71d4305685637a78bb969947a19a94e3abecdc",
+        "ingestion:76:85": "be01a691f4262c058a666879fe0d07a1995b7fcdf96cd52de9e0f1b2a2244abb"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.skimmer",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f23f98626024b1892c7a23712b2586c2afe16d258c5c4470e15523ef9dbaef4e"
+}

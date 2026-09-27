@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "소화제/자양강장/숙취해소",
+        "박카스/자양강장드링크"
+      ],
+      "source_title": "GNM 리포좀 비타민C 1000MG*30정",
+      "raw_record_ids": [
+        "ingestion:26:60",
+        "ingestion:76:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:60": "4d257328bd264c7380890d59a3f16cebcfba6ab50d9be5119a4c5b65b0dfc140",
+        "ingestion:76:22": "702b5f1aafd64b7aea90860e5d4fcc082b251ba87eb64d0290a63f850efc14e6"
+      },
+      "number": 1,
+      "leaf": "food.supplements.functional.vitamin_c",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "소화제/자양강장/숙취해소",
+        "박카스/자양강장드링크"
+      ],
+      "source_title": "simplus 이중제형 멀티비타민 7병",
+      "raw_record_ids": [
+        "ingestion:26:63",
+        "ingestion:76:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:63": "08dc122a4df5cef083303eb1a2d821f4642ad16c91258867532a2aa5ee9c0ea7",
+        "ingestion:76:18": "e5f96dc61d7c9946636ea5323a1663e415dcf7878a4200f18320d3f047bc19f7"
+      },
+      "number": 2,
+      "leaf": "food.supplements.functional.multivitamin",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2aedfa13f4183a14129a6c4284e1e6bb6cb317ef5b724cbd7ac36df1d19d9ec7"
+}

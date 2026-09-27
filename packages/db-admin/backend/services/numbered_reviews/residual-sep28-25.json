@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "칼/가위/도마",
+        "칼/용품",
+        "야채칼"
+      ],
+      "source_title": "simplus 304 스텐와이드필러",
+      "raw_record_ids": [
+        "ingestion:27:75",
+        "ingestion:77:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:75": "ddfcb6171152e03f04012165a25e3cff64f653da34ba5f858e660481e4ce8392",
+        "ingestion:77:31": "56552e53c4ba11b8ec44f6e8ee1e87d350fc39bb35ab24f24f6615efa3ae64b2"
+      },
+      "number": 1,
+      "leaf": "household.kitchen.utensils.peeler",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "8fc3f8bc199bfab9aff819db21f486fac63eeec3edf67c987c1b73b18f814ba9"
+}

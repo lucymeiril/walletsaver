@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "주방용품",
+        "조리도구",
+        "국자/집개/주방 소도구",
+        "조리세트"
+      ],
+      "source_title": "simplus 칼도마 5종 세트",
+      "raw_record_ids": [
+        "ingestion:27:42",
+        "ingestion:77:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:27:42": "bbe0801f7650d7801c4c17a490f713122eacbfb708f59905ffceb9a922c3e610",
+        "ingestion:77:21": "c3040e9887ea393f1bc217f82b56ec9bf02ba7c5c3d24dcd3f7e47d0a177b0d4"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: mixed knife and cutting board package"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4928b6157d1df4dce5fefd84a78a837dc7f4d0d1807a13457752bdb90c0b8c8f"
+}

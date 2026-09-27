@@ -352,9 +352,20 @@ def test_emart_meal_shelf_uses_exact_product_form(title, leaf):
     assert reviewed_emart_meal_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title', ['우엉절임과 김밥단무지 220g', '딱 한끼(순한맛) 308g', '간편식 모음 최대 30%'])
+@pytest.mark.parametrize('title', ['딱 한끼(순한맛) 308g', '간편식 모음 최대 30%'])
 def test_emart_meal_shelf_keeps_mixed_opaque_and_promotion_rows_pending(title):
     assert classify_record(_raw('emart', '밀키트/간편식', title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('shelf,title,leaf', [
+    ('밀키트/간편식', '우엉절임과 김밥단무지 220g', 'food.preserved.sides.pickled'),
+    ('쌀/잡곡/견과', '유기농 단백질 블랙미숫가루 400g (20gx20입)', 'food.drinks.powders.grain'),
+])
+def test_residual_reviewed_food_titles_require_exact_context(shelf, title, leaf):
+    row = _raw('emart', shelf, title)
+    assert classify_record(row)['unified_category_id'] == leaf
+    assert classify_record(_raw('emart', '베스트', title))['unified_category_id'] != leaf
+    assert classify_record(_raw('emart', shelf, title + ' 혼합세트'))['unified_category_id'] != leaf
 
 
 @pytest.mark.parametrize('title,leaf', EMART_HEALTH_TITLES.items())
@@ -423,7 +434,7 @@ def test_emart_grain_shelf_uses_exact_product_form(title, leaf):
     assert reviewed_emart_grain_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title', ['씻거나 불릴필요 없는 맛있는 우리 엄마 밥상 2kg', '유기농 단백질 블랙미숫가루 400g (20gx20입)', '쌀과 견과 혼합선물세트', '잡곡 베스트 모음'])
+@pytest.mark.parametrize('title', ['씻거나 불릴필요 없는 맛있는 우리 엄마 밥상 2kg', '쌀과 견과 혼합선물세트', '잡곡 베스트 모음'])
 def test_emart_grain_shelf_keeps_opaque_bundle_and_promotion_rows_pending(title):
     assert classify_record(_raw('emart', '쌀/잡곡/견과', title))['unified_category_id'] is None
 

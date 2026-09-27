@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "콜라겐/다이어트/프로틴",
+        "콜라겐/태반"
+      ],
+      "source_title": "자임 석류 콜라겐 젤리 20G*15포",
+      "raw_record_ids": [
+        "ingestion:26:61",
+        "ingestion:76:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:61": "6557e6427b901eb73f2f176ac0bf29c8dcd2a84a072dc1f2d96ba49b9f4fb5d5",
+        "ingestion:76:17": "358f8cfee23861f8f06263ba222e677abae9c52961dbdf40b7a2849ec842fc3a"
+      },
+      "number": 1,
+      "leaf": "food.supplements.functional.collagen",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1e25e1e4f0f11b0c82c128b9b107f065cee03edef99eaf91a84aabbeda8a82e6"
+}

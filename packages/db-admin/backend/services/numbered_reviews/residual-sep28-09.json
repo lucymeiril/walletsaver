@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "욕실/생활용품",
+        "욕실용품",
+        "욕실화"
+      ],
+      "source_title": "simplus 베이직 욕실화 그레이270MM",
+      "raw_record_ids": [
+        "ingestion:26:45",
+        "ingestion:75:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:45": "a54db09fb5b1d6d357c17c51dd766f8d7d1a744322cfc3cd4ebb40206ce1b05d",
+        "ingestion:75:71": "5dd977491b037c372ddb0a893f6746e2d948641ad19b32653c168c611454e83f"
+      },
+      "number": 1,
+      "leaf": "household.bath.footwear.slippers",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "욕실/생활용품",
+        "욕실용품",
+        "욕실화"
+      ],
+      "source_title": "simplus 3cm 굽높이다용도 욕실화 파스텔민트 260",
+      "raw_record_ids": [
+        "ingestion:26:52",
+        "ingestion:75:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:52": "e31519a36c56b87d61cd76edc73a949935c67e91baba7bb9f9910d7616839a40",
+        "ingestion:75:93": "38480a1d6c1c8594d0986b3f3c05c73fbda610f5e7f8634b28d8f77e9d536a70"
+      },
+      "number": 2,
+      "leaf": "household.bath.footwear.slippers",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "73b8955d2023f35a95d720aa2af0e40e5bf4f794b028aad407d10a60078a306f"
+}

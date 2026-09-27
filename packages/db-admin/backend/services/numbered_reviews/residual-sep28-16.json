@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "세탁용품",
+        "다림용품",
+        "분무기"
+      ],
+      "source_title": "simplus 미세 분무기 300ml",
+      "raw_record_ids": [
+        "ingestion:26:53",
+        "ingestion:75:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:53": "c78e463808d989733e11638e3ea5b0bf1869169fdef240f7041b1727b66a76c6",
+        "ingestion:75:54": "cd6a43e7c6ccce44c08d32470fd83a5e1f61495ddc1c517d5981245255c08aeb"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.tools.refillable_sprayer",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2bea317e830ae78917bf46dab7cb5699a1641077a31641329685e6ec44a5df27"
+}

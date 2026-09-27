@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "친환경/유기농"
+      ],
+      "source_title": "유기농 요구르트 500ml (100mlx5)",
+      "raw_record_ids": [
+        "ingestion:95:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:95:22": "f50ef11d99c49e1a576922961dccdc7e39b85d8bb4ce5b9fa0e07702ced4cb00"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: drinkable versus spoonable yogurt unidentified"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 340
+    }
+  ],
+  "packet_sha256": "10ebed0c99a675be88b5be21199d5e91fde43832b8709cee848f12821351c73c"
+}

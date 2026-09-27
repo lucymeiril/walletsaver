@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "유기농 단백질 블랙미숫가루 400g (20gx20입)",
+      "raw_record_ids": [
+        "ingestion:80:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:80:40": "d6dd16d584d955e22cd1bca9870d7211b53d714e84c2f7d60b812fab37b1d06c"
+      },
+      "number": 1,
+      "leaf": "food.drinks.powders.grain",
+      "hold_reason": ""
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "쌀/잡곡/견과"
+      ],
+      "source_title": "씻거나 불릴필요 없는 맛있는 우리 엄마 밥상 2kg",
+      "raw_record_ids": [
+        "ingestion:80:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:80:41": "cedfbaabd6fabbd47f74d2ea9b6c6ad1add953f0433dbb879472a9252c957631"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: grain composition or product form unidentified"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 426
+    }
+  ],
+  "packet_sha256": "5ea53723144c19989614eb8e0464273e30839bf7e0da0dc6de56947679f789af"
+}

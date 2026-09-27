@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "건강식품"
+      ],
+      "source_title": "서울우유 한끼식사 구수한 맛 190ml*18입",
+      "raw_record_ids": [
+        "ingestion:94:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:94:25": "915c134cfbab1507eb6acb2f4bee8e41d3c0a9289942c598003df75f098df7ac"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: balanced nutrition not established by meal branding"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 370
+    }
+  ],
+  "packet_sha256": "75621bc5815c8ce15587372245e57825da78c1a8ce9927ae5ad4b0d300b5dfa2"
+}

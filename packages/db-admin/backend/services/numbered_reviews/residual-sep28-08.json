@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "제습제",
+        "습기 제거제"
+      ],
+      "source_title": "유한킴벌리 스카트 더보송 파워 습기제거제 8P",
+      "raw_record_ids": [
+        "ingestion:26:29",
+        "ingestion:75:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:29": "e8ed949171636054f4f0670f245c9f989a8fcf6a17b4c41e3396926249cc09b5",
+        "ingestion:75:58": "3f1da176347e735137ff48c9c7c6798b480d89f1eb14014efb8c0f26337efff8"
+      },
+      "number": 1,
+      "leaf": "household.cleaning.general.dehumidifier",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "제습제",
+        "습기 제거제"
+      ],
+      "source_title": "유한킴벌리 스카트더보송 파워습기제거제 3P",
+      "raw_record_ids": [
+        "ingestion:26:42",
+        "ingestion:75:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:42": "3f452ed5842b0cd3687a4081b9f11e55875d8afacff1b6b970631054ae355df4",
+        "ingestion:75:55": "ea329496519de854824534bfebf3ca32ecee97372aa2ad3dc66180e20933ff54"
+      },
+      "number": 2,
+      "leaf": "household.cleaning.general.dehumidifier",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a7aed88d4787290f6a80cc4e962d92c9f23625199fdcf705ae34dc9d0d258bb7"
+}

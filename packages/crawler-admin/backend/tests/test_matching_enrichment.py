@@ -88,6 +88,21 @@ def test_reviewed_stock_total_recovers_same_per_sachet_boundary_as_staging():
     assert _source_package({**row,'package_quantity':250})[1] is not None
 
 
+def test_reviewed_grain_drink_total_recollects_only_exact_evidence():
+    from core.catalog_quantity import uses_reviewed_quantity_rules
+    title = '유기농 단백질 블랙미숫가루 400g (20gx20입)'
+    row = {'name': title, 'source': 'emart', 'category': '쌀/잡곡/견과',
+           'package_quantity': 400, 'package_unit': 'g', 'display_unit': '400g'}
+    assert uses_reviewed_quantity_rules(title)
+    assert _source_package(row) == ((20, 'g', 20), None)
+    for changed in ({'package_quantity': 500}, {'bundle_count': 10},
+                    {'display_unit': '500g'}, {'attributes': {'package_quantity': 500, 'package_unit': 'g'}}):
+        assert _source_package({**row, **changed})[1] is not None
+    for changed_title in (title + ' 혼합세트', '유기농 단백질 블랙미숫가루 400g'):
+        assert not uses_reviewed_quantity_rules(changed_title)
+        assert _source_package({**row, 'name': changed_title})[0] != (20, 'g', 20)
+
+
 def _engine(tmp_path):
     engine = create_engine(f"sqlite:///{(tmp_path / 'db.sqlite').as_posix()}")
     with engine.begin() as connection:

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "세탁/청소",
+        "방향/제습/탈취/방충",
+        "방충/살충제",
+        "모기향"
+      ],
+      "source_title": "홈키파 마이키파 제로 미스트 100ML",
+      "raw_record_ids": [
+        "ingestion:26:59",
+        "ingestion:75:6"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:59": "eab9260dfd85e1a2031d2f375d9963e171c9861808055ab9707ed1fd39505b85",
+        "ingestion:75:6": "c520aa659c9cd47e0ca2b0609d1f912c133a55a70cd52343136d4b6d9aff8da1"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: repellent versus insecticide mist unclear"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "171bd3746726fb05b2b69d507abe5c895c439fbb87f624fb1761983d30dc149c"
+}

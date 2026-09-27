@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass155",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "욕실/생활용품",
+        "욕실용품",
+        "샤워기/수전",
+        "샤워 호스"
+      ],
+      "source_title": "simplus 필터 샤워헤드&리필7입",
+      "raw_record_ids": [
+        "ingestion:25:83",
+        "ingestion:75:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:83": "7155980a71b0e669485edab00b3472e78b93e69356a84413adb4282e531a1017",
+        "ingestion:75:42": "b59e8efda017afcbe4a3d75a2b88f5b1c990d84723e10b2dfea74f5c498d02e0"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: mixed shower head and replacement filters"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "욕실/생활용품",
+        "욕실용품",
+        "샤워기/수전",
+        "샤워 호스"
+      ],
+      "source_title": "simplus 스테인리스 샤워호스 3m",
+      "raw_record_ids": [
+        "ingestion:25:88",
+        "ingestion:75:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:88": "829d15ecb745bcdfac7182e2127332c0e0b42f37a0c5d86030c0afe1a136d983",
+        "ingestion:75:94": "aceced656aa42b40498e880a474b58269b46bc0f68f477669582f11303ed6cf4"
+      },
+      "number": 2,
+      "leaf": "household.bath.fixtures.shower_hose",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "욕실/생활용품",
+        "욕실용품",
+        "샤워기/수전",
+        "샤워 호스"
+      ],
+      "source_title": "simplus 스테인리스 샤워호스 1.5m",
+      "raw_record_ids": [
+        "ingestion:26:47",
+        "ingestion:75:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:47": "a02c438225740d4374921e73a47447fd03eaae070c80ae92a466eae34a41129d",
+        "ingestion:75:15": "7f7af2e1f4882df1ed76940ef25ffdb4fb814f4744d41360e196349ca80e21e6"
+      },
+      "number": 3,
+      "leaf": "household.bath.fixtures.shower_hose",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "41b6b66a34a14f9c5fc033d9f3637dbf6e8d980d375703b5ce6b546ee75f59f0"
+}
