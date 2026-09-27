@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "옥수수/피클/과일통조림",
+        "스위트콘/콩류/기타",
+        "스위트콘"
+      ],
+      "source_title": "오뚜기 스위트콘 340G",
+      "raw_record_ids": [
+        "ingestion:20:90",
+        "ingestion:70:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:90": "2f9356e71dbf41ca7cff438333422108748a3fad3d97b30049d0db03f6283667",
+        "ingestion:70:17": "f86676ca79e6333928ae79f707601b69a7877a1a900b4973aaa5f5e6c0cb72ed"
+      },
+      "number": 1,
+      "leaf": "food.preserved.canned.corn",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "옥수수/피클/과일통조림",
+        "스위트콘/콩류/기타",
+        "스위트콘"
+      ],
+      "source_title": "오뚜기 초당옥수수 스위트콘 198G",
+      "raw_record_ids": [
+        "ingestion:21:32",
+        "ingestion:70:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:32": "0aa3780462c0dd5d585e51ad17f251dcae1f5f762630bfa8ba5b04f8aa160c87",
+        "ingestion:70:20": "46a29c992b96e17db20af434b8cd34a02b69ace406360de459a447cbcaa9e6b8"
+      },
+      "number": 2,
+      "leaf": "food.preserved.canned.corn",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "bdb1a278098bbd6bb32979fe0e47ce4540dfcbb8084a151f083995f440ab03e2"
+}

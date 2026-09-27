@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "건오징어/건어물/다시팩",
+        "건오징어/한치/진미채",
+        "조미오징어"
+      ],
+      "source_title": "페스츄리 오징어 150G",
+      "raw_record_ids": [
+        "ingestion:4:33",
+        "ingestion:53:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:33": "1660b39f963733d30586072c794338852ed69dcc1922a8d1e3dd1e88a4c6f2cd",
+        "ingestion:53:95": "f1a5467280d500f24dfcaa49ce9d0494b2e52d0f5881fabe8151ca4f6738941d"
+      },
+      "number": 1,
+      "leaf": "food.seafood.processed.dried_fish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "건오징어/건어물/다시팩",
+        "건오징어/한치/진미채",
+        "조미오징어"
+      ],
+      "source_title": "탱글탱글 왕다리오징어 200G",
+      "raw_record_ids": [
+        "ingestion:4:81",
+        "ingestion:54:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:81": "3bc456f54f20fcbcc262f441fc200bc57798a7062bc06d64ef8d8f2b499a18f5",
+        "ingestion:54:55": "50fd50a69e24f726c25af5777082a67867f32f5379f296270ed08a5982b7c1dd"
+      },
+      "number": 2,
+      "leaf": "food.seafood.processed.dried_fish",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "5b6e43e8a6a89fbebebf87f15b857d710cd59ebfa829ca38563c65b71398fccc"
+}

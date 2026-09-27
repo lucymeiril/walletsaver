@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "김치",
+        "배추김치"
+      ],
+      "source_title": "씨제이 비비고 우리아이 한입 백김치 270G",
+      "raw_record_ids": [
+        "ingestion:14:50",
+        "ingestion:63:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:50": "67aabd0bbc1a141583570e6f376581c4f107496c5aaeceeed9473f9f28b716e4",
+        "ingestion:63:87": "a5209dbac4f2cdbe7e99b859795c6c2af3d5eba0fd54b52d04ac26f71bed6216"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: white kimchi conflicts with broader cabbage leaf; taxonomy overlap review needed"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "김치",
+        "배추김치"
+      ],
+      "source_title": "대상 종가 어린이 한입 백김치 300G",
+      "raw_record_ids": [
+        "ingestion:14:91",
+        "ingestion:64:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:91": "f6a51263fa1505f0b8de450c2e365d12d7aba2cfd15930b7c26162d73026a0f3",
+        "ingestion:64:28": "e87fcedc2cb3ddeb002deb5814df0b8a161c9bf2961c87529e96fa0b550583ee"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: white kimchi conflicts with broader cabbage leaf; taxonomy overlap review needed"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2191b2f4dcfc42f4c8391a3c15cbac42730538bc0eff10c22c321f6ba23a56e1"
+}

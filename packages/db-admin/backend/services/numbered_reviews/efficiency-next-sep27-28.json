@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "스트링/과일/스낵치즈",
+        "구워먹는치즈등"
+      ],
+      "source_title": "초리조 슬라이스 100G",
+      "raw_record_ids": [
+        "ingestion:9:20",
+        "ingestion:58:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:20": "0a9591baadd6ced0a73be6147e1b119f7a8937901cbfbe46d6cf5c2855778d3e",
+        "ingestion:58:57": "bee336083959f6cc7eabcf7c35540f44b195f7fd83483400694dc675cf4aa568"
+      },
+      "number": 1,
+      "leaf": "food.meat.processed.sausage",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "스트링/과일/스낵치즈",
+        "구워먹는치즈등"
+      ],
+      "source_title": "살라미 슬라이스 100G",
+      "raw_record_ids": [
+        "ingestion:9:21",
+        "ingestion:58:58"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:21": "573b6a07272969e480da1fdd4a472161281bdbd5fa590cf7cac63ca9c01b8786",
+        "ingestion:58:58": "8b9caef30ce86e5d219269d3bacb19bd65bdd824b32113d19f960c4cc62469fd"
+      },
+      "number": 2,
+      "leaf": "food.meat.processed.sausage",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_homeplus_dairy_forms.py",
+      "line": 28
+    }
+  ],
+  "packet_sha256": "ce03b83c6c4b104029d4b8506c2bda173559165b52578531aeb03b968e45f5f0"
+}

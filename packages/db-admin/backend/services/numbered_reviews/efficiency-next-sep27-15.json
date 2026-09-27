@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "낫또/묵",
+        "낫또"
+      ],
+      "source_title": "풀무원 특등급국산콩물 960ML",
+      "raw_record_ids": [
+        "ingestion:13:93",
+        "ingestion:63:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:93": "e9428c6752916a3f9d9c99c31251ed48bc50ff92695c70e377d67d8325e442fc",
+        "ingestion:63:69": "d0d235bf3fe6da585416f5bcb892d3c11db2c5d4593ea4669e37d6f889b3644f"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: soy liquid versus natto shelf; current path-rejection guard insufficient"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "낫또/묵",
+        "낫또"
+      ],
+      "source_title": "풀무원 국산콩 진한 콩국물 960G",
+      "raw_record_ids": [
+        "ingestion:15:16",
+        "ingestion:64:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:16": "c7fafa85a3e4bb2789e4eb803aa5bc06b6f5b156767332f6e60010390f46665a",
+        "ingestion:64:54": "d50ee312fda4c4369d0e713a98a84f5c477288eedc2f85ea8bc2a117c6721035"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: soy liquid versus natto shelf; current path-rejection guard insufficient"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1036
+    }
+  ],
+  "packet_sha256": "170754045f157bc0f2009ccdf5158d48d0876c2b04f2fd6151cc71faa586afdc"
+}

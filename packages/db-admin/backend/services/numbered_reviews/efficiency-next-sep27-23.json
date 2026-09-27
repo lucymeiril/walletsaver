@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "오렌지주스/감귤주스",
+        "오렌지주스"
+      ],
+      "source_title": "델몬트 오렌지 주스 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:65",
+        "ingestion:66:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:65": "bf193c6d6ea8c5a52f91e54bdee838550a373b8d56ad6da4970731542e2c308f",
+        "ingestion:66:1": "a199cb8e75d0fa523cbc639eb123cbd67bd5a350622d92c8ae665d650fbb7e89"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.fruit",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "오렌지주스/감귤주스",
+        "오렌지주스"
+      ],
+      "source_title": "simplus NFC 착즙 오렌지주스 1L",
+      "raw_record_ids": [
+        "ingestion:16:86",
+        "ingestion:66:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:86": "2a185a16845133d01bf2cb141a324b5fd8126065f092439626ef12466c0b7eca",
+        "ingestion:66:14": "4c03e72debf6a62339a10b49dfb3575627e7e614b54260efbc0ab93006b2afb8"
+      },
+      "number": 2,
+      "leaf": "food.drinks.juice.fruit",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "cc06c510415d7b02074fb0dfdcbaae54c2beb2ef6bdf073ad9377a1e1fd5ef3e"
+}

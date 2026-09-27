@@ -102,6 +102,37 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    # Review-only forms: no source or title alias grants these automatically.
+    *_group("food.meat.fresh", ("식품", "정육·계란", "신선육"), "", (
+        ("duck", "오리고기", ""),
+    )),
+    *_group("food.drinks.mix", ("식품", "음료", "조제음료"), "", (
+        ("vinegar", "식초음료믹스", ""), ("milk_tea", "밀크티믹스", ""),
+    )),
+    *_group("food.snacks.dried", ("식품", "과자·간식", "건조간식"), "", (
+        ("sweet_potato", "건고구마", ""),
+    )),
+    *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "", (
+        ("milmyeon", "밀면", ""),
+    )),
+    *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "", (
+        ("cheongpomuk", "청포묵", ""),
+    )),
+    *_group("food.seafood.processed", ("식품", "수산물", "수산가공품"), "", (
+        ("salted_squid", "오징어젓", ""),
+    )),
+    *_group("food.plant.konjac", ("식품", "식물성식품", "곤약식품"), "", (
+        ("food", "곤약", ""),
+    )),
+    *_group("food.seafood.sashimi", ("식품", "수산물", "회"), "", (
+        ("aged_skate", "숙성홍어회", ""),
+    )),
+    *_group("food.dairy.milk", ("식품", "유제품", "우유"), "", (
+        ("condensed", "연유", ""),
+    )),
+    *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
+        ("chocolate_syrup", "초콜릿시럽", ""),
+    )),
     *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
         ("gangdoenjang", "강된장양념", ""), ("liquid_seasoning", "액상조미료", ""),
     )),

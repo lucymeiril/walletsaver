@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "젓갈류"
+      ],
+      "source_title": "한성기업 새우 젓갈 280G",
+      "raw_record_ids": [
+        "ingestion:14:2",
+        "ingestion:63:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:2": "6383a93bdb6fd38ab6fcf18fb6c36b7158f089ae25973b959ef25a38ebebb5da",
+        "ingestion:63:35": "05bf051650abe8440c47719bf58d3a5bb099f6bcc59222fa2f269fa29952c082"
+      },
+      "number": 1,
+      "leaf": "food.seafood.processed.salted_shrimp",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "젓갈류"
+      ],
+      "source_title": "한성 오징어젓갈 150G",
+      "raw_record_ids": [
+        "ingestion:14:35",
+        "ingestion:63:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:35": "6a5d0f5381018877f3b2233f762e951360361a9c2194e679dfe4aa9b9a03391a",
+        "ingestion:63:66": "09746a4ff14351db7cf118be3e0a5116c0f189763b886581ffbae5cfe90a3a8b"
+      },
+      "number": 2,
+      "leaf": "food.seafood.processed.salted_squid",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ed36806c6514188e3659648b833bb254c4bfdc60e8da08b5fb2325c7be192d5c"
+}

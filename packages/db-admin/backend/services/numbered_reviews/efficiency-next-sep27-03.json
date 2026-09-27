@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념돼지고기"
+      ],
+      "source_title": "팔도진미 대구 북성로식 목심구이 800G/돼지고기",
+      "raw_record_ids": [
+        "ingestion:5:35",
+        "ingestion:54:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:35": "4b478dcb7bc115d867c51e21a9eccc67712d950700521ceea42c91a1b1a8fad6",
+        "ingestion:54:66": "e6e0772b3016a580f452e571695c2d3a90e1b51167a2fb184ec757c428b84474"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념돼지고기"
+      ],
+      "source_title": "생생 한돈 간장 불고기 800G",
+      "raw_record_ids": [
+        "ingestion:5:47",
+        "ingestion:54:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:47": "284cc40f1f0acb8eef028b6846818deffe8af94b93cc9bc29b6b22b2814f5c8d",
+        "ingestion:54:81": "5932f95dfd5c22a28abea0a412f5efa82c0c59d28c01bbc5b3013bdfcf3c7d5b"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념돼지고기"
+      ],
+      "source_title": "생생 한돈 고추장 불고기 800G",
+      "raw_record_ids": [
+        "ingestion:5:49",
+        "ingestion:54:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:49": "aef8a65e462132f324dbae9558e0b1512a0c047f651a28db30d93d49e3a992c1",
+        "ingestion:54:79": "e197cf78380b0ccddcb2ddde378c28fcf501269087d03b89a09ba38de1875144"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4ea64a4c815691446f2d75c11cc090856180fefe5a5de3973d3dbeba7c27bc01"
+}

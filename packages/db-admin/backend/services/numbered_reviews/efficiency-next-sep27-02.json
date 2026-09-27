@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "수입육",
+        "구이/스테이크",
+        "호주산냉장구이류"
+      ],
+      "source_title": "[호주청정우]부채살 100G/소고기",
+      "raw_record_ids": [
+        "ingestion:6:20",
+        "ingestion:54:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:20": "16ca090d1557e92405d097519957c980dce31788b9c16eb269f7b1a6195fb1ea",
+        "ingestion:54:68": "024004ba56a1d21a5314e1e81b7e72e05d7b9a50dbbc857360d1377444bf0327"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.beef",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "수입육",
+        "구이/스테이크",
+        "호주산냉장구이류"
+      ],
+      "source_title": "[호주청정우]척아이롤(목심+등심) 100G/소고기",
+      "raw_record_ids": [
+        "ingestion:54:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:54:83": "a95ec5f66df4dd4409f6a112329ff8dd8d502a2cd5369e638b2257c8fe31a6f5"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.beef",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "수입육",
+        "구이/스테이크",
+        "호주산냉장구이류"
+      ],
+      "source_title": "[호주청정우]살치살 100G/소고기",
+      "raw_record_ids": [
+        "ingestion:55:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:53": "3c11f2bcbde27b38c4cf4e69e111e6e26cdbf734874787e88244a011fe0ec5a3"
+      },
+      "number": 3,
+      "leaf": "food.meat.fresh.beef",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "26986924e60c5dd46296e3fc53243d023e95b47f6cdba0568655ca94f6345531"
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "어묵/맛살/단무지",
+        "어묵",
+        "간식용어묵"
+      ],
+      "source_title": "사조대림 실 곤약 400G",
+      "raw_record_ids": [
+        "ingestion:15:5",
+        "ingestion:64:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:5": "07d06815416f59dae2b932ac686d3e80c6ff014506455c1c0cb3cd0a970a3799",
+        "ingestion:64:43": "c608b6d4ad641d8fd4f2f5c8dbc4db515659c56095766ef2b5b7f9375ffb5f06"
+      },
+      "number": 1,
+      "leaf": "food.plant.konjac.food",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.seafood.processed.fishcake",
+        "reason": "Explicit konjac title disproves fishcake source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "어묵/맛살/단무지",
+        "어묵",
+        "간식용어묵"
+      ],
+      "source_title": "사조대림 곤약 600G",
+      "raw_record_ids": [
+        "ingestion:15:53",
+        "ingestion:64:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:53": "20601b894c8c3f08f7c2b643778d47a362d9e0424fc94e1c5be0f674734dd2f9",
+        "ingestion:64:91": "a934c7cb3c608a76fad7094d69b996dc9f0246b17e29e9316b37af69da8c2f83"
+      },
+      "number": 2,
+      "leaf": "food.plant.konjac.food",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.seafood.processed.fishcake",
+        "reason": "Explicit konjac title disproves fishcake source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1040
+    }
+  ],
+  "packet_sha256": "dce3230beb19eaf6b0c2d1ad09983de4c18652b5d6e944e60f9773d83cc8a306",
+  "revision": {
+    "previous_sha256": "a52b54b876cb70b0a905e0afe164d5d9ddb25a420f0c580f340fb30116b8b0c6",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+    "reason": "Explicit konjac title disproves fishcake source shelf"
+  }
+}

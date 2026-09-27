@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "닭/오리고기",
+        "오리고기",
+        "냉장오리육"
+      ],
+      "source_title": "품애복 1등급오리석쇠불고기간장맛 360G / 냉동",
+      "raw_record_ids": [
+        "ingestion:6:27",
+        "ingestion:55:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:27": "96b690c7049289205ae2c5ce0a8c095c1acb08ec0c756649349b92f65cd4c0e9",
+        "ingestion:55:62": "c221f79a30176d9616d96aca2c0988f5dd03dd700cea61ecfc072603640827f5"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "닭/오리고기",
+        "오리고기",
+        "냉장오리육"
+      ],
+      "source_title": "품애복 1등급오리석쇠불고기고추장맛 360G / 냉동",
+      "raw_record_ids": [
+        "ingestion:6:28",
+        "ingestion:55:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:28": "7b8268c83c711ed01d3386721b972dd3ed6140c9dac2148472bc4d32a531731c",
+        "ingestion:55:63": "de2fa6f7dae48ea1bd3a2236c3d8ff59c07adcb7f141cdcbef204ee26677a4c7"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "닭/오리고기",
+        "오리고기",
+        "냉장오리육"
+      ],
+      "source_title": "무항생제 오리 슬라이스 구이 400G",
+      "raw_record_ids": [
+        "ingestion:55:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:64": "7492e61e545040d8f38d5093413a1e13c755d04e46fbc6c986eb1dc8bfde00cb"
+      },
+      "number": 3,
+      "leaf": "food.meat.fresh.duck",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b42b3c7f555add220bbd8413068fb624f9349518e16bfccc53d1927b0db2988f"
+}

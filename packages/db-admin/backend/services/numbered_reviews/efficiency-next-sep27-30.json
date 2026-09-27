@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "식용유/참기름",
+        "포도씨/카놀라유/식용유/기타유",
+        "식용유"
+      ],
+      "source_title": "해표 식용유 1.5L",
+      "raw_record_ids": [
+        "ingestion:23:0",
+        "ingestion:72:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:0": "f5ae8c4b4b400b21d25ff67c54cce7f3120d7cb46bfb2bc1f8b0f6e335655fb6",
+        "ingestion:72:20": "5fa9bc11e91f93b55545d06716da8a9e17475b2100d85921c33709660300acf0"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.oils.cooking",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "식용유/참기름",
+        "포도씨/카놀라유/식용유/기타유",
+        "식용유"
+      ],
+      "source_title": "해표 식용유 1.8L",
+      "raw_record_ids": [
+        "ingestion:25:57",
+        "ingestion:74:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:57": "c53e657316b917ce4329ccad3aae7d4d9a8774848473fb09d8eac676447a199b",
+        "ingestion:74:59": "0a067f36c01143a777d5cced392c3e2aa5e1bdd97477998783e7b001486e35c0"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.oils.cooking",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a8e59f39f727f99c598e67f22f7449ed502046160706ba9c0f82f5719ea05f7d"
+}

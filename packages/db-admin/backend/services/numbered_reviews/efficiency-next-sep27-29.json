@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "시럽/연유"
+      ],
+      "source_title": "건국 연유 500G",
+      "raw_record_ids": [
+        "ingestion:24:77",
+        "ingestion:73:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:77": "836eb45b802f3781039ed2549a28e349ece66675069b3e456df8e2c785282d8c",
+        "ingestion:73:18": "f0b6e381e8c87ad5b6f95bda05466110a68071d5a6194d55d444dfff7fa8eda1"
+      },
+      "number": 1,
+      "leaf": "food.dairy.milk.condensed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "시럽/제빵믹스",
+        "시럽/연유"
+      ],
+      "source_title": "허쉬 초코시럽 623G",
+      "raw_record_ids": [
+        "ingestion:24:99",
+        "ingestion:72:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:99": "ccb2050320a2639980d8350f0863475ac9cc369573a62b5438aa7cee3578be88",
+        "ingestion:72:92": "a7e2c334d1ed4c1eff76d8ff9000d5ed0734f4b77e675b45fd787406dcb2d6e0"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.chocolate_syrup",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "15bdc4255195a38f1940a342829c5f0622aabf6df85cdf5af2724f767ef5576f"
+}

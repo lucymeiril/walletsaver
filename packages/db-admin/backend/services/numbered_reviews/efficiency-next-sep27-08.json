@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "과자/쿠키/파이",
+        "나쵸/팝콘/옥수수과자",
+        "옥수수스낵"
+      ],
+      "source_title": "simplus 카라멜팝콘 65G",
+      "raw_record_ids": [
+        "ingestion:18:78",
+        "ingestion:67:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:18:78": "01e7baff4dcc832ee307ca5a05ed03e4f4e706533e910f8e3a70fdef390865ea",
+        "ingestion:67:83": "e3cf6aab6899a3c822ca5b6cfd095a3a6b117c054a5946c64afb1afeb96e963f"
+      },
+      "number": 1,
+      "leaf": "food.snacks.savory.popcorn",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.snacks.savory.corn",
+        "reason": "Explicit popcorn title disproves generic corn snack source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "과자/쿠키/파이",
+        "나쵸/팝콘/옥수수과자",
+        "옥수수스낵"
+      ],
+      "source_title": "simplus 버터팝콘 80G",
+      "raw_record_ids": [
+        "ingestion:18:94",
+        "ingestion:67:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:18:94": "961f659f1c258430af9619c85bb8cda553a9f1f659fa37e3e303b01d618200ad",
+        "ingestion:67:88": "89adb6246d99fcf8a0b6339a1e4fc643bb384b66ab52a19fcf7f95716566d150"
+      },
+      "number": 2,
+      "leaf": "food.snacks.savory.popcorn",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.snacks.savory.corn",
+        "reason": "Explicit popcorn title disproves generic corn snack source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "80a9940ec26facd7505965f3ae3a1f00eaa9a63f6beddd74cafd3f65fb24e671",
+  "revision": {
+    "previous_sha256": "ac783beb5504efbc8bc867e8179a8ea34f1867bfd53844942116b800ac443e67",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+    "reason": "Explicit popcorn title disproves generic corn snack source shelf"
+  }
+}

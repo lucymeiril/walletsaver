@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "과자/쿠키/파이",
+        "쌀/곡물 과자",
+        "기타곡물스낵"
+      ],
+      "source_title": "해태 오사쯔 100G",
+      "raw_record_ids": [
+        "ingestion:17:76",
+        "ingestion:68:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:76": "88713cb52f35020615434d0e97693951fd8d0917e96825177f7a9022fcd4db6e",
+        "ingestion:68:2": "5ece5815d16c8b83ef6ced710bf187b597bfc4ccdd355faf6d8bff6dc21f539f"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: snack ingredients or form absent"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "과자/쿠키/파이",
+        "쌀/곡물 과자",
+        "기타곡물스낵"
+      ],
+      "source_title": "그린피스 와사비스낵 380G",
+      "raw_record_ids": [
+        "ingestion:19:75",
+        "ingestion:69:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:19:75": "bf149f68b4d46422d531e0fe703a37af031dd3b52692f02f4ce03830c7a57c8c",
+        "ingestion:69:22": "a31c9c9caa6e2f9209eca19bc9064c8d5c6f3ec6756502ca546e45b0fe61245e"
+      },
+      "number": 2,
+      "leaf": "food.snacks.savory.vegetable",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "191f63e0f64572a57e3bfcf7d93cc24f9162b21f36cf7fa75c8e61279308520b"
+}

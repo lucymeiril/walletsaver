@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_title": "씨제이 비비고 메추리알 장조림 170G",
+      "raw_record_ids": [
+        "ingestion:13:57",
+        "ingestion:63:40"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:57": "351d71188f744ee2610f2434ac1bb9a2410a911fa39ede50c7259fce3d9bd3de",
+        "ingestion:63:40": "853828b98b07389fa2c5334d0b3e85b9379fdab4dc2bd96e3fee5d39d2ae594f"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "raw quail versus prepared dish conflict"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_title": "대상 청정원 아삭 명이나물 300G",
+      "raw_record_ids": [
+        "ingestion:13:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:59": "7603b2e1a85a83250894015187b39d75a576dca77d8dd73c7efc9e76459a237e"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "pickling not stated on broad shelf"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "9b5a6f25c876834fd5f280e61a26f146a8d4bd1a552fa9a984d71d872be96cb9"
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "홍차/아이스티",
+        "아이스홍차믹스"
+      ],
+      "source_title": "티젠 애플사이다비니거 30T(150G)",
+      "raw_record_ids": [
+        "ingestion:15:81",
+        "ingestion:65:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:81": "439283cad905011ff0567f822ef9ee95007f53862992f3253972b52bbc4777d3",
+        "ingestion:65:3": "96ef8428087f665746efea8d1d3b3dd6eb692272576c7204937ffe1a7416164c"
+      },
+      "number": 1,
+      "leaf": "food.drinks.mix.vinegar",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "홍차/아이스티",
+        "아이스홍차믹스"
+      ],
+      "source_title": "티젠 콤부차 요구르트 30T(150G)",
+      "raw_record_ids": [
+        "ingestion:15:98",
+        "ingestion:65:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:98": "beec1244d51cf02a67f388b391eeede6f9f3b2ddb3553deb0fb7c0a17195168d",
+        "ingestion:65:26": "4d737a254701b461f101368178ac97b3237a3455dbbefab474b8455b85e65c21"
+      },
+      "number": 2,
+      "leaf": "food.drinks.tea.kombucha",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "홍차/아이스티",
+        "아이스홍차믹스"
+      ],
+      "source_title": "녹차원 제로슈가 밀크티 블렌드 7T(70G)",
+      "raw_record_ids": [
+        "ingestion:16:34",
+        "ingestion:65:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:34": "03d9e3c2062effceb03223c12952e233fa06ed4ef80ea3ec0723dd9ac4eda954",
+        "ingestion:65:73": "c51ae23f7ffddb77f6d0475842e166d2691b1cc812f6b4c6378b1e47f6f53581"
+      },
+      "number": 3,
+      "leaf": "food.drinks.mix.milk_tea",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "6224ba2c6031ead92304415f92a735d0b1ae10b35329cd9c9556858be23a4ffe"
+}

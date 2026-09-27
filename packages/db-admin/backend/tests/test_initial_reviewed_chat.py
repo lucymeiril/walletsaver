@@ -13,8 +13,7 @@ PASS43_BLOCKED = {
 PASS44_BLOCKED = {
     # Accepted category evidence must not suppress source/ingredient conflicts.
     **dict.fromkeys(['071390258','127465120','126296972','103790615',
-                    '070031202','070031162','069739616','129622202',
-                    '128904268','128852547','143580391','127144229'],
+                    '069739616','129622202','143580391','127144229'],
                    'conflicting_category_evidence'),
     **dict.fromkeys(['120108964','068981243','057467472','000045411'],
                    'conflicting_category_evidence'),
@@ -27,6 +26,12 @@ PASS45_BLOCKED = {
                     '140583801','140583784','058706690','148605655','071275902'],
                    'conflicting_category_evidence'),
     '129081772':'dairy_ingredient_accessory_or_mixed_product',
+}
+REVIEWED_REJECTED_PATH = {
+    '070031202': 'food.snacks.savory.corn',
+    '070031162': 'food.snacks.savory.corn',
+    '128904268': 'food.meals.prepared.soup_stew',
+    '128852547': 'food.meals.prepared.soup_stew',
 }
 
 @pytest.mark.parametrize('accepted',ROWS)
@@ -54,6 +59,8 @@ def test_review_is_identity_bound_and_does_not_override_conflicts(accepted):
         assert result['classification_reason'] in ('conflicting_category_evidence','source_title_product_type_conflict','source_leaf_needs_name_corroboration')
     else:
         assert result['unified_category_id'] == accepted['leaf']
+        if accepted['source_record_key'] in REVIEWED_REJECTED_PATH:
+            assert result['reviewed_rejected_path_category'] == REVIEWED_REJECTED_PATH[accepted['source_record_key']]
     validate_taxonomy(taxonomy_categories({accepted['leaf']}),{accepted['leaf']})
     for changed in ({**row,'source_record_key':'not-reviewed'}, {**row,'source_title':row['source_title']+' 변경'}, {**row,'source_name':'costco'}, {**row,'source_category_path':['다른 진열']}):
         assert reviewed_chat_leaf(changed,source_evidence(changed)) is None

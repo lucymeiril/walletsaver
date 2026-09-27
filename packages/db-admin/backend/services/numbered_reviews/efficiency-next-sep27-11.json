@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "기타면"
+      ],
+      "source_title": "칠갑농산 냉천골 부산비빔밀면 2인분 566G",
+      "raw_record_ids": [
+        "ingestion:12:1",
+        "ingestion:61:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:1": "3044d8f95129d6231e3ee617b9febc7cf3b46f8b496130eb0c543480e3cf7243",
+        "ingestion:61:43": "11eb6802a71ec97d1c855ee6926e4e89c57b36308ba5081cbc2ca3fe5fe737c6"
+      },
+      "number": 1,
+      "leaf": "food.meals.noodles.milmyeon",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "떡볶이/면류",
+        "국수/칼국수/우동",
+        "기타면"
+      ],
+      "source_title": "칠갑농산 냉천골 부산밀면 2인분 1060G",
+      "raw_record_ids": [
+        "ingestion:12:4",
+        "ingestion:61:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:4": "5abd0e3c20e2706e81d20067277576afe477256cd802a9ae5e5a89fda346564d",
+        "ingestion:61:46": "97c931196845c095076b93c098fb8e91ca9f33f792bd90448542445e5076b2b4"
+      },
+      "number": 2,
+      "leaf": "food.meals.noodles.milmyeon",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "290c1d788c47de583740232a93910681758f4114ca357d3c7d3a071bdcec4b68"
+}

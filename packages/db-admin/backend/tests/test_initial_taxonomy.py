@@ -1483,6 +1483,24 @@ def test_explicit_review_only_leaves_do_not_add_loose_name_rules():
         assert classify_record(_raw("emart", "베스트", title))["unified_category_id"] is None
 
 
+def test_efficiency_review_forms_are_distinct_and_require_exact_review():
+    ids = {
+        "food.meat.fresh.duck", "food.drinks.mix.vinegar", "food.drinks.mix.milk_tea",
+        "food.snacks.dried.sweet_potato", "food.meals.noodles.milmyeon",
+        "food.preserved.sides.cheongpomuk", "food.seafood.processed.salted_squid",
+        "food.plant.konjac.food", "food.seafood.sashimi.aged_skate",
+        "food.dairy.milk.condensed", "food.seasonings.sauces.chocolate_syrup",
+    }
+    leaves = {leaf.id: leaf for leaf in LEAVES if leaf.id in ids}
+    assert set(leaves) == ids
+    assert all(len(leaf.path) == 4 and not leaf.source_labels and not leaf.name_terms for leaf in leaves.values())
+    validate_taxonomy(taxonomy_categories(ids), ids)
+    for title in ("곤약면", "밀면", "청포묵", "연유", "초콜릿시럽"):
+        assert classify_record(_raw("emart", "베스트", title))["unified_category_id"] is None
+    for title in ("곤약면과 어묵 혼합세트", "밀면과 냉면 혼합세트"):
+        assert classify_record(_raw("emart", "베스트", title))["unified_category_id"] is None
+
+
 def test_reviewed_produce_leaves_have_four_levels_and_unique_search_keywords():
     paths = {
         "food.produce.fruit.avocado": ["식품", "농산물", "신선과일", "아보카도"],

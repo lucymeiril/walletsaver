@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "냉동/건조/간편과일",
+        "천연간식",
+        "말랭이"
+      ],
+      "source_title": "황금 고구마스틱 800G(봉)",
+      "raw_record_ids": [
+        "ingestion:2:27",
+        "ingestion:51:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:27": "3079f579808146e40b27ecab73a36bb98e50f826c82bc8067ac289b6fbd051db",
+        "ingestion:51:59": "1292d4fd62eee81507ec61ca6006bbd5dc24a5f7dbc43d4bf55a315bd19371ed"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "preparation unclear"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "냉동/건조/간편과일",
+        "천연간식",
+        "말랭이"
+      ],
+      "source_title": "국내산 고구마말랭이 (60G*3번들)",
+      "raw_record_ids": [
+        "ingestion:2:49"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:49": "c23acc9d8f524058a18a38f99bbbad72aa1b1bee149ca4a99e55bc0140b806ba"
+      },
+      "number": 2,
+      "leaf": "food.snacks.dried.sweet_potato",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "0cb4baa39bfd6eb7de361ed923d07dd79cc057ec5e41789da7fc0b8982bff0e3"
+}

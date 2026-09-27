@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "시리얼/간식류소시지",
+        "어린이용 시리얼",
+        "초코"
+      ],
+      "source_title": "동서 오레오오즈 500G",
+      "raw_record_ids": [
+        "ingestion:17:32",
+        "ingestion:67:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:32": "7b37fff523b3f8519cda194db9ff386dc2626e73e7ca6ab3c228f1695ed40b0c",
+        "ingestion:67:37": "f51ec1d6ea8618c5462de0ee943b0abadcf2ac985b54e51dd8af3966bf1e9505"
+      },
+      "number": 1,
+      "leaf": "food.snacks.cereal.chocolate",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "시리얼/간식류소시지",
+        "어린이용 시리얼",
+        "초코"
+      ],
+      "source_title": "동서 크리치오 500G",
+      "raw_record_ids": [
+        "ingestion:17:33",
+        "ingestion:67:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:33": "2999dc91a52c10309d77f3c635b417d2b85b329c2e13c02e1d3e2565113af20e",
+        "ingestion:67:36": "398ddc7307bcd95c878ce075125bf08a9730f5278e6532b78cfea947d7b56d3d"
+      },
+      "number": 2,
+      "leaf": "food.snacks.cereal.chocolate",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "425f6193c509cb393498b368292625626c6f0c194f097152dd2f9430f2c67bba"
+}

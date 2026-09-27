@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "냉동/건조/간편과일",
+        "간편과일"
+      ],
+      "source_title": "델몬트 컷파인애플 400G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:16",
+        "ingestion:51:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:16": "861b26c160008a18cd490e8c2349c2b2107069cc80a125c76350a5f0a3edb054",
+        "ingestion:51:18": "41d7944b6620d432992801cacc3e25bc18fd41da01d0282c7522ef12f10b1aba"
+      },
+      "number": 1,
+      "leaf": "food.produce.processed_fruit.cut",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "냉동/건조/간편과일",
+        "간편과일"
+      ],
+      "source_title": "델몬트 허니듀 멜론(미국) 400G(팩)",
+      "raw_record_ids": [
+        "ingestion:2:17",
+        "ingestion:51:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:17": "d94288fd36a768181e5dfd2b7188d1560d13f31b879ba18370550d8f742d8abf",
+        "ingestion:51:12": "3f03e59dc41905af143f5f6b4a3afbd242129d2741ecd42aca675bae1da8d1fb"
+      },
+      "number": 2,
+      "leaf": "food.produce.processed_fruit.cut",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "62e5940d012fc2d45ccc378cf8d5febf3305c9c8a438e127f2ef8119c3e60664"
+}

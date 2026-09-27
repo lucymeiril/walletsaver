@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "탄산/이온/비타민음료",
+        "탄산수/토닉워터",
+        "토닉워터"
+      ],
+      "source_title": "진로 토닉워터 300ML*6",
+      "raw_record_ids": [
+        "ingestion:16:81",
+        "ingestion:66:38"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:81": "40f790c93b345f4cc7ef4ff44d8f035537b4e432328fc3142efdb3c199b9a73b",
+        "ingestion:66:38": "ec27257b281f98563f7a190a56c4dbd224fd2e54734b94a018339d217f0a791e"
+      },
+      "number": 1,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "탄산/이온/비타민음료",
+        "탄산수/토닉워터",
+        "토닉워터"
+      ],
+      "source_title": "진로 토닉워터 600ML",
+      "raw_record_ids": [
+        "ingestion:17:2",
+        "ingestion:66:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:2": "8299dd856611c9150b3e19bbed32e01e3a5bc6afb013bc16658a52ba0572c76b",
+        "ingestion:66:35": "ccc359f6c960934147b56d3c42d678cc7c161617a6f5b9350551b71485826e97"
+      },
+      "number": 2,
+      "leaf": "food.drinks.water_soda.soda",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2b861791ecb476e9ac8edc6ed6add6a38ddc33c67f514d79defbc9f1ee072a3e"
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "새우/게/랍스터/크랩류",
+        "꽃게"
+      ],
+      "source_title": "냉수 마찰 기절꽃게(국내산) 100G",
+      "raw_record_ids": [
+        "ingestion:4:40",
+        "ingestion:53:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:40": "98d85909f08e929cf41eaeb1642caaa4aa01e71ca00c10d34e3af5d6d4f57e3e",
+        "ingestion:53:36": "610364852f2593b64f082ebba66c9f1ee5cac16a6855b0c4fd33a75ad3f72f28"
+      },
+      "number": 1,
+      "leaf": "food.seafood.shellfish.crab",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "새우/게/랍스터/크랩류",
+        "꽃게"
+      ],
+      "source_title": "서해안 꽃게(국내산/해동) 100G",
+      "raw_record_ids": [
+        "ingestion:4:51",
+        "ingestion:53:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:51": "5f8f2f23dc5ffb0af573485461280d93bea48da2c09e676a80d4f8ac7ea3b646",
+        "ingestion:53:93": "938efe8ebf617656a03550485fe23f99eef312a283b8898a1825c2d908e489df"
+      },
+      "number": 2,
+      "leaf": "food.seafood.shellfish.crab",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 744
+    }
+  ],
+  "packet_sha256": "54398b90a39a5ac3d9e0fec100c729a8d09261ede8698270d4854de2df8ed5da"
+}

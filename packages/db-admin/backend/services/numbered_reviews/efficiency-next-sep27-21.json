@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "골뱅이/소라/꼬막"
+      ],
+      "source_title": "유동 자연산 골뱅이 300G",
+      "raw_record_ids": [
+        "ingestion:20:87",
+        "ingestion:69:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:87": "ad82c4e35ba31fa45b2d0969b58ac35f445d8245965ead086847970a84464091",
+        "ingestion:69:84": "418b075345125993f45fa04893754109e397880589a30de71f0a5276a8f219ff"
+      },
+      "number": 1,
+      "leaf": "food.preserved.canned.whelk",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "골뱅이/소라/꼬막"
+      ],
+      "source_title": "동원 자연산 진골뱅이 300G",
+      "raw_record_ids": [
+        "ingestion:22:43",
+        "ingestion:71:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:22:43": "d6f4a75a1c86f5456ee7d2e3e84e9830c40048ae967c5d6d57de12abf7b4e199",
+        "ingestion:71:88": "1193ee1e56478b00476ebd67bfbfe7e15b437df25105cefbe14a4cc2d94d7a65"
+      },
+      "number": 2,
+      "leaf": "food.preserved.canned.whelk",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f7e1d0078263adc43f112a78771883d8152ec48ed4e4929a90bbe1d2caa8322e"
+}

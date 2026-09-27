@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "한식밀키트"
+      ],
+      "source_title": "도드람 해남 묵은지 김치찌개 1KG",
+      "raw_record_ids": [
+        "ingestion:10:73",
+        "ingestion:59:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:73": "735ee83d1e61594d80dd0d29cd3fcdac4850ad182ad3b6006538fb906f218698",
+        "ingestion:59:50": "ddc886b589e1119408704e9bf6662f321e4f8dbda510434e76969842dcf65d22"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "1: kit form unconfirmed; 2: conflicting tofu ingredient evidence"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "밀키트",
+        "한식밀키트"
+      ],
+      "source_title": "[밀키트] 홈밀 감자수제비 순두부 찌개 1100G",
+      "raw_record_ids": [
+        "ingestion:11:11",
+        "ingestion:60:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:11": "8821ca768bd55b45300d45fc234edcc819a3de87f68e4f722528d57b8e0f2ffb",
+        "ingestion:60:88": "7f3e972c1fe03559d2ee3063a73c3e3182ac3f03d32b287a7b7fc43b59286041"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "1: kit form unconfirmed; 2: conflicting tofu ingredient evidence"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "8ce8f33821063d4471138c7e14f34b92eb0ccc65f3d9b3b7337b01824e340c26"
+}

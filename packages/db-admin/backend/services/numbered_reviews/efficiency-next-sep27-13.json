@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "탕"
+      ],
+      "source_title": "홈밀 한우 사골 육수 500G",
+      "raw_record_ids": [
+        "ingestion:11:53",
+        "ingestion:60:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:53": "c46c069579ab40cc799d92e1abea5c3b0f5b1d9d75935d3cb4bc1c3f16688ab3",
+        "ingestion:60:94": "be13ac5c8493476640f88642c1baf0029f5f5a587e6111bb36330492b94ae6cc"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit broth title disproves prepared soup source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "탕"
+      ],
+      "source_title": "홈플러스시그니처 소고기 양지 육수500G",
+      "raw_record_ids": [
+        "ingestion:11:54",
+        "ingestion:60:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:54": "137b63ffd35b07ff94ca95f36f2a4a38bc2f1bb92bc748bc1bc3f93e25605de1",
+        "ingestion:60:95": "8c138b0d62fcdeec8ab9f768079a6fcbd3cfda6bf7604e1b693471217ea18105"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit broth title disproves prepared soup source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4346919c3a6a971275cb11b1a2323b24e669e3e4b9710ead9950a4969bb2dca8",
+  "revision": {
+    "previous_sha256": "1a6f2172fb93bda50ef465d6e820404f3f5b3e77add2a24f8ea1c8a535d72375",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+    "reason": "Explicit broth title disproves prepared soup source shelf"
+  }
+}

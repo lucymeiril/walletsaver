@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "CJ 동치미 냉면육수 (1인) (300G)",
+      "raw_record_ids": [
+        "ingestion:28:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:27": "7bb032b8ee7fdf1aa7355c885c183959de09b769137983265d866061fc375684"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.noodles.naengmyeon",
+        "reason": "Explicit sauce title disproves noodle source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "풀무원 평양 물냉면육수 (1인) (290G)",
+      "raw_record_ids": [
+        "ingestion:30:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:13": "8ba9c7ad1fd3ce925e540e1cfc4c259bd235e8ed2e5931538380538b3f5e19aa"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.broth",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.noodles.naengmyeon",
+        "reason": "Explicit sauce title disproves noodle source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "냉면ㆍ쫄면",
+        "냉면ㆍ메밀면"
+      ],
+      "source_title": "CJ 함흥 비빔냉면 소스 (1인) (85G)",
+      "raw_record_ids": [
+        "ingestion:32:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:24": "b3658b10c31fdadcc5533e780bf21060d4a506d8c67c689baee3a6b6e85951ae"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.sauces.bibim",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.noodles.naengmyeon",
+        "reason": "Explicit sauce title disproves noodle source shelf",
+        "previous_hold": "Path conflict pending guarded review"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b22debf044ba9848ccc6f3ae70d0414c70ce3b367e14a4305ce1d8ddaf9e5741",
+  "revision": {
+    "previous_sha256": "2280aab1c4f07126cd410d14832dbe99eb7046d2b54ba621e1938667e38698e7",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+    "reason": "Explicit sauce title disproves noodle source shelf"
+  }
+}

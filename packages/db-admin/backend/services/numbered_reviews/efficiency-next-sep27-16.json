@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "낫또/묵",
+        "묵류"
+      ],
+      "source_title": "simplus 청포묵 300G",
+      "raw_record_ids": [
+        "ingestion:13:53",
+        "ingestion:63:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:53": "7abb4047d676dd9a65d09993f3534b6995b8d4303482789e92e98ecc9abfb7aa",
+        "ingestion:63:4": "9628f34bfc7635e02b9fb26d483ab15a3c311a9e64866f172bbac08645f603e1"
+      },
+      "number": 1,
+      "leaf": "food.preserved.sides.cheongpomuk",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "낫또/묵",
+        "묵류"
+      ],
+      "source_title": "simplus 도토리묵 300G",
+      "raw_record_ids": [
+        "ingestion:13:73",
+        "ingestion:63:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:73": "fced43d5542385688b31d42c7ef48d6ea8e0a0959d177dbfa99cc7c48484cf2c",
+        "ingestion:63:25": "2d1890ae17aca6a9f6dd79d68aa0c9e24c5ff4d552b36865ad603e8814974760"
+      },
+      "number": 2,
+      "leaf": "food.preserved.sides.acorn_jelly",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4950b3e66bec505e7f730dc86b0a8973ac5465e344f724c7689a152a65f3dc8b"
+}
