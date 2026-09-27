@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "김치ㆍ반찬ㆍ젓갈",
+        "김치",
+        "열무ㆍ물김치ㆍ백김치",
+        "열무김치"
+      ],
+      "source_title": "CJ 비비고 석박지 (900G)",
+      "raw_record_ids": [
+        "ingestion:32:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:14": "4d619833e2f7445cad98c3f31b78efaa37ae5d49065515776eb075ff32e40957"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 열무김치 경로 후보 중 1번은 상품형태 거부 조건이 아니어서 경로제외 불가; 두 행 모두 충돌"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "김치ㆍ반찬ㆍ젓갈",
+        "김치",
+        "열무ㆍ물김치ㆍ백김치",
+        "열무김치"
+      ],
+      "source_title": "대상 종가 백열무물김치 (1.2KG)",
+      "raw_record_ids": [
+        "ingestion:35:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:41": "84509cd07ac98a96ccffbba088385c7255d5f7a90cdfacc82d3551f5885b19b0"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: 열무김치 경로 후보 중 1번은 상품형태 거부 조건이 아니어서 경로제외 불가; 두 행 모두 충돌"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a2b2b2963b5a6c60bc986cee84750b98e6f17892fde2f7cb7948ee878229daf5"
+}

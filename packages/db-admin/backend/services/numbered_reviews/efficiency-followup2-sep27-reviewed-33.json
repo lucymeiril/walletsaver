@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "만두",
+        "진빵/만두피/화권/완탕/스프링롤",
+        "만두피"
+      ],
+      "source_title": "해태 찹쌀 왕 만두피 360G",
+      "raw_record_ids": [
+        "ingestion:11:87",
+        "ingestion:61:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:87": "46191a7940cbffe4db93a78148c6f510d8d4f1c28818d483522a66558aec84b7",
+        "ingestion:61:28": "ebf008d7c6f46de0cbbf49487d6dc5dd58e5e8e148730bf832af273a4e795dbe"
+      },
+      "number": 1,
+      "leaf": "food.preserved.ingredients.dumpling_wrapper",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3ddac71ef20f4d3ba73ebe3585dd7bbf60f03b3c568b8bd816104a6f6636391d"
+}

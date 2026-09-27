@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "돈까스/소시지/떡갈비/스테이크",
+        "돈까스"
+      ],
+      "source_title": "한돈 통등심 카츠 505G",
+      "raw_record_ids": [
+        "ingestion:5:77",
+        "ingestion:54:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:77": "d1355d285b1447ed1b323fb5be210544bfbdf6a8707fc827527b271be4573a5e",
+        "ingestion:54:97": "e4b88de78fd1a56a4193eaebad28514b221001e9e9c92586d5e843a179cb2a9a"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 카츠 표현의 돈까스 이름확인 규칙 미지원"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "돈까스/소시지/떡갈비/스테이크",
+        "돈까스"
+      ],
+      "source_title": "한돈 모둠 소시지 1KG",
+      "raw_record_ids": [
+        "ingestion:54:78"
+      ],
+      "source_row_sha256": {
+        "ingestion:54:78": "d9145117ff8e33ca3f7d067395be82f010f1fff88e7d1e9975ddc19542171bdd"
+      },
+      "number": 2,
+      "leaf": "food.meat.processed.sausage",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b83f9279d5f8917e02ed3eb35841787b387ffb5e484cc57353ac178a18e4fd3d"
+}

@@ -108,6 +108,14 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.drinks.mix", ("식품", "음료", "조제음료"), "", (
         ("vinegar", "식초음료믹스", ""), ("milk_tea", "밀크티믹스", ""),
+        ("traditional_tea", "전통차믹스", ""),
+    )),
+    *_group("food.seasonings.cooking_herbs", ("식품", "양념·소스", "조리용 건재료"), "", (
+        ("hwanggi", "건황기", ""),
+    )),
+    *_group("food.produce.vegetables", ("식품", "농산물", "신선채소"), "", (
+        ("aukh", "아욱", ""), ("chard", "근대", ""),
+        ("young_radish", "열무", ""), ("herbs", "요리용생허브", ""),
     )),
     *_group("food.snacks.dried", ("식품", "과자·간식", "건조간식"), "", (
         ("sweet_potato", "건고구마", ""),
@@ -192,6 +200,42 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.seafood.assortments", ("식품", "수산물", "수산물모둠"), "", (
         ("frozen", "냉동해물모둠", ""),
+    )),
+    *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "", (
+        ("lentil", "렌틸콩", ""),
+    )),
+    *_group("food.frozen.dessert", ("식품", "냉동식품", "아이스디저트"), "", (
+        ("cup_sherbet", "컵샤베트", ""),
+    )),
+    *_group("food.produce.fruit", ("식품", "농산물", "신선과일"), "", (
+        ("cherry", "체리", ""), ("pineapple", "파인애플", ""),
+    )),
+    *_group("food.snacks.assortments", ("식품", "과자·간식", "혼합간식"), "", (
+        ("savory", "혼합짭짤간식", ""),
+    )),
+    *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "", (
+        ("chicken_cutlet", "치킨까스", ""), ("neobiani", "너비아니", ""),
+    )),
+    *_group("food.preserved.ingredients", ("식품", "반찬·저장식품", "조리재료"), "", (
+        ("tteokbokki_tteok", "떡볶이떡", ""), ("dumpling_wrapper", "만두피", ""),
+    )),
+    *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "", (
+        ("seasoned_perilla", "양념깻잎", ""),
+    )),
+    *_group("food.preserved.canned", ("식품", "반찬·저장식품", "통조림"), "", (
+        ("silkworm_pupae", "번데기통조림", ""), ("mackerel", "고등어통조림", ""),
+    )),
+    *_group("food.bakery.bread", ("식품", "베이커리·스프레드", "빵"), "", (
+        ("hotteok", "호떡", ""),
+    )),
+    *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
+        ("margarine", "마가린", ""),
+    )),
+    *_group("food.drinks.functional", ("식품", "음료", "기타음료"), "", (
+        ("vitamin", "비타민음료", ""), ("hangover_marketed", "숙취해소표방음료", ""),
+    )),
+    *_group("food.seafood.tunicates", ("식품", "수산물", "멍게류"), "", (
+        ("sea_squirt", "생멍게", ""),
     )),
     # Review-only forms: broad merchandising shelves never establish these.
     *_group("stationery.office.organizers", ("문구", "사무용품", "정리용품"), "", (

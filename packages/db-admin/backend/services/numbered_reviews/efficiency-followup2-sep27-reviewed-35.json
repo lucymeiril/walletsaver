@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "볶음/찜/국/탕",
+        "삼계탕"
+      ],
+      "source_title": "매콤 슬라이스 폭립 500G",
+      "raw_record_ids": [
+        "ingestion:10:12",
+        "ingestion:60:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:12": "28fcfa95381149b9c589fa99a7651ad58693b2de79f9b9c34d3628c30d4048d7",
+        "ingestion:60:39": "a012f84b0016461ae4ad47d75cde333daa1add56bc1da4a0b90947ad8581917f"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4c723ab75e7db854f53a1aa3a0dc366b443f238ff74477d6dedd7fa09fadf4e1"
+}

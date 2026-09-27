@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "전통/차/기타음료",
+        "식혜/수정과/쌀음료",
+        "전통음료"
+      ],
+      "source_title": "팔도 비락수정과 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:98",
+        "ingestion:66:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:98": "64d2652a4f52ad8ab5d39a1f5c05733ed6cc45dd470e7ce90da9288cbd0fcaaf",
+        "ingestion:66:43": "964b0e0603737146b78ed190af9fa700ef925bf0a921695c30a7fd722c0639af"
+      },
+      "number": 1,
+      "leaf": "food.drinks.traditional.sujeonggwa",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c16c22ccf460e96586f9bdde765d3ba1cbdc31b7c0b7b996436bb87d3511fcc0"
+}

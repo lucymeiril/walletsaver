@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "버섯",
+        "양송이버섯"
+      ],
+      "source_title": "맛난이 양송이 버섯 180G(팩)",
+      "raw_record_ids": [
+        "ingestion:3:24",
+        "ingestion:52:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:24": "15ea82d8c15ad5f8eaced4125e91cd41faefe5799c5dd567bc57386ec7eecdd2",
+        "ingestion:52:52": "1b2b229075f6325ced907d17e319b343210155f953767695b50cc42a4cf3760c"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "버섯",
+        "양송이버섯"
+      ],
+      "source_title": "양송이 버섯 180G(팩)",
+      "raw_record_ids": [
+        "ingestion:3:30",
+        "ingestion:51:95"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:30": "e97f9ef875e6b34460e8ca99c6fc4692c1b41413b67503ac7c900e4b42aa7752",
+        "ingestion:51:95": "5105578d7e2856c84a931693f4f2e2a61c15e55af3e82f6a4180b2cba973f333"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.mushroom",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "18b785be8f9a2e2e571edd94167acaf5a297badd8a0848f047d14b60b063e6a9"
+}

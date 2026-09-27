@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "견과",
+        "곡물가공/건강분말",
+        "미숫가루/선식",
+        "선식"
+      ],
+      "source_title": "국산 100% 단백질저당통곡물선식500G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:80",
+        "ingestion:52:94"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:80": "720b91d083571561a1aa5af9bbc9928fef8b84f329ba90b3e2afc1e3c483792a",
+        "ingestion:52:94": "d75d09d6e9233fdbe5e798c6814a98d3d89711155e421221b557a8ad3e8e5bcb"
+      },
+      "number": 1,
+      "leaf": "food.drinks.powders.grain",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c155702df4030a2af2e0bb69945b30ec04e5180d95a466f62b425e0e95bd6162"
+}

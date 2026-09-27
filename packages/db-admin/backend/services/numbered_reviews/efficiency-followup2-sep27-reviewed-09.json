@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "source_title": "병아리콩 (1.5KG)",
+      "raw_record_ids": [
+        "ingestion:31:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:63": "64518c8583b91825cf31f00893ce2034798317cd87134e10f09c1731556ed7d8"
+      },
+      "number": 1,
+      "leaf": "food.grains.rice.chickpea",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "슈퍼곡물"
+      ],
+      "source_title": "렌틸콩 (1.7KG)",
+      "raw_record_ids": [
+        "ingestion:33:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:27": "f63172dc13e8a12a4e2ea1b74cd28773aa114afa6e8f773384e4b5c373519a77"
+      },
+      "number": 2,
+      "leaf": "food.grains.rice.lentil",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d545c6c04a9a5f8885392a8023564414532925e3db92c28746bae5763f8f02d1"
+}

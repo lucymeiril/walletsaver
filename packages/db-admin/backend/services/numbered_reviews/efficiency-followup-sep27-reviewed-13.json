@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "삼겹살"
+      ],
+      "source_title": "한돈 일품포크 삼겹살 100G/돼지고기",
+      "raw_record_ids": [
+        "ingestion:5:51",
+        "ingestion:54:64"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:51": "48ef4e92aaa27871fd164d34cfa50e909291279cd21b3122398b4d5c6c8eb482",
+        "ingestion:54:64": "005dc4174e72a2a1e862689ff2e166c2892c6db2797e8164fddb0ad0cd73a324"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "삼겹살"
+      ],
+      "source_title": "농협안심한돈 삼겹살 100G/돼지고기",
+      "raw_record_ids": [
+        "ingestion:55:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:59": "ad46ed27431f29dad35311baa1447b222fdca22963994aeb8ff65ac37f10258c"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "9fa012e77a2b15fed17994bbc7da2d0d4a5732af8e3fba9d8ec43b78b755f515"
+}

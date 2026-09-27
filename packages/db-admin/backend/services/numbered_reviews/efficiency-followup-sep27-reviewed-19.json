@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "나물/해초",
+        "데친나물/삶은나물"
+      ],
+      "source_title": "고추채 절임 300G(통)",
+      "raw_record_ids": [
+        "ingestion:3:18",
+        "ingestion:52:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:18": "88a04d7c55abbca69a05aa24c0221d037df2b9c38d18f7d3f2b9d4e4323764b3",
+        "ingestion:52:34": "ca6dd28155b704626fa7a8e572b245e234b358cc887bdc040c29063bbd243a87"
+      },
+      "number": 1,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "나물/해초",
+        "데친나물/삶은나물"
+      ],
+      "source_title": "명이 절임 300G(통)",
+      "raw_record_ids": [
+        "ingestion:3:47",
+        "ingestion:52:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:47": "65b7867a5db4f99f2676bd7867617ac74c33347b4c638b7072f2ea4aea928435",
+        "ingestion:52:35": "3ac91f8ccd9c76e0649925eafb5c66d954c0ca249004d5c02e7c74eaaccd8baa"
+      },
+      "number": 2,
+      "leaf": "food.preserved.sides.pickled",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2945cbae6054895fe8bc81ff311054e9511dc031cb8c3da172d05e3bdfb3839c"
+}

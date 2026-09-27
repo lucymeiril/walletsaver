@@ -157,6 +157,49 @@ def test_review_only_new_leaves_do_not_guess_unreviewed_titles(path, title):
     assert classify_record(_raw("emart", path, title))["unified_category_id"] is None
 
 
+@pytest.mark.parametrize("leaf_id,path,title", [
+    ("food.drinks.mix.traditional_tea", ("식품", "음료", "조제음료", "전통차믹스"), "생강차 30T"),
+    ("food.seasonings.cooking_herbs.hwanggi", ("식품", "양념·소스", "조리용 건재료", "건황기"), "건황기 100g"),
+    ("food.produce.vegetables.aukh", ("식품", "농산물", "신선채소", "아욱"), "아욱 1단"),
+    ("food.produce.vegetables.chard", ("식품", "농산물", "신선채소", "근대"), "근대 1단"),
+    ("food.produce.vegetables.young_radish", ("식품", "농산물", "신선채소", "열무"), "열무 1단"),
+    ("food.produce.vegetables.herbs", ("식품", "농산물", "신선채소", "요리용생허브"), "생허브 30g"),
+])
+def test_followup_review_only_forms_require_exact_reviewed_context(leaf_id, path, title):
+    leaf = next(item for item in LEAVES if item.id == leaf_id)
+    assert leaf.path == path
+    assert not (leaf.source_labels or leaf.context_labels or leaf.name_terms)
+    for candidate in (title, f"{title} + 다른 상품 혼합팩"):
+        assert classify_record(_raw("emart", "베스트", candidate))["unified_category_id"] != leaf_id
+
+
+@pytest.mark.parametrize("leaf_id,path,title", [
+    ("food.grains.rice.lentil", ("식품", "곡물·견과", "쌀·잡곡", "렌틸콩"), "렌틸콩 1kg"),
+    ("food.frozen.dessert.cup_sherbet", ("식품", "냉동식품", "아이스디저트", "컵샤베트"), "유자 샤베트"),
+    ("food.produce.fruit.cherry", ("식품", "농산물", "신선과일", "체리"), "체리 400g"),
+    ("food.produce.fruit.pineapple", ("식품", "농산물", "신선과일", "파인애플"), "파인애플 1개"),
+    ("food.snacks.assortments.savory", ("식품", "과자·간식", "혼합간식", "혼합짭짤간식"), "스낵믹스"),
+    ("food.meals.prepared.chicken_cutlet", ("식품", "간편식·면", "조리식품", "치킨까스"), "치킨까스 360g"),
+    ("food.meals.prepared.neobiani", ("식품", "간편식·면", "조리식품", "너비아니"), "너비아니 1kg"),
+    ("food.preserved.ingredients.tteokbokki_tteok", ("식품", "반찬·저장식품", "조리재료", "떡볶이떡"), "밀 떡볶이떡"),
+    ("food.preserved.ingredients.dumpling_wrapper", ("식품", "반찬·저장식품", "조리재료", "만두피"), "만두피 360g"),
+    ("food.preserved.sides.seasoned_perilla", ("식품", "반찬·저장식품", "밑반찬", "양념깻잎"), "매콤 깻잎"),
+    ("food.preserved.canned.silkworm_pupae", ("식품", "반찬·저장식품", "통조림", "번데기통조림"), "번데기 130g"),
+    ("food.preserved.canned.mackerel", ("식품", "반찬·저장식품", "통조림", "고등어통조림"), "고등어 300g"),
+    ("food.bakery.bread.hotteok", ("식품", "베이커리·스프레드", "빵", "호떡"), "꿀호떡 8입"),
+    ("food.bakery.spreads.margarine", ("식품", "베이커리·스프레드", "스프레드", "마가린"), "옥수수 마아가린"),
+    ("food.drinks.functional.vitamin", ("식품", "음료", "기타음료", "비타민음료"), "비타민 음료"),
+    ("food.drinks.functional.hangover_marketed", ("식품", "음료", "기타음료", "숙취해소표방음료"), "숙취음료"),
+    ("food.seafood.tunicates.sea_squirt", ("식품", "수산물", "멍게류", "생멍게"), "햇멍게"),
+])
+def test_followup2_review_only_forms_do_not_match_broad_or_mixed_listings(leaf_id, path, title):
+    leaf = next(item for item in LEAVES if item.id == leaf_id)
+    assert leaf.path == path
+    assert not (leaf.source_labels or leaf.context_labels or leaf.name_terms)
+    for candidate in (title, f"{title} + 다른 상품 혼합팩"):
+        assert classify_record(_raw("emart", "베스트", candidate))["unified_category_id"] != leaf_id
+
+
 @pytest.mark.parametrize('title,entry', CLEANING_URL_ENTRIES.items())
 def test_additional_costco_cleaning_forms_require_exact_official_url(title, entry):
     leaf, marker = entry

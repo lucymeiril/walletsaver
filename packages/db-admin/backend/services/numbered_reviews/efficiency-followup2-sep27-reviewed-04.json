@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일",
+        "간편ㆍ냉동과일",
+        "냉동과일"
+      ],
+      "source_title": "아사이볼 (104G/팩)",
+      "raw_record_ids": [
+        "ingestion:30:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:11": "a21aa3d73032409498a71387aca9752fb5851574d7471249c69d8703fdc6b174"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 과일볼 구성 불명"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과일",
+        "간편ㆍ냉동과일",
+        "냉동과일"
+      ],
+      "source_title": "망고볼 (104G/팩)",
+      "raw_record_ids": [
+        "ingestion:32:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:51": "20e19519876c9a12308db6703050d87b7ad3fb3b956f68acd502ce2e683625ed"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: 과일볼 구성 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "fed161feb5e786405034338df07b62f60d4dee000f535b1b230d3d50fe5552ea"
+}

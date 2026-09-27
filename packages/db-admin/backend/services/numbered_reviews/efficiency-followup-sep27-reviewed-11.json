@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "목심"
+      ],
+      "source_title": "한돈 일품포크 목심 100G/돼지고기(목살)",
+      "raw_record_ids": [
+        "ingestion:5:54",
+        "ingestion:54:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:54": "e0a3d1926268f3c66cb300412508484dd2401532edd2370b4456c5773a2908cf",
+        "ingestion:54:80": "ecfc77dbecc2781e5c5f8ccd3de302bff162a331b15879efd33127d1c508c596"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "목심"
+      ],
+      "source_title": "농협안심한돈 목심 100G/돼지고기(목살)",
+      "raw_record_ids": [
+        "ingestion:55:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:42": "61782a3ebb8346c55d1b63eb6ac41270bdb14e17e7d0c5f8274bce431c9af172"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "52a2e255d4b08363b0e76118063586c40ab5783ea939a13e212afb529043435d"
+}

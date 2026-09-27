@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "햄/소시지",
+        "비엔나/후랑크/동그랑땡"
+      ],
+      "source_title": "씨제이 맥스봉 숯불구이맛 핫바 70G",
+      "raw_record_ids": [
+        "ingestion:14:74",
+        "ingestion:64:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:14:74": "5608e518fa39b2b459c64a5252b446e34f8cd069fab0ffe874e7fdeda499ec94",
+        "ingestion:64:11": "19ea31c34e75f05b42aed5d4e85aa461fbbfc47e8af9d4acc09a6df9f0b2511f"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 핫바 육류/어류 구분 불명"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_homeplus_shelves.py",
+      "line": 19
+    }
+  ],
+  "packet_sha256": "8b2980a299927d0deb3ee778e1b758cb4edebb5a852e33f231a7619c6ac8c4ef"
+}

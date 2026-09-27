@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "건채소/기타",
+        "건채소",
+        "건약재"
+      ],
+      "source_title": "국산 황기 80G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:45",
+        "ingestion:52:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:45": "c8acd894c5a289b1a24fd11839ea2f1d024f82aca7faef2052cef0899866d619",
+        "ingestion:52:14": "9c9a8671771d59f7493c4cd0b30e45e14c26f3d05de3133d216d6ed7f76a43f6"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.cooking_herbs.hwanggi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "건채소/기타",
+        "건채소",
+        "건약재"
+      ],
+      "source_title": "찹쌀 누룽지 품은 삼계재료 220G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:59",
+        "ingestion:52:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:59": "f1edb9d73312f4770a3370c3f57e4878e12226f478191cb689a48a092f27c574",
+        "ingestion:52:63": "e2bac4ec77f40d1f51d74a806e7c90230aa835d4423a60ca133f033a52d2fc96"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.cooking_herbs.samgyetang",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "25124580a0115b17f10aab8b96109fb4e8fc2283a55cb4fb36723426a9516ba9"
+}

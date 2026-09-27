@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "참치/꽁치/고등어",
+        "고등어"
+      ],
+      "source_title": "동원 자연산 진고등어 300G",
+      "raw_record_ids": [
+        "ingestion:22:15",
+        "ingestion:71:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:22:15": "ceb98511bbb9eb617332439b05ad063cf639690e1b177c4cea7cde7379066836",
+        "ingestion:71:67": "b99c61e534af8fce24e0d9bc0496e2c1da88d6b97aee7353718021324cf14390"
+      },
+      "number": 1,
+      "leaf": "food.preserved.canned.mackerel",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3d35768a82ac81c3bf99cb6bbcec5a30aa7936c06ae256d8c24a70e5db4de843"
+}

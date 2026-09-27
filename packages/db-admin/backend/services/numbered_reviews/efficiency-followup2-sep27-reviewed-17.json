@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "감귤/만감류",
+        "천혜향/한라봉/기타만감류"
+      ],
+      "source_title": "제주 황금향 4-7입(박스)",
+      "raw_record_ids": [
+        "ingestion:51:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:51:57": "9eff52a04fec562868e7f6690035fc91176331d15ae85169c3085d7a1bbdfadf"
+      },
+      "number": 1,
+      "leaf": "food.produce.fruit.citrus",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "e6089178053958d2dd340b65913ea0b3e85cb58702a7efc343eafa973e87ab4c"
+}

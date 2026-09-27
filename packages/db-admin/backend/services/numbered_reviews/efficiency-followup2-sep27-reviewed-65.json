@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "조기/굴비",
+        "조기"
+      ],
+      "source_title": "부세 마리(대/해동/중국산)",
+      "raw_record_ids": [
+        "ingestion:5:6",
+        "ingestion:54:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:6": "88934b7a2e9649ca908ae55bec2baa1025976866691b4d1ac1ae9e3237074dec",
+        "ingestion:54:62": "5d5dc3366db8661958d3813eaddf7d179874279987ead75ffccf8be0249f09a3"
+      },
+      "number": 1,
+      "leaf": "food.seafood.fish.croaker",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "76f1eaa43fa72ffa746f0e9fa168616ecb492300c2ab7192609b9573630bfd08"
+}

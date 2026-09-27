@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "스팸/햄/닭가슴살캔",
+        "돈육통조림"
+      ],
+      "source_title": "CJ 스팸 클래식 싱글 80G*3",
+      "raw_record_ids": [
+        "ingestion:22:19",
+        "ingestion:71:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:22:19": "32dd33fd40ed98c47cc1f1aabf270ad491fb4145485e21aa6af50ddba602e5c4",
+        "ingestion:71:48": "65676e5bf6b9bd2191e849746adc55ccc6fa4b86cf9e619f97c22de9d5dd65f6"
+      },
+      "number": 1,
+      "leaf": "food.preserved.canned.ham",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "781eb3bbe3339290b04d9ee0d3c966d18a2d35785dac9833d81ef5508d47bf33"
+}

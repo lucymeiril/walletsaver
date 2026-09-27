@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과일",
+        "냉동/건조/간편과일",
+        "열대건과일"
+      ],
+      "source_title": "말랑쫀득 건망고 250G(봉)",
+      "raw_record_ids": [
+        "ingestion:2:44",
+        "ingestion:51:43"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:44": "75bbbc65ae2bed46b9c3ef4bf90a05a9c97a9e2d0f02c1f8ce49de189e1043ef",
+        "ingestion:51:43": "b9ff96a0216fe117000a2fcae02c38ef423541811b19a492a3d0d12175d43fa3"
+      },
+      "number": 1,
+      "leaf": "food.produce.processed_fruit.dried",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "e49c50cc2ae81415eaaa2d846841c03448d9c5c1bd5c9a2695402f43a8318909"
+}

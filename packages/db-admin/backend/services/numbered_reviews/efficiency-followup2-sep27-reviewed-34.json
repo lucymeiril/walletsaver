@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "아이스크림/디저트/얼음",
+        "프리미엄아이스크림"
+      ],
+      "source_title": "라라스윗 저당 초콜릿 초코바 90ML*4",
+      "raw_record_ids": [
+        "ingestion:12:6",
+        "ingestion:61:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:6": "e0fea6a135cad7be0c0dae8de9c0605f4c38a70972b2518ff63c76ba47c11dc6",
+        "ingestion:61:48": "990ff313e04c40f703ade17597fcaf8d6c1af47b297ef5a672c88d495d39316d"
+      },
+      "number": 1,
+      "leaf": "food.frozen.dessert.ice_bar",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "254f5ad7994c3ac9f90e82be9cfa9b8f9e2603d3b1c460960361e76791b924e9"
+}

@@ -14,7 +14,7 @@ def inputs(plan_path, root=ROOT):
     require(plan['action'] == 'prepare', 'Only prepare is supported')
     name = plan['name']
     job = named(root, name, '.debug-artifacts/review-jobs')
-    require(isinstance(plan['shelves'], list) and 0 < len(plan['shelves']) <= 30, 'Invalid shelves')
+    require(isinstance(plan['shelves'], list) and 0 < len(plan['shelves']) <= 100, 'Invalid shelves')
     require(all(isinstance(p, str) and p for p in plan['leaf_prefixes']), 'Invalid prefixes')
     require(bool(plan['leaf_prefixes']), 'Missing prefixes')
     packets = []

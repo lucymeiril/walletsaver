@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "건채소/기타",
+        "건채소",
+        "건버섯"
+      ],
+      "source_title": "국산 건표고버섯 100G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:9",
+        "ingestion:52:9"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:9": "914db5a5d2eb0a90f9a761bdf5814953579ecb5550b4076a284d0c06845408b1",
+        "ingestion:52:9": "0a3757926a8523373b01579a82fca41b87aef795eeb018c0ea279a975b0cac74"
+      },
+      "number": 1,
+      "leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "건채소/기타",
+        "건채소",
+        "건버섯"
+      ],
+      "source_title": "건목이 버섯 50G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:32",
+        "ingestion:52:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:32": "f2028e9a62f32dca529a9f3d68bd784b4fa67ab2d322c007e12067c055ad88de",
+        "ingestion:52:54": "94b971762c3529807dcac86ab148e08703ea1721a0e771cc692362bb435352ab"
+      },
+      "number": 2,
+      "leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "69dff20b107f6ab31947763e6c9eda34fad6883a337dc90b7d961ece85a14324"
+}

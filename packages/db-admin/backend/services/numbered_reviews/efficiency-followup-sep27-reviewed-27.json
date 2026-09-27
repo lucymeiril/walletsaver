@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "메밀/옥수수/뿌리차",
+        "뿌리차(침출차)"
+      ],
+      "source_title": "녹차원 팔방미인 우엉차 100T (100G)",
+      "raw_record_ids": [
+        "ingestion:15:79",
+        "ingestion:65:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:79": "305453bf8bd2f4e5b3f3914b3daeb349a9d8c37cce677e7833f1015076e52d16",
+        "ingestion:65:21": "52c595765a44df34f4d99c8a7b4267416993b87d66e820c1edbaeb68d92becc8"
+      },
+      "number": 1,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "메밀/옥수수/뿌리차",
+        "뿌리차(침출차)"
+      ],
+      "source_title": "아크바 생강차 25T",
+      "raw_record_ids": [
+        "ingestion:16:36",
+        "ingestion:65:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:36": "17315e6c134231c138c626484fa31a0d11401e380d6f2db42fb6d859c76ed43b",
+        "ingestion:65:75": "9784c174f8d27128f5a622d7896a68a8eddc14000f25e9cbc8a3675921fd56a8"
+      },
+      "number": 2,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "8cf256fb86704c1fa4df04dfeba04924fe00db886276233e8e76dfdc99cb7039"
+}

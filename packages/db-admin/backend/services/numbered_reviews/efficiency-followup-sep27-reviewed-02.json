@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "HBAF 메이플피칸 아몬드 믹스넛 (200G)",
+      "raw_record_ids": [
+        "ingestion:34:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:71": "daf892ae95c10541fc9643d3efe395cd0a5d3735d678edb42731d219f7a95fae"
+      },
+      "number": 1,
+      "leaf": "food.grains.nuts.mixed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "HBAF 허니버터 아몬드 (120G)",
+      "raw_record_ids": [
+        "ingestion:34:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:98": "fae971e045fd27579500f33c9d3e97a599e7aa566d99e6cbb037c4669ceb6f07"
+      },
+      "number": 2,
+      "leaf": "food.grains.nuts.almond",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "오늘좋은 체다치즈 마카다미아 (40G)",
+      "raw_record_ids": [
+        "ingestion:35:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:1": "92146d2fd9927461ec1344d8a8c70ed0976d5f73330eb392bf8e3174d0f7092f"
+      },
+      "number": 3,
+      "leaf": "food.grains.nuts.macadamia",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1cd571ca336dcc3c35dc59267f0808528b74fb94194203b571b66c946fc23b18"
+}

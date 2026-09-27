@@ -42,3 +42,16 @@ def test_existing_outputs_cannot_be_reexecuted(tmp_path):
     plan, _ = fixture_plan(tmp_path)
     with pytest.raises(Exception, match='Destination exists'):
         run(plan, tmp_path)
+
+
+@pytest.mark.parametrize('count,valid', [(100, True), (101, False)])
+def test_shelf_bound(tmp_path, count, valid):
+    plan = tmp_path / 'plan.json'
+    plan.write_text(json.dumps({'action': 'prepare', 'name': 'boundary',
+        'shelves': [{'mart': 'emart', 'shelf': f'Shelf {i}'} for i in range(count)],
+        'leaf_prefixes': ['food']}), encoding='utf-8')
+    if valid:
+        assert len(inputs(plan, tmp_path)[2]) == count
+    else:
+        with pytest.raises(Exception, match='Invalid shelves'):
+            inputs(plan, tmp_path)

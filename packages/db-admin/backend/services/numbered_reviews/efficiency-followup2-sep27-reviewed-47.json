@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "당면/건면/스파게티",
+        "즉석면요리",
+        "즉석면"
+      ],
+      "source_title": "면사랑 동치미육수 평양물냉면 1026G",
+      "raw_record_ids": [
+        "ingestion:21:55",
+        "ingestion:71:32"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:55": "a70969129f306493d47f62fb91a9bc63ea75f0485d860edad914540dbcde7a89",
+        "ingestion:71:32": "c0dc719cfe990379be674fc416d2fcc301a5f1af703ab7d9099ec1a58890aa08"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 냉면 후보가 실제 런타임 상품형태 충돌로 보류됨"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1079df0f84a01923a29681654653e1bfb2ef909b4ef130aee2681ae8118f1c03"
+}

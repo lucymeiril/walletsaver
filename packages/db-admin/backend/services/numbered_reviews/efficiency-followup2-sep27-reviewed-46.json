@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "당면/건면/스파게티",
+        "즉석면요리",
+        "상온떡볶이"
+      ],
+      "source_title": "동원 진한사골쌀떡국 151G",
+      "raw_record_ids": [
+        "ingestion:22:49",
+        "ingestion:72:4"
+      ],
+      "source_row_sha256": {
+        "ingestion:22:49": "61c1ac43375c76c798da156e79f1f8188ee0c1f8a324f5d64eb6471abf579599",
+        "ingestion:72:4": "35ca5540eecd49d91608be5ac4b4ff95fee0f11b56d051c98d4ed497a27cc3f9"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.soup_stew",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4ce025caa44a19408277187fd8e11cc8b5dc72f8d7bc7ff4f8e8b9535ee7e7f8"
+}

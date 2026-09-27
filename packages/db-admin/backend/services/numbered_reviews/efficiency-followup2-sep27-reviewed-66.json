@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "어패류",
+        "기타 어패류",
+        "기타조개"
+      ],
+      "source_title": "해물모듬 250G(팩)",
+      "raw_record_ids": [
+        "ingestion:5:23",
+        "ingestion:54:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:23": "331406d14b7819645d1b8ef7305330907b908fb400b2347b1142eef98e74c1ee",
+        "ingestion:54:36": "d092518a7d59c2accb9bb29b178b6849a2b1e3386f13ad5c50e291a40dcecb00"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 냉동상태 확인 불가"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "9833bb25981b165b3005ebd309c37c21be543c3c6ce592f4adb29ea1776f7297"
+}

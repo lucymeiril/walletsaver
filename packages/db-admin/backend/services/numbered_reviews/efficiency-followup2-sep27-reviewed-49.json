@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "번데기/장조림/반찬",
+        "깻잎외야채반찬"
+      ],
+      "source_title": "샘표 우리엄마 깻잎 매콤한맛 70G",
+      "raw_record_ids": [
+        "ingestion:21:12",
+        "ingestion:71:80"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:12": "e846d1bbd0f0907804e38f89993fdd4bef1bcd98e0401029a08b57b41e30d2ac",
+        "ingestion:71:80": "9726424e30e4b63c060b579433f9b521d6662624bca1675c94e66263d4d18452"
+      },
+      "number": 1,
+      "leaf": "food.preserved.sides.seasoned_perilla",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a12f271e4d249a93885a7e64dfed22a9d056f0a3717aa3caa9a9360112765d8b"
+}

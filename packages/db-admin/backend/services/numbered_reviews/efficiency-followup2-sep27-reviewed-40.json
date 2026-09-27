@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "두부/나물",
+        "부침/찌개용두부",
+        "부침용두부"
+      ],
+      "source_title": "씨제이 행복한콩 국산콩 순두부 330G",
+      "raw_record_ids": [
+        "ingestion:15:39",
+        "ingestion:64:77"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:39": "1044b2a45bf2eee622046ddccd273252e787b42a8c03c25989eaf687ee1e97f4",
+        "ingestion:64:77": "a6da3a0582c428408e3cfe13a2b828f8c6445d923f9aa5cb9b3bf5dd8f319c48"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 순두부와 두부 후보 충돌; 두부 후보는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "06b24ed0f0a6230b515d0b9fff946f55dd96c66afe04714d6031db5c31972c5b"
+}

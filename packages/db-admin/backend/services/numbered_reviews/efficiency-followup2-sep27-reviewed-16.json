@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "견과",
+        "씨앗/잣/견과스낵",
+        "스낵류"
+      ],
+      "source_title": "황금 고구마칩 800G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:81",
+        "ingestion:53:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:81": "c94ec1b811eb352795f4ffc118c3ab94a72eb730675a347a905c5582b1712dd8",
+        "ingestion:53:3": "f9ca49dc6df622fb6520347e6bd43aebd5dceafc272bea043346f422c20a0454"
+      },
+      "number": 1,
+      "leaf": "food.snacks.savory.vegetable",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "47291c376a0ccdb26fe7f4656a6aec5343d17163fd48c7572ee7b84caa1197f4"
+}

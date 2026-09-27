@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "베이커리/잼",
+        "기타 빵류",
+        "호빵/호떡"
+      ],
+      "source_title": "삼립 꿀호떡 요요 8입 192G",
+      "raw_record_ids": [
+        "ingestion:20:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:12": "14746a4d49903e393f4c5493ca71276be3b5276951646c3a22be30fe6e94e87b"
+      },
+      "number": 1,
+      "leaf": "food.bakery.bread.hotteok",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "42db638089e0eedd151042db7ad052b3288404bd1a4add2e52e77a1b05ac7bbc"
+}

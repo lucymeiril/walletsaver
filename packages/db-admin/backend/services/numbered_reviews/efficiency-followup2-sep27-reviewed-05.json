@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "과자ㆍ쿠키ㆍ파이",
+        "쿠키ㆍ비스킷"
+      ],
+      "source_title": "오늘좋은 치즈샌드 (90G)",
+      "raw_record_ids": [
+        "ingestion:31:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:93": "06b3ad73dcbe8d0b0443e17acba989e8d892910bf373a9016cb886775d2a1715"
+      },
+      "number": 1,
+      "leaf": "food.snacks.baked.sandwich",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.snacks.baked.biscuits",
+        "reason": "샌드형 상품 제목이 비스킷 경로 후보와 충돌하며 기존 상품형태 거부 규칙이 확인됨",
+        "previous_hold": "evidence: 샌드형 과자와 비스킷 경로 충돌; 경로 거부 검토 대기"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "과자ㆍ쿠키ㆍ파이",
+        "쿠키ㆍ비스킷"
+      ],
+      "source_title": "오늘좋은 초코샌드 (90G)",
+      "raw_record_ids": [
+        "ingestion:33:28"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:28": "30670953d83e8f838935fa113085fbe153bf3272c2fb9f8b9f1a517b4ea89bd0"
+      },
+      "number": 2,
+      "leaf": "food.snacks.baked.sandwich",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.snacks.baked.biscuits",
+        "reason": "샌드형 상품 제목이 비스킷 경로 후보와 충돌하며 기존 상품형태 거부 규칙이 확인됨",
+        "previous_hold": "evidence: 샌드형 과자와 비스킷 경로 충돌; 경로 거부 검토 대기"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "5a4cb1457bd2ab377d610e9d381ed51ecd24d0c9fa0581b15373332b63f7746f",
+  "revision": {
+    "previous_sha256": "e43792cc3219c6499ee19c92fc087e35f671f9e0c13ccf7fae55e5901b677699",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+    "reason": "샌드형 상품 제목이 비스킷 경로 후보와 충돌하며 기존 상품형태 거부 규칙이 확인됨"
+  }
+}

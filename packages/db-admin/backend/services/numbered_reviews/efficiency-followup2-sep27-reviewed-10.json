@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_title": "크라시에 시즈쿠 유자 샤베트 (140ML)",
+      "raw_record_ids": [
+        "ingestion:33:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:29": "cf7e5dbbff307646c9e3472458e75931381bb15c89a3e3035c15782a2c0bddae"
+      },
+      "number": 1,
+      "leaf": "food.frozen.dessert.cup_sherbet",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_title": "크라시에 시즈쿠 백포도 샤베트 (140ML)",
+      "raw_record_ids": [
+        "ingestion:33:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:98": "75478bd732528423547dcc1d2ac12e631d45be79c1809f79fd63f0ba423bb4d7"
+      },
+      "number": 2,
+      "leaf": "food.frozen.dessert.cup_sherbet",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "442f1c6dc2facbe1d4dcedfdcbb824e93cefdc43edda97160da5bd157b87ba0b"
+}

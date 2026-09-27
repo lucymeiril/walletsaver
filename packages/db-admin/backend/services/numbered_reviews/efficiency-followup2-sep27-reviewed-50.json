@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "번데기/장조림/반찬",
+        "번데기"
+      ],
+      "source_title": "유동 번데기 130G",
+      "raw_record_ids": [
+        "ingestion:21:18",
+        "ingestion:70:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:18": "9884dbe39a9a95261ef70e4b6f96030da58fb3cb6ba5136320edb677b1e1b916",
+        "ingestion:70:59": "6d69568ee2505fdbbc8fe596698eac4a6704776a820338d62aa2b8e057a1e9ed"
+      },
+      "number": 1,
+      "leaf": "food.preserved.canned.silkworm_pupae",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "833d44812413c7d226bebd530e3a2ed1a1c6111e7cbdcceedf2b8d4d37c4331a"
+}

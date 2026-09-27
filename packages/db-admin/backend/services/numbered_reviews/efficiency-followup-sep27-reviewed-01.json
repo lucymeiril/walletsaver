@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "요리하다 차돌짬뽕밥 (210G)",
+      "raw_record_ids": [
+        "ingestion:30:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:70": "34889583bc6d6fd932923dd2cbc25c8f7779735805c28e2016c9d989927bdff5"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 조리밥 형태는 보이나 국밥/컵밥 구분 불명"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "CJ 비비고 소고기양지 육수 (500G)",
+      "raw_record_ids": [
+        "ingestion:31:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:71": "b5b10ff2f610108c1b7cbe88476ce5a5a0d6e58432def978928898353a3083da"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: 육수 형태는 확인되나 국탕 소스 경로와 충돌하여 안전한 경로 거부 적용 범위 불명"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "요리하다 차돌된장밥 (210G)",
+      "raw_record_ids": [
+        "ingestion:34:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:25": "cbf9aba1ad4fc28adfed853fec280acc50074a0a7ece3243492927526c2db0df"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: 조리밥 형태는 보이나 국밥/컵밥 구분 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ee8cf8a1eade4b1349cbec231355c86f69cd7c1447dc696ea186ee332556398e"
+}

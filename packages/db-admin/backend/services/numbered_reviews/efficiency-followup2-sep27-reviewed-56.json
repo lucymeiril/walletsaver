@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "야채주스 (토마토 외)",
+        "천연야채음료"
+      ],
+      "source_title": "롯데 델몬트 알로에 로우슈거 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:87",
+        "ingestion:66:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:87": "b9637c74a1a7cd2c2087ff3d829226e32c8abce38556bb4a6d805535e9a5e998",
+        "ingestion:66:26": "ae77d1502bb3243554b20f0fa4479b59c6cac1aea74313f8656e86409bb790f2"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.aloe",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "bfa1db94250006a26df415955148d1e4d426a1ca24f34144621b924a95583549"
+}

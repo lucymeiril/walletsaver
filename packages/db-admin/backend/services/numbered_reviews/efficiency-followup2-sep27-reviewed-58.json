@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "포도/사과/매실/기타",
+        "포도/사과/매실"
+      ],
+      "source_title": "simplus NFC 착즙 사과주스 1L",
+      "raw_record_ids": [
+        "ingestion:16:90",
+        "ingestion:66:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:90": "5c0d4d5cdcb9a5b396f2114815b70a050df7b186723e41baa3105edb39292345",
+        "ingestion:66:16": "67dd838fd44465104100ce3472689ea9bc6db14501dd63872fe3cabf113d6926"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.fruit",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "66d56f88c89e5f49f98dea02c01422ce7eca95ec04f20265a9d7378753a55ec2"
+}

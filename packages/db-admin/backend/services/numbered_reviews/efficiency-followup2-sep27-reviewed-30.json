@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "떡갈비/동그랑땡&완자/함박스테이크",
+        "떡갈비"
+      ],
+      "source_title": "동원 양반 통살고기 완자 425G*2",
+      "raw_record_ids": [
+        "ingestion:60:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:60:3": "3246792fb18c5a529e9245aa7e68b5b9867f22b2d8220a7e358955d5ca7d1b4b"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 미트볼과 떡갈비 경로 충돌; 떡갈비 후보는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1255c81dd23e7c3a74662377a44514b5ec7d1de7ada3e7d878ae5580c1216fef"
+}

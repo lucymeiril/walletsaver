@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "source_title": "오늘좋은 국물떡볶이소스 (150G)",
+      "raw_record_ids": [
+        "ingestion:32:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:42": "8d62a7943a5220b026de2cd3c371cea67c5e40ab73f72fbad8a304d53e65acc9"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.tteokbokki",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "양념ㆍ장류",
+        "기타양념"
+      ],
+      "source_title": "오늘좋은 오징어볶음양념 (140G)",
+      "raw_record_ids": [
+        "ingestion:33:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:50": "2d3b96e4ef18d4e9e6b46690c26838c987545259743a6824fc9fc1214fdf4911"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.seafood_stir_fry",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "02812aaa03514f5bec7ca5fa73b7218d3ec52bb0d4c40e8c92f4012f0bcdd710"
+}

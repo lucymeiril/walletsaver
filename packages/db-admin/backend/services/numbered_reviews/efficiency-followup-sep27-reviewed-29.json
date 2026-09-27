@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "보리차/둥글레차",
+        "기타차(둥글레외 기타차)"
+      ],
+      "source_title": "동구바이오제약 100%유기농 컬리케일 15포",
+      "raw_record_ids": [
+        "ingestion:16:27",
+        "ingestion:65:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:27": "e826e5531992ce356e6b6ec242e49b6d2c583a02f27410972e444738665b5085",
+        "ingestion:65:65": "5fa872bbff630fceee4979bd5e2d05ce0e00331621d8aa41c4ee07ae941c7e53"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: kale product form"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "보리차/둥글레차",
+        "기타차(둥글레외 기타차)"
+      ],
+      "source_title": "유기농 감로우엉차 10T(10G)",
+      "raw_record_ids": [
+        "ingestion:16:52",
+        "ingestion:65:92"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:52": "817a32b037479d83fa79c99dcecca5705a333f715a28ed3446d04ffbad3bc061",
+        "ingestion:65:92": "105c2fd62582888519a2407ccd3bd69164219955a2b0303af2547fdb449f2dcc"
+      },
+      "number": 2,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c93aafa1a8de98dd0f9412556be3c9e06f72d4a2366c3d59c96ec217002cb74a"
+}

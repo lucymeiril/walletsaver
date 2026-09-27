@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "국거리채소"
+      ],
+      "source_title": "아욱(봉)",
+      "raw_record_ids": [
+        "ingestion:52:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:37": "f3365452f2f09af9b604f6eda5a1b36f6d0afa3b18f9a0095301fac7b0ca3c8a"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.aukh",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "국거리채소"
+      ],
+      "source_title": "근대(봉)",
+      "raw_record_ids": [
+        "ingestion:52:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:84": "796a49e62cce443e40746438b95521f5ca6e8615d26353f42df56539b45112c9"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.chard",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a2b06dad4ae06bb6af3647a8efc7c71133c17be738b84bb67f6519b8660073d8"
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "햄/소시지",
+        "닭가슴살/훈제오리"
+      ],
+      "source_title": "품애복 1등급 흑마늘 오리바베큐 슬라이스 500G",
+      "raw_record_ids": [
+        "ingestion:12:68",
+        "ingestion:62:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:68": "9c065e72b0df111f14a80d8fcb4c48646f355770e9f015522000187905cbf2ad",
+        "ingestion:62:2": "cc2a9c021166fba6bb08b4c92308de894f05b9bb74917e29eacb5b5a38bec90b"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "058fcdf234be5d0627abe1d49eadbced76e5c4787cf0e721ab9c34ba2e5dda1f"
+}

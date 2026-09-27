@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "피자/핫도그/치킨",
+        "피자/브리또",
+        "피자"
+      ],
+      "source_title": "닥터오트커 리스토란테피아디나 280G(140G*2)",
+      "raw_record_ids": [
+        "ingestion:10:46",
+        "ingestion:60:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:46": "f18e8bc3e2053a32295cb685a72067d0e9a6b5cff4c6f2197e0f50ecfa54dd17",
+        "ingestion:60:29": "569af25b67fbb01a0795203141903a3391dca8d30247ef1e1b7b11eba8244153"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 피아디나 일반형/속채움 구분 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "e52b898b01c4bf2838f1faf5ca780edd3aa89f417f27cb4f0bfb27583456524b"
+}

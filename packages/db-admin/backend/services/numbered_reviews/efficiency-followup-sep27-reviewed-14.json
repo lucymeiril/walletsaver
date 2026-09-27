@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "수입육",
+        "국거리/불고기/다짐/샤브샤브",
+        "호주산냉장/냉동정육류"
+      ],
+      "source_title": "호주청정우 앞다리 불고기&샤브샤브 600G(팩)",
+      "raw_record_ids": [
+        "ingestion:5:50",
+        "ingestion:54:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:50": "9a963aa6cb3c4203587f08f5e5ad9f524e985a84f2326c9e837eec11ffb8f801",
+        "ingestion:54:88": "25edda39c572b4238d2f2ce45e73a1c3eefe1088824fbb3b91da81f8f2781fc8"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.beef",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "수입육",
+        "국거리/불고기/다짐/샤브샤브",
+        "호주산냉장/냉동정육류"
+      ],
+      "source_title": "[호주청정우]홍두깨 100G/소고기",
+      "raw_record_ids": [
+        "ingestion:5:73",
+        "ingestion:55:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:73": "90ad5156f91e10abda488b715edc743e8e1fce6612d0d26c22b24a46d702617f",
+        "ingestion:55:2": "bf9fe4b5e3b6f179ea561b55bd29230d5ac7d9f7bdab7ae0b4be1d0f46fca0f1"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.beef",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f9dd7ec7b1ff5eb4fe336d236708be757b212e92f557b003e1fa76c9bb940354"
+}

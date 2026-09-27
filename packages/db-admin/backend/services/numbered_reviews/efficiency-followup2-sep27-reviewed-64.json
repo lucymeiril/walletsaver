@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "갈치/삼치/고등어",
+        "삼치"
+      ],
+      "source_title": "생물 대삼치 1/4 마리(왕특대)",
+      "raw_record_ids": [
+        "ingestion:3:94",
+        "ingestion:53:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:94": "2314ab48b9859677dbd534e2abb4941e3176d29725db3320794f119cf235ef40",
+        "ingestion:53:15": "1bed2ced67d4a2084a94046fc7d942e66867ab13fddac9c93c638c7ea4f44af6"
+      },
+      "number": 1,
+      "leaf": "food.seafood.fish.spanish_mackerel",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4b5d1a96b78b5fde9b4a7f2341bfda26af33a785886123ebac45367778b3e7d9"
+}

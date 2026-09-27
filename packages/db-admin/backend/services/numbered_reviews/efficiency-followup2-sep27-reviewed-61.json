@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "탄산/이온/비타민음료",
+        "숙취음료(컨디션)",
+        "숙취제거음료"
+      ],
+      "source_title": "삼양사 큐원 상쾌환 100ML*2",
+      "raw_record_ids": [
+        "ingestion:17:10",
+        "ingestion:66:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:17:10": "3194d7b7cef7e58d4d1bce73aed6c7d8854b36cd43efe6947f645ec2a9a6f134",
+        "ingestion:66:46": "89b3162187c4d473fc22d07a38ff5db4a0b981c3f47c292fc28ee003890f5551"
+      },
+      "number": 1,
+      "leaf": "food.drinks.functional.hangover_marketed",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b534ab3ef11941f9dc98443dce16bf26d998c8fa4cad7f24b400a15ecc5cd5e3"
+}

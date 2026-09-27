@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "간편/냉동수산물",
+        "냉동간편수산물",
+        "냉동새우"
+      ],
+      "source_title": "간편 씨푸드믹스 600G(팩)",
+      "raw_record_ids": [
+        "ingestion:4:71",
+        "ingestion:53:57"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:71": "014e2b876f34ad68d114ce861bf27841a59b91e00fb3ed6661a19338dd23f27d",
+        "ingestion:53:57": "496c490aa753ccd875d562a7c58239e9ef575f0da9ccad02b2300ae1c0dc5391"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 냉동해물모둠과 새우 후보 충돌; 새우 후보는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 743
+    }
+  ],
+  "packet_sha256": "c867578ae9d7feee2dd54f1be38980b07002aefb59393c276320611a608d7656"
+}

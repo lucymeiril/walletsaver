@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 초밥의달인 롤 유부초밥 고소한 맛 (254G)",
+      "raw_record_ids": [
+        "ingestion:29:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:21": "1a110c48f2f2245dae9712b2a19c2dde322085ebf4c523fda31bb6c5254c5699"
+      },
+      "number": 1,
+      "leaf": "food.preserved.ingredients.inari",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 초밥의달인 큰 사각 유부초밥 (189G)",
+      "raw_record_ids": [
+        "ingestion:29:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:75": "a0a75192045cc4def6758286fb2596f6c96c6224a8edb21800f3fa8db5528a39"
+      },
+      "number": 2,
+      "leaf": "food.preserved.ingredients.inari",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 저당 롤유부초밥 (고소) (254G)",
+      "raw_record_ids": [
+        "ingestion:32:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:13": "da04dd30ba24a249f9ae503dba6d61af939d290f4613b8a4cbf342383cf60c11"
+      },
+      "number": 3,
+      "leaf": "food.preserved.ingredients.inari",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ef3a0981c8278dca7d16795d3731c463f087608a7bbb4e7510c2c6ac26a57e35"
+}

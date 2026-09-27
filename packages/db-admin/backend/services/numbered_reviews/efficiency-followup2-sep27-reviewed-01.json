@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "냉동밥ㆍ즉석죽ㆍ즉석스프",
+        "볶음밥"
+      ],
+      "source_title": "요리하다 중화식 잡채밥 (250G)",
+      "raw_record_ids": [
+        "ingestion:30:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:45": "7fc54011fed15a1c9b75d36336eeea67cb5fefdda097161e73a2bc4ee721f86c"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 조리밥 종류 불명"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "냉동밥ㆍ즉석죽ㆍ즉석스프",
+        "볶음밥"
+      ],
+      "source_title": "CJ 햇반 불고기비빔밥 (410G)",
+      "raw_record_ids": [
+        "ingestion:33:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:34": "27600d9d8793bb940347e2d623fdf3979e257ec8ca5d948c5fd1eae38f93493c"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: 조리밥 종류 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1ba5047bf99b83993f05870a80987179fdcc0f6b7da67ecfc9643437f56efaaa"
+}

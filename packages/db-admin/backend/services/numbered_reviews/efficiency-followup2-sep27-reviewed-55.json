@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "베이커리/잼",
+        "잼/스프레드",
+        "스프레드"
+      ],
+      "source_title": "오뚜기 옥수수 마아가린 200G",
+      "raw_record_ids": [
+        "ingestion:20:19",
+        "ingestion:69:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:19": "9424edd16f292f48a0b102b64088d97b8a186d1eb79c84d41a07c1c59562bc49",
+        "ingestion:69:53": "585c6227334fe3e072790c5b3820cc3fbe51f1a190ee760343f1f584d3407f35"
+      },
+      "number": 1,
+      "leaf": "food.bakery.spreads.margarine",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "96470cf78ecb29da1d6f3e187b7ec1ea62e2246d3f770255c60c2be2f07d6c00"
+}

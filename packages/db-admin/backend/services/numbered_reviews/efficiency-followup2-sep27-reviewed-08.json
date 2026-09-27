@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
+      "raw_record_ids": [
+        "ingestion:32:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:46": "d84a2816256649cd6b0ced02de3d0b472a7927ba54749dedd26d81ec00341ece"
+      },
+      "number": 1,
+      "leaf": "food.seafood.fish.mackerel",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "간편ㆍ모듬수산물",
+        "간편수산물"
+      ],
+      "source_title": "노르웨이 고등어 필렛 (700G)",
+      "raw_record_ids": [
+        "ingestion:34:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:8": "669c3377faea5415aa55e323fc059e96afb942a15c9e19923d1d9b13b65f2abb"
+      },
+      "number": 2,
+      "leaf": "food.seafood.fish.mackerel",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "6a1a348f1125cea0d5d8e03d3de13964ed792f983a20784c3114ba7be3a58132"
+}

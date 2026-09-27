@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "만두",
+        "교자만두/군만두",
+        "군만두"
+      ],
+      "source_title": "씨제이 비비고 군만두 450G*2",
+      "raw_record_ids": [
+        "ingestion:11:78",
+        "ingestion:61:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:78": "2fa1b16c9d38c8931a2b0b3d82acf8f0e114041a0e7d9c7e0d71871d9ef843ae",
+        "ingestion:61:19": "ae4b18b579c1a8f660254ef0d71a2ebe4a94bffff58c6c8e4088a5fa56d1fc89"
+      },
+      "number": 1,
+      "leaf": "food.meals.dumplings.assorted",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "5971cd5d4f3be9122c9ff18a528d458c88ae8d7b33bf30ae6ac5ce7faf6ca030"
+}

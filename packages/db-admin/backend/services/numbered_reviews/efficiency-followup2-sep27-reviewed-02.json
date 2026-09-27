@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "요리ㆍ안주",
+        "안주요리"
+      ],
+      "source_title": "CJ 제일제당 고메 함박 스테이크 (152G)",
+      "raw_record_ids": [
+        "ingestion:28:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:17": "1312a6d5b336a768fb88424ea7ac255d0428a0db14ba3423fcad64310fcb9140"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "요리ㆍ안주",
+        "안주요리"
+      ],
+      "source_title": "풀무원 철판 도톰녹두전 (300G)",
+      "raw_record_ids": [
+        "ingestion:34:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:19": "c52f2b4c9860c35b39f65aa3ce6511c723943df4596b76b86a8b21a42f0baf22"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.pancake",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3b1c9eaadafc6934e5cf2ab333428bd78ae67a9650b9afabb11b84880dce0a89"
+}

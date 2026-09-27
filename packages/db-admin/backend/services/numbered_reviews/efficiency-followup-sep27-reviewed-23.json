@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "새싹채소"
+      ],
+      "source_title": "스위트바질 50G(팩)",
+      "raw_record_ids": [
+        "ingestion:3:58",
+        "ingestion:52:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:58": "267a0ffc1ddf00651b2e74cf1636331a3d7ebc3c97ab36eab2ca5883ce3809d7",
+        "ingestion:52:82": "c05775a5576d13b8a3ab373523901134fb0541bad3ba51ffd3d7778084d01095"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.herbs",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "새싹채소"
+      ],
+      "source_title": "고수 100G(팩)",
+      "raw_record_ids": [
+        "ingestion:52:81"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:81": "1eb49a373d04dd5e475c52f35b8772828190c601b3a1a3d5f587852686c89ea7"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.herbs",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d49c36c00d4223d22dfe77b01bcbbf4ef69fd4127f1bae0a68c0a88dda6ea552"
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "브랜드돈육목심"
+      ],
+      "source_title": "백두대간 한돈 얇은목심 구이용 400G",
+      "raw_record_ids": [
+        "ingestion:6:31",
+        "ingestion:55:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:31": "58c3038a9e132eb53496fd7498c0a992da992184462847d1d61fc1e6e7dd7c4d",
+        "ingestion:55:18": "1438d5cbcc55049553d86e5512ea9c879f96841660177857890bc44cd05a1e3b"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "삼겹살/목살/구이/수육",
+        "브랜드돈육목심"
+      ],
+      "source_title": "백두대간 한돈 목심 구이용 400G",
+      "raw_record_ids": [
+        "ingestion:55:69"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:69": "99b0804c120cbc4f9c8be9c59707ea246ad8233e14d690288bfabed4f0e8e217"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "b0ceefece88ac463a3ff9557500e868aa02d8c7a1f4dc914f0d8b4b791577636"
+}

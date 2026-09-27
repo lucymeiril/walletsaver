@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "양파/마늘/파/생강",
+        "대파"
+      ],
+      "source_title": "평창 고랭지 대파(봉)",
+      "raw_record_ids": [
+        "ingestion:2:85",
+        "ingestion:51:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:85": "00116600aa0657508859ff1ebf0a3aa3f24bde91d3091be27df3135335d44acd",
+        "ingestion:51:82": "d49b75db019d228c74d4440f0bb2ff9ae9ba961ca0d63a5aafb0c8f5eda4a1fe"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.scallion",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "양파/마늘/파/생강",
+        "대파"
+      ],
+      "source_title": "깐 대파(봉)",
+      "raw_record_ids": [
+        "ingestion:2:98",
+        "ingestion:52:29"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:98": "dccaafb5646805f9ea2502cfa38f8b3869eb6c96c95a5091037a249bdea9ddcd",
+        "ingestion:52:29": "2a53379443a8d9d66f9d199fe98bb3153c609c328d7f9c2236289a2e6f55014c"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.scallion",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "51611f98ad6f32716fdf6d9900f23781ff2009d6da26e37378be3ca848a6bae9"
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "물엿ㆍ식초ㆍ맛술ㆍ액젓",
+        "올리고당ㆍ알룰로스"
+      ],
+      "source_title": "큐원 알룰로스 프리바이오틱스 (540G)",
+      "raw_record_ids": [
+        "ingestion:31:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:5": "1784ccb8167c730da5e1f3739bbbd484677be8524d06aef695751f5af82b0c50"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: allulose physical form"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "물엿ㆍ식초ㆍ맛술ㆍ액젓",
+        "올리고당ㆍ알룰로스"
+      ],
+      "source_title": "큐원 알룰로스 난소화성말토덱스트린 (540G)",
+      "raw_record_ids": [
+        "ingestion:34:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:22": "4238f1148602a4a10d08f9b5ba03a39149cb81fcac6eace2d23d22c2b6c2fd98"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: allulose physical form"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d4e7b94fcf7f256c81b2adba47df427d4fda528a27b0f55af499354a06e409e8"
+}

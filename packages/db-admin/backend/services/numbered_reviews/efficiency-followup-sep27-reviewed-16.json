@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념소고기"
+      ],
+      "source_title": "양파담은 호주청정우 양념 소불고기 800G",
+      "raw_record_ids": [
+        "ingestion:5:46",
+        "ingestion:54:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:46": "8599490d712b2bc9ac4d2606788631022bdcdbd3acf0ea6bff23ba7ad2637b3f",
+        "ingestion:54:75": "2f0bb047609cb02b9a1673aec248335c40ebe055638291ecd6cd9d49a773a485"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념소고기"
+      ],
+      "source_title": "야끼니꾸식 우삼겹 양념구이 500G",
+      "raw_record_ids": [
+        "ingestion:54:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:54:87": "bdadd80e791cfeba0f922d233219e53f749e3d805a1141a026a841f97af37a0f"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f2a5584aed683be905b64ef349cdfa64785ffe3e3d913d0f8a9c483c317a34f1"
+}

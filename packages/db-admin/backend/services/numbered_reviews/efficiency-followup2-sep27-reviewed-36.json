@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "전/볶음/국탕",
+        "안주/전류/떡",
+        "안주/전류"
+      ],
+      "source_title": "오리지널 바비큐 폭립 500G",
+      "raw_record_ids": [
+        "ingestion:9:98",
+        "ingestion:60:45"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:98": "3fd7b4c7d3da0a63026f0e8d0d3dc93287371e531380cf9a2b8abafd102a32a5",
+        "ingestion:60:45": "70af966ff35993ecfd613095950087319ddfb6cc986471e8d31e8dff0fd890d8"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "7a1d866ace1445c6d01dc9755954bcf4e8a1205e308a03be6d05f3e37a590873"
+}

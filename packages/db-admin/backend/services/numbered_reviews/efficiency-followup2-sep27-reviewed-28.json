@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "돈까스/떡갈비/너겟",
+        "돈까스/생선까스/탕수육/김말이/기타",
+        "돈까스"
+      ],
+      "source_title": "목우촌 주부9단치킨까스 360G",
+      "raw_record_ids": [
+        "ingestion:10:3",
+        "ingestion:59:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:3": "04062e8c84761002651e46718f256c3dfd3be1bc3ef2183542222e4f53395dd8",
+        "ingestion:59:34": "350389ca2ba46d47ce54fa4f96ffa41e38640e7f0bd5edf3fe5688ba03bfcffb"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 치킨까스와 돈까스 경로 충돌; 돈까스 후보는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1032
+    }
+  ],
+  "packet_sha256": "c402d73c5bce7c46b485d09601b9681c3dd6763e1b6da0846a3f088bbab5da47"
+}

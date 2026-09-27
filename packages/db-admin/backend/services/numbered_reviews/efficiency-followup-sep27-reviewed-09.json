@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "갈비/찜/장조림",
+        "돈육갈비"
+      ],
+      "source_title": "한돈 일품포크 갈비 100G/돼지고기",
+      "raw_record_ids": [
+        "ingestion:5:57",
+        "ingestion:54:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:57": "7ef4c9a2dd120e2ab40159f55ea9f176225ff4792f8694c925635a7337af0658",
+        "ingestion:54:91": "1b1acc9b50b19572df9716d12faf192b5a93ea3cd05ef9736e8f88b1070c87a4"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "갈비/찜/장조림",
+        "돈육갈비"
+      ],
+      "source_title": "한돈 일품포크 등갈비 100G/돼지고기",
+      "raw_record_ids": [
+        "ingestion:5:72",
+        "ingestion:54:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:72": "6c4997334e5f008598dd41749cb6b52cb9d4046579bf4a05141955ad1d40bb81",
+        "ingestion:54:98": "ee6d9343fb619c2e815426e2ce25b3da4694bfabfe1bda844620cc24e777d1e5"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "e04ad75d4319018a27830262e72c8c3396c78e17db50a6e91429344f8b49744e"
+}

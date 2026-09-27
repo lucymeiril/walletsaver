@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "델리/치킨/초밥",
+        "치킨/튀김/구이",
+        "후라이드/양념/로스트",
+        "로스트"
+      ],
+      "source_title": "홈플델리 로스트 치킨",
+      "raw_record_ids": [
+        "ingestion:6:57",
+        "ingestion:56:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:57": "a29ebe6deaaa8d8d0361279bb789a3ac008b33c556068af90c42845a4d133d99",
+        "ingestion:56:1": "777cc39352f32da4c0b00941b4248a0369d357155b3709a4de224750d40516c5"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.chicken",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "63e64bc6f40004e902a1ae77a882de47b27b4b2afa7df2507054bf88d6907de9"
+}

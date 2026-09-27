@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "식용유/참기름",
+        "포도씨/카놀라유/식용유/기타유",
+        "포도씨/카놀라유/기타"
+      ],
+      "source_title": "CJ 2배 바삭 튀김유 900ML",
+      "raw_record_ids": [
+        "ingestion:25:10",
+        "ingestion:74:63"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:10": "b60775a740f256dbd300af1bb18b3e70e932d57c56c2633eed2cf736f662cf0e",
+        "ingestion:74:63": "15fb5b418c56e27fd0bba93edacb0de1318c3ea45093ad11269fb6eaed53f2d1"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.oils.cooking",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "식용유/참기름",
+        "포도씨/카놀라유/식용유/기타유",
+        "포도씨/카놀라유/기타"
+      ],
+      "source_title": "만토바 230도 오일스프레이 200ML",
+      "raw_record_ids": [
+        "ingestion:25:50",
+        "ingestion:74:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:50": "852f2ecf4dfb5019c1600cec909955336bf46668753e06052854df5ee6cbb396",
+        "ingestion:74:55": "031300cb206d988ff4d40774385399f0da1a27685abc4231876818f625b288df"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.oils.cooking",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_homeplus_pantry.py",
+      "line": 28
+    }
+  ],
+  "packet_sha256": "9b88ef59864ed73d9a267059ad47797736da3086a12885454a5b94f908aa8995"
+}

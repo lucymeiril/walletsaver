@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "국화/아카시아차/꽃차",
+        "화차(꽃차)"
+      ],
+      "source_title": "몬타냐 꿀히비스커스차 20T(30G)",
+      "raw_record_ids": [
+        "ingestion:16:5",
+        "ingestion:65:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:5": "5091e5921d067e79c6a9ad558d5068bb5a2f619e186f5a44f9a9952b73709f05",
+        "ingestion:65:48": "52d57e31b7c078509070705f8bddeb56791261e05bf77c528767e24ea84674fb"
+      },
+      "number": 1,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "녹차/보리차/기타차",
+        "국화/아카시아차/꽃차",
+        "화차(꽃차)"
+      ],
+      "source_title": "녹차원 국화차 20T (16G)",
+      "raw_record_ids": [
+        "ingestion:16:14",
+        "ingestion:65:37"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:14": "43fe50ba55894d9c9612217ee2b52cce935b660b95c12e428c9ea6eb3ddfd17f",
+        "ingestion:65:37": "5e6150961dd9c74b1889fb695974b27a0d793769998a6c1ac38ac5f65f2b44ef"
+      },
+      "number": 2,
+      "leaf": "food.drinks.tea.herbal",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "65f80440930e398a2521c575aabbccca84fc7abd76ccd7393ae87f6416cda8b2"
+}

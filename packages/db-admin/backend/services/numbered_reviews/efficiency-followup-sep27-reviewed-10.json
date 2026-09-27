@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "불고기/찌개/다짐육",
+        "브랜드돈육뒷다리"
+      ],
+      "source_title": "백두대간 한돈 찌개용(앞다리+뒷다리) 400G",
+      "raw_record_ids": [
+        "ingestion:6:12",
+        "ingestion:55:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:12": "b72f9fee4bd1ad983a8482e6cb62a9601870f3f67a263239a7b624524112d83e",
+        "ingestion:55:66": "6eb5d1f43312879a417971a638f48c81410089b75a17eabbe11baf9243769648"
+      },
+      "number": 1,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "돼지고기",
+        "불고기/찌개/다짐육",
+        "브랜드돈육뒷다리"
+      ],
+      "source_title": "백두대간 한돈 뒷다리 불고기용 500G",
+      "raw_record_ids": [
+        "ingestion:55:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:67": "d9965061181a49d1c5920f612bf599b073a2cc15bf634c608ff2e9bb22f6f23f"
+      },
+      "number": 2,
+      "leaf": "food.meat.fresh.pork",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "04f81247625f64fa56088f019ff673a3bb37fa2be390057af19e30cd6df18d55"
+}

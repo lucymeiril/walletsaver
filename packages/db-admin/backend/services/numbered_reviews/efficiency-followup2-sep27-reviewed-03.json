@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "source_title": "CJ 주부초밥왕 저당 유부초밥 (280G)",
+      "raw_record_ids": [
+        "ingestion:29:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:70": "5dd028c7b20f75d4292caeba64da0fbf509b44b89c306b4f95c6e1dca24ac5e9"
+      },
+      "number": 1,
+      "leaf": "food.preserved.ingredients.inari",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "source_title": "대림 주부초밥짱 (160G)",
+      "raw_record_ids": [
+        "ingestion:31:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:73": "4e22fb2aeb98b20160a60da44287b4850991a5013c8e36723a7b96a1e02759e8"
+      },
+      "number": 2,
+      "leaf": "food.preserved.ingredients.inari",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2998e91fc6fbd4cd78e3b54486409cd07cb779a6b1e26d49f823d26f04f77c48"
+}

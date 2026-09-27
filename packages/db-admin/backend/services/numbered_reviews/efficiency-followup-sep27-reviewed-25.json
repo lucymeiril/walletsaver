@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "파프리카/브로콜리/피망",
+        "브로콜리"
+      ],
+      "source_title": "브로콜리 2입(국산/봉)",
+      "raw_record_ids": [
+        "ingestion:2:82",
+        "ingestion:52:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:82": "4ee27449dbf2e37b93a208dd42e1fa263b0c4e025d72bc18529f80ec4419041d",
+        "ingestion:52:0": "60b8b29bdc479b7bec57dd400db3b8517a030d66bf90b4f01efbf50d81997a35"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.broccoli",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "파프리카/브로콜리/피망",
+        "브로콜리"
+      ],
+      "source_title": "손질 브로콜리 300G(팩)",
+      "raw_record_ids": [
+        "ingestion:3:37",
+        "ingestion:52:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:37": "70bffc3295764be6ae758b0e08c476f8e7fba5cba2cb05aaa48f154a16637ec2",
+        "ingestion:52:20": "c945e0e3bac725e3c14c883a8e1b3787d232078f8f53aa8b67c231993446b8ac"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.broccoli",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "00cd4c8bfbcbaa63c837851b2611d1c34a85ec878b2a9de8a0a0e89b47d23a1a"
+}

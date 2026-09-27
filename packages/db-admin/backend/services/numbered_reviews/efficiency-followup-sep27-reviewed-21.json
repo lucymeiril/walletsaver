@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "배추/무",
+        "무/열무"
+      ],
+      "source_title": "산지 그대로 무 국산(개)",
+      "raw_record_ids": [
+        "ingestion:2:83",
+        "ingestion:51:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:83": "2c4c2f3751ba1b7021ced9ad261aa0f7e8212106faa69c891239932e881c925b",
+        "ingestion:51:83": "a12aedc4a0b8dc197284c1d6bd5769825f09126279fdb7c62e1e3ab8ee94c206"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.radish",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "배추/무",
+        "무/열무"
+      ],
+      "source_title": "열무(국산/봉)",
+      "raw_record_ids": [
+        "ingestion:3:46",
+        "ingestion:52:65"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:46": "c26bd26b9fd1cb27996d7baf8bb03a2f53d14b17118dc5a34a49ad7d658b7bbe",
+        "ingestion:52:65": "8c73e3d8e67ef036e14baa8f9da25f22e78ced4fa8af34d3d0e24c526289cb27"
+      },
+      "number": 2,
+      "leaf": "food.produce.vegetables.young_radish",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "710f2b0d6490ba1d789804b3a3f41370c1ef0007681605ee40fe6752f0c5201f"
+}

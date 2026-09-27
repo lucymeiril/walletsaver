@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "과자/시리얼",
+        "떡/한과/전통과자",
+        "안주/옛날과자",
+        "유탕과자"
+      ],
+      "source_title": "덴로쿠 오이리 스낵믹스 14봉 294G",
+      "raw_record_ids": [
+        "ingestion:19:76",
+        "ingestion:69:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:19:76": "63f3064a86db4a51a455bc7c8b8f01a792d30e2e30c1cdd84995819265cae60d",
+        "ingestion:69:24": "7764994972f8850f72e2a86ca84834742433f5a74c7e72065ba2ae92f750a2a8"
+      },
+      "number": 1,
+      "leaf": "food.snacks.assortments.savory",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f4416a8a16345f1ceccc5123f674ce8941e0558ef9f5161e59a333b10ced416b"
+}

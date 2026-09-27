@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "생수/음료/주류",
+        "과일/야채음료",
+        "오렌지주스/감귤주스",
+        "감귤주스"
+      ],
+      "source_title": "롯데 델몬트 매실 로우슈거 1.5L",
+      "raw_record_ids": [
+        "ingestion:16:94",
+        "ingestion:66:17"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:94": "da912d898b34ef70ccec334e5e40a9a1b4503e1fe6cc6b7acc6e5e8525d5d0a7",
+        "ingestion:66:17": "3f31fa9ba8ef5594f8b15e6a1c1e78d38580d19c4efe709d9d24c0a4d52e479f"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "12769d4e3701a997041d1bad5022d99bcb5c1b85051c9116c31965256d5e2a2f"
+}

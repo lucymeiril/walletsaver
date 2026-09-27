@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)",
+      "raw_record_ids": [
+        "ingestion:32:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:35": "319eb7c9ea690f9088838dc844847e332f42f42757de68cb44c8d8ff297f7a7a"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: milk or protein drink identity"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_title": "파스퇴르 단백질플러스 곡물맛 (195ML)",
+      "raw_record_ids": [
+        "ingestion:34:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:70": "568f1413f4d907087432e62110c06b6b92df17fd6ba7347f5facf2b20a42c901"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: milk or protein drink identity"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d316d2485281ce5c79a87af6d3195114b12e5fb34e23b9bd910e527dc254f561"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass150",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "참치/스팸/축수산통조림",
+        "참치/꽁치/고등어",
+        "참치"
+      ],
+      "source_title": "동원 포도씨유 참치 150G*2+살코기참치 135G*4",
+      "raw_record_ids": [
+        "ingestion:20:78",
+        "ingestion:71:14"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:78": "89ec640d98b350c61430ad8fe15c3ca44cc3ddbb173bec1ec6b5de0c0d1803b8",
+        "ingestion:71:14": "f28303a20a792c63f2140076b5763ef390031b811fed7158d0d54d4f235bd852"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 참치통조림과 포도씨유 원재료명 후보 충돌"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_product_forms.py",
+      "line": 121
+    }
+  ],
+  "packet_sha256": "1d6e870c7e5d892aef8cd44a8c6fba20d53491262c7f0091996b133b137c9ca3"
+}
