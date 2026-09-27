@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "양파/마늘/파/생강",
+        "쪽파"
+      ],
+      "source_title": "깐쪽파(봉)",
+      "raw_record_ids": [
+        "ingestion:3:22",
+        "ingestion:52:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:22": "e91a7b197bd5209302a534a0c950ba73c5a7e570c3a98ed961798e27217c914f",
+        "ingestion:52:26": "2390874d1dc0d6ba0bb9fb0ee7c46d716dec98aa42b8f0a2c9b75a46e46d14d9"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.small_green_onion",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "91088a4d03d197ddea38470bf8803b061a69cd8cd1771d633250267918a52e91"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "건면ㆍ생면ㆍ면요리",
+        "우동사리ㆍ사리면",
+        "우동사리"
+      ],
+      "source_title": "요리하다X정호영 돈코츠라멘 (2인) (426G)",
+      "raw_record_ids": [
+        "ingestion:33:0"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:0": "85f6284644b5a62ae76a1fa6bc17effa3fda4ce4d5504b49888ba571a532afee"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 일본식라멘과 우동 후보 충돌; 우동 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "67599d7932a8046bc6b766009e792b64e65f08597fa27acbcfcedede6e9882df"
+}

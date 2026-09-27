@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "치킨ㆍ돈까스ㆍ튀김",
+        "닭꼬치"
+      ],
+      "source_title": "요리하다X안유성 타레 야키토리 봉 (300G)",
+      "raw_record_ids": [
+        "ingestion:34:62"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:62": "708536d8629ddddc92d5d66fe7549761a5ad644843a4f75a7b200646cf2c4544"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.chicken_skewer",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c7c34e3a6a205c8da5cc1b3b9393ed2702ca0086e12f394c77775b74bce8339b"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "라면ㆍ통조림ㆍ즉석밥",
+        "라면",
+        "봉지라면",
+        "일반라면"
+      ],
+      "source_title": "오뚜기 동대문식 닭한마리 칼국수 (460G)",
+      "raw_record_ids": [
+        "ingestion:34:51"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:51": "ebd646057f676d331a1237c5c7a242ae790ab8d50ee617691972436b265c6525"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 칼국수와 과거 봉지라면 경계 충돌; 경로 강제 제외 불가"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3af5955fe76cf35641c273abd1471e3f55ebd297dd64ddd202c75ed63b52f678"
+}

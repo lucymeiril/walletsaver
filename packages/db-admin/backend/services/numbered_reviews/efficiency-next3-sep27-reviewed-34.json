@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소금/설탕",
+        "흰설탕"
+      ],
+      "source_title": "simplus 뉴슈가 100G",
+      "raw_record_ids": [
+        "ingestion:23:87",
+        "ingestion:73:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:87": "8913d88d6497907154b05c721fbdf5d63e62aef981e2351e978a1d60a85c06e3",
+        "ingestion:73:48": "a6f7f3e4f04d2e0f08ecbf8dcfa40a3499c1695ed2af3cd62145a62533effdcd"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 뉴슈가 제형 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "6ac7c84f6c2075679925c4bed7e284f5d88b84c285331c7bbfbf3afa44c4a37b"
+}

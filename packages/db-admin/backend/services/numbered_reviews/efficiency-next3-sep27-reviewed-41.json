@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "양배추/양상추/샐러리/기타",
+        "샐러리"
+      ],
+      "source_title": "아삭아삭 셀러리(봉)",
+      "raw_record_ids": [
+        "ingestion:3:29",
+        "ingestion:52:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:29": "d2592040a0cb4df08fb3c1ed33cc605cd1bcc2b8545027186b728a132fc19a55",
+        "ingestion:52:47": "cdcc6f519bab9a3e3b286a6d7c4a22614e6138b6195e791b4f097f5113229c47"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.celery",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3c44eb170580682d4d4285803bdabf075b385ad5ff1f923ee69af1df0015fc55"
+}

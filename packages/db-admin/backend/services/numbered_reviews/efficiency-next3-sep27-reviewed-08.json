@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "치킨ㆍ돈까스ㆍ튀김",
+        "치킨ㆍ너겟ㆍ텐더",
+        "치킨너겟ㆍ치킨텐더"
+      ],
+      "source_title": "사세 치킨 가라아게 (300G)",
+      "raw_record_ids": [
+        "ingestion:29:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:50": "896e66e48dfa26d27c7211db6bf158c8e73a699afcd378652fde8177863e1590"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 닭조리식과 너겟 형태 중첩"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a209c109c601f0907b5229f4e1f7a8b7537d3cfbb7c541a5d6e8a555cf95bc70"
+}

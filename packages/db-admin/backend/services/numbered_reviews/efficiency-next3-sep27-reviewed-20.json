@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "건과일ㆍ과일칩",
+        "과일칩"
+      ],
+      "source_title": "명인부각 오리지널 (180G)",
+      "raw_record_ids": [
+        "ingestion:35:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:31": "5840df29a5c1945875a817ad89e2fb172f01d955356f2eb91ef0fb86809e89b7"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 명인부각 브랜드·오리지널 표기만으로 형태 확인 불가"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d1b17b9833f5df22f4231b449c51b1ac6ad8aa8e8aa9654e6de1753cfc8ad4d7"
+}

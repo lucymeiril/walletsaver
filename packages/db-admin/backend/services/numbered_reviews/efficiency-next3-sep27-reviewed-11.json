@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "떡ㆍ한과ㆍ전통과자",
+        "전통과자"
+      ],
+      "source_title": "오늘좋은 옥수수 똘뱅이 (195G)",
+      "raw_record_ids": [
+        "ingestion:31:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:84": "2416691a44c9a7fbcf8b424ed470755c45584bb7b20ec633027b2ad32b74d5bb"
+      },
+      "number": 1,
+      "leaf": "food.snacks.savory.corn",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d4a807f4dbe43b9023c5c65d0287d4c125c4f1b56d2e22c2285a843d5557011e"
+}

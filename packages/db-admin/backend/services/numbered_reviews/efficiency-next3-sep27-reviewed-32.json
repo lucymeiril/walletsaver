@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "다시다/미원/맛소금",
+        "멸치/해물다시다"
+      ],
+      "source_title": "농심 혼다시 120G",
+      "raw_record_ids": [
+        "ingestion:25:32",
+        "ingestion:74:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:32": "6beb902a549751a45409a5878e6930b81a6a471a32987c3a9b26a3b82739d412",
+        "ingestion:74:67": "6c67f14b148cc7bd191ee8020b1d28f91e56d4eea85029d4481c489031ddd5d8"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.stock.stock_seasoning",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_seasonings.py",
+      "line": 29
+    }
+  ],
+  "packet_sha256": "9bb859006e9b6feb6ccdf4467e1a68600f737e9807f6ce7237d5f92df624b1d5"
+}

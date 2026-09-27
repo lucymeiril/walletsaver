@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "쌀ㆍ백미",
+        "20kg"
+      ],
+      "source_title": "미담쌀(백미) 20KG (20KG)",
+      "raw_record_ids": [
+        "ingestion:31:88"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:88": "9e8b8e67b4f9faa657d45e18081e3ab6fd08abe80b6fa9aa38cd5932486ae27f"
+      },
+      "number": 1,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f24d325af08429b82037659efdbb7841307718fbc5065f4b3f6250d523461270"
+}

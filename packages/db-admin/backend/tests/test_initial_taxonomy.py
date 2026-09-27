@@ -200,6 +200,27 @@ def test_followup2_review_only_forms_do_not_match_broad_or_mixed_listings(leaf_i
         assert classify_record(_raw("emart", "베스트", candidate))["unified_category_id"] != leaf_id
 
 
+@pytest.mark.parametrize("leaf_id,path,title", [
+    ("food.meals.noodles.japanese_ramen_meal", ("식품", "간편식·면", "면요리", "일본식라멘조리식"), "돈코츠라멘 2인"),
+    ("food.snacks.baked.stick", ("식품", "과자·간식", "구운과자", "스틱과자"), "스틱과자 45g"),
+    ("food.seafood.fish.sea_bream", ("식품", "수산물", "생선", "생도미"), "생물도미 1마리"),
+    ("food.seafood.processed.blanched_octopus", ("식품", "수산물", "수산가공품", "데친문어"), "데친문어 100g"),
+    ("food.seasonings.stock.stock_seasoning", ("식품", "양념·소스", "조미료", "육수조미료"), "해물다시다 120g"),
+    ("food.produce.leafy.minari", ("식품", "농산물", "잎채소", "미나리"), "미나리 1봉"),
+    ("food.produce.leafy.radish_sprouts", ("식품", "농산물", "잎채소", "무순"), "무순 1팩"),
+    ("food.produce.vegetables.celery", ("식품", "농산물", "신선채소", "셀러리"), "셀러리 1봉"),
+    ("food.produce.vegetables.ginger", ("식품", "농산물", "신선채소", "생강"), "생강 150g"),
+    ("food.produce.vegetables.small_green_onion", ("식품", "농산물", "신선채소", "쪽파"), "쪽파 1봉"),
+    ("food.produce.vegetables.corn", ("식품", "농산물", "신선채소", "옥수수"), "옥수수 2입"),
+])
+def test_next3_review_only_forms_require_specific_review(leaf_id, path, title):
+    leaf = next(item for item in LEAVES if item.id == leaf_id)
+    assert leaf.path == path
+    assert not (leaf.source_labels or leaf.context_labels or leaf.name_terms)
+    for candidate in (title, f"{title} + 다른 상품 혼합팩"):
+        assert classify_record(_raw("emart", "베스트", candidate))["unified_category_id"] != leaf_id
+
+
 @pytest.mark.parametrize('title,entry', CLEANING_URL_ENTRIES.items())
 def test_additional_costco_cleaning_forms_require_exact_official_url(title, entry):
     leaf, marker = entry
@@ -361,7 +382,14 @@ def test_homeplus_misc_flavored_powder_uses_exact_form(title, leaf):
     assert reviewed_homeplus_flavored_powder_leaf({**evidence, 'source_title': title + ' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title', ['티젠 애플사이다비니거 사과&배 30T(150G)', '가향분말 베스트 모음', '콤부차와 단백질 혼합세트'])
+def test_reviewed_homeplus_vinegar_mix_requires_exact_source_context():
+    row = {'source_name': 'homeplus', 'source_title': '티젠 애플사이다비니거 사과&배 30T(150G)', 'source_category_path': list(HOMEPLUS_FLAVORED_PATH)}
+    assert classify_record(row)['unified_category_id'] == 'food.drinks.mix.vinegar'
+    assert classify_record({**row, 'source_category_path': ['커피/차']})['unified_category_id'] is None
+    assert classify_record({**row, 'source_title': row['source_title'] + ' 혼합세트'})['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title', ['가향분말 베스트 모음', '콤부차와 단백질 혼합세트'])
 def test_homeplus_misc_flavored_powder_keeps_vinegar_opaque_and_mixed_rows_pending(title):
     row = {'source_name': 'homeplus', 'source_title': title, 'source_category_path': list(HOMEPLUS_FLAVORED_PATH)}
     assert classify_record(row)['unified_category_id'] is None

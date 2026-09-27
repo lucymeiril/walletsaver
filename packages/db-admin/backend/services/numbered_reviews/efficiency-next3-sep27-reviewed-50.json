@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "코코아/핫초코",
+        "가향분말류",
+        "기타가향분말류"
+      ],
+      "source_title": "티젠 애플사이다비니거 사과&배 30T(150G)",
+      "raw_record_ids": [
+        "ingestion:16:29",
+        "ingestion:65:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:16:29": "a09457244b0316da96cfaf01d0efdbede3ad4b0c88925bf857b652dc969b3190",
+        "ingestion:65:67": "0e9bd6e6ba81ee63e61676b725c277fe8c8126ab6dbc255eede624a28503eb74"
+      },
+      "number": 1,
+      "leaf": "food.drinks.mix.vinegar",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 364
+    }
+  ],
+  "packet_sha256": "299ecfff551c47b2a429523268e70fdedf17127dc535b73dcb19da52c217a732"
+}

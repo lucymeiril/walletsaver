@@ -150,5 +150,7 @@ def test_lemon_classification_does_not_invent_contents():
     row={'source_name':'homeplus','source_title':'하루하나 유기농 레몬즙 14T',
         'source_category_path':['커피/차','전통차/액상차/꿀','액상차/농축액','농축액']}
     result=classify_record(row)
-    assert result['unified_category_id'] is None
+    assert result['unified_category_id'] == 'food.drinks.bases.lemon'
     assert 'package_quantity' not in result
+    assert classify_record({**row, 'source_category_path':['커피/차']})['unified_category_id'] is None
+    assert classify_record({**row, 'source_title':row['source_title']+' 혼합세트'})['unified_category_id'] is None

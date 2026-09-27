@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "오징어/낙지/주꾸미/문어",
+        "낙지문어"
+      ],
+      "source_title": "데친문어(국내산/절단) 100G",
+      "raw_record_ids": [
+        "ingestion:53:24"
+      ],
+      "source_row_sha256": {
+        "ingestion:53:24": "2b0df8ab5fb338b079d537cc25bee5e2be987425da0e039ac0fc1b358a6b9a9e"
+      },
+      "number": 1,
+      "leaf": "food.seafood.processed.blanched_octopus",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f6d1e7a4d51db378b4a74ed780a452f0a581371201db61683da8839df71f78fe"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "델리ㆍ즉석조리",
+        "샌드위치ㆍ햄버거",
+        "샌드위치"
+      ],
+      "source_title": "탱글탱글 소세지가 쏙! 15핫도그 (팩)",
+      "raw_record_ids": [
+        "ingestion:28:35"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:35": "8f58c8ac2cf45542e0ef758c224a7b4ec48ce7340472b3c37e5e0c6d679a0086"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 핫도그와 샌드위치 후보 충돌; 샌드위치 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1076
+    }
+  ],
+  "packet_sha256": "7f5a089c68cbdeab6023ea26e7ca8fc502a5e1863f8d20f21f5074622d5e1c24"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "요거트/요구르트",
+        "떠먹는 요구르트",
+        "토핑요거트"
+      ],
+      "source_title": "서울우유 비요뜨 쿠키앤크림 131G*2",
+      "raw_record_ids": [
+        "ingestion:7:51",
+        "ingestion:56:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:7:51": "00c580441d01487ee205354ac2614805240359db8973b27219cce3183b395467",
+        "ingestion:56:93": "9501795fcce46fb82445d157f0b7de39fb1d521567c4759d2c05f0450164e695"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 토핑요거트 원재료·부속품 방어 규칙 충돌"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "14370fd0dd83ae8d0a92be136f6842204e67ef62c530df8dc5efcebb6a527216"
+}

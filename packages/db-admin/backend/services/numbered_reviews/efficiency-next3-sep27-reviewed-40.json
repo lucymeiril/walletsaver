@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "양배추/양상추/샐러리/기타",
+        "샐러드채소 기타",
+        "샐러드채소기타(비트,파슬리 등)"
+      ],
+      "source_title": "미니 로메인(봉)",
+      "raw_record_ids": [
+        "ingestion:3:7",
+        "ingestion:52:19"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:7": "cb538ddf2c49c5d9b4fd722e804caf395d7e54d67b0d1499c0aff15dbd6860dd",
+        "ingestion:52:19": "d5cf4294ad98eab3e56db9369e765bcf0e2cf2ecf9031d0fbe59ba56ab2e04ac"
+      },
+      "number": 1,
+      "leaf": "food.produce.vegetables.salad",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ce5dcfbcd32009a88b102a39b5d2bb6252fd674ff8a680fb08a33d31b7c8ecea"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "생선",
+        "기타생선"
+      ],
+      "source_title": "국산 생물도미 (마리)",
+      "raw_record_ids": [
+        "ingestion:35:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:42": "3875532a95ddcc921310112e391e38184cadbc00ba2ead0734c61dfe513cfe7a"
+      },
+      "number": 1,
+      "leaf": "food.seafood.fish.sea_bream",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4858b1c368fc697ebdfce57ca74fd26065006d353d410f600d0acdd11eeec71b"
+}

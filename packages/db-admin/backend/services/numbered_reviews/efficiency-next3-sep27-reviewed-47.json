@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "커피/차",
+        "전통차/액상차/꿀",
+        "꿀",
+        "사양벌꿀류"
+      ],
+      "source_title": "녹차원 사양벌꿀 1KG",
+      "raw_record_ids": [
+        "ingestion:15:90",
+        "ingestion:65:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:90": "56a5a387f163db5b3ff5b44e51e356be1b4e007a401a43c397e2f06e032edea2",
+        "ingestion:65:39": "4f139104d7d9bd421ef7d9eb628ece9fc3e9418cb02228470a9ace9949531498"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.syrups.honey",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "84438a77b793bab9f34dc6d9fe88fa413e29e97a3c25b136d214a8c4c24ba8cb"
+}

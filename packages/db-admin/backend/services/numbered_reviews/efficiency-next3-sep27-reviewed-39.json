@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "샐러드/드레싱/편이채소",
+        "편이채소"
+      ],
+      "source_title": "무순(팩)",
+      "raw_record_ids": [
+        "ingestion:52:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:52:50": "f9e137570ab43034824643dd0b1cb3e902d78f26f618f7095fb1a613014f675f"
+      },
+      "number": 1,
+      "leaf": "food.produce.leafy.radish_sprouts",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "6ceb3fd2680afdba3467e13c2cbdfc1ff60ea6ecd15e6ec405769c3bfb311eef"
+}

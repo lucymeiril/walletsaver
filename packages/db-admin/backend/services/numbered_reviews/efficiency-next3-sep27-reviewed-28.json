@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "쌀/잡곡",
+        "콩/팥/보리/귀리",
+        "콩류"
+      ],
+      "source_title": "국산 서리태 1KG(봉)",
+      "raw_record_ids": [
+        "ingestion:2:69",
+        "ingestion:51:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:2:69": "2ac859e97790704a0ec266f69defecd4901028f82515b6b564559334c2bec3ed",
+        "ingestion:51:74": "56096e2a36395a226936a8ccd13dcad011b7c856f31c5e46a542377bf588f1e4"
+      },
+      "number": 1,
+      "leaf": "food.grains.rice.soybean",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ef7cf1fd9637ea92afa9b23087a9b10c9a0cedb701f3e737ed17243188bdabbd"
+}

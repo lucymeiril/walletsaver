@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "닭/오리고기",
+        "백숙용",
+        "토종닭"
+      ],
+      "source_title": "백숙 재료 담은 토종닭 1,050G(마리)",
+      "raw_record_ids": [
+        "ingestion:55:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:55:12": "701db3d8b8d683d629d0df67a04213d60e7d3261df49598ed6ed25297d74b227"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "mixed-package: 닭과 백숙재료 별도 혼합"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "873633a59ad0702f6bdec7bcb0c3727755c2a8898bccb755bc300569373457e2"
+}

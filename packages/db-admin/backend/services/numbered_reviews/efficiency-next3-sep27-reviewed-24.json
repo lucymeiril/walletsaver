@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "소금ㆍ설탕",
+        "스테비아ㆍ대체감미료"
+      ],
+      "source_title": "백설 스테비아 (400G)",
+      "raw_record_ids": [
+        "ingestion:34:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:79": "f69879162c2b0f8803bc1efb7f7f6c6628b2e8e63158a782191921a44bd924ab"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: stevia sweetener formulation"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "8fa26ed0cca22a4302a23334df823042e5eebef58cff4f0cb0a85038d2beff11"
+}

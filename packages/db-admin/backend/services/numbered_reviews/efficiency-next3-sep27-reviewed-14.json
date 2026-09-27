@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "라면ㆍ통조림ㆍ즉석밥",
+        "라면",
+        "봉지라면",
+        "볶음면ㆍ기타라면"
+      ],
+      "source_title": "오뚜기 옛날 잡채 (75G*4)",
+      "raw_record_ids": [
+        "ingestion:35:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:12": "4a66d3cba2ab63838c73b9d3721ed308422ac8a43a908cbd62fd19341f3b7b40"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 잡채와 과거 봉지라면 경계 충돌; 경로 강제 제외 불가"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "857e97d9ddbbff5905df48b48c770e17a7eeecfbffc4c232ea9f6687258316a5"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "과자ㆍ쿠키ㆍ파이",
+        "스틱과자"
+      ],
+      "source_title": "오리온 통크 초코 (45G)",
+      "raw_record_ids": [
+        "ingestion:28:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:18": "262544213e0ae5ef2a494dbafdd40c11ce88632ad1ddfe5edc5b16c0e3d063bc"
+      },
+      "number": 1,
+      "leaf": "food.snacks.baked.stick",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "004027d3f836ee5acb8451abfa14afcc6df114ae3e0599f461238f7d6d81e6ab"
+}

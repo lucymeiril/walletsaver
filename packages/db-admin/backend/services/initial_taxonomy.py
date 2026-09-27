@@ -237,6 +237,28 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.seafood.tunicates", ("식품", "수산물", "멍게류"), "", (
         ("sea_squirt", "생멍게", ""),
     )),
+    *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "", (
+        ("japanese_ramen_meal", "일본식라멘조리식", ""),
+    )),
+    *_group("food.snacks.baked", ("식품", "과자·간식", "구운과자"), "", (
+        ("stick", "스틱과자", ""),
+    )),
+    *_group("food.seafood.fish", ("식품", "수산물", "생선"), "", (
+        ("sea_bream", "생도미", ""),
+    )),
+    *_group("food.seafood.processed", ("식품", "수산물", "수산가공품"), "", (
+        ("blanched_octopus", "데친문어", ""),
+    )),
+    *_group("food.seasonings.stock", ("식품", "양념·소스", "조미료"), "", (
+        ("stock_seasoning", "육수조미료", ""),
+    )),
+    *_group("food.produce.leafy", ("식품", "농산물", "잎채소"), "", (
+        ("minari", "미나리", ""), ("radish_sprouts", "무순", ""),
+    )),
+    *_group("food.produce.vegetables", ("식품", "농산물", "신선채소"), "", (
+        ("celery", "셀러리", ""), ("ginger", "생강", ""),
+        ("small_green_onion", "쪽파", ""), ("corn", "옥수수", ""),
+    )),
     # Review-only forms: broad merchandising shelves never establish these.
     *_group("stationery.office.organizers", ("문구", "사무용품", "정리용품"), "", (
         ("bookend", "북엔드", ""), ("memo_board", "메모보드", ""),

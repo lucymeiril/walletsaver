@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "요거트ㆍ요구르트",
+        "마시는요구르트"
+      ],
+      "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
+      "raw_record_ids": [
+        "ingestion:32:76"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:76": "8c72e04fcf783d9411cde64cd4fded5039ee695cc3d965170355d7da6edf3842"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 마시는 그릭요거트 축 중첩"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "80a7bb3bddcaa16be54057a1c754c2138b882823b7223a6910918b85f97d1cb5"
+}

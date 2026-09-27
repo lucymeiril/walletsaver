@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "채소",
+        "반찬채소(시금치/생나물)",
+        "미나리"
+      ],
+      "source_title": "청도 미나리 국산(봉)",
+      "raw_record_ids": [
+        "ingestion:3:13",
+        "ingestion:52:33"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:13": "3d0071199bacebcdd023c32762cacf26f30a5fdda625766f5a4d3d4a8fed0d4c",
+        "ingestion:52:33": "3ba3885673f337454dc32e5eb17980d0e6f939ff86abea606ec33c887437aa0c"
+      },
+      "number": 1,
+      "leaf": "food.produce.leafy.minari",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "544ac2810f9ba4978f13be5b216867757171e45734dd07f551136f884c4b91a0"
+}

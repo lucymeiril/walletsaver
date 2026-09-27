@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "기타해산물"
+      ],
+      "source_title": "신선한 생멍게 (150G)",
+      "raw_record_ids": [
+        "ingestion:33:22"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:22": "4556850fcb2291a0ce13137a2a01ca0bbfe3cdcaffa1e3a7994edef68ffcb2c2"
+      },
+      "number": 1,
+      "leaf": "food.seafood.tunicates.sea_squirt",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "8ce5c24643871a258eb46c27d5adeb484a16583df15f170591275ab4cb033000"
+}

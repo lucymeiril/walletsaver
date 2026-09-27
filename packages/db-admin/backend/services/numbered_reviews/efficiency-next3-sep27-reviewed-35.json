@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "식초/물엿/맛술/액젓",
+        "홍초/마시는식초"
+      ],
+      "source_title": "대상 청정원 마시는 홍초 복분자 1.5L",
+      "raw_record_ids": [
+        "ingestion:24:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:46": "d79814f7b9bfca61e0a738da11f2b509b29c33ea031383970c00bbe310dc9c64"
+      },
+      "number": 1,
+      "leaf": "food.drinks.mix.vinegar",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "f2fd5407f1f88abf5620127ed3bc4ab13f724819f462d4ac8b2620d2ad75ac78"
+}

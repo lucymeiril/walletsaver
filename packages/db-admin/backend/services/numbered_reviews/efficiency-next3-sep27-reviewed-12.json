@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "김치ㆍ반찬ㆍ젓갈",
+        "김치",
+        "총각김치ㆍ파김치ㆍ갓김치",
+        "총각김치"
+      ],
+      "source_title": "대상 종가 시원하고 아삭한 석박지 (900G)",
+      "raw_record_ids": [
+        "ingestion:31:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:31:31": "770811d824ab909033615a435b87c074e0b4033bfc547bba9546c80c97dc9518"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 석박지와 무김치 계층 중첩"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "2d32e40e3d58fc0588a5e0d1194542418e8792f4f77a3a980dfce8da4afaa5a7"
+}

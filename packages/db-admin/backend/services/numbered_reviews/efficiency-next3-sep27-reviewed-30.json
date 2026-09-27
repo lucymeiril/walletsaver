@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "고추가루/깨/향신료",
+        "후추/볶음깨",
+        "후추"
+      ],
+      "source_title": "신영 페페로치노홀 20G",
+      "raw_record_ids": [
+        "ingestion:24:63",
+        "ingestion:72:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:63": "0f2dd276dc2a84bcd128397f8bd1f48bc433dbd1cb8880e4586483644e4fb9e8",
+        "ingestion:72:34": "8ce1f136554d79711ac139b1e5f4aa8f8da0d6350008453e8230769012ae9134"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 건고추와 후추 후보 충돌; 후추 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a5b249e35ee2afe6e95d389e8b95460633be5af92361b2e5a9186f7e89cd2b08"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "요리ㆍ안주",
+        "떡갈비ㆍ완자ㆍ전",
+        "떡갈비"
+      ],
+      "source_title": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+      "raw_record_ids": [
+        "ingestion:28:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:56": "d364c22c6ed68d4e9a200774859c85c61f1eef15651a4fec7880e752da991f80"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 함박스테이크와 떡갈비 후보 충돌; 떡갈비 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "78757b61bfd2448222121c3eda0b01c28225d4ca265157e01538b0f278840fe6"
+}

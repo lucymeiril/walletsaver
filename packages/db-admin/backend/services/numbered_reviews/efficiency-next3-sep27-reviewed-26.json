@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "치즈",
+        "스낵치즈"
+      ],
+      "source_title": "빙그레 벨큐브 고메스타일 (125G)",
+      "raw_record_ids": [
+        "ingestion:32:79"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:79": "70584cb0291abcdabd7508ec052931ca61a3589e3e723f2a549a063abd0b2b39"
+      },
+      "number": 1,
+      "leaf": "food.dairy.cheese.portion",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "0acfd5f552f68009dae42c0bbd3967e0aed333fe9d4faacbbab1cddd3e65f424"
+}

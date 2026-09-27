@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "밀키트",
+        "일식ㆍ아시안식",
+        "아시안식"
+      ],
+      "source_title": "샘표 티아시아 게살 푸팟퐁 커리 (170G)",
+      "raw_record_ids": [
+        "ingestion:33:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:52": "ec222dd489da6b5437b5ef584908a6cbdc9208d7780901820cfda1023ab72304"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 카레와 밀키트 후보 충돌; 밀키트 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3cf66e4a0470f154f2dfd0b31ad57c6dd4078832dd8ff1ed02e21f7e846857d7"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "짜장면ㆍ중화면",
+        "중화면"
+      ],
+      "source_title": "면사랑 해물짬뽕 (363G)",
+      "raw_record_ids": [
+        "ingestion:34:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:44": "37f7f59c2ed31328153a80dc0856d16ad0cb729ff63c939cc743e1405e454b2b"
+      },
+      "number": 1,
+      "leaf": "food.meals.noodles.jjamppong",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "4f9e6d3767b5127c42d7ac3a97ab6860bc1a1766d69f48eedd604e85c5281719"
+}

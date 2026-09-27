@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "쌀ㆍ백미",
+        "4kg내외"
+      ],
+      "source_title": "가을 햅쌀(26년 햅쌀) (4KG)",
+      "raw_record_ids": [
+        "ingestion:35:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:35:3": "287f112af8471beb8810c9c10fad6ebb15e1a60d5959bb747ce6dfcd018c16db"
+      },
+      "number": 1,
+      "leaf": "food.grains.rice.white",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "06bba94a998c1d203fe4d8fb9f9eace549d2d85f7233888a3c6c7a1a180bad8d"
+}

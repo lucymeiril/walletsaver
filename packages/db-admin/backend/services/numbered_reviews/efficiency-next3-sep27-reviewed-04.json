@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "밀키트",
+        "일식ㆍ아시안식",
+        "일식"
+      ],
+      "source_title": "면사랑 차슈돈코츠라멘 (285G)",
+      "raw_record_ids": [
+        "ingestion:34:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:83": "115e4f42bd379602e698cdd8b7166635287137b92e49605948bba1b812a10b7d"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 일본식라멘과 밀키트 후보 충돌; 밀키트 경로는 상품형태 거부 조건 아님"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1796416a23606c7b4e2b8b9ea6d58547d25a98440da3000fe96a48a04f12d2fd"
+}

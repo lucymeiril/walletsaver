@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "소금/설탕",
+        "갈색설탕/흑설탕",
+        "갈색설탕"
+      ],
+      "source_title": "CJ 백설 자일로스 갈색설탕 1KG",
+      "raw_record_ids": [
+        "ingestion:24:94",
+        "ingestion:73:75"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:94": "081a3bb0e43f5067faa425a3a5996593cc9c3fdfdd05f3a64ecfbc0fe0e480da",
+        "ingestion:73:75": "dda124f4f58114d3546c3d8863a3951db250f29da22237ecafa7fec742e0237e"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.baking.brown_sugar",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "48e0a129f31c831c8a57d6511966db98c3feec306e4083da3f956ff7cd92079a"
+}

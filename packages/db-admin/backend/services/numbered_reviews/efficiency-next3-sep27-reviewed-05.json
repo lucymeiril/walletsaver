@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass152",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "요리ㆍ안주",
+        "떡갈비ㆍ완자ㆍ전",
+        "냉동전"
+      ],
+      "source_title": "풀무원 철판 바삭감자채전 (300G)",
+      "raw_record_ids": [
+        "ingestion:33:86"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:86": "4059f9f1030df2067c27e8fa4dc52cb266705774e29b3aad47daccf5725118e7"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.pancake",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "a332e5f56f4260e12a27cecf2a10559cd9d629188ce958f75fa16299f17d26f0"
+}
