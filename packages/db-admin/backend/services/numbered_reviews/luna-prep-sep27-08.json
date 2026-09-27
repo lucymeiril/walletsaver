@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "1000ml 나100%",
+      "raw_record_ids": [
+        "ingestion:83:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:83:26": "8134b14a69461f129b686d54a5285f04d1b4beba5d6d9a928a52cee66403b3fb"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: product identity"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "(200ml*3개)",
+      "raw_record_ids": [
+        "ingestion:83:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:83:42": "182ce1017658cdf3f277bf73053c71f0d774c917861325f184d04669b9da8d04"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: product identity"
+    },
+    {
+      "mart": "emart",
+      "source_path_parts": [
+        "우유/유제품"
+      ],
+      "source_title": "인기 치즈/버터 모음전, 최대 ~50% 행사",
+      "raw_record_ids": [
+        "ingestion:83:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:83:53": "e4bf968793573bb793ef5619ae5441ce934adebb1ea37e2b6fe788d2d0e4d809"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "non-product: promotion/event"
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2,
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 219
+    },
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 1414
+    }
+  ],
+  "packet_sha256": "4a2222606faf621cef3069f4a3b8fb98cadb85ad750e1a43e5264f2fae5df383"
+}

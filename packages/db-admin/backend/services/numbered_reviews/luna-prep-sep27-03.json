@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념닭오리"
+      ],
+      "source_title": "생생 춘천식 닭갈비 600G",
+      "raw_record_ids": [
+        "ingestion:5:37",
+        "ingestion:54:70"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:37": "b45153b17cbf3d98f2a8f2db7726c90c67bf4654544c4073cc617661e0efad5b",
+        "ingestion:54:70": "0472d76fcd657b9524603d8ef6d1fd36785586b9cff91b28fb4db01839ffce8b"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념닭오리"
+      ],
+      "source_title": "생생 안동식 순살찜닭 600G",
+      "raw_record_ids": [
+        "ingestion:5:39",
+        "ingestion:54:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:39": "6e54de88c1f71470615a6afc5929161ea562592790f60ac8563c1b7edb1d6ef9",
+        "ingestion:54:73": "c7b9e4600bca3b568583462229062e33ef5902d2fcdee9ccdf3d5bbb68b5a6f2"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.seasoned_meat",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념닭오리"
+      ],
+      "source_title": "하림 동물복지 IFF 한입쏙 닭가슴살 청양고추 500G",
+      "raw_record_ids": [
+        "ingestion:6:5",
+        "ingestion:55:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:5": "d7e026ccac7009c26de9221a3ad1c73d6fe188fdf1b48d031d3dc232ab113ceb",
+        "ingestion:55:21": "81554f10ae5e211a13db3de9b4623a550b3a5ec70a1b043c9e20efcb2c33fc7f"
+      },
+      "number": 3,
+      "leaf": "food.meat.processed.breast",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "정육/계란",
+        "양념육/가공육",
+        "양념닭오리"
+      ],
+      "source_title": "하림 동물복지 IFF 한입쏙 닭가슴살 오리지널 500G",
+      "raw_record_ids": [
+        "ingestion:6:8"
+      ],
+      "source_row_sha256": {
+        "ingestion:6:8": "18d8142c1af554fe33a446517cec381b5fb7830f22f13898cc872e00699f499e"
+      },
+      "number": 4,
+      "leaf": "food.meat.processed.breast",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "5fd8d7dafd28a0d1e83a7f0df2c908d1c85bc95edaeb69ed8f8918dabad7d216"
+}

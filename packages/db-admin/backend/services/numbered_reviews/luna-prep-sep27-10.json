@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "견과",
+        "곡물가공/건강분말",
+        "미숫가루/선식",
+        "미숫가루"
+      ],
+      "source_title": "이천쌀로 만든 국산 고단백 미숫가루 500G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:74",
+        "ingestion:52:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:74": "38957c43d049bf2ad68ff61c145ba09925a564aa6a006d8cb0a6ad8172fbde76",
+        "ingestion:52:99": "f7fdd1d2bb1de30c535695153f817253919c8bf2b34fad4391cde139c3d96a10"
+      },
+      "number": 1,
+      "leaf": "food.drinks.powders.grain",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "견과",
+        "곡물가공/건강분말",
+        "미숫가루/선식",
+        "미숫가루"
+      ],
+      "source_title": "단백질 귀리 쉐이크 800G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:84",
+        "ingestion:53:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:84": "d5009aec5883c44c1ee348ae13d5d65811b9a05ddb336e34e221842ec1e470f4",
+        "ingestion:53:5": "acb9dcb4912c6326c33ea36a822c0be82dc960dfa365490d51c47358617011a7"
+      },
+      "number": 2,
+      "leaf": "food.drinks.powders.grain",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "견과",
+        "곡물가공/건강분말",
+        "미숫가루/선식",
+        "미숫가루"
+      ],
+      "source_title": "단백질 블랙 미숫가루 800G(봉)",
+      "raw_record_ids": [
+        "ingestion:3:87",
+        "ingestion:53:10"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:87": "ae81bfe8271086cfadaeb8fe3240afb4b76fa4be8af0e28833874044b6a3b3d9",
+        "ingestion:53:10": "ce8283b443d3902903d58bde54ecdfc82a2eb89b5ebf415695e0496a071a57d4"
+      },
+      "number": 3,
+      "leaf": "food.drinks.powders.grain",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "d32b73472bf8ae5a9d2ce9cebd6a986eb381b9423570a3e67ce1a72a7179c38f"
+}

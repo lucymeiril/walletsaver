@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "라면/수입면류",
+        "짜장라면/우동라면",
+        "짜장라면"
+      ],
+      "source_title": "농심 올리브 짜파게티 140G*5입",
+      "raw_record_ids": [
+        "ingestion:20:25",
+        "ingestion:69:68"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:25": "d25757441922a1885356e6683c8f3e02ec2614b86ca6e1e934bc0e4cfd3cead7",
+        "ingestion:69:68": "cb6f6aff510ea745e3cff4c2894ebf49630bc00dd9680fcd85e5604fcba2c082"
+      },
+      "number": 1,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "라면/수입면류",
+        "짜장라면/우동라면",
+        "짜장라면"
+      ],
+      "source_title": "오뚜기 짜슐랭 145G*5입",
+      "raw_record_ids": [
+        "ingestion:20:51",
+        "ingestion:70:73"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:51": "f41365d18cdf40dd52b5ad211e0a1638127b12dc8312dc2819ad06fc5a75c5d0",
+        "ingestion:70:73": "9b1359bb944d8d5ed112eb83d1d376d5706b7d368eea91e73789e4672c6daf52"
+      },
+      "number": 2,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "라면/수입면류",
+        "짜장라면/우동라면",
+        "짜장라면"
+      ],
+      "source_title": "농심 사천짜파게티 137g*4입",
+      "raw_record_ids": [
+        "ingestion:21:37",
+        "ingestion:70:91"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:37": "3ac286be52b49d83c765fbf58855ddca87851e729d3bdac81d23531d15b40a08",
+        "ingestion:70:91": "205b026d37d698d76cd049060a868c304eed7c5f82d0cd01b2dca9ae07ce2e60"
+      },
+      "number": 3,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "라면/수입면류",
+        "짜장라면/우동라면",
+        "짜장라면"
+      ],
+      "source_title": "삼양 짜짜로니 140G*5입",
+      "raw_record_ids": [
+        "ingestion:72:13"
+      ],
+      "source_row_sha256": {
+        "ingestion:72:13": "e8d8d8f8e0bcc3c75eb26df3c6ff81b54412a799aafe18e992fe059967ddee7a"
+      },
+      "number": 4,
+      "leaf": "food.meals.noodles.bag_ramen",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "493c7b4ccc0a253461af5b0b1fcefec92aa34b0532d825ab4dd7355d65a047c0"
+}

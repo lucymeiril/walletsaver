@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "콜라겐/다이어트/프로틴",
+        "이외 미용 보조식품"
+      ],
+      "source_title": "리얼닥터 혈당케어 바나바잎 추출물 500MG*60정",
+      "raw_record_ids": [
+        "ingestion:26:64",
+        "ingestion:76:21"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:64": "2075d183830f2a98bb203f0a5e0de43c56f4405eac11642a8ddf79db14960353",
+        "ingestion:76:21": "6341e47e7f027ff1d39d69b04366df4ee819f496d5e9b2bfc771d60476455555"
+      },
+      "number": 1,
+      "leaf": "food.supplements.functional.banaba",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "콜라겐/다이어트/프로틴",
+        "이외 미용 보조식품"
+      ],
+      "source_title": "일동후디스 하이뮨 프로틴밸런스 19G*10입",
+      "raw_record_ids": [
+        "ingestion:26:69",
+        "ingestion:76:27"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:69": "b7f5daf5af9193f6d1db3047578beb73632bbf4c6614e13b14b4f72533c2d33b",
+        "ingestion:76:27": "27a650ed6e00f292c8bc9afb62c2e8c80b3706594eeaecf1f4d21b197bbfc9ca"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: protein supplement form"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "건강식품",
+        "콜라겐/다이어트/프로틴",
+        "이외 미용 보조식품"
+      ],
+      "source_title": "하이뮨 프로틴 밸런스 저당 190ML*16",
+      "raw_record_ids": [
+        "ingestion:26:73",
+        "ingestion:76:31"
+      ],
+      "source_row_sha256": {
+        "ingestion:26:73": "0374047476b0914ec5224fe84c0b617a0d45b40290cd4eab1631dd933c2afe36",
+        "ingestion:76:31": "b8b9ccfc02981829f4753902978941779b2ce761e82b2d2a6a65d649444047d6"
+      },
+      "number": 3,
+      "leaf": "food.supplements.protein.drink",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "44706aeec0e15403aa801f5077fab885cad378f059c874fc49993db6dc213a1b"
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "CJ 고메 토마토 미트볼 (147G)",
+      "raw_record_ids": [
+        "ingestion:29:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:46": "fbcd3673e6aa1acbe1933548d0e1171ffd5789f4943e5e2b14abdeacdbee789d"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.meatballs",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.sausage",
+        "reason": "Explicit meatball or ham product disproves sausage shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "CJ 동그란 스팸 (160G)",
+      "raw_record_ids": [
+        "ingestion:29:71"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:71": "db4d5829364e5fca3b3912fde1fba49d02749aa43fdc60d70df9688fd89b763b"
+      },
+      "number": 2,
+      "leaf": "food.meat.processed.ham",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.sausage",
+        "reason": "Explicit meatball or ham product disproves sausage shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "동원 제주마늘 살코기햄 (300G)",
+      "raw_record_ids": [
+        "ingestion:33:48"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:48": "160aa09c1225da8d649c649e3bde4a6ce3b7f65c399b6c2bc759ed0c19d19b1c"
+      },
+      "number": 3,
+      "leaf": "food.meat.processed.ham",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.sausage",
+        "reason": "Explicit meatball or ham product disproves sausage shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+        "소시지"
+      ],
+      "source_title": "동원 그릴리 델리햄 오리지널 (450G)",
+      "raw_record_ids": [
+        "ingestion:34:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:34:2": "b24e88c1483f73c3315e89baa4f3d960cd14ff70d8871fd4ecacd2f787b1e9c6"
+      },
+      "number": 4,
+      "leaf": "food.meat.processed.ham",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.sausage",
+        "reason": "Explicit meatball or ham product disproves sausage shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "fa2edbc3583755178e9285d60dd09b0d7f2016536ea2b6fcefadaa4c11a63a33",
+  "revision": {
+    "previous_sha256": "4e4ba58f88d74491a38a971c4a652138619ef7ae5688c5c453d0b16a1326652b",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+    "reason": "Explicit meatball or ham product disproves sausage shelf; existing form veto applies"
+  }
+}

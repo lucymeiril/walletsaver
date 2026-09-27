@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 오리지날 (50G)",
+      "raw_record_ids": [
+        "ingestion:28:82"
+      ],
+      "source_row_sha256": {
+        "ingestion:28:82": "12c1515270f34c49b031aee2efbaac2d7b4fe2aafd2a0ccba902afc10b29794d"
+      },
+      "number": 1,
+      "leaf": "food.snacks.savory.seaweed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 구운마늘&새우 (50G)",
+      "raw_record_ids": [
+        "ingestion:29:36"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:36": "de2c02a6eed024ff69276144f94c53ddfa23720957756991c7169c61e3b37221"
+      },
+      "number": 2,
+      "leaf": "food.snacks.savory.seaweed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "오늘좋은 김부각 청양마요맛 (50G)",
+      "raw_record_ids": [
+        "ingestion:29:74"
+      ],
+      "source_row_sha256": {
+        "ingestion:29:74": "61dd39e4dec035d478fae23377d56906e7f7c2be26fe9eee5e4a1075b94ecb41"
+      },
+      "number": 3,
+      "leaf": "food.snacks.savory.seaweed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "김ㆍ미역ㆍ해조류",
+        "김스낵ㆍ기타김"
+      ],
+      "source_title": "양반 김부각(오리지널) (50G)",
+      "raw_record_ids": [
+        "ingestion:33:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:47": "5c3b4c6716570e1eecd835dcf18105b6e3f99d509485c6407ea65a202fb5aa92"
+      },
+      "number": 4,
+      "leaf": "food.snacks.savory.seaweed",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "71d783f4ca542ba44e59d5beb67274b72c5e28a82255c1b11ac9d66974b52912"
+}

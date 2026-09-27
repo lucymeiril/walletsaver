@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "티아시아 비프키마커리전자레인지용 170G",
+      "raw_record_ids": [
+        "ingestion:21:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:56": "a9f7163a699b2cc73b62aa47a3801663a5bf5bd5b1e8caf187cfd6449c6bf593"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.curry",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit curry or jjajang meal title disproves soup shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로짜장 200G",
+      "raw_record_ids": [
+        "ingestion:71:97"
+      ],
+      "source_row_sha256": {
+        "ingestion:71:97": "accba5db435a315968c1d4ae168987ba8d9f6ca56ab233b0d5398ab88f5611c9"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.black_bean",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit curry or jjajang meal title disproves soup shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로카레 약간매운맛 200G",
+      "raw_record_ids": [
+        "ingestion:71:98"
+      ],
+      "source_row_sha256": {
+        "ingestion:71:98": "78dc77c64948006683bbbd35c7ec0a76f5c6c8cf4e14e3fadc7308b2fe00dc65"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.curry",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit curry or jjajang meal title disproves soup shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "즉석식품/누룽지/죽",
+        "즉석국",
+        "즉석국(레토르트)"
+      ],
+      "source_title": "오뚜기 그대로카레 순한맛 200G",
+      "raw_record_ids": [
+        "ingestion:71:99"
+      ],
+      "source_row_sha256": {
+        "ingestion:71:99": "7039a075a184f9202a90d4ce92069d4e729b7fba1f27b9942d0bafc15009d08c"
+      },
+      "number": 4,
+      "leaf": "food.meals.prepared.curry",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meals.prepared.soup_stew",
+        "reason": "Explicit curry or jjajang meal title disproves soup shelf; existing form veto applies",
+        "previous_hold": "evidence: source shelf contradicts explicit product form"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "0a37f81e20a1c0d4480a9577b0d5ab4176707b35b6ee9362057fb528681cbc5c",
+  "revision": {
+    "previous_sha256": "4997ecf98f968362ae6a842886745a92c72c7ce0c3a59f3ae20242acced72c8b",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+    "reason": "Explicit curry or jjajang meal title disproves soup shelf; existing form veto applies"
+  }
+}

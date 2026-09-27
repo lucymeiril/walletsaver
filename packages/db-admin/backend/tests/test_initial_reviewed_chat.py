@@ -17,7 +17,7 @@ PASS44_BLOCKED = {
                     '128904268','128852547','143580391','127144229'],
                    'conflicting_category_evidence'),
     **dict.fromkeys(['120108964','068981243','057467472','000045411'],
-                   'source_leaf_needs_name_corroboration'),
+                   'conflicting_category_evidence'),
 }
 PASS45_BLOCKED = {
     # 070137671: exact numbered review now discards only the liquid-shelf
@@ -39,6 +39,12 @@ def test_review_is_identity_bound_and_does_not_override_conflicts(accepted):
     elif accepted['source_record_key'] in PASS44_BLOCKED:
         assert result['unified_category_id'] is None
         assert result['classification_reason'] == PASS44_BLOCKED[accepted['source_record_key']]
+        if accepted['source_record_key'] in {'120108964','068981243','057467472','000045411'}:
+            # The new exact-title review establishes bag ramen, while the old
+            # identity-bound proposal still asserts black-bean noodles. Both
+            # candidates must remain visible and conflict when that key is supplied.
+            assert set(result['candidate_category_ids']) == {
+                'food.meals.noodles.bag_ramen', 'food.meals.noodles.black_bean'}
     elif accepted['source_record_key'] in PASS43_BLOCKED:
         assert result['unified_category_id'] is None
         assert result['classification_reason'] == PASS43_BLOCKED[accepted['source_record_key']]

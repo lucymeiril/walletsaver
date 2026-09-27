@@ -102,6 +102,21 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    *_group("food.seasonings.roux", ("식품", "양념·소스", "고형조리양념"), "", (
+        ("curry", "고형카레", ""),
+    )),
+    *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "", (
+        ("meatballs", "미트볼", ""),
+    )),
+    *_group("food.supplements.functional", ("식품", "건강식품", "건강보조식품"), "", (
+        ("banaba", "바나바잎추출물", ""),
+    )),
+    *_group("food.drinks.powders", ("식품", "음료", "분말음료"), "", (
+        ("grain", "곡물분말음료·미숫가루", ""),
+    )),
+    *_group("food.snacks.chewy", ("식품", "과자·간식", "쫀득과자"), "", (
+        ("cookie", "쫀득쿠키", ""),
+    )),
     *_group("food.produce.assortments", ("식품", "농산물", "농산물모둠"), "", (
         ("fresh_fruit", "혼합신선과일", ""),
     )),

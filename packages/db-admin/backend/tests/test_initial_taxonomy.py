@@ -776,10 +776,28 @@ def test_snack_and_bakery_forms_are_not_the_mixed_retail_leaf(path,title,leaf):
     assert reviewed_homeplus_snack_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title', ['풀무원 토이쿠키 만들기 300G','화정당 두바이 쫀득쿠키 오리지널 160G','화정당 두바이+말차 쫀득쿠키 160G'])
+@pytest.mark.parametrize('title', ['풀무원 토이쿠키 만들기 300G'])
 def test_frozen_dessert_brand_or_diy_kit_does_not_prove_ready_baked_cookie(title):
     from services.initial_audited_homeplus_snacks import FROZEN
     assert classify_record(_raw('homeplus',list(FROZEN),title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title', ['화정당 두바이 쫀득쿠키 오리지널 160G','화정당 두바이+말차 쫀득쿠키 160G'])
+def test_reviewed_chewy_cookie_is_not_assumed_baked(title):
+    from services.initial_audited_homeplus_snacks import FROZEN
+    assert classify_record(_raw('homeplus',list(FROZEN),title))['unified_category_id'] == 'food.snacks.chewy.cookie'
+    assert classify_record(_raw('homeplus',['가전'],title))['unified_category_id'] is None
+    assert classify_record(_raw('homeplus',list(FROZEN),title+' + 아이스크림 혼합세트'))['unified_category_id'] != 'food.snacks.chewy.cookie'
+
+
+@pytest.mark.parametrize('leaf_id', [
+    'food.seasonings.roux.curry', 'food.meals.prepared.meatballs',
+    'food.supplements.functional.banaba', 'food.drinks.powders.grain', 'food.snacks.chewy.cookie',
+])
+def test_operator_batch_leaves_remain_review_only(leaf_id):
+    leaf = next(item for item in LEAVES if item.id == leaf_id)
+    assert len(leaf.path) == 4
+    assert not leaf.name_terms and not leaf.source_labels
 
 
 @pytest.mark.parametrize('title', ['돌핀 폴라레티 후르트 400ML','돌핀 폴라레티 해피썸머 400ML','돌핀 폴라레티 후르츠 바이오 400ML','자임 콜라겐 애사비 젤리 210G','자임 콜라겐 레몬 젤리 210G'])

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "아이스크림/디저트/얼음",
+        "디저트",
+        "냉동케익/푸딩/마카롱"
+      ],
+      "source_title": "화정당 두바이 쫀득쿠키 오리지널 160G",
+      "raw_record_ids": [
+        "ingestion:9:88",
+        "ingestion:60:18"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:88": "1fe6c6457d1582dbde7f45ed0277e384346831b9d50e064a690f4b02ce9962a8",
+        "ingestion:60:18": "4968aad77225f5d383a8a46626e10f36ec540dedfe9e4a25730f5225eaf37c54"
+      },
+      "number": 1,
+      "leaf": "food.snacks.chewy.cookie",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "아이스크림/디저트/얼음",
+        "디저트",
+        "냉동케익/푸딩/마카롱"
+      ],
+      "source_title": "풀무원 토이쿠키 만들기 300G",
+      "raw_record_ids": [
+        "ingestion:10:55",
+        "ingestion:60:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:55": "55826bd9b53da9a7aaab9835652663428dd6f145d7bcafa4bde4473090609271",
+        "ingestion:60:54": "86a7341f3d2c03ff0fdca9658040dc0e301d31bbc9d02ae52e934a48b150a7e3"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: cookie-making kit contents unspecified"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "아이스크림/디저트/얼음",
+        "디저트",
+        "냉동케익/푸딩/마카롱"
+      ],
+      "source_title": "화정당 두바이+말차 쫀득쿠키 160G",
+      "raw_record_ids": [
+        "ingestion:10:96",
+        "ingestion:59:61"
+      ],
+      "source_row_sha256": {
+        "ingestion:10:96": "621f040335ae8dc20f910dcc5b68dacfdac74060cc4172045833002f745c0d8b",
+        "ingestion:59:61": "525027edbff88a7c4c348ef4627616f3471ec7403a8b04c47171124401d3ce31"
+      },
+      "number": 3,
+      "leaf": "food.snacks.chewy.cookie",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1,
+        2,
+        3
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_taxonomy.py",
+      "line": 779
+    }
+  ],
+  "packet_sha256": "aeff066fc6a57626fc7db99d60d8eb9c7a9690efe0cdcd7b98cd83b8a3cd71ad"
+}

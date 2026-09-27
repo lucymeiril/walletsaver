@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 약간매운맛 (100G)",
+      "raw_record_ids": [
+        "ingestion:30:41"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:41": "4c333e68f9b6d727adeae64daa8804159e692111d2847f2d604a457834dc6762"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.powders.curry",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 순한맛 (100G)",
+      "raw_record_ids": [
+        "ingestion:30:47"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:47": "1287711b48b859c7246b7e493a2a08309e3b701957045a49ac025048a8d35f1a"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.powders.curry",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 3일 숙성카레 클래식 고형 (약간매운맛) (100G)",
+      "raw_record_ids": [
+        "ingestion:32:59"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:59": "568aa535813960a0496ac2a0726ffe794473afbf56032f726898514928bd2395"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.roux.curry",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 매운맛 (100G)",
+      "raw_record_ids": [
+        "ingestion:33:42"
+      ],
+      "source_row_sha256": {
+        "ingestion:33:42": "b8e34d0b327e3f400e72c72a18af04f36ad0c8a869baed3dbe7b4740e8662452"
+      },
+      "number": 4,
+      "leaf": "food.seasonings.powders.curry",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "c6c8f73531da52c1202599aa10f235c4231f6bdb0d3c56f4bcca846362747777"
+}

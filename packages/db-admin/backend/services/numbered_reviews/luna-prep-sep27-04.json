@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (오렌지망고) (200ML * 10)",
+      "raw_record_ids": [
+        "ingestion:30:26"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:26": "955c4491e3e6c555a7e6fb1dbe62cbc936e6c748bb9386170e85ca0192772552"
+      },
+      "number": 1,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (오렌지) (200ML * 10)",
+      "raw_record_ids": [
+        "ingestion:30:93"
+      ],
+      "source_row_sha256": {
+        "ingestion:30:93": "6eaab0fd7e85f5d33c46caca6915296a2c489019bc7869aef36faee9139330b7"
+      },
+      "number": 2,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (사파리) (200ML * 10)",
+      "raw_record_ids": [
+        "ingestion:32:5"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:5": "b755b996fbc27728e633d7acb77d607c2bb9a0c9c5f234acc920ef65b8566801"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: safari drink contents"
+    },
+    {
+      "mart": "lottemart",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (사과) (200ML * 10)",
+      "raw_record_ids": [
+        "ingestion:32:84"
+      ],
+      "source_row_sha256": {
+        "ingestion:32:84": "41f5840504b4a6c4a14e768c3f4a9b06bad709cf12d83863719602b4bea263c6"
+      },
+      "number": 4,
+      "leaf": "food.drinks.juice.fruit_drink",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "cec63ede715bfe5393271966a649a909ced924c8b3d26bb6ef1e8882be124da4"
+}

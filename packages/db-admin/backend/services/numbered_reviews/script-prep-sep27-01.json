@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass145",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "만두",
+        "물만두/찐만두",
+        "김치찐만두"
+      ],
+      "source_title": "동원 개성왕만두김치 350G",
+      "raw_record_ids": [
+        "ingestion:9:73",
+        "ingestion:59:11"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:73": "2493731f376a434646bbf92b88f50d39e5297a9d82ff134474eee7f10923d2a8",
+        "ingestion:59:11": "ce39609623d833f37347bdaddcfad6a42c81d499ea7b55ec0975dea99ebb7930"
+      },
+      "number": 1,
+      "leaf": "food.meals.dumplings.steamed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "만두",
+        "물만두/찐만두",
+        "김치찐만두"
+      ],
+      "source_title": "풀무원 얄피꽉찬 김치만두 400G*2",
+      "raw_record_ids": [
+        "ingestion:9:87",
+        "ingestion:60:15"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:87": "018c78e287b9196556904965edf1b024d011bdc3d0c8444b3315bd2799d9175b",
+        "ingestion:60:15": "41c42be8f6fc26015dc1f306e66ee37ac370dad33d5d9d6b54d398d5155f4720"
+      },
+      "number": 2,
+      "leaf": "food.meals.dumplings.steamed",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "냉장/냉동/밀키트",
+        "만두",
+        "물만두/찐만두",
+        "김치찐만두"
+      ],
+      "source_title": "씨제이 비비고 김치 왕 만두 420G*2",
+      "raw_record_ids": [
+        "ingestion:11:48",
+        "ingestion:60:89"
+      ],
+      "source_row_sha256": {
+        "ingestion:11:48": "6855680e7d919befb87397d01a866d19244ed9531f9a2b01b4d7fc11c44b23a5",
+        "ingestion:60:89": "c9437094a336373360ccc7cbc07b987cb7e90831003882b498d353ab88d7a760"
+      },
+      "number": 3,
+      "leaf": "food.meals.dumplings.steamed",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "1a5a3c487b4c7e98101eb268231bbb1b2714b09999818602cbf3b5f87dd0dc6f"
+}
