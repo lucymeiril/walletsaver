@@ -2,6 +2,8 @@
 
 Luna를 쓰는 모든 새 호출은 최소 `reasoning_effort=high`로 고정한다(사용자 지시). 등록 역할이 low로 남아 있으면 default 역할에 모델과 high를 명시한다. 아래 low 시험은 과거 기록이며 high 성능을 검증한 결과가 아니다.
 
+현재 검사 운영(사용자 수정 지시): 인증 실행·대기·실패 로그 정리는 `docs/catalog-verification.md`와 고정 verifier 프로필로 위탁한다. 아래 과거의 “인증 직접 실행” 결론은 대체됐다. 부모는 의미 판단·수정 필요 사항과 인증 결과만 받고, 성공 검사를 중복 실행하지 않는다.
+
 2026-09-27 실행 위탁 기록: Luna low에 프로필·plan 경로만 전달(호출문 100자 이내), 준비 명령11개/패킷10개는 성공. 그러나 후보를 37건 대신10건으로 보고해 부모가 정정했다. 최초 프로필2144바이트·plan1174바이트, 재구성 명령1602문자였으므로 호출문만으로 절감했다고 볼 수 없다. 원 보고서는 `.debug-artifacts/operator-logs/luna-prep-sep27/report.json`에 보존했다. 준비를 `catalog_prepare.py`로 옮겨 실제 추가6건 준비 및 기존37건 해시·집계를 검증했고, 행 집계/변조/덮어쓰기 방지 검사3개를 통과했다. 다음부터 준비·기존 검사 실행은 직접 한 명령; 별도 여러 단계가 남을 때만 Luna high 투입 여부를 판단한다. 토큰/할당량 절감은 미측정이다.
 
 현재 효율 시험: GPT-6 Sol low 분류 1회 → 주 에이전트 의미 검토. Luna 분류나 Sol 검수자를 기본으로 추가 호출하지 않는다. `fork_turns=none`을 사용한다. 등록된 `catalog_classifier`가 아직 GPT-5.6 Sol로 표시되면 기본 역할에 `model=gpt-6-sol`, `reasoning_effort=low`를 명시하고 `.codex/agents/catalog_classifier.toml`의 작업 지침을 읽게 한다. 파일 변경만으로 실행 중 역할 설정이 갱신됐다고 주장하지 않는다.

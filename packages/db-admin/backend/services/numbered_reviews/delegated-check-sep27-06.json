@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "오징어/낙지/주꾸미/문어",
+        "오징어"
+      ],
+      "source_title": "생물 오징어(국내산) 마리",
+      "raw_record_ids": [
+        "ingestion:3:92",
+        "ingestion:53:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:3:92": "aea8820cee410d7cf6aa4115dd1e0a2f7e69724b2c67024892fa2094904d8775",
+        "ingestion:53:12": "56633a637fd7cc80f1f67aec7734e2bc042566393bec84d6e6548fbd1eccc924"
+      },
+      "number": 1,
+      "leaf": "food.seafood.molluscs.squid",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "오징어/낙지/주꾸미/문어",
+        "오징어"
+      ],
+      "source_title": "해동 손질오징어(원양산/행사) 마리",
+      "raw_record_ids": [
+        "ingestion:4:0",
+        "ingestion:53:25"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:0": "462b44480228dece8e501d16fac38d0b5aa41aff1cd1cbc241ec0cdd0a135cc6",
+        "ingestion:53:25": "ade37e8ed4b97be1166e0770ebe0a54bc2ab923c0d88b6694a3343170db5ffa0"
+      },
+      "number": 2,
+      "leaf": "food.seafood.molluscs.squid",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "연체갑각류",
+        "오징어/낙지/주꾸미/문어",
+        "오징어"
+      ],
+      "source_title": "해동 손질오징어(원양산/소) 마리",
+      "raw_record_ids": [
+        "ingestion:4:52",
+        "ingestion:53:46"
+      ],
+      "source_row_sha256": {
+        "ingestion:4:52": "399693492df09856bbea512a23e4d79cdb524ae3f8278639d84f8d6f084716e5",
+        "ingestion:53:46": "a2715c77ea716b5333ddab086caa3569e714f89fc89dc82a437056442256e64d"
+      },
+      "number": 3,
+      "leaf": "food.seafood.molluscs.squid",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "5a30af10c6fb52b804849bd1b46a9635ccb3577fc04fb7d5c868db8aead2c46c"
+}

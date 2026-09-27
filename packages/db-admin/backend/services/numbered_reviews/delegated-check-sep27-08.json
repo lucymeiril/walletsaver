@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "슬라이스 치즈"
+      ],
+      "source_title": "서울우유 앙팡치즈 까요까요 초코 78G",
+      "raw_record_ids": [
+        "ingestion:8:75",
+        "ingestion:58:7"
+      ],
+      "source_row_sha256": {
+        "ingestion:8:75": "d47a546469939178e4295e673978fcdf7e411b81aa9c59166612095cc116bafe",
+        "ingestion:58:7": "4b254f8d0a943c49608026a48920646884e317d0615addbcbaec58c9e6f8153a"
+      },
+      "number": 1,
+      "leaf": null,
+      "hold_reason": "evidence: 치즈 형태 불명"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "슬라이스 치즈"
+      ],
+      "source_title": "서울우유 앙팡치즈 까요까요 딸기 72.5G",
+      "raw_record_ids": [
+        "ingestion:8:93",
+        "ingestion:58:30"
+      ],
+      "source_row_sha256": {
+        "ingestion:8:93": "96f62ad30f9998d2e64d101dd28d249d629655f02566b71bf326e9951dc14cf2",
+        "ingestion:58:30": "e895abc92b66c14aafb900caee0fe12f8a36af2fa7468a403adcf34e5700c006"
+      },
+      "number": 2,
+      "leaf": null,
+      "hold_reason": "evidence: 치즈 형태 불명"
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "슬라이스 치즈"
+      ],
+      "source_title": "일드프랑스 아페리프레 사뵈르드코트다쥐르 100G",
+      "raw_record_ids": [
+        "ingestion:59:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:59:1": "99d03dec7b575a13e151bfc5279031db14888e2c4fb9f95bc1d781f79a5be197"
+      },
+      "number": 3,
+      "leaf": null,
+      "hold_reason": "evidence: 치즈 형태 불명"
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "9ad62168d5aafae9fc9afec3a3685568f24f9fac05c7617c88c49a0722f52e03"
+}

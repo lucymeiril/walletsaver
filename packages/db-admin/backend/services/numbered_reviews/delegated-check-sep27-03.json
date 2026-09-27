@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "햄/소시지",
+        "햄/분절햄/슬라이스햄/김밥햄"
+      ],
+      "source_title": "씨제이 고메 함박스테이크 152G",
+      "raw_record_ids": [
+        "ingestion:12:79",
+        "ingestion:62:20"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:79": "a9cf6dfd8f31cc086b31bf4cf9c88ad0e0bbcda6a3b9841b3adb6f3a6f5dda34",
+        "ingestion:62:20": "0eb75d82e5a2a4eb4f6d379f62f6825e727dc406276993638be402e48d87dbbd"
+      },
+      "number": 1,
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.ham",
+        "reason": "Explicit steak/meatball title disproves ham shelf; existing product-form veto",
+        "previous_hold": "Ham shelf conflicts with explicit steak/meatball product form"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "햄/소시지",
+        "햄/분절햄/슬라이스햄/김밥햄"
+      ],
+      "source_title": "씨제이 고메 치즈 함박스테이크 152G",
+      "raw_record_ids": [
+        "ingestion:12:87",
+        "ingestion:62:12"
+      ],
+      "source_row_sha256": {
+        "ingestion:12:87": "07121914a5a37aa5b5908d9adb3cfe5948b7a5e46ed5d0b2e09f2e1c7954279f",
+        "ingestion:62:12": "ef88f406d1368115d667560298ab9eb3e08bdcd47bd461e55f8c520a360b8551"
+      },
+      "number": 2,
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.ham",
+        "reason": "Explicit steak/meatball title disproves ham shelf; existing product-form veto",
+        "previous_hold": "Ham shelf conflicts with explicit steak/meatball product form"
+      }
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "햄/소시지",
+        "햄/분절햄/슬라이스햄/김밥햄"
+      ],
+      "source_title": "씨제이 고메 토마토미트볼 147G",
+      "raw_record_ids": [
+        "ingestion:13:22",
+        "ingestion:62:39"
+      ],
+      "source_row_sha256": {
+        "ingestion:13:22": "4b44e2f648b574eaf630b2d2bf68e77f62268131e00fb02a33431d93549f073f",
+        "ingestion:62:39": "426bbf66c5093be5213994c77145c88e6456501fb5eb95d4d5ff60807590e01c"
+      },
+      "number": 3,
+      "leaf": "food.meals.prepared.meatballs",
+      "hold_reason": "",
+      "rejected_path_evidence": {
+        "category_id": "food.meat.processed.ham",
+        "reason": "Explicit steak/meatball title disproves ham shelf; existing product-form veto",
+        "previous_hold": "Ham shelf conflicts with explicit steak/meatball product form"
+      }
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "64f5867253d6afa1f59999040498866e3b55b902927e29311541238cd623fba2",
+  "revision": {
+    "previous_sha256": "51dffe33d93c61b5ea17c9174ffd7d254dcaf14200430eff3ef933cf6bb38525",
+    "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+    "reason": "Explicit steak/meatball title disproves ham shelf; existing product-form veto"
+  }
+}

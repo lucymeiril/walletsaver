@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "조기/굴비",
+        "굴비"
+      ],
+      "source_title": "영광 참굴비 행사(1.0kg내외/20마리)",
+      "raw_record_ids": [
+        "ingestion:5:18",
+        "ingestion:54:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:18": "4b7a98fa788fa7ed170e180963bc78bed14ccefaf4fc6ee343027d8d11ef82ac",
+        "ingestion:54:34": "13def949d9033ecf8dc64e4682908a184f7f75da313c95026fa0825686f0a20c"
+      },
+      "number": 1,
+      "leaf": "food.seafood.processed.gulbi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "조기/굴비",
+        "굴비"
+      ],
+      "source_title": "영광 참굴비 2호 (20마리/1.4KG 내외)",
+      "raw_record_ids": [
+        "ingestion:5:21",
+        "ingestion:54:52"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:21": "ad4b271e31d3610288f23bed0ee577b746a4add60f7940d03b322582e447603a",
+        "ingestion:54:52": "eec196679c9e460555f7a0d210eaa3aa14b9ab0d20a46880fc73ff586d73042a"
+      },
+      "number": 2,
+      "leaf": "food.seafood.processed.gulbi",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "수산물/건어물",
+        "생선",
+        "조기/굴비",
+        "굴비"
+      ],
+      "source_title": "영광참굴비 4호 (1.2kg내외/20마리)",
+      "raw_record_ids": [
+        "ingestion:5:22",
+        "ingestion:54:53"
+      ],
+      "source_row_sha256": {
+        "ingestion:5:22": "0ed4d02baa92925bc11083e49d6af6891f674d5b5a1a4258980da7f3bfe429ea",
+        "ingestion:54:53": "d03340ba7214ab749c5069c3a2cd2c6da2f069d60bddae93c87f0d58ed12c543"
+      },
+      "number": 3,
+      "leaf": "food.seafood.processed.gulbi",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "32b556410f90699adfc654489b7b236f7c8b4ab0e8bfdf96951ff5afbe7e1e4c"
+}

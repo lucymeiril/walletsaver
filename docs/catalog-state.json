@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass148",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7392,
-  "unresolved": 1804,
-  "next_task": "Next food shelves via catalog_prepare.py plan; use Sol low for classification and parent review. Luna minimum high if a genuinely multi-step unscripted execution task arises; routine prepare and harness run are direct commands. Sep27 operator batch: 43 reviewed, 37 classified, 33 products and 46 observations added. Historical identity-key noodle conflicts remain held; pass141 quantity conflicts pending.",
+  "included": 7445,
+  "unresolved": 1751,
+  "next_task": "Continue remaining food shelves. Sol classifier -> parent semantic decisions -> catalog_integrator inspect/apply/conflict diagnostics -> Luna high catalog_verifier using catalog_executor pinned plan. Main does not run/poll full tests. pass148 added 27 products and 53 observations from 30 reviewed/27 classified titles. Keep pass141 quantity conflicts and historical identity-key noodle conflicts pending.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

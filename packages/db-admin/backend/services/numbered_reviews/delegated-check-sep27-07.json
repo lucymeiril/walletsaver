@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "생크림/휘핑크림"
+      ],
+      "source_title": "알라 휘핑크림 1L",
+      "raw_record_ids": [
+        "ingestion:8:70",
+        "ingestion:58:1"
+      ],
+      "source_row_sha256": {
+        "ingestion:8:70": "f71043012fc6a6cf77a88d9f90565314add57b5cdf72bf8db19a12d5a0d6b5a2",
+        "ingestion:58:1": "1686b50ce3bf0e99d8c57e3fef6e611135e2a53942016cb8d6fa3704c60690cc"
+      },
+      "number": 1,
+      "leaf": "food.bakery.ingredients.whipping_cream",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "생크림/휘핑크림"
+      ],
+      "source_title": "직수입 LAURA 휘핑크림 250G",
+      "raw_record_ids": [
+        "ingestion:8:72",
+        "ingestion:58:3"
+      ],
+      "source_row_sha256": {
+        "ingestion:8:72": "72dfa20ccec11a25d010771f97ce243b15217f77f5a105d7eda45189c76f1d43",
+        "ingestion:58:3": "909d7c066f295bf2d5f54e5ff7b8c020c71259031779692e141de44c0e7dc869"
+      },
+      "number": 2,
+      "leaf": "food.bakery.ingredients.whipping_cream",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "우유/유제품",
+        "치즈/버터",
+        "생크림/휘핑크림"
+      ],
+      "source_title": "매일 휘핑크림 250ML",
+      "raw_record_ids": [
+        "ingestion:9:53",
+        "ingestion:58:87"
+      ],
+      "source_row_sha256": {
+        "ingestion:9:53": "87d7fcb03ed7e422614dbbe488f3d8ba20f378f57ee64dd7f5bc3eff8bff9aa6",
+        "ingestion:58:87": "36f4eabe850a54c57e0518e7d39d44889318ef6e31031115c09f89677be0b510"
+      },
+      "number": 3,
+      "leaf": "food.bakery.ingredients.whipping_cream",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "58e05b195fa024bd61693e8629a62f96bb3a37759dad704a0a78588d2ba03bfe"
+}

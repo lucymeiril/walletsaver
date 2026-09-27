@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "당면/건면/스파게티",
+        "쌀국수/월남쌈"
+      ],
+      "source_title": "Simplus 밀또띠아 315G",
+      "raw_record_ids": [
+        "ingestion:20:98",
+        "ingestion:70:56"
+      ],
+      "source_row_sha256": {
+        "ingestion:20:98": "af319fa632ebdf9533fb1b09882280f64417efe762d674f50f7770996b6efbe2",
+        "ingestion:70:56": "26ee912571fabac89d830c9af2af2ae16d6beed2c162f983d32d44bbad6e75da"
+      },
+      "number": 1,
+      "leaf": "food.bakery.bread.tortilla",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "당면/건면/스파게티",
+        "쌀국수/월남쌈"
+      ],
+      "source_title": "델리썬 소프트플라워 또띠아 320G",
+      "raw_record_ids": [
+        "ingestion:21:2"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:2": "b651cb1b2e37872b0d4f24ad655c9ed4f9f5bf8448bbdfd0d4cf7b4dded3decf"
+      },
+      "number": 2,
+      "leaf": "food.bakery.bread.tortilla",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "라면/즉석식품/통조림",
+        "당면/건면/스파게티",
+        "쌀국수/월남쌈"
+      ],
+      "source_title": "Simplus 통밀또띠아 315G",
+      "raw_record_ids": [
+        "ingestion:21:13",
+        "ingestion:70:54"
+      ],
+      "source_row_sha256": {
+        "ingestion:21:13": "bb76ac03bfdb528cdaa94cb44079d99680639b3bfffe6e17e82f64af05dac3aa",
+        "ingestion:70:54": "b1771f53b6a3ecbc37a070928cdd3efca76e6d79ce55c2733490e338c8c51da2"
+      },
+      "number": 3,
+      "leaf": "food.bakery.bread.tortilla",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "3d8eaa8a4ddeef3688bbe4600b460d962327ea6e9cf9c81f17a16ccd93f667bd"
+}

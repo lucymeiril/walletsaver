@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "다시다/미원/맛소금",
+        "원물/티백/액상조미료",
+        "액상조미료"
+      ],
+      "source_title": "샘표 연두 순 500ML",
+      "raw_record_ids": [
+        "ingestion:23:37",
+        "ingestion:74:16"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:37": "205e5d41bcbbf3658e3d204e0957d33fe4293849d0d99d8f3a51e89726446b5b",
+        "ingestion:74:16": "4c6cd9840325cc0bcfcede407856c309ec68bbf4dfdddb28b81478235013a901"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.liquid_seasoning",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "다시다/미원/맛소금",
+        "원물/티백/액상조미료",
+        "액상조미료"
+      ],
+      "source_title": "샘표 연두 순 320G",
+      "raw_record_ids": [
+        "ingestion:24:65",
+        "ingestion:74:44"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:65": "eb35684309603101585452c9afdd68a89908f08f18a5f563a3c3509323a84a8a",
+        "ingestion:74:44": "dcc33f36ee33af38ecaef7c5052638722d178778c8a87843cdc008289c1a5f21"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.sauces.liquid_seasoning",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "다시다/미원/맛소금",
+        "원물/티백/액상조미료",
+        "액상조미료"
+      ],
+      "source_title": "샘표 연두진 500ML",
+      "raw_record_ids": [
+        "ingestion:24:87",
+        "ingestion:73:83"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:87": "e6838c946d30f75b09284191ce5cdae85b43dc06e4f27c722be2a30f17cc76ef",
+        "ingestion:73:83": "d258ac1bb74530bc4fbd3393c0f47d7d312821b8a640c4ba00c2aef69beebbdb"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.sauces.liquid_seasoning",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        2
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_seasonings.py",
+      "line": 29
+    }
+  ],
+  "packet_sha256": "dd7e95ca585b8000019edb13364e7b4811fa73066b2ec2f8bcb6dcd448993df0"
+}

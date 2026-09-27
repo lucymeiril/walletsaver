@@ -26,5 +26,9 @@ def test_scope_or_changed_title_requires_review(mart,path,title):
     assert reviewed_baking_leaf({"mart":mart,"source_path_parts":path,"source_title":title}) is None
 
 
-def test_unknown_starch_composition_stays_pending():
-    assert classify_record({"source_name":"homeplus", "source_category_path":["장류/양념/제빵","밀가루/분말류","밀가루/전분","전분"], "source_title":"simplus 감자맛 전분 400G"})["unified_category_id"] is None
+def test_reviewed_starch_does_not_infer_pure_potato_composition():
+    path = ["장류/양념/제빵","밀가루/분말류","밀가루/전분","전분"]
+    row = {"source_name":"homeplus", "source_category_path":path, "source_title":"simplus 감자맛 전분 400G"}
+    assert classify_record(row)["unified_category_id"] == 'food.seasonings.baking.starch'
+    assert classify_record({**row, 'source_category_path':['생활용품']})['unified_category_id'] is None
+    assert classify_record({**row, 'source_title':row['source_title']+' + 밀가루 혼합세트'})['unified_category_id'] != 'food.seasonings.baking.starch'

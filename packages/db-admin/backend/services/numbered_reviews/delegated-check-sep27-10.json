@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "밀가루/분말류",
+        "밀가루/전분",
+        "전분"
+      ],
+      "source_title": "simplus 감자맛 전분 400G",
+      "raw_record_ids": [
+        "ingestion:23:97",
+        "ingestion:73:34"
+      ],
+      "source_row_sha256": {
+        "ingestion:23:97": "0e94be65f5a497dbc10db920f62f0a5aa7ad73728f4267b5f6e8bba46f10e956",
+        "ingestion:73:34": "a5ed4d547aa5d534de89fae25a3b0776e83ae77e64580dc38e329c0ae3d45bc8"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.baking.starch",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "밀가루/분말류",
+        "밀가루/전분",
+        "전분"
+      ],
+      "source_title": "simplus 옥수수맛 전분 400G",
+      "raw_record_ids": [
+        "ingestion:24:53",
+        "ingestion:73:96"
+      ],
+      "source_row_sha256": {
+        "ingestion:24:53": "d0e5d22924e79b731285a9f0f282a9f240d8ab7275506f572f66a4c93edd47f8",
+        "ingestion:73:96": "60d4ec3f7229ba4930a8e807d79e3c46b090c62d86f35e8eb30bfd66d9f7f707"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.baking.starch",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "장류/양념/제빵",
+        "밀가루/분말류",
+        "밀가루/전분",
+        "전분"
+      ],
+      "source_title": "simplus 국내산 고구마맛 전분 400G",
+      "raw_record_ids": [
+        "ingestion:25:41",
+        "ingestion:74:50"
+      ],
+      "source_row_sha256": {
+        "ingestion:25:41": "dbe4e4e49f4cfe07ffa7f2237fd2d8602c0d96db69fea499d7e538048cfefccb",
+        "ingestion:74:50": "fe88055c7de5623a756292851f37f8b6f89c69ca9f346344b8b9305bf599ae78"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.baking.starch",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [
+    {
+      "numbers": [
+        1
+      ],
+      "file": "packages/db-admin/backend/tests/test_initial_audited_baking.py",
+      "line": 30
+    }
+  ],
+  "packet_sha256": "9b9bc6feed39e11cb34bc398b75cef178977fac250547377f192b223fcb19371"
+}

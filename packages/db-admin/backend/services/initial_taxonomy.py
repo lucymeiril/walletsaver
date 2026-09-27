@@ -102,6 +102,27 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
+        ("gangdoenjang", "강된장양념", ""), ("liquid_seasoning", "액상조미료", ""),
+    )),
+    *_group("food.seasonings.pastes", ("식품", "양념·소스", "장류"), "", (
+        ("cheonggukjang", "청국장", ""),
+    )),
+    *_group("food.plant.soy", ("식품", "식물성식품", "콩가공품"), "", (
+        ("soy_liquid", "콩물", ""), ("tofu_roll", "두부봉", ""),
+    )),
+    *_group("food.bakery.bread", ("식품", "베이커리·스프레드", "빵"), "", (
+        ("tortilla", "또띠아", ""),
+    )),
+    *_group("food.seafood.processed", ("식품", "수산물", "수산가공품"), "", (
+        ("gulbi", "굴비", ""),
+    )),
+    *_group("food.bakery.ingredients", ("식품", "베이커리·스프레드", "제과재료"), "", (
+        ("whipping_cream", "휘핑크림", ""),
+    )),
+    *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "", (
+        ("starch", "조리용전분", ""),
+    )),
     *_group("food.seasonings.roux", ("식품", "양념·소스", "고형조리양념"), "", (
         ("curry", "고형카레", ""),
     )),

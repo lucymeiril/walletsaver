@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "baseline": ".debug-artifacts/initial-catalog-20260927-pass147",
+  "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "냉장소스/냉장장류",
+        "냉장장류"
+      ],
+      "source_title": "씨제이 다담 우렁 강된장 양념 500G",
+      "raw_record_ids": [
+        "ingestion:15:17",
+        "ingestion:64:55"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:17": "3f6b594ff69147cca73b4571b4bbddf96bdb19886f8b794f530addf5d9045846",
+        "ingestion:64:55": "d499b792f83b76abfb6ff63385e8580f0b324c233cc97dd6673d90c20e758297"
+      },
+      "number": 1,
+      "leaf": "food.seasonings.sauces.gangdoenjang",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "냉장소스/냉장장류",
+        "냉장장류"
+      ],
+      "source_title": "옹심원 재래식 청국장 국산 400G",
+      "raw_record_ids": [
+        "ingestion:15:28",
+        "ingestion:64:66"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:28": "78da65f920c07736f50b6ab6f941ee676a94897bdf182772a1eeca0a07195c57",
+        "ingestion:64:66": "ffff3d2b4104b71ba706b3b0b08eb36bf8e329e6b7ebced03cc2c34bc08a4d33"
+      },
+      "number": 2,
+      "leaf": "food.seasonings.pastes.cheonggukjang",
+      "hold_reason": ""
+    },
+    {
+      "mart": "homeplus",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "냉장소스/냉장장류",
+        "냉장장류"
+      ],
+      "source_title": "옹심원 재래식 청국장 수입산 400G",
+      "raw_record_ids": [
+        "ingestion:15:29",
+        "ingestion:64:67"
+      ],
+      "source_row_sha256": {
+        "ingestion:15:29": "7bc4ee17af930b28c752a5dedb959c91adb8e47b3cf2454dc02d3644ba286102",
+        "ingestion:64:67": "fb096ba7e21f16455648129e6e45c85dcd0980c4318daaf63cf5043e70716f03"
+      },
+      "number": 3,
+      "leaf": "food.seasonings.pastes.cheonggukjang",
+      "hold_reason": ""
+    }
+  ],
+  "contract_references": [],
+  "packet_sha256": "ab43d6984107e7ee2b4521beb2b653a2f392d3607b696f0bcd2f8efb97263962"
+}
