@@ -38,7 +38,8 @@ def _proposal_document(path):
     return json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=unique)
 
 
-def inspect_job(job_path, save=None, root=ROOT):
+def inspect_job(job_path, save=None, root=ROOT, show_review=False, limit=20):
+    review.require(type(limit) is int and limit > 0, 'Review limit must be a positive integer')
     root = root.resolve()
     job_path = _contained_json(root, job_path, '.debug-artifacts/review-jobs')
     job = review.read(job_path)
@@ -54,6 +55,7 @@ def inspect_job(job_path, save=None, root=ROOT):
     hold_reasons = Counter()
     assigned = held = candidates = 0
     contexts = set()
+    review_rows = []
     for item in job['packets']:
         review.require(set(item) == {'name', 'path', 'sha256', 'output'}, 'Invalid job packet fields')
         name = item['name']
@@ -86,6 +88,15 @@ def inspect_job(job_path, save=None, root=ROOT):
         # leaf, completeness, and cross-rule validation. Silence its one-line output.
         with contextlib.redirect_stdout(io.StringIO()):
             review.proposal(name, proposal_hash, root=root)
+        if show_review:
+            decisions = {number: {'leaf': leaf}
+                         for leaf, numbers in document['assignments'].items() for number in numbers}
+            decisions.update({number: {'hold': reason}
+                              for reason, numbers in document['holds'].items() for number in numbers})
+            for row in packet['rows']:
+                review_rows.append({'packet': name, 'number': row['number'], 'mart': row['mart'],
+                                    'path': ' > '.join(row['source_path_parts']),
+                                    'title': row['source_title'], 'decision': decisions[row['number']]})
         proposals.append({'name': name, 'sha256': proposal_hash,
                           'packet_sha256': document['packet_sha256']})
 
@@ -107,6 +118,10 @@ def inspect_job(job_path, save=None, root=ROOT):
     ).items()))
     if save is not None:
         summary['manifest'] = save_path.relative_to(root).as_posix()
+    if show_review:
+        summary['review'] = {'shown': min(limit, len(review_rows)),
+                             'total': len(review_rows), 'truncated': len(review_rows) > limit,
+                             'rows': review_rows[:limit]}
     print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
     return manifest
 
@@ -145,12 +160,14 @@ def main():
     command = sub.add_parser('inspect')
     command.add_argument('--job', required=True)
     command.add_argument('--save')
+    command.add_argument('--review', action='store_true')
+    command.add_argument('--limit', type=int, default=20)
     command = sub.add_parser('apply')
     command.add_argument('--job', required=True)
     command.add_argument('--manifest', required=True)
     args = parser.parse_args()
     if args.action == 'inspect':
-        inspect_job(args.job, args.save)
+        inspect_job(args.job, args.save, show_review=args.review, limit=args.limit)
     else:
         apply_job(args.job, args.manifest)
 

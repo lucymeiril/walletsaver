@@ -119,3 +119,25 @@ def test_inspect_rejects_leaf_outside_delegated_job(tmp_path, monkeypatch):
     with pytest.raises(ValueError, match='leaf outside job'):
         batch.inspect_job(job, root=tmp_path)
     assert calls == []
+
+
+def test_review_view_joins_validated_rows_and_marks_truncation(tmp_path, monkeypatch, capsys):
+    job, calls = fixture_job(tmp_path, monkeypatch)
+    batch.inspect_job(job, root=tmp_path, show_review=True, limit=1)
+    summary = json.loads(capsys.readouterr().out)
+    assert calls == [('one', False), ('two', False)]
+    assert summary['review'] == {'shown': 1, 'total': 2, 'truncated': True,
+        'rows': [{'packet': 'one', 'number': 1, 'mart': 'mart', 'path': 'one',
+                  'title': 'one', 'decision': {'leaf': 'leaf'}}]}
+    batch.inspect_job(job, root=tmp_path, show_review=True, limit=2)
+    full = json.loads(capsys.readouterr().out)['review']
+    assert (full['shown'], full['total'], full['truncated']) == (2, 2, False)
+    assert full['rows'][1]['decision'] == {'hold': 'unclear'}
+
+
+@pytest.mark.parametrize('limit', [0, -1, 1.5, True])
+def test_review_view_rejects_invalid_limit(tmp_path, monkeypatch, limit):
+    job, calls = fixture_job(tmp_path, monkeypatch)
+    with pytest.raises(ValueError, match='Review limit must be a positive integer'):
+        batch.inspect_job(job, root=tmp_path, show_review=True, limit=limit)
+    assert calls == []

@@ -139,7 +139,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("condensed", "연유", ""),
     )),
     *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
-        ("chocolate_syrup", "초콜릿시럽", ""),
+        ("chocolate_syrup", "초콜릿시럽", ""), ("cold_noodle_broth", "냉면육수", ""),
     )),
     *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
         ("gangdoenjang", "강된장양념", ""), ("liquid_seasoning", "액상조미료", ""),

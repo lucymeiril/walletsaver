@@ -26,6 +26,36 @@ def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
 
 
+_COLD_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바"
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
+    ("오뚜기 생 쫄면 2인분 452G", "food.meals.noodles.jjolmyeon"),
+    ("씨제이 동치미 냉면육수 1인 300ML", "food.seasonings.sauces.cold_noodle_broth"),
+    ("풀무원 바로조리 생쫄면 2인분 460G", "food.meals.noodles.jjolmyeon"),
+    ("칠갑농산 냉면육수(5인분) 1500ML", "food.seasonings.sauces.cold_noodle_broth"),
+    ("오뚜기 쫄면 4인분 904G", "food.meals.noodles.jjolmyeon"),
+    ("풀무원 저당 생쫄면 2인 460G", "food.meals.noodles.jjolmyeon"),
+    ("대상 청정원 동치미 육수 1인분 300G", "food.seasonings.sauces.cold_noodle_broth"),
+    ("칠갑농산 냉천골 부드러운 생쫄면 424G", "food.meals.noodles.jjolmyeon"),
+])
+def test_reviewed_cold_noodle_form_rejects_only_wrong_retail_leaf(title, leaf):
+    result = classify_record(_raw("homeplus", _COLD_NOODLE_PATH, title))
+    assert result["unified_category_id"] == leaf
+    assert result["reviewed_rejected_path_category"] == "food.meals.noodles.naengmyeon"
+
+
+@pytest.mark.parametrize(("title", "path"), [
+    ("오뚜기 생 쫄면 2인분 452G", "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 간편국수"),
+    ("씨제이 동치미 냉면육수 1인 300ML", "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 간편국수"),
+    ("오뚜기 생 쫄면 2인분 452G + 냉면육수 세트", _COLD_NOODLE_PATH),
+])
+def test_reviewed_cold_noodle_form_does_not_cover_other_context_or_mixed_listing(title, path):
+    result = classify_record(_raw("homeplus", path, title))
+    assert result["unified_category_id"] is None
+    assert result["reviewed_rejected_path_category"] is None
+
+
 @pytest.mark.parametrize("leaf_id,path", [
     ("household.maintenance.window.screen_material", ("생활용품", "집수리", "방충망용품", "방충망보수·틈새차단재")),
     ("household.maintenance.window.screen_roller", ("생활용품", "집수리", "방충망용품", "방충망작업밀대")),

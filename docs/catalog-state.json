@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260928-pass157",
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass158",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7815,
-  "unresolved": 1381,
-  "next_task": "Next: review held Homeplus refrigerated/prepared foods24titles46observations, then tofu/kimchi/sides12titles23observations; kitchenware14titles27observations need quantity/promotion, not reclassification. residual36 reviewed26assigned10held added17products31observations; preserve proposal originals and prior holds. pass156 quantity conflict fixed by exact-title shared total-vs-pack reconciliation; parent/contract prechecks required.",
+  "included": 7831,
+  "unresolved": 1365,
+  "next_task": "Held-food workflow-smoke8 resolved through existing veto/revise-path, added8products16observations; no guard weakening or classifier call. Remaining prepared-food16title subset and kitchenware quantities next. Build reusable catalog_batch inspect compact review view to replace repeated manual joins; preserve all old holds and exact-context safety.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

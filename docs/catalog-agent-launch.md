@@ -21,6 +21,7 @@ Luna를 쓰는 모든 새 호출은 최소 `reasoning_effort=high`로 고정한�
    원본 선반명과 내부 접두사는 다르다. 음식 묶음에는 제목을 보고 `food.drinks`, `food.frozen`, `food.seasonings` 같은 교차 품목도 포함한다. 존재하지 않는 접두사나 누락 리프 때문에 생긴 보류를 모델의 분류 실패로 집계하지 않는다.
 3. 분류자는 번호별 배정/보류만, 검수자는 변경점과 입력 해시만 쓴다. 제목과 구체적 경로를 함께 판단한다.
 4. `py tools/catalog_batch.py inspect --job <job> --save <new-manifest>`로 전체 형식·해시·적용 가능성을 확인한다. manifest는 의미 검토나 승인서가 아니다.
+   부모의 원문 검토는 같은 명령에 `--review --limit <묶음 제목 수>`를 붙인다. 제목·마트경로·배정/보류를 검증 후 함께 출력하므로 별도 셸 join을 작성하지 않는다. `truncated=true`이면 전체 검토가 아니며, 한도를 늘려 누락 행을 확인한다. 이미 검토한 원문은 재출력하지 않는다.
 5. 부모 의미 검토 후 `py tools/catalog_batch.py apply --job <job> --manifest <manifest>`로 규칙을 생성한다. 원본 제안을 보존한다. 사전 검증은 전체에 적용하지만 다중 파일 쓰기는 원자적이지 않다. 중단 시 생성 파일을 확인한다.
 6. 관련 묶음의 새 리프·충돌 해결 후 preflight → 새 run-id 인증 → checkpoint. 보류만 늘린 묶음마다 인증하지 않는다.
 
