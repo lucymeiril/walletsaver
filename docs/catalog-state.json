@@ -1,12 +1,12 @@
 {
-  "baseline": ".debug-artifacts/initial-catalog-20260928-pass159",
+  "baseline": ".debug-artifacts/initial-catalog-20260928-pass160",
   "source": ".debug-artifacts/handoff-roundtrip-20260911/source-pending.sqlite",
   "source_file_sha256": "1406daf131add703d5dac0021d9c6f5194823ad59aef66bd3869f402907bf7e5",
   "protected_db": ".walletsavior/admin.sqlite",
   "protected_db_sha256": "ef1dbdae18c371ae9402202e2fee9be2396e7c9a6807f6e8e47eaded0908b0d2",
   "decisions": "handoff/2026-09-11/review-decisions-input.json",
-  "included": 7839,
-  "unresolved": 1357,
-  "next_task": "Unreviewed shelves0; continue persisted holds. Reusable revise-holds now handles certified subsets with zero candidates, preserving siblings/backups. This batch4titles8observations resolved. Remaining prepared-food conflicts/evidence and kitchenware quantity/promotion next; preserve historical ramen/dairy conflicts (10observations,7titles). Compact review view implemented, use instead of manual joins. No measured token savings.",
+  "included": 7849,
+  "unresolved": 1347,
+  "next_task": "All shelves reviewed; continue persisted holds by actionable reason, not opaque titles. pass159+160 resolved9products18observations. revise-holds supports certified missing-leaf subsets; compact inspect --review avoids manual joins. Curry7 and icing-colour unchanged: new evidence required. Next prepared-food source conflicts or kitchenware quantity/promotion; preserve historical ramen/dairy10observations. No quota savings measured.",
   "untrusted_remote_proposals": "0091915: pass45/proposals/complete-remaining-001-451.json; not DB completion"
 }

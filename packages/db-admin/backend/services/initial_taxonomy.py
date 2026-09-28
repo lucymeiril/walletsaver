@@ -144,6 +144,10 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
         ("gangdoenjang", "강된장양념", ""), ("liquid_seasoning", "액상조미료", ""),
     )),
+    *_group("food.seasonings.sauces", ("식품", "양념·소스", "조미소스"), "", (
+        ("sushi_vinegar", "초데리소스", ""), ("mulhoe", "물회소스", ""),
+        ("horseradish", "홀스래디쉬소스", ""),
+    )),
     *_group("food.seasonings.pastes", ("식품", "양념·소스", "장류"), "", (
         ("cheonggukjang", "청국장", ""),
     )),
@@ -161,6 +165,9 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "", (
         ("starch", "조리용전분", ""),
+    )),
+    *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "", (
+        ("sprinkles", "제과용스프링클", ""),
     )),
     *_group("food.seasonings.roux", ("식품", "양념·소스", "고형조리양념"), "", (
         ("curry", "고형카레", ""),

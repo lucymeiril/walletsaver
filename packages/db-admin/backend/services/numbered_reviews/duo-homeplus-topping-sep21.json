@@ -40,8 +40,8 @@
         "ingestion:74:70": "2bc7d07091c0cf8eeaebc269c81d18d802ca037472748b5447797652c162c62c"
       },
       "number": 2,
-      "leaf": null,
-      "hold_reason": "new leaf: baking sprinkles"
+      "leaf": "food.seasonings.baking.sprinkles",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -60,8 +60,8 @@
         "ingestion:74:71": "8980aaf6a16d1aca1a90ee2309ce494ae61e106becb3f76d4cca71b2494bdce0"
       },
       "number": 3,
-      "leaf": null,
-      "hold_reason": "new leaf: baking sprinkles"
+      "leaf": "food.seasonings.baking.sprinkles",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -85,5 +85,10 @@
     }
   ],
   "contract_references": [],
-  "packet_sha256": "012cbcbcbc2b0bb328fd8274a8bf5eb96cc84aa99c0cc99f98b27a690df0bce2"
+  "packet_sha256": "012cbcbcbc2b0bb328fd8274a8bf5eb96cc84aa99c0cc99f98b27a690df0bce2",
+  "revision": {
+    "previous_sha256": "6019676ee65a7671cd55958fa9f5d05c666317b6abe071b80a44366de3e5910d",
+    "baseline": ".debug-artifacts/initial-catalog-20260928-pass159",
+    "reason": "Explicit baking sprinkles in title and compatible topping shelf; icing colour and chocolate pen forms remain held"
+  }
 }

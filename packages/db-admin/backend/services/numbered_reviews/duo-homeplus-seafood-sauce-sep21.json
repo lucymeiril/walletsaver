@@ -42,8 +42,8 @@
         "ingestion:54:19": "2fac92cc3631672b86347ba0cc275cd6e2f153115409e115462da87262993be3"
       },
       "number": 2,
-      "leaf": null,
-      "hold_reason": "new leaf: sushi seasoning sauce"
+      "leaf": "food.seasonings.sauces.sushi_vinegar",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -63,8 +63,8 @@
         "ingestion:54:47": "50e26818872995a7624761faae7ce75a1e4cec550d43d38d107face430bd81c6"
       },
       "number": 3,
-      "leaf": null,
-      "hold_reason": "new leaf: mulhoe sauce"
+      "leaf": "food.seasonings.sauces.mulhoe",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -84,8 +84,8 @@
         "ingestion:54:33": "0f52f5380336d0c6c5dbf589c0c6fde1a30964946e2688f9444a6a5a4c62b530"
       },
       "number": 4,
-      "leaf": null,
-      "hold_reason": "new leaf: caper and horseradish sauce"
+      "leaf": "food.seasonings.sauces.horseradish",
+      "hold_reason": ""
     }
   ],
   "contract_references": [
@@ -97,5 +97,10 @@
       "line": 595
     }
   ],
-  "packet_sha256": "496655c214923c8f0c26764200f4b5dd6cde55228a7b62f3f5d6f6edba46b64f"
+  "packet_sha256": "496655c214923c8f0c26764200f4b5dd6cde55228a7b62f3f5d6f6edba46b64f",
+  "revision": {
+    "previous_sha256": "de66729499aa487b6b53142cfc96f422d1c0d69b8da88d66a42d0de50d76422f",
+    "baseline": ".debug-artifacts/initial-catalog-20260928-pass159",
+    "reason": "Explicit sauce form in title and compatible sauce shelf; add review-only leaves for sushi seasoning, mulhoe, and horseradish sauces; capers describes horseradish sauce flavour"
+  }
 }

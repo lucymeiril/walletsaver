@@ -29,6 +29,43 @@ def _raw(mart, path, name="검수할 상품", **extra):
 _COLD_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바"
 _BRAISE_PATH = "냉장/냉동/밀키트 > 전/볶음/국탕 > 볶음/찜/국/탕 > 볶음/찜"
 _SIMPLE_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 간편국수"
+_SEAFOOD_SAUCE_PATH = "수산물/건어물 > 간편/냉동수산물 > 수산간편식 > 소스류"
+_BAKING_TOPPING_PATH = "장류/양념/제빵 > 시럽/제빵믹스 > 토핑"
+
+
+@pytest.mark.parametrize(("title", "path", "leaf"), [
+    ("초데리소스 260G", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.sushi_vinegar"),
+    ("속초식물회소스 500G(팩)", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.mulhoe"),
+    ("케이퍼 & 홀스래디쉬 소스 60G", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.horseradish"),
+    ("브레드가든스프링클 레인보우 25G", _BAKING_TOPPING_PATH, "food.seasonings.baking.sprinkles"),
+    ("브레드가든스프링클 파스텔 미니 하트 25G", _BAKING_TOPPING_PATH, "food.seasonings.baking.sprinkles"),
+])
+def test_reviewed_sauce_and_sprinkle_forms_require_exact_context(title, path, leaf):
+    assert classify_record(_raw("homeplus", path, title))["unified_category_id"] == leaf
+    assert classify_record(_raw("homeplus", "다른 선반", title))["unified_category_id"] is None
+    assert classify_record(_raw("homeplus", path, title + " + 다른 상품 세트"))["unified_category_id"] is None
+
+
+@pytest.mark.parametrize(("leaf", "label"), [
+    ("food.seasonings.sauces.sushi_vinegar", "초데리소스"),
+    ("food.seasonings.sauces.mulhoe", "물회소스"),
+    ("food.seasonings.sauces.horseradish", "홀스래디쉬소스"),
+    ("food.seasonings.baking.sprinkles", "제과용스프링클"),
+])
+def test_reviewed_sauce_and_sprinkle_leaves_have_four_levels(leaf, label):
+    nodes = {row["id"]: row for row in taxonomy_categories({leaf})}
+    validate_taxonomy(nodes.values(), {leaf})
+    assert nodes[leaf]["name_ko"] == label
+    assert {row["unified_category_id"]: row["word"] for row in keyword_definitions({leaf})} == {leaf: label}
+
+
+@pytest.mark.parametrize(("title", "path"), [
+    ("홀스래디쉬 소스 210G", _SEAFOOD_SAUCE_PATH),
+    ("브레드가든 아이싱 칼라 56G", _BAKING_TOPPING_PATH),
+    ("오뚜기 카레 순한맛 100G", "라면/즉석식품/통조림 > 카레/짜장 > 카레/짜장/밥양념 > 카레/짜장"),
+])
+def test_neighboring_unresolved_forms_remain_pending(title, path):
+    assert classify_record(_raw("homeplus", path, title))["unified_category_id"] is None
 
 
 @pytest.mark.parametrize(("title", "path", "leaf"), [
