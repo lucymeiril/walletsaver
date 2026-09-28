@@ -27,6 +27,27 @@ def _raw(mart, path, name="검수할 상품", **extra):
 
 
 _COLD_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바"
+_BRAISE_PATH = "냉장/냉동/밀키트 > 전/볶음/국탕 > 볶음/찜/국/탕 > 볶음/찜"
+_SIMPLE_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 간편국수"
+
+
+@pytest.mark.parametrize(("title", "path", "leaf"), [
+    ("도드람 본래매운맛뼈찜 1KG", _BRAISE_PATH, "food.meals.prepared.meat_braise"),
+    ("도드람 본래간장맛뼈찜 1KG", _BRAISE_PATH, "food.meals.prepared.meat_braise"),
+    ("홈밀 돼지등뼈 김치찜 1300G", _BRAISE_PATH, "food.meals.prepared.meat_braise"),
+    ("씨제이 사천 마라탕면 2인분 434G", _SIMPLE_NOODLE_PATH, "food.meals.noodles.malatang"),
+])
+def test_reviewed_missing_food_forms_are_exact(title, path, leaf):
+    assert classify_record(_raw("homeplus", path, title))["unified_category_id"] == leaf
+
+
+@pytest.mark.parametrize(("title", "path"), [
+    ("도드람 본래매운맛뼈찜 1KG", _SIMPLE_NOODLE_PATH),
+    ("씨제이 사천 마라탕면 2인분 434G", _BRAISE_PATH),
+    ("도드람 본래매운맛뼈찜 1KG + 김치찌개 1KG", _BRAISE_PATH),
+])
+def test_reviewed_missing_food_forms_do_not_cover_wrong_context_or_mixed_title(title, path):
+    assert classify_record(_raw("homeplus", path, title))["unified_category_id"] is None
 
 
 @pytest.mark.parametrize(("title", "leaf"), [

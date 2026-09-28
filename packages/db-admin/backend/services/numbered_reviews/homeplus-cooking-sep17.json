@@ -42,8 +42,8 @@
         "ingestion:60:20": "66f04b88b7ef5c2e06bf707a2d92cff36b71dffe0ed1c1eeaa9d76339a0de91f"
       },
       "number": 2,
-      "leaf": null,
-      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+      "leaf": "food.meals.prepared.meat_braise",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -63,8 +63,8 @@
         "ingestion:60:21": "347e7f987b67c926e1a6440f9f8895db761f68ed6943f25b079619468a08c22a"
       },
       "number": 3,
-      "leaf": null,
-      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+      "leaf": "food.meals.prepared.meat_braise",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -147,10 +147,15 @@
         "ingestion:60:71": "1135a633ec3bae5d91889393767928297cf86d392a0e6aef36229f871a56d7df"
       },
       "number": 7,
-      "leaf": null,
-      "hold_reason": "뼈찜 및 김치찜 형태 리프 검토"
+      "leaf": "food.meals.prepared.meat_braise",
+      "hold_reason": ""
     }
   ],
   "contract_references": [],
-  "packet_sha256": "95e57e989466a2c6264a0341ae93a67fbc8a992f0443da81460e8d357d98bcaf"
+  "packet_sha256": "95e57e989466a2c6264a0341ae93a67fbc8a992f0443da81460e8d357d98bcaf",
+  "revision": {
+    "previous_sha256": "d160c86176ee3c9cbfb1137f9337ed9b83b6a1dffdcb8a3d1810afda84da5713",
+    "baseline": ".debug-artifacts/initial-catalog-20260928-pass158",
+    "reason": "명시 뼈찜 및 돼지등뼈 김치찜의 육류 찜 형태; 현재 분류 후보 없음; 조미소스·반찬·국탕으로 추정하지 않음"
+  }
 }

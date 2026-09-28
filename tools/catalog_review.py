@@ -153,6 +153,7 @@ def main():
     p = sub.add_parser('shelves'); p.add_argument('--mart'); p.add_argument('--contains',default=''); p.add_argument('--limit',type=int,default=20)
     p = sub.add_parser('revise-path'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--reject',required=True); p.add_argument('--reason',required=True); p.add_argument('--set',action='append',required=True)
     p.add_argument('--draft',action='store_true')
+    p = sub.add_parser('revise-holds'); p.add_argument('name'); p.add_argument('--rule-sha',required=True); p.add_argument('--reason',required=True); p.add_argument('--set',action='append',required=True)
     p = sub.add_parser('prepare'); p.add_argument('name'); p.add_argument('--mart',required=True); p.add_argument('--shelf',required=True)
     p = sub.add_parser('decide'); p.add_argument('name'); p.add_argument('--packet-sha',required=True); p.add_argument('--set',action='append',default=[]); p.add_argument('--hold',action='append',default=[])
     p = sub.add_parser('proposal'); p.add_argument('name'); p.add_argument('--proposal-sha',required=True); p.add_argument('--apply',action='store_true')
@@ -162,6 +163,7 @@ def main():
     args = parser.parse_args()
     if args.action == 'shelves': shelves(args.mart,args.contains,args.limit)
     elif args.action == 'revise-path': revise_path(args.name,args.rule_sha,args.reject,args.reason,args.set,draft=args.draft)
+    elif args.action == 'revise-holds': revise_holds(args.name,args.rule_sha,args.reason,args.set)
     elif args.action == 'prepare': prepare(args.name,args.mart,args.shelf)
     elif args.action == 'decide': decide(args.name,args.packet_sha,args.set,args.hold)
     elif args.action == 'proposal': proposal(args.name,args.proposal_sha,args.apply)
@@ -176,6 +178,61 @@ def revision_input_allowed(certified_hash, rule_sha, doc, state, draft):
     else:
         require(draft,'Revision requires currently certified rules or explicit --draft')
         require(doc.get('baseline')==state['baseline'],'Stale draft')
+
+
+def revise_holds(name, rule_sha, reason, specs, root=ROOT):
+    """Assign a subset of certified missing-leaf holds without changing path evidence."""
+    state, _, baseline, _, _ = preflight(root)
+    path = named(root, name, REVIEWS)
+    require(sha(path) == rule_sha, 'Rule file changed')
+    certificate = read(baseline/'checks-passed.json')
+    doc = read(path)
+    require(certificate['code_sha256'].get(str(path.relative_to(root))) == rule_sha,
+            'Revision requires current certified rules')
+    require(doc['source_file_sha256'] == state['source_file_sha256'], 'Source changed')
+    require(bool(reason.strip()), 'Review reason required')
+    assignments = {}
+    for spec in specs:
+        require('=' in spec, 'Expected leaf=numbers')
+        leaf, numbers = spec.split('=', 1)
+        require(bool(leaf) and bool(numbers), 'Expected leaf=numbers')
+        for token in numbers.split(','):
+            require(bool(re.fullmatch(r'[1-9][0-9]*', token)), 'Invalid number')
+            number = int(token)
+            require(number not in assignments, 'Duplicate number')
+            assignments[number] = leaf
+    require(bool(assignments), 'No selected holds')
+    sys.path[:0] = [str(root/'packages/shared'), str(root/'packages/db-admin/backend')]
+    from services.initial_taxonomy import LEAVES, classify_record
+    leaves = {leaf.id for leaf in LEAVES}
+    require(set(assignments.values()) <= leaves, 'Unknown leaf category')
+    rows = {row['number']: row for row in doc['rows']}
+    require(set(assignments) <= set(rows), 'Unknown number')
+    source = {row['raw_record_id']: row for row in read(baseline/'classification-decisions.json')}
+    for number, leaf in assignments.items():
+        row = rows[number]
+        require(row['leaf'] is None and bool(row['hold_reason']), 'Selected row is not held')
+        for rid in row['raw_record_ids']:
+            require(rid in source, 'Source row missing')
+            raw = source[rid]
+            require((raw['mart'], raw['source_path_parts'], raw['source_title']) ==
+                    (row['mart'], row['source_path_parts'], row['source_title']), 'Source context changed')
+            require(raw['unified_category_id'] is None, 'Already classified')
+            require(not raw['candidate_category_ids'] and raw['classification_reason'] == 'insufficient_leaf_evidence',
+                    'Existing category conflict or suspicion')
+        evidence = classify_record({'source_name':row['mart'], 'source_title':row['source_title'],
+                                    'source_category_path':row['source_path_parts']})
+        require(not evidence['candidate_category_ids'] and evidence['classification_reason'] == 'insufficient_leaf_evidence',
+                'Current category conflict or suspicion')
+        row['leaf'] = leaf
+        row['hold_reason'] = ''
+    backup = named(root, name+'-'+rule_sha[:12], '.debug-artifacts/review-revisions')
+    write_new(backup, read(path))
+    doc['revision'] = {'previous_sha256':rule_sha, 'baseline':state['baseline'], 'reason':reason}
+    temp = path.with_suffix('.json.tmp')
+    write_new(temp, doc)
+    temp.replace(path)
+    print(f'Revised {len(assignments)} held rules; previous version backed up; not DB-certified')
 
 
 def revise_path(name, rule_sha, rejected, reason, specs, root=ROOT, draft=False):

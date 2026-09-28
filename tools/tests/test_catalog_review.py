@@ -49,6 +49,53 @@ def test_path_revision_requires_current_certified_hash(tmp_path,monkeypatch):
         review.revise_path('sample',review.sha(path),'leaf','reason',[],tmp_path)
 
 
+def test_revise_holds_preserves_sibling_and_guards_hash_selection_conflict(tmp_path, monkeypatch):
+    baseline=tmp_path/'baseline'; baseline.mkdir()
+    state={'baseline':'baseline','source_file_sha256':'source'}
+    monkeypatch.setattr(review,'preflight',lambda root:(state,None,baseline,None,None))
+    path=review.named(tmp_path,'sample',review.REVIEWS)
+    shelf=['냉장/냉동/밀키트','전/볶음/국탕','볶음/찜/국/탕','볶음/찜']
+    source=[{'raw_record_id':'one','mart':'homeplus','source_path_parts':shelf,
+             'source_title':'검토용 육류찜 1KG','unified_category_id':None,
+             'candidate_category_ids':[],'classification_reason':'insufficient_leaf_evidence'}]
+    review.write_new(baseline/'classification-decisions.json',source)
+    original={'source_file_sha256':'source','rows':[
+        {'number':1,'mart':'homeplus','source_path_parts':shelf,'source_title':source[0]['source_title'],
+         'raw_record_ids':['one'],'source_row_sha256':{'one':review.digest(source[0])},
+         'leaf':None,'hold_reason':'missing leaf'},
+        {'number':2,'leaf':'food.meals.prepared.soup_stew','hold_reason':''}]}
+    review.write_new(path,original)
+    rule_sha=review.sha(path)
+    review.write_new(baseline/'checks-passed.json',{'code_sha256':{str(path.relative_to(tmp_path)):rule_sha}})
+    with pytest.raises(ValueError,match='Rule file changed'):
+        review.revise_holds('sample','wrong','review',['food.meals.prepared.meat_braise=1'],tmp_path)
+    for spec, message in [('food.meals.prepared.meat_braise=2','not held'),
+                          ('food.meals.prepared.meat_braise=1,1','Duplicate'),
+                          ('food.meals.prepared.meat_braise=3','Unknown number')]:
+        with pytest.raises(ValueError,match=message):
+            review.revise_holds('sample',rule_sha,'review',[spec],tmp_path)
+    source[0]['candidate_category_ids']=['food.meals.prepared.soup_stew']
+    original['rows'][0]['source_row_sha256']['one']=review.digest(source[0])
+    path.write_text(json.dumps(original),encoding='utf-8')
+    changed_sha=review.sha(path)
+    (baseline/'checks-passed.json').write_text(json.dumps({'code_sha256':{str(path.relative_to(tmp_path)):changed_sha}}))
+    (baseline/'classification-decisions.json').write_text(json.dumps(source))
+    with pytest.raises(ValueError,match='Existing category conflict'):
+        review.revise_holds('sample',changed_sha,'review',['food.meals.prepared.meat_braise=1'],tmp_path)
+    source[0]['candidate_category_ids']=[]
+    original['rows'][0]['source_row_sha256']['one']=review.digest(source[0])
+    path.write_text(json.dumps(original),encoding='utf-8')
+    rule_sha=review.sha(path)
+    (baseline/'checks-passed.json').write_text(json.dumps({'code_sha256':{str(path.relative_to(tmp_path)):rule_sha}}))
+    (baseline/'classification-decisions.json').write_text(json.dumps(source))
+    review.revise_holds('sample',rule_sha,'review',['food.meals.prepared.meat_braise=1'],tmp_path)
+    revised=review.read(path)
+    assert revised['rows'][0]['leaf']=='food.meals.prepared.meat_braise'
+    assert revised['rows'][1]==original['rows'][1]
+    backup=review.named(tmp_path,'sample-'+rule_sha[:12],'.debug-artifacts/review-revisions')
+    assert review.read(backup)==original
+
+
 def test_shelves_count_titles_exclude_reviewed_and_filter():
     def row(rid,title='same',mart='emart',leaf=None):
         return dict(raw_record_id=rid,source_title=title,mart=mart,source_path='생활용품',unified_category_id=leaf)

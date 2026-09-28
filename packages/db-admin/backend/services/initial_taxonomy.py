@@ -166,7 +166,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("curry", "고형카레", ""),
     )),
     *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "", (
-        ("meatballs", "미트볼", ""),
+        ("meatballs", "미트볼", ""), ("meat_braise", "육류찜", ""),
     )),
     *_group("food.supplements.functional", ("식품", "건강식품", "건강보조식품"), "", (
         ("banaba", "바나바잎추출물", ""),
@@ -238,7 +238,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sea_squirt", "생멍게", ""),
     )),
     *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "", (
-        ("japanese_ramen_meal", "일본식라멘조리식", ""),
+        ("japanese_ramen_meal", "일본식라멘조리식", ""), ("malatang", "마라탕면", ""),
     )),
     *_group("food.snacks.baked", ("식품", "과자·간식", "구운과자"), "", (
         ("stick", "스틱과자", ""),

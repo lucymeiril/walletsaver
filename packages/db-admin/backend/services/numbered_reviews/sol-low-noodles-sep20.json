@@ -84,8 +84,8 @@
         "ingestion:60:78": "4aba1bc787581438b73af223ba4768c15af6df9da53e9beb1a01baae72ff87a1"
       },
       "number": 4,
-      "leaf": null,
-      "hold_reason": "신규 리프 필요: 마라탕면"
+      "leaf": "food.meals.noodles.malatang",
+      "hold_reason": ""
     },
     {
       "mart": "homeplus",
@@ -131,5 +131,10 @@
     }
   ],
   "contract_references": [],
-  "packet_sha256": "3b6c6dc4b2f1e0c2636036b3cd8d7d78450ab811f19805074e109c500b529099"
+  "packet_sha256": "3b6c6dc4b2f1e0c2636036b3cd8d7d78450ab811f19805074e109c500b529099",
+  "revision": {
+    "previous_sha256": "c4f79e4e8c6a5174009cc0d013eb07918a2645c69cecef4e1234ce973d8852dd",
+    "baseline": ".debug-artifacts/initial-catalog-20260928-pass158",
+    "reason": "명시 마라탕면의 면요리 형태; 현재 분류 후보 없음; 범용 국수 추정 없이 정확 맥락만 검토"
+  }
 }
