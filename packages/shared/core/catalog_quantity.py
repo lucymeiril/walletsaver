@@ -791,7 +791,8 @@ def physical_specification_role(category_id):
     if (category.startswith('household.kitchen.drinkware.') or category in {
             'household.kitchen.cookware.kettle', 'household.kitchen.coffee.drip_kettle',
             'household.kitchen.coffee.server', 'household.kitchen.storage.stainless_container',
-            'household.kitchen.storage.food_bottle', 'household.kitchen.consumables.paper_cup'}):
+            'household.kitchen.storage.food_bottle', 'household.kitchen.consumables.paper_cup',
+            'household.cleaning.waste.bin'}):
         return 'empty_vessel_capacity'
     return None
 

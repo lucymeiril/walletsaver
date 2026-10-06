@@ -614,6 +614,8 @@ def test_physical_item_specification_keeps_independent_sold_count(title,quantity
     ('빈 종이컵473ml x 180', 473, 180, 'household.kitchen.consumables.paper_cup', 180),
     ('유리잔270+380ml 8P', 380, 1, 'household.kitchen.drinkware.glass', 8),
     ('주전자3.5L', 3500, 1, 'household.kitchen.cookware.kettle', None),
+    ('압축 휴지통10L', 10000, 1, 'household.cleaning.waste.bin', None),
+    ('압축 휴지통20L 2개', 20000, 1, 'household.cleaning.waste.bin', 2),
 ])
 def test_empty_vessel_capacity_uses_declared_primary_count_without_bundle_multiplication(title, quantity, bundle, leaf, count):
     from core.catalog_quantity import normalize_catalog_package, package_pricing_measure, valid_physical_device_variant

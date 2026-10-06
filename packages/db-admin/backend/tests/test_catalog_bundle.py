@@ -129,6 +129,7 @@ def _physical_role_bundle(category, title, quantity, unit):
 
 @pytest.mark.parametrize('category,title,quantity,unit,count,count_unit', [
     ('household.security.storage.safe','금고 40L',40000,'ml',None,None),
+    ('household.cleaning.waste.bin','압축 휴지통20L',20000,'ml',None,None),
     ('household.outdoor.bags.cooler_tote','쿨러백 16L',16000,'ml',None,None),
     ('household.bath.textiles.towel','타월 150g 1P',150,'g',1,'개'),
     ('household.bath.textiles.towel','타월 130g 5P',130,'g',5,'개'),
