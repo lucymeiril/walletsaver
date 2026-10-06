@@ -38,9 +38,17 @@ _REVIEWED_SOURCE_DISPLAYS = {
 }
 
 
+def uses_separate_measured_count_rules(title: str) -> bool:
+    return bool(_SEPARATE_MEASURED_COUNT_RE.search(unicodedata.normalize('NFKC', title)))
+
+
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
+    if uses_separate_measured_count_rules(title):
+        # Select validation, not approval: inner-content scope is checked with
+        # source fields/category below, never inferred from the two numbers.
+        return True
     if title in _REVIEWED_RESIDUAL177_PACKAGES or uses_approximate_measurement_rules(title):
         return True
     parsed = parse_package_quantity(title)
@@ -78,6 +86,117 @@ UNIT_ALIASES = {
 COUNT_UNITS = {"개입", "봉지", "인분", "세트", "마리", "회분", "구", "입", "팩", "봉", "병", "캔", "손", "매", "롤", "포", "장", "족", "통", "인", "p", "t", "모", "두", "알", "미", "포기", "단", "망", "박스", "쌍", "켤레"}
 _COUNT_UNIT_PATTERN = "(?:" + "|".join(re.escape(unit) for unit in sorted(COUNT_UNITS | {"개", "ea"}, key=len, reverse=True)) + ")"
 _COUNT_RANGE_RE = re.compile(rf"(?<![\d.])\d+(?:\.\d+)?\s*(?:{_COUNT_UNIT_PATTERN})?\s*[~～〜–—-]\s*\d+(?:\.\d+)?\s*{_COUNT_UNIT_PATTERN}", re.I)
+_SEPARATE_MEASURED_COUNT_RE = re.compile(
+    r"(?<![A-Za-z\d.,])(\d+(?:\.\d+)?)\s*(kg|g|ml|l)(?![A-Za-z])"
+    r"\s*(?:씩\s*)?(?:\(\s*)?(\d+(?:\.\d+)?)\s*"
+    r"(개입|입|개|팩|봉|병|캔|포)(?![A-Za-z가-힣\d.])", re.I,
+)
+
+
+def _separate_measured_count(payload, attrs, title, category_id):
+    """Validate an inner measure followed by an independent sold count.
+
+    A cup's source/display inner content or explicit per-pack wording supplies
+    the scope. Bare mass plus piece count may instead describe a whole bag.
+    Return a convenience-parser candidate only after all source layers agree.
+    """
+    matches = list(_SEPARATE_MEASURED_COUNT_RE.finditer(title))
+    if not matches:
+        if (category_id == 'food.meals.noodles.cup_ramen'
+            and re.search(r'컵|사발', title) and _COUNT_RANGE_RE.search(title)):
+            return None, ['count_range_unresolved']
+        return None, []
+    if (len(matches) != 1 or _COUNT_RANGE_RE.search(title)
+        or re.search(r'[+~～〜]|[x×*]\s*\d|혼합|세트|모음|콤보|선물|선택|랜덤|추가|증정|덤', title, re.I)):
+        return None, ['independent_count_scope_unresolved']
+    match = matches[0]
+    amount, unit, count = Decimal(match[1]), match[2].casefold(), Decimal(match[3])
+    if amount <= 0 or count <= 0 or count != count.to_integral_value():
+        return None, ['bundle_count_invalid']
+    count = int(count)
+    factor, canonical_unit = UNIT_ALIASES[unit]
+    inner = (amount * Decimal(str(factor)), canonical_unit)
+    total = (inner[0] * count, canonical_unit)
+    counts = re.findall(rf'(?<![\d.])\d+(?:\.\d+)?\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z가-힣\d.])', title, re.I)
+    if len(counts) != 1:
+        return None, ['independent_count_scope_unresolved']
+    per_pack = bool(re.search(r'(?:1\s*)?(?:개|팩|봉|병|캔|포|컵)당\s*$', title[:match.start()])
+                    or re.search(r'(?:kg|g|ml|l)\s*씩', match[0], re.I))
+    cup = category_id == 'food.meals.noodles.cup_ramen' and bool(re.search(r'컵|사발', title))
+    if not per_pack and (not cup or re.search(r'총\s*(?:내용량|중량|용량)?|전체|합계', title)):
+        return None, ['measured_inner_scope_unresolved']
+    layers, visited = [], set()
+    def visit(layer):
+        if not isinstance(layer, Mapping):
+            raise ValueError('invalid source layer')
+        if id(layer) in visited:
+            return
+        visited.add(id(layer)); layers.append(layer)
+        for key in ('attributes', 'attrs'):
+            if layer.get(key) is not None:
+                visit(layer[key])
+    inner_field = inner_display = False
+    try:
+        visit(payload); visit(attrs)
+        for layer in layers:
+            quantities = [layer[k] for k in ('package_quantity','pack_qty','packQty','pack_quantity','packQuantity') if layer.get(k) not in (None,'')]
+            units = [layer[k] for k in ('package_unit','pack_unit','packUnit','unitName') if layer.get(k) not in (None,'')]
+            if bool(quantities) != bool(units):
+                raise ValueError('incomplete source pair')
+            for quantity in quantities:
+                quantity = _number(quantity)
+                if quantity is None or quantity <= 0:
+                    raise ValueError('invalid source quantity')
+                for alias in units:
+                    multiplier, canonical = UNIT_ALIASES.get(_text(alias).casefold(), (1, None))
+                    pair = (quantity * Decimal(str(multiplier)), canonical)
+                    if pair not in ({inner, total} if per_pack else {inner}):
+                        raise ValueError('conflicting source quantity')
+                    inner_field |= pair == inner
+            for key in ('bundle_count','bundleCount'):
+                if layer.get(key) not in (None,'') and _number(layer[key]) not in {Decimal(1), Decimal(count)}:
+                    raise ValueError('conflicting bundle count')
+            for key in ('display_unit','unit'):
+                display = _text(layer.get(key))
+                if not display or display == title:
+                    continue
+                # A quote basis can never establish inner contents/count. A
+                # compatible quote remains offer evidence; other dimensions fail.
+                basis = re.fullmatch(r'(\d+(?:\.\d+)?)\s*(kg|g|ml|l)\s*당\s*[0-9,]+(?:\.\d+)?\s*원', display, re.I)
+                if basis:
+                    if UNIT_ALIASES[basis[2].casefold()][1] != canonical_unit:
+                        raise ValueError('incompatible price basis')
+                    continue
+                separate = list(_SEPARATE_MEASURED_COUNT_RE.finditer(display))
+                if (separate and (len(separate) != 1 or Decimal(separate[0][3]) != count)
+                    or len(re.findall(rf'(?<![\d.])\d+(?:\.\d+)?\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z가-힣\d.])', display, re.I)) > 1
+                    or re.search(r'당|기준', display)):
+                    raise ValueError('unresolved display scope')
+                parsed = parse_package_quantity(display)
+                if not parsed or _COUNT_RANGE_RE.search(display) or re.search(r'[+~～〜]', display):
+                    raise ValueError('unresolved display')
+                multiplier, canonical = UNIT_ALIASES.get(_text(parsed['package_unit']).casefold(), (1, _text(parsed['package_unit']).casefold()))
+                pair = (Decimal(str(parsed['package_quantity'])) * Decimal(str(multiplier)), canonical)
+                display_count = parsed.get('bundle_count', 1)
+                if canonical in {'개','개입','입','팩','봉','병','캔','포'}:
+                    if pair[0] != count or display_count != 1:
+                        raise ValueError('conflicting display count')
+                elif pair not in {inner, total} or display_count not in {1, count} or display_count != 1 and pair != inner:
+                    raise ValueError('conflicting measured display')
+                inner_display |= pair == inner
+            for key in ('unit_price_basis','unit_price_basis_raw','unit_price_display','unit_price_text','unit_price_unit'):
+                basis = _text(layer.get(key))
+                if not basis:
+                    continue
+                quoted = re.fullmatch(r'(?:\d+(?:\.\d+)?\s*)?(kg|g|ml|l)\s*(?:당\s*[0-9,]+(?:\.\d+)?\s*원)?', basis, re.I)
+                if not quoted or UNIT_ALIASES[quoted[1].casefold()][1] != canonical_unit:
+                    raise ValueError('unresolved price basis')
+        if not per_pack and not (inner_field and inner_display):
+            return None, ['measured_inner_scope_unresolved']
+    except (ValueError, InvalidOperation):
+        return None, ['independent_count_source_conflict']
+    return {'package_quantity': float(amount), 'package_unit': unit,
+            'bundle_count': count, 'raw_match': match[0]}, []
 
 def _text(value: Any) -> str:
     return unicodedata.normalize("NFKC", str(value or "")).strip()
@@ -1007,7 +1126,17 @@ def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, An
     if raw_count is not None and (count_number is None or count_number < 1 or count_number != count_number.to_integral_value()):
         return None, ["bundle_count_invalid"]
     display_unit = _text(_first((payload, attrs), ("display_unit", "unit")))
-    parsed_candidates = [parsed for text in (title, display_unit) if (parsed := parse_package_quantity(text))]
+    independent, independent_issues = _separate_measured_count(payload, attrs, title, category_id)
+    if independent_issues:
+        return None, independent_issues
+    parsed_candidates = ([independent] if independent else [parsed for text in (title,) if (parsed := parse_package_quantity(text))])
+    if display_unit and (display_parsed := parse_package_quantity(display_unit)):
+        parsed_candidates.append(display_parsed)
+    if independent and count_number == 1:
+        # This schema default is not another outer pack. Only this source-
+        # validated independent-count syntax may replace it; x-chains retain
+        # the existing stricter explicit bundle agreement below.
+        count_number = None
     explicit_counts = {int(parsed["bundle_count"]) for parsed in parsed_candidates if parsed.get("bundle_count")}
     if len(explicit_counts) > 1:
         issues.append("bundle_count_conflict")

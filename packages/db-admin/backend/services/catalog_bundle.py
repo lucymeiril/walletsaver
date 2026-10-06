@@ -152,6 +152,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"bundle.{key}는 object 배열이어야 합니다")
     if errors:
         return BundleValidation(False, file_hash, {}, errors=errors)
+    _decorate_catalog_metadata(session, bundle)
     counts = {key: len(bundle.get(key, [])) for key in ENTITY_KEYS}
     if bundle.get("schema_version") != SCHEMA_VERSION:
         errors.append(f"schema_version은 {SCHEMA_VERSION!r}이어야 합니다")
@@ -326,8 +327,13 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"variants[{variant_id}]의 원문 상품명 이력 계약이 올바르지 않습니다")
         interval_review = (row.get('attributes') or {}).get('count_interval_listing')
         if interval_review is not None:
+            from core.catalog_identity import reviewed_leaf_compatible
+            interval_category = products.get(product_id, {}).get('unified_category_id')
+            corrected_leaf = reviewed_leaf_compatible(
+                interval_review.get('category_id'), interval_category,
+                interval_review.get('title'), (interval_review.get('required_source') or {}).get('source_urls', []))
             if (not valid_count_interval_variant(row)
-                    or products.get(product_id, {}).get('unified_category_id') != interval_review.get('category_id')):
+                    or interval_category != interval_review.get('category_id') and not corrected_leaf):
                 errors.append(f"variants[{variant_id}]의 선언된 개수 범위 계약이 올바르지 않습니다")
             else:
                 signature = (product_id, 'declared_count_interval_v1', tuple(interval_review['count_interval']))
@@ -444,6 +450,28 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"source_listings[{listing_id}].source_title이 필요합니다")
         variant = variants.get(row.get("public_variant_id"), {})
         product = products.get(variant.get("public_product_id"), {})
+        # A later external import must not restore a discarded per-cup count.
+        # Validate the independent sold count using the same shared parser;
+        # do not silently change an imported variant ID or its saved receipts.
+        from core.catalog_quantity import uses_separate_measured_count_rules
+        effective_variant = variant
+        if not effective_variant:
+            stored_variant = session.get(NormalizedProductVariant, row.get('public_variant_id'))
+            if stored_variant is not None:
+                effective_variant = {key: getattr(stored_variant, key) for key in (
+                    'public_product_id', 'package_quantity', 'package_unit', 'bundle_count',
+                    'display_unit', 'attributes')}
+        effective_product = products.get(effective_variant.get('public_product_id'), {})
+        category = effective_product.get('unified_category_id', existing_product_categories.get(
+            effective_variant.get('public_product_id')))
+        if (category == 'food.meals.noodles.cup_ramen'
+                and uses_separate_measured_count_rules(_text(row.get('source_title')))):
+            parsed, issues = normalize_catalog_package(
+                effective_variant, effective_variant.get('attributes') or {}, row['source_title'], category_id=category)
+            fields = ('package_quantity', 'package_unit', 'bundle_count')
+            if (not parsed or issues or tuple(parsed.get(key) for key in fields)
+                    != tuple(effective_variant.get(key, 1 if key == 'bundle_count' else None) for key in fields)):
+                errors.append(f"source_listings[{listing_id}]의 독립 판매개수/내용량 규격이 원문과 다릅니다")
         from core.reviewed_source_evidence import (source_parent_selection, source_outer_set_count,
                                                    source_nonexact_contents_specification, source_entitlement_specification, source_partial_retail_specification)
         if (source_parent_selection(variant) or source_outer_set_count(variant)
@@ -631,8 +659,46 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
     )
 
 
+def _decorate_catalog_metadata(session: Session, bundle: dict) -> None:
+    """Same reviewed source/group/category/keyword rules for every import."""
+    from core.catalog_identity import reviewed_product_fields, with_category_keywords
+    if not bundle.get('products'):
+        return
+    categories = {row.id: {'id': row.id, 'parent_id': row.parent_id}
+                  for row in session.execute(select(UnifiedCategory)).scalars()}
+    categories.update({row['id']: row for row in bundle.get('categories', []) if 'id' in row})
+    keywords = {row.word: {'word': row.word, 'is_active': row.is_active, 'unified_category_id': row.unified_category_id}
+                for row in session.execute(select(Keyword)).scalars()}
+    keywords.update({row['word']: row for row in bundle.get('keywords', []) if 'word' in row})
+    variants = dict(session.execute(select(NormalizedProductVariant.public_variant_id,
+                                            NormalizedProductVariant.public_product_id)).all())
+    variants.update({row['public_variant_id']: row.get('public_product_id') for row in bundle.get('variants', [])})
+    listings = {row.public_source_listing_id: {field: getattr(row, field) for field in (
+        'public_variant_id', 'source_name', 'source_record_key', 'source_title', 'source_url')}
+        for row in session.execute(select(NormalizedSourceListing)).scalars()}
+    listings.update({row['public_source_listing_id']: row for row in bundle.get('source_listings', [])})
+    by_product: dict[str, list] = {}
+    for row in listings.values():
+        by_product.setdefault(variants.get(row.get('public_variant_id')), []).append(row)
+    for row in bundle['products']:
+        # Do not turn malformed external JSON strings into valid word arrays
+        # before the original type validator can reject them.
+        if any(field in row and row[field] is not None and (
+                not isinstance(row[field], list) or any(not isinstance(word, str) for word in row[field]))
+               for field in ('aliases', 'keywords')):
+            continue
+        if row.get('attributes') is not None and not isinstance(row['attributes'], Mapping):
+            continue
+        if not isinstance(row.get('unified_category_id'), str):
+            continue
+        updated = reviewed_product_fields(row, by_product.get(row.get('public_product_id'), []))
+        updated = with_category_keywords(updated, list(categories.values()), list(keywords.values()))
+        row.update(updated)
+
+
 def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, user: str) -> dict[str, Any]:
     bundle = {**{key: [] for key in ENTITY_KEYS}, **bundle}
+    _decorate_catalog_metadata(session, bundle)
     validation = validate_bundle(session, bundle, file_hash)
     if not validation.ok:
         raise ValueError("catalog bundle validation failed: " + "; ".join(validation.errors[:10]))
@@ -822,6 +888,21 @@ def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, us
         obj.source = "external-ai"
         obj.notes = _optional_text(row.get("notes")) or f"bundle:{file_hash[:12]}"
         applied["match_rules"] += 1
+
+    # Category-linked keywords are shared search/matching concepts. They do
+    # not weaken source/name/spec matching or replace any target IDs.
+    from core.catalog_identity import keyword_ids_for_category
+    categories = [{'id': row.id, 'parent_id': row.parent_id} for row in session.execute(select(UnifiedCategory)).scalars()]
+    keywords = [{'id': row.id, 'is_active': row.is_active, 'unified_category_id': row.unified_category_id}
+                for row in session.execute(select(Keyword)).scalars()]
+    affected = {row['public_product_id'] for row in bundle['products']} | {row['public_product_id'] for row in bundle['match_rules']}
+    if affected:
+        product_categories = dict(session.execute(select(
+            NormalizedCanonicalProduct.public_product_id, NormalizedCanonicalProduct.unified_category_id
+        ).where(NormalizedCanonicalProduct.public_product_id.in_(affected))).all())
+        for rule in session.execute(select(MatchingEntry).where(MatchingEntry.public_product_id.in_(affected))).scalars():
+            if rule.source != 'human':
+                rule.keyword_ids = keyword_ids_for_category(product_categories.get(rule.public_product_id), categories, keywords)
 
     # Preserve the old ID/specification for audit and saved account references,
     # but do not present an unreferenced corrected specification as a sale option.

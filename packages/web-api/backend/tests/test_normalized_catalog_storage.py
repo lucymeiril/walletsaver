@@ -665,3 +665,115 @@ def test_measured_food_physical_companion_keeps_known_content_without_homogeneou
     assert variant['attributes']['source_components'] == components
     rejected = PublicCatalogStore._normalized_offer(event, {**variant, 'attributes': {}})
     assert rejected['quantity_basis'] is rejected['scalar_basis'] is rejected['received_package_count_scope'] is None
+
+
+@pytest.fixture
+def scoped_group_catalog(tmp_path, monkeypatch):
+    import core.catalog_identity as identity
+    path = tmp_path / 'scoped-group.sqlite'
+    review = {'key': 'reviewed-milk', 'canonical_product_id': 'milk-a',
+              'member_product_ids': ['milk-a', 'milk-b'], 'canonical_name': '같은 우유',
+              'brand': '검토브랜드', 'review_version': 'reviewed_catalog_groups_v1'}
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: {'groups': [{**review, 'leaf': 'food.milk'}]})
+    with sqlite3.connect(path) as db:
+        db.executescript('''
+        CREATE TABLE unified_categories(id TEXT PRIMARY KEY,parent_id TEXT,name_ko TEXT,sort_order INTEGER);
+        CREATE TABLE normalized_canonical_products(public_product_id TEXT PRIMARY KEY,unified_category_id TEXT,
+            canonical_name TEXT,brand TEXT,aliases TEXT,keywords TEXT,attributes TEXT,primary_image_url TEXT,is_active INTEGER);
+        CREATE TABLE normalized_product_variants(public_variant_id TEXT PRIMARY KEY,public_product_id TEXT,
+            variant_name TEXT,package_quantity REAL,package_unit TEXT,bundle_count INTEGER,display_unit TEXT,attributes TEXT,is_active INTEGER);
+        CREATE TABLE normalized_source_listings(public_source_listing_id TEXT PRIMARY KEY,public_variant_id TEXT,
+            source_name TEXT,source_record_key TEXT,source_title TEXT,source_url TEXT,image_url TEXT,source_unit_text TEXT,is_active INTEGER);
+        CREATE TABLE normalized_offer_events(public_offer_event_id TEXT PRIMARY KEY,public_source_listing_id TEXT,
+            price REAL,price_state TEXT,promotion_type TEXT,offer_state TEXT,crawled_at TEXT,raw_evidence TEXT);
+        CREATE TABLE keywords(id INTEGER,word TEXT,synonyms TEXT,is_active INTEGER,unified_category_id TEXT);
+        ''')
+        db.executemany('INSERT INTO unified_categories VALUES(?,?,?,0)', [
+            ('food', None, '식품'), ('food.milk', 'food', '우유'), ('food.snack', 'food', '과자')])
+        for key, category, name, aliases, attrs, active in [
+            ('milk-a', 'food.milk', '첫 상품', ['원문 별칭%'], {'catalog_group': review}, 1),
+            ('milk-b', 'food.milk', '다른 원문', [], {'catalog_group': review}, 1),
+            ('snack', 'food.snack', '밀크 과자', [], {}, 1),
+            ('hidden', 'food.milk', '숨긴 우유', [], {}, 0)]:
+            db.execute('INSERT INTO normalized_canonical_products VALUES(?,?,?,?,?,?,?,?,?)',
+                (key, category, name, '브랜드', json.dumps(aliases), '[]', json.dumps(attrs), None, active))
+        for key in ('milk-a', 'milk-b'):
+            db.execute('INSERT INTO normalized_product_variants VALUES(?,?,?,?,?,?,?,?,?)',
+                ('var-' + key, key, '200ml', 200, 'ml', 1, '200ml', '{}', 1))
+            db.execute('INSERT INTO normalized_source_listings VALUES(?,?,?,?,?,?,?,?,?)',
+                ('listing-' + key, 'var-' + key, 'homeplus', key, key + ' 200ml', 'https://example.test/' + key, None, '200ml', 1))
+            for number, price, state in [(1, 2000, 'active'), (2, 1800, 'pending_review' if key == 'milk-a' else 'active')]:
+                db.execute('INSERT INTO normalized_offer_events VALUES(?,?,?,?,?,?,?,?)',
+                    (key + '-event-' + str(number), 'listing-' + key, price, 'normal', 'final_price', state,
+                     '2026-10-0' + str(number) + 'T00:00:00Z', '{}'))
+        db.executemany('INSERT INTO keywords VALUES(?,?,?,?,?)', [
+            (1, '우유', json.dumps(json.dumps(['밀크'], ensure_ascii=True)), 1, 'food.milk'),
+            (2, '과자', json.dumps(['밀크']), 0, 'food.snack'),
+            (3, '오염', json.dumps(['공통검색']), 1, None),
+            (4, '미등록', json.dumps(['잘못된검색']), 1, 'missing'),
+            (5, '객체', json.dumps({'alias': '객체검색'}), 1, 'food.snack')])
+    return path
+
+
+@pytest.mark.parametrize('query,category,expected', [
+    ('밀크', None, ['milk-a']), ('우유', 'food', ['milk-a']), ('밀크 과자', None, ['snack']),
+    ('밀크', 'food.snack', []), ('공통검색', None, []), ('잘못된검색', None, []),
+    ('객체검색', None, []), ('원문 별칭%', None, ['milk-a']), ('다른 원문', None, ['milk-a']),
+    ('%', None, ['milk-a']), ('브랜드', None, ['milk-a', 'snack']),
+])
+def test_scoped_synonym_alias_search_groups_before_paging(scoped_group_catalog, query, category, expected):
+    store = PublicCatalogStore(scoped_group_catalog)
+    rows, total = store.search_normalized_products_page(query, category=category, per_page=1)
+    assert total == len(expected)
+    assert [row['id'] for row in rows] == expected[:1]
+    if total > 1:
+        second, _ = store.search_normalized_products_page(query, category=category, page=2, per_page=1)
+        assert [row['id'] for row in second] == expected[1:]
+
+
+def test_group_detail_preserves_requested_id_selected_variants_and_full_history(scoped_group_catalog, monkeypatch):
+    store = PublicCatalogStore(scoped_group_catalog)
+    calls = []
+    original = PublicCatalogStore._normalized_offer
+    def counted(event, *args, **kwargs):
+        calls.append(event['public_offer_event_id'])
+        return original(event, *args, **kwargs)
+    monkeypatch.setattr(PublicCatalogStore, '_normalized_offer', staticmethod(counted))
+    rows, total = store.search_normalized_products_page('밀크')
+    assert total == 1 and len(calls) == 2
+    assert set(calls) == {'milk-a-event-2', 'milk-b-event-2'}
+    assert rows[0]['best_offer']['id'] == 'milk-b-event-2'
+    assert rows[0]['cur'] == 1800  # No fallback to milk-a's earlier eligible event.
+    calls.clear()
+    detail = store.get_normalized_product_detail('milk-b')
+    assert detail['id'] == detail['public_product_id'] == 'milk-b'
+    assert detail['canonical_public_product_id'] == 'milk-a'
+    assert detail['group_member_product_ids'] == ['milk-a', 'milk-b']
+    assert detail['name'] == '같은 우유' and len(calls) == 4
+    assert {v['id'] for v in detail['variants']} == {'var-milk-a', 'var-milk-b'}
+    assert all(v['package_quantity'] == 200 for v in detail['variants'])
+    assert all(len(v['listings'][0]['offers']) == 2 for v in detail['variants'])
+
+
+@pytest.mark.parametrize('mutation', ['nonreciprocal', 'unregistered', 'wrong_leaf', 'malformed', 'inactive_canonical'])
+def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_catalog, mutation):
+    with sqlite3.connect(scoped_group_catalog) as db:
+        if mutation == 'nonreciprocal':
+            db.execute("UPDATE normalized_canonical_products SET attributes='{}' WHERE public_product_id='milk-b'")
+        elif mutation == 'unregistered':
+            rows = db.execute("SELECT public_product_id,attributes FROM normalized_canonical_products WHERE public_product_id LIKE 'milk-%'").fetchall()
+            for key, text in rows:
+                attrs = json.loads(text)
+                attrs['catalog_group']['key'] = 'invented'
+                db.execute('UPDATE normalized_canonical_products SET attributes=? WHERE public_product_id=?', (json.dumps(attrs), key))
+        elif mutation == 'wrong_leaf':
+            db.execute("UPDATE normalized_canonical_products SET unified_category_id='food.snack' WHERE public_product_id LIKE 'milk-%'")
+        elif mutation == 'malformed':
+            db.execute("UPDATE normalized_canonical_products SET attributes='null' WHERE public_product_id='milk-b'")
+        else:
+            db.execute("UPDATE normalized_canonical_products SET is_active=0 WHERE public_product_id='milk-a'")
+    store = PublicCatalogStore(scoped_group_catalog)
+    rows, total = store.search_normalized_products_page('브랜드')
+    expected = 2 if mutation == 'inactive_canonical' else 3
+    assert total == len(rows) == expected
+    assert all(row['group_member_product_ids'] == [row['id']] for row in rows)

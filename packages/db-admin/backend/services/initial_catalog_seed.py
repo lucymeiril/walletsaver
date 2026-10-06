@@ -453,11 +453,15 @@ def build_initial_catalog_bundle(
             attrs = payload.get('attributes') or {}
             attrs = attrs if isinstance(attrs, Mapping) else {}
             package, issues = _package(payload, attrs, row['source_title'], category_id=category_id)
+            measured_scope = ('measured_inner_scope_unresolved' in row['issues']
+                              and category_id == 'food.meals.noodles.cup_ramen')
             if (package and 'physical_device_specification' in package.get('attributes', {})
-                    or any(issue.startswith(('physical_device_', 'unit_service_')) for issue in issues)):
+                    or any(issue.startswith(('physical_device_', 'unit_service_')) for issue in issues)
+                    or measured_scope):
                 row['package'] = package
                 row['issues'] = [issue for issue in row['issues'] if not issue.startswith(
-                    ('unit_', 'bundle_', 'mixed_package_', 'multiple_package_', 'count_range_', 'bulk_package_'))] + issues
+                    ('unit_', 'bundle_', 'mixed_package_', 'multiple_package_', 'count_range_', 'bulk_package_'))
+                    and issue != 'measured_inner_scope_unresolved'] + issues
     bundle: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION, "builder_version": BUILDER_VERSION, "run_id": run_id,
         "source_ingestion_ids": sorted({row["ingestion_id"] for row in rows}),
@@ -918,6 +922,17 @@ def build_initial_catalog_bundle(
         bundle["match_rules"].append(rule)
     bundle["products"] = [products[key] for key in sorted(products)]
     bundle["variants"] = [variants[key] for key in sorted(variants)]
+    # Reviewed browsing groups preserve source/variant/event IDs. Formal
+    # imports consume this same explicit registry, never text similarity.
+    from core.catalog_identity import reviewed_product_fields, with_category_keywords
+    variant_products = {row['public_variant_id']: row['public_product_id'] for row in bundle['variants']}
+    listings_by_product = defaultdict(list)
+    for listing in bundle['source_listings']:
+        listings_by_product[variant_products.get(listing['public_variant_id'])].append(listing)
+    for index, product in enumerate(bundle['products']):
+        product = reviewed_product_fields(product, listings_by_product[product['public_product_id']])
+        product = with_category_keywords(product, category_rows, bundle['keywords'])
+        bundle['products'][index] = product
     bundle["week_buckets"] = [weeks[key] for key in sorted(weeks)]
     bundle["unresolved"].sort(key=lambda row: (row["ingestion_id"], row["item_index"]))
     bundle["observation_accounting"].sort(key=lambda row: row["raw_record_id"])

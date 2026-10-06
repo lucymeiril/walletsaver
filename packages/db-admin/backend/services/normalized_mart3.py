@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from core.promotion_semantics import PriceState, PromotionPriceFacts, PromotionType
+from core.catalog_identity import reviewed_product_fields
 from services.name_normalize import normalize_match_text, normalize_package_signature
 from storage.models import (
     Category,
@@ -205,6 +206,27 @@ def publish_mart3_rows(
             package_signature,
             projection_version,
         )
+        source_contexts = session.execute(select(
+            NormalizedSourceListing.source_name, NormalizedSourceListing.source_record_key,
+            NormalizedSourceListing.source_title, NormalizedSourceListing.source_url,
+        ).join(NormalizedProductVariant).where(
+            NormalizedProductVariant.public_product_id == product.public_product_id,
+        )).mappings().all()
+        reviewed = reviewed_product_fields({
+            "public_product_id": product.public_product_id,
+            "unified_category_id": product.unified_category_id,
+            "aliases": product.aliases, "attributes": product.attributes,
+        }, source_contexts)
+        product.aliases = reviewed["aliases"] if "aliases" in reviewed else product.aliases
+        product.attributes = reviewed["attributes"]
+        product.unified_category_id = reviewed["unified_category_id"]
+        from core.catalog_identity import with_category_keywords
+        from storage.models import Keyword
+        decorated = with_category_keywords({**reviewed, 'keywords': product.keywords},
+            [{'id': category.id, 'parent_id': category.parent_id} for category in session.execute(select(UnifiedCategory)).scalars()],
+            [{'word': keyword.word, 'is_active': keyword.is_active, 'unified_category_id': keyword.unified_category_id}
+             for keyword in session.execute(select(Keyword)).scalars()])
+        product.keywords, product.attributes = decorated['keywords'], decorated['attributes']
         offer = _upsert_offer_event(session, row, listing, projection_version)
         week = _upsert_week_bucket(session, row, projection_version)
         link = session.get(
@@ -287,6 +309,9 @@ def _upsert_product(
         session.add(product)
         session.flush()
         return product
+    data["attributes"] = {**(product.attributes if isinstance(product.attributes, dict) else {}), **data["attributes"]}
+    data["aliases"] = sorted({alias for alias in _list(product.aliases) + data["aliases"] if isinstance(alias, str)})
+    data["keywords"] = sorted({word for word in _list(product.keywords) + data["keywords"] if isinstance(word, str)})
     for key, value in data.items():
         setattr(product, key, value)
     if not product.primary_image_url and row.get("image_url"):
@@ -383,6 +408,19 @@ def _upsert_offer_event(
     projection_version: str,
 ) -> NormalizedOfferEvent:
     facts = _price_facts(row)
+    source_stamp = row.get("crawled_at")
+    if isinstance(source_stamp, str):
+        try:
+            source_stamp = datetime.fromisoformat(source_stamp.replace("Z", "+00:00"))
+        except ValueError:
+            source_stamp = None
+    if not isinstance(source_stamp, datetime):
+        raise ValueError("offer source observation timestamp missing")
+    if not row.get("public_offer_event_id") and source_stamp.tzinfo is None:
+        raise ValueError("offer source observation timestamp must be timezone-aware")
+    # Time belongs to the historical observation identity, never product/spec
+    # matching. Different offset spellings of the same instant replay one event.
+    observed_at = _parse_datetime(source_stamp)
     event_id = row.get("public_offer_event_id") or _stable_id(
         "offer",
         listing.public_source_listing_id,
@@ -394,6 +432,7 @@ def _upsert_offer_event(
         row.get("event_name") or "",
         _datetime_key(row.get("valid_from")),
         _datetime_key(row.get("valid_to")),
+        observed_at.isoformat(),
     )
     offer = session.get(NormalizedOfferEvent, event_id)
     data = {
@@ -411,7 +450,7 @@ def _upsert_offer_event(
         "raw_record_id": row.get("raw_record_id"),
         "raw_evidence": row.get("raw_evidence") if isinstance(row.get("raw_evidence"), dict) else {},
         "audit_provenance": row.get("audit_provenance") if isinstance(row.get("audit_provenance"), dict) else {},
-        "crawled_at": _parse_datetime(row.get("crawled_at")) or datetime.utcnow(),
+        "crawled_at": observed_at,
         "offer_state": row.get("offer_state") or "active",
         "projection_version": projection_version,
     }
@@ -548,11 +587,11 @@ def _positive_float_or_none(value: Any) -> float | None:
 
 def _parse_datetime(value: Any) -> datetime | None:
     if isinstance(value, datetime):
-        return value.replace(tzinfo=None)
+        return value.astimezone(timezone.utc).replace(tzinfo=None) if value.tzinfo is not None else value
     if not isinstance(value, str) or not value.strip():
         return None
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00")).replace(tzinfo=None)
+        return _parse_datetime(datetime.fromisoformat(value.replace("Z", "+00:00")))
     except ValueError:
         return None
 

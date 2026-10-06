@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_revision": 69,
-  "version": "2026-10-06-catalog69-hotdeal271",
+  "catalog_revision": 72,
+  "version": "2026-10-06-catalog72-groups272",
   "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update69 with unchanged public catalog/fuel; 7actual external source posts and their conditions are separately restored; accounts/sessions empty. Historical catalog source_code_base is unchanged, new feed/installer source hashes listed separately.",
+  "data_scope": "Sanitized catalog/admin-update72 and consistent publicsnapshot:22reviewedlogicalgroups retain55oldIDs,3lemonleaf corrections, active category-keyword links and actual101g×6 correction; all9115 event/quote/raw/time IDs retained, externalhotdeal7 unchanged; accounts/sessions empty. Historical certificate remains historical.",
   "files": {
     "admin.sqlite": {
-      "sha256": "c9e41b1e9d53f7c3eba1be688c9bc62da6be8a03efaa40b6be86c02722ce82a6",
-      "bytes": 61435904,
+      "sha256": "a6f027121de279cb0048008aeeaa301a2197cdea3722884a13735265f889d6da",
+      "bytes": 61816832,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -46,7 +46,7 @@
       ],
       "counts": {
         "normalized_canonical_products": 6308,
-        "normalized_product_variants": 6370,
+        "normalized_product_variants": 6371,
         "normalized_source_listings": 6458,
         "normalized_offer_events": 9115,
         "normalized_week_buckets": 3,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 46,
+        "catalog_sync_log": 47,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "9d3794cae6f938f930ce4e3eca3f08c157a5d9e3f25dc6733aae4a8f3a3258fd",
-      "archive_bytes": 8662421
+      "archive_sha256": "3bdeade646100caee3bd7da4387ffdd745c707f908cf039ef5a4c486d760b3eb",
+      "archive_bytes": 8806195
     },
     "public_snapshot.sqlite": {
-      "sha256": "a505759038976068dcc0d390b67433191839fe7cb177baf37576944862aa589d",
-      "bytes": 57073664,
+      "sha256": "e13a1f5cde0cb8f788c7ea47d638766294a44fabe6068820c5755fcc17061654",
+      "bytes": 57425920,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -97,7 +97,7 @@
       ],
       "counts": {
         "normalized_canonical_products": 6308,
-        "normalized_product_variants": 6370,
+        "normalized_product_variants": 6371,
         "normalized_source_listings": 6458,
         "normalized_offer_events": 8803,
         "normalized_week_buckets": 3,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "9efe195c19e21f518ede13a63bb115800a8bb6cb66c9b1dcab92ae435594c551",
-      "archive_bytes": 8018556
+      "archive_sha256": "878b5a646b1fa7e51e3122cfa90b47051c4258ab7344d5377dc3d09a299af430",
+      "archive_bytes": 8157891
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -162,5 +162,15 @@
     "packages/web-api/backend/services/external_hotdeal_storage.py": "e0fc9067097f0bb0a4ec16455cfa10fd0698d38561d72ea49365e2544a34aeda",
     "packages/shared/core/models.py": "ec8e54c8e7881f2ceef9e877de99fae8f8ea5ff0d0c542a336390bde7d3681ba",
     "tools/install_demo_catalog.py": "69926ad6ec0cda79c6bf9c0b870b16f34e87b11eee90ef06dda1e56e9b0b0ea4"
+  },
+  "reviewed_group_source_files": {
+    "packages/shared/core/catalog_identity.py": "5f22244c53237977f8a07bb8ffe141da1cf643b0cfefb9142895a84581738e26",
+    "packages/shared/core/reviewed_catalog_groups.json": "8b91b4929c7e406b7bc340c54ba55bb1fb0497228a68297b66c73f97878c078b",
+    "packages/shared/core/catalog_quantity.py": "f9128e692db8a09569db62cd1cc0c5e80d221e8a42046280a147dee531589b15",
+    "packages/shared/core/catalog_matching.py": "749534314bebf4039372e3afefcccb426d2c4a108e5828cd29fa1905ed493294",
+    "packages/db-admin/backend/services/catalog_bundle.py": "d3afa5c741e3da2ee5898f1c878dbdb3e2ff6360619cccfe80f0143e75d4cc76",
+    "packages/db-admin/backend/services/initial_catalog_seed.py": "faa731609e18d04acd924d08de82585e72bc2bfe4fdc74a53260cf96bc07b7a0",
+    "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
+    "packages/web-api/backend/services/catalog_storage.py": "07e76b7822d4f74a59e862755dd926ec9697470aa672f15160fa5c1985754b2b"
   }
 }

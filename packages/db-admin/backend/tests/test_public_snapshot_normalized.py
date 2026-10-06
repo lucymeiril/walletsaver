@@ -520,3 +520,65 @@ def test_normalized_management_readonly_auth_and_bounded_filters(normalized_mana
     assert empty['items'] == [] and empty['total'] == empty['total_pages'] == 0
     # The editable legacy namespace still reports its actual empty tables.
     assert client.get('/api/prices/').json()['total'] == 0
+
+
+def test_fallback_offer_identity_uses_source_instant_not_product_price_identity(matched_offer_source):
+    from services.normalized_mart3 import _upsert_offer_event
+    engine, source = matched_offer_source
+    with Session(engine) as session, session.begin():
+        listing = session.get(NormalizedSourceListing, 'listing-approved')
+        row = {'price': 2000, 'promotion_type': 'final_price', 'crawled_at': '2026-10-01T08:00:00Z'}
+        first = _upsert_offer_event(session, row, listing, 'mart3-v1')
+        replay = _upsert_offer_event(session, {**row, 'crawled_at': '2026-10-01T17:00:00+09:00'}, listing, 'mart3-v1')
+        later = _upsert_offer_event(session, {**row, 'crawled_at': '2026-10-08T08:00:00Z'}, listing, 'mart3-v1')
+        changed = _upsert_offer_event(session, {**row, 'price': 2100}, listing, 'mart3-v1')
+        assert first.public_offer_event_id == replay.public_offer_event_id
+        assert len({first.public_offer_event_id, later.public_offer_event_id, changed.public_offer_event_id}) == 3
+        assert first.crawled_at == datetime(2026, 10, 1, 8) and later.crawled_at == datetime(2026, 10, 8, 8)
+        assert [first.price, later.price, changed.price] == [2000, 2000, 2100]
+        assert all(offer.public_source_listing_id == listing.public_source_listing_id for offer in (first, later, changed))
+        explicit = _upsert_offer_event(session, {**row, 'public_offer_event_id': 'historical-id',
+            'crawled_at': datetime(2026, 9, 1, 8)}, listing, 'mart3-v1')
+        assert explicit.public_offer_event_id == 'historical-id' and explicit.crawled_at == datetime(2026, 9, 1, 8)
+        for unknown in (None, 'invalid', '2026-10-01T08:00:00'):
+            with pytest.raises(ValueError, match='source observation timestamp'):
+                _upsert_offer_event(session, {**row, 'crawled_at': unknown}, listing, 'mart3-v1')
+        assert session.execute(text('SELECT COUNT(*) FROM normalized_offer_events')).scalar_one() == 4
+
+
+def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_alias(matched_offer_source, monkeypatch):
+    import core.catalog_identity as identity
+    from copy import deepcopy
+    from services.normalized_mart3 import publish_mart3_rows
+    engine, source = matched_offer_source
+    group = {'key': 'approved-coffee', 'canonical_product_id': 'prod-approved',
+             'member_product_ids': ['prod-approved', 'other-member'], 'canonical_name': '검토된 공통 커피',
+             'brand': '승인브랜드', 'review_version': 'reviewed_catalog_groups_v1', 'leaf': 'food.coffee',
+             'bindings': {'prod-approved': [{'source_name': 'costco', 'source_record_key': '111',
+                                           'source_titles': [source['source_title']], 'source_urls': [source['source_url']]}]}}
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: {'groups': [group]})
+    with Session(engine) as session, session.begin():
+        session.add(UnifiedCategory(id='food.coffee', slug='coffee', name_ko='커피', level=3))
+        product = session.get(NormalizedCanonicalProduct, 'prod-approved')
+        product.attributes = {'classification_warning': True, 'reviewed_metadata': {'kept': 1}}
+        product.aliases = ['기존 별칭']
+        variant = session.get(NormalizedProductVariant, 'var-approved')
+        original_spec = deepcopy(variant.attributes)
+        row = {**source, 'canonical_name': product.canonical_name, 'brand': product.brand,
+               'price': 2000, 'public_source_listing_id': 'listing-approved',
+               'unified_category_id': 'food.coffee', 'promotion_type': 'final_price'}
+        first = publish_mart3_rows(session, [row])[0]
+        second = publish_mart3_rows(session, [{**row, 'crawled_at': '2026-10-08T08:00:00Z'}])[0]
+        assert first['public_product_id'] == second['public_product_id'] == 'prod-approved'
+        assert first['public_variant_id'] == second['public_variant_id'] == 'var-approved'
+        assert first['public_source_listing_id'] == second['public_source_listing_id'] == 'listing-approved'
+        assert first['public_offer_event_id'] != second['public_offer_event_id']
+        assert product.canonical_name == '검토된 커피'
+        assert product.aliases == ['검토된 공통 커피', '기존 별칭']
+        assert product.attributes['catalog_group']['key'] == 'approved-coffee'
+        assert product.attributes['classification_warning'] is True
+        assert product.attributes['reviewed_metadata'] == {'kept': 1}
+        assert variant.attributes == original_spec
+        publish_mart3_rows(session, [{**row, 'source_title': '잘못된 상품', 'crawled_at': '2026-10-09T08:00:00Z'}])
+        assert 'catalog_group' not in product.attributes
+        assert product.attributes['reviewed_metadata'] == {'kept': 1}

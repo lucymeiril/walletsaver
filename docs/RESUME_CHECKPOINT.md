@@ -1,4 +1,6 @@
-# 재개점 — initial-catalog-20260928-pass160
+# Historical checkpoint — initial-catalog-20260928-pass160
+
+Current team-demo source/data/startup is documented in [CAPSTONE_RUNBOOK](CAPSTONE_RUNBOOK.md) and `demo-data/manifest.json`. The following preserved checkpoint is historical.
 
 - 인증 사본: `.debug-artifacts/initial-catalog-20260928-pass160/checks-passed.json`; 운영 DB 미적용·공개 미승인.
 - 적재 7849, 미해결 1347; 상품군 5220, 판매 페이지 5370.

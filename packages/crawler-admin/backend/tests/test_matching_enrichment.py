@@ -1566,3 +1566,96 @@ def test_selectable_parent_never_exports_as_a_fixed_child_even_with_a_stored_mat
             assert result['matching_status'] == 'miss' and exported != 'hit'
     finally:
         reset_db_admin_engine()
+
+
+@pytest.mark.parametrize('mutation', ['original', 'price_only', 'price_absent', 'wrong_native', 'wrong_title', 'wrong_quantity', 'wrong_count', 'wrong_display'])
+def test_actual_homeplus_cup_inner_measure_and_separate_count_match_and_export(tmp_path, mutation):
+    import json
+    # Exact pinned Homeplus127938195 ingestion71:21 source payload. Its 101g
+    # declaration is inner cup content; literal6입 is sold count, not one cup.
+    original = {'attributes': {'brand': '농심',
+                'canon_hash': '0ec3999c003d0d1bc52b8d8dc056c84c0a519ba6',
+                'canonical_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'category_hint': '컵라면',
+                'docId': 'H127938195N37O0',
+                'external_seller': False,
+                'legacy_detail_url': 'https://mfront.homeplus.co.kr/p/%EB%86%8D%EC%8B%AC-%EC%8B%A0%EB%9D%BC%EB%A9%B4-%EB%B8%94%EB%9E%99-%EC%82%AC%EB%B0%9C%EB%A9%B4101G-6%EC%9E%85/127938195',
+                'mart_native_category_id': '16',
+                'mart_native_category_path': '라면/즉석식품/통조림 > 라면/수입면류 > 컵라면 > 컵라면',
+                'mart_native_code': '127938195',
+                'normalized_name': '농심 신라면 블랙 사발면101G 6입',
+                'permanent_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'raw_name': '농심 신라면 블랙 사발면101G 6입',
+                'source': 'homeplus',
+                'source_name': 'homeplus',
+                'source_record_key': '127938195',
+                'source_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'storeType': 'HYPER',
+                'unit_price_basis_raw': '100G',
+                'unit_price_displayed': 1584.0},
+ 'brand': '__no_brand__',
+ 'category': '컵라면',
+ 'crawled_at': '2026-09-02T22:39:30.951033',
+ 'detail_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+ 'discount_percent': None,
+ 'display_unit': '101g',
+ 'event_name': '홈플러스 할인',
+ 'image_url': '',
+ 'match_key': '__no_brand__|농심 신라면 블랙 사발면101g 6입||101g',
+ 'matching_miss_reason': 'key_not_found',
+ 'matching_status': 'miss',
+ 'name': '농심 신라면 블랙 사발면101G 6입',
+ 'normalized_name': '농심 신라면 블랙 사발면101G 6입',
+ 'original_price': None,
+ 'package_quantity': 101.0,
+ 'package_unit': 'g',
+ 'price_per_100g': 9504.95,
+ 'promo_label': None,
+ 'promo_type': None,
+ 'sale_price': 9600,
+ 'source': 'homeplus',
+ 'store': '홈플러스',
+ 'unit': '101g',
+ 'unit_price_display': '',
+ 'valid_from': None,
+ 'valid_until': None}
+    public_product_id = 'prod-2c82a5b3e1a444ca26a637ec4c52655c'
+    public_variant_id = 'var-8cebdd1b260e36b2555700cb0eb26a2e'
+    engine = _engine(tmp_path)
+    key = _seed_source_scoped_match(engine, original, quantity=101, unit='g', count=6)
+    with engine.begin() as connection:
+        connection.execute(text('UPDATE normalized_canonical_products SET public_product_id=:pid, canonical_name=:name, brand=:brand, unified_category_id=:leaf'),
+                           {'pid':public_product_id, 'name':original['name'], 'brand':'농심', 'leaf':'food.meals.noodles.cup_ramen'})
+        connection.execute(text('UPDATE normalized_product_variants SET public_product_id=:pid, public_variant_id=:vid'),
+                           {'pid':public_product_id, 'vid':public_variant_id})
+        connection.execute(text('UPDATE matching_entries SET public_product_id=:pid, public_variant_id=:vid'),
+                           {'pid':public_product_id, 'vid':public_variant_id})
+        connection.execute(text('ALTER TABLE normalized_product_variants ADD COLUMN attributes TEXT'))
+        connection.execute(text('UPDATE normalized_product_variants SET attributes=:attrs'),
+                           {'attrs':json.dumps({'specification_basis':'source_structured_and_explicit_text'})})
+        connection.execute(text('CREATE TABLE normalized_source_listings (public_variant_id TEXT, source_name TEXT, source_record_key TEXT, source_title TEXT, source_url TEXT, is_active BOOLEAN)'))
+        connection.execute(text('INSERT INTO normalized_source_listings VALUES (:vid, :source, :native, :title, :url, 1)'),
+                           {'vid':public_variant_id, 'source':'homeplus', 'native':'127938195', 'title':original['name'], 'url':original['detail_url']})
+    row = deepcopy(original)
+    if mutation == 'price_only': row['sale_price'] = 12300
+    elif mutation == 'price_absent': row['sale_price'] = None
+    elif mutation == 'wrong_native': row['attributes']['source_record_key'] = '127938196'
+    elif mutation == 'wrong_title': row['name'] = '농심 신라면 블랙 사발면101G 5입'
+    elif mutation == 'wrong_quantity': row['package_quantity'] = 102
+    elif mutation == 'wrong_count': row['bundle_count'] = 5
+    elif mutation == 'wrong_display': row['display_unit'] = '101g×5'
+    valid = mutation in {'original', 'price_only', 'price_absent'}
+    reset_db_admin_engine(engine)
+    try:
+        result = enrich_items_with_matching_entries([deepcopy(row)])[0]
+        assert (result['matching_status'] == 'hit') == valid
+        assert result['sale_price'] == row['sale_price']
+        if valid:
+            assert result['public_product_id'] == public_product_id
+            assert result['public_variant_id'] == public_variant_id
+            assert result.get('unified_category_id') == 'food.meals.noodles.cup_ramen'
+        with Session(engine) as session:
+            assert (lookup_row_match_statuses(session, [(row, key)])[0] == 'hit') == valid
+    finally:
+        reset_db_admin_engine()
+        engine.dispose()

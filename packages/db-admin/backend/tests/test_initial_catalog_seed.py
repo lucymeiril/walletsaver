@@ -1560,6 +1560,87 @@ def test_structured_total_and_compact_title_bundle_recover_per_package_boundary(
     assert bundle["offers"][0]["standard_unit_price"] == pytest.approx(3333.3333)
 
 
+@pytest.mark.parametrize('default_count', [None, 1, 6])
+def test_separate_cup_measure_and_sold_count_preserve_source_inner_contents(default_count):
+    from core.catalog_quantity import normalize_catalog_package, uses_reviewed_quantity_rules
+    title = '농심 신라면 블랙 사발면101G 6입'
+    # Original Homeplus127938195 fields:101g is inner cup content, with a
+    # separate literal6입. A schema default1 is not a second outer factor.
+    raw = {'package_quantity':101, 'package_unit':'g', 'display_unit':'101g',
+           'unit':'101g', 'attributes':{'unit_price_basis_raw':'100G'}}
+    if default_count is not None:
+        raw['bundle_count'] = default_count
+    before = deepcopy(raw)
+    assert uses_reviewed_quantity_rules(title)
+    outputs = [normalize_catalog_package({**raw, 'sale_price':quote}, raw['attributes'], title,
+               category_id='food.meals.noodles.cup_ramen') for quote in (9600, 12300)]
+    assert outputs[0] == outputs[1]
+    package, issues = outputs[0]
+    assert issues == []
+    assert (package['package_quantity'],package['package_unit'],package['bundle_count']) == (101,'g',6)
+    assert raw == before
+
+
+@pytest.mark.parametrize('title,quantity,unit,display,expected', [
+    ('시험음료 병당100ml 6병',100,'ml','100ml',(100,'ml',6)),
+    ('시험식품 개당101g 6입',606,'g','606g',(101,'g',6)),
+    ('시험식품 101g씩 6입',101,'g','101g×6',(101,'g',6)),
+    ('시험식품 개당101g 6입',101,'g','6입',(101,'g',6)),
+])
+def test_separate_count_explicit_per_pack_scope_preserves_total_without_repeating_count(title,quantity,unit,display,expected):
+    from core.catalog_quantity import normalize_catalog_package
+    package, issues = normalize_catalog_package(
+        {'package_quantity':quantity,'package_unit':unit,'display_unit':display}, {}, title)
+    assert issues == []
+    assert (package['package_quantity'],package['package_unit'],package['bundle_count']) == expected
+
+
+@pytest.mark.parametrize('change,attrs,title,leaf', [
+    ({'bundle_count':2},{},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{'bundleCount':2},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{'pack_qty':606,'pack_unit':'g'},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({'display_unit':'101g×2'},{},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({'display_unit':'101g 5입'},{},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({'display_unit':'606g×6'},{},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({'display_unit':'100g 당 1584원','unit':''},{},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{'unit_price_basis_raw':'1개'},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{'unit_price_basis_raw':'100ml'},'농심 신라면 블랙 사발면101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6입',None),
+    ({},{},'시험식품101G 6입','food.meals.noodles.cup_ramen'),
+    ({'package_quantity':600,'display_unit':'600g','unit':'600g'},{},'시험식품600g5입',None),
+    ({},{},'농심 신라면 블랙 사발면 총101G 6입','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6입×2팩','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6입 2팩','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6입+1입','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6입 혼합세트','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 6.5입','food.meals.noodles.cup_ramen'),
+    ({},{},'농심 신라면 블랙 사발면101G 5~6입','food.meals.noodles.cup_ramen'),
+])
+def test_separate_measured_count_conflicts_and_ambiguous_scope_stay_held(change,attrs,title,leaf):
+    from core.catalog_quantity import normalize_catalog_package
+    raw = {'package_quantity':101,'package_unit':'g','display_unit':'101g','unit':'101g',**change}
+    package, issues = normalize_catalog_package(raw, attrs, title, category_id=leaf)
+    assert package is None and issues
+
+
+@pytest.mark.parametrize('title', ['시험컵101g 6호','시험컵101g 모델6','시험컵101g 6Brix'])
+def test_grade_and_model_numbers_are_not_separate_sold_counts(title):
+    from core.catalog_quantity import normalize_catalog_package
+    package, issues = normalize_catalog_package(
+        {'package_quantity':101,'package_unit':'g','display_unit':'101g'}, {}, title,
+        category_id='food.meals.noodles.cup_ramen')
+    assert issues == [] and package['bundle_count'] == 1
+
+
+def test_separate_count_never_materializes_approximate_mass_as_inner_contents():
+    from core.catalog_quantity import normalize_catalog_package
+    package, issues = normalize_catalog_package(
+        {'package_quantity':101,'package_unit':'g','display_unit':'101g'}, {},
+        '시험사발면101g 내외 6입', category_id='food.meals.noodles.cup_ramen')
+    assert issues == []
+    assert (package['package_quantity'],package['package_unit'],package['bundle_count']) == (6,'개',1)
+
+
 @pytest.mark.parametrize(("title", "quantity", "unit"), [
     ("맑은청 찰토마토 7~10입/팩", 10, "입"),
     ("토마토 7입~10입/팩", 10, "입"),
@@ -2301,4 +2382,86 @@ def test_original_hierarchy_is_loaded_with_later_conflict_held_in_offers(monkeyp
         stripped = deepcopy(bundle)
         stripped['variants'][0]['attributes'].pop('explicit_listing_quantity_review')
         assert not validate_bundle(session,stripped,'stripped-original-history').ok
+    engine.dispose()
+
+
+def test_actual_homeplus_cup_builder_and_formal_listing_guard_preserve_product_identity():
+    from services.initial_taxonomy import taxonomy_categories
+    from services.catalog_bundle import apply_bundle
+    from storage.models import NormalizedProductVariant
+    # Pinned original Homeplus127938195 ingestion71:21 payload, selected only.
+    raw = {'attributes': {'brand': '농심',
+                'canon_hash': '0ec3999c003d0d1bc52b8d8dc056c84c0a519ba6',
+                'canonical_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'category_hint': '컵라면',
+                'docId': 'H127938195N37O0',
+                'external_seller': False,
+                'legacy_detail_url': 'https://mfront.homeplus.co.kr/p/%EB%86%8D%EC%8B%AC-%EC%8B%A0%EB%9D%BC%EB%A9%B4-%EB%B8%94%EB%9E%99-%EC%82%AC%EB%B0%9C%EB%A9%B4101G-6%EC%9E%85/127938195',
+                'mart_native_category_id': '16',
+                'mart_native_category_path': '라면/즉석식품/통조림 > 라면/수입면류 > 컵라면 > 컵라면',
+                'mart_native_code': '127938195',
+                'normalized_name': '농심 신라면 블랙 사발면101G 6입',
+                'permanent_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'raw_name': '농심 신라면 블랙 사발면101G 6입',
+                'source': 'homeplus',
+                'source_name': 'homeplus',
+                'source_record_key': '127938195',
+                'source_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+                'storeType': 'HYPER',
+                'unit_price_basis_raw': '100G',
+                'unit_price_displayed': 1584.0},
+ 'brand': '__no_brand__',
+ 'category': '컵라면',
+ 'crawled_at': '2026-09-02T22:39:30.951033',
+ 'detail_url': 'https://mfront.homeplus.co.kr/item?itemNo=127938195&storeType=HYPER',
+ 'discount_percent': None,
+ 'display_unit': '101g',
+ 'event_name': '홈플러스 할인',
+ 'image_url': '',
+ 'match_key': '__no_brand__|농심 신라면 블랙 사발면101g 6입||101g',
+ 'matching_miss_reason': 'key_not_found',
+ 'matching_status': 'miss',
+ 'name': '농심 신라면 블랙 사발면101G 6입',
+ 'normalized_name': '농심 신라면 블랙 사발면101G 6입',
+ 'original_price': None,
+ 'package_quantity': 101.0,
+ 'package_unit': 'g',
+ 'price_per_100g': 9504.95,
+ 'promo_label': None,
+ 'promo_type': None,
+ 'sale_price': 9600,
+ 'source': 'homeplus',
+ 'store': '홈플러스',
+ 'unit': '101g',
+ 'unit_price_display': '',
+ 'valid_from': None,
+ 'valid_until': None}
+    leaf = 'food.meals.noodles.cup_ramen'
+    bundle = build_initial_catalog_bundle([ingestion(71, [raw])], categories=taxonomy_categories([leaf]),
+        assignments={('homeplus', '127938195'): assignment(unified_category_id=leaf)}, run_id='actual-cup-count-boundary')
+    assert bundle['unresolved'] == []
+    assert bundle['products'][0]['public_product_id'] == 'prod-2c82a5b3e1a444ca26a637ec4c52655c'
+    variant = bundle['variants'][0]
+    assert variant['public_variant_id'] == 'var-8cebdd1b260e36b2555700cb0eb26a2e'
+    assert variant['public_variant_id'] != 'var-68327a307c884a3f8ae63e3e64151a9e'
+    assert (variant['package_quantity'], variant['package_unit'], variant['bundle_count']) == (101, 'g', 6)
+    assert bundle['offers'][0]['price'] == raw['sale_price'] == 9600
+    engine = create_engine('sqlite:///:memory:')
+    Base.metadata.create_all(engine)
+    with Session(engine) as session:
+        assert validate_bundle(session, bundle, 'correct-six').ok
+        bad = deepcopy(bundle)
+        bad['variants'][0]['bundle_count'] = 1
+        assert not validate_bundle(session, bad, 'wrong-single').ok
+        apply_bundle(session, bundle, 'correct-six', user='test')
+        stored = session.get(NormalizedProductVariant, variant['public_variant_id'])
+        stored.bundle_count = 1
+        session.flush()
+        listing_only = deepcopy(bundle)
+        for field in ('categories', 'products', 'variants', 'offers', 'match_rules', 'keywords'):
+            listing_only[field] = []
+        assert not validate_bundle(session, listing_only, 'listing-only-stale').ok
+        stored.bundle_count = 6
+        session.flush()
+        assert validate_bundle(session, listing_only, 'listing-only-six').ok
     engine.dispose()

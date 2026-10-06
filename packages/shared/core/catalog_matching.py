@@ -123,7 +123,7 @@ def _source_package(row: dict[str, Any], category_id: str | None = None) -> tupl
         if any(issue.startswith("unit_service_") for issue in issues):
             return None, "normalized_variant_conflict"
     if uses_reviewed_component_rules(title) or uses_reviewed_residual_quantity_rules(title) or uses_approximate_measurement_rules(title):
-        package, issues = normalize_catalog_package(row, {}, title)
+        package, issues = normalize_catalog_package(row, {}, title, category_id=category_id)
         if not package or issues:
             return None, 'normalized_variant_conflict'
         canonical = _package_identity(package['package_quantity'], package['package_unit'])
@@ -132,7 +132,7 @@ def _source_package(row: dict[str, Any], category_id: str | None = None) -> tupl
     units = [layer[key] for layer in layers for key in _UNIT_KEYS if layer.get(key) not in (None, "")]
     if not quantities or not units:
         if reviewed_quantity:
-            package, issues = normalize_catalog_package(row, attrs, title)
+            package, issues = normalize_catalog_package(row, attrs, title, category_id=category_id)
             if package and not issues:
                 canonical = _package_identity(package['package_quantity'], package['package_unit'])
                 return (*canonical, package['bundle_count']), None
@@ -172,7 +172,7 @@ def _source_package(row: dict[str, Any], category_id: str | None = None) -> tupl
             return None, 'normalized_variant_conflict'
         # The shared validator must see original purchased-count units too
         # (e.g. 개입). Canonicalize its verified result, not its source evidence.
-        package, issues = normalize_catalog_package(row, attrs, title)
+        package, issues = normalize_catalog_package(row, attrs, title, category_id=category_id)
         if not package or issues:
             return None, 'normalized_variant_conflict'
         expected = (package['package_quantity'], package['package_unit'], package['bundle_count'])
@@ -180,7 +180,7 @@ def _source_package(row: dict[str, Any], category_id: str | None = None) -> tupl
             for field in ('display_unit', 'unit'):
                 value = layer.get(field)
                 if value and parse_package_quantity(str(value)):
-                    candidate, conflicts = normalize_catalog_package({**row, 'display_unit': value}, attrs, title)
+                    candidate, conflicts = normalize_catalog_package({**row, 'display_unit': value}, attrs, title, category_id=category_id)
                     if not candidate or conflicts or (candidate['package_quantity'], candidate['package_unit'], candidate['bundle_count']) != expected:
                         return None, 'normalized_variant_conflict'
         canonical = _package_identity(package['package_quantity'], package['package_unit'])
@@ -416,7 +416,7 @@ def _normalized_source_reason(row: dict[str, Any], key: str, entry: dict[str, An
         target_components = component_signature(variant)
         source_components = None
         if uses_reviewed_component_rules(title):
-            normalized_source, issues = normalize_catalog_package(row, {}, title)
+            normalized_source, issues = normalize_catalog_package(row, {}, title, category_id=category_id)
             if not normalized_source or issues:
                 return 'normalized_variant_conflict'
             source_components = component_signature(normalized_source)

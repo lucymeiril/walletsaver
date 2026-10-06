@@ -6,6 +6,7 @@ import hashlib
 import os
 import sqlite3
 import math
+from collections.abc import Mapping
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -13,6 +14,7 @@ from pathlib import Path
 from core.promotion_semantics import comparable_transaction_or_none, confirmed_price_or_none
 from core.reviewed_source_evidence import valid_linear_contents_variant, valid_source_component_variant, package_comparison_reason
 from core.catalog_quantity import normalize_catalog_package, canonical_components, package_pricing_measure
+from core.catalog_identity import attributes_of, validated_group_members
 
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
@@ -231,33 +233,91 @@ class PublicCatalogStore:
         """Search the four-level normalized catalog SSOT."""
         page = max(1, int(page))
         per_page = max(1, min(int(per_page), self.MAX_RESULT_LIMIT))
-        clauses = ["p.is_active=1"]
-        params: list[object] = []
-        query = str(query or "").strip()
-        if query:
-            escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
-            clauses.append("(LOWER(p.canonical_name) LIKE LOWER(?) ESCAPE '\\' OR LOWER(COALESCE(p.brand,'')) LIKE LOWER(?) ESCAPE '\\')")
-            params.extend([f"%{escaped}%", f"%{escaped}%"])
-        category = str(category or "").strip()
-        if category:
-            clauses.append(
-                "p.unified_category_id IN (WITH RECURSIVE tree(id) AS ("
-                "SELECT id FROM unified_categories WHERE id=? UNION ALL "
-                "SELECT c.id FROM unified_categories c JOIN tree t ON c.parent_id=t.id"
-                ") SELECT id FROM tree)"
-            )
-            params.append(category)
-        where = " AND ".join(clauses)
         with self.connection() as connection:
-            total = int(connection.execute(
-                f"SELECT COUNT(*) FROM normalized_canonical_products p WHERE {where}", tuple(params)
-            ).fetchone()[0])
+            clauses = ["p.is_active=1"]
+            params: list[object] = []
+            categories = self._unified_rows(connection)
+            query = str(query or "").strip()
+            if query:
+                escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+                names = ("LOWER(p.canonical_name) LIKE LOWER(?) ESCAPE '\\' OR "
+                         "LOWER(COALESCE(p.brand,'')) LIKE LOWER(?) ESCAPE '\\' OR "
+                         "EXISTS (SELECT 1 FROM json_each(CASE WHEN json_valid(p.aliases) "
+                         "THEN CASE WHEN json_type(p.aliases)='array' THEN p.aliases ELSE '[]' END "
+                         "ELSE '[]' END) a WHERE a.type='text' AND LOWER(a.value) LIKE LOWER(?) ESCAPE '\\')")
+                scope = self._keyword_search_scope(connection, query, categories)
+                if scope:
+                    # An exact registered concept searches its category scope.
+                    # A snack whose title mentions milk is not a milk product.
+                    names = "p.unified_category_id IN (" + ",".join("?" for _ in scope) + ")"
+                    params.extend(sorted(scope))
+                else:
+                    params.extend([f"%{escaped}%"] * 3)
+                clauses.append("(" + names + ")")
+            category = str(category or "").strip()
+            if category:
+                descendants = self._descendants(categories, category)
+                clauses.append("p.unified_category_id IN (" + ",".join("?" for _ in descendants) + ")")
+                params.extend(sorted(descendants))
+            # Resolve reviewed groups before paging, using product metadata only.
+            # Events/history are projected only for the selected page.
             rows = connection.execute(
-                f"SELECT p.* FROM normalized_canonical_products p WHERE {where} "
-                "ORDER BY p.canonical_name COLLATE NOCASE, p.public_product_id LIMIT ? OFFSET ?",
-                (*params, per_page, (page - 1) * per_page),
+                "SELECT p.public_product_id, p.unified_category_id, p.canonical_name, p.attributes, p.is_active "
+                "FROM normalized_canonical_products p WHERE " + " AND ".join(clauses), params,
             ).fetchall()
-            return [self._normalized_product(connection, row, include_all=False) for row in rows], total
+            cache = {row["public_product_id"]: dict(row) for row in rows}
+            representatives = {}
+            for row in rows:
+                members, canonical = self._catalog_group(connection, dict(row), cache)
+                representative = self._product_lookup(connection, canonical, cache)
+                review = attributes_of(representative).get("catalog_group")
+                name = review["canonical_name"] if len(members) > 1 else representative["canonical_name"]
+                representatives[canonical] = (name, members)
+            ordered = sorted(representatives, key=lambda key: (representatives[key][0].casefold(), key))
+            selected = ordered[(page - 1) * per_page:page * per_page]
+            payloads = []
+            for key in selected:
+                full = connection.execute("SELECT * FROM normalized_canonical_products WHERE public_product_id=?", (key,)).fetchone()
+                payloads.append(self._normalized_product(connection, full, include_all=False,
+                                                        group_member_ids=representatives[key][1]))
+            return payloads, len(ordered)
+
+    def _keyword_search_scope(self, connection, query, categories) -> set[str]:
+        if not self._table(connection, "keywords"):
+            return set()
+        columns = {row[1] for row in connection.execute("PRAGMA table_info(keywords)")}
+        if not {"word", "synonyms", "is_active", "unified_category_id"}.issubset(columns):
+            return set()
+        known = {row["id"] for row in categories}
+        scope = set()
+        for row in connection.execute("SELECT word, synonyms, unified_category_id FROM keywords WHERE is_active=1"):
+            synonyms = _json(row["synonyms"], [])
+            # Older JSON columns sometimes contain a JSON-encoded array string.
+            # Decode that data layer once; never interpret arbitrary backslashes.
+            if isinstance(synonyms, str):
+                synonyms = _json(synonyms, [])
+            terms = [row["word"]] + (synonyms if isinstance(synonyms, list) else [])
+            if row["unified_category_id"] in known and any(
+                    isinstance(term, str) and term.strip().casefold() == query.casefold() for term in terms):
+                scope.update(self._descendants(categories, row["unified_category_id"]))
+        return scope
+
+    @staticmethod
+    def _product_lookup(connection, product_id, cache):
+        if product_id not in cache:
+            row = connection.execute("SELECT * FROM normalized_canonical_products WHERE public_product_id=?", (product_id,)).fetchone()
+            cache[product_id] = dict(row) if row else None
+        return cache[product_id]
+
+    def _catalog_group(self, connection, product, cache):
+        if not isinstance(attributes_of(product).get("catalog_group"), Mapping):
+            return (product["public_product_id"],), product["public_product_id"]
+        members = validated_group_members(product, lambda key: self._product_lookup(connection, key, cache))
+        if len(members) > 1:
+            canonical = attributes_of(product)["catalog_group"]["canonical_product_id"]
+            if self._product_lookup(connection, canonical, cache).get("is_active"):
+                return members, canonical
+        return (product["public_product_id"],), product["public_product_id"]
 
     def get_normalized_product_detail(self, public_product_id: str) -> dict | None:
         with self.connection() as connection:
@@ -267,9 +327,13 @@ class PublicCatalogStore:
             ).fetchone()
             return self._normalized_product(connection, row, include_all=True) if row else None
 
-    def _normalized_product(self, connection, product_row, *, include_all: bool) -> dict:
+    def _normalized_product(self, connection, product_row, *, include_all: bool, group_member_ids=None) -> dict:
         product = dict(product_row)
+        members, canonical = self._catalog_group(connection, product, {})
+        members = group_member_ids if group_member_ids is not None else members
         attributes = _json(product.get("attributes"), {})
+        attributes = attributes if isinstance(attributes, dict) else {}
+        group_review = attributes.get("catalog_group") if len(members) > 1 else None
         category = connection.execute(
             "SELECT name_ko FROM unified_categories WHERE id=?",
             (product.get("unified_category_id"),),
@@ -277,9 +341,9 @@ class PublicCatalogStore:
         variants_payload: list[dict] = []
         comparable_offers: list[dict] = []
         variants = connection.execute(
-            "SELECT * FROM normalized_product_variants WHERE public_product_id=? AND is_active=1 "
+            "SELECT * FROM normalized_product_variants WHERE public_product_id IN (" + ",".join("?" for _ in members) + ") AND is_active=1 "
             "ORDER BY public_variant_id",
-            (product["public_product_id"],),
+            tuple(members),
         ).fetchall()
         for variant_row in variants:
             variant = dict(variant_row)
@@ -302,7 +366,7 @@ class PublicCatalogStore:
                 events_payload = []
                 events = connection.execute(
                     "SELECT * FROM normalized_offer_events WHERE public_source_listing_id=? "
-                    "ORDER BY crawled_at DESC, public_offer_event_id DESC",
+                    "ORDER BY crawled_at DESC, public_offer_event_id DESC" + ("" if include_all else " LIMIT 1"),
                     (listing["public_source_listing_id"],),
                 ).fetchall()
                 for event_row in events:
@@ -355,8 +419,10 @@ class PublicCatalogStore:
         return {
             "id": product["public_product_id"],
             "public_product_id": product["public_product_id"],
-            "name": product["canonical_name"],
-            "brand": product.get("brand") or "",
+            "canonical_public_product_id": canonical,
+            "group_member_product_ids": list(members),
+            "name": group_review["canonical_name"] if group_review else product["canonical_name"],
+            "brand": (group_review.get("brand") or "") if group_review else (product.get("brand") or ""),
             "category_id": product.get("unified_category_id") or "",
             "cat": str(category["name_ko"] if category else ""),
             "img": product.get("primary_image_url") or "",

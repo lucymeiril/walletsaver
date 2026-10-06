@@ -601,7 +601,7 @@ def test_product_bundle_serialization_and_reimport_preserve_classification_and_k
     current = session.get(NormalizedCanonicalProduct, original['products'][0]['public_product_id'])
     before = deepcopy(current.attributes)
     exported = json.loads(json.dumps(product_bundle_row(current)))
-    assert exported['aliases'] == ['원래 이름'] and exported['keywords'] == ['초코']
+    assert exported['aliases'] == ['원래 이름'] and exported['keywords'] == ['초코', '초코우유']
     assert exported['classification_confidence'] == 0.79 and exported['review_status'] == 'approved'
     # Normalized model JSON stores these fields in attributes. Both official
     # serialization and that persisted representation retain the same review.
@@ -610,7 +610,7 @@ def test_product_bundle_serialization_and_reimport_preserve_classification_and_k
     incoming['products'] = [exported]
     assert validate_bundle(session, incoming, 'metadata-roundtrip').ok
     apply_bundle(session, incoming, 'metadata-roundtrip', user='tester')
-    assert current.attributes == before and current.keywords == ['초코'] and current.aliases == ['원래 이름']
+    assert current.attributes == before and current.keywords == ['초코', '초코우유'] and current.aliases == ['원래 이름']
     for field in ('keywords', 'aliases'):
         bad = deepcopy(incoming)
         bad['products'][0][field] = json.dumps(exported[field])
@@ -1738,3 +1738,25 @@ def test_captured_quote_review_rejects_wrong_receipt_or_payment_claim(source, ch
     assert not validation.ok
     assert session.get(NormalizedOfferEvent, original['offers'][0]['public_offer_event_id']).offer_state == 'pending_review'
     session.close()
+
+
+def test_formal_import_connects_only_active_category_keywords_and_preserves_targets():
+    session = _session()
+    bundle = _bundle()
+    bundle['keywords'].append({'word': '우유', 'unified_category_id': 'food.dairy.milk', 'synonyms': []})
+    bundle['products'][0]['keywords'] = ['원문 전용 검색어']
+    apply_bundle(session, bundle, 'keyword-link-initial', user='synthetic-moderator')
+    product = session.get(NormalizedCanonicalProduct, 'prod-chocoemong')
+    rule = session.execute(select(MatchingEntry)).scalar_one()
+    target = (rule.public_product_id, rule.public_variant_id, rule.match_key)
+    ids = {keyword.word: keyword.id for keyword in session.execute(select(Keyword)).scalars()}
+    assert product.keywords == ['우유', '원문 전용 검색어', '초코우유']
+    assert rule.keyword_ids == sorted(ids.values())
+    changed = deepcopy(bundle)
+    changed['products'][0] = __import__('services.catalog_bundle', fromlist=['product_bundle_row']).product_bundle_row(product)
+    changed['keywords'][0]['is_active'] = False
+    apply_bundle(session, changed, 'keyword-deactivated', user='synthetic-moderator')
+    assert product.keywords == ['우유', '원문 전용 검색어']
+    assert rule.keyword_ids == [ids['우유']]
+    assert (rule.public_product_id, rule.public_variant_id, rule.match_key) == target
+    assert apply_bundle(session, changed, 'keyword-deactivated', user='synthetic-moderator')['idempotent'] is True
