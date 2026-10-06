@@ -8,7 +8,7 @@ import { searchService } from '../../services/searchService';
 import { getVariantBestOffer, getPriceHistorySummary, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../../utils/productDecision';
 import useStore from '../../stores/appStore';
 import useCartStore from '../../stores/cartStore';
-import { buildCartPayload, selectProductOffer } from '../../utils/productActions';
+import { buildCartPayload, selectProductOffer, getProductSelection } from '../../utils/productActions';
 import useModalStore from '../../stores/modalStore';
 import useDebounce from '../../hooks/useDebounce';
 import useAbortController from '../../hooks/useAbortController';
@@ -32,12 +32,22 @@ export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
+  const { openMartModal, openHotdealModal, openProductModal, openProductDetailModal } = useModalStore();
   const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToast } = useStore();
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [productData, setProductData] = useState(null);
+  const [detailError, setDetailError] = useState(null);
+  const sharedSelection = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const keys = ['variant', 'listing', 'offer'];
+    const present = keys.some(key => params.has(key));
+    const valid = keys.every(key => params.getAll(key).length === 1
+      && params.get(key)?.trim() && params.get(key).length <= 200);
+    return { present, valid, selection: { variantId: params.get('variant'),
+      listingId: params.get('listing'), offerId: params.get('offer') } };
+  }, [location.search]);
   const [allChartData, setChartData] = useState([]);
   const [selectedListingId, setSelectedListingId] = useState(null);
   const addCartItem = useCartStore(st => st.addItem);
@@ -88,6 +98,7 @@ export default function PricePage() {
     }
     const controller = new AbortController();
     setProductData(null);
+    setDetailError(null);
     setLoading(true);
     fetch(`/api/products/${encodeURIComponent(id)}`, { signal: controller.signal }).then(async r => {
       const response = await r.json();
@@ -98,6 +109,7 @@ export default function PricePage() {
       .catch(err => {
         if (err.name === 'AbortError') return;
         console.error(err);
+        setDetailError(err.message);
         addToast('상품 정보를 불러오는데 실패했습니다', 'error');
       })
       .finally(() => setLoading(false));
@@ -268,6 +280,14 @@ export default function PricePage() {
 
   // 상품 상세 — 속성 변형은 DB에서 조회
   const variants = productData?.variants || [];
+  const sharedChoice = sharedSelection.present && sharedSelection.valid && productData && String(productData.id) === id
+    ? getProductSelection(productData, sharedSelection.selection) : null;
+  useEffect(() => {
+    if (!sharedChoice || String(productData.id) !== id) return;
+    setVariantIdx(productData.variants.findIndex(variant => variant.id === sharedChoice.variant.id));
+    setSelectedListingId(sharedChoice.listing.id);
+    openProductDetailModal(selectProductOffer(productData, sharedSelection.selection));
+  }, [productData, id, sharedSelection, openProductDetailModal]);
   const activeVariant = variants[variantIdx] || null;
   const normalizedCatalog = Boolean(product?.public_product_id);
   const variantBest = normalizedCatalog ? getVariantBestOffer(activeVariant) : null;
@@ -389,6 +409,14 @@ export default function PricePage() {
   }, [categories, products]);
 
   // --- Early returns (after all hooks) ---
+  if (sharedSelection.present) {
+    const error = !sharedSelection.valid ? '공유 링크의 규격·판매처·관측 정보가 불완전합니다'
+      : detailError || (productData && !sharedChoice
+        ? '공유된 규격·판매처·관측을 확인할 수 없습니다. 다른 거래로 자동 변경하지 않았습니다' : null);
+    if (error) return <div role="alert"><p>{error}</p>
+      <button onClick={() => navigate(`/price/${encodeURIComponent(id)}`, { replace: true })}>상품 다시 선택</button></div>;
+    if (!productData) return <div style={{ padding: '4rem 0' }}><Spinner size="lg" /></div>;
+  }
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
   }

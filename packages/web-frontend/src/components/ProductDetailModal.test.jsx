@@ -10,7 +10,7 @@ import useCartStore from '../stores/cartStore';
 import ShoppingListPanel from './common/ShoppingListPanel';
 import useModalStore from '../stores/modalStore';
 import { getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText } from '../utils/productDecision';
-import { buildCartPayload, buildWishlistPayload, selectProductOffer, normalizeProduct } from '../utils/productActions';
+import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct } from '../utils/productActions';
 
 vi.mock('recharts', () => ({ ResponsiveContainer: ({children}) => children, AreaChart: ({data}) => <div data-testid="selected-history">{JSON.stringify(data)}</div>, BarChart: () => null, Area: () => null, Bar: () => null, XAxis: () => null, YAxis: () => null, Tooltip: () => null, Cell: () => null }));
 
@@ -716,6 +716,44 @@ describe('selected normalized transaction boundary',()=>{
     expect(text).toContain('회원 필요');
     expect(text).toContain('판매 기간 종료');
     expect(text).not.toContain('0원');
+    const url = new URL(text.split('\n').at(-1));
+    expect(url.origin).toBe(window.location.origin);
+    expect(url.pathname).toBe('/price/prod-spec');
+    expect(Object.fromEntries(url.searchParams)).toEqual({ variant: 'var-a', listing: 'listing-a', offer: 'offer-a' });
+  });
+  it('restores the exact shared variant, source and quote rather than the product best offer', async () => {
+    const product = selectionFixture();
+    useModalStore.getState().closeModal();
+    const shared = buildProductShareUrl(product, { variantId: 'var-b', listingId: 'listing-b', offerId: 'offer-b' });
+    vi.stubGlobal('fetch', vi.fn(async path => ({ ok: true, json: async () => ({
+      data: String(path) === '/api/products/prod-spec' ? product : [],
+    }) })));
+    render(<MemoryRouter initialEntries={[new URL(shared).pathname + new URL(shared).search]}>
+      <Routes><Route path="/price/:id" element={<PricePage />} /></Routes></MemoryRouter>);
+    await waitFor(() => expect(useModalStore.getState().activeModal).toBe('productDetail'));
+    const restored = useModalStore.getState().modalData;
+    expect(restored).toMatchObject({ selected_variant_id: 'var-b', selected_listing_id: 'listing-b',
+      selected_offer_id: 'offer-b', source: '판매처-b', unit: '90g×6' });
+    expect(restored.selected_offer).toEqual(product.variants[1].listings[0].offers[0]);
+    useModalStore.getState().closeModal();
+  });
+  it.each([
+    'variant=var-b',
+    'variant=var-b&listing=listing-a&offer=offer-b',
+    'variant=var-b&listing=listing-b&offer=old-offer',
+    'variant=var-a&variant=var-b&listing=listing-b&offer=offer-b',
+  ])('holds incomplete or changed shared selection without selecting another quote: %s', async query => {
+    useModalStore.getState().closeModal();
+    vi.stubGlobal('fetch', vi.fn(async path => ({ ok: true, json: async () => ({
+      data: String(path) === '/api/products/prod-spec' ? selectionFixture() : [],
+    }) })));
+    render(<MemoryRouter initialEntries={['/price/prod-spec?' + query]}>
+      <Routes><Route path="/price/:id" element={<PricePage />} /></Routes></MemoryRouter>);
+    await screen.findByRole('alert');
+    expect(screen.getByRole('button', { name: '상품 다시 선택' })).toBeInTheDocument();
+    expect(useModalStore.getState().activeModal).toBeNull();
+    expect(screen.queryByRole('button', { name: '🛒 장보기에 추가' })).not.toBeInTheDocument();
+    expect(api.post).not.toHaveBeenCalled();
   });
   it('does not report a copied link when clipboard and native sharing are unavailable', async () => {
     vi.stubGlobal('navigator', {});

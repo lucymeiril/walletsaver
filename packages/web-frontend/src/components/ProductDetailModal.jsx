@@ -16,7 +16,7 @@ import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
-import { buildCartPayload, buildWishlistPayload, normalizeProduct, selectProductOffer, getProductSelection } from '../utils/productActions';
+import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection } from '../utils/productActions';
 import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
 
@@ -214,7 +214,13 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
     const text = [name, spec, `${moneyLabel} ${known ? getObservedOfferPriceText(quote, amount) : '미확인'}`,
       storeName && `판매처 ${storeName}`, quote?.availability_reason === 'expired' && '판매 기간 종료 · 과거 관측 가격',
       quote && getOfferConditionText(quote)].filter(Boolean).join(' · ');
-    const url = sourceUrl || window.location.href;
+    let url;
+    try {
+      url = normalizedAlert ? buildProductShareUrl(product, offerSelection) : sourceUrl || window.location.href;
+    } catch (error) {
+      addToast(error.message, 'warning');
+      return;
+    }
     if (navigator.share) {
       try {
         await navigator.share({ title: name, text, url });
@@ -228,7 +234,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
         addToast('이 브라우저에서는 링크 복사를 사용할 수 없습니다', 'warning');
       }
     }
-  }, [name, price, storeName, sourceUrl, unit, chosen, normalizedAlert, addToast]);
+  }, [name, price, storeName, sourceUrl, unit, chosen, normalizedAlert, productId, product, offerSelection, addToast]);
 
   const handleSaveAlert = useCallback(async () => {
     if (!isLoggedIn) {

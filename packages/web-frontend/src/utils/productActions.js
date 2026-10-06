@@ -201,6 +201,22 @@ export function getProductSelection(product, selection = {}) {
     || (choices.length === 1 ? choices[0] : null);
 }
 
+export function buildProductShareUrl(product, selection = {}, origin = window.location.origin) {
+  const identity = normalizeProduct(product);
+  const id = product.public_product_id ?? identity.catalogProductId ?? identity.numericProductId;
+  if (!id) throw new Error('공유할 상품을 확인할 수 없습니다');
+  const url = new URL(`/price/${encodeURIComponent(id)}`, origin);
+  if (product.public_product_id || Object.hasOwn(product, 'best_offer')) {
+    const chosen = getProductSelection(product, selection);
+    if (!chosen?.variant.id || !chosen?.listing.id || !chosen?.offer.id)
+      throw new Error('공유할 규격·판매처·관측을 다시 선택해주세요');
+    url.searchParams.set('variant', chosen.variant.id);
+    url.searchParams.set('listing', chosen.listing.id);
+    url.searchParams.set('offer', chosen.offer.id);
+  }
+  return url.href;
+}
+
 export function selectProductOffer(product, selection = {}) {
   const chosen = getProductSelection(product, selection);
   if (!chosen) return product.variant_id || product.selected_variant_id
