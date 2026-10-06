@@ -38,7 +38,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 다섯 파일은 catalog90→91→92→93→94→95의 **기존 상품군 metadata와 근거 있는 기존 리프 정정만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 일곱 파일은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정을 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -254,7 +254,7 @@ TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callbac
 
 ## 7. 검증 상태
 
-이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 배포 및 별도 설치 시험 데이터는 revision90(전체9115/공개8803/pending312)이다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
+이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 일관된 배포는 revision97(전체9115/공개8803/pending312)이며 최초 설치/재기동 경로는 이전 같은 installer 증거를 재사용한다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
 
 The existing Crawler → Data review intake detail renders original nested purchase terms and role-specific interpretation notes. Inspect exact native/product/variant connections; missing listing/event IDs remain unknown, and approved source quotes are not confirmed checkout receipts. Collector provenance retains bounded business fields and actual HTTP receipt metadata without retaining private account/session branches. HTTP401/403/429 stops that supplier run, preserving any earlier rows as partial; do not bypass the stop with another same-host query.
 
@@ -301,3 +301,5 @@ Collector execution separates source completeness, validation, acknowledged pend
 378의536기등록 원문 문맥에서20군45옛ID와 기존 리프3건을 근거로 정정해 catalog94/484군1175옛ID가 연결됐다. 제스프리 골드·그린, 조미료 고유라인·레시피, 샌드과자 맛별·상하목장 밀크/초코, 명시 건강식품 라인을 구분한다. 강된장 원문과 롯데의 튜브아이스크림 세부 경로를 기존 자료에서 회수했으며 새 형태·수량을 추측하지 않았다. 정식apply/replay/publish94는 원9115event/관측가격/시각/규격/계정참조를 보존한다. 실제24GET/쓰기0/외부요청0에서 새 카테고리·마트군·옛ID별 전체이력과 골드1팩 내부수량 미확인·510ml와85ml×6 별도규격·선택3개/무료1개 결제보류·맛소금250g 두 마트의 표시조건 관측 단가를 확인했다. 표시조건 비교를 실제 결제 영수증이나 전상품 현재 최저가로 확대하지 않는다. 초기98·새출처·전수동일성·최종제출완료는 계속 주장하지 않는다.
 
 Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID의 연결만 추가했다. 배터리 AA/AAA·기존 판매개수, 그릴 치수와 물품 NULL, 바나나 산지·라인, 밤 포장, 생크림 및 표고 선물 구성은 각 원 규격에 남는다. 기존 9115 관측·가격·시점·계정 참조를 보존했고 신규 관측은 없다.
+
+현재97은 에너자이저 두10+10기획팩의 미입증 판매개수를 물품NULL로, 벡셀8+8입의 명시 포장구성을16입으로 정정했다. literal 규격·12900/8900원 관측·원event/시각/전체이력은 유지하며 bareN+N을 N팩구매+N팩증정으로 만들지 않는다. 판매묶음 행사역할/지급금액 미확인은 별도 보류다. 원래1개/8입 선택은 재선택 안내하고 기존 참조를 묵시적으로 새 규격에 옮기지 않는다. 두NULLID namespace 정정은 별도96→97 이력에 보존했다. 정상22/32입·내용량·혼합벡터는 기존 근거를 유지하며 신규관측·초기98분류·전체인증은 반복하지 않았다.

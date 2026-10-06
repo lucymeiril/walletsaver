@@ -981,6 +981,32 @@ def valid_physical_device_variant(variant):
                 and derived[0].get('attributes', {}).get('physical_device_specification') == proof)
 
 
+def additive_battery_pack_specification(title, category_id):
+    """Retain literal fixed-pack addition, independently of purchase benefits.
+
+    A terminal count unit names cells; `기획팩` alone names a pack, not its
+    counted entity. Neither quoted money nor an unqualified N+N badge bridges
+    that missing unit. Source-bound reviewed records approve its interpretation.
+    """
+    if category_id != 'household.utilities.batteries.alkaline':
+        return None
+    title = _text(title)
+    matches = list(re.finditer(r'(?<![\d.])(\d+)\s*\+\s*(\d+)\s*(개입|입|기획팩)(?![가-힣\d])', title))
+    if len(matches) != 1:
+        return None
+    match = matches[0]
+    a, b = int(match[1]), int(match[2])
+    residual = title[:match.start()] + title[match.end():]
+    if (not a or not b or re.search(r'[+~～×*]|[xX]\s*\d|선택|랜덤|혼합|증정|덤', residual)
+            or re.search(r'\d+\s*(?:입|개|팩|세트|kg|g|ml|l)(?![A-Za-z])', residual, re.I)):
+        return None
+    unit = '입' if match[3] in {'입', '개입'} else None
+    return {'literal': match[0], 'expression': f'{a}+{b}', 'terms': [a, b],
+            'count_unit': unit, 'counted_entity': 'battery_cells' if unit else None,
+            'total_count': a + b if unit else None,
+            'scope': 'fixed_pack_contents' if unit else 'pack_count_unit_unverified'}
+
+
 def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str, *, category_id=None) -> tuple[dict[str, Any] | None, list[str]]:
     if not isinstance(payload, Mapping) or not isinstance(attrs, Mapping):
         return None, ['unit_source_invalid']
@@ -1003,9 +1029,15 @@ def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, An
         return interval
     explicit = explicit_listing_package(payload, attrs, title)
     if explicit is not None:
+        if (explicit[0] and explicit[0]['attributes'].get('explicit_listing_quantity_review', {}).get('measurement_role') == 'declared_additive_battery_pack'
+                and category_id is not None and category_id != 'household.utilities.batteries.alkaline'):
+            return None, ['additive_pack_category_conflict']
         return explicit
     nonmeasured = nonmeasured_listing_review(payload, attrs, title)
     if nonmeasured is not None:
+        if (nonmeasured[0] and nonmeasured[0]['attributes']['nonmeasured_listing'].get('measurement_role') == 'declared_additive_battery_pack'
+                and category_id is not None and category_id != 'household.utilities.batteries.alkaline'):
+            return None, ['additive_pack_category_conflict']
         # A failed source-bound vessel review remains a capacity rejection.
         # Keep that existing diagnostic; a valid bound review still wins above.
         if nonmeasured[0] is None and title in CAPACITY_NOT_CONTENT_TITLES and any(
@@ -1014,6 +1046,10 @@ def normalize_catalog_package(payload: Mapping[str, Any], attrs: Mapping[str, An
         ):
             return None, ["unit_container_capacity_not_contents"]
         return nonmeasured
+    if additive_battery_pack_specification(title, category_id) is not None:
+        # A partial/default crawler quantity cannot approve a new fixed pack.
+        # Explicit/nonmeasured source reviews above retain the original fields.
+        return None, ['additive_pack_source_review_required']
     physical = physical_device_package(payload, attrs, title, category_id)
     if physical is not None:
         return physical

@@ -201,6 +201,18 @@ def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str, titl
     }
     promotion_text = label or event_name
     buy_get = re.fullmatch(r"\s*(\d+)\s*\+\s*(\d+)\s*", promotion_text)
+    from core.reviewed_source_evidence import reviewed_additive_battery_pack
+    pack_expression = reviewed_additive_battery_pack(payload, attrs, title)
+    if (pack_expression and buy_get and promotion == 'buy_x_get_y'
+            and f'{int(buy_get[1])}+{int(buy_get[2])}' == pack_expression['expression']
+            and not conditions.get('promotion_conditions')):
+        # A fixed-pack badge is not evidence to buy N whole packs for N free.
+        # Keep its literal source condition, quote and unknown payable status.
+        promotion = 'unknown'
+        conditions.update(source_pack_expression=pack_expression['literal'],
+                          source_promotion_role='pack_or_purchase_scope_unverified',
+                          payable_price_unconfirmed=True)
+        issues.append('promotion_conditions_unresolved')
     if promotion == "buy_x_get_y":
         if buy_get:
             buy_quantity, free_quantity = (int(buy_get.group(1)), int(buy_get.group(2)))

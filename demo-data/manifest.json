@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 95,
-  "version": "2026-10-06-catalog95-groups393",
-  "source_code_base": "b6f4adf94e456c5c7900ba2fc9400db75485195e",
+  "catalog_revision": 97,
+  "version": "2026-10-06-catalog97-battery395",
+  "source_code_base": "c68b192c57e98d25b09893095b38e5699cebec90",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update95 and consistent publicsnapshot; reviewed named producer/model/line groups retain all original old IDs, independent source variants/physicalNULL/exactdeclared counts, own/group full timed history. Original9115 event/quote/raw/time and separateexternalhotdeal7 unchanged; accounts/sessions empty. Initial98 paused, historical certificate unchanged.",
+  "data_scope": "Sanitized catalog/admin-update97 and consistent publicsnapshot; Reviewed battery source-role correction: two10+10pack count-unit unverified physicalNULL, one explicit8+8입 fixed16 cells; literal specification and observed quote/time retained without inferred whole-pack purchase promotion. Seed-aligned NULL IDs repaired separately after96, original and intermediate IDs retained inactive. Existing492 groups1191 IDs and28 leaf reviews unchanged; independent source variants and full timed history retained. Original9115 event/quote/raw/time and separateexternalhotdeal7 unchanged; accounts/sessions empty. Initial98 paused, historical certificate unchanged.",
   "files": {
     "admin.sqlite": {
-      "sha256": "b118bcdc87ad3f173388e77da94ff344e7ece314c47c3a209d15a4ac089e2586",
-      "bytes": 62697472,
+      "sha256": "6f0d0062fd6c9545786fb10f6389f0805e5c53c0302a37cf2ac43fe8482689cb",
+      "bytes": 62705664,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -46,7 +46,7 @@
       ],
       "counts": {
         "normalized_canonical_products": 6308,
-        "normalized_product_variants": 6376,
+        "normalized_product_variants": 6381,
         "normalized_source_listings": 6458,
         "normalized_offer_events": 9115,
         "normalized_week_buckets": 3,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 70,
+        "catalog_sync_log": 72,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "ce9b4587db922933a1f8b0f93bf1645fb5f25b280a352c281f265dc75b624753",
-      "archive_bytes": 8969699
+      "archive_sha256": "2792de84e9032ffa9b82952bc071c7b03dcb618d426a1d7c6d61e53894a8de92",
+      "archive_bytes": 8970131
     },
     "public_snapshot.sqlite": {
-      "sha256": "a6a1ab03f9de902381e4babbb5cc55c2c4b15d4df4e92dd8ae2bd096d4072e47",
-      "bytes": 58286080,
+      "sha256": "b105163d5e56eacd80a0b33eb0922c96d62f08c4bb8c613763bf3eefa75cd971",
+      "bytes": 58277888,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -97,7 +97,7 @@
       ],
       "counts": {
         "normalized_canonical_products": 6308,
-        "normalized_product_variants": 6376,
+        "normalized_product_variants": 6381,
         "normalized_source_listings": 6458,
         "normalized_offer_events": 8803,
         "normalized_week_buckets": 3,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "f2c94e8bbc3cba7a51bb6d8fe0d215ad7fc5edd39e2fba1e357accc94afb6d97",
-      "archive_bytes": 8329694
+      "archive_sha256": "bcb59b79b510be90825a6ec204c4141a4a2d1fece8c550d69f7ba7c3e2f727ca",
+      "archive_bytes": 8325400
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -166,18 +166,18 @@
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "f039767ee85c8a8b12509755532288b74d9269ca849c07bb0d6919dd50e6a6eb",
     "packages/shared/core/reviewed_catalog_groups.json": "60cf89372b8a6ae784ed7babecb58fb238c87afbc27b68014b46393017fd0527",
-    "packages/shared/core/catalog_quantity.py": "4843ce5fbf99aa3c182a96fb424982fd8e7e5deaa99c1001c0a1b5382ac87391",
+    "packages/shared/core/catalog_quantity.py": "0b8293d5d2f27361ecb3e4761d13f54707eb1d1fce26b0fcb37a69d6aa6abdbb",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
-    "packages/db-admin/backend/services/initial_catalog_seed.py": "e018ac35129593eef1c9dbcfe8a18482b03f0b6177f0567dbff71b1409f0477d",
+    "packages/db-admin/backend/services/initial_catalog_seed.py": "d9e9a0ffe20f3673c441bc2a2626ab2051ee9a7976a9b93b284f4430b1f1d6f1",
     "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
     "packages/web-api/backend/services/catalog_storage.py": "3c0c0aedbdf63078dcedc7999707007c4ff29193dbe23bb1d61900978ccce714",
     "packages/web-frontend/src/utils/productDecision.js": "7a13ab81d7c23d4037b0b9fe8921e0641f9cfc4a8003d004573b8eee89eced46",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "5ec6e7c3249ce9467db7b654de84eb0cea9e31718edf231308029f630d9a29fd",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
     "packages/db-admin/backend/services/initial_taxonomy.py": "70fb03031ca0344d4b2a94929a33243e90850f58558806ecc078c6992bcac8ff",
-    "packages/shared/core/reviewed_content_quantities.py": "3fda84784a4ad386c9c213e3133674896ac98aec6a8690ff091747bda2649503",
-    "packages/shared/core/reviewed_source_evidence.py": "e2d8d4d303955fb0d5412cdf84c2d824f9e6592ec6722197b164eb276473925d",
+    "packages/shared/core/reviewed_content_quantities.py": "c4ea3566b9b1c957c5227ad750572d2f7dd41952eb237ec143696a7f4b687c11",
+    "packages/shared/core/reviewed_source_evidence.py": "e164c97de38aa9dba8860269e2f72d48b45569b16974d3e9b4b22f1694b95ad9",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
     "packages/web-api/backend/api/routes/admin_remote.py": "2d179b6043b978b2c5ed85b650f108b9c9bf463a1b2232177c7cc14728acd4cb",
     "packages/web-api/backend/api/routes/search.py": "0a18c5f4078c3d414db52a444edf5d31689025d69851ca30eef59760a391b294",
@@ -228,6 +228,22 @@
       "base_catalog_revision": 94,
       "reviewed_catalog_revision": 95,
       "scope": "Reviewed8existing producer/narrowline/form/component families16oldIDs metadata only; source quantities/listings/events/rawquotes/time/accounts unchanged. Officialpreview/apply/replay/publish95 verified."
+    },
+    {
+      "path": "demo-data/updates/catalog95-to96.json",
+      "sha256": "d94a48426ce4e3fb329a81ce903ac3e8eaa9690d985d41e0854c96a10bdd4207",
+      "bytes": 34083,
+      "base_catalog_revision": 95,
+      "reviewed_catalog_revision": 96,
+      "scope": "Three source-bound battery role corrections: two literal10+10 pack count-unit unknown physicalNULL and one explicit8+8입 fixed16cells; unsupported whole-pack buy/free interpretation held. Original quote/event/time/raw/source/accounts retained, old quantity variants inactive with reselection."
+    },
+    {
+      "path": "demo-data/updates/catalog96-to97.json",
+      "sha256": "528f9c2946040b5a51a582ae3d7e995a089cffbaf7f458e6495945af71951edc",
+      "bytes": 11793,
+      "base_catalog_revision": 96,
+      "reviewed_catalog_revision": 97,
+      "scope": "Two physicalNULL IDs aligned with existing seed nonmeasured-listing namespace; original and intermediate IDs retained inactive. No quantity, price, offer, event/time/raw/account changes."
     }
   ],
   "reviewed_catalog_groups": {

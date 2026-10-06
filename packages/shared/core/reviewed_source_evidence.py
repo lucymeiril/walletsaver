@@ -231,6 +231,9 @@ def nonmeasured_listing_review(payload, attrs, title):
     if len(matching) != 1:
         return None, ['nonmeasured_listing_evidence_conflict']
     review = matching[0]
+    if (review.get('measurement_role') == 'declared_additive_battery_pack'
+            and not _valid_additive_battery_pack_review(review, None)):
+        return None, ['nonmeasured_listing_evidence_conflict']
     count = review.get('declared_package_bundle_count', 1)
     if type(count) is not int or count < 1:
         return None, ['nonmeasured_listing_evidence_conflict']
@@ -269,7 +272,9 @@ def valid_nonmeasured_variant(variant):
             and variant.get('package_quantity') is None and variant.get('package_unit') is None
             and type(variant.get('bundle_count')) is int and variant.get('bundle_count') == count
             and variant.get('standard_unit') is None
-            and not attrs.get('package_components'))
+            and not attrs.get('package_components')
+            and (review.get('measurement_role') != 'declared_additive_battery_pack'
+                 or _valid_additive_battery_pack_review(review, None)))
 
 
 def _reviewed_source_attributes_match(payload, attrs, review):
@@ -391,7 +396,7 @@ def explicit_listing_package(payload, attrs, title):
     hold = review.get('eligibility_hold_reason')
     if hold:
         package['attributes']['declared_package_structure'] = review['declared_package_structure']
-    if review.get('measurement_role') in {'declared_unselected_entity_count', 'declared_exclusive_option_containers', 'declared_outer_set_count', 'declared_nonexact_mass_specification', 'declared_incomplete_entitlement_specification', 'declared_incomplete_retail_package_specification'} and not valid_explicit_listing_variant(package):
+    if review.get('measurement_role') in {'declared_unselected_entity_count', 'declared_exclusive_option_containers', 'declared_outer_set_count', 'declared_nonexact_mass_specification', 'declared_incomplete_entitlement_specification', 'declared_incomplete_retail_package_specification', 'declared_additive_battery_pack'} and not valid_explicit_listing_variant(package):
         return None, conflict
     return package, [hold] if hold else []
 
@@ -418,7 +423,30 @@ def valid_explicit_listing_variant(variant):
             and (review.get('measurement_role') != 'declared_incomplete_entitlement_specification'
                  or (type(variant.get('bundle_count')) is int and _valid_entitlement_review(review)))
             and (review.get('measurement_role') != 'declared_incomplete_retail_package_specification'
-                 or (type(variant.get('bundle_count')) is int and _valid_partial_retail_review(review))))
+                 or (type(variant.get('bundle_count')) is int and _valid_partial_retail_review(review)))
+            and (review.get('measurement_role') != 'declared_additive_battery_pack'
+                 or _valid_additive_battery_pack_review(review, review['normalized'])))
+
+
+def _valid_additive_battery_pack_review(review, normalized):
+    from core.catalog_quantity import additive_battery_pack_specification
+    specification = additive_battery_pack_specification(review.get('title'), review.get('category_id'))
+    if not specification or specification != review.get('declared_pack_specification'):
+        return False
+    expected = ([specification['total_count'], specification['count_unit'], 1]
+                if specification['count_unit'] else None)
+    return normalized == expected
+
+
+def reviewed_additive_battery_pack(payload, attrs, title):
+    """A badge does not independently establish buy/free purchase quantities."""
+    for result in (explicit_listing_package(payload, attrs, title),
+                   nonmeasured_listing_review(payload, attrs, title)):
+        if result and result[0] and not result[1]:
+            review = result[0]['attributes'].get('explicit_listing_quantity_review') or result[0]['attributes'].get('nonmeasured_listing')
+            if review and review.get('measurement_role') == 'declared_additive_battery_pack':
+                return review['declared_pack_specification']
+    return None
 
 
 def _valid_unselected_entity_count_review(review):

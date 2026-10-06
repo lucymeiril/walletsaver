@@ -1,0 +1,325 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation396-reviewed-source-vector-repair",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-01122ce6ead5d578c85f3d6d9f5ddf74",
+      "unified_category_id": "household.utilities.batteries.alkaline",
+      "category_id": null,
+      "canonical_name": "에너자이저 맥스 AA 10+10 기획팩",
+      "brand": null,
+      "aliases": [
+        "에너자이저 맥스 AA"
+      ],
+      "keywords": [
+        "알카라인건전지"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:20"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000702355676"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "알카라인건전지"
+        ],
+        "catalog_group": {
+          "key": "reviewed.utilities.energizer-max-aa",
+          "canonical_product_id": "prod-01122ce6ead5d578c85f3d6d9f5ddf74",
+          "member_product_ids": [
+            "prod-01122ce6ead5d578c85f3d6d9f5ddf74",
+            "prod-a225520c686de44d2d78f5f5428c0693"
+          ],
+          "canonical_name": "에너자이저 맥스 AA",
+          "brand": "에너자이저",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/76/56/35/item/1000702355676_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-611137ff889642f1b8d3a34053f2faa8",
+      "unified_category_id": "household.utilities.batteries.alkaline",
+      "category_id": null,
+      "canonical_name": "에너자이저 맥스 AAA 10+10 기획팩",
+      "brand": null,
+      "aliases": [
+        "에너자이저 맥스 AAA"
+      ],
+      "keywords": [
+        "알카라인건전지"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:22"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000702355663"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "알카라인건전지"
+        ],
+        "catalog_group": {
+          "key": "reviewed.utilities.energizer-max-aaa",
+          "canonical_product_id": "prod-394458079431bdc6cc13039757c985cd",
+          "member_product_ids": [
+            "prod-394458079431bdc6cc13039757c985cd",
+            "prod-611137ff889642f1b8d3a34053f2faa8"
+          ],
+          "canonical_name": "에너자이저 맥스 AAA",
+          "brand": "에너자이저",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/63/56/35/item/1000702355663_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [
+    {
+      "public_variant_id": "var-6dfd4fb483816be17eddc6c9f3fc0c81",
+      "public_product_id": "prod-01122ce6ead5d578c85f3d6d9f5ddf74",
+      "variant_name": "에너자이저 맥스 AA 10+10 기획팩",
+      "package_quantity": null,
+      "package_unit": null,
+      "display_unit": "",
+      "bundle_count": 1,
+      "standard_unit": null,
+      "attributes": {
+        "specification_basis": "source_structured_and_explicit_text",
+        "quantity_basis": "nonmeasured_source_listing_v1",
+        "sold_piece_count": null,
+        "bundle_count_basis": "one_source_listing_not_piece_count",
+        "nonmeasured_listing": {
+          "title": "에너자이저 맥스 AA 10+10 기획팩",
+          "category_id": "household.utilities.batteries.alkaline",
+          "required_source": {
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355676&siteNo=6001&salestrNo=2037"
+            ],
+            "source_fields": {
+              "category": "생활잡화/공구",
+              "attributes.mart_native_category_path": "생활잡화/공구",
+              "attributes.category_hint": "생활잡화/공구"
+            }
+          },
+          "quantity_fields": {
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "display_unit": "1개",
+            "unit": "1개",
+            "attributes.unit_price_display": [
+              "1",
+              "개"
+            ]
+          },
+          "measurement_role": "declared_additive_battery_pack",
+          "declared_pack_specification": {
+            "literal": "10+10 기획팩",
+            "expression": "10+10",
+            "terms": [
+              10,
+              10
+            ],
+            "count_unit": null,
+            "counted_entity": null,
+            "total_count": null,
+            "scope": "pack_count_unit_unverified"
+          },
+          "reason": "Whole literal addition preserved independently of price. Terminal 입 establishes counted cells; 기획팩 alone leaves entity/count scope unresolved. Bare N+N badge does not prove buy/free packs. Original source fields remain exact."
+        }
+      },
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    },
+    {
+      "public_variant_id": "var-c9238e562294c8d911938e9b590ce2c1",
+      "public_product_id": "prod-611137ff889642f1b8d3a34053f2faa8",
+      "variant_name": "에너자이저 맥스 AAA 10+10 기획팩",
+      "package_quantity": null,
+      "package_unit": null,
+      "display_unit": "",
+      "bundle_count": 1,
+      "standard_unit": null,
+      "attributes": {
+        "specification_basis": "source_structured_and_explicit_text",
+        "quantity_basis": "nonmeasured_source_listing_v1",
+        "sold_piece_count": null,
+        "bundle_count_basis": "one_source_listing_not_piece_count",
+        "nonmeasured_listing": {
+          "title": "에너자이저 맥스 AAA 10+10 기획팩",
+          "category_id": "household.utilities.batteries.alkaline",
+          "required_source": {
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355663&siteNo=6001&salestrNo=2037"
+            ],
+            "source_fields": {
+              "category": "생활잡화/공구",
+              "attributes.mart_native_category_path": "생활잡화/공구",
+              "attributes.category_hint": "생활잡화/공구"
+            }
+          },
+          "quantity_fields": {
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "display_unit": "1개",
+            "unit": "1개",
+            "attributes.unit_price_display": [
+              "1",
+              "개"
+            ]
+          },
+          "measurement_role": "declared_additive_battery_pack",
+          "declared_pack_specification": {
+            "literal": "10+10 기획팩",
+            "expression": "10+10",
+            "terms": [
+              10,
+              10
+            ],
+            "count_unit": null,
+            "counted_entity": null,
+            "total_count": null,
+            "scope": "pack_count_unit_unverified"
+          },
+          "reason": "Whole literal addition preserved independently of price. Terminal 입 establishes counted cells; 기획팩 alone leaves entity/count scope unresolved. Bare N+N badge does not prove buy/free packs. Original source fields remain exact."
+        }
+      },
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "source_listings": [
+    {
+      "public_source_listing_id": "listing-d9ec5aeb995b2a6fdeff97cdbe6e01a7",
+      "public_variant_id": "var-6dfd4fb483816be17eddc6c9f3fc0c81",
+      "source_name": "emart",
+      "source_record_key": "1000702355676",
+      "source_title": "에너자이저 맥스 AA 10+10 기획팩",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355676&siteNo=6001&salestrNo=2037",
+      "image_url": "https://sitem.ssgcdn.com/76/56/35/item/1000702355676_i1_290.jpg",
+      "source_unit_text": "1개",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    },
+    {
+      "public_source_listing_id": "listing-22ea40a8dcc8ca701e1e41a22a9c1219",
+      "public_variant_id": "var-c9238e562294c8d911938e9b590ce2c1",
+      "source_name": "emart",
+      "source_record_key": "1000702355663",
+      "source_title": "에너자이저 맥스 AAA 10+10 기획팩",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355663&siteNo=6001&salestrNo=2037",
+      "image_url": "https://sitem.ssgcdn.com/63/56/35/item/1000702355663_i1_290.jpg",
+      "source_unit_text": "1개",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [
+    {
+      "id": 3966,
+      "match_key": "__no_brand__|에너자이저 맥스 aa 10 10 기획팩||1개",
+      "brand": null,
+      "name_core": "에너자이저 맥스 AA 10+10 기획팩",
+      "pack_qty": 1.0,
+      "pack_unit": "개",
+      "canonical_product_id": null,
+      "public_product_id": "prod-01122ce6ead5d578c85f3d6d9f5ddf74",
+      "public_variant_id": "var-6dfd4fb483816be17eddc6c9f3fc0c81",
+      "category_id": null,
+      "keyword_ids": [
+        528
+      ],
+      "confidence": 0.9,
+      "source": "external-ai",
+      "last_used_at": null,
+      "hit_count": 0,
+      "notes": "initial seed; exact crawler key; ingestion:101:20",
+      "pack_unit_kind": null,
+      "source_record_key": null,
+      "aliases": null
+    },
+    {
+      "id": 3967,
+      "match_key": "__no_brand__|에너자이저 맥스 aaa 10 10 기획팩||1개",
+      "brand": null,
+      "name_core": "에너자이저 맥스 AAA 10+10 기획팩",
+      "pack_qty": 1.0,
+      "pack_unit": "개",
+      "canonical_product_id": null,
+      "public_product_id": "prod-611137ff889642f1b8d3a34053f2faa8",
+      "public_variant_id": "var-c9238e562294c8d911938e9b590ce2c1",
+      "category_id": null,
+      "keyword_ids": [
+        528
+      ],
+      "confidence": 0.9,
+      "source": "external-ai",
+      "last_used_at": null,
+      "hit_count": 0,
+      "notes": "initial seed; exact crawler key; ingestion:101:22",
+      "pack_unit_kind": null,
+      "source_record_key": null,
+      "aliases": null
+    }
+  ],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

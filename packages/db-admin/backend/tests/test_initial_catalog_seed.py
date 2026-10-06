@@ -22,6 +22,56 @@ from services.initial_catalog_seed import (
 from storage.models import Base
 
 
+@pytest.mark.parametrize('title,count', [
+    ('에너자이저 맥스 AA 10+10 기획팩', None),
+    ('에너자이저 맥스 AAA 10+10 기획팩', None),
+    ('벡셀 프리미엄 건전지 AAA 8+8입', 16),
+])
+def test_reviewed_additive_battery_pack_does_not_become_purchase_multiplier(title, count):
+    from core.reviewed_content_quantities import REVIEWED_NONMEASURED_LISTINGS, REVIEWED_EXPLICIT_LISTING_PACKAGES
+    from core.reviewed_source_evidence import valid_nonmeasured_variant, valid_explicit_listing_variant
+    from services.initial_catalog_seed import _price
+    reviews = REVIEWED_NONMEASURED_LISTINGS + REVIEWED_EXPLICIT_LISTING_PACKAGES
+    review = next(r for r in reviews if r['title'] == title and r.get('measurement_role') == 'declared_additive_battery_pack')
+    raw = {'name': title, 'sale_price': 9000, 'attributes': {}}
+    for name, value in {**review['required_source']['source_fields'], **review['quantity_fields']}.items():
+        layer, key = (raw['attributes'], name[11:]) if name.startswith('attributes.') else (raw, name)
+        if isinstance(value, list):
+            value = f'{value[0]}{value[1]} 당 500원'
+        layer[key] = value
+    for key in ('canonical_url', 'detail_url', 'source_url'):
+        raw[key] = review['required_source']['source_urls'][0]
+    raw['attributes']['promo_label'] = review['declared_pack_specification']['expression']
+    leaf = review['category_id']
+    package, issues = _package(raw, raw['attributes'], title, category_id=leaf)
+    assert not issues and package['package_quantity'] == count and package['bundle_count'] == 1
+    valid = valid_nonmeasured_variant if count is None else valid_explicit_listing_variant
+    assert valid(package)
+    price, issues = _price(raw, raw['attributes'], 'emart', title)
+    assert price['price'] == 9000 and price['promotion_type'] == 'unknown'
+    assert price['promotion_conditions']['payable_price_unconfirmed'] is True
+    assert 'buy_quantity' not in price['promotion_conditions'] and 'minimum_quantity' not in price['promotion_conditions']
+    changed = deepcopy(raw)
+    changed['sale_price'] = 11000
+    changed['attributes']['unit_price_display'] = '1개 당 700원'
+    assert _package(changed, changed['attributes'], title, category_id=leaf) == (package, [])
+    wrong_quantity = deepcopy(raw)
+    wrong_quantity['package_quantity'] = 7
+    wrong_basis = deepcopy(raw)
+    wrong_basis['attributes']['unit_price_display'] = '1마리 당 500원'
+    missing_url = deepcopy(raw)
+    for key in ('canonical_url', 'detail_url', 'source_url'):
+        missing_url.pop(key)
+    for changed in (wrong_quantity, wrong_basis, missing_url):
+        assert _package(changed, changed['attributes'], title, category_id=leaf)[0] is None
+    assert _package(raw, raw['attributes'], title, category_id='food.drinks.water_soda.water')[0] is None
+    malformed = deepcopy(package)
+    malformed['package_quantity'] = 1 if count is None else 8
+    assert not valid(malformed)
+    assert _package({'package_quantity': 1, 'package_unit': '개'}, {},
+                    '다른 건전지 AAA 8+8입', category_id=leaf)[0] is None
+
+
 @pytest.mark.parametrize('species,title', [
     ('beef', '냉동 한우 양지 500g'),
     ('pork', '냉동 돼지 삼겹살 500g'),

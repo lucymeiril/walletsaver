@@ -5478,3 +5478,76 @@ REVIEWED_SOURCE_COMPONENT_LISTINGS += ({'title': '썬키스트 견과 3종세트
            'appears inthat savedofficialbody. This isone complete mixedrecipe set, not '
            'homogeneous25gx60 contents. Preserve originalquote/basis but no aggregate '
            'homogeneousunitprice; outer20 isexclusive523645, neverborrowed.'},)
+
+
+# Reviewed source-bound fixed-pack expressions; never purchase-benefit multipliers.
+REVIEWED_NONMEASURED_LISTINGS += ({'title': '에너자이저 맥스 AA 10+10 기획팩',
+  'category_id': 'household.utilities.batteries.alkaline',
+  'required_source': {'source_urls': ['https://emart.ssg.com/item/itemView.ssg?itemId=1000702355676&siteNo=6001&salestrNo=2037'],
+                      'source_fields': {'category': '생활잡화/공구',
+                                        'attributes.mart_native_category_path': '생활잡화/공구',
+                                        'attributes.category_hint': '생활잡화/공구'}},
+  'quantity_fields': {'package_quantity': 1.0,
+                      'package_unit': '개',
+                      'display_unit': '1개',
+                      'unit': '1개',
+                      'attributes.unit_price_display': ['1', '개']},
+  'measurement_role': 'declared_additive_battery_pack',
+  'declared_pack_specification': {'literal': '10+10 기획팩',
+                                  'expression': '10+10',
+                                  'terms': [10, 10],
+                                  'count_unit': None,
+                                  'counted_entity': None,
+                                  'total_count': None,
+                                  'scope': 'pack_count_unit_unverified'},
+  'reason': 'Whole literal addition preserved independently of price. Terminal 입 establishes counted cells; 기획팩 alone '
+            'leaves entity/count scope unresolved. Bare N+N badge does not prove buy/free packs. Original source '
+            'fields remain exact.'},
+ {'title': '에너자이저 맥스 AAA 10+10 기획팩',
+  'category_id': 'household.utilities.batteries.alkaline',
+  'required_source': {'source_urls': ['https://emart.ssg.com/item/itemView.ssg?itemId=1000702355663&siteNo=6001&salestrNo=2037'],
+                      'source_fields': {'category': '생활잡화/공구',
+                                        'attributes.mart_native_category_path': '생활잡화/공구',
+                                        'attributes.category_hint': '생활잡화/공구'}},
+  'quantity_fields': {'package_quantity': 1.0,
+                      'package_unit': '개',
+                      'display_unit': '1개',
+                      'unit': '1개',
+                      'attributes.unit_price_display': ['1', '개']},
+  'measurement_role': 'declared_additive_battery_pack',
+  'declared_pack_specification': {'literal': '10+10 기획팩',
+                                  'expression': '10+10',
+                                  'terms': [10, 10],
+                                  'count_unit': None,
+                                  'counted_entity': None,
+                                  'total_count': None,
+                                  'scope': 'pack_count_unit_unverified'},
+  'reason': 'Whole literal addition preserved independently of price. Terminal 입 establishes counted cells; 기획팩 alone '
+            'leaves entity/count scope unresolved. Bare N+N badge does not prove buy/free packs. Original source '
+            'fields remain exact.'})
+
+REVIEWED_EXPLICIT_LISTING_PACKAGES += ({'title': '벡셀 프리미엄 건전지 AAA 8+8입',
+  'category_id': 'household.utilities.batteries.alkaline',
+  'required_source': {'source_urls': ['https://emart.ssg.com/item/itemView.ssg?itemId=1000592400156&siteNo=6001&salestrNo=2037'],
+                      'source_fields': {'category': '생활잡화/공구',
+                                        'attributes.mart_native_category_path': '생활잡화/공구',
+                                        'attributes.category_hint': '생활잡화/공구'}},
+  'quantity_fields': {'package_quantity': 8.0,
+                      'package_unit': '입',
+                      'display_unit': '8입',
+                      'unit': '8입',
+                      'attributes.unit_price_display': ['1', '개']},
+  'measurement_role': 'declared_additive_battery_pack',
+  'declared_pack_specification': {'literal': '8+8입',
+                                  'expression': '8+8',
+                                  'terms': [8, 8],
+                                  'count_unit': '입',
+                                  'counted_entity': 'battery_cells',
+                                  'total_count': 16,
+                                  'scope': 'fixed_pack_contents'},
+  'reason': 'Whole literal addition preserved independently of price. Terminal 입 establishes counted cells; 기획팩 alone '
+            'leaves entity/count scope unresolved. Bare N+N badge does not prove buy/free packs. Original source '
+            'fields remain exact.',
+  'normalized': [16, '입', 1],
+  'preserved_display_unit': '16입',
+  'preserved_specification_basis': 'reviewed_literal_whole_additive_pack_count'},)
