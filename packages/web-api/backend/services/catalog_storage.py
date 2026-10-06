@@ -916,17 +916,15 @@ class PublicCatalogStore:
                 ]
                 count_column = "category_id"
                 count_table = "products"
+                counts = {
+                    row[0]: int(row[1])
+                    for row in connection.execute(
+                        f"SELECT {count_column}, COUNT(*) FROM {count_table} "
+                        f"WHERE is_active=1 AND {count_column} IS NOT NULL GROUP BY {count_column}"
+                    )
+                }
             else:
-                count_column = "unified_category_id"
-                count_table = "normalized_canonical_products"
-
-            counts = {
-                row[0]: int(row[1])
-                for row in connection.execute(
-                    f"SELECT {count_column}, COUNT(*) FROM {count_table} "
-                    f"WHERE is_active=1 AND {count_column} IS NOT NULL GROUP BY {count_column}"
-                )
-            }
+                counts = self._normalized_category_counts(connection)
             by_id = {
                 row["id"]: {
                     "id": row["id"], "name": row["name_ko"] or "",
@@ -952,29 +950,54 @@ class PublicCatalogStore:
                 node.pop("parent_id", None)
             return sorted(roots, key=lambda value: (-value["count"], value["name"]))
 
+    def _normalized_category_counts(self, connection, category_ids=None) -> dict[str, int]:
+        """Count browse identities without projecting variants or observations."""
+        where = "is_active=1 AND unified_category_id IS NOT NULL"
+        params = ()
+        if category_ids is not None:
+            if not category_ids:
+                return {}
+            params = tuple(sorted(category_ids))
+            where += " AND unified_category_id IN (" + ",".join("?" for _ in params) + ")"
+        counts = {row[0]: int(row[1]) for row in connection.execute(
+            "SELECT unified_category_id, COUNT(*) FROM normalized_canonical_products WHERE "
+            + where + " GROUP BY unified_category_id", params,
+        )}
+        # Only explicit group candidates need metadata. All ordinary products
+        # retain their SQL count, and malformed groups remain separate rows.
+        candidates = [dict(row) for row in connection.execute(
+            "SELECT public_product_id, unified_category_id, attributes, is_active "
+            "FROM normalized_canonical_products WHERE " + where +
+            " AND CASE WHEN json_valid(attributes) THEN "
+            "json_type(attributes,'$.catalog_group')='object' ELSE 0 END", params,
+        )]
+        cache = {row["public_product_id"]: row for row in candidates}
+        counted = set()
+        for product in candidates:
+            members, canonical = self._catalog_group(connection, product, cache)
+            if len(members) < 2 or canonical in counted:
+                continue
+            counted.add(canonical)
+            active_count = sum(bool(self._product_lookup(connection, key, cache).get("is_active"))
+                               for key in members)
+            counts[product["unified_category_id"]] -= max(0, active_count - 1)
+        return counts
+
     def get_category_children(self, category_id: str) -> tuple[list[dict], int, str]:
         with self.connection() as connection:
             categories = self._unified_rows(connection)
             if not self._normalized_schema(connection):
                 return [], 0, category_id
-            product_table = "normalized_canonical_products"
             by_id = {row["id"]: row for row in categories}
             children = [row for row in categories if row.get("parent_id") == category_id]
             all_ids = self._descendants(categories, category_id)
-            placeholders = ",".join("?" for _ in all_ids)
-            total = connection.execute(
-                f"SELECT COUNT(*) FROM {product_table} WHERE is_active=1 AND unified_category_id IN ({placeholders})",
-                tuple(all_ids),
-            ).fetchone()[0] if all_ids else 0
+            counts = self._normalized_category_counts(connection, all_ids)
+            total = sum(counts.values())
 
             result = []
             for child in children:
                 ids = self._descendants(categories, child["id"])
-                marks = ",".join("?" for _ in ids)
-                count = connection.execute(
-                    f"SELECT COUNT(*) FROM {product_table} WHERE is_active=1 AND unified_category_id IN ({marks})",
-                    tuple(ids),
-                ).fetchone()[0] if ids else 0
+                count = sum(counts.get(key, 0) for key in ids)
                 result.append({"id": child["id"], "name": child["name_ko"], "count": int(count)})
             result.sort(key=lambda value: (-value["count"], value["name"]))
 

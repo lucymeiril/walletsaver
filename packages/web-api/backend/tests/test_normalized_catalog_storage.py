@@ -777,6 +777,9 @@ def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_cat
     expected = 2 if mutation == 'inactive_canonical' else 3
     assert total == len(rows) == expected
     assert all(row['group_member_product_ids'] == [row['id']] for row in rows)
+    assert store.get_category_tree()[0]['count'] == expected
+    children, child_total, _ = store.get_category_children('food')
+    assert child_total == sum(child['count'] for child in children) == expected
 
 
 @pytest.mark.parametrize('query,category,expected', [
@@ -831,3 +834,42 @@ def test_named_identity_keyword_synonyms_do_not_expand_to_competing_brands(scope
     rows, total = PublicCatalogStore(scoped_group_catalog).search_normalized_products_page(query, category=category)
     assert total == len(expected)
     assert {row['id'] for row in rows} == expected
+
+
+def test_reviewed_category_counts_equal_grouped_browse_without_history_projection(scoped_group_catalog, monkeypatch):
+    store = PublicCatalogStore(scoped_group_catalog)
+    _, expected = store.get_category_products('food', page=1, per_page=20)
+    assert expected == 2  # Two active source milk rows form one identity, plus snack.
+    def no_projection(*args, **kwargs):
+        raise AssertionError('Category counts must not project product/spec/history')
+    monkeypatch.setattr(store, '_normalized_product', no_projection)
+    tree = store.get_category_tree()
+    assert tree[0]['count'] == expected
+    assert {node['id']:node['count'] for node in tree[0]['children']} == {'food.milk':1, 'food.snack':1}
+    children, total, path = store.get_category_children('food')
+    assert total == expected and path == '식품'
+    assert {node['id']:node['count'] for node in children} == {'food.milk':1, 'food.snack':1}
+    children, total, path = store.get_category_children('food.milk')
+    assert children == [] and total == 1 and path == '식품 > 우유'
+    # Inactive preserved group members never add to the logical count.
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("UPDATE normalized_canonical_products SET is_active=0 WHERE public_product_id='milk-b'")
+    assert store.get_category_tree()[0]['count'] == 2
+    assert store.get_category_children('food.milk')[1] == 1
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("UPDATE normalized_canonical_products SET is_active=0 WHERE public_product_id='milk-a'")
+    assert store.get_category_tree()[0]['count'] == 1
+    assert store.get_category_children('food.milk')[1] == 0
+
+
+def test_legacy_category_counts_retain_active_source_rows(tmp_path):
+    path = tmp_path / 'legacy-count.sqlite'
+    with sqlite3.connect(path) as db:
+        db.executescript('''
+        CREATE TABLE categories(id TEXT PRIMARY KEY,parent_id TEXT,name TEXT,sort_order INTEGER);
+        CREATE TABLE products(id INTEGER PRIMARY KEY,category_id TEXT,is_active INTEGER);
+        INSERT INTO categories VALUES('legacy',NULL,'식품',0),('legacy.milk','legacy','우유',0);
+        INSERT INTO products VALUES(1,'legacy.milk',1),(2,'legacy.milk',1),(3,'legacy.milk',0);
+        ''')
+    tree = PublicCatalogStore(path).get_category_tree()
+    assert tree[0]['count'] == tree[0]['children'][0]['count'] == 2

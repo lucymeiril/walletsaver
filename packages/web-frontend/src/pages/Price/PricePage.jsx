@@ -527,7 +527,7 @@ export default function PricePage() {
             >
               <span className={s.categoryIcon}>{cat.icon}</span>
               <span className={s.categoryName}>{cat.name}</span>
-              <span className={s.categoryCount}>{cat.count}개 상품 관측</span>
+              <span className={s.categoryCount}>{cat.count}개 상품군·품목</span>
               <span className={s.categoryExamples}>{cat.examples?.join?.(' · ') || ''}</span>
               <span className={s.categoryChildren}>
                 {cat.children.slice(0, 4).map(child => child.name).join(' / ')}

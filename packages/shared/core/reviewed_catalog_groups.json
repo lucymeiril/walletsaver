@@ -3808,6 +3808,750 @@
         "prod-5e545ecd41568d6e18b57d3fb1b9ce81",
         "prod-7468c068bd40454f8777b6f2c569c965"
       ]
+    },
+    {
+      "key": "juice276:hite.zero",
+      "canonical_product_id": "prod-3bcf5a682a07e2a0fe7b5cc0506511dd",
+      "member_product_ids": [
+        "prod-3bcf5a682a07e2a0fe7b5cc0506511dd",
+        "prod-44c95f9b1fc819838b4d77d5cebe2663",
+        "prod-c3b250c430d6ecc43cbfc1f25f441a26",
+        "prod-e91e6c64e48854ff947d128c9711e5b3"
+      ],
+      "canonical_name": "하이트 제로 무알콜",
+      "brand": "하이트",
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3bcf5a682a07e2a0fe7b5cc0506511dd": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801119221117",
+            "source_titles": [
+              "하이트 제로 무알콜 (350ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801119221117/details"
+            ]
+          }
+        ],
+        "prod-44c95f9b1fc819838b4d77d5cebe2663": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801119221124",
+            "source_titles": [
+              "하이트 제로 무알콜 (350ML * 6)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801119221124/details"
+            ]
+          }
+        ],
+        "prod-c3b250c430d6ecc43cbfc1f25f441a26": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801001236434",
+            "source_titles": [
+              "하이트 제로 (무알콜)(캔) (500ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801001236434/details"
+            ]
+          }
+        ],
+        "prod-e91e6c64e48854ff947d128c9711e5b3": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801001236441",
+            "source_titles": [
+              "하이트 제로 (무알콜)(캔) (500ML * 6)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801001236441/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "34f8ab33b65fc5d29e6b61a836196fee29743ee518fba5ebf64c35278fcda1a2",
+      "derived_alias_member_ids": [
+        "prod-3bcf5a682a07e2a0fe7b5cc0506511dd",
+        "prod-44c95f9b1fc819838b4d77d5cebe2663",
+        "prod-c3b250c430d6ecc43cbfc1f25f441a26",
+        "prod-e91e6c64e48854ff947d128c9711e5b3"
+      ]
+    },
+    {
+      "key": "juice276:kloud.nonalc",
+      "canonical_product_id": "prod-1d0e070e399d6cf02e0d5807d9d043d6",
+      "member_product_ids": [
+        "prod-1d0e070e399d6cf02e0d5807d9d043d6",
+        "prod-89aaa1761c817761b6a133a4b0e25e0b",
+        "prod-a51c3db873bafe9caae8c901efed3e2d",
+        "prod-e89e375530dbae4dce44a97654e70eff"
+      ],
+      "canonical_name": "클라우드 논알콜릭",
+      "brand": "클라우드",
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1d0e070e399d6cf02e0d5807d9d043d6": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000674587224",
+            "source_titles": [
+              "[논알콜] 클라우드 논알콜릭 350캔"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000674587224&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-89aaa1761c817761b6a133a4b0e25e0b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801022025048",
+            "source_titles": [
+              "클라우드 논알콜릭 (500ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801022025048/details"
+            ]
+          }
+        ],
+        "prod-a51c3db873bafe9caae8c901efed3e2d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801022025086",
+            "source_titles": [
+              "클라우드 논알콜릭 (350ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801022025086/details"
+            ]
+          }
+        ],
+        "prod-e89e375530dbae4dce44a97654e70eff": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000674587216",
+            "source_titles": [
+              "[논알콜] 클라우드 논알콜릭 500캔"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000674587216&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "08ba514eb1f5f91734cfe3fdeec967e0761673bfd7f81238e609e86cbcd93e90",
+      "derived_alias_member_ids": [
+        "prod-1d0e070e399d6cf02e0d5807d9d043d6",
+        "prod-89aaa1761c817761b6a133a4b0e25e0b",
+        "prod-a51c3db873bafe9caae8c901efed3e2d",
+        "prod-e89e375530dbae4dce44a97654e70eff"
+      ]
+    },
+    {
+      "key": "juice276:sunup.pineapple100",
+      "canonical_product_id": "prod-5dc5d86f80f3b5a2155214453fc24682",
+      "member_product_ids": [
+        "prod-5dc5d86f80f3b5a2155214453fc24682",
+        "prod-7e2a7bbdf28fe7a0701d9b10b04cffe8"
+      ],
+      "canonical_name": "매일 썬업 100% 파인애플",
+      "brand": "매일",
+      "leaf": "food.drinks.juice.fruit",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5dc5d86f80f3b5a2155214453fc24682": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "142835789",
+            "source_titles": [
+              "매일 썬업100% 과일주스 파인애플 750ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=142835789&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7e2a7bbdf28fe7a0701d9b10b04cffe8": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000040428776",
+            "source_titles": [
+              "[매일유업] 썬업 100% 과즙 파인애플 750mL"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000040428776&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "509df12ce7098769e5984dad3d2a9f02e3bf09456f54806b50d25da690b3a0d6",
+      "derived_alias_member_ids": [
+        "prod-5dc5d86f80f3b5a2155214453fc24682",
+        "prod-7e2a7bbdf28fe7a0701d9b10b04cffe8"
+      ]
+    },
+    {
+      "key": "juice276:lotte.ssaek.orange",
+      "canonical_product_id": "prod-387c6142e9f497e03d0825131448553b",
+      "member_product_ids": [
+        "prod-387c6142e9f497e03d0825131448553b",
+        "prod-a08a8202cc31a3db314b5547eea36811"
+      ],
+      "canonical_name": "롯데 쌕쌕 오렌지",
+      "brand": "롯데",
+      "leaf": "food.drinks.juice.fruit",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-387c6142e9f497e03d0825131448553b": [
+          {
+            "source_name": "costco",
+            "source_record_key": "691636",
+            "source_titles": [
+              "롯데쌕쌕오렌지 240ml x 30 x 96"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Food/Lotte-Ssaek-Ssaek-Orange-240ml-x-30-x-96/p/691636"
+            ]
+          }
+        ],
+        "prod-a08a8202cc31a3db314b5547eea36811": [
+          {
+            "source_name": "costco",
+            "source_record_key": "690662",
+            "source_titles": [
+              "롯데쌕쌕오렌지 240ml x 30"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Lotte-Ssaek-Ssaek-Orange-240ml-x-30/p/690662"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3f95d8099f4d4ca35b696ac8a683169d5a3e1d95ee6a8d7c0386b83099eed843",
+      "derived_alias_member_ids": [
+        "prod-387c6142e9f497e03d0825131448553b",
+        "prod-a08a8202cc31a3db314b5547eea36811"
+      ]
+    },
+    {
+      "key": "juice276:martinelli.apple.pet",
+      "canonical_product_id": "prod-83a536518fa67943141068cac8f2edde",
+      "member_product_ids": [
+        "prod-83a536518fa67943141068cac8f2edde",
+        "prod-e6a439b0045b40bdff30c11c6071d920"
+      ],
+      "canonical_name": "마티넬리 사과주스 PET",
+      "brand": "마티넬리",
+      "leaf": "food.drinks.juice.fruit",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-83a536518fa67943141068cac8f2edde": [
+          {
+            "source_name": "costco",
+            "source_record_key": "676273",
+            "source_titles": [
+              "마티넬리 사과주스 PET병 296ml x 24"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Martinellis-Apple-Juice-PET-296ml-x-24/p/676273"
+            ]
+          }
+        ],
+        "prod-e6a439b0045b40bdff30c11c6071d920": [
+          {
+            "source_name": "costco",
+            "source_record_key": "695651",
+            "source_titles": [
+              "마티넬리 사과주스 PET 296ml x 24 x 77"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Food/Martinellis-Apple-Juice-PET-296ml-x-24-x-77/p/695651"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "78b5195ea1077e100d673d051a724317bc52f6e13495ae26eca5de798cd8c142",
+      "derived_alias_member_ids": [
+        "prod-83a536518fa67943141068cac8f2edde",
+        "prod-e6a439b0045b40bdff30c11c6071d920"
+      ]
+    },
+    {
+      "key": "juice276:unif.mixed.green",
+      "canonical_product_id": "prod-6850bb9bd684b336a79d72a2045798ba",
+      "member_product_ids": [
+        "prod-6850bb9bd684b336a79d72a2045798ba",
+        "prod-aefbd2ffc185762c3c1e3f4120c91348"
+      ],
+      "canonical_name": "Unif 믹스 그린주스",
+      "brand": "Unif",
+      "leaf": "food.drinks.juice.vegetable",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6850bb9bd684b336a79d72a2045798ba": [
+          {
+            "source_name": "costco",
+            "source_record_key": "687498",
+            "source_titles": [
+              "Unif 믹스 그린주스 200ml x 24"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Unif-Mixed-Green-Juice-200ml-x-24/p/687498"
+            ]
+          }
+        ],
+        "prod-aefbd2ffc185762c3c1e3f4120c91348": [
+          {
+            "source_name": "costco",
+            "source_record_key": "687494",
+            "source_titles": [
+              "Unif 믹스 그린주스 1L x 12"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Unif-Mixed-Green-Juice-1L-x-12/p/687494"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0657f56cbaf91541e77d0a5eb7050e531709a47b125ddb8b86b5a742829dd343",
+      "derived_alias_member_ids": [
+        "prod-6850bb9bd684b336a79d72a2045798ba",
+        "prod-aefbd2ffc185762c3c1e3f4120c91348"
+      ]
+    },
+    {
+      "key": "juice276:donsimon.tomato",
+      "canonical_product_id": "prod-d359408d8eec747efd5db7213457626c",
+      "member_product_ids": [
+        "prod-d359408d8eec747efd5db7213457626c",
+        "prod-d41d7e7e7302bfc7cefd796197958781"
+      ],
+      "canonical_name": "돈시몬 토마토주스",
+      "brand": "돈시몬",
+      "leaf": "food.drinks.juice.vegetable",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-d359408d8eec747efd5db7213457626c": [
+          {
+            "source_name": "costco",
+            "source_record_key": "694103",
+            "source_titles": [
+              "Don Simon 토마토 주스 200ml x 24"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Don-Simon-Tomato-Juice-200ml-x-24/p/694103"
+            ]
+          }
+        ],
+        "prod-d41d7e7e7302bfc7cefd796197958781": [
+          {
+            "source_name": "costco",
+            "source_record_key": "688047",
+            "source_titles": [
+              "돈시몬 토마토 주스 1L x 12"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/Juice/Don-Simon-Tomato-Juice-1L-x-12/p/688047"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1c2272052d479d820771f96cdc988d6007d5be90d1192f9a130bf57302656a58",
+      "derived_alias_member_ids": [
+        "prod-d359408d8eec747efd5db7213457626c",
+        "prod-d41d7e7e7302bfc7cefd796197958781"
+      ]
+    },
+    {
+      "key": "juice276:haruhana.organic.lemon",
+      "canonical_product_id": "prod-3294959225e9a4a054eb0d3da72e7958",
+      "member_product_ids": [
+        "prod-3294959225e9a4a054eb0d3da72e7958",
+        "prod-a94aedddc1e456e7b15defe974c75a1e"
+      ],
+      "canonical_name": "하루하나 유기농 레몬즙",
+      "brand": "하루하나",
+      "leaf": "food.drinks.bases.lemon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3294959225e9a4a054eb0d3da72e7958": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070812407",
+            "source_titles": [
+              "하루하나 유기농 레몬즙 480ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070812407&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a94aedddc1e456e7b15defe974c75a1e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070688692",
+            "source_titles": [
+              "하루하나 유기농 레몬즙 14T"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070688692&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "7fb4a6ebde00a01df8881d7d6fdad610dbf6032645a13f7b12bf85303a81b6af",
+      "derived_alias_member_ids": [
+        "prod-3294959225e9a4a054eb0d3da72e7958",
+        "prod-a94aedddc1e456e7b15defe974c75a1e"
+      ]
+    },
+    {
+      "key": "juice276:caprisun.orange.mango",
+      "canonical_product_id": "prod-8350be9618878e688661d779d4053a05",
+      "member_product_ids": [
+        "prod-8350be9618878e688661d779d4053a05",
+        "prod-d58a7c532cb5755393a5e963d6898c88"
+      ],
+      "canonical_name": "카프리썬 오렌지망고",
+      "brand": "카프리썬",
+      "leaf": "food.drinks.juice.fruit_drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8350be9618878e688661d779d4053a05": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801043900096",
+            "source_titles": [
+              "카프리썬 (오렌지망고) (200ML * 10)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801043900096/details"
+            ]
+          }
+        ],
+        "prod-d58a7c532cb5755393a5e963d6898c88": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "007931719",
+            "source_titles": [
+              "농심 카프리썬 오렌지망고 200ML*10"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=007931719&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9da41095525d87cbc44a58072c8fe55d11c3c1778dc99d9e0824539150e1dc08",
+      "derived_alias_member_ids": [
+        "prod-8350be9618878e688661d779d4053a05",
+        "prod-d58a7c532cb5755393a5e963d6898c88"
+      ]
+    },
+    {
+      "key": "juice276:caprisun.orange",
+      "canonical_product_id": "prod-b2bbdc22094b1a2dbfa549fcee518e20",
+      "member_product_ids": [
+        "prod-b2bbdc22094b1a2dbfa549fcee518e20",
+        "prod-d8185e03b818f78008a0640b38a33b43"
+      ],
+      "canonical_name": "카프리썬 오렌지",
+      "brand": "카프리썬",
+      "leaf": "food.drinks.juice.fruit_drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b2bbdc22094b1a2dbfa549fcee518e20": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801043900010",
+            "source_titles": [
+              "카프리썬 (오렌지) (200ML * 10)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801043900010/details"
+            ]
+          }
+        ],
+        "prod-d8185e03b818f78008a0640b38a33b43": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000026174",
+            "source_titles": [
+              "농심 카프리썬 오렌지 200ML*10"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000026174&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f6275eb759e5b593c9a2d6f5f3d3b8816a58e1820e84725383157173f3ae94b5",
+      "derived_alias_member_ids": [
+        "prod-b2bbdc22094b1a2dbfa549fcee518e20",
+        "prod-d8185e03b818f78008a0640b38a33b43"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:nongshim-spicy-shrimp-cracker",
+      "canonical_product_id": "prod-05b9c64790d233f06e705ee6551a374e",
+      "member_product_ids": [
+        "prod-05b9c64790d233f06e705ee6551a374e",
+        "prod-3c89158434b6e5a3269a3e6f54f1e0cb"
+      ],
+      "canonical_name": "농심 매운 새우깡",
+      "brand": "농심",
+      "leaf": "food.snacks.savory.wheat",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-05b9c64790d233f06e705ee6551a374e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123210929",
+            "source_titles": [
+              "농심 매운 새우깡 90G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123210929&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-3c89158434b6e5a3269a3e6f54f1e0cb": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127575836",
+            "source_titles": [
+              "농심 매운 새우깡 400G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127575836&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "86302109de4f883c8b184b3599ccb55058757a2a8eff59cf3d7c92bc0613dcdb",
+      "derived_alias_member_ids": [
+        "prod-05b9c64790d233f06e705ee6551a374e",
+        "prod-3c89158434b6e5a3269a3e6f54f1e0cb"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:simplus-wangsaeu-original",
+      "canonical_product_id": "prod-34dcc7a5f245a50e5af610754dabe9bb",
+      "member_product_ids": [
+        "prod-34dcc7a5f245a50e5af610754dabe9bb",
+        "prod-cb9aad128aecbf1426a837e37ecdcd81"
+      ],
+      "canonical_name": "simplus 왕새우 오리지널",
+      "brand": "simplus",
+      "leaf": "food.snacks.savory.wheat",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-34dcc7a5f245a50e5af610754dabe9bb": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "145347832",
+            "source_titles": [
+              "simplus 왕새우오리지널 360G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=145347832&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cb9aad128aecbf1426a837e37ecdcd81": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "145347849",
+            "source_titles": [
+              "simplus 왕새우오리지널 90G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=145347849&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "109434db40c9f23fa8ec7a2b13ace5b3fd343994ac70d13d4ad817013cefb8e8",
+      "derived_alias_member_ids": [
+        "prod-34dcc7a5f245a50e5af610754dabe9bb",
+        "prod-cb9aad128aecbf1426a837e37ecdcd81"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:nongshim-shrimp-cracker",
+      "canonical_product_id": "prod-79c1c918a4de7a6352be30224459c6a9",
+      "member_product_ids": [
+        "prod-79c1c918a4de7a6352be30224459c6a9",
+        "prod-91b666e492f0b50814008e71b88d78b9"
+      ],
+      "canonical_name": "농심 새우깡",
+      "brand": "농심",
+      "leaf": "food.snacks.savory.wheat",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-79c1c918a4de7a6352be30224459c6a9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123210855",
+            "source_titles": [
+              "농심 새우깡 90G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123210855&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-91b666e492f0b50814008e71b88d78b9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123212645",
+            "source_titles": [
+              "농심 새우깡 400G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123212645&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5200fa978f0213051a106e216f6f7611a2db8b72ebf9cf23e9fd61ad05bd59e2",
+      "derived_alias_member_ids": [
+        "prod-79c1c918a4de7a6352be30224459c6a9",
+        "prod-91b666e492f0b50814008e71b88d78b9"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:simplus-perilla-buckwheat-chip",
+      "canonical_product_id": "prod-44c591caeabaf713e933c25ebb3afd13",
+      "member_product_ids": [
+        "prod-44c591caeabaf713e933c25ebb3afd13",
+        "prod-a00d103b5ddf0ca3e7175afef6fe09b2"
+      ],
+      "canonical_name": "simplus 들기름 메밀칩",
+      "brand": "simplus",
+      "leaf": "food.snacks.savory.grain",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-44c591caeabaf713e933c25ebb3afd13": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071006773",
+            "source_titles": [
+              "simplus 들기름 메밀칩 60G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071006773&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a00d103b5ddf0ca3e7175afef6fe09b2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071094799",
+            "source_titles": [
+              "simplus 대짜 들기름메밀칩 254G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071094799&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5006ea81f97f6a8f7bda948f76bf71d84f587c3f7f30d7dc6d6ab80cfbfa5a1a",
+      "derived_alias_member_ids": [
+        "prod-44c591caeabaf713e933c25ebb3afd13",
+        "prod-a00d103b5ddf0ca3e7175afef6fe09b2"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:badasori-glutinous-laver-bugak-set",
+      "canonical_product_id": "prod-2fea5302cf7e47cd389d9c5573dd94e6",
+      "member_product_ids": [
+        "prod-2fea5302cf7e47cd389d9c5573dd94e6",
+        "prod-6a569023bdd2e1442bec11c5b0aa59ee"
+      ],
+      "canonical_name": "바다소리 찹쌀 김부각 세트",
+      "brand": "바다소리",
+      "leaf": "food.snacks.savory.seaweed",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2fea5302cf7e47cd389d9c5573dd94e6": [
+          {
+            "source_name": "costco",
+            "source_record_key": "695236",
+            "source_titles": [
+              "찹쌀 김부각 세트 (5개입)"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Bugak-Set/p/695236"
+            ]
+          }
+        ],
+        "prod-6a569023bdd2e1442bec11c5b0aa59ee": [
+          {
+            "source_name": "costco",
+            "source_record_key": "695237",
+            "source_titles": [
+              "찹쌀 김부각 세트(5개입) x 5"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Badasori-Bugak-Set-x-5/p/695237"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e7bd7638cd24415dcd81935ed007f01286fae4ccb018bccc356dcb3299baf62f",
+      "derived_alias_member_ids": [
+        "prod-2fea5302cf7e47cd389d9c5573dd94e6",
+        "prod-6a569023bdd2e1442bec11c5b0aa59ee"
+      ]
+    },
+    {
+      "key": "snack277:orion.hot.goraebap.spicy",
+      "canonical_product_id": "prod-622a37211e3bbb1caae646807670a71f",
+      "member_product_ids": [
+        "prod-622a37211e3bbb1caae646807670a71f",
+        "prod-9deb616b463d1fe02affd89aa34d68f8"
+      ],
+      "canonical_name": "오리온 핫 고래밥 매콤양념",
+      "brand": "오리온",
+      "leaf": "food.snacks.savory.wheat",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-622a37211e3bbb1caae646807670a71f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070325932",
+            "source_titles": [
+              "오리온 핫고래밥 매콤양념 56G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070325932&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9deb616b463d1fe02affd89aa34d68f8": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117113407",
+            "source_titles": [
+              "오리온 핫 고래밥 매콤양념맛 (56G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117113407/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a14f0fab1013a8078388810ccc0b30aa28861d0c836afdf1d17d2e8e79075403",
+      "derived_alias_member_ids": [
+        "prod-622a37211e3bbb1caae646807670a71f",
+        "prod-9deb616b463d1fe02affd89aa34d68f8"
+      ]
     }
   ],
   "leaf_reviews": [
@@ -3855,6 +4599,21 @@
       ],
       "reason": "Reviewed whole fresh lemon, not frozen/processed/flavored product; origin/count/mass retained, no SKU merge.",
       "evidence_sha256": "f07ab3714c8975835d831c2bbad3bd818fce3349033e719592d1892ad96bec73"
+    },
+    {
+      "product_id": "prod-9deb616b463d1fe02affd89aa34d68f8",
+      "old_leaf": "food.snacks.savory.grain",
+      "new_leaf": "food.snacks.savory.wheat",
+      "source_name": "lottemart",
+      "source_record_key": "8801117113407",
+      "source_titles": [
+        "오리온 핫 고래밥 매콤양념맛 (56G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801117113407/details"
+      ],
+      "reason": "Broader grain fallback corrected by exact reviewed brand/line/spicy56g identity with HP full wheat-snack source path; source-specific IDs and recipe/variant/price/history preserved.",
+      "evidence_sha256": "c8588738db441c214946b1914c15bbd7acd4205646fcc64093c1e41452819d51"
     }
   ]
 }
