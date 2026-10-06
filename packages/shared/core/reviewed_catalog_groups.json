@@ -2909,6 +2909,905 @@
         "prod-7483d0f7fe43c8a1ace815ce0498fb0b",
         "prod-8a2a22c90ad42a605cbaf73a64c0559f"
       ]
+    },
+    {
+      "key": "coffee275:kanu.decaf.mini",
+      "canonical_product_id": "prod-0285015fa13265bba6a88fb50366c80d",
+      "member_product_ids": [
+        "prod-0285015fa13265bba6a88fb50366c80d",
+        "prod-0d7d823cedc20f11cd5a87546a4cf32a",
+        "prod-5cbaec33214574d4abf32d0ad5b79864"
+      ],
+      "canonical_name": "카누 디카페인 미니",
+      "brand": "카누",
+      "leaf": "food.drinks.coffee.instant",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0285015fa13265bba6a88fb50366c80d": [
+          {
+            "source_name": "costco",
+            "source_record_key": "611169",
+            "source_titles": [
+              "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169"
+            ]
+          }
+        ],
+        "prod-0d7d823cedc20f11cd5a87546a4cf32a": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037058673",
+            "source_titles": [
+              "카누 디카페인 미니 (0.9G*30입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037058673/details"
+            ]
+          }
+        ],
+        "prod-5cbaec33214574d4abf32d0ad5b79864": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000013330980",
+            "source_titles": [
+              "카누 디카페인 아메리카노 미니 100입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000013330980&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "afb5f4cf1e9cc392dcaff69aa301a2c9212fdebd44f4f7a54933b76efc6e9559",
+      "derived_alias_member_ids": [
+        "prod-0285015fa13265bba6a88fb50366c80d",
+        "prod-0d7d823cedc20f11cd5a87546a4cf32a",
+        "prod-5cbaec33214574d4abf32d0ad5b79864"
+      ]
+    },
+    {
+      "key": "coffee275:kanu.dark.mini",
+      "canonical_product_id": "prod-268b54c9cac96203dc5f12aa9fb9fe53",
+      "member_product_ids": [
+        "prod-268b54c9cac96203dc5f12aa9fb9fe53",
+        "prod-4b9484dc105b125c2c162c3017ad7665",
+        "prod-7637e39df2971cbc7d6d6b4e0e9edbac",
+        "prod-7bdeca3b3b19d4eac5a86d741c27383f"
+      ],
+      "canonical_name": "카누 다크로스트 미니",
+      "brand": "카누",
+      "leaf": "food.drinks.coffee.instant",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-268b54c9cac96203dc5f12aa9fb9fe53": [
+          {
+            "source_name": "costco",
+            "source_record_key": "611162",
+            "source_titles": [
+              "카누 미니 다크 로스트 커피 0.9g x 150스틱"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611162"
+            ]
+          }
+        ],
+        "prod-4b9484dc105b125c2c162c3017ad7665": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000713229681",
+            "source_titles": [
+              "[맥심] 카누 다크 미니 210입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000713229681&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-7637e39df2971cbc7d6d6b4e0e9edbac": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126090190",
+            "source_titles": [
+              "동서 카누 미니 다크 로스트 150T (135G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126090190&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7bdeca3b3b19d4eac5a86d741c27383f": [
+          {
+            "source_name": "costco",
+            "source_record_key": "611163",
+            "source_titles": [
+              "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "41dd26a3ddb090e4108ddcd86856c0bed0232b18ef8348e2a0617355fe2a818b",
+      "derived_alias_member_ids": [
+        "prod-268b54c9cac96203dc5f12aa9fb9fe53",
+        "prod-4b9484dc105b125c2c162c3017ad7665",
+        "prod-7637e39df2971cbc7d6d6b4e0e9edbac",
+        "prod-7bdeca3b3b19d4eac5a86d741c27383f"
+      ]
+    },
+    {
+      "key": "coffee275:kanu.mild.mini",
+      "canonical_product_id": "prod-2aecb7df4fada96b80fb5b2b3743bad7",
+      "member_product_ids": [
+        "prod-2aecb7df4fada96b80fb5b2b3743bad7",
+        "prod-4e4f3aa160347f4a2a8088e085d432c4",
+        "prod-5449316649f2f70132ccb698f07cdce4",
+        "prod-5d9cae1204da7082a0a01c5da5cb6cbb",
+        "prod-92003ac5d7b949b3205e77d45f067742",
+        "prod-9c5d8941f03fb3fc7aa8e2c4ddb44e9a",
+        "prod-df822ef76247d4a28112866393b18a93"
+      ],
+      "canonical_name": "카누 마일드로스트 미니",
+      "brand": "카누",
+      "leaf": "food.drinks.coffee.instant",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2aecb7df4fada96b80fb5b2b3743bad7": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000579128334",
+            "source_titles": [
+              "[카누] 마일드 로스트 아메리카노 미니 (150입+20입)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000579128334&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-4e4f3aa160347f4a2a8088e085d432c4": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008848271",
+            "source_titles": [
+              "카누 마일드 로스트 아메리카노 미니 100입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008848271&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5449316649f2f70132ccb698f07cdce4": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126090230",
+            "source_titles": [
+              "동서 카누 미니 마일드 로스트 150T(135G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126090230&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-5d9cae1204da7082a0a01c5da5cb6cbb": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000713229671",
+            "source_titles": [
+              "[카누] 마일드 미니 210입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000713229671&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-92003ac5d7b949b3205e77d45f067742": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037053753",
+            "source_titles": [
+              "동서 카누 미니 마일드로스트 아메리카노 100포 (0.9G*100입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037053753/details"
+            ]
+          }
+        ],
+        "prod-9c5d8941f03fb3fc7aa8e2c4ddb44e9a": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037075977",
+            "source_titles": [
+              "맥심 카누 미니 마일드로스트 (0.9G*190입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037075977/details"
+            ]
+          }
+        ],
+        "prod-df822ef76247d4a28112866393b18a93": [
+          {
+            "source_name": "costco",
+            "source_record_key": "611164",
+            "source_titles": [
+              "카누 미니 마일드 로스트 커피 0.9g x 150스틱"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Mini-Mild-Roasted-Coffee-09g-x-150sticks/p/611164"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c1c171dcbbcfde890b70080fe08428543883fe8d3be887b1f2ef2e73484b571b",
+      "derived_alias_member_ids": [
+        "prod-2aecb7df4fada96b80fb5b2b3743bad7",
+        "prod-4e4f3aa160347f4a2a8088e085d432c4",
+        "prod-5449316649f2f70132ccb698f07cdce4",
+        "prod-5d9cae1204da7082a0a01c5da5cb6cbb",
+        "prod-92003ac5d7b949b3205e77d45f067742",
+        "prod-9c5d8941f03fb3fc7aa8e2c4ddb44e9a",
+        "prod-df822ef76247d4a28112866393b18a93"
+      ]
+    },
+    {
+      "key": "coffee275:maxim.whitegold.mix",
+      "canonical_product_id": "prod-31bf58a7267cfd5fe872631884522f55",
+      "member_product_ids": [
+        "prod-31bf58a7267cfd5fe872631884522f55",
+        "prod-460dcb2de988cac3a8de6401be79b35e",
+        "prod-5268b5b0976246dc1de7d59ffacc488f",
+        "prod-a2e5406140f96b16c7bb90292c73a69a",
+        "prod-efafebcc840d97c0747f47565155dd1b",
+        "prod-f719db6e1af4492e88f9b9273dded415"
+      ],
+      "canonical_name": "맥심 화이트골드 커피믹스",
+      "brand": "맥심",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-31bf58a7267cfd5fe872631884522f55": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037051179",
+            "source_titles": [
+              "맥심 화이트골드 믹스 (11.7G*50입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037051179/details"
+            ]
+          }
+        ],
+        "prod-460dcb2de988cac3a8de6401be79b35e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120821891",
+            "source_titles": [
+              "동서 맥심 화이트골드 커피믹스 230T (2691G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120821891&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-5268b5b0976246dc1de7d59ffacc488f": [
+          {
+            "source_name": "costco",
+            "source_record_key": "512934",
+            "source_titles": [
+              "맥심 화이트 골드 커피믹스 11.7g x 210T x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934"
+            ]
+          }
+        ],
+        "prod-a2e5406140f96b16c7bb90292c73a69a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008398878",
+            "source_titles": [
+              "화이트골드 커피믹스100입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398878&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-efafebcc840d97c0747f47565155dd1b": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008398879",
+            "source_titles": [
+              "화이트골드 커피믹스 180입 (+20입)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008398879&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-f719db6e1af4492e88f9b9273dded415": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037052558",
+            "source_titles": [
+              "동서 맥심 커피믹스 화이트골드 (11.7G*220입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037052558/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "612749a7a874a9982acc143b7e6be570ecd66fb4b1a37fc4109c64edbdb35a32",
+      "derived_alias_member_ids": [
+        "prod-31bf58a7267cfd5fe872631884522f55",
+        "prod-460dcb2de988cac3a8de6401be79b35e",
+        "prod-5268b5b0976246dc1de7d59ffacc488f",
+        "prod-a2e5406140f96b16c7bb90292c73a69a",
+        "prod-efafebcc840d97c0747f47565155dd1b",
+        "prod-f719db6e1af4492e88f9b9273dded415"
+      ]
+    },
+    {
+      "key": "coffee275:maxim.mochagold.mild",
+      "canonical_product_id": "prod-2726f0d44e5b44bc2c0dd9ff505a1a1a",
+      "member_product_ids": [
+        "prod-2726f0d44e5b44bc2c0dd9ff505a1a1a",
+        "prod-8188506589a4334e5269d92266d6fd58"
+      ],
+      "canonical_name": "맥심 모카골드 마일드",
+      "brand": "맥심",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2726f0d44e5b44bc2c0dd9ff505a1a1a": [
+          {
+            "source_name": "costco",
+            "source_record_key": "512933",
+            "source_titles": [
+              "맥심 모카골드마일드커피믹스 12g x 210T x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933"
+            ]
+          }
+        ],
+        "prod-8188506589a4334e5269d92266d6fd58": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037047202",
+            "source_titles": [
+              "동서 맥심 커피믹스 모카골드 마일드 (12G*220입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037047202/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "639e10233ced0000e669c3ee33f13836b89422781c838e68499d1139dc189359",
+      "derived_alias_member_ids": [
+        "prod-2726f0d44e5b44bc2c0dd9ff505a1a1a",
+        "prod-8188506589a4334e5269d92266d6fd58"
+      ]
+    },
+    {
+      "key": "coffee275:maxim.mochagold.mix",
+      "canonical_product_id": "prod-4a01190ded399de99c163a91d4d773de",
+      "member_product_ids": [
+        "prod-4a01190ded399de99c163a91d4d773de",
+        "prod-7efc2b0e1ce419418b3b847cf877c265"
+      ],
+      "canonical_name": "맥심 모카골드 커피믹스",
+      "brand": "맥심",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4a01190ded399de99c163a91d4d773de": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "106872747",
+            "source_titles": [
+              "동서 맥심 모카골드 커피믹스 230T (2760G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=106872747&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7efc2b0e1ce419418b3b847cf877c265": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "006042864",
+            "source_titles": [
+              "동서 맥심 모카골드 믹스 50T (600G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=006042864&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "48b9543454c26a6bf3d6bb0eb9f6ef4c9c598bb2fb5482d3d13049edadaeeb7c",
+      "derived_alias_member_ids": [
+        "prod-4a01190ded399de99c163a91d4d773de",
+        "prod-7efc2b0e1ce419418b3b847cf877c265"
+      ]
+    },
+    {
+      "key": "coffee275:maxim.supremegold.mix",
+      "canonical_product_id": "prod-51dead83bd2a495d071705966acaca6d",
+      "member_product_ids": [
+        "prod-51dead83bd2a495d071705966acaca6d",
+        "prod-5a05ef247efe0eebf9ecf43cf83e19f4"
+      ],
+      "canonical_name": "맥심 슈프림골드 커피믹스",
+      "brand": "맥심",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-51dead83bd2a495d071705966acaca6d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "064586356",
+            "source_titles": [
+              "동서 맥심 슈프림골드 커피믹스 150T+20T (2295G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=064586356&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-5a05ef247efe0eebf9ecf43cf83e19f4": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000172885803",
+            "source_titles": [
+              "슈프림골드 커피믹스 20입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000172885803&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "62fef3455a9301084e327fdcbf2b3fc34fe36bc7ce6c8635eae6dadf1008fff7",
+      "derived_alias_member_ids": [
+        "prod-51dead83bd2a495d071705966acaca6d",
+        "prod-5a05ef247efe0eebf9ecf43cf83e19f4"
+      ]
+    },
+    {
+      "key": "coffee275:maxim.mocha.mix",
+      "canonical_product_id": "prod-336ec95dacf9192b1c0965e7c66584a9",
+      "member_product_ids": [
+        "prod-336ec95dacf9192b1c0965e7c66584a9",
+        "prod-f8659b6f4e48a77a7e1024b47fa5f501"
+      ],
+      "canonical_name": "맥심 모카믹스",
+      "brand": "맥심",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-336ec95dacf9192b1c0965e7c66584a9": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037022322",
+            "source_titles": [
+              "맥심 모카믹스 (12G*50입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037022322/details"
+            ]
+          }
+        ],
+        "prod-f8659b6f4e48a77a7e1024b47fa5f501": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037006391",
+            "source_titles": [
+              "맥심 모카믹스 (12G*20입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037006391/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3296dabffdcc078fc10cd1d57aca3e096e093c6b37b623fb6610da44a78ff3cb",
+      "derived_alias_member_ids": [
+        "prod-336ec95dacf9192b1c0965e7c66584a9",
+        "prod-f8659b6f4e48a77a7e1024b47fa5f501"
+      ]
+    },
+    {
+      "key": "coffee275:seoul.gangneung.latte",
+      "canonical_product_id": "prod-030b08a57cd8e501ed45ef50f44a47d5",
+      "member_product_ids": [
+        "prod-030b08a57cd8e501ed45ef50f44a47d5",
+        "prod-c555bb354ef7ceedacefd74bde4b0e55"
+      ],
+      "canonical_name": "서울우유 강릉커피 라떼",
+      "brand": "서울우유",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-030b08a57cd8e501ed45ef50f44a47d5": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000047906471",
+            "source_titles": [
+              "강릉커피 라떼 250ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000047906471&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-c555bb354ef7ceedacefd74bde4b0e55": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "147043727",
+            "source_titles": [
+              "서울우유 강릉커피 라떼 250ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=147043727&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "7c9106e10b5ab7e8886db340000d63e2dc9c41ea63797f1f9c6f06b0be71d538",
+      "derived_alias_member_ids": [
+        "prod-030b08a57cd8e501ed45ef50f44a47d5",
+        "prod-c555bb354ef7ceedacefd74bde4b0e55"
+      ]
+    },
+    {
+      "key": "coffee275:denmark.digestible.vanilla",
+      "canonical_product_id": "prod-7e02a48114a0fb46a9817efc14b8dc1d",
+      "member_product_ids": [
+        "prod-7e02a48114a0fb46a9817efc14b8dc1d",
+        "prod-8b9c6eaacc8149e530b8458e00f06b1a"
+      ],
+      "canonical_name": "덴마크 소화가잘되는 바닐라라떼",
+      "brand": "덴마크",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7e02a48114a0fb46a9817efc14b8dc1d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071066891",
+            "source_titles": [
+              "동원덴마크 소화가잘되는바닐라라떼 250ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071066891&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8b9c6eaacc8149e530b8458e00f06b1a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000696295830",
+            "source_titles": [
+              "덴마크 소화가 잘되는 우유로만든 바닐라라떼 250ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295830&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c57d517ba403ca8b50f4bd8f01826a3512a5c4eb09f8fdf6b4c8578a69bdb0ff",
+      "derived_alias_member_ids": [
+        "prod-7e02a48114a0fb46a9817efc14b8dc1d",
+        "prod-8b9c6eaacc8149e530b8458e00f06b1a"
+      ]
+    },
+    {
+      "key": "coffee275:seoul.coffeetown.deepbrown.mocha",
+      "canonical_product_id": "prod-7ced42bf37b2ff5d62149be09a253303",
+      "member_product_ids": [
+        "prod-7ced42bf37b2ff5d62149be09a253303",
+        "prod-c2f228b4c89feb406f0bd9c92f0d2885"
+      ],
+      "canonical_name": "서울우유 커피타운 딥브라운 모카",
+      "brand": "서울우유",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7ced42bf37b2ff5d62149be09a253303": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070735182",
+            "source_titles": [
+              "서울우유 커피타운 딥브라운 모카 250ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070735182&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c2f228b4c89feb406f0bd9c92f0d2885": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000600899686",
+            "source_titles": [
+              "커피타운 딥브라운 모카 250ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000600899686&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "effa990a2b948d22991717a0cf5a0b3b81041e91e98502661c636cd17442560a",
+      "derived_alias_member_ids": [
+        "prod-7ced42bf37b2ff5d62149be09a253303",
+        "prod-c2f228b4c89feb406f0bd9c92f0d2885"
+      ]
+    },
+    {
+      "key": "coffee275:seoul.starbucks.cafelatte",
+      "canonical_product_id": "prod-765087e04a619bebc2f18f08fdfee134",
+      "member_product_ids": [
+        "prod-765087e04a619bebc2f18f08fdfee134",
+        "prod-ca1c6c48a9f6af8b01dfca9a0d595d09"
+      ],
+      "canonical_name": "서울우유 스타벅스 카페라떼",
+      "brand": "스타벅스",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-765087e04a619bebc2f18f08fdfee134": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007051239",
+            "source_titles": [
+              "스타벅스 카페 라떼 200ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007051239&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-ca1c6c48a9f6af8b01dfca9a0d595d09": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128696979",
+            "source_titles": [
+              "서울우유 스타벅스 카페라떼 200ML*6"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128696979&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e754325f777eca4c8a7116fce351b9726be83951ee5e1bf3a71e56702e500089",
+      "derived_alias_member_ids": [
+        "prod-765087e04a619bebc2f18f08fdfee134",
+        "prod-ca1c6c48a9f6af8b01dfca9a0d595d09"
+      ]
+    },
+    {
+      "key": "coffee275:denmark.digestible.cafelatte",
+      "canonical_product_id": "prod-ac7f2ca2c52faa4edc735cbd01f10c21",
+      "member_product_ids": [
+        "prod-ac7f2ca2c52faa4edc735cbd01f10c21",
+        "prod-d7a1d8643176091d04c6e9b5a326be83"
+      ],
+      "canonical_name": "덴마크 소화가잘되는 카페라떼",
+      "brand": "덴마크",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-ac7f2ca2c52faa4edc735cbd01f10c21": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000696295827",
+            "source_titles": [
+              "덴마크 소화가 잘 되는 우유로 만든 카페라떼 250ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000696295827&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-d7a1d8643176091d04c6e9b5a326be83": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071066885",
+            "source_titles": [
+              "동원덴마크 소화가잘되는카페라떼 250ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071066885&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3e9388b387567c02b0fef49d3d6ef08a52f265c5e9db123c40dc437997e98331",
+      "derived_alias_member_ids": [
+        "prod-ac7f2ca2c52faa4edc735cbd01f10c21",
+        "prod-d7a1d8643176091d04c6e9b5a326be83"
+      ]
+    },
+    {
+      "key": "coffee275:letsbe.mild",
+      "canonical_product_id": "prod-12b1bfd9dca345f692f133c76b778641",
+      "member_product_ids": [
+        "prod-12b1bfd9dca345f692f133c76b778641",
+        "prod-8f8c9e1f90aabbfeeb168f7836487620"
+      ],
+      "canonical_name": "레쓰비 마일드",
+      "brand": "레쓰비",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-12b1bfd9dca345f692f133c76b778641": [
+          {
+            "source_name": "costco",
+            "source_record_key": "604241",
+            "source_titles": [
+              "레쓰비 마일드 캔커피 175ml x 30 x 2팩"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Lets-Be-Mild-Can-Coffee-175ml-x-30-x-2-Pack/p/604241"
+            ]
+          }
+        ],
+        "prod-8f8c9e1f90aabbfeeb168f7836487620": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000030573216",
+            "source_titles": [
+              "레쓰비마일드 175ml*12입"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000030573216&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "540fa01ad9ad01dd4f0e63bea539242ee63bf0f4dfe0881225727d2b26d72c86",
+      "derived_alias_member_ids": [
+        "prod-12b1bfd9dca345f692f133c76b778641",
+        "prod-8f8c9e1f90aabbfeeb168f7836487620"
+      ]
+    },
+    {
+      "key": "coffee275:starbucks.pikeplace",
+      "canonical_product_id": "prod-4e873b66cbc1ac4702eb4fc7aa616664",
+      "member_product_ids": [
+        "prod-4e873b66cbc1ac4702eb4fc7aa616664",
+        "prod-7e1a883c98e6d440c8c009a4328fe851"
+      ],
+      "canonical_name": "스타벅스 파이크 플레이스 로스트",
+      "brand": "스타벅스",
+      "leaf": "food.drinks.coffee.ready",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4e873b66cbc1ac4702eb4fc7aa616664": [
+          {
+            "source_name": "costco",
+            "source_record_key": "612346",
+            "source_titles": [
+              "스타벅스 파이크 플레이스 로스트 275ml x 24"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Pike-Place-Roast-Coffee-275ml-x-24bottle/p/612346"
+            ]
+          }
+        ],
+        "prod-7e1a883c98e6d440c8c009a4328fe851": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037067897",
+            "source_titles": [
+              "스타벅스 파이크 플레이스 로스트 (275ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037067897/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a060b5fa6c4d449379cd043c67bc0b68014436f811ebfb8dbe2e0e91855b1aff",
+      "derived_alias_member_ids": [
+        "prod-4e873b66cbc1ac4702eb4fc7aa616664",
+        "prod-7e1a883c98e6d440c8c009a4328fe851"
+      ]
+    },
+    {
+      "key": "coffee275:pulses.zeroweet.mild.stevia",
+      "canonical_product_id": "prod-4da58c7a40fd361673f3a4e5e29f73f4",
+      "member_product_ids": [
+        "prod-4da58c7a40fd361673f3a4e5e29f73f4",
+        "prod-801efad0997b30d409c497e565e7da00"
+      ],
+      "canonical_name": "펄세스 제로윗 마일드 스테비아 커피믹스",
+      "brand": "펄세스",
+      "leaf": "food.drinks.coffee.mix",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4da58c7a40fd361673f3a4e5e29f73f4": [
+          {
+            "source_name": "costco",
+            "source_record_key": "691925",
+            "source_titles": [
+              "펄세스제로윗 마일드스테비아커피믹스 250ct x 90"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Food/Pulses-Zeroweet-Mild-Stevia-Coffee-Mix-250t-x-90/p/691925"
+            ]
+          }
+        ],
+        "prod-801efad0997b30d409c497e565e7da00": [
+          {
+            "source_name": "costco",
+            "source_record_key": "689169",
+            "source_titles": [
+              "펄세스 제로윗 마일드 스테비아 커피믹스 9.5g x 250ct"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Pulses-Zeroweet-Mild-Stevia-Coffee-Mix-95g-x-250t/p/689169"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0572a431a073fbeacf1b9e4d743e73f68819ba5374e5d59e3754299a364aa276",
+      "derived_alias_member_ids": [
+        "prod-4da58c7a40fd361673f3a4e5e29f73f4",
+        "prod-801efad0997b30d409c497e565e7da00"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:belmio-classic-coffee-capsules",
+      "canonical_product_id": "prod-5e545ecd41568d6e18b57d3fb1b9ce81",
+      "member_product_ids": [
+        "prod-5e545ecd41568d6e18b57d3fb1b9ce81",
+        "prod-7468c068bd40454f8777b6f2c569c965"
+      ],
+      "canonical_name": "벨미오 클래식 캡슐커피",
+      "brand": "벨미오",
+      "leaf": "food.drinks.coffee.capsule",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5e545ecd41568d6e18b57d3fb1b9ce81": [
+          {
+            "source_name": "costco",
+            "source_record_key": "649298",
+            "source_titles": [
+              "벨미오 캡슐커피 클래식 80개입"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/649298"
+            ]
+          }
+        ],
+        "prod-7468c068bd40454f8777b6f2c569c965": [
+          {
+            "source_name": "costco",
+            "source_record_key": "696869",
+            "source_titles": [
+              "벨미오 캡슐커피 클래식 100개입"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Belmio-100-Classic-Coffee-Capsules/p/696869"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "eeb3b1042d0e319ec292764047f6e0614475bac4f53a669c4b07f57d3555bda7",
+      "derived_alias_member_ids": [
+        "prod-5e545ecd41568d6e18b57d3fb1b9ce81",
+        "prod-7468c068bd40454f8777b6f2c569c965"
+      ]
     }
   ],
   "leaf_reviews": [
