@@ -10802,6 +10802,706 @@
         "prod-a4f2eb1b30db2ce4de2dd0a5ee05f113",
         "prod-cdda4b80e1c0253e7f7451cc156c411a"
       ]
+    },
+    {
+      "key": "reviewed-family-v1:hwakwabang-milk-manju",
+      "canonical_product_id": "prod-0eedc3e4142b98ed47eb72c405dc85c1",
+      "member_product_ids": [
+        "prod-0eedc3e4142b98ed47eb72c405dc85c1",
+        "prod-cb2ed0882c0fbeb69ec1dd6824bf83d0"
+      ],
+      "canonical_name": "화과방 우유앙빵",
+      "brand": "화과방",
+      "leaf": "food.bakery.bread.filled",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0eedc3e4142b98ed47eb72c405dc85c1": [
+          {
+            "source_name": "costco",
+            "source_record_key": "696723",
+            "source_titles": [
+              "화과방 우유앙빵 35g x 15입 x 5"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Hwakwabang-Milk-Manju-35g-x-15ct-x-5/p/696723"
+            ]
+          }
+        ],
+        "prod-cb2ed0882c0fbeb69ec1dd6824bf83d0": [
+          {
+            "source_name": "costco",
+            "source_record_key": "664672",
+            "source_titles": [
+              "화과방 우유앙빵 35g x 15입 x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Hwakwabang-Milk-Manju-35g-x-15ct-x-2/p/664672"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1253fb55d3e42ab90f6461fb34b753a1abf2136a401581735640af62c0d37570",
+      "derived_alias_member_ids": [
+        "prod-0eedc3e4142b98ed47eb72c405dc85c1",
+        "prod-cb2ed0882c0fbeb69ec1dd6824bf83d0"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ristorante-mozzarella-pizza",
+      "canonical_product_id": "prod-8c8cc91469f70c9b58fab1ffd0ed48b0",
+      "member_product_ids": [
+        "prod-8c8cc91469f70c9b58fab1ffd0ed48b0",
+        "prod-46f612ff40cad57a79fa593d6ce12226"
+      ],
+      "canonical_name": "리스토란테 모짜렐라피자",
+      "brand": "리스토란테",
+      "leaf": "food.meals.prepared.pizza",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8c8cc91469f70c9b58fab1ffd0ed48b0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070829428",
+            "source_titles": [
+              "리스토란테 모짜렐라치즈피자 355G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070829428&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-46f612ff40cad57a79fa593d6ce12226": [
+          {
+            "source_name": "costco",
+            "source_record_key": "666930",
+            "source_titles": [
+              "리스토란테 모짜렐라피자 355g x 7pk"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/p/666930"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d723568bbe40c05c0041945cb8994c3ca84f4e6d1cca76ecb4c7bdcbcab98593",
+      "derived_alias_member_ids": [
+        "prod-8c8cc91469f70c9b58fab1ffd0ed48b0",
+        "prod-46f612ff40cad57a79fa593d6ce12226"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-corn-cheese-pizza",
+      "canonical_product_id": "prod-b11d1858f0998d7cfa67a46036d86d67",
+      "member_product_ids": [
+        "prod-b11d1858f0998d7cfa67a46036d86d67",
+        "prod-3f11a03989b2c76236a9dabd7664b560"
+      ],
+      "canonical_name": "오뚜기 콘치즈 피자",
+      "brand": "오뚜기",
+      "leaf": "food.meals.prepared.pizza",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b11d1858f0998d7cfa67a46036d86d67": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069859704",
+            "source_titles": [
+              "오뚜기 콘치즈 피자 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069859704&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-3f11a03989b2c76236a9dabd7664b560": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000550073340",
+            "source_titles": [
+              "콘치즈 피자 300g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000550073340&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "30051af9ed33532cfb1119ea36dfe1e9311b05bcf5391882571f46021c66284b",
+      "derived_alias_member_ids": [
+        "prod-b11d1858f0998d7cfa67a46036d86d67",
+        "prod-3f11a03989b2c76236a9dabd7664b560"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bibigo-kimchi-wanggyoja",
+      "canonical_product_id": "prod-01262c99466e5e1416c4e0e345f23d56",
+      "member_product_ids": [
+        "prod-01262c99466e5e1416c4e0e345f23d56",
+        "prod-f3fd3944a38f93ba9e4e0afc80e736fc"
+      ],
+      "canonical_name": "CJ 비비고 김치 왕교자",
+      "brand": "CJ 비비고",
+      "leaf": "food.meals.dumplings.gyoza",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-01262c99466e5e1416c4e0e345f23d56": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801392011962",
+            "source_titles": [
+              "CJ 비비고 김치왕교자 (315G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801392011962/details"
+            ]
+          }
+        ],
+        "prod-f3fd3944a38f93ba9e4e0afc80e736fc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124808279",
+            "source_titles": [
+              "씨제이 비비고 김치 왕교자 420G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124808279&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b65b8540269a5e8d360e2d4fdb6a6dae918b9c722951552b9964219ce637afe7",
+      "derived_alias_member_ids": [
+        "prod-01262c99466e5e1416c4e0e345f23d56",
+        "prod-f3fd3944a38f93ba9e4e0afc80e736fc"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bibigo-water-dumplings",
+      "canonical_product_id": "prod-08b57d4d7cea57848854a982a89de1c8",
+      "member_product_ids": [
+        "prod-08b57d4d7cea57848854a982a89de1c8",
+        "prod-0ed8b9b312f5bd735a6c34e66729ce4a",
+        "prod-19a3aaf1b6e1c2c5ca8d6f57419ff12e",
+        "prod-545a2708e62b57e9560c1817141cf035",
+        "prod-7cf70cb7dab73f3669c8bbdcf70c85d6"
+      ],
+      "canonical_name": "CJ 비비고 물만두",
+      "brand": "CJ 비비고",
+      "leaf": "food.meals.dumplings.boiled",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-08b57d4d7cea57848854a982a89de1c8": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "122625498",
+            "source_titles": [
+              "씨제이 비비고 물만두 370G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=122625498&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-0ed8b9b312f5bd735a6c34e66729ce4a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000547499428",
+            "source_titles": [
+              "CJ 물만두 315g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000547499428&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-19a3aaf1b6e1c2c5ca8d6f57419ff12e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070135684",
+            "source_titles": [
+              "씨제이 비비고 물만두 315G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070135684&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-545a2708e62b57e9560c1817141cf035": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801392034909",
+            "source_titles": [
+              "CJ 비비고 물만두 (315G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801392034909/details"
+            ]
+          }
+        ],
+        "prod-7cf70cb7dab73f3669c8bbdcf70c85d6": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000010051300",
+            "source_titles": [
+              "CJ 물만두370g*2"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000010051300&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "905d788b7d1ab7b4da628a3b062f3a67bb519e4f78e59b05e06cd4826d8cd7b4",
+      "derived_alias_member_ids": [
+        "prod-08b57d4d7cea57848854a982a89de1c8",
+        "prod-0ed8b9b312f5bd735a6c34e66729ce4a",
+        "prod-19a3aaf1b6e1c2c5ca8d6f57419ff12e",
+        "prod-545a2708e62b57e9560c1817141cf035",
+        "prod-7cf70cb7dab73f3669c8bbdcf70c85d6"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-dimsum-shrimp-hargow",
+      "canonical_product_id": "prod-1460e64d260d1f17fa8caae9cfc34d9e",
+      "member_product_ids": [
+        "prod-0d1572c9bffb701876e216eedd7f1314",
+        "prod-1460e64d260d1f17fa8caae9cfc34d9e",
+        "prod-3237dd7a58c3d4240209c2fae0b05cfc"
+      ],
+      "canonical_name": "동원 딤섬 새우 하가우",
+      "brand": "동원",
+      "leaf": "food.meals.dumplings.dimsum",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0d1572c9bffb701876e216eedd7f1314": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "057102167",
+            "source_titles": [
+              "동원 딤섬 새우 하가우 300G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=057102167&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-1460e64d260d1f17fa8caae9cfc34d9e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801047317272",
+            "source_titles": [
+              "동원 딤섬 새우하가우 (420G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801047317272/details"
+            ]
+          }
+        ],
+        "prod-3237dd7a58c3d4240209c2fae0b05cfc": [
+          {
+            "source_name": "costco",
+            "source_record_key": "671151",
+            "source_titles": [
+              "동원 딤섬 새우하가우1.2KG X 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Dongwin-Dimsum-Hargow-12KG-X-2/p/671151"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "53757c12619fa56546a22677d88c5e9301ca2da5a980e9cea868afbac216d707",
+      "derived_alias_member_ids": [
+        "prod-0d1572c9bffb701876e216eedd7f1314",
+        "prod-1460e64d260d1f17fa8caae9cfc34d9e",
+        "prod-3237dd7a58c3d4240209c2fae0b05cfc"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bibigo-wanggyoja",
+      "canonical_product_id": "prod-165c9763560e6a318d16bf7aeb84c5ae",
+      "member_product_ids": [
+        "prod-165c9763560e6a318d16bf7aeb84c5ae",
+        "prod-2656eb501bdff2640f4ec8515f316d20",
+        "prod-c553c34a9d5c41abaa9cd7eb2722194b"
+      ],
+      "canonical_name": "CJ 비비고 왕교자",
+      "brand": "CJ 비비고",
+      "leaf": "food.meals.dumplings.gyoza",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-165c9763560e6a318d16bf7aeb84c5ae": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "133424707",
+            "source_titles": [
+              "씨제이 비비고 왕교자 만두 350G*3"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=133424707&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-2656eb501bdff2640f4ec8515f316d20": [
+          {
+            "source_name": "costco",
+            "source_record_key": "674446",
+            "source_titles": [
+              "비비고 왕교자 1.925kg x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Pork-Dumpling-1925kg-x-2/p/674446"
+            ]
+          }
+        ],
+        "prod-c553c34a9d5c41abaa9cd7eb2722194b": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000025935885",
+            "source_titles": [
+              "CJ 왕교자1.12kg"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000025935885&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "06ac01deb8b58a0e3f815dc0b3dfc5a50fdbf07a87182bd608c83b9cf3054aaa",
+      "derived_alias_member_ids": [
+        "prod-165c9763560e6a318d16bf7aeb84c5ae",
+        "prod-2656eb501bdff2640f4ec8515f316d20",
+        "prod-c553c34a9d5c41abaa9cd7eb2722194b"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bibigo-barley-potato-dumplings",
+      "canonical_product_id": "prod-174e509afc5b97e665a0200a09600a14",
+      "member_product_ids": [
+        "prod-174e509afc5b97e665a0200a09600a14",
+        "prod-f0fcd1669311cf08bc52da3d98dd9cbe"
+      ],
+      "canonical_name": "CJ 비비고 찰보리 감자만두",
+      "brand": "CJ 비비고",
+      "leaf": "food.meals.dumplings.steamed",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-174e509afc5b97e665a0200a09600a14": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125233974",
+            "source_titles": [
+              "씨제이 비비고 찰보리 감자 만두 400G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125233974&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f0fcd1669311cf08bc52da3d98dd9cbe": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801392085963",
+            "source_titles": [
+              "CJ 비비고 찰보리감자만두 (300G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801392085963/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "69c7332613ca606737b249973b768f766e5a78e7e0c1140e97a05e12da07244b",
+      "derived_alias_member_ids": [
+        "prod-174e509afc5b97e665a0200a09600a14",
+        "prod-f0fcd1669311cf08bc52da3d98dd9cbe"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bibigo-whole-shrimp-dumplings",
+      "canonical_product_id": "prod-624f8013e4d83869a736e391ee047d55",
+      "member_product_ids": [
+        "prod-2f971c5e68b9e73b02e0316a18e9d743",
+        "prod-624f8013e4d83869a736e391ee047d55",
+        "prod-aa8f062bab2c49bce874e00a545fb111"
+      ],
+      "canonical_name": "CJ 비비고 통새우만두",
+      "brand": "CJ 비비고",
+      "leaf": "food.meals.dumplings.steamed",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2f971c5e68b9e73b02e0316a18e9d743": [
+          {
+            "source_name": "costco",
+            "source_record_key": "673730",
+            "source_titles": [
+              "비비고통새우만두200g x 6"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Whole-Shrimp-Mandu-200g-x-6/p/673730"
+            ]
+          }
+        ],
+        "prod-624f8013e4d83869a736e391ee047d55": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801392067167",
+            "source_titles": [
+              "CJ 비비고 통새우만두 (200G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801392067167/details"
+            ]
+          }
+        ],
+        "prod-aa8f062bab2c49bce874e00a545fb111": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070298531",
+            "source_titles": [
+              "씨제이 비비고 통새우 만두 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070298531&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5f020a16a8cb378d7250a885c7fb4bf1ec7460f61db046ed6d253df50b884783",
+      "derived_alias_member_ids": [
+        "prod-2f971c5e68b9e73b02e0316a18e9d743",
+        "prod-624f8013e4d83869a736e391ee047d55",
+        "prod-aa8f062bab2c49bce874e00a545fb111"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:pulmuone-thin-full-kimchi",
+      "canonical_product_id": "prod-633ce1ce34994e21010aa75448f99cb3",
+      "member_product_ids": [
+        "prod-633ce1ce34994e21010aa75448f99cb3",
+        "prod-97b18f4e6cd5aa0662ff6aee07100d84"
+      ],
+      "canonical_name": "풀무원 얄피꽉찬 김치만두",
+      "brand": "풀무원",
+      "leaf": "food.meals.dumplings.steamed",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-633ce1ce34994e21010aa75448f99cb3": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801114145630",
+            "source_titles": [
+              "풀무원 얄피꽉찬 김치만두기획 (400G*2입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801114145630/details"
+            ]
+          }
+        ],
+        "prod-97b18f4e6cd5aa0662ff6aee07100d84": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "129860109",
+            "source_titles": [
+              "풀무원 얄피꽉찬 김치만두 400G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=129860109&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d555e56af12ce1bc13a9b403c64dbc68cfc4acda23bef322d47466197689ba57",
+      "derived_alias_member_ids": [
+        "prod-633ce1ce34994e21010aa75448f99cb3",
+        "prod-97b18f4e6cd5aa0662ff6aee07100d84"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-dimsum-chive-cheungfun",
+      "canonical_product_id": "prod-922f83bea8edb4231d42764aa90eceba",
+      "member_product_ids": [
+        "prod-71694faa241d640ca24fe051ca952dfd",
+        "prod-922f83bea8edb4231d42764aa90eceba"
+      ],
+      "canonical_name": "동원 딤섬 부추 창펀",
+      "brand": "동원",
+      "leaf": "food.meals.dumplings.dimsum",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-71694faa241d640ca24fe051ca952dfd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "057102150",
+            "source_titles": [
+              "동원 딤섬 부추 창펀 390G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=057102150&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-922f83bea8edb4231d42764aa90eceba": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801047317289",
+            "source_titles": [
+              "동원 딤섬 부추창펀 (550G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801047317289/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a858dea66de59853472c224f5d973b5959412c4fb448b243de88612285d26575",
+      "derived_alias_member_ids": [
+        "prod-71694faa241d640ca24fe051ca952dfd",
+        "prod-922f83bea8edb4231d42764aa90eceba"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:pulmuone-thin-full-meat",
+      "canonical_product_id": "prod-8073e64d03b86afce0eb66eb72eddd78",
+      "member_product_ids": [
+        "prod-8073e64d03b86afce0eb66eb72eddd78",
+        "prod-e330521c9fd65e274027bc0c8532301d"
+      ],
+      "canonical_name": "풀무원 얄피꽉찬 고기만두",
+      "brand": "풀무원",
+      "leaf": "food.meals.dumplings.steamed",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8073e64d03b86afce0eb66eb72eddd78": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "129860213",
+            "source_titles": [
+              "풀무원 얄피꽉찬 고기만두 400G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=129860213&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e330521c9fd65e274027bc0c8532301d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801114145647",
+            "source_titles": [
+              "풀무원 얄피꽉찬 고기만두기획 (400G*2입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801114145647/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "66d2fe0eae93c86b884a5548e828674677e83350f00a83165a7d7ba234e68b6f",
+      "derived_alias_member_ids": [
+        "prod-8073e64d03b86afce0eb66eb72eddd78",
+        "prod-e330521c9fd65e274027bc0c8532301d"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:haitai-gohyang-dumplings",
+      "canonical_product_id": "prod-8bc023850003b1396a04d00078a73d44",
+      "member_product_ids": [
+        "prod-8bc023850003b1396a04d00078a73d44",
+        "prod-b2783586cefae4b1d7457b0c87de96e9",
+        "prod-fcacc6a1e9f0f8d53060b3b787b36025"
+      ],
+      "canonical_name": "해태 고향만두",
+      "brand": "해태",
+      "leaf": "food.meals.dumplings.gyoza",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8bc023850003b1396a04d00078a73d44": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070921934",
+            "source_titles": [
+              "해태 고향만두 1200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070921934&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-b2783586cefae4b1d7457b0c87de96e9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069662153",
+            "source_titles": [
+              "해태 고향만두 320G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069662153&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fcacc6a1e9f0f8d53060b3b787b36025": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070325431",
+            "source_titles": [
+              "해태 고향만두 300G*3"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070325431&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d37e7ef64322546956c573cc7ce226274854c7f6dc3f2882a5bc6162cdbdc549",
+      "derived_alias_member_ids": [
+        "prod-8bc023850003b1396a04d00078a73d44",
+        "prod-b2783586cefae4b1d7457b0c87de96e9",
+        "prod-fcacc6a1e9f0f8d53060b3b787b36025"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:cj-gourmet-shrimp-hargow",
+      "canonical_product_id": "prod-48ef9c6e49ecf03ad3f7a19b4363cc11",
+      "member_product_ids": [
+        "prod-48ef9c6e49ecf03ad3f7a19b4363cc11",
+        "prod-8663aa712788a2ee4cd2000b49f788cd"
+      ],
+      "canonical_name": "CJ 고메 새우 하가우",
+      "brand": "CJ 고메",
+      "leaf": "food.meals.dumplings.dimsum",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-48ef9c6e49ecf03ad3f7a19b4363cc11": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071230973",
+            "source_titles": [
+              "씨제이 고메 새우 하가우 135G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071230973&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8663aa712788a2ee4cd2000b49f788cd": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000737358742",
+            "source_titles": [
+              "CJ 고메 새우하가우 135g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000737358742&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "10b0beae9f202b14740702b2e6c93dbfb1888bf8d40a45b30bbf7e11e2a24479",
+      "derived_alias_member_ids": [
+        "prod-48ef9c6e49ecf03ad3f7a19b4363cc11",
+        "prod-8663aa712788a2ee4cd2000b49f788cd"
+      ]
     }
   ],
   "leaf_reviews": [
@@ -11029,6 +11729,51 @@
       ],
       "reason": "Explicit same Crown caramelcorn-and-peanut mixed snack line, original Lotte title includes peanut, both current Homeplus native titles use corn_peanut leaf. Preserve measured package quantities; no component proportions guessed.",
       "evidence_sha256": "4fd68245af1f92a6f48e2218c8239efd4b7c84cf0919ae33666e13d16b2ba801"
+    },
+    {
+      "product_id": "prod-0d1572c9bffb701876e216eedd7f1314",
+      "old_leaf": "food.meals.dumplings.steamed",
+      "new_leaf": "food.meals.dumplings.dimsum",
+      "source_name": "homeplus",
+      "source_record_key": "057102167",
+      "source_titles": [
+        "동원 딤섬 새우 하가우 300G*2"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=057102167&storeType=HYPER"
+      ],
+      "reason": "Explicitexactnamedproductform: literalDongwon딤섬 titles refinegenericsteamed todimsum; pureBibigowhole-shrimp title/currentscalarfields containnoassortment, exactnamed200gLotte/HPsteamedpaths corroborate steamed, notmixed. Preservealloriginals/quantity/ingredientsunknowns/sourcecategories/IDs; no species/recipe inference.",
+      "evidence_sha256": "a3704188a0ab172de6ef1687adaa08098253004858fd5be63825d6798995f7a0"
+    },
+    {
+      "product_id": "prod-2f971c5e68b9e73b02e0316a18e9d743",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.steamed",
+      "source_name": "costco",
+      "source_record_key": "673730",
+      "source_titles": [
+        "비비고통새우만두200g x 6"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Whole-Shrimp-Mandu-200g-x-6/p/673730"
+      ],
+      "reason": "Explicitexactnamedproductform: literalDongwon딤섬 titles refinegenericsteamed todimsum; pureBibigowhole-shrimp title/currentscalarfields containnoassortment, exactnamed200gLotte/HPsteamedpaths corroborate steamed, notmixed. Preservealloriginals/quantity/ingredientsunknowns/sourcecategories/IDs; no species/recipe inference.",
+      "evidence_sha256": "8260149946049ff149d1be14b99baf3253b32d506aa544849a8335a70fcca15e"
+    },
+    {
+      "product_id": "prod-71694faa241d640ca24fe051ca952dfd",
+      "old_leaf": "food.meals.dumplings.steamed",
+      "new_leaf": "food.meals.dumplings.dimsum",
+      "source_name": "homeplus",
+      "source_record_key": "057102150",
+      "source_titles": [
+        "동원 딤섬 부추 창펀 390G*2"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=057102150&storeType=HYPER"
+      ],
+      "reason": "Explicitexactnamedproductform: literalDongwon딤섬 titles refinegenericsteamed todimsum; pureBibigowhole-shrimp title/currentscalarfields containnoassortment, exactnamed200gLotte/HPsteamedpaths corroborate steamed, notmixed. Preservealloriginals/quantity/ingredientsunknowns/sourcecategories/IDs; no species/recipe inference.",
+      "evidence_sha256": "9f5ce4c4b589be764d15492f093f42b59aca99dd9d56c55be1b8591aba459124"
     }
   ]
 }
