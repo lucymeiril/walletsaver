@@ -9079,6 +9079,1729 @@
         "prod-41616693ff0be54a89370b7b5bf45822",
         "prod-90512697c0f12fa7ec6832a67b12b081"
       ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-sowanamu-cheddar",
+      "canonical_product_id": "prod-19ea0ec6da351829cb18b9a9dd651efa",
+      "member_product_ids": [
+        "prod-19ea0ec6da351829cb18b9a9dd651efa",
+        "prod-125564f823f57c41d3af653dbdd5bf60"
+      ],
+      "canonical_name": "소와나무 체다치즈",
+      "brand": "소와나무",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-19ea0ec6da351829cb18b9a9dd651efa": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070925936",
+            "source_titles": [
+              "동원소와나무 체다치즈 270G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070925936&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "emart",
+            "source_record_key": "1000697983082",
+            "source_titles": [
+              "[동원] 소와나무 체다치즈 270g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000697983082&siteNo=7009&salestrNo=2551"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801155728793",
+            "source_titles": [
+              "동원 소와나무 체다치즈 (270G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801155728793/details"
+            ]
+          }
+        ],
+        "prod-125564f823f57c41d3af653dbdd5bf60": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000772503866",
+            "source_titles": [
+              "[쓱7클럽] 소와나무 체다치즈 270g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000772503866&siteNo=7009&salestrNo=2551"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "cc8749e59de72b388ddb7e7ad1e4f64c345f7aab8082d96912f721b9f396c501",
+      "derived_alias_member_ids": [
+        "prod-19ea0ec6da351829cb18b9a9dd651efa",
+        "prod-125564f823f57c41d3af653dbdd5bf60"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sowanamu-triple-slice",
+      "canonical_product_id": "prod-2277aa7129d725ceef2387719caa6b69",
+      "member_product_ids": [
+        "prod-2277aa7129d725ceef2387719caa6b69",
+        "prod-fab114149b48804388b1a9bea6a4fb10"
+      ],
+      "canonical_name": "소와나무 트리플 슬라이스 치즈",
+      "brand": "소와나무",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2277aa7129d725ceef2387719caa6b69": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "137415902",
+            "source_titles": [
+              "동원소와나무 트리플 슬라이스 치즈 360G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=137415902&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fab114149b48804388b1a9bea6a4fb10": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801155729998",
+            "source_titles": [
+              "동원 소와나무 트리플 치즈 슬라이스 (234G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801155729998/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a6a92e5822ed45047b2f2e66e0787654f74f6c7fd2d7396aca1f56c9c4028c72",
+      "derived_alias_member_ids": [
+        "prod-2277aa7129d725ceef2387719caa6b69",
+        "prod-fab114149b48804388b1a9bea6a4fb10"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sangha-protein-cheddar-slice",
+      "canonical_product_id": "prod-b218a14bc0cc1408be4f716276898476",
+      "member_product_ids": [
+        "prod-b218a14bc0cc1408be4f716276898476",
+        "prod-2b00ce0ecdd648156c16bfd2abe0e71c"
+      ],
+      "canonical_name": "상하치즈 프로틴 체다 슬라이스",
+      "brand": "상하치즈",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b218a14bc0cc1408be4f716276898476": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000811678189",
+            "source_titles": [
+              "[매일유업]상하치즈  프로틴치즈 체다 슬라이스15매 255G"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000811678189&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-2b00ce0ecdd648156c16bfd2abe0e71c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000823151848",
+            "source_titles": [
+              "[쓱7클럽]상하치즈  프로틴치즈 체다 슬라이스15매 255G"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000823151848&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f26171d6bbe23f72ed8bc24c0bc753d1ce3066f373aac785c1929b54221768ed",
+      "derived_alias_member_ids": [
+        "prod-b218a14bc0cc1408be4f716276898476",
+        "prod-2b00ce0ecdd648156c16bfd2abe0e71c"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:maeil-stretchy-pizza-shred",
+      "canonical_product_id": "prod-37037bb2b9e06cb02c6b5dc7240d078c",
+      "member_product_ids": [
+        "prod-37037bb2b9e06cb02c6b5dc7240d078c",
+        "prod-feace3cdb5e98b5b63c1284e59b9a269"
+      ],
+      "canonical_name": "매일 쫄깃하게 늘어나는 피자용 슈레드치즈",
+      "brand": "매일",
+      "leaf": "food.dairy.cheese.shredded",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-37037bb2b9e06cb02c6b5dc7240d078c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "122254464",
+            "source_titles": [
+              "매일 쫄깃하게 늘어나는 피자용 슈레드치즈 100G*5"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=122254464&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-feace3cdb5e98b5b63c1284e59b9a269": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "010176276",
+            "source_titles": [
+              "매일 쫄깃하게늘어나는 피자용 슈레드치즈 75G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=010176276&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6eff8fc421747105f6fe201bd44a0593f3c625fe943ebc7452681795b0b6dada",
+      "derived_alias_member_ids": [
+        "prod-37037bb2b9e06cb02c6b5dc7240d078c",
+        "prod-feace3cdb5e98b5b63c1284e59b9a269"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:denmark-nonsalty-calcium-vitamin",
+      "canonical_product_id": "prod-4af9d76849a4cedbc73f25bb693124fc",
+      "member_product_ids": [
+        "prod-4af9d76849a4cedbc73f25bb693124fc",
+        "prod-95f1980697ec8b4bf4344032a6699105"
+      ],
+      "canonical_name": "덴마크 짜지않은 고칼슘&비타민 치즈",
+      "brand": "덴마크",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4af9d76849a4cedbc73f25bb693124fc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126305255",
+            "source_titles": [
+              "동원 덴마크짜지않은 고칼슘&비타민 치즈 252G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126305255&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-95f1980697ec8b4bf4344032a6699105": [
+          {
+            "source_name": "costco",
+            "source_record_key": "647713",
+            "source_titles": [
+              "덴마크 짜지않은 치즈 고칼슘&비타민 252g x 10"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Denmark-Non-Salty-Cheese-High-CA-Vitamin-252gx10/p/647713"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b1bd0d1fdcdf2bc3ba42f192c5a6f1660546aaf6f0942e1e0169b2f1e938f1e8",
+      "derived_alias_member_ids": [
+        "prod-4af9d76849a4cedbc73f25bb693124fc",
+        "prod-95f1980697ec8b4bf4344032a6699105"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sangha-bone-calcium",
+      "canonical_product_id": "prod-7e6e730154191da80c2375c0ab9bd13a",
+      "member_product_ids": [
+        "prod-7e6e730154191da80c2375c0ab9bd13a",
+        "prod-9e488d93032831eb02a1359c64258e99"
+      ],
+      "canonical_name": "상하 뼈로가는 칼슘치즈",
+      "brand": "상하",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7e6e730154191da80c2375c0ab9bd13a": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801150109030",
+            "source_titles": [
+              "매일 상하 뼈로가는 칼슘치즈 (270G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801150109030/details"
+            ]
+          }
+        ],
+        "prod-9e488d93032831eb02a1359c64258e99": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006615136",
+            "source_titles": [
+              "[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006615136&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3a86d3e89e936b732a6c650944c932f235136e8555bf7dc05d496d11d2a185e7",
+      "derived_alias_member_ids": [
+        "prod-7e6e730154191da80c2375c0ab9bd13a",
+        "prod-9e488d93032831eb02a1359c64258e99"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoul-enfant-organic-step2",
+      "canonical_product_id": "prod-bc3bc4109c1f70afacc44b7f5b56e355",
+      "member_product_ids": [
+        "prod-bc3bc4109c1f70afacc44b7f5b56e355",
+        "prod-90051a2f19a29e4ff102ba83e5a68393"
+      ],
+      "canonical_name": "서울우유 앙팡 유기농 아기치즈 스텝2",
+      "brand": "서울우유",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-bc3bc4109c1f70afacc44b7f5b56e355": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "103811754",
+            "source_titles": [
+              "서울우유 앙팡 유기농 아기치즈 스텝2 180G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=103811754&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-90051a2f19a29e4ff102ba83e5a68393": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007073040",
+            "source_titles": [
+              "앙팡 유기농 아기치즈 스텝2 180g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007073040&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b856976d3fd7340ea38e48f642e7401dd9fc2930f8f9ac486dd798469e3822a2",
+      "derived_alias_member_ids": [
+        "prod-bc3bc4109c1f70afacc44b7f5b56e355",
+        "prod-90051a2f19a29e4ff102ba83e5a68393"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:denmark-2x-mozzarella-slice",
+      "canonical_product_id": "prod-aa43c5593c7ddf7d0ef7817494bb5d00",
+      "member_product_ids": [
+        "prod-aa43c5593c7ddf7d0ef7817494bb5d00",
+        "prod-92fa277f2e5d9bca30a0ca8ba741dc96",
+        "prod-bbd66c0fead536855b31f234920a6cec"
+      ],
+      "canonical_name": "덴마크 2X 모짜렐라 슬라이스",
+      "brand": "덴마크",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-aa43c5593c7ddf7d0ef7817494bb5d00": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071070960",
+            "source_titles": [
+              "동원덴마크 2X투엑스모짜렐라슬라이스 192G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071070960&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-92fa277f2e5d9bca30a0ca8ba741dc96": [
+          {
+            "source_name": "costco",
+            "source_record_key": "685526",
+            "source_titles": [
+              "동원 덴마크 2X 모짜렐라 슬라이스 치즈 192g x 10"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Denmark-2X-Mozzarella-Sliced-Cheese-192g-x-10/p/685526"
+            ]
+          }
+        ],
+        "prod-bbd66c0fead536855b31f234920a6cec": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801155000158",
+            "source_titles": [
+              "동원 투엑스 모짜렐라 치즈 (192G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801155000158/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0f8860876e9510e45577bdf1f848061444e17f67478fc5d6d62096f72bc1be3c",
+      "derived_alias_member_ids": [
+        "prod-aa43c5593c7ddf7d0ef7817494bb5d00",
+        "prod-92fa277f2e5d9bca30a0ca8ba741dc96",
+        "prod-bbd66c0fead536855b31f234920a6cec"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:denmark-2x-cheddar-slice",
+      "canonical_product_id": "prod-cbbe6ae99586f69bd886d7158ea374e6",
+      "member_product_ids": [
+        "prod-cbbe6ae99586f69bd886d7158ea374e6",
+        "prod-e5295940d3e9aefaf48178eb0e7e2ae3",
+        "prod-95c9d9d148c8bd7ec559c54312060128"
+      ],
+      "canonical_name": "덴마크 2X 체다 슬라이스",
+      "brand": "덴마크",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-cbbe6ae99586f69bd886d7158ea374e6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071070954",
+            "source_titles": [
+              "동원덴마크 2X투엑스체다슬라이스 192G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071070954&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e5295940d3e9aefaf48178eb0e7e2ae3": [
+          {
+            "source_name": "costco",
+            "source_record_key": "685527",
+            "source_titles": [
+              "동원 덴마크 2X 체다슬라이스 치즈 192g x 10"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Denmark-2X-Cheddar-Sliced-Cheese-192g-x-10/p/685527"
+            ]
+          }
+        ],
+        "prod-95c9d9d148c8bd7ec559c54312060128": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801155000141",
+            "source_titles": [
+              "동원 투엑스 체다치즈 (192G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801155000141/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ab5eb4da619b37273597260c30ef5e6f71631d6cf2b4caf9a9ff998a824d2721",
+      "derived_alias_member_ids": [
+        "prod-cbbe6ae99586f69bd886d7158ea374e6",
+        "prod-e5295940d3e9aefaf48178eb0e7e2ae3",
+        "prod-95c9d9d148c8bd7ec559c54312060128"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sowanamu-italian-pizza",
+      "canonical_product_id": "prod-b64b967513b6e3416090487566e5e049",
+      "member_product_ids": [
+        "prod-b64b967513b6e3416090487566e5e049",
+        "prod-970ff003ecee8e59b833229ff4ee5ba3"
+      ],
+      "canonical_name": "소와나무 이태리안 피자치즈",
+      "brand": "소와나무",
+      "leaf": "food.dairy.cheese.shredded",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b64b967513b6e3416090487566e5e049": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127336072",
+            "source_titles": [
+              "동원소와나무 이태리안 피자치즈 280G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127336072&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-970ff003ecee8e59b833229ff4ee5ba3": [
+          {
+            "source_name": "costco",
+            "source_record_key": "680964",
+            "source_titles": [
+              "소와나무 이태리안 피자치즈 1kg x 3"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Italian-Pizza-Cheese-1kg-x-3/p/680964"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "7716fa90af84110941fe5f0e84f8d9cd188a7247e8ee519594cd67ae529bc485",
+      "derived_alias_member_ids": [
+        "prod-b64b967513b6e3416090487566e5e049",
+        "prod-970ff003ecee8e59b833229ff4ee5ba3"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoul-cheddar-slice",
+      "canonical_product_id": "prod-dfd4017382edbebcf11b345ed2634cca",
+      "member_product_ids": [
+        "prod-dfd4017382edbebcf11b345ed2634cca",
+        "prod-cac5b3c8ece3d9f53825a047165f5657",
+        "prod-92acf9236b211492bc218c75c89cd9fa"
+      ],
+      "canonical_name": "서울우유 체다 슬라이스치즈",
+      "brand": "서울우유",
+      "leaf": "food.dairy.cheese.sliced",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-dfd4017382edbebcf11b345ed2634cca": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "122231975",
+            "source_titles": [
+              "서울우유 체다 슬라이스치즈 270G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=122231975&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cac5b3c8ece3d9f53825a047165f5657": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008895612",
+            "source_titles": [
+              "체다 슬라이스 치즈(270g2개입) 540g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008895612&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-92acf9236b211492bc218c75c89cd9fa": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120658796",
+            "source_titles": [
+              "서울우유 체다치즈 900G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120658796&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b7f63386bf74c0269d3cca64cbe929ded7baacaa52b18d0e42f3fcd6c081458d",
+      "derived_alias_member_ids": [
+        "prod-dfd4017382edbebcf11b345ed2634cca",
+        "prod-cac5b3c8ece3d9f53825a047165f5657",
+        "prod-92acf9236b211492bc218c75c89cd9fa"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoulmilk-angpang-kkayo-strawberry",
+      "canonical_product_id": "prod-198debe96a86b8bc78216437b7313714",
+      "member_product_ids": [
+        "prod-198debe96a86b8bc78216437b7313714",
+        "prod-fc07fe02b2db1db074f724c7c0f72ff9"
+      ],
+      "canonical_name": "서울우유 앙팡치즈 까요까요 딸기",
+      "brand": "서울우유",
+      "leaf": "food.dairy.cheese.portion",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-198debe96a86b8bc78216437b7313714": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126296972",
+            "source_titles": [
+              "서울우유 앙팡치즈 까요까요 딸기 72.5G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126296972&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fc07fe02b2db1db074f724c7c0f72ff9": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000017917188",
+            "source_titles": [
+              "앙팡치즈 까요까요 딸기 72g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c921e71841702ae99a0f066695fe1681e8f8c80270ba6339ae0dddebaf69f3ee",
+      "derived_alias_member_ids": [
+        "prod-198debe96a86b8bc78216437b7313714",
+        "prod-fc07fe02b2db1db074f724c7c0f72ff9"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-denmark-grilling-cheese",
+      "canonical_product_id": "prod-3ee32624aaa7f493ba309c4a4f98de04",
+      "member_product_ids": [
+        "prod-3ee32624aaa7f493ba309c4a4f98de04",
+        "prod-9f96505b4d613bc7dd7480189d9c2c32"
+      ],
+      "canonical_name": "동원 덴마크 구워먹는 치즈",
+      "brand": "동원 덴마크",
+      "leaf": "food.dairy.cheese.grilling",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3ee32624aaa7f493ba309c4a4f98de04": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124027460",
+            "source_titles": [
+              "동원덴마크 구워먹는 치즈 125G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124027460&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9f96505b4d613bc7dd7480189d9c2c32": [
+          {
+            "source_name": "costco",
+            "source_record_key": "671972",
+            "source_titles": [
+              "덴마크 구워먹는치즈 500g x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Denmark-Grilled-Cheese-500g-x-2/p/671972"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "2578d113c168f35863cecee5cb444b9caa2e9ddb411f5b59747a54ee5efca6bd",
+      "derived_alias_member_ids": [
+        "prod-3ee32624aaa7f493ba309c4a4f98de04",
+        "prod-9f96505b4d613bc7dd7480189d9c2c32"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:bridel-unsalted-portion-butter",
+      "canonical_product_id": "prod-420731473ecc3919f049e1c7844de353",
+      "member_product_ids": [
+        "prod-420731473ecc3919f049e1c7844de353",
+        "prod-568ab4dbdcd2fc2c3e1068efb841ca22"
+      ],
+      "canonical_name": "Bridel 무가염 포션버터",
+      "brand": "Bridel",
+      "leaf": "food.dairy.cheese.butter",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-420731473ecc3919f049e1c7844de353": [
+          {
+            "source_name": "costco",
+            "source_record_key": "693931",
+            "source_titles": [
+              "Bridel 무가염포션버터 500g x 3"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Bridel-Unsalted-Portion-Butter-500g-x-3/p/693931"
+            ]
+          }
+        ],
+        "prod-568ab4dbdcd2fc2c3e1068efb841ca22": [
+          {
+            "source_name": "costco",
+            "source_record_key": "692668",
+            "source_titles": [
+              "Bridel 무가염포션버터 10g x 100ea"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Bridel-Unsalted-Portion-Butter-10g-x-100ea/p/692668"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "251563d1476d46dae19a87c6fc5aa780fae76d84a5302162576fb15ac18facbe",
+      "derived_alias_member_ids": [
+        "prod-420731473ecc3919f049e1c7844de353",
+        "prod-568ab4dbdcd2fc2c3e1068efb841ca22"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoulmilk-cheese-cubic-party-plain",
+      "canonical_product_id": "prod-6e0b7ff2bf962d60607c6867fe69770f",
+      "member_product_ids": [
+        "prod-6e0b7ff2bf962d60607c6867fe69770f",
+        "prod-a3f12995832e7fe1e1aa17f5ed505dd6"
+      ],
+      "canonical_name": "서울우유 치즈큐빅파티 플레인",
+      "brand": "서울우유",
+      "leaf": "food.dairy.cheese.portion",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6e0b7ff2bf962d60607c6867fe69770f": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000332411674",
+            "source_titles": [
+              "치즈큐빅 파티 플레인87g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000332411674&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-a3f12995832e7fe1e1aa17f5ed505dd6": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000392777415",
+            "source_titles": [
+              "치즈큐빅파티 플레인87g*2입기획"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000392777415&siteNo=7009&salestrNo=2551"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "cb1ed07850457ff43cd1265faf9b643f55c0ae6d62358a335b9418f1829b1e60",
+      "derived_alias_member_ids": [
+        "prod-6e0b7ff2bf962d60607c6867fe69770f",
+        "prod-a3f12995832e7fe1e1aa17f5ed505dd6"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-denmark-fresh-ricotta",
+      "canonical_product_id": "prod-736bcf3538630149781f23eef3ebcea6",
+      "member_product_ids": [
+        "prod-736bcf3538630149781f23eef3ebcea6",
+        "prod-fea6f8cb31c616cfd9a78297ccf20fd0"
+      ],
+      "canonical_name": "덴마크 후레쉬 리코타",
+      "brand": "동원 덴마크",
+      "leaf": "food.dairy.cheese.ricotta",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-736bcf3538630149781f23eef3ebcea6": [
+          {
+            "source_name": "costco",
+            "source_record_key": "671471",
+            "source_titles": [
+              "덴마크후레쉬리코타150g x 5"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Denmark-Fresh-Ricotta-150g-x-5/p/671471"
+            ]
+          }
+        ],
+        "prod-fea6f8cb31c616cfd9a78297ccf20fd0": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000191640699",
+            "source_titles": [
+              "덴마크 후레쉬 리코타 150g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000191640699&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d425510331c807861583b2b00accead65f5b8fb8112e2255af0303743a071d73",
+      "derived_alias_member_ids": [
+        "prod-736bcf3538630149781f23eef3ebcea6",
+        "prod-fea6f8cb31c616cfd9a78297ccf20fd0"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:arla-plain-cream-cheese",
+      "canonical_product_id": "prod-8aa82ceec1767b80495c13711f19a1d5",
+      "member_product_ids": [
+        "prod-8aa82ceec1767b80495c13711f19a1d5",
+        "prod-a85853699b60300cc0f640d5c35dead2"
+      ],
+      "canonical_name": "Arla 크림치즈 플레인",
+      "brand": "Arla",
+      "leaf": "food.dairy.cheese.cream",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8aa82ceec1767b80495c13711f19a1d5": [
+          {
+            "source_name": "costco",
+            "source_record_key": "646163",
+            "source_titles": [
+              "매일유업 Arla 크림치즈 플레인 150g x 6"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/p/646163"
+            ]
+          }
+        ],
+        "prod-a85853699b60300cc0f640d5c35dead2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124930369",
+            "source_titles": [
+              "알라 크림치즈 플레인 150G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124930369&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9f9a16a5d9ae45af2fb2a728e81f5d42cda550e002e1d5531797e54c3fa9d6c2",
+      "derived_alias_member_ids": [
+        "prod-8aa82ceec1767b80495c13711f19a1d5",
+        "prod-a85853699b60300cc0f640d5c35dead2"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:belcube-plain-cube-cheese",
+      "canonical_product_id": "prod-9da4bd1afc2e039089ced4d7bdfb973a",
+      "member_product_ids": [
+        "prod-9da4bd1afc2e039089ced4d7bdfb973a",
+        "prod-e8b7175adb759c4de7ab27ce1c2925e0"
+      ],
+      "canonical_name": "벨큐브 플레인 큐브치즈",
+      "brand": "벨큐브",
+      "leaf": "food.dairy.cheese.portion",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-9da4bd1afc2e039089ced4d7bdfb973a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110929646",
+            "source_titles": [
+              "벨큐브 플레인 큐브치즈 78G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110929646&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e8b7175adb759c4de7ab27ce1c2925e0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120040835",
+            "source_titles": [
+              "벨큐브 플레인 큐브치즈 125G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120040835&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "4f53e20693ce63795c9c4952a8f65c94ba093af4d7b4bf49524956871b895309",
+      "derived_alias_member_ids": [
+        "prod-9da4bd1afc2e039089ced4d7bdfb973a",
+        "prod-e8b7175adb759c4de7ab27ce1c2925e0"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-denmark-fresh-mozzarella-mini",
+      "canonical_product_id": "prod-b9d0f3e233c1fa81a46b3a460a4ed622",
+      "member_product_ids": [
+        "prod-b9d0f3e233c1fa81a46b3a460a4ed622",
+        "prod-e8072677bc46126385dc16a83589454d"
+      ],
+      "canonical_name": "덴마크 후레쉬 모짜렐라 미니",
+      "brand": "동원 덴마크",
+      "leaf": "food.dairy.cheese.fresh_mozzarella",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b9d0f3e233c1fa81a46b3a460a4ed622": [
+          {
+            "source_name": "costco",
+            "source_record_key": "671474",
+            "source_titles": [
+              "덴마크후레쉬모짜렐라미니125G X 5"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Denmark-Fresh-Mozzarella-Mini-125g-x-5/p/671474"
+            ]
+          }
+        ],
+        "prod-e8072677bc46126385dc16a83589454d": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000171317518",
+            "source_titles": [
+              "덴마크 후레쉬 모짜렐라 미니 125g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000171317518&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "046b36f2049aaad7a624c3bd61ff9eabe4ee2e8b2881f10eabd9a54a97b3af2e",
+      "derived_alias_member_ids": [
+        "prod-b9d0f3e233c1fa81a46b3a460a4ed622",
+        "prod-e8072677bc46126385dc16a83589454d"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:maeil-enyo",
+      "canonical_product_id": "prod-0b25eab676e66e9bb9e87946d85af1f9",
+      "member_product_ids": [
+        "prod-0b25eab676e66e9bb9e87946d85af1f9",
+        "prod-15dfdb178c76f8603da6b253e98d15ef",
+        "prod-1ec9518980b24702f7b6e37218b59f8d",
+        "prod-3aa76f87000f2bde916510175ac0bf2e"
+      ],
+      "canonical_name": "매일 엔요",
+      "brand": "매일",
+      "leaf": "food.dairy.yogurt.drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0b25eab676e66e9bb9e87946d85af1f9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127640828",
+            "source_titles": [
+              "매일 엔요 기획 100ML*15"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127640828&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-15dfdb178c76f8603da6b253e98d15ef": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127640765",
+            "source_titles": [
+              "매일 엔요 100ML*5"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127640765&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-1ec9518980b24702f7b6e37218b59f8d": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000721236973",
+            "source_titles": [
+              "[매일유업] 엔요 10입 기획(100ml*10)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000721236973&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-3aa76f87000f2bde916510175ac0bf2e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "145967751",
+            "source_titles": [
+              "매일 엔요 280ML*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=145967751&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9e6ef32d20f8c23710ea45b2fe1f7d59135b5dde16fc48a1eef51e72b522196b",
+      "derived_alias_member_ids": [
+        "prod-0b25eab676e66e9bb9e87946d85af1f9",
+        "prod-15dfdb178c76f8603da6b253e98d15ef",
+        "prod-1ec9518980b24702f7b6e37218b59f8d",
+        "prod-3aa76f87000f2bde916510175ac0bf2e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:maeil-bio-drinking-plain",
+      "canonical_product_id": "prod-0a77ceba0fcea10c7c84c47a088c4f15",
+      "member_product_ids": [
+        "prod-0a77ceba0fcea10c7c84c47a088c4f15",
+        "prod-16f092d6f8c738b8f5054db204fc4a70"
+      ],
+      "canonical_name": "매일 바이오드링킹 플레인",
+      "brand": "매일",
+      "leaf": "food.dairy.yogurt.drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0a77ceba0fcea10c7c84c47a088c4f15": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126319751",
+            "source_titles": [
+              "매일 바이오드링킹 플레인 750ML*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126319751&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-16f092d6f8c738b8f5054db204fc4a70": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125980682",
+            "source_titles": [
+              "매일 바이오드링킹 플레인 250ML*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125980682&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0c7643ab2ae80e9cc1a32ec6e7ebb51092f368626776a4508dac39409c8b73aa",
+      "derived_alias_member_ids": [
+        "prod-0a77ceba0fcea10c7c84c47a088c4f15",
+        "prod-16f092d6f8c738b8f5054db204fc4a70"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoul-zzayo-strawberry",
+      "canonical_product_id": "prod-4145f0b78b53b37346ea65214fef3cf8",
+      "member_product_ids": [
+        "prod-4145f0b78b53b37346ea65214fef3cf8",
+        "prod-436ff1dd96fbe880a77349cec07f7aea"
+      ],
+      "canonical_name": "서울우유 짜요짜요 딸기",
+      "brand": "서울우유",
+      "leaf": "food.dairy.yogurt.squeeze",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4145f0b78b53b37346ea65214fef3cf8": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "004541154",
+            "source_titles": [
+              "서울우유 짜요짜요 요구르트 딸기 240G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=004541154&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-436ff1dd96fbe880a77349cec07f7aea": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006617166",
+            "source_titles": [
+              "짜요짜요 딸기맛 240g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "53fce354b2bbdde41ef2f8181827ee4b29765369e4d060da566ea56399a3ab46",
+      "derived_alias_member_ids": [
+        "prod-4145f0b78b53b37346ea65214fef3cf8",
+        "prod-436ff1dd96fbe880a77349cec07f7aea"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sangha-organic-yogurt",
+      "canonical_product_id": "prod-a59508d8b18c3cf7032d0a8a3e392b19",
+      "member_product_ids": [
+        "prod-a59508d8b18c3cf7032d0a8a3e392b19",
+        "prod-478e352d4a56e2618e02f2482f606f5c"
+      ],
+      "canonical_name": "상하목장 유기농 요구르트",
+      "brand": "상하목장",
+      "leaf": "food.dairy.yogurt.drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a59508d8b18c3cf7032d0a8a3e392b19": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126235567",
+            "source_titles": [
+              "상하목장 유기농 요구르트 100ML*5"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126235567&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-478e352d4a56e2618e02f2482f606f5c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000055206801",
+            "source_titles": [
+              "유기농 요구르트 500ml (100mlx5)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000055206801&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f113d2bbdd3ce25ac252e7b97d92daaccf3e609eba4309d50a7a1e16ee801ca5",
+      "derived_alias_member_ids": [
+        "prod-a59508d8b18c3cf7032d0a8a3e392b19",
+        "prod-478e352d4a56e2618e02f2482f606f5c"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:pasteur-qbyeon-apple",
+      "canonical_product_id": "prod-17d400c19e4e2669f23facd77117fca1",
+      "member_product_ids": [
+        "prod-17d400c19e4e2669f23facd77117fca1",
+        "prod-f9324960fe37360356b820f8ee652402"
+      ],
+      "canonical_name": "파스퇴르 쾌변 사과",
+      "brand": "파스퇴르",
+      "leaf": "food.dairy.yogurt.drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-17d400c19e4e2669f23facd77117fca1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "101640710",
+            "source_titles": [
+              "파스퇴르 쾌변요구르트 사과 150ML*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=101640710&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f9324960fe37360356b820f8ee652402": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "068706346",
+            "source_titles": [
+              "파스퇴르 쾌변 사과8입 150ML*8"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=068706346&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c7b3a0df8515a4aaaf67c81fd187c67d1e257142a72b4c75c47714863f189902",
+      "derived_alias_member_ids": [
+        "prod-17d400c19e4e2669f23facd77117fca1",
+        "prod-f9324960fe37360356b820f8ee652402"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoul-duoan-original",
+      "canonical_product_id": "prod-e45c4f3dbf1fa865ddf44431e7c10706",
+      "member_product_ids": [
+        "prod-e45c4f3dbf1fa865ddf44431e7c10706",
+        "prod-7a74a5fc1942123c5029a31194dc141e"
+      ],
+      "canonical_name": "서울우유 듀오안 오리지널",
+      "brand": "서울우유",
+      "leaf": "food.dairy.yogurt.drink",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-e45c4f3dbf1fa865ddf44431e7c10706": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801115224631",
+            "source_titles": [
+              "서울우유 듀오안 오리지널 (150ML*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801115224631/details"
+            ]
+          }
+        ],
+        "prod-7a74a5fc1942123c5029a31194dc141e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071177724",
+            "source_titles": [
+              "서울 듀오안오리지널 150ML*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071177724&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3a657fe82bf2b3ce83697dc4a3f9b77b7c13fd6a4a06b807647f8ecdc432872f",
+      "derived_alias_member_ids": [
+        "prod-e45c4f3dbf1fa865ddf44431e7c10706",
+        "prod-7a74a5fc1942123c5029a31194dc141e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:pulmuone-danone-greek-not-sweet-plain",
+      "canonical_product_id": "prod-06f6be27916e83717a48015bc09524cd",
+      "member_product_ids": [
+        "prod-06f6be27916e83717a48015bc09524cd",
+        "prod-9ee71931218dec4963843c05af48f8ec"
+      ],
+      "canonical_name": "풀무원다논 그릭요거트 달지않은 플레인",
+      "brand": "풀무원다논",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-06f6be27916e83717a48015bc09524cd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128288645",
+            "source_titles": [
+              "풀무원다논 그릭요거트 달지 않은 플레인 90G*8입"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128288645&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9ee71931218dec4963843c05af48f8ec": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070984992",
+            "source_titles": [
+              "풀무원다논 그릭요거트 달지않은 플레인 400G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070984992&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9f4777a5846f7dd2370ead182f2d13ae0d9d8775f4119b5d0ab926cb5b51e914",
+      "derived_alias_member_ids": [
+        "prod-06f6be27916e83717a48015bc09524cd",
+        "prod-9ee71931218dec4963843c05af48f8ec"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ildong-foodis-greek-not-sweet-lowfat",
+      "canonical_product_id": "prod-0b9437a74fbbc55ca1112cee3223ea82",
+      "member_product_ids": [
+        "prod-0b9437a74fbbc55ca1112cee3223ea82",
+        "prod-728121bbd4bc0fe52c1fdd6ce781de4b",
+        "prod-c480e78aa0e22ef30b7707943c2e8e08"
+      ],
+      "canonical_name": "일동후디스 그릭요거트 달지않은 저지방",
+      "brand": "일동후디스",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0b9437a74fbbc55ca1112cee3223ea82": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124770552",
+            "source_titles": [
+              "일동후디스 달지않은 저지방 그릭요거트 450G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124770552&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-728121bbd4bc0fe52c1fdd6ce781de4b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801157492760",
+            "source_titles": [
+              "후디스 그릭요거트 달지않은 저지방 (80G*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801157492760/details"
+            ]
+          }
+        ],
+        "prod-c480e78aa0e22ef30b7707943c2e8e08": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126943190",
+            "source_titles": [
+              "일동후디스 그릭요거트달지않은저지방 80G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126943190&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "fe319faa2ed4897fdeafb22d4539dae0b0779d3f826a0c657454231dc2574052",
+      "derived_alias_member_ids": [
+        "prod-0b9437a74fbbc55ca1112cee3223ea82",
+        "prod-728121bbd4bc0fe52c1fdd6ce781de4b",
+        "prod-c480e78aa0e22ef30b7707943c2e8e08"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-denmark-high-greek",
+      "canonical_product_id": "prod-226eac669ae1873063a108a2de8b5f20",
+      "member_product_ids": [
+        "prod-226eac669ae1873063a108a2de8b5f20",
+        "prod-e052da99896abb1ad300ac67dcfe1e7d"
+      ],
+      "canonical_name": "동원 덴마크 하이 그릭요거트",
+      "brand": "동원 덴마크",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-226eac669ae1873063a108a2de8b5f20": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000642597160",
+            "source_titles": [
+              "덴마크 하이 그릭요거트 800g (400g *2)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000642597160&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-e052da99896abb1ad300ac67dcfe1e7d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070967270",
+            "source_titles": [
+              "동원덴마크 하이그릭요거트 400G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070967270&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1e4a451fe891d8e6ba758477593983b283f0d8c4378ca1046f4ea8d46902d79d",
+      "derived_alias_member_ids": [
+        "prod-226eac669ae1873063a108a2de8b5f20",
+        "prod-e052da99896abb1ad300ac67dcfe1e7d"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoulmilk-yogurt-blueberry",
+      "canonical_product_id": "prod-30750aae747f6bc6852284a0e764bbfc",
+      "member_product_ids": [
+        "prod-30750aae747f6bc6852284a0e764bbfc",
+        "prod-934f1fa1d550b527ca6e5bf8ab24e39e"
+      ],
+      "canonical_name": "서울우유 요거트 블루베리",
+      "brand": "서울우유",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-30750aae747f6bc6852284a0e764bbfc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070502256",
+            "source_titles": [
+              "서울우유 요거트 블루베리 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070502256&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-934f1fa1d550b527ca6e5bf8ab24e39e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801115216032",
+            "source_titles": [
+              "서울우유 요거트 블루베리 (85G*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801115216032/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef0acfec5bef29d329b032075d1e21b646f32ae85c85b8b3c7cc97e31d292c6c",
+      "derived_alias_member_ids": [
+        "prod-30750aae747f6bc6852284a0e764bbfc",
+        "prod-934f1fa1d550b527ca6e5bf8ab24e39e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoulmilk-yogurt-peach",
+      "canonical_product_id": "prod-3c832010057fcd24080a2bbe16e755fc",
+      "member_product_ids": [
+        "prod-3c832010057fcd24080a2bbe16e755fc",
+        "prod-65a90701b594b317e7a5235701c86670"
+      ],
+      "canonical_name": "서울우유 요거트 복숭아",
+      "brand": "서울우유",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3c832010057fcd24080a2bbe16e755fc": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801115216025",
+            "source_titles": [
+              "서울우유 요거트 복숭아 (85G*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801115216025/details"
+            ]
+          }
+        ],
+        "prod-65a90701b594b317e7a5235701c86670": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070502244",
+            "source_titles": [
+              "서울우유 요거트 복숭아 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070502244&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c68ab9a8c0d1171036e4dae22c339e180daaa7225063661bf267b699a037e0a9",
+      "derived_alias_member_ids": [
+        "prod-3c832010057fcd24080a2bbe16e755fc",
+        "prod-65a90701b594b317e7a5235701c86670"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:yozm-greek-plain",
+      "canonical_product_id": "prod-3fb8e9ca139b3c33f7d1f3dd62b861b4",
+      "member_product_ids": [
+        "prod-3fb8e9ca139b3c33f7d1f3dd62b861b4",
+        "prod-706a5d9fbcf391254275568400baf309",
+        "prod-df307e74f82018dadfeac64f4978762e"
+      ],
+      "canonical_name": "요즘 그릭요거트 플레인",
+      "brand": "요즘",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3fb8e9ca139b3c33f7d1f3dd62b861b4": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8809520490924",
+            "source_titles": [
+              "요즘 그릭요거트 플레인 (450G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8809520490924/details"
+            ]
+          }
+        ],
+        "prod-706a5d9fbcf391254275568400baf309": [
+          {
+            "source_name": "costco",
+            "source_record_key": "674761",
+            "source_titles": [
+              "요즘그릭요거트플레인450g x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/YOZM-Greek-Yogurt-Plain-450g-x-2/p/674761"
+            ]
+          }
+        ],
+        "prod-df307e74f82018dadfeac64f4978762e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8809520490108",
+            "source_titles": [
+              "요즘 그릭요거트 플레인 (100G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8809520490108/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5e26e345c43c5aa2f9430326f98c4064aeb948c69eb09e44c0cb85f251d3efb7",
+      "derived_alias_member_ids": [
+        "prod-3fb8e9ca139b3c33f7d1f3dd62b861b4",
+        "prod-706a5d9fbcf391254275568400baf309",
+        "prod-df307e74f82018dadfeac64f4978762e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:maeil-bio-plain",
+      "canonical_product_id": "prod-4c12fac6c8736a79f8075b068f5dca30",
+      "member_product_ids": [
+        "prod-4c12fac6c8736a79f8075b068f5dca30",
+        "prod-9392a02f84de3c5b890e834d4e6904a3",
+        "prod-c6184037f8e78912bc26cd36b22201df"
+      ],
+      "canonical_name": "매일 바이오 플레인",
+      "brand": "매일",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4c12fac6c8736a79f8075b068f5dca30": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124911029",
+            "source_titles": [
+              "매일 바이오 플레인 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124911029&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9392a02f84de3c5b890e834d4e6904a3": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123072683",
+            "source_titles": [
+              "매일 바이오 플레인 450G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123072683&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c6184037f8e78912bc26cd36b22201df": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123361105",
+            "source_titles": [
+              "매일 바이오 플레인 900G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123361105&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0e577b7380cbb7192bb2ce555d067f08f6a83d2a44a3d08bb28663077d683891",
+      "derived_alias_member_ids": [
+        "prod-4c12fac6c8736a79f8075b068f5dca30",
+        "prod-9392a02f84de3c5b890e834d4e6904a3",
+        "prod-c6184037f8e78912bc26cd36b22201df"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ildong-foodis-greek-plain",
+      "canonical_product_id": "prod-4d9b33b84830bf512ea451107070160c",
+      "member_product_ids": [
+        "prod-4d9b33b84830bf512ea451107070160c",
+        "prod-aa3f56258900fed98e59c5fcb3201022"
+      ],
+      "canonical_name": "일동후디스 그릭요거트 플레인",
+      "brand": "일동후디스",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4d9b33b84830bf512ea451107070160c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126943155",
+            "source_titles": [
+              "일동후디스 그릭요거트 플레인 80G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126943155&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-aa3f56258900fed98e59c5fcb3201022": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801157492753",
+            "source_titles": [
+              "후디스 그릭요거트 플레인 (80G*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801157492753/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e8bb6f73a439f3cb340193e3cfee66c4aa361d264ac97f9b6bda9492d669bc2b",
+      "derived_alias_member_ids": [
+        "prod-4d9b33b84830bf512ea451107070160c",
+        "prod-aa3f56258900fed98e59c5fcb3201022"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sangha-organic-baby-strawberry-banana",
+      "canonical_product_id": "prod-57eb36093c9e8951a88f851a3915969c",
+      "member_product_ids": [
+        "prod-57eb36093c9e8951a88f851a3915969c",
+        "prod-5a36121c042049bfdec27bf580fef7bf"
+      ],
+      "canonical_name": "상하목장 유기농 베이비 요구르트 딸기&바나나",
+      "brand": "상하목장",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-57eb36093c9e8951a88f851a3915969c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000017812040",
+            "source_titles": [
+              "유기농 베이비 요구르트 딸기&바나나 340g (85g*4)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000017812040&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5a36121c042049bfdec27bf580fef7bf": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126235585",
+            "source_titles": [
+              "상하목장 유기농 베이비 요구르트 딸기&바나나 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126235585&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "63277a260ed1e3cfef02e9df9a8a0a9e31f5ed4656bd49fa843173e9068d6884",
+      "derived_alias_member_ids": [
+        "prod-57eb36093c9e8951a88f851a3915969c",
+        "prod-5a36121c042049bfdec27bf580fef7bf"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:seoulmilk-yogurt-strawberry",
+      "canonical_product_id": "prod-82e131f3e97bfaec5ca5e800cc35ef63",
+      "member_product_ids": [
+        "prod-82e131f3e97bfaec5ca5e800cc35ef63",
+        "prod-e905f777951af8f970170f864c3f230b"
+      ],
+      "canonical_name": "서울우유 요거트 딸기",
+      "brand": "서울우유",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-82e131f3e97bfaec5ca5e800cc35ef63": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801115216001",
+            "source_titles": [
+              "서울우유 요거트 딸기 (85G*4입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801115216001/details"
+            ]
+          }
+        ],
+        "prod-e905f777951af8f970170f864c3f230b": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070502210",
+            "source_titles": [
+              "서울우유 요거트 딸기 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070502210&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3ca60fa3f9dfc6edd75fd4139cec470fd3c7a5564452219b78b9b7f554592aad",
+      "derived_alias_member_ids": [
+        "prod-82e131f3e97bfaec5ca5e800cc35ef63",
+        "prod-e905f777951af8f970170f864c3f230b"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:sangha-organic-baby-plain",
+      "canonical_product_id": "prod-a6c04899a3b9e96e7017ba80df1ccd68",
+      "member_product_ids": [
+        "prod-a6c04899a3b9e96e7017ba80df1ccd68",
+        "prod-baf114ff3780b98008699fa1574f5c0a"
+      ],
+      "canonical_name": "상하목장 유기농 베이비 요구르트 플레인",
+      "brand": "상하목장",
+      "leaf": "food.dairy.yogurt.spoon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a6c04899a3b9e96e7017ba80df1ccd68": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125054650",
+            "source_titles": [
+              "매일 상하목장 유기농 베이비 요구르트 플레인 85G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125054650&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-baf114ff3780b98008699fa1574f5c0a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000011626449",
+            "source_titles": [
+              "유기농 베이비 요구르트 플레인 340g (85g*4)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626449&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6e79f017633e87af5e917ebd439b8b7cebcd80668e0e8f6fe279eb5860420444",
+      "derived_alias_member_ids": [
+        "prod-a6c04899a3b9e96e7017ba80df1ccd68",
+        "prod-baf114ff3780b98008699fa1574f5c0a"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:pulmuone-danone-greek-plain",
+      "canonical_product_id": "prod-a4f2eb1b30db2ce4de2dd0a5ee05f113",
+      "member_product_ids": [
+        "prod-a4f2eb1b30db2ce4de2dd0a5ee05f113",
+        "prod-cdda4b80e1c0253e7f7451cc156c411a"
+      ],
+      "canonical_name": "풀무원다논 그릭요거트 플레인",
+      "brand": "풀무원다논",
+      "leaf": "food.dairy.yogurt.greek",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a4f2eb1b30db2ce4de2dd0a5ee05f113": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126159865",
+            "source_titles": [
+              "풀무원다논 그릭요거트 플레인 90G*8입"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126159865&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cdda4b80e1c0253e7f7451cc156c411a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124743245",
+            "source_titles": [
+              "풀무원 다논 그릭플레인 400g"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124743245&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "fec8d69da1bfda754f7f9bff3eee16e6755cc803f6aedaba4d5ddd503221d28b",
+      "derived_alias_member_ids": [
+        "prod-a4f2eb1b30db2ce4de2dd0a5ee05f113",
+        "prod-cdda4b80e1c0253e7f7451cc156c411a"
+      ]
     }
   ],
   "leaf_reviews": [
