@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -456,17 +458,18 @@ async def test_exact_product_zero_keeps_actual_quality_stage(crawler, monkeypatc
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("kind", ["sdk_only", "visible_challenge", "zero", "http403", "http429"])
+@pytest.mark.parametrize("kind", ["sdk_only", "visible_challenge", "zero", "http401", "http403", "http429", "nonproduct202", "header202", "visible_waf202"])
 async def test_exact_product_http_boundary_is_one_normal_read(crawler, html, monkeypatch, kind):
     import requests
 
-    body = html + '<script>awsWafCookieDomainList = []; captchaSDK = {};</script>' if kind == "sdk_only" else '<html><body>Verify you are human</body></html>' if kind == "visible_challenge" else '<html><body></body></html>'
-    status = 403 if kind == "http403" else 429 if kind == "http429" else 200
+    body = html + '<script>awsWafCookieDomainList = []; captchaSDK = {};</script>' if kind == "sdk_only" else '<html><body>Verify you are human</body></html>' if kind == "visible_challenge" else '<html><body>AWS WAF challenge</body></html>' if kind == 'visible_waf202' else '<html><script>awsWafCookieDomainList=[];</script><body></body></html>'
+    status = int(kind[4:]) if kind.startswith('http') else 202 if kind.endswith('202') else 200
     calls = []
     class Response:
         status_code = status
         text = body
         content = body.encode()
+        headers = {'x-amzn-waf-action': 'challenge'} if kind == 'header202' else {}
     def get(_session, url, **kwargs):
         calls.append((url, kwargs))
         return Response()
@@ -481,6 +484,7 @@ async def test_exact_product_http_boundary_is_one_normal_read(crawler, html, mon
         assert result.status.name == "SUCCESS"
         assert result.items_count == 1
         assert not result.quality_details["fetch"].get("blocked")
+        assert 'source_stopped' not in result.quality_details
     else:
         assert result.status.name == "FAILED"
         assert result.items == []
@@ -489,10 +493,105 @@ async def test_exact_product_http_boundary_is_one_normal_read(crawler, html, mon
             assert "source_zero_raw_rows" in result.error_msg
             assert not result.errors
             assert not result.quality_details["fetch"].get("blocked")
+            assert 'source_stopped' not in result.quality_details
         elif kind == "visible_challenge":
             assert result.quality_details["fetch"]["blocked"] is True
         else:
             assert f"HTTP {status}" in result.error_msg
+        if kind != 'zero':
+            assert result.quality_details['source_stopped'] is True
+            assert result.quality_details['source_stop_status'] == status
+            expected = ('visible_access_challenge' if kind == 'visible_challenge' else
+                'nonproduct_response' if kind == 'nonproduct202' else
+                'aws_waf_challenge' if kind in {'header202', 'visible_waf202'} else 'http_access_denied')
+            assert result.quality_details['source_stop_reason'] == expected
+            if kind == 'nonproduct202':
+                assert not result.quality_details['fetch'].get('blocked')
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('shape', ['query', 'legacy_group'])
+async def test_exact_product_business_provenance_keeps_public_terms_without_http_claim(crawler, shape):
+    product = deepcopy(_API_PRODUCT_SAMPLE)
+    product.update(cartLimitQty=5, orderMinQty=2, basketMinimumSpend=70000,
+        basketPromotion={'description': '선택 바스켓 조건'}, operatingCapacity=10,
+        productReferences=[{'retailerProductId': 'OS8809251334535', 'quantity': 2}],
+        membershipRequired=False, quantityInBasket=9, basketLines=[{'token': 'PRIVATE'}],
+        ratingSummary={'rating': 5}, session={'cookie': 'PRIVATE'}, cart={'entries': ['PRIVATE']})
+    product['promotions'][0]['limitReached'] = False
+    body = (_query_html([product]) if shape == 'query' else
+        json.dumps({'productGroups': [{'decoratedProducts': [product]}], 'account': {'token': 'PRIVATE'}}))
+    target = 'https://lottemartzetta.com/products/OS8809251334528/details'
+    result = await crawler._crawl_saved_source_input(body, source_url=target)
+    assert result.items_count == 1
+    item = result.items[0]
+    evidence = item['attributes']['submission_business_evidence'][0]
+    node = evidence['raw_product_node']
+    for key in ('cartLimitQty', 'orderMinQty', 'basketMinimumSpend', 'basketPromotion',
+                'operatingCapacity', 'productReferences', 'membershipRequired'):
+        assert node[key] == product[key]
+    assert node['promotions'][0]['limitReached'] is False
+    for key in ('quantityInBasket', 'basketLines', 'ratingSummary', 'session', 'cart'):
+        assert key not in node
+        assert any(entry['path'] == '/' + key for entry in evidence['removed_fields'])
+    assert evidence['native_context'] == '8809251334528'
+    assert evidence['source_pointer'] == ('script0/window.__QUERY_INITIAL_STATE__/queries/0/state/data/product'
+        if shape == 'query' else 'json/productGroups/0/decoratedProducts/0')
+    assert evidence['http_receipt_status'] == 'not_recorded'
+    assert evidence['source_response_received_at'] is None
+    assert 'crawled_at' not in item
+    assert evidence['source_response_url'] is None and evidence['source_response_body_sha256'] is None
+    assert item['sale_price'] == 3590 and item['package_quantity'] == 110
+    if shape == 'query':
+        assert item['name'] == product['name']
+        assert item['promo_type'] is None and item['price_per_100g'] is None
+        assert 'promotion_conditions' not in item['attributes']
+    encoded = json.dumps(node, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
+    assert evidence['raw_product_node_sha256'] == hashlib.sha256(encoded).hexdigest()
+    product['productReferences'][0]['quantity'] = 99
+    assert node['productReferences'][0]['quantity'] == 2
+
+
+@pytest.mark.asyncio
+async def test_exact_product_http_provenance_uses_receipt_before_parsing(crawler, monkeypatch):
+    import requests
+    import crawlers.marts.lottemart.crawler as module
+
+    product = deepcopy(_API_PRODUCT_SAMPLE)
+    product['quantityRestrictionGroup'] = {'minimum': 2, 'maximum': 5}
+    body = _query_html([product])
+    target = 'https://lottemartzetta.com/products/OS8809251334528/details'
+    received = datetime(2026, 10, 6, 12, 34, 56, 123456, tzinfo=timezone.utc)
+    events = []
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            if tz is not None:
+                events.append('receipt')
+                return received
+            return datetime(2026, 10, 6, 12, 34, 57)
+    class Response:
+        status_code, headers, content, url = 200, {}, body.encode(), target
+        @property
+        def text(self):
+            events.append('parse_body')
+            return body
+    monkeypatch.setattr(module, 'datetime', Clock)
+    monkeypatch.setattr(requests.Session, 'get', lambda *_args, **_kwargs: Response())
+    result = await crawler._crawl_source_url_once(target)
+    assert result.items_count == 1
+    assert events[0] == 'receipt' and events.index('receipt') < events.index('parse_body')
+    item = result.items[0]
+    evidence = item['attributes']['submission_business_evidence'][0]
+    assert evidence['http_receipt_status'] == 'supplied_response_metadata'
+    assert evidence['source_response_url'] == target
+    assert evidence['source_response_body_sha256'] == hashlib.sha256(body.encode()).hexdigest()
+    assert datetime.fromisoformat(evidence['source_response_received_at']) == received
+    assert datetime.fromisoformat(item['crawled_at'].replace('Z', '+00:00')) == received
+    assert evidence['raw_product_node']['quantityRestrictionGroup'] == product['quantityRestrictionGroup']
+    assert item['attributes']['lottemart_detail_source_fields']['price'] == product['price']
+    assert item['sale_price'] == 3590 and item['package_quantity'] == 110
+    assert item['promo_type'] is None and item['price_per_100g'] is None
 
 
 @pytest.mark.parametrize("quote", [True, False, {"amount": 3590}, "행사 2개 3590원", "2026-10-04", "3,59원", "NaN", float("inf")])

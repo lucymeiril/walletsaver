@@ -16,7 +16,9 @@ def commercial_product_evidence(product: dict, pointer: str, *, response_url: st
     removed, omitted = [], object()
     removed_count = 0
     sensitive = re.compile(r'account|session|customer|auth|credential|password|cookie|token|review|wishlist|contact', re.I)
-    private_cart_fields = {'cart', 'shoppingcart', 'cartid', 'cartitems', 'cartentries', 'cartentry'}
+    private_cart_fields = {'cart', 'shoppingcart', 'cartid', 'cartitems', 'cartentries', 'cartentry',
+                           'basket', 'basketid', 'basketitems', 'basketlines', 'basketentries',
+                           'quantityinbasket', 'rating', 'ratingcount', 'ratingsummary', 'userrating', 'myrating'}
 
     def omit(path, reason):
         nonlocal removed_count

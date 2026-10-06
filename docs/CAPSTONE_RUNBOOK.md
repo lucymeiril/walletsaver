@@ -36,6 +36,7 @@ export WS_DEMO_DIR="$WS_ROOT/.demo-runtime"
 python3 -m venv .venv
 export WS_PY="$WS_ROOT/.venv/bin/python"
 "$WS_PY" -m pip install -r packages/web-api/backend/requirements.txt -r packages/db-admin/backend/requirements.txt -r packages/crawler-admin/requirements.txt
+"$WS_PY" -m playwright install chromium
 for ws_frontend in packages/web-frontend packages/crawler-admin/frontend packages/db-admin/frontend; do
   (cd "$ws_frontend" && npm ci) || exit 1
 done
@@ -44,6 +45,10 @@ set -a
 set +a
 "$WS_PY" tools/install_demo_catalog.py --source demo-data --target "$WS_DEMO_DIR"
 ```
+
+`pip install`은 Playwright Python 모듈만 설치하며 브라우저 실행 파일을 설치하지 않는다. Windows launcher는 Chromium 설치를 수행하지만 Linux에서는 위 명령을 별도로 실행해야 한다. 새 Debian/Ubuntu 호스트에 브라우저 시스템 라이브러리도 없다면 위 `install chromium` 대신 `"$WS_PY" -m playwright install --with-deps chromium`을 사용한다(시스템 패키지 설치 권한 필요). API를 실행하는 동일 사용자·venv에서 설치하여 그 사용자의 Playwright browser cache를 사용한다. 이 새 호스트 설치 명령은 이번 문서 수정에서 실행하지 않았다.
+
+Web의 Naver 공개 장소 검색은 `playwright.chromium.launch(headless=True)`를 사용하므로 이 Chromium이 필요하고 Xvfb는 필요하지 않다. `CRAWLER_BROWSER_EXECUTABLE_PATH`는 크롤러 helper의 설정이며 Web Naver 검색 브라우저를 바꾸지 않는다. 설치와 사용자 opt-in은 서로 다른 단계다. 기존 실제 opt-in 한 번에서 5개 장소가 반환된 증거는 유지하며, 브라우저 미설치·응답 미확인은 검색 0건이나 Naver OAuth 실패로 표시하지 않는다.
 
 이후 같은 shell에서 명시적인 저장 경로·내부 서비스 주소를 설정한다. `BACKUP_DIR`와 `WALLETSAVIOR_ORCHESTRATOR_DB`도 데모 경로에 묶어 다른 설치의 관리 저장소를 사용하지 않는다.
 
@@ -85,7 +90,15 @@ export CORS_ORIGINS="http://127.0.0.1:5174"
 (cd packages/db-admin/frontend && exec npm run dev -- --host 127.0.0.1 --port 5175 --strictPort) > "$WS_DEMO_DIR/db-ui.log" 2>&1 &
 ```
 
-이마트 일반 화면 모드 수집을 준비할 때는 실제 설치한 안정판 Chrome의 실행 경로를 지정할 수 있다. 아래 값은 예시 자리이며 자신의 설치 경로로 바꾼다. `DISPLAY`가 없는 Linux에서는 크롤러 API를 이미 실행한 뒤 중복으로 실행하지 말고, 위 크롤러 시작 명령을 `xvfb-run -a`로 감싸 화면 모드를 제공한다.
+이마트 일반 화면 모드 수집은 `chrome` 채널의 안정판 Google Chrome을 사용한다. 위 Chromium 설치만으로 이 채널이 설치되지는 않는다. Chrome이 없는 지원 Linux 호스트에서는 다음 설치 명령을 사용하거나 공식 안정판 Chrome을 설치한다. `DISPLAY`도 없는 Debian/Ubuntu에서는 Xvfb가 필요하다(시스템 설치 권한 필요). 이미 준비된 호스트에서는 이 설치를 반복하지 않는다.
+
+```sh
+"$WS_PY" -m playwright install chrome
+sudo apt-get update
+sudo apt-get install -y xvfb
+```
+
+실제 설치한 안정판 Chrome의 실행 경로를 지정할 수도 있다. 아래 값은 예시 자리이며 자신의 설치 경로로 바꾼다. Chrome 채널의 기본 설치를 사용하면 경로 export는 생략한다. `DISPLAY`가 없는 Linux에서는 크롤러 API를 이미 실행한 뒤 중복으로 실행하지 말고, 위 크롤러 시작 명령을 `xvfb-run -a`로 감싸 화면 모드를 제공한다.
 
 ```sh
 export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrome"
@@ -93,9 +106,9 @@ export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrom
 (cd packages/crawler-admin/backend && exec xvfb-run -a "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
 ```
 
-공용 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 환경의 정상 CA 신뢰를 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
+공용 크롤러 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 의존성 다운로드와 실제 브라우저 접속은 별개이므로 pip 설치 성공만으로 브라우저 proxy/TLS 접속까지 확인됐다고 보지 않는다. 다운로드 도구·OS·브라우저의 정상 CA 신뢰와 세션 proxy 설정을 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
 
-Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 저장된 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐으며 snapshot 61을 공개 Web이 소비했다. 새 라이브 가격을 만든 결과가 아니고 배포 압축 데이터는 revision 60을 유지한다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. trial snapshot62와 복원 뒤 data_revision64(dirty)는 배포 revision60과 별도이며 이미 확인한 publish를 반복하지 않는다.
+Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 현재 배포 압축 데이터와 별도 시험 탑재본은 revision67(전체9114/공개8802/pending312)이다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)는 과거 검증 기록이며 현재 revision67 상태가 아니다. 이미 확인한 publish를 반복하지 않는다.
 
 ## 3. Docker Compose: 공개 Web/API만 실행
 
@@ -134,7 +147,7 @@ docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.
 
 분류 결과 JSONL의 **matching-only import**는 기존 public mapping의 검수 정보 경로다. legacy 분류 행은 기존 `category_id` 검증을 유지한다. normalized 행은 기존 key와 실제 알려진 active product·unified leaf 계층·해당 product의 variant·명칭·수량이 일치할 때만 server가 참조를 검증하고 legacy category NULL을 허용한다. 임의 public ID·다른 variant·다른 수량이나 추정 legacy category를 입력하지 않는다. 현재 저장된 Costco mapping 한 건의 UI preview·confirm은 HTTP 200·변경없음 1건(신규/수정 0건)이 확인됐고, 같은 trace 재확인은 idempotent=true였다. 기존 graph·키워드·계정 참조는 보존됐다. 이는 새 상품 추가 성공이 아니다.
 
-새 product·variant·normalized key 또는 분류 변경은 기존 원본 검수 **catalog bundle preview → apply → replay → snapshot** 경로로 처리한다. 현재 확인한 saved-bundle replay/snapshot 61과 배포 데이터 revision 60을 구분한다. 두 경로의 기능을 하나의 import 성공으로 합쳐 표시하지 않는다.
+새 product·variant·normalized key 또는 분류 변경은 기존 원본 검수 **catalog bundle preview → apply → replay → snapshot** 경로로 처리한다. 이전 saved-bundle replay/snapshot 61 증거와 현재 배포·시험 데이터 revision67을 구분한다. 두 경로의 기능을 하나의 import 성공으로 합쳐 표시하지 않는다.
 
 관리 UI의 인증된 실행을 기본으로 사용한다. 직접 API를 사용할 때도 `REQUIRE_AUTH=true`이므로 익명 POST/GET은 401을 반환한다. 다음 PowerShell 예시는 공개 데모 계정으로 로그인한 뒤 같은 설치의 관리자 API에 인증 헤더를 전달한다. JWT를 출력하거나 로그·Git에 저장하지 않는다.
 
@@ -162,7 +175,7 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 | --- | --- |
 | Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 지원되는 비공개 credentials file. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
 | Naver OAuth | 비공개 `NAVER_CLIENT_ID`·`NAVER_CLIENT_SECRET`과 해당 provider callback 등록 필요. Naver 지도 공개 브라우저 검색과 다른 기능이며 실제 OAuth 미검증 |
-| Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 설치된 브라우저·공급자 접근·지도 링크 서비스가 필요하며, OAuth 키가 이 공개 검색의 필수 키라는 주장은 하지 않음 |
+| Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. `NAVER_CLIENT_ID`/`NAVER_CLIENT_SECRET`은 이 공개 검색의 필수 키가 아니라 별도 OAuth 설정 |
 | Opinet 공식 API | `OPINET_API_KEY`와 실제 공급자 권한·접근 필요. 배포된 7개 주유소·14개 가격은 각각 원래 날짜의 관측값이며 실시간 API 결과가 아님 |
 | 연료 지도 좌표 | Opinet 원본 X/Y의 CRS·변환 연결 미확인. 배포 좌표는 NULL이며 GPS 거리순 비교를 보장하지 않음. 개별 Naver 후보 x/y를 확인한 것만으로 모든 주유소 좌표나 Opinet CRS를 확정하지 않음 |
 | 핫딜 | 현재 Algumon collector는 fixture placeholder이고 실제 공개 요청은 403으로 중지된 기록이 있음. 실제 post의 정상 수집·parser 연결이 필요하며, 이를 자격증명 부족이라고 단정하지 않음. demo 핫딜 라이브 갱신 미검증 |
@@ -178,7 +191,7 @@ Compose에서는 `--env-file .env.demo.local`을 사용한다. TeamDemo Google c
 
 ## 7. 검증 상태
 
-이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 배포 데이터는 revision 60이며 새 라이브 수집이나 전체 품질 통과로 선언하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
+이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 현재 배포·시험 데이터는 revision67(전체9114/공개8802/pending312)이다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
 
 The existing Crawler → Data review intake detail renders original nested purchase terms and role-specific interpretation notes. Inspect exact native/product/variant connections; missing listing/event IDs remain unknown, and approved source quotes are not confirmed checkout receipts. Collector provenance retains bounded business fields and actual HTTP receipt metadata without retaining private account/session branches. HTTP401/403/429 stops that supplier run, preserving any earlier rows as partial; do not bypass the stop with another same-host query.
 

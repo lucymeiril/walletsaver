@@ -114,3 +114,21 @@ def test_inject_source_field_overwrites_and_returns_record():
     record = {"source": "old", "name": "item"}
     assert inject_source_field(record, "emart") is record
     assert record["source"] == "emart"
+
+
+def test_commercial_source_node_excludes_personal_basket_without_losing_purchase_terms():
+    from crawlers.marts.source_utils import commercial_product_evidence
+    source = {'code': 'native-test-only', 'price': {'value': 1000},
+              'quantityInBasket': 2, 'basketLines': [{'native': 'private-selection', 'qty': 2}],
+              'ratingSummary': {'rating': 4.5}, 'cartLimitQty': 3, 'orderMinQty': 2,
+              'basketMinimumSpend': 70000, 'basketPromotion': {'buy': 3, 'free': 1},
+              'operatingCapacity': 'spec-only', 'productReferences': [{'code': 'native-related-only', 'cartLimitQty': 4}]}
+    evidence = commercial_product_evidence(source, 'product', response_url=None,
+                                          response_body_sha256=None, received_at=None)
+    node = evidence['raw_product_node']
+    assert node == {key: value for key, value in source.items() if key not in {'quantityInBasket', 'basketLines', 'ratingSummary'}}
+    assert {row['path'] for row in evidence['removed_fields']} == {'/quantityInBasket', '/basketLines', '/ratingSummary'}
+    assert evidence['commercial_node_complete'] is False and evidence['removed_field_count'] == 3
+    assert evidence['http_receipt_status'] == 'not_recorded'
+    # The related native stays source evidence; it does not become this SKU.
+    assert node['code'] == 'native-test-only' and node['productReferences'][0]['code'] == 'native-related-only'

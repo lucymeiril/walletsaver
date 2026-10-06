@@ -36,6 +36,7 @@ from crawlers.marts.source_utils import (
     absolute_url,
     build_source_map_manifest,
     build_source_attributes,
+    commercial_product_evidence,
     compute_canon_hash,
     normalize_lottemart_url,
     parse_period_fields,
@@ -228,17 +229,23 @@ class LottemartCrawler(CrawlerContract):
         return True
 
     @staticmethod
-    def _product_only_state(value: Any, depth: int = 0) -> Any:
+    def _product_only_state(value: Any, depth: int = 0, *, original_nodes: dict | None = None,
+                            pointer: str = '') -> Any:
         # Existing extractors recurse through saved envelopes. Exclude private namespaces
         # before that traversal; none of this state is serialized into diagnostic output.
         if depth > 40:
             return None
         if isinstance(value, dict):
-            return {key: LottemartCrawler._product_only_state(item, depth + 1)
+            result = {key: LottemartCrawler._product_only_state(item, depth + 1,
+                        original_nodes=original_nodes, pointer=f'{pointer}/{key}')
                     for key, item in value.items()
                     if not re.search(r"account|auth|member|login|cart|basket|order|wishlist|review|rating|cookie|token|session|sdk", key, re.I)}
+            if original_nodes is not None:
+                original_nodes[id(result)] = (value, pointer)
+            return result
         if isinstance(value, list):
-            return [LottemartCrawler._product_only_state(item, depth + 1) for item in value]
+            return [LottemartCrawler._product_only_state(item, depth + 1,
+                original_nodes=original_nodes, pointer=f'{pointer}/{index}') for index, item in enumerate(value)]
         return value
 
     @staticmethod
@@ -281,15 +288,20 @@ class LottemartCrawler(CrawlerContract):
             fields["categoryPath"] = [value[:64] for value in product["categoryPath"][:8] if isinstance(value, str)]
         return fields
 
-    def _parse_exact_product(self, body: str, target: str) -> tuple[list[DiscountItem], int, dict]:
+    def _parse_exact_product(self, body: str, target: str, *, response_url: str | None = None,
+                             response_body_sha256: str | None = None,
+                             received_at: datetime | None = None) -> tuple[list[DiscountItem], int, dict]:
         """Use existing source shapes, binding native evidence before any conversion."""
+        receipt = dict(response_url=response_url, response_body_sha256=response_body_sha256, received_at=received_at)
         if re.search(r"window\.__QUERY_INITIAL_STATE__\s*=", body):
-            return self._parse_query_exact_product(body, target)
+            return self._parse_query_exact_product(body, target, **receipt)
         candidates = []
+        original_nodes = {}
         state_text = self._extract_initial_state_json(body)
         payload = None
         try:
-            payload = self._product_only_state(json.loads(state_text or body))
+            payload = self._product_only_state(json.loads(state_text or body), original_nodes=original_nodes,
+                pointer='window.__INITIAL_STATE__' if state_text else 'json')
         except (ValueError, TypeError):
             pass
         entities = self._find_product_entities(payload)
@@ -340,8 +352,15 @@ class LottemartCrawler(CrawlerContract):
         conversion_errors = 0
         for row, converter in matched:
             try:
+                original, pointer = original_nodes.get(id(row), (row, f'{shape}/{candidates.index((row, converter))}'))
+                evidence = commercial_product_evidence(original, pointer, **receipt)
+                evidence['native_context'] = self._extract_lottemart_ean13(original)[0]
                 item = converter(row)
-                if item: items.append(item)
+                if item:
+                    item.attributes['submission_business_evidence'] = [evidence]
+                    if evidence['http_receipt_status'] == 'supplied_response_metadata':
+                        item.crawled_at = datetime.fromisoformat(evidence['source_response_received_at'])
+                    items.append(item)
             except (TypeError, ValueError, AttributeError):
                 conversion_errors += 1
         captured = [self._candidate_fields(row) for row, _ in matched[:5]]
@@ -474,7 +493,9 @@ class LottemartCrawler(CrawlerContract):
             "lottemart_detail_source_fields_sha256": hashlib.sha256(json.dumps(source, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()})
         return item
 
-    def _parse_query_exact_product(self, body: str, target: str) -> tuple[list[DiscountItem], int, dict]:
+    def _parse_query_exact_product(self, body: str, target: str, *, response_url: str | None = None,
+                                  response_body_sha256: str | None = None,
+                                  received_at: datetime | None = None) -> tuple[list[DiscountItem], int, dict]:
         from bs4 import BeautifulSoup
         candidates = []
         malformed = False
@@ -504,10 +525,16 @@ class LottemartCrawler(CrawlerContract):
         conversion_errors = 0
         for product, pointer in matched:
             try:
+                evidence = commercial_product_evidence(product, pointer, response_url=response_url,
+                    response_body_sha256=response_body_sha256, received_at=received_at)
+                evidence['native_context'] = self._extract_lottemart_ean13(product)[0]
                 item = self._query_product_to_discount_item(product, pointer)
                 if item is None:
                     malformed = True
                 else:
+                    item.attributes['submission_business_evidence'] = [evidence]
+                    if evidence['http_receipt_status'] == 'supplied_response_metadata':
+                        item.crawled_at = datetime.fromisoformat(evidence['source_response_received_at'])
                     items.append(item)
                     source_versions.add(item.attributes["lottemart_detail_source_fields_sha256"])
             except (TypeError, ValueError, AttributeError):
@@ -517,6 +544,10 @@ class LottemartCrawler(CrawlerContract):
         if malformed or conflict:
             items = []
         elif items:
+            evidence = [record for item in items for record in item.attributes['submission_business_evidence']]
+            items[0].attributes['submission_business_evidence'] = evidence[:5]
+            if len(evidence) > 5:
+                items[0].attributes['submission_business_evidence_truncated'] = len(evidence) - 5
             items = items[:1]
         diagnostic = {"diagnostic_kind": "lottemart_exact_product_parse", "schema_marker": "query_state_product",
             "initial_state_marker_present": bool(re.search(r"window\.__INITIAL_STATE__\s*=", body)),
@@ -572,6 +603,9 @@ class LottemartCrawler(CrawlerContract):
         valid_items = await self.validate(parsed)
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
         for _d in items_as_dict:
+            evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
+            if evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence):
+                _d.pop("crawled_at", None)  # DTO construction clock is not a source receipt.
             _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
             items_as_dict,
@@ -620,6 +654,8 @@ class LottemartCrawler(CrawlerContract):
         response: requests.Response | None = None
         target = self._exact_product_native(source_url)
         diagnostic = None
+        source_stop_status = None
+        source_stop_reason = None
 
         session = requests.Session()
         try:
@@ -631,9 +667,20 @@ class LottemartCrawler(CrawlerContract):
                 max_retries=1,
                 allow_redirects=not bool(target),
             )
+            received_at = datetime.now(timezone.utc)
+            response_body = getattr(response, 'content', None)
+            response_hash = hashlib.sha256(response_body).hexdigest() if isinstance(response_body, bytes) else None
+            response_url = getattr(response, 'url', None)
             if response.status_code != 200:
                 message = f"source_url HTTP {response.status_code}"
-                if response.status_code in {202, 403, 429} and self._is_aws_waf_challenge(response.text):
+                waf_action = str((getattr(response, 'headers', None) or {}).get('x-amzn-waf-action', '')).lower()
+                is_waf = response.status_code in {202, 403, 429} and (
+                    waf_action in {'challenge', 'captcha'} or self._is_aws_waf_challenge(response.text))
+                if response.status_code in {202, 401, 403, 429}:
+                    source_stop_status = response.status_code
+                    source_stop_reason = ('aws_waf_challenge' if is_waf else
+                        'nonproduct_response' if response.status_code == 202 else 'http_access_denied')
+                if is_waf:
                     message += " (AWS WAF challenge)"
                     waf_blocker = self._waf_blocker_details(
                         message,
@@ -648,7 +695,8 @@ class LottemartCrawler(CrawlerContract):
                     error_msg=message,
                     status_code=response.status_code,
                 ))
-            elif target and self._has_visible_access_challenge(response.text):
+            elif self._has_visible_access_challenge(response.text):
+                source_stop_status, source_stop_reason = 200, 'visible_access_challenge'
                 message = "source_url HTTP 200 active access challenge"
                 errors.append(message)
                 strategy_failures.append(StrategyFailure(
@@ -660,7 +708,8 @@ class LottemartCrawler(CrawlerContract):
                     blocker="visible_access_challenge",
                 )
             elif target:
-                parsed, raw_count, diagnostic = self._parse_exact_product(response.text, target)
+                parsed, raw_count, diagnostic = self._parse_exact_product(response.text, target,
+                    response_url=response_url, response_body_sha256=response_hash, received_at=received_at)
             else:
                 raw_count = self.count_raw_candidates(response.text)
                 parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
@@ -670,6 +719,9 @@ class LottemartCrawler(CrawlerContract):
         valid_items = await self.validate(parsed)
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
         for _d in items_as_dict:
+            evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
+            if evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence):
+                _d.pop("crawled_at", None)  # DTO construction clock is not a source receipt.
             _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
             items_as_dict,
@@ -702,6 +754,14 @@ class LottemartCrawler(CrawlerContract):
         })
         if waf_blocker:
             self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+        if source_stop_status is not None:
+            quality_details.update(source_stopped=True, source_stop_status=source_stop_status,
+                                   source_stop_reason=source_stop_reason)
+            if source_stop_reason == 'nonproduct_response':
+                quality_details['fetch']['nonproduct_response'] = True
+            else:
+                quality_details['fetch']['blocked'] = True
+                quality_details['fetch'].setdefault('blocker', f'http_{source_stop_status}')
         raw_diagnostic = self._finish_target_diagnostic(diagnostic, quality_details)
         quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
         finished_at = datetime.now()
