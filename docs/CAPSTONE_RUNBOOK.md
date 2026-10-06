@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json demo-data/updates/catalog99-to100.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json demo-data/updates/catalog99-to100.json demo-data/updates/catalog100-to101.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -308,4 +308,4 @@ Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID
 
 현재99 동봉 데이터는492군/1191옛ID/41분류 정정이력과9115관측을 유지한다. 전기·숯 그릴4건, 고구마 건조스낵2건, 스텐 식판1건의 원문에 묶인 세부 탐색을 정정했다. 기기·식판의 물품NULL과 두 스낵의300g·80g×10 원규격, 가격·시점·계정참조는 바꾸지 않았다. 실제14GET의 변경 탐색·상세와3GET의 관측 설명을 확인했다. 검색은 관측 조건 비교금액이며 선택 상세는 해당 출처 표시가격·관측 시점으로 설명하고 현재 구매가로 단정하지 않는다. source24pins/배포계정0과9개 정식 갱신파일을 함께 제공하며 제출후보 검증은 계속된다.
 
-현재100은25대표/27기존 원상품의 명시 형태와2기존군의 분류 의미를 맞춘다. 전·전병·생선스테이크·두유면·약밥·계란장·피클·씨제거/슬라이스올리브의8공통 탐색 형태를 지원하며 원431#401–404의 입증된 냉동전 판정은 유지한다. 절임·굽기·냉동·원료를 이름이나 중량만으로 추가하지 않았다. 원9115관측/가격/시점,6381규격/6458판매페이지, 계정 참조와492군/1191옛ID는 유지하며 배포계정0이다. 99→100 파일은 정식preview/apply/replay/snapshot100 증거가 있는 파생분류 갱신이고 신규 상품/관측 적재가 아니다. 초기98분류·새 출처·전체인증은 재개하지 않았다.
+현재101은23기존상품의 입증된 형태를7공통4단계 리프로 구체화하고,20건의 출처 단가 기준을 판매내용량으로 오독한 파생규격을 정정한다. 명시 티백·정·캡슐 개수8건은 개수규격으로, 판매내용량 미입증12건은 수량 미확인으로 유지한다. 캡슐mg을 총판매g으로 환산하지 않았고 독립라벨100g/100ml·명시80g은 유지한다. 출처 단가문구·원가격·원시각은 그대로 설명/이력에 표시하며 미확인 내용을 정확g·단가·수령1로 만들지 않는다. 41고유 원상품/20새규격과20옛inactive규격 이력,6458판매페이지/원9115event/계정참조 및492군1191옛ID를 보존한다.100→101 정식preview/apply/동일replay/snapshot101 및 변경15GET·실제matching/export60HIT80거절 근거가 있으며 신규 상품/관측 적재0이다. 배포계정0,91source-leaf reviews/26sourcepins. 초기98·새출처·전체인증은 중단 유지한다.

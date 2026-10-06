@@ -23815,7 +23815,7 @@
       ],
       "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 초코",
       "brand": "매일유업 상하목장",
-      "leaf": "food.frozen.dessert.tube",
+      "leaf": "food.dessert_preparations.freezing.ice_cream",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-5093d125687d998b7cf4b259448af522": [
@@ -23858,7 +23858,7 @@
       ],
       "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 밀크",
       "brand": "매일유업 상하목장",
-      "leaf": "food.frozen.dessert.tube",
+      "leaf": "food.dessert_preparations.freezing.ice_cream",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-7ae4e713bf153946cc5d526c713d719d": [
@@ -25404,6 +25404,351 @@
       ],
       "evidence_sha256": "e52cb4f6f671e6f4447eebe4908d4a393a239cb535707997f06635618e92833d",
       "reason": "Literalpitted/sliced establishesmechanicalprocessing, notbrine; originalquantity retained."
+    },
+    {
+      "product_id": "prod-a49ce9a583c51ddaef4bc0439862df2c",
+      "old_leaf": "food.produce.processed_fruit.frozen",
+      "new_leaf": "food.produce.processed.fruit_puree",
+      "source_name": "homeplus",
+      "source_record_key": "071339200",
+      "source_titles": [
+        "뚜까 아사이베리 퓨레 큐브 200G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071339200&storeType=HYPER"
+      ],
+      "evidence_sha256": "9cf8ecdf39b354d9d3199755a5a3ef19f1bc578b0ed643e9df4a22b3bcd98188",
+      "reason": "ExplicitnativeBlack-Bean-Noodle URL/coldnoodlebroth namedpurpose/pureefruitform/meatsauce withoutunproveddip; originalcoldsourcepath/literalrecipe/quantity preserved."
+    },
+    {
+      "product_id": "prod-b2d1f755f73d11330b07c650346a0e10",
+      "old_leaf": "food.produce.processed_fruit.dried",
+      "new_leaf": "food.snacks.dried.nut_rolled_fruit",
+      "source_name": "costco",
+      "source_record_key": "666033",
+      "source_titles": [
+        "호두말이 곶감세트 1.2kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dried-Persimmon-Walnut-Gift-Set-12kg/p/666033"
+      ],
+      "evidence_sha256": "39c27296fafad862648d8e35998abe06a13e039fe1e9edaf7c52f8b0f6804dce",
+      "reason": "Literal walnutrolleddriedpersimmon/깨소금 form, notplain driedfruit/whole roastedseed; noingredientratio/packing/defaultquantity guess."
+    },
+    {
+      "product_id": "prod-2270354514c206366bf4074499bf3786",
+      "old_leaf": "food.seasonings.sauces.broth",
+      "new_leaf": "food.seasonings.sauces.cold_noodle_broth",
+      "source_name": "lottemart",
+      "source_record_key": "8801007033686",
+      "source_titles": [
+        "CJ 동치미 냉면육수 (1인) (300G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007033686/details"
+      ],
+      "evidence_sha256": "5c17bed448a5bd5687e7ebb100b3a54cf63ea3948b6abb43fdd6281295619c8d",
+      "reason": "ExplicitnativeBlack-Bean-Noodle URL/coldnoodlebroth namedpurpose/pureefruitform/meatsauce withoutunproveddip; originalcoldsourcepath/literalrecipe/quantity preserved."
+    },
+    {
+      "product_id": "prod-8ee8813d805dbe2d307e59a06df66711",
+      "old_leaf": "food.seasonings.sauces.broth",
+      "new_leaf": "food.seasonings.sauces.cold_noodle_broth",
+      "source_name": "lottemart",
+      "source_record_key": "8801114303931",
+      "source_titles": [
+        "풀무원 평양 물냉면육수 (1인) (290G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801114303931/details"
+      ],
+      "evidence_sha256": "1d32eb353ee34d110de158e6313eb02c0df7da9555ff3a45274f4782db83b2e3",
+      "reason": "ExplicitnativeBlack-Bean-Noodle URL/coldnoodlebroth namedpurpose/pureefruitform/meatsauce withoutunproveddip; originalcoldsourcepath/literalrecipe/quantity preserved."
+    },
+    {
+      "product_id": "prod-00bce22713256987179550e7b8d10585",
+      "old_leaf": "food.seasonings.sauces.black_bean",
+      "new_leaf": "food.meals.noodles.black_bean",
+      "source_name": "costco",
+      "source_record_key": "695610",
+      "source_titles": [
+        "고메 고기짜장 1,360g x 2개"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Gourmet-Black-Bean-Noodle-1360g-x-2/p/695610"
+      ],
+      "evidence_sha256": "a013036df07cd0648bc5106fb6035154e1b785463ce2c42d2b44fd65bda0e988",
+      "reason": "ExplicitnativeBlack-Bean-Noodle URL/coldnoodlebroth namedpurpose/pureefruitform/meatsauce withoutunproveddip; originalcoldsourcepath/literalrecipe/quantity preserved."
+    },
+    {
+      "product_id": "prod-381dd4e61130b809815de051c3a4d7d9",
+      "old_leaf": "food.seasonings.sauces.chicken_dip",
+      "new_leaf": "food.seasonings.sauces.meat",
+      "source_name": "costco",
+      "source_record_key": "693790",
+      "source_titles": [
+        "하인즈프라이드치킨소스295ml x 3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Heinz-Fried-Chicken-Sauce-295ml-x-3/p/693790"
+      ],
+      "evidence_sha256": "ac7817af6e9d42475649d58d6d7d1fee7654ea303629f969709933e3f9fc6d29",
+      "reason": "ExplicitnativeBlack-Bean-Noodle URL/coldnoodlebroth namedpurpose/pureefruitform/meatsauce withoutunproveddip; originalcoldsourcepath/literalrecipe/quantity preserved."
+    },
+    {
+      "product_id": "prod-a5e2aced20b5fb0ece7ca6cccf11bc56",
+      "old_leaf": "food.seasonings.spices.roasted_sesame",
+      "new_leaf": "food.seasonings.spices.sesame_salt",
+      "source_name": "emart",
+      "source_record_key": "1000057539352",
+      "source_titles": [
+        "유기농 발아 깨소금 180g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000057539352&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "5b27066cb21faff8d15df5b623850452b694639a0ffbdc93d93ecc6972e76304",
+      "reason": "Literal walnutrolleddriedpersimmon/깨소금 form, notplain driedfruit/whole roastedseed; noingredientratio/packing/defaultquantity guess."
+    },
+    {
+      "product_id": "prod-4fcc3205566acfe8d4454d6aee9ee53e",
+      "old_leaf": "food.bakery.dessert.cake",
+      "new_leaf": "food.meals.prepared.rice_cake",
+      "source_name": "emart",
+      "source_record_key": "1000696547842",
+      "source_titles": [
+        "미니카스텔라인절미 100g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000696547842&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "0170595cfa187954c771f7d5bcb28f6ee90d8d1bc5351bee75e7e7819b010b07",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-9df14af56111d00302bb167d0ddcecad",
+      "old_leaf": "food.bakery.bread.sandwich",
+      "new_leaf": "food.meals.prepared.sandwich",
+      "source_name": "emart",
+      "source_record_key": "1000620266649",
+      "source_titles": [
+        "사라다크라상2입"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000620266649&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "a8fc3c6f505b4a21ed5c732eb85bf28811f192164070b47fa524f857c0122890",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-355c6cb6769f06a3d371c3dffeb855f4",
+      "old_leaf": "food.meals.prepared.rice_cake",
+      "new_leaf": "food.preserved.ingredients.tteokguk_cake",
+      "source_name": "homeplus",
+      "source_record_key": "106864376",
+      "source_titles": [
+        "풀무원 우리쌀 떡국떡 700G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=106864376&storeType=HYPER"
+      ],
+      "evidence_sha256": "d08325ba4a8b7309cc015da1cda5ba6dbfd4d51d1f031fad6ccf06ae0e1b9205",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-65d28d88b32efdfa9341a009a379b94f",
+      "old_leaf": "food.meals.prepared.rice_cake",
+      "new_leaf": "food.preserved.ingredients.tteokguk_cake",
+      "source_name": "homeplus",
+      "source_record_key": "124501077",
+      "source_titles": [
+        "씨제이 참쌀 떡국떡 1KG"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=124501077&storeType=HYPER"
+      ],
+      "evidence_sha256": "f99e90b4fe856824a8145e9f8e9353058a9089ffd5b67c915da4294135c305c7",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-8fc16f54a892c8c1e892a29eaf7473dd",
+      "old_leaf": "food.meals.prepared.rice_cake",
+      "new_leaf": "food.preserved.ingredients.tteokguk_cake",
+      "source_name": "homeplus",
+      "source_record_key": "128400674",
+      "source_titles": [
+        "풀무원 찰 떡국떡 1KG"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=128400674&storeType=HYPER"
+      ],
+      "evidence_sha256": "9dd520238f24f6a2f7dd2eaf175e3842ff0f22a28111c38660ac4403bee05815",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-f5efbe49d858e3c74b5216bfffe762b0",
+      "old_leaf": "food.meals.prepared.rice_cake",
+      "new_leaf": "food.preserved.ingredients.tteokguk_cake",
+      "source_name": "homeplus",
+      "source_record_key": "121514199",
+      "source_titles": [
+        "씨제이 미정당 국산쌀 떡국떡 700G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=121514199&storeType=HYPER"
+      ],
+      "evidence_sha256": "e9daa1d2c66919204e2fa93238dfef3ded0e23ecfe25adae8e49089823e4fed7",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-d87db825802983b7f04ae1b6ba17ba79",
+      "old_leaf": "food.meals.prepared.frozen_potato",
+      "new_leaf": "food.meals.prepared.fries",
+      "source_name": "emart",
+      "source_record_key": "1000731999155",
+      "source_titles": [
+        "양념감자튀김 400g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000731999155&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "8faf204c00a3f1a975da8da3e6e4997e1da167ae38109ecf915cadf1f290aa93",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-23636685c3fda577c9cdc16c4ffd4b1c",
+      "old_leaf": "food.frozen.dessert.cup_sherbet",
+      "new_leaf": "food.frozen.dessert.sherbet",
+      "source_name": "lottemart",
+      "source_record_key": "0000049320367",
+      "source_titles": [
+        "크라시에 시즈쿠 유자 샤베트 (140ML)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0000049320367/details"
+      ],
+      "evidence_sha256": "aded81c7478941c2a3bdcc8f24215777e1f570c00f1444542b00518e1b51aa43",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-8fff8f3a6fb730fc99a44a88002af962",
+      "old_leaf": "food.frozen.dessert.cup_sherbet",
+      "new_leaf": "food.frozen.dessert.sherbet",
+      "source_name": "lottemart",
+      "source_record_key": "0000049320381",
+      "source_titles": [
+        "크라시에 시즈쿠 백포도 샤베트 (140ML)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0000049320381/details"
+      ],
+      "evidence_sha256": "d5a1c638efbaf555e0238ee436c59a5d6febd6dcb4d04b773558dd30613c4859",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-3c61a8413770a746866fb22e86692ebd",
+      "old_leaf": "food.meals.baby.puree",
+      "new_leaf": "food.produce.processed.vegetable_puree",
+      "source_name": "emart",
+      "source_record_key": "1000802852051",
+      "source_titles": [
+        "처음먹는 평창감자 퓨레 80g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000802852051&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "ce1d188831af86a9e59ccb0f37813a4cd38086f06f8751efa4eca7b21d0a0d13",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-629de89d6747301c7731caa80c08d0bc",
+      "old_leaf": "food.meals.baby.puree",
+      "new_leaf": "food.produce.processed.vegetable_puree",
+      "source_name": "emart",
+      "source_record_key": "1000413002538",
+      "source_titles": [
+        "처음먹는 고구마 퓨레"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000413002538&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "a7d9de0e8ee09f09d62d02b88aee824fcda36afabe0f3c3d8cf3859c8f9faadc",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-e9c8bee835d0c16e24e65a6b55daf2b8",
+      "old_leaf": "food.meals.baby.puree",
+      "new_leaf": "food.produce.processed.vegetable_puree",
+      "source_name": "emart",
+      "source_record_key": "1000413002568",
+      "source_titles": [
+        "처음먹는 단호박 퓨레"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000413002568&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "bb601dadc25b4a44cfb0c66c32f47c00cb2fd9ab2212e918d5d7b023153104db",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-5093d125687d998b7cf4b259448af522",
+      "old_leaf": "food.frozen.dessert.tube",
+      "new_leaf": "food.dessert_preparations.freezing.ice_cream",
+      "source_name": "lottemart",
+      "source_record_key": "8801121034927",
+      "source_titles": [
+        "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801121034927/details"
+      ],
+      "evidence_sha256": "a6727845f4f7ad438b2bc0557efeed8fd0d63a8a104e32135603a0975a77efca",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-7ae4e713bf153946cc5d526c713d719d",
+      "old_leaf": "food.frozen.dessert.tube",
+      "new_leaf": "food.dessert_preparations.freezing.ice_cream",
+      "source_name": "lottemart",
+      "source_record_key": "8801121031667",
+      "source_titles": [
+        "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801121031667/details"
+      ],
+      "evidence_sha256": "bc218c33a391307a5d6e87dc4ca52e8b350a65bd10ef502052584e0f1e5be0f7",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-7d45d8a7ad884768729d41bcb4ea3729",
+      "old_leaf": "food.frozen.dessert.tube",
+      "new_leaf": "food.dessert_preparations.freezing.ice_cream",
+      "source_name": "emart",
+      "source_record_key": "1000065464261",
+      "source_titles": [
+        "얼려먹는 아이스크림 밀크 510ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "962f328414c36fa1435420ead2e8f8160f880f275a00b7cb8765ea066cee7a27",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
+    },
+    {
+      "product_id": "prod-e4892efd298265a372ea6a4177dbf282",
+      "old_leaf": "food.frozen.dessert.tube",
+      "new_leaf": "food.dessert_preparations.freezing.ice_cream",
+      "source_name": "emart",
+      "source_record_key": "1000314928679",
+      "source_titles": [
+        "얼려먹는 아이스크림 초코 510ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "5074576f0d4691d16eb6fa920c965536c81d249ca4c91e7f8d9e36ee79e37ffd",
+      "reason": "Explicitoriginalfoodform/purpose and actualspecificpath; no unproved cup/tube, freezer/infant purpose, ingredient/quantity inference."
     }
   ]
 }

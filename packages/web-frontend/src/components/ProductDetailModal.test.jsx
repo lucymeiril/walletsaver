@@ -13,7 +13,7 @@ import useCartStore from '../stores/cartStore';
 import ShoppingListPanel from './common/ShoppingListPanel';
 import useModalStore from '../stores/modalStore';
 import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText, getCatalogObservationDescription } from '../utils/productDecision';
-import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct } from '../utils/productActions';
+import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct, getSourceReferencePriceText } from '../utils/productActions';
 
 vi.mock('recharts', () => ({ ResponsiveContainer: ({children}) => children, AreaChart: ({data}) => <div data-testid="selected-history">{JSON.stringify(data)}</div>, BarChart: () => null, Area: () => null, Bar: () => null, XAxis: () => null, YAxis: () => null, Tooltip: () => null, Cell: () => null }));
 
@@ -592,6 +592,74 @@ const selectionFixture = () => ({ id:'prod-spec', public_product_id:'prod-spec',
       offer_state:'active',current_eligible:true,
     }]}],
   })) });
+
+describe('409 source reference price is not sold contents', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); });
+
+  it('keeps the source literal alongside a held quote without supplying contents or comparable pricing', () => {
+    const raw = selectionFixture();
+    raw.variants = [raw.variants[0]];
+    const variant = raw.variants[0], offer = variant.listings[0].offers[0];
+    Object.assign(variant, { package_quantity: null, package_unit: null, standard_unit: null,
+      display_unit: '', name: '퓨레 원문 상품' });
+    Object.assign(offer, { listed_price: 3000, total_price: null, comparable_price: null,
+      total_quantity: null, quantity_unit: null, received_package_count: null,
+      per_100g: null, current_eligible: false,
+      source_reference_price_text: '10g당 375원',
+      source_reference_price_role: 'source_reference_not_sold_contents' });
+    const before = JSON.stringify(raw);
+    const selected = selectProductOffer(raw, { variantId: variant.id });
+    expect(normalizeProduct(selected)).toMatchObject({ sourceReferencePriceText: '10g당 375원',
+      sourceReferencePriceRole: 'source_reference_not_sold_contents' });
+    expect(selected.unit).toBe('');
+    expect(selected.best_offer).toBeNull();
+    expect(getOfferUnitPrice(selected.selected_offer)).toBeNull();
+    expect(() => buildCartPayload(selected)).toThrow('실제 거래 금액이 확인되지 않아');
+    render(<ProductDetailModal product={selected} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText(/출처 단가 기준: 10g당 375원 · 판매 내용량·비교 단위 아님/)).toBeInTheDocument();
+    expect(screen.getByText(/표시 가격 3,000원/)).toBeInTheDocument();
+    expect(screen.getAllByText(/판매 수량 미확인/).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/375원\/100g/)).not.toBeInTheDocument();
+    expect(JSON.stringify(raw)).toBe(before);
+  });
+
+  it('keeps a declared capsule count separate from a milligram price reference and preserves ordinary measured offers', () => {
+    const raw = selectionFixture();
+    raw.variants = [raw.variants[0]];
+    const variant = raw.variants[0], offer = variant.listings[0].offers[0];
+    Object.assign(variant, { package_quantity: 60, package_unit: '개', standard_unit: '개',
+      bundle_count: 1, display_unit: '60캡슐' });
+    Object.assign(offer, { total_quantity: 60, quantity_unit: '개', per_100g: null, per_item: 100,
+      source_reference_price_text: '1000mg당 원문 표시 기준',
+      source_reference_price_role: 'source_reference_not_sold_contents' });
+    const selected = selectProductOffer(raw, { variantId: variant.id });
+    expect(selected.unit).toBe('60캡슐');
+    expect(selected.selected_offer.total_quantity).toBe(60);
+    expect(selected.selected_offer.quantity_unit).toBe('개');
+    expect(selected.selected_offer.per_100g).toBeNull();
+    expect(buildCartPayload(selected).quoted_offer.source_reference_price_text).toBe('1000mg당 원문 표시 기준');
+    render(<ProductDetailModal product={selected} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getAllByText('60캡슐').length).toBeGreaterThan(0);
+    expect(screen.getByText(/출처 단가 기준: 1000mg당 원문 표시 기준/)).toBeInTheDocument();
+    cleanup();
+    Object.assign(variant, { package_quantity: 80, package_unit: 'g', standard_unit: 'g', display_unit: '80g' });
+    Object.assign(offer, { total_quantity: 80, quantity_unit: 'g', per_100g: 7500 });
+    delete offer.source_reference_price_text; delete offer.source_reference_price_role;
+    const ordinary = selectProductOffer(raw, { variantId: variant.id });
+    expect(ordinary.unit).toBe('80g');
+    expect(getOfferUnitPrice(ordinary.selected_offer)).toEqual({ price: 7500, unit: '100g' });
+    expect(normalizeProduct(ordinary).sourceReferencePriceText).toBe('');
+  });
+
+  it('requires the explicit source role and a nonempty literal rather than raw numeric or unrelated fields', () => {
+    for (const offer of [null, {}, { source_reference_price_text: '10g당 375원' },
+      { source_reference_price_role: 'sold_contents', source_reference_price_text: '10g당 375원' },
+      ...[null, false, 375, {}, ''].map(text => ({ source_reference_price_role: 'source_reference_not_sold_contents', source_reference_price_text: text })),
+      { attributes: { unit_price_display: '10g당 375원' } }]) {
+      expect(getSourceReferencePriceText(offer)).toBe('');
+    }
+  });
+});
 
 describe('406 selected measured scalar specification fallback', () => {
   afterEach(() => { cleanup(); vi.clearAllMocks(); });

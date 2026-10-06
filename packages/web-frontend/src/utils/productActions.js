@@ -10,6 +10,12 @@ function firstDefined(...values) {
   return values.find((v) => v !== undefined && v !== null && v !== '');
 }
 
+export function getSourceReferencePriceText(offer) {
+  if (offer?.source_reference_price_role !== 'source_reference_not_sold_contents') return '';
+  const text = offer.source_reference_price_text;
+  return typeof text === 'string' && text.trim() ? text : '';
+}
+
 function toNumber(value, fallback = 0) {
   if (value === undefined || value === null || value === '') return fallback;
   const n = Number(value);
@@ -44,6 +50,9 @@ function slugPart(value, fallback = 'item') {
 }
 
 export function normalizeProduct(product = {}) {
+  const sourceReferenceOffer = product.selected_offer ?? product.best_offer
+    ?? product.offer_context ?? product.quoted_offer ?? product;
+  const sourceReferencePriceText = getSourceReferencePriceText(sourceReferenceOffer);
   const explicitProductId = firstDefined(product.public_product_id, product.product_id, product.productId);
   const looksLikeSavedListItem = explicitProductId == null
     && (
@@ -168,6 +177,8 @@ export function normalizeProduct(product = {}) {
     sourceTitle,
     description: firstDefined(product.description, product.content, product.summary, ''),
     unitPriceDisplay: firstDefined(product.unit_price_display, product.attributes?.unit_price_display, product.offer_raw_data?.unit_price_display, ''),
+    sourceReferencePriceText,
+    sourceReferencePriceRole: sourceReferencePriceText ? 'source_reference_not_sold_contents' : null,
     standardUnitPrice: firstDefined(product.standard_unit_price, product.unit_price, null),
     standardUnit: firstDefined(product.standard_unit, null),
     sourceType,

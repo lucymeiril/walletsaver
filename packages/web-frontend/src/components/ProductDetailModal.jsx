@@ -16,7 +16,7 @@ import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
-import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection } from '../utils/productActions';
+import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection, getSourceReferencePriceText } from '../utils/productActions';
 import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, getCatalogObservationDescription, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
 
@@ -307,6 +307,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const currentIsBest = bestValue != null && selectedValue != null && selectedValue <= bestValue;
   const hasCheaperOffer = bestValue != null && selectedValue != null && bestValue < selectedValue;
   const offerFacts = (offer = {}, components = offer.quantity_components || []) => <small>
+    {getSourceReferencePriceText(offer) && <span> · 출처 단가 기준: {getSourceReferencePriceText(offer)} · 판매 내용량·비교 단위 아님</span>}
     {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
     {offer.current_eligible === false && offer.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
     {isObservationReceiptEligible(offer) && offer.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}

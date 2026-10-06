@@ -750,11 +750,24 @@ def _reviewed_source_package(payload, attrs, title, boundary):
             "standard_unit": unit if unit in {"g", "ml"} else None, "display_unit": title}, []
 
 
-def reviewed_price_basis_identity(payload: Mapping[str, Any], title: str) -> tuple[float, str] | None:
+def reviewed_price_basis_identity(payload: Mapping[str, Any], title: str) -> tuple[float | None, str | None] | None:
     """Stable key measurement for exact reviewed price-quote listings only."""
     title = _text(title)
     if not isinstance(payload, Mapping):
         return None
+    # Source-bound reference-role repairs key on independent sold counts, or
+    # an unknown content basis. Monetary reference text never enters identity.
+    from core.reviewed_source_evidence import explicit_listing_package, nonmeasured_listing_review
+    for candidate, field, role in (
+        (explicit_listing_package(payload, {}, title), 'explicit_listing_quantity_review',
+         'independent_count_after_price_reference_correction'),
+        (nonmeasured_listing_review(payload, {}, title), 'nonmeasured_listing',
+         'price_reference_not_sold_contents'),
+    ):
+        if candidate and candidate[0] and not candidate[1]:
+            package = candidate[0]
+            if package['attributes'][field].get('measurement_role') == role:
+                return package['package_quantity'], package['package_unit']
     if title not in _REVIEWED_SOURCE_DISPLAYS:
         # A source-bound net-content declaration can have monetary quotes in
         # unit/display_unit. The exact reviewed contents, not quote money,

@@ -41,7 +41,9 @@ _COUNT_ONLY_PACKAGE_RE = re.compile(
     rf"\(\s*(?:[^)]*,\s*)?(?P<unit>{_COUNT_UNIT_PATTERN})\s*\)"
 )
 _DISPLAY_REF_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
-_REFERENCE_UNIT_SUFFIX_RE = re.compile(r"^\s*(?:당|기준|/\s*(?:당|[0-9,]+\s*원|원))")
+_REFERENCE_UNIT_SUFFIX_RE = re.compile(
+    rf"^\s*(?:당(?![가-힣A-Za-z])|기준|/\s*(?:당(?![가-힣A-Za-z])|{_MEASURE_NUMBER_PATTERN}\s*원|원))"
+)
 
 _STORAGE_HINTS = {
     "냉장": "chilled",
@@ -120,9 +122,10 @@ def _is_reference_unit_match(text: str, match: re.Match[str]) -> bool:
     unit_text = match.group("paren_unit") or match.group("unit")
     if not qty_text or not unit_text:
         return False
-    reference_unit = f"{qty_text}{_normalize_unit(unit_text)}"
+    # Reference role comes from the explicit suffix, not from a customary
+    # denominator such as 100g. A 10g quote does not establish a 10g sale pack.
     return bool(
-        _DISPLAY_REF_UNIT_RE.match(reference_unit)
+        float(qty_text.replace(",", "")) > 0
         and _REFERENCE_UNIT_SUFFIX_RE.match(text[match.end():])
     )
 

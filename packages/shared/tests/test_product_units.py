@@ -337,6 +337,28 @@ def test_raw_unit_measure_is_used_when_title_has_no_package_but_reference_units_
     assert parsed["package_unit"] == "g"
     assert parsed["display_unit"] == "80g"
 
+    # Explicit reference suffixes work for arbitrary measured denominators;
+    # the published rate must not be converted into sold contents by division.
+    for reference in ('10g 당 375원', '25ml 기준 100원', '0.5kg/1,250원',
+                      '(10g)당 375원', '10g/375.50원'):
+        parsed = normalize_unit_metadata(name='처음먹는 고구마 퓨레', sale_price=3000, raw_unit=reference)
+        assert parsed['package_quantity'] is parsed['package_unit'] is parsed['price_per_100g'] is None
+        assert parsed['display_unit'] == reference
+        parsed = normalize_unit_metadata(name=f'퓨레 {reference}', sale_price=3000)
+        assert parsed['package_quantity'] is parsed['package_unit'] is parsed['price_per_100g'] is None
+        parsed = normalize_unit_metadata(name='퓨레 80g', sale_price=3000, raw_unit=reference)
+        assert parsed['package_quantity'] == 80 and parsed['package_unit'] == 'g'
+        assert parsed['price_per_100g'] == 3750
+        parsed = normalize_unit_metadata(name=f'퓨레 80g {reference}', sale_price=3000)
+        assert parsed['package_quantity'] == 80 and parsed['price_per_100g'] == 3750
+
+    for raw in ('10g', '10g/봉'):
+        parsed = normalize_unit_metadata(name='퓨레', sale_price=3000, raw_unit=raw)
+        assert parsed['package_quantity'] == 10 and parsed['price_per_100g'] == 30000
+    # The beginning of a product noun is not a price-per suffix.
+    parsed = normalize_unit_metadata(name='10g 당근 퓨레', sale_price=3000)
+    assert parsed['package_quantity'] == 10 and parsed['price_per_100g'] == 30000
+
 
 def test_measure_bundle_parser_prefers_total_packaging_over_trailing_count_units() -> None:
     parsed = normalize_unit_metadata(name="[기획] 모짜렐라 치즈볼 360g*2입", sale_price=8980)

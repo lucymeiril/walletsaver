@@ -107,6 +107,16 @@ def quantity_evidence_matches(actual, expected):
     return True
 
 
+def _review_quantity_matches(actual, review):
+    # A reviewed reference-role correction may retain both immutable old
+    # producer fields and the exact corrected producer projection. Neither
+    # changes source identity or admits arbitrary quantities/price bases.
+    alternatives = review.get('producer_quantity_field_history', [])
+    return quantity_evidence_matches(actual, review['quantity_fields']) or any(
+        quantity_evidence_matches(actual, fields) for fields in alternatives
+    )
+
+
 def source_observation_eligibility_review(payload, attrs, title):
     """Separate a reviewed factual gap from an independently exact SKU context.
 
@@ -227,7 +237,7 @@ def nonmeasured_listing_review(payload, attrs, title):
         return None, ['nonmeasured_listing_evidence_conflict']
     matching = [record for record in choices
                 if source_review_matches(source_review_evidence(payload), record['required_source'])
-                and quantity_evidence_matches(quantity, record['quantity_fields'])]
+                and _review_quantity_matches(quantity, record)]
     if len(matching) != 1:
         return None, ['nonmeasured_listing_evidence_conflict']
     review = matching[0]
@@ -303,6 +313,8 @@ def explicit_listing_standard_unit(review):
 
 def _explicit_quantity_matches(quantity, review):
     expected = review['quantity_fields']
+    if review.get('measurement_role') == 'independent_count_after_price_reference_correction':
+        return _review_quantity_matches(quantity, review)
     if review.get('measurement_role') in {'declared_outer_set_count', 'declared_nonexact_mass_specification', 'declared_incomplete_entitlement_specification', 'declared_incomplete_retail_package_specification'}:
         # Original quoted count rates are not inner food amounts or payment.
         # Keep their basis compatible without using the mutable money value.
@@ -763,6 +775,10 @@ def package_comparison_reason(variant):
     attrs = variant.get('attributes') or {}
     if not isinstance(attrs, Mapping):
         return 'quantity_evidence_unverified'
+    nonmeasured = attrs.get('nonmeasured_listing')
+    if isinstance(nonmeasured, Mapping) and nonmeasured.get('measurement_role') == 'price_reference_not_sold_contents':
+        return ('source_exact_contents_unverified' if valid_nonmeasured_variant(variant)
+                else 'quantity_evidence_unverified')
     if ('source_component_listing' in attrs
             or attrs.get('quantity_basis') == 'reviewed_source_component_vector_v1'):
         # A stored scalar or stale serialized contract must not make an

@@ -720,6 +720,22 @@ class PublicCatalogStore:
                 per_item_divisor = total_quantity
             elif unit in {"g", "ml"}:
                 per_item_divisor = bundle * received_packages
+        # Reference unit-price text is an observed source quotation, never a
+        # sold-content specification or a computed comparison amount.
+        review = attributes.get("explicit_listing_quantity_review") or attributes.get("nonmeasured_listing") or {}
+        reference_role = (isinstance(review, Mapping) and review.get("measurement_role") in {
+            "independent_count_after_price_reference_correction", "price_reference_not_sold_contents"})
+        reference_text = None
+        if reference_role:
+            observations = evidence.get("observations")
+            for observation in reversed(observations if isinstance(observations, list) else []):
+                raw = observation.get("raw_payload") if isinstance(observation, Mapping) else None
+                raw_attrs = raw.get("attributes") if isinstance(raw, Mapping) else None
+                if isinstance(raw_attrs, Mapping):
+                    value = raw_attrs.get("unit_price_display") or raw_attrs.get("unit_price_text")
+                    if isinstance(value, str) and value.strip():
+                        reference_text = value.strip()
+                        break
         condition = conditions.get("condition_text") or evidence.get("condition_text") or evidence.get("promotion_condition")
         validity_eligible, availability_reason = PublicCatalogStore._offer_validity(event)
         return {
@@ -770,6 +786,8 @@ class PublicCatalogStore:
                              attributes.get("scalar_basis") if declared_vector else None),
             "quantity_purpose_reason": purpose_reason,
             "quantity_comparison_reason": composition_reason,
+            "source_reference_price_text": reference_text,
+            "source_reference_price_role": "source_reference_not_sold_contents" if reference_text else None,
             "membership_required": conditions.get("membership_required", evidence.get("membership_required")),
             "coupon_required": conditions.get("coupon_required", evidence.get("coupon_required")),
             "event_name": event.get("event_name"),
