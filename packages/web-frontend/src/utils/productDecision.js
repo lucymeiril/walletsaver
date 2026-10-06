@@ -1,4 +1,4 @@
-import { normalizeProduct } from './productActions';
+import { getProductSelection, normalizeProduct } from './productActions';
 
 const COUNT_UNITS = new Set(['개입','봉지','인분','세트','마리','회분','구','입','개','팩','봉','병','캔','손','매','롤','포','장','족','통','인','p','t','모','두','알','미','포기','단','망','박스','쌍','켤레']);
 
@@ -674,6 +674,15 @@ export function getHotdealJudgment(product = {}, priceTrust = null, historySumma
 
 export function buildProductDecision(product = {}, { priceCompare = null, priceHistory = [], priceTrust = null } = {}) {
   const normalized = normalizeProduct(product);
+  const normalizedCatalog = Boolean(product.public_product_id || Object.hasOwn(product, 'best_offer'));
+  // Source declarations survive even when this selected quote cannot provide
+  // a comparable/current transaction. Never borrow another group's offer.
+  const selectedSource = normalizedCatalog ? getProductSelection(product)?.offer : null;
+  const sourceText = value => typeof value === 'string' && value.trim() ? value.trim() : '';
+  const sourceStart = sourceText(selectedSource?.valid_from);
+  const sourceEnd = sourceText(selectedSource?.valid_to);
+  const sourcePeriod = sourceStart || sourceEnd
+    ? `출처 행사 기간 ${sourceStart || '시작일 미확인'} ~ ${sourceEnd || '종료일 미확인'}` : '';
   const historySummary = getPriceHistorySummary(product, priceHistory);
   const comparableOffers = getComparableOffers(product, priceCompare);
   const judgment = getHotdealJudgment(product, priceTrust, historySummary);
@@ -689,7 +698,10 @@ export function buildProductDecision(product = {}, { priceCompare = null, priceH
     currentOffer: {
       sourceName: normalized.storeName || firstDefined(product.source_name, product.source, '온라인'),
       sourceType: channel,
-      period: firstDefined(normalized.period, product.validity_period, product.valid_until, ''),
+      period: normalizedCatalog
+        ? `${selectedSource?.availability_reason === 'expired' ? '판매 기간 종료 · ' : ''}${sourcePeriod}`
+        : firstDefined(normalized.period, product.validity_period, product.valid_until, ''),
+      conditionText: selectedSource ? getOfferConditionText(selectedSource) : '',
       unitPrice: firstDefined(normalized.standardUnitPrice, product.unit_price, ''),
       unit: normalized.standardUnit,
     },

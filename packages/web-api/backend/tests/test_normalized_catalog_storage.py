@@ -777,3 +777,57 @@ def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_cat
     expected = 2 if mutation == 'inactive_canonical' else 3
     assert total == len(rows) == expected
     assert all(row['group_member_product_ids'] == [row['id']] for row in rows)
+
+
+@pytest.mark.parametrize('query,category,expected', [
+    ('펩시콜라', None, {'pepsi', 'named-alias'}),
+    ('코카콜라', None, {'coke'}),
+    ('아이시스', None, {'isis'}),
+    ('펩시제로', None, {'pepsi-zero'}),
+    ('아이시스 생수', None, {'isis'}),
+    ('콜라', None, {'pepsi', 'coke', 'pepsi-zero', 'named-alias'}),
+    ('펩시콜라', 'food.milk', set()),
+    ('초콜릿우유', None, {'milk-a'}),
+    ('초콜릿우유', 'food.snack', set()),
+    ('유제품', None, {'milk-a'}),
+    ('자펩시음료', None, {'pepsi', 'coke', 'pepsi-zero', 'named-alias'}),
+    ('ABCs', None, {'milk-a'}),
+    ('펩시%콜라', None, {'named-alias'}),
+    ('펩시_콜라', None, {'named-alias'}),
+    ('모형 콜라', None, {'named-alias'}),
+])
+def test_named_identity_keyword_synonyms_do_not_expand_to_competing_brands(scoped_group_catalog, monkeypatch, query, category, expected):
+    import core.catalog_identity as identity
+    groups = identity.reviewed_registry()['groups']
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: {'groups': groups + [
+        {'brand':'펩시', 'canonical_name':'펩시콜라'},
+        {'brand':'코카콜라', 'canonical_name':'코카콜라'},
+        {'brand':'아이시스', 'canonical_name':'아이시스'},
+        {'brand':None, 'canonical_name':None},
+        {'brand':'유', 'canonical_name':'별도 상품'},
+        {'brand':'ABC', 'canonical_name':'ABC plain milk'},
+        {'brand':None, 'canonical_name':'모형콜라'},
+    ]})
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.executemany('INSERT INTO unified_categories VALUES(?,?,?,0)', [
+            ('food.cola', 'food', '콜라'), ('food.water', 'food', '생수')])
+        for key, leaf, name, brand, aliases in [
+            ('pepsi', 'food.cola', '펩시콜라', '펩시', []),
+            ('pepsi-zero', 'food.cola', '펩시제로', '펩시', []),
+            ('coke', 'food.cola', '코카콜라', '코카콜라', []),
+            ('named-alias', 'food.cola', '출처 음료', None, ['펩시콜라','펩시%콜라','펩시_콜라','모형 콜라']),
+            ('isis', 'food.water', '아이시스 생수', '아이시스', []),
+            ('samdasu', 'food.water', '삼다수 생수', '삼다수', []),
+            ('branded-snack', 'food.snack', '펩시콜라맛 과자', '펩시', []),
+        ]:
+            db.execute('INSERT INTO normalized_canonical_products VALUES(?,?,?,?,?,?,?,?,?)',
+                       (key, leaf, name, brand, json.dumps(aliases), '[]', '{}', None, 1))
+        db.execute("UPDATE normalized_canonical_products SET canonical_name='초콜릿우유맛 쿠키' WHERE public_product_id='snack'")
+        db.executemany('INSERT INTO keywords VALUES(?,?,?,?,?)', [
+            (10, '콜라', json.dumps(['펩시콜라','코카콜라','펩시제로','자펩시음료','펩시%콜라','펩시_콜라','모형 콜라']), 1, 'food.cola'),
+            (11, '생수', json.dumps(['아이시스']), 1, 'food.water'),
+            (12, '우유', json.dumps(['초콜릿우유','유제품','ABCs']), 1, 'food.milk'),
+        ])
+    rows, total = PublicCatalogStore(scoped_group_catalog).search_normalized_products_page(query, category=category)
+    assert total == len(expected)
+    assert {row['id'] for row in rows} == expected

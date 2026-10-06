@@ -1659,3 +1659,95 @@ def test_actual_homeplus_cup_inner_measure_and_separate_count_match_and_export(t
     finally:
         reset_db_admin_engine()
         engine.dispose()
+
+
+@pytest.mark.parametrize('mutation', ['original', 'price_only', 'price_absent', 'wrong_native', 'wrong_title', 'wrong_quantity', 'wrong_count', 'wrong_display', 'wrong_source_path'])
+def test_actual_emart_milk_inner_volume_and_separate_count_match_and_export(tmp_path, mutation):
+    import json
+    # Exact pinned Emart0000008847095 ingestion83:78. Declared1L is
+    # inner contents; literal2개 is independently sold count, not one bottle.
+    original = {'attributes': {'category_hint': '우유/유제품',
+                'collection': '서울우유',
+                'collection_surface': 'category',
+                'external_seller': False,
+                'image_url': 'https://sitem.ssgcdn.com/95/70/84/item/0000008847095_i1_290.jpg',
+                'mart': '이마트',
+                'mart_native_category_id': '6000213534',
+                'mart_native_category_path': '우유/유제품',
+                'mart_native_code': '0000008847095',
+                'promo_label': '',
+                'salestr_no': '2037',
+                'shipping_labels': ['주간배송', '주간배송', '주간배송'],
+                'shipping_type_code': '10',
+                'site_no': '6001',
+                'source_name': 'emart',
+                'source_record_key': '0000008847095',
+                'source_url': 'https://emart.ssg.com/item/itemView.ssg?itemId=0000008847095&siteNo=6001&salestrNo=2037',
+                'unit_price_display': '100ml 당 274원'},
+ 'brand': '__no_brand__',
+ 'category': '우유/유제품',
+ 'crawled_at': '2026-09-02T23:51:14.773337',
+ 'detail_url': 'https://emart.ssg.com/item/itemView.ssg?itemId=0000008847095&siteNo=6001&salestrNo=2037',
+ 'discount_percent': None,
+ 'display_unit': '1L',
+ 'event_name': '이마트 할인',
+ 'image_url': 'https://sitem.ssgcdn.com/95/70/84/item/0000008847095_i1_290.jpg',
+ 'match_key': '__no_brand__|저지방 우유 1l2개||1l',
+ 'matching_miss_reason': 'key_not_found',
+ 'matching_status': 'miss',
+ 'name': '저지방 우유 (1L2개)',
+ 'normalized_name': '',
+ 'original_price': None,
+ 'package_quantity': 1.0,
+ 'package_unit': 'L',
+ 'price_per_100g': None,
+ 'promo_label': None,
+ 'promo_type': None,
+ 'sale_price': 5480,
+ 'source': 'emart',
+ 'store': '이마트',
+ 'unit': '1L',
+ 'unit_price_display': '',
+ 'valid_from': None,
+ 'valid_until': None}
+    public_product_id = 'prod-bb72c33adda186e178ab170ae50a315a'
+    public_variant_id = 'var-3b7d1f18941534b95c3529fd3b661000'
+    engine = _engine(tmp_path)
+    key = _seed_source_scoped_match(engine, original, quantity=1000, unit='ml', count=2)
+    with engine.begin() as connection:
+        connection.execute(text('UPDATE normalized_canonical_products SET public_product_id=:pid, canonical_name=:name, brand=:brand, unified_category_id=:leaf'),
+                           {'pid':public_product_id, 'name':original['name'], 'brand':None, 'leaf':'food.dairy.milk.plain'})
+        connection.execute(text('UPDATE normalized_product_variants SET public_product_id=:pid, public_variant_id=:vid'),
+                           {'pid':public_product_id, 'vid':public_variant_id})
+        connection.execute(text('UPDATE matching_entries SET public_product_id=:pid, public_variant_id=:vid'),
+                           {'pid':public_product_id, 'vid':public_variant_id})
+        connection.execute(text('ALTER TABLE normalized_product_variants ADD COLUMN attributes TEXT'))
+        connection.execute(text('UPDATE normalized_product_variants SET attributes=:attrs'),
+                           {'attrs':json.dumps({'specification_basis':'source_structured_and_explicit_text'})})
+        connection.execute(text('CREATE TABLE normalized_source_listings (public_variant_id TEXT, source_name TEXT, source_record_key TEXT, source_title TEXT, source_url TEXT, is_active BOOLEAN)'))
+        connection.execute(text('INSERT INTO normalized_source_listings VALUES (:vid, :source, :native, :title, :url, 1)'),
+                           {'vid':public_variant_id, 'source':'emart', 'native':'0000008847095', 'title':original['name'], 'url':original['detail_url']})
+    row = deepcopy(original)
+    if mutation == 'price_only': row['sale_price'] = 6100
+    elif mutation == 'price_absent': row['sale_price'] = None
+    elif mutation == 'wrong_native': row['attributes']['source_record_key'] = '0000008847096'
+    elif mutation == 'wrong_title': row['name'] = '저지방 우유 (1L3개)'
+    elif mutation == 'wrong_quantity': row['package_quantity'] = 1.1
+    elif mutation == 'wrong_count': row['bundle_count'] = 3
+    elif mutation == 'wrong_display': row['display_unit'] = '1L×3'
+    elif mutation == 'wrong_source_path': row['attributes']['mart_native_category_path'] = '세탁세제'
+    valid = mutation in {'original', 'price_only', 'price_absent'}
+    reset_db_admin_engine(engine)
+    try:
+        result = enrich_items_with_matching_entries([deepcopy(row)])[0]
+        assert (result['matching_status'] == 'hit') == valid
+        assert result['sale_price'] == row['sale_price']
+        if valid:
+            assert result['public_product_id'] == public_product_id
+            assert result['public_variant_id'] == public_variant_id
+            assert result.get('unified_category_id') == 'food.dairy.milk.plain'
+        with Session(engine) as session:
+            assert (lookup_row_match_statuses(session, [(row, key)])[0] == 'hit') == valid
+    finally:
+        reset_db_admin_engine()
+        engine.dispose()

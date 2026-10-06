@@ -478,7 +478,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
               <div>
                 <span>유효 기간</span>
                 <strong>{currentOffer.period || '기간 미확인'}</strong>
-                <small>{eventType || '행사 정보 없음'}</small>
+                <small>{currentOffer.conditionText || eventType || '행사 조건 미확인'}</small>
               </div>
               <div>
                 <span>다음 행동</span>
@@ -532,7 +532,9 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                 )}
               </>
             ) : (
-              <p className={s.noData}>가격 이력이 아직 없습니다. 찜해두면 이후 가격 변동을 추적할 수 있어요.</p>
+              <p className={s.noData}>{isNormalizedCatalog
+                ? '이 화면에 연결된 조회 기간의 선택 규격 관측 이력 미확인 · 전체 기간 이력·통계는 미확인입니다.'
+                : '가격 이력이 아직 없습니다. 찜해두면 이후 가격 변동을 추적할 수 있어요.'}</p>
             )}
           </div>
 

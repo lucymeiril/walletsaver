@@ -120,9 +120,15 @@ def reviewed_product_fields(product: Mapping, listings: list[Mapping]) -> dict:
                 or row.get("source_url") not in expected[(row["source_name"], row["source_record_key"])]["source_urls"]
                 for row in listings):
             attrs.pop("catalog_group", None)
+            if own in group.get("derived_alias_member_ids", []):
+                result["aliases"] = [alias for alias in (result.get("aliases") or [])
+                                     if alias != group["canonical_name"]]
             break
         if result.get("unified_category_id") != group["leaf"]:
             attrs.pop("catalog_group", None)
+            if own in group.get("derived_alias_member_ids", []):
+                result["aliases"] = [alias for alias in (result.get("aliases") or [])
+                                     if alias != group["canonical_name"]]
             break
         attrs["catalog_group"] = {key: group[key] for key in (
             "key", "canonical_product_id", "member_product_ids", "canonical_name", "brand", "review_version")}

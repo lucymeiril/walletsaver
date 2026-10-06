@@ -9,7 +9,7 @@ import useStore from '../stores/appStore';
 import useCartStore from '../stores/cartStore';
 import ShoppingListPanel from './common/ShoppingListPanel';
 import useModalStore from '../stores/modalStore';
-import { getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText } from '../utils/productDecision';
+import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText } from '../utils/productDecision';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct } from '../utils/productActions';
 
 vi.mock('recharts', () => ({ ResponsiveContainer: ({children}) => children, AreaChart: ({data}) => <div data-testid="selected-history">{JSON.stringify(data)}</div>, BarChart: () => null, Area: () => null, Bar: () => null, XAxis: () => null, YAxis: () => null, Tooltip: () => null, Cell: () => null }));
@@ -589,6 +589,47 @@ const selectionFixture = () => ({ id:'prod-spec', public_product_id:'prod-spec',
       offer_state:'active',current_eligible:true,
     }]}],
   })) });
+
+describe('273 selected source summary without comparable payment', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); });
+
+  it('keeps the selected expired rule and source period without borrowing an eligible sibling or claiming absent history', () => {
+    const raw = selectionFixture();
+    const quote = raw.variants[0].listings[0].offers[0];
+    Object.assign(quote, { total_price: null, comparable_price: null, total_quantity: null,
+      per_100g: null, current_eligible: false, availability_reason: 'expired',
+      observation_receipt_eligible: false,
+      observation_receipt_reason: 'promotion_observation_outside_period',
+      valid_to: '2026-09-01T15:00:00Z', crawled_at: '2026-09-02T14:51:14Z' });
+    const product = selectProductOffer(raw, { variantId: 'var-a', listingId: 'listing-a', offerId: 'offer-a' });
+    const original = JSON.stringify(product);
+    const decision = buildProductDecision(product);
+    expect(product.best_offer).toBeNull();
+    expect(decision.currentOffer.period).toBe('판매 기간 종료 · 출처 행사 기간 시작일 미확인 ~ 2026-09-01T15:00:00Z');
+    expect(decision.currentOffer.conditionText).toContain('관측 당시 행사 적용 미확인');
+    expect(decision.currentOffer.conditionText).toContain('구매 2');
+    expect(decision.currentOffer.conditionText).toContain('추가 증정 1');
+    expect(decision.historySummary).toMatchObject({ hasData: false, comparableCount: 0, min: null, avg: null, max: null });
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText(decision.currentOffer.period)).toBeInTheDocument();
+    expect(screen.getByText(/이 화면에 연결된 조회 기간의 선택 규격 관측 이력 미확인/)).toBeInTheDocument();
+    expect(screen.queryByText(/가격 이력이 아직 없습니다/)).not.toBeInTheDocument();
+    expect(screen.queryByText('행사 정보 없음')).not.toBeInTheDocument();
+    expect(screen.queryByText(/출처 조건 계산 금액 6,000/)).not.toBeInTheDocument();
+    expect(JSON.stringify(product)).toBe(original);
+
+    const history = [{ ...quote, variant_id: 'var-a', listing_id: 'listing-a',
+      date: quote.crawled_at, price: quote.listed_price }];
+    expect(buildProductDecision(product, { priceHistory: history }).historySummary).toMatchObject({
+      hasData: true, count: 1, comparableCount: 0, min: null, avg: null, max: null });
+  });
+
+  it('keeps an ambiguous source summary unknown rather than adopting another member period', () => {
+    const raw = selectionFixture(); raw.best_offer = null;
+    raw.variants[1].listings[0].offers[0].valid_to = '2026-12-31T15:00:00Z';
+    expect(buildProductDecision(raw).currentOffer).toMatchObject({ period: '', conditionText: '' });
+  });
+});
 
 describe('selected price alerts', () => {
   beforeEach(() => {

@@ -450,7 +450,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"source_listings[{listing_id}].source_title이 필요합니다")
         variant = variants.get(row.get("public_variant_id"), {})
         product = products.get(variant.get("public_product_id"), {})
-        # A later external import must not restore a discarded per-cup count.
+        # A later external import must not restore a discarded inner-container count.
         # Validate the independent sold count using the same shared parser;
         # do not silently change an imported variant ID or its saved receipts.
         from core.catalog_quantity import uses_separate_measured_count_rules
@@ -464,7 +464,8 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
         effective_product = products.get(effective_variant.get('public_product_id'), {})
         category = effective_product.get('unified_category_id', existing_product_categories.get(
             effective_variant.get('public_product_id')))
-        if (category == 'food.meals.noodles.cup_ramen'
+        if ((category == 'food.meals.noodles.cup_ramen'
+                or isinstance(category, str) and category.startswith('food.dairy.milk.'))
                 and uses_separate_measured_count_rules(_text(row.get('source_title')))):
             parsed, issues = normalize_catalog_package(
                 effective_variant, effective_variant.get('attributes') or {}, row['source_title'], category_id=category)

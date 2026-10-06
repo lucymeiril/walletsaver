@@ -546,7 +546,8 @@ def test_fallback_offer_identity_uses_source_instant_not_product_price_identity(
         assert session.execute(text('SELECT COUNT(*) FROM normalized_offer_events')).scalar_one() == 4
 
 
-def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_alias(matched_offer_source, monkeypatch):
+@pytest.mark.parametrize('original_common_alias', [False, True])
+def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_alias(matched_offer_source, monkeypatch, original_common_alias):
     import core.catalog_identity as identity
     from copy import deepcopy
     from services.normalized_mart3 import publish_mart3_rows
@@ -554,6 +555,7 @@ def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_a
     group = {'key': 'approved-coffee', 'canonical_product_id': 'prod-approved',
              'member_product_ids': ['prod-approved', 'other-member'], 'canonical_name': '검토된 공통 커피',
              'brand': '승인브랜드', 'review_version': 'reviewed_catalog_groups_v1', 'leaf': 'food.coffee',
+             'derived_alias_member_ids': [] if original_common_alias else ['prod-approved'],
              'bindings': {'prod-approved': [{'source_name': 'costco', 'source_record_key': '111',
                                            'source_titles': [source['source_title']], 'source_urls': [source['source_url']]}]}}
     monkeypatch.setattr(identity, 'reviewed_registry', lambda: {'groups': [group]})
@@ -561,7 +563,7 @@ def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_a
         session.add(UnifiedCategory(id='food.coffee', slug='coffee', name_ko='커피', level=3))
         product = session.get(NormalizedCanonicalProduct, 'prod-approved')
         product.attributes = {'classification_warning': True, 'reviewed_metadata': {'kept': 1}}
-        product.aliases = ['기존 별칭']
+        product.aliases = ['기존 별칭'] + (['검토된 공통 커피'] if original_common_alias else [])
         variant = session.get(NormalizedProductVariant, 'var-approved')
         original_spec = deepcopy(variant.attributes)
         row = {**source, 'canonical_name': product.canonical_name, 'brand': product.brand,
@@ -582,3 +584,5 @@ def test_mart3_quote_import_retains_reviewed_metadata_and_adds_only_registered_a
         publish_mart3_rows(session, [{**row, 'source_title': '잘못된 상품', 'crawled_at': '2026-10-09T08:00:00Z'}])
         assert 'catalog_group' not in product.attributes
         assert product.attributes['reviewed_metadata'] == {'kept': 1}
+        assert product.aliases == (['검토된 공통 커피', '기존 별칭']
+                                   if original_common_alias else ['기존 별칭'])

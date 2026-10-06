@@ -96,14 +96,22 @@ _SEPARATE_MEASURED_COUNT_RE = re.compile(
 def _separate_measured_count(payload, attrs, title, category_id):
     """Validate an inner measure followed by an independent sold count.
 
-    A cup's source/display inner content or explicit per-pack wording supplies
-    the scope. Bare mass plus piece count may instead describe a whole bag.
+    A source-bound cup or liquid milk's matching inner-content fields/display,
+    or explicit per-pack wording, supplies scope. Bare mass plus piece count
+    may instead describe a whole bag.
     Return a convenience-parser candidate only after all source layers agree.
     """
+    milk_form = (isinstance(category_id, str) and category_id.startswith('food.dairy.milk.')
+                 and category_id != 'food.dairy.milk.condensed' and '우유' in title
+                 and not re.search(r'분유|분말|파우더|가루|우유맛|우유용|우유컵|우유병|세제|세정|용기|계량|텀블러', title))
+    if (milk_form and re.search(r'\d+\s*(?:개입|입|개|팩|봉|병|캔|포)', title)
+        and re.search(r'약\s*\d|\d(?:\.\d+)?\s*(?:ml|l|개입|입|개|팩|봉|병|캔|포)\s*(?:내외|미만|이상|이하|정도)', title, re.I)):
+        return None, ['measured_inner_scope_unresolved']
     matches = list(_SEPARATE_MEASURED_COUNT_RE.finditer(title))
     if not matches:
-        if (category_id == 'food.meals.noodles.cup_ramen'
-            and re.search(r'컵|사발', title) and _COUNT_RANGE_RE.search(title)):
+        if (_COUNT_RANGE_RE.search(title) and
+            (category_id == 'food.meals.noodles.cup_ramen' and re.search(r'컵|사발', title)
+             or milk_form and re.search(r'\d\s*(?:ml|l)(?![A-Za-z])', title, re.I))):
             return None, ['count_range_unresolved']
         return None, []
     if (len(matches) != 1 or _COUNT_RANGE_RE.search(title)
@@ -123,7 +131,8 @@ def _separate_measured_count(payload, attrs, title, category_id):
     per_pack = bool(re.search(r'(?:1\s*)?(?:개|팩|봉|병|캔|포|컵)당\s*$', title[:match.start()])
                     or re.search(r'(?:kg|g|ml|l)\s*씩', match[0], re.I))
     cup = category_id == 'food.meals.noodles.cup_ramen' and bool(re.search(r'컵|사발', title))
-    if not per_pack and (not cup or re.search(r'총\s*(?:내용량|중량|용량)?|전체|합계', title)):
+    milk = milk_form and canonical_unit == 'ml'
+    if not per_pack and (not (cup or milk) or re.search(r'총\s*(?:내용량|중량|용량)?|전체|합계', title)):
         return None, ['measured_inner_scope_unresolved']
     layers, visited = [], set()
     def visit(layer):
@@ -139,6 +148,12 @@ def _separate_measured_count(payload, attrs, title, category_id):
     try:
         visit(payload); visit(attrs)
         for layer in layers:
+            if milk and not per_pack:
+                for key in ('category','category_hint','mart_native_category_path','source_category_path','category_path'):
+                    path = _text(layer.get(key))
+                    if path and (re.search(r'세제|세정|청소|주방용품|가전|반려|문구|장난감|생활용품|주류|생수|분유|분말|두유|요구르트|요거트|연유', path)
+                                 or not re.search(r'우유|유제품|유가공|축산|친환경|유기농|식품|냉장|신선|가공유|음료|milk|dairy', path, re.I)):
+                        raise ValueError('incompatible milk source category')
             quantities = [layer[k] for k in ('package_quantity','pack_qty','packQty','pack_quantity','packQuantity') if layer.get(k) not in (None,'')]
             units = [layer[k] for k in ('package_unit','pack_unit','packUnit','unitName') if layer.get(k) not in (None,'')]
             if bool(quantities) != bool(units):

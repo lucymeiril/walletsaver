@@ -1760,3 +1760,114 @@ def test_formal_import_connects_only_active_category_keywords_and_preserves_targ
     assert rule.keyword_ids == [ids['우유']]
     assert (rule.public_product_id, rule.public_variant_id, rule.match_key) == target
     assert apply_bundle(session, changed, 'keyword-deactivated', user='synthetic-moderator')['idempotent'] is True
+
+
+def test_actual_emart_milk_formal_import_cannot_restore_discarded_inner_count():
+    # Exact source/title/spec bindings from selected original83:78 builder.
+    bundle = {'schema_version': 'walletsaver-catalog-v2',
+ 'run_id': '273-selected-milk-count-repaired',
+ 'categories': [{'id': 'food',
+                 'parent_id': None,
+                 'slug': 'food',
+                 'name_ko': '식품',
+                 'level': 0,
+                 'source_origin': 'initial-real-catalog-v1',
+                 'sort_order': 0},
+                {'id': 'food.dairy',
+                 'parent_id': 'food',
+                 'slug': 'dairy',
+                 'name_ko': '유제품',
+                 'level': 1,
+                 'source_origin': 'initial-real-catalog-v1',
+                 'sort_order': 1},
+                {'id': 'food.dairy.milk',
+                 'parent_id': 'food.dairy',
+                 'slug': 'milk',
+                 'name_ko': '우유',
+                 'level': 2,
+                 'source_origin': 'initial-real-catalog-v1',
+                 'sort_order': 2},
+                {'id': 'food.dairy.milk.plain',
+                 'parent_id': 'food.dairy.milk',
+                 'slug': 'plain',
+                 'name_ko': '흰우유',
+                 'level': 3,
+                 'source_origin': 'initial-real-catalog-v1',
+                 'sort_order': 3}],
+ 'products': [{'public_product_id': 'prod-bb72c33adda186e178ab170ae50a315a',
+               'unified_category_id': 'food.dairy.milk.plain',
+               'canonical_name': '저지방 우유 (1L2개)',
+               'brand': None,
+               'aliases': ['서울우유 저지방 우유'],
+               'keywords': [],
+               'classification_confidence': 0.95,
+               'review_status': 'classified',
+               'primary_image_url': 'https://sitem.ssgcdn.com/95/70/84/item/0000008847095_i1_290.jpg',
+               'is_active': True,
+               'attributes': {'identity_basis': 'source_scoped',
+                              'product_group_key': None,
+                              'classification_reason': None,
+                              'classification_attributes': {},
+                              'classification_attribute_evidence': [{'source_name': 'emart',
+                                                                     'source_record_key': '0000008847095',
+                                                                     'classification_attributes': {},
+                                                                     'classification_reason': None,
+                                                                     'source_ingestion_ids': [83],
+                                                                     'raw_record_ids': ['ingestion:83:0']}],
+                              'source_ingestion_ids': [83],
+                              'catalog_group': {'key': 'seoulmilk.lowfat.unqualified',
+                                                'canonical_product_id': 'prod-107424bffbe6cf42286e429a8f45b5d7',
+                                                'member_product_ids': ['prod-070e84cbffe7a0a371ccf86b012119ad',
+                                                                       'prod-107424bffbe6cf42286e429a8f45b5d7',
+                                                                       'prod-61a3b62f1a08e08094fa9fa641ccd1cc',
+                                                                       'prod-7f29a3c0ef88dd3bc321bf9c8fd47f09',
+                                                                       'prod-8d8e4541fcd9923efc51107d172dabda',
+                                                                       'prod-bb72c33adda186e178ab170ae50a315a'],
+                                                'canonical_name': '서울우유 저지방 우유',
+                                                'brand': '서울우유',
+                                                'review_version': 'reviewed_catalog_groups_v1'}}}],
+ 'variants': [{'public_variant_id': 'var-3b7d1f18941534b95c3529fd3b661000',
+               'public_product_id': 'prod-bb72c33adda186e178ab170ae50a315a',
+               'variant_name': '저지방 우유 (1L2개)',
+               'package_quantity': 1000.0,
+               'package_unit': 'ml',
+               'bundle_count': 2,
+               'standard_unit': 'ml',
+               'display_unit': '1L',
+               'attributes': {'specification_basis': 'source_structured_and_explicit_text'}}],
+ 'source_listings': [{'public_source_listing_id': 'listing-6f2d4f0f2778a9c214102af20e62e199',
+                      'public_variant_id': 'var-3b7d1f18941534b95c3529fd3b661000',
+                      'source_name': 'emart',
+                      'source_record_key': '0000008847095',
+                      'source_title': '저지방 우유 (1L2개)',
+                      'source_url': 'https://emart.ssg.com/item/itemView.ssg?itemId=0000008847095&siteNo=6001&salestrNo=2037',
+                      'image_url': 'https://sitem.ssgcdn.com/95/70/84/item/0000008847095_i1_290.jpg',
+                      'source_unit_text': '1L',
+                      'source_category_paths': [['우유/유제품']],
+                      'source_ingestion_ids': [83]}],
+ 'offers': [],
+ 'week_buckets': [],
+ 'offer_week_links': [],
+ 'match_rules': [],
+ 'keywords': [],
+ 'mart_category_mappings': [],
+ 'unresolved': []}
+    session = _session()
+    assert validate_bundle(session, bundle, 'milk-two').ok
+    wrong = deepcopy(bundle)
+    wrong['variants'][0]['bundle_count'] = 1
+    assert not validate_bundle(session, wrong, 'milk-one').ok
+    apply_bundle(session, bundle, 'milk-two', user='synthetic-moderator')
+    stored = session.get(NormalizedProductVariant, bundle['variants'][0]['public_variant_id'])
+    original_ids = (stored.public_product_id, stored.public_variant_id)
+    stored.bundle_count = 1
+    session.flush()
+    listing_only = deepcopy(bundle)
+    for field in ('categories', 'products', 'variants'):
+        listing_only[field] = []
+    assert not validate_bundle(session, listing_only, 'milk-stored-one').ok
+    stored.bundle_count = 2
+    session.flush()
+    assert validate_bundle(session, listing_only, 'milk-stored-two').ok
+    assert original_ids == (stored.public_product_id, stored.public_variant_id)
+    session.close()

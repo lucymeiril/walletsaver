@@ -1641,6 +1641,67 @@ def test_separate_count_never_materializes_approximate_mass_as_inner_contents():
     assert (package['package_quantity'],package['package_unit'],package['bundle_count']) == (6,'개',1)
 
 
+@pytest.mark.parametrize('title,quantity,unit,display,leaf,bundle', [
+    ('저지방 우유 (1L2개)',1,'L','1L','plain',None),
+    ('저지방 우유 (1L2개)',1,'L','1L','plain',1),
+    ('저지방 우유 (1L2개)',1,'L','1L','plain',2),
+    ('저지방 우유 (1L2개)',1000,'ml','1L×2','plain',2),
+    ('시험 바나나 우유 200ml 3개',200,'ml','200ml','banana',None),
+    ('시험 초코우유 200ml 3개',200,'ml','200ml','chocolate',None),
+])
+def test_separate_liquid_milk_count_requires_source_inner_container_scope(title,quantity,unit,display,leaf,bundle):
+    from core.catalog_quantity import normalize_catalog_package, uses_reviewed_quantity_rules
+    attrs = {'category_hint':'우유/유제품','mart_native_category_path':'우유/유제품',
+             'collection':'서울우유','unit_price_display':'100ml 당 274원'}
+    raw = {'package_quantity':quantity,'package_unit':unit,'display_unit':display,
+           'unit':display,'category':'우유/유제품','attributes':attrs}
+    if bundle is not None:
+        raw['bundle_count'] = bundle
+    before = deepcopy(raw)
+    assert uses_reviewed_quantity_rules(title)
+    results = [normalize_catalog_package({**raw,'sale_price':quote},attrs,title,
+               category_id='food.dairy.milk.'+leaf) for quote in (5480,6500)]
+    assert results[0] == results[1]
+    package, issues = results[0]
+    assert issues == []
+    expected = (1000,'ml',2) if unit.lower() == 'l' or quantity == 1000 else (200,'ml',3)
+    assert (package['package_quantity'],package['package_unit'],package['bundle_count']) == expected
+    assert raw == before
+
+
+@pytest.mark.parametrize('title,leaf,change,attrs', [
+    ('저지방 우유 (1L2개)',None,{},{}),
+    ('저지방 우유 (1L2개)','food.drinks.juice.fruit',{},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{'category':'주방용품/세제'},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{}, {'mart_native_category_path':'반려동물'}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{'bundle_count':3},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{}, {'bundleCount':3}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{'package_quantity':2,'display_unit':'2L','unit':'2L'},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{'display_unit':'1L×3'},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{'display_unit':'100ml 당 274원','unit':''},{}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{}, {'unit_price_basis_raw':'100g'}),
+    ('저지방 우유 (1L2개)','food.dairy.milk.plain',{}, {'unit_price_basis_raw':'1개'}),
+    ('시험 오렌지주스1L2개','food.dairy.milk.plain',{},{}),
+    ('시험 두유1L2개','food.dairy.milk.plain',{},{}),
+    ('시험 우유맛음료1L2개','food.dairy.milk.plain',{},{}),
+    ('시험 우유분말600g5입','food.dairy.milk.plain',{'package_quantity':600,'package_unit':'g','display_unit':'600g','unit':'600g'},{}),
+    ('시험 우유용용기1L2개','food.dairy.milk.plain',{},{}),
+    ('시험 우유600g5입','food.dairy.milk.plain',{'package_quantity':600,'package_unit':'g','display_unit':'600g','unit':'600g'},{}),
+    ('시험 우유1L2개+다른우유500ml','food.dairy.milk.plain',{},{}),
+    ('시험 우유1L2개 2팩','food.dairy.milk.plain',{},{}),
+    ('시험 우유1L2개×2팩','food.dairy.milk.plain',{},{}),
+    ('시험 우유1L2~3개','food.dairy.milk.plain',{},{}),
+    ('시험 우유1L내외2개','food.dairy.milk.plain',{},{}),
+    ('시험 우유1L2개내외','food.dairy.milk.plain',{},{}),
+])
+def test_separate_milk_count_does_not_broaden_unknown_or_conflicting_roles(title,leaf,change,attrs):
+    from core.catalog_quantity import normalize_catalog_package
+    raw = {'package_quantity':1,'package_unit':'L','display_unit':'1L','unit':'1L',
+           'category':'우유/유제품',**change}
+    package, issues = normalize_catalog_package(raw,attrs,title,category_id=leaf)
+    assert package is None and issues
+
+
 @pytest.mark.parametrize(("title", "quantity", "unit"), [
     ("맑은청 찰토마토 7~10입/팩", 10, "입"),
     ("토마토 7입~10입/팩", 10, "입"),

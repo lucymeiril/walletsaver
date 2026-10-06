@@ -6,6 +6,8 @@ import hashlib
 import os
 import sqlite3
 import math
+import re
+import unicodedata
 from collections.abc import Mapping
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -249,7 +251,14 @@ class PublicCatalogStore:
                 if scope:
                     # An exact registered concept searches its category scope.
                     # A snack whose title mentions milk is not a milk product.
-                    names = "p.unified_category_id IN (" + ",".join("?" for _ in scope) + ")"
+                    scoped = "p.unified_category_id IN (" + ",".join("?" for _ in scope) + ")"
+                    if self._query_names_reviewed_identity(query):
+                        # Named brand/group synonyms are not interchangeable
+                        # with every product in the keyword's concept category.
+                        names = "(" + names + ") AND " + scoped
+                        params.extend([f"%{escaped}%"] * 3)
+                    else:
+                        names = scoped
                     params.extend(sorted(scope))
                 else:
                     params.extend([f"%{escaped}%"] * 3)
@@ -281,6 +290,32 @@ class PublicCatalogStore:
                 payloads.append(self._normalized_product(connection, full, include_all=False,
                                                         group_member_ids=representatives[key][1]))
             return payloads, len(ordered)
+
+    @staticmethod
+    def _query_names_reviewed_identity(query: str) -> bool:
+        from core.catalog_identity import reviewed_registry
+        text = unicodedata.normalize("NFKC", query).casefold()
+        compact = "".join(text.split())
+        registry = reviewed_registry()
+        groups = registry.get("groups") if isinstance(registry, Mapping) else None
+        if not isinstance(groups, list):
+            return False
+        for group in groups:
+            if not isinstance(group, Mapping):
+                continue
+            name = group.get("canonical_name")
+            if isinstance(name, str) and compact == "".join(unicodedata.normalize("NFKC", name).casefold().split()):
+                return True
+            brand = group.get("brand")
+            if not isinstance(brand, str):
+                continue
+            brand = unicodedata.normalize("NFKC", brand).strip().casefold()
+            if len("".join(brand.split())) < 2:
+                continue
+            if (re.search(r"(?<!\w)" + re.escape(brand) + r"(?!\w)", text)
+                    or re.fullmatch(r"[가-힣]{2,}", brand) and compact.startswith(brand)):
+                return True
+        return False
 
     def _keyword_search_scope(self, connection, query, categories) -> set[str]:
         if not self._table(connection, "keywords"):

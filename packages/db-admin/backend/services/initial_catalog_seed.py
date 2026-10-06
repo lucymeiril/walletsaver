@@ -454,7 +454,8 @@ def build_initial_catalog_bundle(
             attrs = attrs if isinstance(attrs, Mapping) else {}
             package, issues = _package(payload, attrs, row['source_title'], category_id=category_id)
             measured_scope = ('measured_inner_scope_unresolved' in row['issues']
-                              and category_id == 'food.meals.noodles.cup_ramen')
+                              and (category_id == 'food.meals.noodles.cup_ramen'
+                                   or category_id.startswith('food.dairy.milk.')))
             if (package and 'physical_device_specification' in package.get('attributes', {})
                     or any(issue.startswith(('physical_device_', 'unit_service_')) for issue in issues)
                     or measured_scope):
