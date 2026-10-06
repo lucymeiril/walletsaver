@@ -524,7 +524,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                           <span className={s.barLabel}>{formatDate(p.date)}</span>
                           {isNormalizedCatalog && (!isObservationReceiptEligible(p) || !(p.comparablePrice > 0) || (p.offerState && p.offerState !== 'active')) && <small>비교 조건 미확인</small>}
                           <span className={s.barPrice}>{isNormalizedCatalog ? getObservedOfferPriceText(p, p.price) : fmt(p.price)}</span>
-                          {isNormalizedCatalog && <small>{getOfferConditionText(p)}{isObservationReceiptEligible(p) && p.total_price > 0 ? ` · ${getOfferAmountLabel(p, '실제 거래 금액')} ${fmt(p.total_price)}원` : ''}</small>}
+                          {isNormalizedCatalog && <small>{getOfferConditionText(p)}{isObservationReceiptEligible(p) && p.total_price > 0 ? ` · ${getOfferAmountLabel(p)} ${fmt(p.total_price)}원` : ''}</small>}
                         </div>
                       );
                     })}

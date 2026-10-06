@@ -841,14 +841,14 @@ export default function PricePage() {
                             <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
                             <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
                             <Tooltip
-                              content={normalizedCatalog ? ({active,payload}) => active && payload?.[0]?.payload ? <div style={{background:'var(--surface)',padding:12}}><strong>{payload[0].payload.date} · 관측 표시 가격 {getObservedOfferPriceText(payload[0].payload, payload[0].payload.price)}</strong><p>{getOfferConditionText(payload[0].payload)}</p>{isObservationReceiptEligible(payload[0].payload) && payload[0].payload.total_price > 0 && <p>{getOfferAmountLabel(payload[0].payload, '실제 거래 금액')} {fmt(payload[0].payload.total_price)}원</p>}{(!isObservationReceiptEligible(payload[0].payload) || payload[0].payload.comparable_price == null) && <p>비교 조건 미확인</p>}</div> : null : undefined}
+                              content={normalizedCatalog ? ({active,payload}) => active && payload?.[0]?.payload ? <div style={{background:'var(--surface)',padding:12}}><strong>{payload[0].payload.date} · 관측 표시 가격 {getObservedOfferPriceText(payload[0].payload, payload[0].payload.price)}</strong><p>{getOfferConditionText(payload[0].payload)}</p>{isObservationReceiptEligible(payload[0].payload) && payload[0].payload.total_price > 0 && <p>{getOfferAmountLabel(payload[0].payload)} {fmt(payload[0].payload.total_price)}원</p>}{(!isObservationReceiptEligible(payload[0].payload) || payload[0].payload.comparable_price == null) && <p>비교 조건 미확인</p>}</div> : null : undefined}
                               contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
                               formatter={v => [`${fmt(v)}원`, '가격']}
                             />
                             <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
                           </AreaChart>
                         </ResponsiveContainer>
-                        {normalizedCatalog && <details><summary>관측별 구매 조건</summary>{chartData.map((point,index) => <p key={point.id || `${point.date}-${index}`}>{point.date} · 관측 표시 가격 {getObservedOfferPriceText(point, point.price)} · {getOfferConditionText(point)}{isObservationReceiptEligible(point) && point.total_price > 0 ? ` · ${getOfferAmountLabel(point, '실제 거래 금액')} ${fmt(point.total_price)}원` : ''}{!isObservationReceiptEligible(point) || point.comparable_price == null ? ' · 비교 조건 미확인' : ''}</p>)}</details>}
+                        {normalizedCatalog && <details><summary>관측별 구매 조건</summary>{chartData.map((point,index) => <p key={point.id || `${point.date}-${index}`}>{point.date} · 관측 표시 가격 {getObservedOfferPriceText(point, point.price)} · {getOfferConditionText(point)}{isObservationReceiptEligible(point) && point.total_price > 0 ? ` · ${getOfferAmountLabel(point)} ${fmt(point.total_price)}원` : ''}{!isObservationReceiptEligible(point) || point.comparable_price == null ? ' · 비교 조건 미확인' : ''}</p>)}</details>}
                       </>
                     )}
                   </div>

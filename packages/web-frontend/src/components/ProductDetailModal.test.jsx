@@ -1707,6 +1707,29 @@ describe('256 observation-time promotion receipt validity', () => {
       expect(api.post).not.toHaveBeenCalled(); expect(JSON.stringify(quote)).toBe(original);
     });
 
+  it('labels an ordinary historical quote as observed rather than actual buyer payment in both history renderers', async () => {
+    const quote = { ...sourceQuote(null), listed_price: 11860, total_price: 11860, comparable_price: 11860,
+      total_quantity: 1700, quantity_unit: 'ml', per_100g: null, per_100ml: 698,
+      received_package_count: 1, minimum_quantity: null, promotion_condition: null, promotion_conditions: {},
+      promotion_type: 'final_price', observation_receipt_eligible: null, observation_receipt_reason: null,
+      current_eligible: false, membership_required: null, coupon_required: null };
+    const original = JSON.stringify(quote); const product = sourceProduct(quote);
+    const history = [{ ...quote, date: quote.crawled_at, price: quote.listed_price }];
+    useStore.setState({ isLoggedIn: false, toasts: [] }); api.getJson.mockResolvedValue({ data: null });
+    render(<ProductDetailModal product={{ ...product, price_history: history }} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getAllByText(/관측 거래 금액 11,860원/).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/실제 거래 금액/)).not.toBeInTheDocument();
+    cleanup();
+    vi.stubGlobal('fetch', vi.fn(async path => ({ ok: true, json: async () => ({ data:
+      String(path) === '/api/products/prod-temporal' ? product : String(path).includes('price-history') ? history : [] }) })));
+    render(<MemoryRouter initialEntries={['/price/prod-temporal']}><Routes><Route path="/price/:id" element={<PricePage />} /></Routes></MemoryRouter>);
+    await screen.findByTestId('selected-history'); fireEvent.click(screen.getByText('관측별 구매 조건'));
+    expect(screen.getAllByText(/관측 거래 금액 11,860원/).length).toBeGreaterThan(0);
+    expect(screen.getByTestId('selected-history')).toHaveTextContent('11860');
+    expect(screen.queryByText(/실제 거래 금액/)).not.toBeInTheDocument();
+    expect(JSON.stringify(quote)).toBe(original); expect(api.post).not.toHaveBeenCalled();
+  });
+
   it('retains a confirmed within-period historical receipt and compatible statistics after the source period expires today', async () => {
     const quote = { ...sourceQuote(null), observation_receipt_eligible: true, observation_receipt_reason: null,
       crawled_at: '2026-09-01T13:00:00Z', current_eligible: false, is_latest: false };
