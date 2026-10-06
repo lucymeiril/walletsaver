@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "catalog_revision": 69,
-  "version": "2026-10-06-catalog69",
+  "version": "2026-10-06-catalog69-hotdeal271",
   "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete catalog/update knowledge and coherent snapshot69; three actual native quotes retain original receipt/unknown payment and NULL comparison; user/session stores initialize empty.",
+  "data_scope": "Sanitized catalog/admin-update69 with unchanged public catalog/fuel; 7actual external source posts and their conditions are separately restored; accounts/sessions empty. Historical catalog source_code_base is unchanged, new feed/installer source hashes listed separately.",
   "files": {
     "admin.sqlite": {
-      "sha256": "18b6c263015332d1f1fc3375249457b865cbadd7baac410dd67d1a20f3fef85c",
-      "bytes": 61419520,
+      "sha256": "c9e41b1e9d53f7c3eba1be688c9bc62da6be8a03efaa40b6be86c02722ce82a6",
+      "bytes": 61435904,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -61,7 +61,7 @@
         "product_matches": 0,
         "mart_category_mappings": 506,
         "pending_categorizations": 0,
-        "pending_ingestions": 14,
+        "pending_ingestions": 15,
         "public_snapshot_state": 1,
         "catalog_sync_log": 46,
         "imports_audit": 0,
@@ -71,8 +71,8 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "5f541ec49bc8ab5c09b158c4ce09bcc24be41cf1617ce8ed53c935c2b3d64511",
-      "archive_bytes": 8663652
+      "archive_sha256": "9d3794cae6f938f930ce4e3eca3f08c157a5d9e3f25dc6733aae4a8f3a3258fd",
+      "archive_bytes": 8662421
     },
     "public_snapshot.sqlite": {
       "sha256": "a505759038976068dcc0d390b67433191839fe7cb177baf37576944862aa589d",
@@ -131,9 +131,36 @@
       "archive_file": "opinet.sqlite.gz",
       "archive_sha256": "0480e849605d875a673cf51b4fba38cd8507ba3b7e03790042e8f78b81406fc3",
       "archive_bytes": 2141
+    },
+    "external_hotdeals.sqlite": {
+      "required_tables": [
+        "hotdeal_posts",
+        "snapshot_meta"
+      ],
+      "counts": {
+        "hotdeal_posts": 7,
+        "snapshot_meta": 1
+      },
+      "archive_file": "external_hotdeals.sqlite.gz",
+      "sha256": "3599a901a9ba89faa1b642d2e273e7e23d2ff99d0f094b638b42175fd95b51bc",
+      "bytes": 40960,
+      "archive_sha256": "43274dff70b06d86de2d6a3d641141e0a07bb2b44260fdf8d13baae3f40948fc",
+      "archive_bytes": 2799
     }
   },
   "admin_migration_revision": "capstone_keyword_ssot_v1",
   "fuel_data_scope": "7 published native stations and14 dated gasoline/diesel quotes; coordinates NULL pending CRS, no official API credentials/current-price guarantee",
-  "installation": "One-time validated gzip restoration into writable rawSQLite paths; subsequent starts preserve localcatalog/users"
+  "installation": "One-time validated gzip restoration into writable rawSQLite paths; subsequent starts preserve localcatalog/users",
+  "external_hotdeals": {
+    "rows": 7,
+    "basis": "actual6Ruliweb titleKRWquotes+1Uniqlo APPmemberconditionalPDP; sourceclosed/time/payment/option unknowns retained"
+  },
+  "external_hotdeal_source_files": {
+    "packages/crawler-admin/backend/crawlers/hotdeals/ruliweb.py": "e08b1d23558247fe7020a5f310d35be8c1ae82f92d229d00a2aa288a3cff39d9",
+    "packages/db-admin/backend/services/external_hotdeal_snapshot.py": "83e34f9a22fcdd0df05d6efff3e06e195f8f75342792e6782449eefcaed4d69d",
+    "packages/db-admin/backend/api/routes/ingestion_core.py": "80b76057fe1cea25655075dbfa51d6e467854c5da82e9892dcaaa9a253444ade",
+    "packages/web-api/backend/services/external_hotdeal_storage.py": "e0fc9067097f0bb0a4ec16455cfa10fd0698d38561d72ea49365e2544a34aeda",
+    "packages/shared/core/models.py": "ec8e54c8e7881f2ceef9e877de99fae8f8ea5ff0d0c542a336390bde7d3681ba",
+    "tools/install_demo_catalog.py": "69926ad6ec0cda79c6bf9c0b870b16f34e87b11eee90ef06dda1e56e9b0b0ea4"
+  }
 }

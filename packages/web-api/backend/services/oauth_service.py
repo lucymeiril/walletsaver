@@ -1,4 +1,4 @@
-"""OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
+"""OAuth 서비스 — Google OAuth 2.0 처리 (기존 계정 연결 데이터는 유지)"""
 import json
 import hashlib
 import os
@@ -36,22 +36,7 @@ class OAuthConfig:
             "userinfo_url": "https://www.googleapis.com/oauth2/v2/userinfo",
             "scope": "openid email profile",
         },
-        "kakao": {
-            "client_id_env": "KAKAO_CLIENT_ID",
-            "client_secret_env": "KAKAO_CLIENT_SECRET",
-            "auth_url": "https://kauth.kakao.com/oauth/authorize",
-            "token_url": "https://kauth.kakao.com/oauth/token",
-            "userinfo_url": "https://kapi.kakao.com/v2/user/me",
-            "scope": "profile_nickname account_email",
-        },
-        "naver": {
-            "client_id_env": "NAVER_CLIENT_ID",
-            "client_secret_env": "NAVER_CLIENT_SECRET",
-            "auth_url": "https://nid.naver.com/oauth2.0/authorize",
-            "token_url": "https://nid.naver.com/oauth2.0/token",
-            "userinfo_url": "https://openapi.naver.com/v1/nid/me",
-            "scope": "",
-        },
+
     }
 
     @classmethod
@@ -198,28 +183,7 @@ async def get_user_info(provider: str, access_token: str) -> OAuthUserInfo:
             profile_image=data.get("picture"),
             email_verified=data.get("verified_email") is True,
         )
-    elif provider == "kakao":
-        account = data.get("kakao_account", {})
-        profile = account.get("profile", {})
-        return OAuthUserInfo(
-            provider="kakao",
-            provider_user_id=_provider_user_id(data.get("id")),
-            email=account.get("email", ""),
-            nickname=profile.get("nickname", f"kakao_{data['id']}"),
-            profile_image=profile.get("profile_image_url"),
-            email_verified=account.get("is_email_valid") is True and account.get("is_email_verified") is True,
-        )
-    elif provider == "naver":
-        info = data.get("response", {})
-        return OAuthUserInfo(
-            provider="naver",
-            provider_user_id=_provider_user_id(info.get("id")),
-            email=info.get("email", ""),
-            nickname=info.get("nickname", f"naver_{info['id']}"),
-            profile_image=info.get("profile_image"),
-        )
-    else:
-        raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
+    raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
 
 
 def _provider_user_id(value) -> str:

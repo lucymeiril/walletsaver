@@ -5,7 +5,6 @@ import { HOTDEAL_FILTERS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import useThrottledCallback from '../../hooks/useThrottledCallback';
-import Badge from '../../components/common/Badge';
 import Spinner from '../../components/common/Spinner';
 import SafeImage from '../../components/common/SafeImage';
 import EmptyState from '../../components/common/EmptyState';
@@ -21,6 +20,41 @@ function normalizeDeal(deal) {
     hotVotes: deal.hotVotes ?? deal.votes_hot ?? 0,
     coldVotes: deal.coldVotes ?? deal.votes_not ?? 0,
   };
+}
+
+function sourceLabel(deal) {
+  return deal.source_label || deal.source;
+}
+
+function quoteAmount(value) {
+  if (typeof value !== 'number' && (typeof value !== 'string' || !/^\d+(?:\.\d+)?$/.test(value))) return null;
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0 ? amount : null;
+}
+
+function quoteText(item) {
+  const amount = quoteAmount(item.price);
+  if (amount == null) return '원문 표시가 미확인';
+  return `원문 표시가 ${fmt(amount)}${item.price_currency === 'KRW' ? '원' : ' (통화 미명시)'}`;
+}
+
+function hasSourcePriceComparison(item) {
+  return item.price_basis !== 'community_quote' && item.price_currency === 'KRW'
+    && quoteAmount(item.price) != null && quoteAmount(item.origPrice) != null;
+}
+
+function SourceFacts({ item }) {
+  const conditions = Array.isArray(item.source_conditions)
+    ? item.source_conditions.filter(value => typeof value === 'string' && value.trim()) : [];
+  const period = typeof item.source_period === 'string' && item.source_period.trim() ? item.source_period : null;
+  return <div>
+    <div>{item.posted_at ? `원문 게시 시각 ${item.posted_at}` : '원문 게시 시각 미확인'}</div>
+    <div>{item.fetched_at ? `수집 시각 ${item.fetched_at}` : '수집 시각 미확인'}</div>
+    <div>{item.expired === true ? '원문 조건 종료' : null}{item.expired === true && ' · '}{item.expires_at ? `출처 종료 시각 ${item.expires_at}` : period ? '종료 시각·시간대 미확인' : '기간 미명시'}</div>
+    {period && <div>원문 기간: {period} · 시간대·종료 경계 미확인</div>}
+    <div>{conditions.length ? `원문 조건: ${conditions.join(' · ')}` : '원문 조건 정보 미확인'}</div>
+    {['community_quote', 'official_conditional_quote'].includes(item.price_basis) && <div>{item.price_basis === 'community_quote' ? '커뮤니티 원문 관측' : '공식 원문 조건 표시가'} · 실제 조건 충족·현재 선택 결제 금액 미확인</div>}
+  </div>;
 }
 
 function hotdealParams(filter, page = 1) {
@@ -66,21 +100,12 @@ function voteTypeFromApi(type) {
   return type || null;
 }
 
-function getTier(price, origPrice) {
-  if (!price || !origPrice || origPrice <= price) return null;
-  const ratio = price / origPrice;
-  if (ratio <= 0.4) return { label: '역대급', color: 'success' };
-  if (ratio <= 0.6) return { label: '대박', color: 'info' };
-  if (ratio <= 0.8) return { label: '괜찮은', color: 'warning' };
-  return { label: '보통', color: 'neutral' };
-}
-
 export default function HotdealPage() {
   const location = useLocation();
   const addToast = useStore((state) => state.addToast);
   const [filter, setFilter] = useState('all');
   const [source, setSource] = useState('전체');
-  const [sort, setSort] = useState('discount');
+  const [sort, setSort] = useState('time');
   const [detail, setDetail] = useState(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [votes, setVotes] = useState({});
@@ -181,12 +206,12 @@ export default function HotdealPage() {
 
   const allItems = useMemo(() => {
     let items = [...allDeals];
-    if (source !== '전체') items = items.filter((deal) => deal.source === source);
+    if (source !== '전체') items = items.filter((deal) => sourceLabel(deal) === source || deal.source === source);
 
     if (sort === 'discount') {
       items.sort((a, b) => {
-        const aRatio = a.price && a.origPrice ? a.price / a.origPrice : 1;
-        const bRatio = b.price && b.origPrice ? b.price / b.origPrice : 1;
+        const aRatio = hasSourcePriceComparison(a) ? a.price / a.origPrice : 1;
+        const bRatio = hasSourcePriceComparison(b) ? b.price / b.origPrice : 1;
         return aRatio - bRatio;
       });
     } else if (sort === 'popular') {
@@ -196,7 +221,8 @@ export default function HotdealPage() {
         return bScore - aScore;
       });
     } else if (sort === 'priceAsc') {
-      items.sort((a, b) => (a.price || Infinity) - (b.price || Infinity));
+      const knownKrw = deal => deal.price_currency === 'KRW' ? quoteAmount(deal.price) ?? Infinity : Infinity;
+      items.sort((a, b) => knownKrw(a) - knownKrw(b));
     }
 
     return items;
@@ -274,7 +300,7 @@ export default function HotdealPage() {
     <div>
       <div className={s.hdr}>
         <h2>핫딜 모아보기</h2>
-        <p>수집된 핫딜의 가격·할인율과 커뮤니티 반응을 한곳에서 확인합니다</p>
+        <p>수집된 원문 표시가·조건과 커뮤니티 반응입니다. 현재 구매 가능 여부나 결제 금액을 보장하지 않습니다.</p>
       </div>
 
       {loading && (
@@ -311,8 +337,8 @@ export default function HotdealPage() {
           </div>
           <select className={s.sortSel} value={sort} onChange={(event) => setSort(event.target.value)}>
             <option value="time">최신순</option>
-            <option value="discount">할인율순</option>
-            <option value="priceAsc">가격순</option>
+            <option value="discount">원문 표시 할인율순</option>
+            <option value="priceAsc">KRW 원문 표시가순</option>
             <option value="popular">인기순</option>
           </select>
         </div>
@@ -339,31 +365,30 @@ export default function HotdealPage() {
         )}
 
         {items.map((deal) => {
-          const tier = getTier(deal.price, deal.origPrice);
           const vote = votes[deal.id];
           return (
             <div key={deal.id} className={s.card} onClick={() => setDetail(deal)}>
               {deal.thumb && <SafeImage src={deal.thumb} alt={deal.title} className={s.thumb} />}
               <div className={s.cardBody}>
                 <div className={s.cardHead}>
-                  <span className={s.source}>{deal.source}</span>
+                  <span className={s.source}>{sourceLabel(deal)}</span>
                   <span className={s.time}>{deal.time}</span>
                 </div>
                 <div className={s.cardTitle}>{deal.title}</div>
                 <div className={s.cardBottom}>
-                  <span className={s.price}>{deal.price ? `${fmt(deal.price)}원` : ''}</span>
+                  <span className={s.price}>{quoteText(deal)}</span>
                   <div className={s.badges}>
-                    {tier && <Badge variant="solid" color={tier.color} size="sm">{tier.label}</Badge>}
-                    {deal.price && deal.origPrice && deal.origPrice > deal.price && (
+                    {hasSourcePriceComparison(deal) && deal.origPrice > deal.price && (
                       <span className={`${s.discBadge} ${deal.price / deal.origPrice <= 0.5 ? s.ultra : deal.price / deal.origPrice <= 0.75 ? s.great : s.ok}`}>
-                        {Math.round((1 - deal.price / deal.origPrice) * 100)}% 할인
+                        원문 표시가 기준 {Math.round((1 - deal.price / deal.origPrice) * 100)}%
                       </span>
                     )}
                     {(deal.hotVotes || 0) + (deal.coldVotes || 0) >= 10 && (
-                      <span className={s.verifiedBadge}>✅ 커뮤니티 검증</span>
+                      <span className={s.verifiedBadge}>커뮤니티 반응</span>
                     )}
                   </div>
                 </div>
+                <SourceFacts item={deal} />
                 <div className={s.cardMeta}>
                   💬 {deal.comments || 0} · 🔥 {deal.hotVotes || 0} / ❄️ {deal.coldVotes || 0}
                 </div>
@@ -526,19 +551,20 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({
 
         <div className={s.modalBody}>
           <div className={s.modalMeta}>
-            <span className={s.source}>{item.source}</span>
+            <span className={s.source}>{sourceLabel(item)}</span>
             <span className={s.time}><Clock size={12} /> {item.time}</span>
-            {totalVotes >= 10 && <span className={s.verifiedBadge}>✅ 커뮤니티 검증</span>}
+            {totalVotes >= 10 && <span className={s.verifiedBadge}>커뮤니티 반응</span>}
           </div>
           <h3 className={s.modalTitle}>{item.title}</h3>
 
           <div className={s.modalPriceRow}>
-            {item.price && <span className={s.modalPrice}>{fmt(item.price)}원</span>}
-            {item.origPrice && <span className={s.modalOrig}>{fmt(item.origPrice)}원</span>}
-            {item.price && item.origPrice && item.origPrice > item.price && (
-              <span className={s.modalDisc}>{Math.round((1 - item.price / item.origPrice) * 100)}% 할인</span>
+            <span className={s.modalPrice}>{quoteText(item)}</span>
+            {hasSourcePriceComparison(item) && <span className={s.modalOrig}>원문 비교 표시가 {fmt(item.origPrice)}원</span>}
+            {hasSourcePriceComparison(item) && item.origPrice > item.price && (
+              <span className={s.modalDisc}>원문 표시가 기준 {Math.round((1 - item.price / item.origPrice) * 100)}%</span>
             )}
           </div>
+          <SourceFacts item={item} />
 
           {item.url && (
             <a

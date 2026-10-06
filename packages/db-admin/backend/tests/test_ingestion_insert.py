@@ -203,3 +203,24 @@ def test_catalog_taxonomy_seed_is_idempotent_and_does_not_seed_products():
     assert second == {"categories": 0, "keywords": 0, "repaired_keywords": 0}
     assert product_count == 0
     assert history_count == 0
+
+
+def test_approved_hotdeal_uses_external_post_and_preserves_identity_on_update():
+    from storage.models import HotdealPost, HotdealPrice
+    Session = _make_session_factory()
+    item = {"title": "[스팀] 파이널판타지 16 컴플리트에디션 31920원",
+            "source_url": "https://bbs.ruliweb.com/market/board/1020/read/107813",
+            "source_record_key": "ruliweb:post:107813", "price": 31920,
+            "source_community": "루리웹", "tags": ["currency:KRW", "price_basis:community_quote"],
+            "crawled_at": "2026-10-06T10:15:17+00:00"}
+    with Session.begin() as session:
+        assert _insert_items(session, [item], "HotdealPost") == 1
+        identity = session.execute(select(HotdealPost)).scalar_one().id
+        assert _insert_items(session, [item], "HotdealPost") == 1
+        assert _insert_items(session, [{**item, "price": 31000, "crawled_at": "2026-10-06T10:16:17+00:00"}], "HotdealPost") == 1
+        assert _insert_items(session, [item], "HotdealPost") == 1  # Earlier receipt cannot overwrite newer quote.
+        row = session.execute(select(HotdealPost)).scalar_one()
+        assert row.id == identity and row.price == 31000 and row.original_price is None
+        assert row.source_native_id == "ruliweb:post:107813" and row.tags == item['tags']
+        assert session.query(Product).count() == session.query(HotdealPrice).count() == 0
+        assert _insert_items(session, [{**item, "price": True}], "HotdealPost") == 0

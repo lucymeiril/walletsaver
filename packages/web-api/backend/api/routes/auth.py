@@ -158,31 +158,11 @@ async def logout():
     return response
 
 
-@router.post("/demo-login")
-async def demo_login(request: Request, provider: str = "google"):
-    """로컬 발표용 기능. 명시적으로 ENABLE_DEMO_LOGIN=true인 환경에서만 허용한다."""
-    if os.getenv("ENABLE_DEMO_LOGIN", "false").strip().lower() not in {"1", "true", "yes"}:
-        raise HTTPException(status_code=404, detail="찾을 수 없습니다")
-    if provider not in {"google", "kakao", "naver"}:
-        raise HTTPException(status_code=400, detail="지원하지 않는 데모 공급자입니다")
-
-    user = _store(request).ensure_demo_user(
-        email=f"demo-{provider}@walletsavior.local",
-        nickname="발표용 데모 사용자",
-    )
-    if not _is_active(user):
-        raise HTTPException(status_code=403, detail="비활성화된 계정입니다")
-    tokens = create_token_pair(user["id"], user["email"], user["role"])
-    response = JSONResponse(content={"success": True, "data": _profile(user).model_dump()})
-    _set_auth_cookies(response, tokens)
-    return response
-
-
 @router.get("/oauth/{provider}")
 async def oauth_login(request: Request, provider: str):
     """OAuth 로그인 URL로 리다이렉트."""
     try:
-        if provider not in {"google", "kakao", "naver"}:
+        if provider != "google":
             raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
         binding = secrets.token_urlsafe(32)
         store = PublicUserStore(getattr(request.app.state, "storage", None))
@@ -213,7 +193,7 @@ async def oauth_callback(
     error: str | None = None,
 ):
     """OAuth 콜백 — OAuth 계정과 accounts.sqlite 사용자를 연결한다."""
-    if provider not in {"google", "kakao", "naver"}:
+    if provider != "google":
         raise HTTPException(status_code=400, detail="지원하지 않는 OAuth 공급자입니다")
 
     def callback_response(reason: str | None = None):

@@ -319,12 +319,13 @@ class CrawlPipeline:
         dedup_before = len(items)
         items = deduplicate(items, key_fields=dedup_fields)
         deduplicated_count = dedup_before - len(items)
-        items = enrich_with_category(items)
+        if model_type != "HotdealPost":
+            items = enrich_with_category(items)
 
         # The persistent matching table is the current automatic knowledge base.
         # Hits receive canonical product/category metadata; misses remain explicit
         # so the raw-batch export can send only unresolved rows to external AI.
-        if items:
+        if items and model_type != "HotdealPost":
             items = enrich_items_with_matching_entries(items)
         matching_hits = sum(
             1 for item in items if item.get("matching_status") == "hit"
@@ -364,7 +365,7 @@ class CrawlPipeline:
 
         # Mart observations require the source/spec/condition-aware review
         # contract; the legacy bulk writer cannot represent those facts.
-        direct_store = SKIP_REVIEW and model_type != "DiscountItem"
+        direct_store = SKIP_REVIEW and model_type not in {"DiscountItem", "HotdealPost"}
         items_saved = 0
         if items_valid == 0:
             if items_found:

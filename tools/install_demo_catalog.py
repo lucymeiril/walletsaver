@@ -14,7 +14,8 @@ import sys
 import tempfile
 import zlib
 
-FILES = ("admin.sqlite", "public_snapshot.sqlite", "opinet.sqlite")
+REQUIRED_FILES = ("admin.sqlite", "public_snapshot.sqlite", "opinet.sqlite")
+FILES = REQUIRED_FILES + ("external_hotdeals.sqlite",)
 MARKER = ".demo-catalog-installed.json"
 LOCK = ".demo-catalog-install.lock"
 
@@ -82,10 +83,11 @@ def validate_source(source: Path) -> tuple[dict, str]:
     revision = manifest.get("catalog_revision")
     if not isinstance(revision, int) or isinstance(revision, bool) or revision < 1:
         raise ValueError("Invalid catalog revision")
-    if not isinstance(manifest.get("files"), dict) or set(manifest["files"]) != set(FILES):
-        raise ValueError("Manifest must describe exactly the admin, public catalog and fuel snapshots")
+    if (not isinstance(manifest.get("files"), dict) or not set(REQUIRED_FILES).issubset(manifest["files"])
+            or not set(manifest["files"]).issubset(FILES)):
+        raise ValueError("Manifest must describe admin/public/fuel and only the optional external hotdeal snapshot")
     # Validate every stored digest before any temporary restoration or target write.
-    for name in FILES:
+    for name in manifest["files"]:
         spec = manifest["files"][name]
         if not isinstance(spec, dict):
             raise ValueError(f"Invalid manifest file contract: {name}")
@@ -111,7 +113,7 @@ def validate_source(source: Path) -> tuple[dict, str]:
             raise ValueError(f"Missing required table contract: {name}")
         if not isinstance(counts, dict) or not set(required).issubset(counts):
             raise ValueError(f"Missing required table counts: {name}")
-    for name in FILES:
+    for name in manifest["files"]:
         spec = manifest["files"][name]
         if "archive_file" in spec:
             # Temporary, fixed-name restoration is inspected with a read-only VFS;
@@ -143,10 +145,10 @@ def install(source: Path, target: Path) -> str:
         receipt = json.loads(marker.read_text(encoding="utf-8"))
         if not isinstance(receipt, dict):
             raise ValueError("Invalid installed catalog receipt")
-        expected = {name: manifest["files"][name]["sha256"] for name in FILES}
+        expected = {name: manifest["files"][name]["sha256"] for name in manifest["files"]}
         if receipt.get("schema_version") != 1 or receipt.get("source_manifest_sha256") != manifest_sha or receipt.get("source_files") != expected:
             raise ValueError("Installed catalog provenance differs; update via the admin workflow, never overwrite")
-        for name in FILES:
+        for name in manifest["files"]:
             regular_file(target / name)
         # User/admin changes, WALs and new private stores are deliberately untouched.
         return "Existing demo preserved (no files copied)"
@@ -160,7 +162,7 @@ def install(source: Path, target: Path) -> str:
     try:
         if any(path != lock for path in target.iterdir()):
             raise ValueError("Target changed during first installation")
-        for name in FILES:
+        for name in manifest["files"]:
             destination = target / name
             with destination.open("xb") as output:
                 created.append(destination)
@@ -170,13 +172,13 @@ def install(source: Path, target: Path) -> str:
             if digest(destination) != manifest["files"][name]["sha256"]:
                 raise ValueError(f"Copied hash mismatch: {name}")
         # Detect a source mutation during the copy before certifying the installation.
-        if digest(source / "manifest.json") != manifest_sha or any(digest(stored_path(source, n, manifest["files"][n])) != manifest["files"][n].get("archive_sha256", manifest["files"][n]["sha256"]) for n in FILES):
+        if digest(source / "manifest.json") != manifest_sha or any(digest(stored_path(source, n, manifest["files"][n])) != manifest["files"][n].get("archive_sha256", manifest["files"][n]["sha256"]) for n in manifest["files"]):
             raise ValueError("Source changed during installation")
         with marker.open("x", encoding="utf-8") as output:
             created.append(marker)
             json.dump({"schema_version": 1, "catalog_revision": manifest["catalog_revision"],
                        "source_manifest_sha256": manifest_sha,
-                       "source_files": {name: manifest["files"][name]["sha256"] for name in FILES}}, output, indent=2)
+                       "source_files": {name: manifest["files"][name]["sha256"] for name in manifest["files"]}}, output, indent=2)
             output.write("\n")
             output.flush()
             os.fsync(output.fileno())
@@ -186,7 +188,7 @@ def install(source: Path, target: Path) -> str:
         raise
     finally:
         lock.unlink(missing_ok=True)
-    return "Sanitized admin/public/fuel snapshots installed; private account stores are not shipped"
+    return "Sanitized catalog/fuel and any declared external-hotdeal snapshots installed; private account stores are not shipped"
 
 
 def main() -> int:

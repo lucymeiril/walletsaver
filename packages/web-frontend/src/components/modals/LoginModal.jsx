@@ -112,11 +112,11 @@ export default function LoginModal() {
     }
   };
 
-  const handleOAuth = (provider) => {
+  const handleGoogleLogin = () => {
     // 로컬에서는 Vite의 same-origin /api 프록시를 사용한다. 백엔드 포트를
     // 직접 가리키면 localhost/127.0.0.1이 섞여 OAuth 쿠키가 사라질 수 있다.
     const backendUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-    window.location.href = `${backendUrl}/api/auth/oauth/${provider}`;
+    window.location.href = `${backendUrl}/api/auth/oauth/google`;
   };
 
   const switchTab = (t) => {
@@ -152,9 +152,7 @@ export default function LoginModal() {
             {loginLoading ? '로그인 중...' : '로그인'}
           </button>
           <div className={s.divider}><span>또는</span></div>
-          <button type="button" className={s.google} onClick={() => handleOAuth('google')}>{GOOGLE_ICON} 구글로 시작하기</button>
-          <button type="button" className={s.kakao} onClick={() => handleOAuth('kakao')}>카카오로 시작하기</button>
-          <button type="button" className={s.naver} onClick={() => handleOAuth('naver')}>네이버로 시작하기</button>
+          <button type="button" className={s.google} onClick={handleGoogleLogin}>{GOOGLE_ICON} 구글로 시작하기</button>
           <p className={s.switchLink}>계정이 없으신가요? <button type="button" onClick={() => switchTab('signup')}>회원가입</button></p>
         </form>
       ) : (

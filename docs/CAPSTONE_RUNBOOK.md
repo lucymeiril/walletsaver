@@ -176,20 +176,20 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 | 외부 기능 | 필요한 설정·현재 한계 |
 | --- | --- |
 | Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 `GOOGLE_CLIENT_SECRET_FILE`이 가리키는 비공개 JSON의 `web`/`installed` client 설정. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
-| Naver OAuth | 비공개 `NAVER_CLIENT_ID`·`NAVER_CLIENT_SECRET`과 해당 provider callback 등록 필요. Naver 지도 공개 브라우저 검색과 다른 기능이며 실제 OAuth 미검증 |
-| Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. `NAVER_CLIENT_ID`/`NAVER_CLIENT_SECRET`은 이 공개 검색의 필수 키가 아니라 별도 OAuth 설정 |
-| Opinet 공식 API | `OPINET_API_KEY`와 실제 공급자 권한·접근 필요. 배포된 7개 주유소·14개 가격은 각각 원래 날짜의 관측값이며 실시간 API 결과가 아님 |
+| 로그인 범위 | 자체 이메일·비밀번호 회원가입/로그인과 Google만 활성화한다. Naver/Kakao/기타 로그인·가짜 소셜 데모 로그인은 제거했다. 기존 계정/연결 기록은 삭제하지 않는다. |
+| Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. 폐지된 Naver 로그인 설정은 이 공개 장소 검색에 필요하지 않음 |
+| Opinet 공식 API | 사용자 요청으로 연기했다. `OPINET_API_KEY` 준비나 실제 API는 현재 제출 차단/필수 입력이 아니다. 수동 출처의 7개 주유소·14개 가격은 원래 갱신 날짜의 관측값이며 실시간 가격/좌표·거리 확정이 아님. |
 | 연료 지도 좌표 | 공식 API의 `GIS_X_COOR`/`GIS_Y_COOR` KOTI-KATEC 변환과 수동 페이지 callback 위치필드는 구분한다. 수동 위치필드의 CRS는 미입증이므로 원문 XY만 보존하고 좌표는 NULL로 둔다. 배포 7개 좌표도 NULL이며 GPS 거리순 비교를 보장하지 않음. Naver 명칭·주소 연결만으로 x/y의 CRS를 확정하지 않음 |
-| 핫딜 | Algumon의 정상 단일 HTTP transport는 구현됐지만 검증된 live 목록 parser는 없다. 원문/fixture helper를 live posts로 사용하지 않으며 알 수 없는 본문·접근실패는 명시적으로 보류한다. 실제 403 중지 기록은 유지했고 이번 구현에서 공급자 요청은 하지 않았다. 실제 post/feed 연결은 미완료이며 자격증명 부족만으로 단정하지 않음 |
+| 핫딜 | 271 정상 공개 Ruliweb 목록·게시글과 Uniqlo 공식 상품 근거 → 정식 관리자 승인·중복 없는 저장·별도 external snapshot·실제 화면까지 확인했다. 루리웹 6개 원문 KRW 표시가와 유니클로 1개 APP회원 한정 59,900원/취소선79,900원·`2026/10/08 까지`를 제공한다. 결제·선택 사이즈·배송·회원 자격은 미확인, 명시 종료 게시물은 종료로 표시한다. Algumon/Musinsa403 경로는 중단 유지하며 해당 실패로 정상 출처를 비우지 않는다. |
 | 이마트 라이브 | Playwright의 `chrome` 채널·화면 모드와 명시적 세션 proxy/CA 연결이 필요. 현재 호스트의 공식 Chrome 154.0.8037.97·Xvfb 화면 모드·로컬 DOM과 별도 공개 의존성의 proxy/TLS 확인은 완료됐다. 이마트 요청은 없었으며 기존 429 중지와 허용된 다음 공급자 구간·6–7분 제한을 지킨다. 로그인·challenge 우회 없음 |
 
-TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와 crawler API의 Google/Naver/Opinet 이름별 설정 및 Google file locator는 공란으로 확인했다. 이는 다른 경로에 개인 키 파일이 없다는 뜻이 아니며 공급자 로그인 성공을 뜻하지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
+TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와 crawler API의 Google 이름별 설정 및 Google file locator는 공란으로 확인했다. 이는 다른 경로에 개인 키 파일이 없다는 뜻이 아니며 공급자 로그인 성공을 뜻하지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
 
 ```powershell
 .\start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local
 ```
 
-Compose에서는 named Google/Naver/Kakao 설정에 `--env-file .env.demo.local`을 사용한다. Google JSON 파일 방식은 host 경로 문자열을 API에 그대로 넘기지 않는다. `.env.demo.local`의 `GOOGLE_CLIENT_SECRET_FILE`을 이미 존재하는 비공개 JSON의 host 절대경로로 설정한 뒤, ignored `.compose.oauth.local.yml`에 다음 read-only 연결을 넣는다. 컨테이너 안에서는 고정된 `/run/secrets/google-oauth.json`을 읽는다. `create_host_path: false`는 파일 경로가 없을 때 빈 디렉터리를 만들지 않게 한다. 외부 JSON·실제 값은 Git/배포 데이터에 포함하지 않는다.
+Compose에서는 named Google 설정에 `--env-file .env.demo.local`을 사용한다. Google JSON 파일 방식은 host 경로 문자열을 API에 그대로 넘기지 않는다. `.env.demo.local`의 `GOOGLE_CLIENT_SECRET_FILE`을 이미 존재하는 비공개 JSON의 host 절대경로로 설정한 뒤, ignored `.compose.oauth.local.yml`에 다음 read-only 연결을 넣는다. 컨테이너 안에서는 고정된 `/run/secrets/google-oauth.json`을 읽는다. `create_host_path: false`는 파일 경로가 없을 때 빈 디렉터리를 만들지 않게 한다. 외부 JSON·실제 값은 Git/배포 데이터에 포함하지 않는다.
 
 ```yaml
 services:
@@ -222,3 +222,5 @@ The existing Crawler → Data review intake detail renders original nested purch
 Collector execution separates source completeness, validation, acknowledged pending-review storage, approval and publication. A partial source is processed once and remains partial even when every retained row is stored. A zero or missing diagnostic does not prove a successful collection; fixtures and saved-source replay remain separate from representative live retailer evidence. Naver253 opt-in five-place search/distance display is reusable for the unchanged consumer contract; it does not prove external OAuth, fuel CRS coordinates or Windows/new-cloud execution.
 
 270의 동일 공개 앱에서 공유 URL을 새 익명 브라우저 세션으로 열어 선택한600g/homeplus/8980 관측과 exact variant/listing/offer 및2+1/min2 원문 조건을 복원했다. 행사 종료 후 거래총액·수령량은 계속 보류하며 다른 거래로 자동 변경하지 않는다. 불완전·변경된 공유 tuple은 재선택 안내로 보류한다. 공급자 URL과 앱 공유 URL은 별개이며 native OS 공유 선택기는 미검증이다. 소유 합성 계정의 프로필 수정→새로고침→새 세션 재로그인 유지, 가격 알림 현재 미충족·조건보류 조회→해제→새로고침도 확인했고 기존cart/wishlist는 보존됐다. 외부 발송/자동수집/OAuth 성공을 뜻하지 않는다. 데이터69와 계정 없는 동봉 gzip은 변경하지 않았다.
+
+271 제출 후보 범위: 외부 알림 이메일/푸시는 범위 밖이며 규칙 저장·조회·현재 조건 상태·해제는 유지한다. 원문 표시 가격·통화·수량·입증된 조건 산술은 실제 결제 미시험만으로 없애지 않는다. Homeplus269는 원문2190/2L×6/최소1·최대2·쿠폰을 보존했고 통화 미명시와 고객 쿠폰 적용은 별도 미확인이다. 핫딜의 표시가 차이25%도 원문 두 가격의 산술이며 보편적인 결제 할인 보장이 아니다. `WALLETSAVIOR_OPTIONAL_CRAWLERS=ruliweb`은 정상 공개 단일 feed collector를 관리 화면에 등록한다; 자동수집 예약을 만들지 않는다.

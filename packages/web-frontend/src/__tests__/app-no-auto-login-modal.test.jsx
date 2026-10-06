@@ -8,9 +8,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import useStore from '../stores/appStore';
 import { api } from '../services/api';
 import { authService } from '../services/authService';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act, waitFor, fireEvent } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from '../App';
+import LoginModal from '../components/modals/LoginModal';
 
 vi.mock('../services/accountSync', () => ({ syncAccountData: vi.fn().mockResolvedValue([]) }));
 function LocationProbe() { return <output data-testid="route">{useLocation().pathname}</output>; }
@@ -20,6 +21,22 @@ describe('앱 부팅 시 로그인 모달 자동 노출 방지', () => {
     useStore.setState({ isLoginModalOpen: false, isLoggedIn: false, user: null });
     vi.restoreAllMocks();
     localStorage.clear();
+  });
+
+  it('제공자 로그인은 Google만 노출하며 이메일 로그인과 회원가입은 유지한다', () => {
+    useStore.setState({ isLoginModalOpen: true });
+    global.fetch = vi.fn();
+    render(<LoginModal />);
+    expect(screen.getByRole('button', { name: '구글로 시작하기' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /카카오|네이버/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: '이메일', exact: true })).toBeInTheDocument();
+    expect(screen.getByLabelText('비밀번호', { exact: true })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: '회원가입' }));
+    expect(screen.getByRole('tab', { name: '회원가입' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByPlaceholderText('2~20자')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '회원가입', exact: true })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /카카오|네이버/ })).not.toBeInTheDocument();
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it('인증되지 않은 상태에서 부팅 시 getProfile 401이 로그인 모달을 열지 않는다', async () => {

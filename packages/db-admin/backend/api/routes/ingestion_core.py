@@ -20,6 +20,7 @@ from api.auth import (
     get_current_identity,
 )
 from services.audit import log_action
+from services.external_hotdeal_snapshot import upsert_approved_hotdeal
 from services.normalized_mart3 import publish_mart3_rows, publish_matched_offer_observations
 from services.product_match_rules import (
     apply_rule_to_product,
@@ -1597,28 +1598,7 @@ def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: 
         try:
             with session.begin_nested():
                 if schema_type == "HotdealPost":
-                    product_name = item.get("title", "")
-                    price = item.get("price")
-                    if price is None:
-                        raise ValueError("HotdealPost.price is missing; keep it in review until AI/human supplies a price")
-                    hotdeal_source = normalize_source_key(
-                        item.get("source_community")
-                        or item.get("source")
-                        or item.get("source_name")
-                        or item.get("source_site")
-                        or item.get("source_type")
-                        or item.get("url"),
-                        default="hotdeal",
-                    )
-                    pid = _ensure_product(session, product_name, crawler_source=hotdeal_source)
-                    row = HotdealPrice(
-                        product_id=pid,
-                        price=float(price),
-                        source=hotdeal_source,
-                        source_url=item.get("url", ""),
-                        title=product_name,
-                        crawled_at=datetime.utcnow(),
-                    )
+                    row = upsert_approved_hotdeal(session, item)
                 else:
                     source = _resolve_source(item)
                     if source == "mart_regular":

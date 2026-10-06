@@ -193,3 +193,26 @@ def test_unknown_optional_name_is_ignored(monkeypatch):
 
     assert "ghost" not in registry._registry
     assert "musinsa" in registry._registry
+
+
+def test_ruliweb_actual_business_nodes_keep_literal_quotes_and_unknowns(monkeypatch):
+    from datetime import datetime, timezone
+    from pathlib import Path
+    from crawlers.hotdeals.ruliweb import RuliwebCrawler
+    html = (Path(__file__).parent / "fixtures/ruliweb/source271-business.html").read_text()
+    nodes = RuliwebCrawler.business_nodes(html)
+    rows = RuliwebCrawler.parse_nodes(nodes, datetime(2026, 10, 6, 10, 13, tzinfo=timezone.utc))
+    assert len(nodes) == 13 and len(rows) == 6
+    selected = next(r for r in rows if r.source_native_id == "ruliweb:107813")
+    assert selected.price == 31920 and selected.original_price is None
+    assert selected.post_date is None  # Clock alone does not provide a date/timezone.
+    assert "currency:KRW" in selected.tags and "price_basis:community_quote" in selected.tags
+    assert not any(r.source_native_id == "ruliweb:107815" for r in rows)  # Bare658000/5000 has no currency.
+    assert RuliwebCrawler.business_nodes('<p>HTTP200 empty shell</p>') == []
+    monkeypatch.setenv("WALLETSAVIOR_OPTIONAL_CRAWLERS", "ruliweb")
+    registry = CrawlerRegistry()
+    registry.discover()
+    crawler = registry.get_crawler("ruliweb")
+    assert crawler.SOURCE_ID == "ruliweb" and crawler.info.target_url == RuliwebCrawler.DEAL_URL
+    with pytest.raises(ValueError, match="no offline fallback"):
+        crawler.crawl_list()

@@ -17,10 +17,6 @@
 /* OAuth buttons */
 .google { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:#fff; color:#333; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background var(--dur) var(--ease); }
 .google:hover { background:#f5f5f5; }
-.kakao { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:#FEE500; color:#3C1E1E; border:none; cursor:pointer; transition:filter var(--dur) var(--ease); }
-.kakao:hover { filter:brightness(.95); }
-.naver { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:#03C75A; color:#fff; border:none; cursor:pointer; transition:filter var(--dur) var(--ease); }
-.naver:hover { filter:brightness(.9); }
 
 /* Password field */
 .passwordWrap { position:relative; display:flex; align-items:center; }

@@ -311,17 +311,12 @@ class TestOAuthURLGeneration:
         assert config["client_id"] == "file-client"
         assert config["client_secret"] == "file-secret"
 
-    def test_kakao_login_url(self, monkeypatch, oauth_store):
-        monkeypatch.setenv("KAKAO_CLIENT_ID", "kakao-client")
-        monkeypatch.setenv("KAKAO_CLIENT_SECRET", "kakao-secret")
-        url = get_oauth_login_url("kakao", "synthetic-browser", state_store=oauth_store)
-        assert "kauth.kakao.com" in url
-
-    def test_naver_login_url(self, monkeypatch, oauth_store):
-        monkeypatch.setenv("NAVER_CLIENT_ID", "naver-client")
-        monkeypatch.setenv("NAVER_CLIENT_SECRET", "naver-secret")
-        url = get_oauth_login_url("naver", "synthetic-browser", state_store=oauth_store)
-        assert "nid.naver.com" in url
+    @pytest.mark.parametrize("provider", ["kakao", "naver", "facebook"])
+    def test_retired_provider_cannot_start_or_build_callback(self, oauth_store, provider):
+        with pytest.raises(ValueError, match="지원하지 않는"):
+            get_oauth_login_url(provider, "synthetic-browser", state_store=oauth_store)
+        with pytest.raises(ValueError, match="지원하지 않는"):
+            get_oauth_redirect_uri(provider)
 
     def test_invalid_provider_raises(self, oauth_store):
         with pytest.raises(ValueError, match="지원하지 않는"):
@@ -400,6 +395,12 @@ class TestOAuthRoutes:
         resp = client.get("/api/auth/oauth/facebook")
         assert resp.status_code == 400
 
+    @pytest.mark.parametrize("provider", ["kakao", "naver", "facebook"])
+    def test_retired_routes_reject_without_provider_or_account_creation(self, client, provider):
+        assert client.get(f"/api/auth/oauth/{provider}").status_code == 400
+        assert client.get(f"/api/auth/oauth/{provider}/callback", params={"code": "old", "state": "old"}).status_code == 400
+        assert client.post("/api/auth/demo-login", params={"provider": provider}).status_code == 404
+
     def test_oauth_denial_redirects_to_frontend_instead_of_422(self, client, monkeypatch, provider):
         monkeypatch.setenv("FRONTEND_URL", "http://localhost:5173/")
         state, _ = self.begin(client)
@@ -446,9 +447,12 @@ class TestOAuthRoutes:
         if mismatch != "missing_state":
             params["state"] = state
         response = client.get(path, params=params)
-        assert "error=oauth_state" in response.headers["location"]
+        if mismatch == "wrong_provider":
+            assert response.status_code == 400
+        else:
+            assert "error=oauth_state" in response.headers["location"]
         provider[0].assert_not_awaited()
-        if mismatch != "missing_state":
+        if mismatch not in {"missing_state", "wrong_provider"}:
             from services.user_storage import PublicUserStore
             assert validate_oauth_state(state, "google", "anything", state_store=PublicUserStore(client.app.state.storage)) is False
 
@@ -638,10 +642,6 @@ class TestOAuthProviderClaims:
         ("google", {"id": "google-sub", "email": "claim@example.com", "verified_email": True}, True),
         ("google", {"id": "google-sub", "email": "claim@example.com", "verified_email": "true"}, False),
         ("google", {"id": "google-sub"}, False),
-        ("kakao", {"id": 123, "kakao_account": {"email": "claim@example.com", "is_email_valid": True, "is_email_verified": True}}, True),
-        ("kakao", {"id": 123, "kakao_account": {"is_email_verified": True}}, False),
-        ("kakao", {"id": 123, "kakao_account": {"is_email_valid": True, "is_email_verified": False}}, False),
-        ("naver", {"response": {"id": "naver-sub", "email": "claim@example.com", "email_verified": True}}, False),
     ])
     async def test_oauth_email_verification_requires_literal_provider_evidence(self, monkeypatch, provider, payload, verified):
         import httpx
@@ -652,7 +652,7 @@ class TestOAuthProviderClaims:
             http.return_value.__aenter__.return_value.get = AsyncMock(return_value=response)
             info = await get_user_info(provider, "synthetic-token")
         assert info.email_verified is verified
-        assert info.provider_user_id in {"google-sub", "123", "naver-sub"}
+        assert info.provider_user_id == "google-sub"
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("payload", [{}, {"id": None}, {"id": True}, {"id": ""}])
@@ -732,14 +732,14 @@ db.close()
         assert validate_oauth_state(old, "google", "browser-one", state_store=oauth_store) is False
         stale = generate_oauth_state("google", "browser-one", state_store=oauth_store)
         monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL)
-        new = generate_oauth_state("naver", "browser-two", state_store=oauth_store)
+        new = generate_oauth_state("google", "browser-two", state_store=oauth_store)
         with oauth_store.SessionLocal() as session:
             assert session.execute(text("SELECT count(*) FROM oauth_pending_states")).scalar_one() == 1
         assert validate_oauth_state(stale, "google", "browser-one", state_store=oauth_store) is False
         monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL - 1)
-        assert validate_oauth_state(new, "naver", "browser-two", state_store=oauth_store) is False
+        assert validate_oauth_state(new, "google", "browser-two", state_store=oauth_store) is False
         monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL)
-        assert validate_oauth_state(new, "naver", "browser-two", state_store=oauth_store) is False
+        assert validate_oauth_state(new, "google", "browser-two", state_store=oauth_store) is False
         valid = generate_oauth_state("google", "browser-one", state_store=oauth_store)
         monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 3 * OAUTH_STATE_TTL - .01)
         assert validate_oauth_state(valid, "google", "browser-one", state_store=oauth_store) is True

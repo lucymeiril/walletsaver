@@ -65,6 +65,7 @@ _CORE_CRAWLERS: dict[str, tuple[str, dict]] = {
 }
 
 _OPTIONAL_CRAWLERS: dict[str, tuple[str, dict]] = {
+    "ruliweb": ("crawlers.hotdeals.ruliweb", _crawler_config("ruliweb", "루리웹", "hotdeal", model="HotdealPost", required_fields=["title", "url", "price"], retry_count=1)),
     "musinsa": (
         "crawlers.shopping.musinsa.crawler",
         _crawler_config("musinsa", "무신사", "shopping", retry_count=2),

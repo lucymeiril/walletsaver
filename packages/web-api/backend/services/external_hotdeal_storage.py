@@ -169,6 +169,26 @@ class ExternalHotdealStore:
     @staticmethod
     def _serialize(row: sqlite3.Row | dict) -> dict:
         data = dict(row)
+        tags = _json_list(data.get("tags"))
+        def fact(prefix, default=None):
+            return next((t[len(prefix):] for t in tags if isinstance(t, str) and t.startswith(prefix)), default)
+        def timestamp(value):
+            if not value:
+                return ""
+            try:
+                dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+                # Approved writer normalizes aware source receipts to SQLite UTC.
+                return dt.replace(tzinfo=dt.tzinfo or timezone.utc).astimezone(timezone.utc).isoformat()
+            except ValueError:
+                return str(value)
+        expires = data.get("expires_at")
+        expired = fact("source_closed:") == "true"
+        if expires:
+            try:
+                dt = datetime.fromisoformat(str(expires).replace("Z", "+00:00"))
+                expired = expired or dt.replace(tzinfo=dt.tzinfo or timezone.utc) <= datetime.now(timezone.utc)
+            except ValueError:
+                pass
         return {
             "id": int(data["id"]),
             "hotdeal_id": int(data["id"]),
@@ -177,14 +197,20 @@ class ExternalHotdealStore:
             "source": data.get("source_site") or "other",
             "source_site": data.get("source_site") or "other",
             "source_native_id": data.get("source_native_id"),
+            "source_label": fact("source_label:", data.get("source_site") or "other"),
+            "price_currency": fact("currency:"),
+            "price_basis": fact("price_basis:", "source_quote"),
+            "source_period": fact("period:"),
+            "source_conditions": [t[len("condition:"):] for t in tags if isinstance(t, str) and t.startswith("condition:")],
+            "expired": expired,
             "url": data.get("url") or "",
             "price": data.get("price"),
             "origPrice": data.get("original_price"),
             "original_price": data.get("original_price"),
             "discount_rate": data.get("discount_rate"),
             "time": _relative_time(data.get("posted_at") or data.get("fetched_at")),
-            "posted_at": str(data.get("posted_at") or ""),
-            "expires_at": str(data.get("expires_at") or ""),
+            "posted_at": timestamp(data.get("posted_at")),
+            "expires_at": timestamp(data.get("expires_at")),
             "cat": data.get("category_raw") or "",
             "category": data.get("category_raw") or "",
             "shop_name": data.get("shop_name") or "",
@@ -192,8 +218,8 @@ class ExternalHotdealStore:
             "views": 0,
             "comments": 0,
             "thumb": None,
-            "is_verified": True,
-            "fetched_at": str(data.get("fetched_at") or ""),
+            "is_verified": False,
+            "fetched_at": timestamp(data.get("fetched_at")),
         }
 
     @staticmethod
@@ -205,8 +231,8 @@ class ExternalHotdealStore:
         clauses = ["is_active=1"]
         params: list[object] = []
         if source:
-            clauses.append("source_site=?")
-            params.append(source)
+            clauses.append("(source_site=? OR EXISTS (SELECT 1 FROM json_each(COALESCE(tags, '[]')) WHERE value=?))")
+            params.extend([source, "source_label:" + source])
         if category and category != "all":
             category_text = str(category).strip()
             aliases = _CATEGORY_ALIASES.get(category_text.lower(), (category_text,))
@@ -293,7 +319,6 @@ class ExternalHotdealStore:
             return []
         with self.connection() as connection:
             rows = connection.execute(
-                "SELECT DISTINCT source_site FROM hotdeal_posts "
-                "WHERE is_active=1 ORDER BY source_site"
+                "SELECT * FROM hotdeal_posts WHERE is_active=1 ORDER BY source_site"
             ).fetchall()
-        return [str(row[0]) for row in rows if row[0]]
+        return sorted({self._serialize(row)["source_label"] for row in rows})
