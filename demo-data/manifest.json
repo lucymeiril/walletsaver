@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_revision": 86,
-  "version": "2026-10-06-catalog86-sunkist-vector315",
+  "catalog_revision": 87,
+  "version": "2026-10-06-catalog87-groups318",
   "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update86 and consistent publicsnapshot:339reviewedlogicalgroups retain818oldIDs,19exactsource-bound leaf corrections, active category-keyword links and actual101g×6/1000ml×2 corrections and509119 prior scalar→known3recipe25g×20each vector;523645 vector/ID unchanged, oldscalar inactive/reselection held; all9115 event/quote/raw/time IDs retained, externalhotdeal7 unchanged; accounts/sessions empty. Historical certificate remains historical.",
+  "data_scope": "Sanitized catalog/admin-update87 and consistent publicsnapshot:356reviewedlogicalgroups retain877oldIDs,25exactsource-bound leaf corrections, active category-keyword links and actual101g×6 and1000ml×2 corrections; all9115 event/quote/raw/time IDs retained, externalhotdeal7 unchanged; accounts/sessions empty. Historical certificate remains historical.",
   "files": {
     "admin.sqlite": {
-      "sha256": "b5a2b7e49590e0657750a9270ffbe640ee2818f57fc280c0f8102cfdabe877ca",
-      "bytes": 62402560,
+      "sha256": "5509c630157b1e5f96e0a297eecf8815ebd08faf8bbd355a4484577b80563800",
+      "bytes": 62476288,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 61,
+        "catalog_sync_log": 62,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "fb7b9d981bb09c4e53346feea8bf608bb78f88939023c12c481355c8a227e1ed",
-      "archive_bytes": 8912764
+      "archive_sha256": "a45c2ccc19336fbd0c4a06ca137a028c8da1721fca9d00273a8c333da1b4f807",
+      "archive_bytes": 8928441
     },
     "public_snapshot.sqlite": {
-      "sha256": "e2038040a71c94e0bb8ec8aa7d29f03b64927398b218ac2938dd3236701c8756",
-      "bytes": 57982976,
+      "sha256": "3ce913b658af6dceec3bc7677a2d8647875da496356be5301ca0693333140a26",
+      "bytes": 58056704,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "af2a7c8a11138ca5c440cf2e3e695d965510443fd8b3f2a7f4bc1845f578db91",
-      "archive_bytes": 8268826
+      "archive_sha256": "003a4747b0c50469c2b2adfaa0e296589dcc56ace122ccc9c18c275bdf04d846",
+      "archive_bytes": 8284232
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "8eb98edf843a792e6e2f340d768fb362e7060e6cd9b7baf6d2a83b06762bfd5f",
-    "packages/shared/core/reviewed_catalog_groups.json": "a142b55223325a56160c8a79461c015addfa4bc675c23c082b8dbc9a0d082e41",
+    "packages/shared/core/reviewed_catalog_groups.json": "a88693f0c6e5b127606427a100c8c363469420a33bfa9ace39b5bd4a973ea798",
     "packages/shared/core/catalog_quantity.py": "cfab46242fe8bd71a80d42391729721597082efdac48b7f03eb0733a38a9ccb3",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
