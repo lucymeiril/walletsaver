@@ -113,6 +113,7 @@ LEAVES: tuple[Leaf, ...] = (
     Leaf("clothing.underwear.tops.undershirt", ("패션", "속옷", "속옷상의", "런닝"), (), (), ()),
     Leaf("leisure.games.tabletop.strategy", ("취미·여가", "게임", "탁상게임", "전략보드게임"), (), ("전략보드게임", "전략 보드게임"), ()),
     # Source-confirmed forms; empty terms keep general shelves from assigning them.
+    Leaf("food.preserved.canned.chicken", ("식품", "반찬·저장식품", "통조림", "닭고기통조림"), (), (), ()),
     Leaf("food.snacks.savory.coated_seed", ("식품", "과자·간식", "스낵", "코팅씨앗스낵"), (), (), ()),
     Leaf("food.meals.prepared.shrimp_gangjeong", ("식품", "간편식·면", "조리식품", "새우강정"), (), (), ()),
     Leaf("food.drinks.tea_sets.assortment", ("식품", "음료", "차세트", "차모둠세트"), (), (), ()),
@@ -2277,6 +2278,7 @@ def keyword_definitions(category_ids: Iterable[str] | None = None) -> list[dict[
         leaf = _BY_ID[leaf_id]
         # Search synonyms do not become context-free classifier name rules.
         baked_search_terms = {
+            'food.preserved.canned.chicken': ('닭가슴살캔', '닭가슴살통조림'),
             'food.snacks.baked.crepe': ('크레페',),
             'food.snacks.baked.waffle': ('와플',),
             'food.snacks.baked.crispy_roll': ('크리스피롤',),
