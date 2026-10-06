@@ -539,7 +539,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
           </div>
 
           <div className={s.section}>
-            <h3 className={s.sectionTitle}>🏬 비교 가능한 판매처</h3>
+            <h3 className={s.sectionTitle}>🏬 판매처별 규격·가격</h3>
             {otherOffers.length > 0 ? (
               <div className={s.otherStores}>
                 {comparableOffers.map((offer, i) => (

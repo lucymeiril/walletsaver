@@ -562,9 +562,14 @@ def test_reviewed_mixed_scalar_preserves_historical_quote_and_aggregate_without_
          'price_state': 'normal', 'offer_state': 'active', 'promotion_type': 'final_price',
          'raw_evidence': '{}'}, variant,
     )
-    assert offer['listed_price'] == offer['total_price'] == offer['comparable_price'] == quote
-    assert offer['total_quantity'] == 920 and offer['quantity_unit'] == 'g'
-    assert offer['bundle_count'] == 4 and offer['received_package_count'] == 1
+    assert offer['listed_price'] == quote
+    assert offer['quantity_unit'] == 'g' and offer['bundle_count'] == 4
+    if context.startswith('mixed_') or context == 'homogeneous':
+        assert offer['total_price'] == offer['comparable_price'] == quote
+        assert offer['total_quantity'] == 920 and offer['received_package_count'] == 1
+    else:
+        assert offer['total_price'] is offer['comparable_price'] is None
+        assert offer['total_quantity'] is offer['received_package_count'] is None
     assert offer['membership_required'] is None and offer['coupon_required'] is None
     if context == 'homogeneous':
         assert offer['quantity_comparison_reason'] is None
@@ -667,6 +672,64 @@ def test_measured_food_physical_companion_keeps_known_content_without_homogeneou
     assert rejected['quantity_basis'] is rejected['scalar_basis'] is rejected['received_package_count_scope'] is None
 
 
+@pytest.mark.parametrize('mutation', [
+    'missing_contract', 'null_contract', 'malformed_contract', 'unregistered_contract',
+    'doubleescaped_contract', 'component_conflict', 'missing_basis', 'stale_measured_scalar',
+])
+def test_invalid_component_evidence_preserves_quote_but_holds_derived_receipt(mutation):
+    from copy import deepcopy
+    from core.reviewed_content_quantities import REVIEWED_SOURCE_COMPONENT_LISTINGS
+    from core.reviewed_source_evidence import valid_source_component_variant
+    review = deepcopy(next(r for r in REVIEWED_SOURCE_COMPONENT_LISTINGS
+                           if any(url.endswith('/523645') for url in r['required_source']['source_urls'])))
+    attrs = {'quantity_basis': 'reviewed_source_component_vector_v1',
+             'scalar_basis': 'one_complete_declared_vector_not_piece_count',
+             'source_components': deepcopy(review['components']), 'source_component_listing': review}
+    variant = {'package_quantity': 1, 'package_unit': '세트', 'bundle_count': 1,
+               'standard_unit': None, 'attributes': attrs}
+    assert valid_source_component_variant(variant)
+    if mutation == 'missing_contract':
+        attrs.pop('source_component_listing')
+    elif mutation == 'null_contract':
+        attrs['source_component_listing'] = None
+    elif mutation == 'malformed_contract':
+        attrs['source_component_listing'] = 'unverified-copied-contract'
+    elif mutation == 'unregistered_contract':
+        review['required_source']['source_urls'] = ['https://example.test/other-native']
+    elif mutation == 'doubleescaped_contract':
+        # JSON decoding leaves literal Unicode escapes, unlike ordinary JSON
+        # ensure_ascii serialization, which decodes back to registered text.
+        review['title'] = review['title'].encode('unicode_escape').decode('ascii')
+    elif mutation == 'component_conflict':
+        attrs['source_components'][0]['count'] += 1
+    elif mutation == 'missing_basis':
+        attrs.pop('quantity_basis')
+    elif mutation == 'stale_measured_scalar':
+        variant.update(package_quantity=1500, package_unit='g', standard_unit='g')
+    assert not valid_source_component_variant(variant)
+    variant['attributes'] = json.dumps(attrs, ensure_ascii=True)
+    event = {'public_offer_event_id': 'original-component-event', 'price': 11000,
+             'original_price': 13000, 'price_state': 'normal', 'offer_state': 'active',
+             'promotion_type': 'buy_x_get_y', 'event_name': '2+1',
+             'crawled_at': '2026-10-06T09:00:00Z', 'price_per_100g': 733.33,
+             'raw_evidence': json.dumps({'promotion_conditions': {
+                 'buy_quantity': 2, 'free_quantity': 1, 'membership_required': None,
+                 'coupon_required': None}})}
+    before = deepcopy((event, variant))
+    offer = PublicCatalogStore._normalized_offer(event, variant)
+    assert offer['quantity_comparison_reason'] == 'quantity_evidence_unverified'
+    assert offer['listed_price'] == 11000 and offer['original_price'] == 13000
+    assert offer['id'] == event['public_offer_event_id'] and offer['crawled_at'] == event['crawled_at']
+    assert offer['event_name'] == '2+1'
+    assert offer['promotion_conditions'] == json.loads(event['raw_evidence'])['promotion_conditions']
+    for field in ('total_price', 'comparable_price', 'total_quantity', 'received_package_count',
+                  'received_package_count_scope', 'per_item', 'per_100g', 'per_100ml', 'per_100m',
+                  'pricing_measure_quantity', 'pricing_measure_unit', 'pricing_measure_basis'):
+        assert offer[field] is None, field
+    assert offer['quantity_components'] == []
+    assert (event, variant) == before
+
+
 @pytest.fixture
 def scoped_group_catalog(tmp_path, monkeypatch):
     import core.catalog_identity as identity
@@ -713,6 +776,32 @@ def scoped_group_catalog(tmp_path, monkeypatch):
             (4, '미등록', json.dumps(['잘못된검색']), 1, 'missing'),
             (5, '객체', json.dumps({'alias': '객체검색'}), 1, 'food.snack')])
     return path
+
+
+def test_invalid_component_latest_quote_cannot_be_current_or_fall_back_to_old_receipt(scoped_group_catalog):
+    attrs = json.dumps({'quantity_basis': 'reviewed_source_component_vector_v1',
+                        'source_component_listing': None})
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute('UPDATE normalized_product_variants SET package_quantity=1500, package_unit=?, attributes=? '
+                   'WHERE public_variant_id=?', ('g', attrs, 'var-milk-a'))
+        db.execute('UPDATE normalized_product_variants SET is_active=0 WHERE public_variant_id=?', ('var-milk-b',))
+        db.execute('UPDATE normalized_offer_events SET offer_state=? WHERE public_offer_event_id=?',
+                   ('active', 'milk-a-event-2'))
+        original_events = db.execute('SELECT * FROM normalized_offer_events ORDER BY public_offer_event_id').fetchall()
+    store = PublicCatalogStore(scoped_group_catalog)
+    detail = store.get_normalized_product_detail('milk-a')
+    offers = detail['variants'][0]['listings'][0]['offers']
+    assert {offer['id'] for offer in offers} == {'milk-a-event-1', 'milk-a-event-2'}
+    latest = next(offer for offer in offers if offer['is_latest'])
+    assert latest['id'] == 'milk-a-event-2' and latest['listed_price'] == 1800
+    assert all(offer['current_eligible'] is False for offer in offers)
+    assert all(offer['quantity_comparison_reason'] == 'quantity_evidence_unverified' for offer in offers)
+    assert all(offer['comparable_price'] is offer['total_quantity'] is None for offer in offers)
+    assert not detail['best_offer']
+    rows, total = store.search_normalized_products_page('밀크')
+    assert total == 1 and not rows[0]['best_offer']
+    with sqlite3.connect(scoped_group_catalog) as db:
+        assert db.execute('SELECT * FROM normalized_offer_events ORDER BY public_offer_event_id').fetchall() == original_events
 
 
 @pytest.mark.parametrize('query,category,expected', [

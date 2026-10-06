@@ -735,6 +735,11 @@ def package_comparison_reason(variant):
     attrs = variant.get('attributes') or {}
     if not isinstance(attrs, Mapping):
         return 'quantity_evidence_unverified'
+    if ('source_component_listing' in attrs
+            or attrs.get('quantity_basis') == 'reviewed_source_component_vector_v1'):
+        # A stored scalar or stale serialized contract must not make an
+        # unverified contents vector look like an ordinary priced package.
+        return None if valid_source_component_variant(variant) else 'quantity_evidence_unverified'
     if 'explicit_listing_quantity_review' not in attrs:
         return None
     if not valid_explicit_listing_variant(variant):

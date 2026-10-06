@@ -89,6 +89,60 @@ def test_facility_service_occupancy_stays_unloaded_after_category_materializatio
     assert food is not None and not issues
 
 
+@pytest.mark.parametrize('native,expected_count,quote', [('509119', 20, 41990), ('523645', 400, 689900)])
+def test_registered_sunkist_originals_keep_recipe_vectors_and_apply_outer_sets_once(native, expected_count, quote):
+    from services.initial_taxonomy import taxonomy_categories
+    from core.catalog_quantity import package_pricing_measure
+    # Actual original product-only fields: ingestion41:95 SHA666baad4e8cf9737a721ddab05c5c699ff9179a293fc05797e0790cecec54ae3;
+    # ingestion41:91 SHA60abef485ca970eeaad6c6356bb135147fd2eaf36e4936c5282dc5f390474825.
+    outer = native == '523645'
+    title = '썬키스트 견과 ３종세트 25g x 60봉' + (' x 20세트' if outer else '')
+    slug = 'Sunkist-Nut-3-Variety-25g-x-60-x-20set' if outer else 'Sunkist-Nut-3-Variety-Set-25g-x-60'
+    url = f'https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/{slug}/p/{native}'
+    display = '개　　　당 34,495원' if outer else '100G당 2,799원'
+    raw = {'name': title, 'normalized_name': title, 'raw_name': title, 'brand': '__no_brand__',
+           'source': 'costco', 'mart': 'costco', 'source_record_key': native, 'mart_native_code': native,
+           'canonical_url': url, 'detail_url': url, 'source_url': url,
+           'category': '과자', 'mart_native_category_path': '과자',
+           'image_url': ('https://www.costco.co.kr/medias/sys_master/images/ha1/h4f/9867896717342.jpg' if outer
+                         else 'https://www.costco.co.kr/medias/sys_master/images/h4e/h2c/9894602407966.jpg'),
+           'pack_qty': 60, 'pack_unit': '봉', 'price': quote, 'sale_price': quote,
+           'unit_price_display': display, 'unit_price_text': display,
+           'unit_price_basis': '개　　　' if outer else '100G',
+           'unit_price_basis_raw': '개　　　' if outer else '100G',
+           'crawled_at': '2026-08-31T01:51:51.875403Z'}
+    before = deepcopy(raw)
+    leaf = 'food.grains.nuts.mixed'
+    bundle = build_initial_catalog_bundle([ingestion(rows=[raw], mart='costco')],
+        categories=taxonomy_categories({leaf}),
+        assignments={('costco', native): assignment(unified_category_id=leaf)}, run_id='sunkist-original-vector')
+    assert not bundle['unresolved'] and len(bundle['offers']) == len(bundle['variants']) == 1
+    variant = bundle['variants'][0]
+    assert (variant['package_quantity'], variant['package_unit'], variant['bundle_count']) == (1, '세트', 1)
+    components = variant['attributes']['source_components']
+    assert [c['identity'] for c in components] == ['썬키스트 25 클래식', '썬키스트 25 팝', '썬키스트 25 재즈']
+    assert all((c['quantity'], c['unit'], c['count'], c['amount_scope']) ==
+               (25, 'g', expected_count, 'per_counted_component') for c in components)
+    assert sum(c['quantity'] * c['count'] for c in components) == (30000 if outer else 1500)
+    assert variant['standard_unit'] is None
+    assert package_pricing_measure(variant) is None
+    offer = bundle['offers'][0]
+    assert offer['price'] == quote
+    assert offer['standard_unit_price'] is None and offer['price_per_100g'] is None
+    assert bundle['source_listings'][0]['source_record_key'] == native
+    assert raw == before
+    engine = create_engine('sqlite:///:memory:')
+    Base.metadata.create_all(engine)
+    try:
+        with Session(engine) as session:
+            assert validate_bundle(session, bundle, 'sunkist-vector').ok
+            doubled = deepcopy(bundle)
+            doubled['variants'][0]['attributes']['source_components'][0]['count'] *= 20
+            assert not validate_bundle(session, doubled, 'repeated-outer-factor').ok
+    finally:
+        engine.dispose()
+
+
 def test_declared_assortment_hierarchy_keeps_quantity_separate_from_recipe_hold(monkeypatch):
     from core.catalog_quantity import normalize_catalog_package
     from core import reviewed_content_quantities

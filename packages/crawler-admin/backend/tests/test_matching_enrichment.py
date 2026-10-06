@@ -431,6 +431,100 @@ def test_ordinary_homeplus_recollection_and_export_reject_url_context_contradict
         reset_db_admin_engine()
 
 
+def _sunkist_original_source(native):
+    # Minimal original observations, not canonical quantities copied into a
+    # collector row: 509119 SHA666baad4e8cf9737a721ddab05c5c699ff9179a293fc05797e0790cecec54ae3;
+    # 523645 SHA60abef485ca970eeaad6c6356bb135147fd2eaf36e4936c5282dc5f390474825.
+    outer = native == '523645'
+    slug = ('Sunkist-Nut-3-Variety-25g-x-60-x-20set' if outer
+            else 'Sunkist-Nut-3-Variety-Set-25g-x-60')
+    url = f'https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/{slug}/p/{native}'
+    title = '썬키스트 견과 ３종세트 25g x 60봉' + (' x 20세트' if outer else '')
+    basis = '개　　　' if outer else '100G'
+    quote = 689900 if outer else 41990
+    display = '개　　　당 34,495원' if outer else '100G당 2,799원'
+    return {'name': title, 'normalized_name': title, 'raw_name': title,
+            'brand': '__no_brand__', 'source': 'costco', 'mart': 'costco',
+            'source_record_key': native, 'mart_native_code': native,
+            'category': '과자', 'mart_native_category_path': '과자',
+            'canonical_url': url, 'source_url': url, 'detail_url': url,
+            'image_url': ('https://www.costco.co.kr/medias/sys_master/images/ha1/h4f/9867896717342.jpg' if outer
+                          else 'https://www.costco.co.kr/medias/sys_master/images/h4e/h2c/9894602407966.jpg'),
+            'pack_qty': 60, 'pack_unit': '봉', 'price': quote, 'sale_price': quote,
+            'unit_price_basis': basis, 'unit_price_basis_raw': basis,
+            'unit_price_display': display, 'unit_price_text': display,
+            'crawled_at': '2026-08-31T01:51:51.875403Z'}
+
+
+@pytest.mark.parametrize('native', ['509119', '523645'])
+@pytest.mark.parametrize('mutation', ['original', 'price_only', 'native', 'url', 'count',
+                                    'component', 'bare', 'malformed_source',
+                                    'target_count', 'target_identity', 'target_bare',
+                                    'malformed_target', 'malformed_target_vector'])
+def test_registered_sunkist_vectors_recollect_and_export_only_exact_source(tmp_path, native, mutation):
+    import json
+    from core.catalog_quantity import normalize_catalog_package
+    product_id, variant_id = {
+        '509119': ('prod-881e99f2ce0d781e2524a3d3097137d6', 'var-adad45d44f7974f4f76b2c5d8879aec9'),
+        '523645': ('prod-5c95fd6ab8551f9f49adf357dede832d', 'var-09f3c9b913bac1aeb474ca8159aa0e6b'),
+    }[native]
+    original = _sunkist_original_source(native)
+    package, issues = normalize_catalog_package(original, {}, original['name'])
+    assert not issues
+    expected_count = 400 if native == '523645' else 20
+    assert [c['count'] for c in package['attributes']['source_components']] == [expected_count] * 3
+    assert (package['package_quantity'], package['package_unit'], package['bundle_count']) == (1, '세트', 1)
+    engine = _engine(tmp_path)
+    key = _seed_source_scoped_match(engine, original, quantity=1, unit='세트', count=1)
+    attrs = deepcopy(package['attributes'])
+    if mutation == 'target_count': attrs['source_components'][0]['count'] *= 20
+    elif mutation == 'target_identity': attrs['source_components'][0]['identity'] = '다른 레시피'
+    elif mutation == 'target_bare': attrs = {}
+    elif mutation == 'malformed_target_vector': attrs['source_components'] = {'count': expected_count}
+    with engine.begin() as connection:
+        connection.execute(text('ALTER TABLE normalized_product_variants ADD COLUMN attributes TEXT'))
+        connection.execute(text('ALTER TABLE normalized_product_variants ADD COLUMN standard_unit TEXT'))
+        connection.execute(text('UPDATE normalized_canonical_products SET brand=NULL, canonical_name=:title, unified_category_id=:leaf'),
+                           {'title': package['display_unit'], 'leaf': 'food.grains.nuts.mixed'})
+        connection.execute(text('UPDATE normalized_product_variants SET attributes=:attrs'),
+                           {'attrs': '{broken' if mutation == 'malformed_target' else json.dumps(attrs)})
+        connection.execute(text('UPDATE normalized_canonical_products SET public_product_id=:product'), {'product': product_id})
+        connection.execute(text('UPDATE normalized_product_variants SET public_product_id=:product, public_variant_id=:variant'),
+                           {'product': product_id, 'variant': variant_id})
+        connection.execute(text('UPDATE matching_entries SET public_product_id=:product, public_variant_id=:variant'),
+                           {'product': product_id, 'variant': variant_id})
+        connection.execute(text('CREATE TABLE normalized_source_listings (public_variant_id TEXT, source_name TEXT, source_record_key TEXT, source_title TEXT, source_url TEXT, is_active BOOLEAN)'))
+        connection.execute(text("INSERT INTO normalized_source_listings VALUES (:variant,'costco',:native,:title,:url,1)"),
+                           {'variant': variant_id, 'native': native, 'title': original['name'], 'url': original['source_url']})
+    row = deepcopy(original)
+    if mutation == 'price_only':
+        row.update(price=50000, sale_price=50000,
+                   unit_price_display='개당 2,500원' if native == '523645' else '100G당 3,333원',
+                   unit_price_text='개당 2,500원' if native == '523645' else '100G당 3,333원')
+    elif mutation == 'native': row.update(source_record_key='other', mart_native_code='other')
+    elif mutation == 'url': row.update(canonical_url=original['canonical_url']+'4', source_url=original['source_url']+'4', detail_url=original['detail_url']+'4')
+    elif mutation == 'count': row['pack_qty'] = 61
+    elif mutation == 'component':
+        row['attributes'] = {'source_components': deepcopy(attrs['source_components'])}
+        row['attributes']['source_components'][0]['quantity'] = 26
+    elif mutation == 'bare': row = {'name': original['name'], 'sale_price': original['sale_price']}
+    elif mutation == 'malformed_source': row['canonical_url'] = [original['canonical_url']]
+    before = deepcopy(row)
+    reset_db_admin_engine(engine)
+    try:
+        valid = mutation in {'original', 'price_only'}
+        result = enrich_items_with_matching_entries([deepcopy(row)])[0]
+        with Session(engine) as session:
+            export_status = lookup_row_match_statuses(session, [(row, key)])[0]
+        assert (result['matching_status'] == 'hit', export_status == 'hit') == (valid, valid)
+        if valid:
+            assert (result['public_product_id'], result['public_variant_id']) == (product_id, variant_id)
+        assert row == before
+    finally:
+        reset_db_admin_engine()
+        engine.dispose()
+
+
 def _source_row(**changes):
     # Small deterministic shape of the persisted DiscountItem rows: the match
     # key uses the full raw name/unit, structured quantity is a separate field,

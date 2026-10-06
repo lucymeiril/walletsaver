@@ -608,13 +608,6 @@ class PublicCatalogStore:
             )
             if "unit_service_occupancy_not_entitlement" in purpose_issues:
                 purpose_reason = "unit_service_occupancy_not_entitlement"
-        comparable = float(transaction[0]) if transaction and not purpose_reason else None
-        received_packages = int(transaction[1]) if transaction else 1
-        quantity = float(variant["package_quantity"]) if variant.get("package_quantity") is not None else None
-        quantity = quantity if quantity is not None and quantity > 0 else None
-        bundle = int(variant["bundle_count"]) if variant.get("bundle_count") is not None else None
-        bundle = bundle if bundle is not None and bundle > 0 else None
-        total_quantity = quantity * bundle * received_packages if transaction and quantity and bundle and not purpose_reason else None
         attributes = _json(variant.get("attributes"), {})
         attributes = attributes if isinstance(attributes, dict) else {}
         declared_vector = valid_source_component_variant({**variant, "attributes": attributes})
@@ -626,6 +619,19 @@ class PublicCatalogStore:
             **variant, 'attributes': attributes})
         if "package_components" in attributes and not homogeneous_vector:
             composition_reason = "quantity_evidence_unverified"
+        invalid_quantity_evidence = composition_reason == "quantity_evidence_unverified"
+        if invalid_quantity_evidence:
+            # A stale scalar/vector cannot establish paid spend or receipt
+            # quantities. Keep the immutable quote and declared variant fields;
+            # valid known-scalar comparison holds retain their established facts.
+            transaction = None
+        comparable = float(transaction[0]) if transaction and not purpose_reason else None
+        received_packages = int(transaction[1]) if transaction else 1
+        quantity = float(variant["package_quantity"]) if variant.get("package_quantity") is not None else None
+        quantity = quantity if quantity is not None and quantity > 0 else None
+        bundle = int(variant["bundle_count"]) if variant.get("bundle_count") is not None else None
+        bundle = bundle if bundle is not None and bundle > 0 else None
+        total_quantity = quantity * bundle * received_packages if transaction and quantity and bundle and not purpose_reason else None
         unit = str(variant.get("package_unit") or "").strip().lower()
         linear_contents = unit == "m" and valid_linear_contents_variant({
             **variant, "attributes": _json(variant.get("attributes"), {})})
@@ -688,7 +694,8 @@ class PublicCatalogStore:
             "received_package_count": received_packages if transaction and not purpose_reason else None,
             # This integer repeats the whole declared contents vector. It does
             # not establish the number of physical containers or pieces.
-            "received_package_count_scope": ("declared_linear_package_repetitions" if linear_contents else
+            "received_package_count_scope": (None if invalid_quantity_evidence else
+                                             "declared_linear_package_repetitions" if linear_contents else
                                              "complete_declared_vector" if declared_vector or homogeneous_vector else None),
             "quantity_basis": ("reviewed_declared_linear_contents" if linear_contents else
                                "reviewed_homogeneous_contents" if homogeneous_vector else

@@ -372,8 +372,11 @@ def _normalized_source_reason(row: dict[str, Any], key: str, entry: dict[str, An
                 and valid_linear_contents_variant(linear_review[0])
                 and not valid_linear_contents_variant(variant)):
             return 'normalized_variant_conflict'
-    if isinstance(variant_attrs, dict) and 'source_component_listing' in variant_attrs:
-        review = source_component_listing_package(row, {}, title)
+    review = source_component_listing_package(row, {}, title)
+    if (review is not None or
+            isinstance(variant_attrs, dict) and 'source_component_listing' in variant_attrs):
+        # A proved mixed source cannot fall through to a scalar target when
+        # its persisted vector attributes are missing or malformed.
         if (not valid_source_component_variant(variant) or not review or not review[0] or review[1]
                 or review[0]['attributes']['source_component_listing'] != variant_attrs['source_component_listing']
                 or package != (1, '세트', 1)):

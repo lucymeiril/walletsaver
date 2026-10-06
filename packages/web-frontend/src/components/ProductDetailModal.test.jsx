@@ -534,7 +534,7 @@ describe('ProductDetailModal public catalog rendering', () => {
     expect(screen.getByText('역대 최저가')).toBeInTheDocument();
     expect(screen.getByText('가격 이력 요약', { exact: false })).toBeInTheDocument();
     expect(screen.getByText('마지막 할인 04-30')).toBeInTheDocument();
-    expect(screen.getByText('비교 가능한 판매처', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('판매처별 규격·가격', { exact: false })).toBeInTheDocument();
     expect(screen.getByText('쿠팡')).toBeInTheDocument();
     expect(screen.getByText('커뮤니티 반응 🔥42 / ❄️3')).toBeInTheDocument();
     expect(screen.getByText('댓글 18개')).toBeInTheDocument();
@@ -1581,7 +1581,7 @@ describe('248 validated linear receipt consumers', () => {
     render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
     expect(screen.getAllByText(/선형 내용량 360m.*선택 선형 구성 ×3.*물리 패키지 수량 미확인/).length).toBeGreaterThan(0);
     expect(screen.queryByText(/수령 패키지 3|1080m|원\/100g|원\/100ml/)).not.toBeInTheDocument();
-    const comparisonTable = screen.getByRole('heading', { name: '🏬 비교 가능한 판매처' }).parentElement;
+    const comparisonTable = screen.getByRole('heading', { name: '🏬 판매처별 규격·가격' }).parentElement;
     expect(comparisonTable).toHaveTextContent('선형 내용량 360m');
     expect(comparisonTable).not.toHaveTextContent('선형 판매 내용량 검증 미확인');
   });

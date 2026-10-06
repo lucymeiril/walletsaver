@@ -5436,3 +5436,45 @@ REVIEWED_SOURCE_COMPONENT_LISTINGS += ({'title': '종가 백열무김치 1.2kg &
             'NULL; technical1set wrapper is not sold1. Old1200g scalar represented only the first '
             'component. No homogeneous2400g rate, inferred physical count, generic ampersand rule or '
             'price-derived amount.'},)
+
+# Reviewed loaded-catalog correction: apply already preserved201 facts to509119.
+REVIEWED_SOURCE_COMPONENT_LISTINGS += ({'title': '썬키스트 견과 3종세트 25g x 60봉',
+ 'category_id': 'food.grains.nuts.mixed',
+ 'required_source': {'source_urls': ['https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119'],
+                     'source_fields': {'mart_native_category_path': '과자', 'category': '과자'}},
+ 'quantity_fields': {'pack_qty': 60,
+                     'pack_unit': '봉',
+                     'unit_price_display': ['100', 'g'],
+                     'unit_price_basis': ['100', 'g'],
+                     'unit_price_basis_raw': ['100', 'g'],
+                     'unit_price_text': ['100', 'g']},
+ 'components': [{'identity': '썬키스트 25 클래식',
+                 'presentation': 'declared_nut_recipe_bag',
+                 'quantity': 25,
+                 'unit': 'g',
+                 'count': 20,
+                 'amount_scope': 'per_counted_component'},
+                {'identity': '썬키스트 25 팝',
+                 'presentation': 'declared_nut_recipe_bag',
+                 'quantity': 25,
+                 'unit': 'g',
+                 'count': 20,
+                 'amount_scope': 'per_counted_component'},
+                {'identity': '썬키스트 25 재즈',
+                 'presentation': 'declared_nut_recipe_bag',
+                 'quantity': 25,
+                 'unit': 'g',
+                 'count': 20,
+                 'amount_scope': 'per_counted_component'}],
+ 'required_source_image_url': 'https://www.costco.co.kr/medias/sys_master/images/h4e/h2c/9894602407966.jpg',
+ 'independent_specifications': {'per_set_recipe_bag_counts': [20, 20, 20],
+                                'sold_set_count': 1,
+                                'total_bag_count': 60,
+                                'declared_total_g': 1500,
+                                'official_feature_sha256': '05ed3e0c16a04767d885a715550e990400d2145251605350a9edc9d7d5379353',
+                                'printed_label_sha256': 'f019d70b73141dc3999d2c3acd9476f22f6440873962100e7db5e0ec0e4a650b'},
+ 'reason': 'Existing201 official509119 exactnative capacity feature and printedpackage '
+           'independentlydeclareClassic/Pop/Jazz25gx20each:60bags/1500g. Original509119thumbnail '
+           'appears inthat savedofficialbody. This isone complete mixedrecipe set, not '
+           'homogeneous25gx60 contents. Preserve originalquote/basis but no aggregate '
+           'homogeneousunitprice; outer20 isexclusive523645, neverborrowed.'},)
