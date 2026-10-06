@@ -1216,13 +1216,23 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
                             raise ValueError('supplemental Lotte native/currency conflict')
                         declared_package(view.get('size'))
                         money(offer_view.get('price'))
-        if _review_digest(attrs.get('promotion_conditions')) != _review_digest(marker):
+        original_marker = attrs.get('promotion_conditions')
+        # The ordinary Homeplus producer records uncertainty before review.
+        # Native nodes above supply the reviewed limits; never rewrite that
+        # original marker or treat it as proof of payment/coupon eligibility.
+        producer_marker = {'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+                           'payable_price_unconfirmed': True,
+                           'minimum_purchase_quantity_unconfirmed': True,
+                           'coupon_application_unconfirmed': True}
+        if (_review_digest(original_marker) != _review_digest(marker)
+                and not (source == 'homeplus'
+                         and _review_digest(original_marker) == _review_digest(producer_marker))):
             raise ValueError('original native quote markers differ from declared source facts')
         terms = {**marker, **extra, 'currency_unconfirmed': marker['source_quote_currency'] is None}
-        if previous is not None and (_review_digest(previous) != _review_digest(marker)
+        if previous is not None and (_review_digest(previous) != _review_digest(original_marker)
                                      or _review_digest(expected) != _review_digest(terms)):
             raise ValueError('original native source conditions differ between observations')
-        previous, expected = marker, terms
+        previous, expected = original_marker, terms
     return {'promotion_conditions': previous}, expected
 
 

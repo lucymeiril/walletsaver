@@ -278,7 +278,7 @@ def _offer_review_payload(original, family="minimum_order2_without_discount", so
     return reviewed
 
 
-def _native_quote_fixture(source):
+def _native_quote_fixture(source, normal_producer_marker=False):
     original = _offer_review_fixture('observed_source_quote_purchase_conditions_unverified')
     listing, variant, offer = (original[key][0] for key in ('source_listings', 'variants', 'offers'))
     marker = {'source_condition_kind': 'source_quote_purchase_conditions_unverified',
@@ -340,7 +340,12 @@ def _native_quote_fixture(source):
                    source_url=short if source == 'costco' else url)
     variant.update(variant_name=title, package_quantity=quantity, package_unit=unit, bundle_count=bundles,
                    display_unit=display, standard_unit=unit if unit == 'ml' else None)
-    attrs.update(source_record_key=native, source_url=url, promotion_conditions=marker)
+    original_marker = ({'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+                        'payable_price_unconfirmed': True,
+                        'minimum_purchase_quantity_unconfirmed': True,
+                        'coupon_application_unconfirmed': True}
+                       if normal_producer_marker else marker)
+    attrs.update(source_record_key=native, source_url=url, promotion_conditions=original_marker)
     raw = {'source': source, 'name': title, 'source_title': title, 'source_record_key': native,
            'source_url': url, 'sale_price': price, 'original_price': None, 'event_name': event,
            'package_quantity': quantity, 'package_unit': unit, 'attributes': attrs}
@@ -348,14 +353,15 @@ def _native_quote_fixture(source):
     observation = offer['raw_evidence']['observations'][0]
     observation.update(raw_payload=raw, raw_payload_sha256=_offer_review_digest(raw))
     offer.update(price=price, event_name=event, raw_evidence={'observations': [observation],
-                 'promotion_conditions': {'promotion_conditions': marker}})
+                 'promotion_conditions': {'promotion_conditions': original_marker}})
     return original, {**marker, **terms}
 
 
-@pytest.mark.parametrize('source', ['homeplus', 'costco', 'lottemart'])
-def test_native_quote_review_preserves_source_conditions_quote_history_and_sticky_replay(source):
+@pytest.mark.parametrize('source,normal_producer_marker', [
+    ('homeplus', False), ('costco', False), ('lottemart', False), ('homeplus', True)])
+def test_native_quote_review_preserves_source_conditions_quote_history_and_sticky_replay(source, normal_producer_marker):
     family = 'native_source_quote_purchase_conditions_unverified'
-    original, terms = _native_quote_fixture(source)
+    original, terms = _native_quote_fixture(source, normal_producer_marker)
     reviewed = _offer_review_payload(original, family, source_quote_terms=terms)
     session = _session()
     replay = {**deepcopy(original), 'run_id': 'new-original-replay'}
@@ -414,10 +420,15 @@ def test_native_quote_review_preserves_source_conditions_quote_history_and_stick
     ('costco', 'terms_float'), ('lottemart', 'historical_quote'), ('homeplus', 'raw_quantity'),
     ('costco', 'raw_quote_alias'), ('costco', 'attribute_quote_alias'),
     ('lottemart', 'supplemental_quote'), ('homeplus', 'sibling_native'), ('homeplus', 'option_selection'),
-    ('homeplus', 'legacy_family'), ('costco', 'wrong_host'), ('lottemart', 'wrong_url_native')])
+    ('homeplus', 'legacy_family'), ('costco', 'wrong_host'), ('lottemart', 'wrong_url_native'),
+    ('homeplus', 'producer_source_hash'), ('homeplus', 'producer_option_selection'),
+    ('homeplus', 'producer_raw_quantity'), ('homeplus', 'producer_coupon_money'),
+    ('homeplus', 'producer_marker_forgery')])
 def test_native_quote_review_rejects_source_context_types_or_payment_forgery(source, change):
     family = 'native_source_quote_purchase_conditions_unverified'
-    original, terms = _native_quote_fixture(source)
+    normal_producer_marker = change.startswith('producer_')
+    change = change.removeprefix('producer_')
+    original, terms = _native_quote_fixture(source, normal_producer_marker)
     raw = original['offers'][0]['raw_evidence']['observations'][0]['raw_payload'];attrs = raw['attributes']
     node = (attrs.get('homeplus_detail_source_fields') or attrs.get('lottemart_detail_source_fields')
             or attrs.get('submission_business_evidence', [{}])[0].get('raw_product_node'))
@@ -443,6 +454,7 @@ def test_native_quote_review_rejects_source_context_types_or_payment_forgery(sou
         original['variants'][0]['attributes']['source_evidence_reviews'].append(
             deepcopy(original['variants'][0]['attributes']['source_evidence_reviews'][-1]))
     elif change == 'raw_quantity':raw['package_quantity'] = 3000
+    elif change == 'marker_forgery':attrs['promotion_conditions']['payable_price_unconfirmed'] = False
     elif change == 'wrong_host':
         raw['source_url'] = attrs['source_url'] = raw['source_url'].replace('www.costco.co.kr', 'wrong.example')
     elif change == 'wrong_url_native':

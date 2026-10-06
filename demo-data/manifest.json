@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "catalog_revision": 67,
-  "version": "2026-10-06-catalog67",
-  "source_code_base": "7ad6e274efb757d9420dfc295812e99b03b5ec1a",
+  "catalog_revision": 69,
+  "version": "2026-10-06-catalog69",
+  "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
     "residual_review": "user_paused"
   },
   "runtime_catalog": {
-    "events": 9114,
-    "public": 8802,
+    "events": 9115,
+    "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete catalog/update knowledge and coherent snapshot67; two new actual native quotes retain original receipt/unknown payment and NULL comparison; user/session stores initialize empty.",
+  "data_scope": "Sanitized complete catalog/update knowledge and coherent snapshot69; three actual native quotes retain original receipt/unknown payment and NULL comparison; user/session stores initialize empty.",
   "files": {
     "admin.sqlite": {
-      "sha256": "a57655ede3ad02522e9bcda6a052e69a3604b74b03706b673d5869aa1e78d2d6",
-      "bytes": 61370368,
+      "sha256": "18b6c263015332d1f1fc3375249457b865cbadd7baac410dd67d1a20f3fef85c",
+      "bytes": 61419520,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -48,9 +48,9 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6370,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 9114,
+        "normalized_offer_events": 9115,
         "normalized_week_buckets": 3,
-        "normalized_offer_week_links": 9089,
+        "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
         "unified_categories": 1383,
@@ -61,9 +61,9 @@
         "product_matches": 0,
         "mart_category_mappings": 506,
         "pending_categorizations": 0,
-        "pending_ingestions": 13,
+        "pending_ingestions": 14,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 45,
+        "catalog_sync_log": 46,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "aa9564849d7c556c1103ab7b1ec927ae6ef83f9ae3105f0cc8aea90d5102a39b",
-      "archive_bytes": 8652699
+      "archive_sha256": "5f541ec49bc8ab5c09b158c4ce09bcc24be41cf1617ce8ed53c935c2b3d64511",
+      "archive_bytes": 8663652
     },
     "public_snapshot.sqlite": {
-      "sha256": "47138dd72a0762778525622f835c358fd169c397004aea904232f64face6ef7d",
-      "bytes": 57044992,
+      "sha256": "a505759038976068dcc0d390b67433191839fe7cb177baf37576944862aa589d",
+      "bytes": 57073664,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -99,9 +99,9 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6370,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 8802,
+        "normalized_offer_events": 8803,
         "normalized_week_buckets": 3,
-        "normalized_offer_week_links": 8792,
+        "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
         "unified_categories": 1383,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "c078ddbc607be0693081053ad61e46ca0e6d0a186502ade82ff906b5fd988a94",
-      "archive_bytes": 8013356
+      "archive_sha256": "9efe195c19e21f518ede13a63bb115800a8bb6cb66c9b1dcab92ae435594c551",
+      "archive_bytes": 8018556
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
