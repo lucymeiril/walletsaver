@@ -159,7 +159,8 @@ def parse_opinet_public_region_html(
     This parser reads only the server-rendered ``#os_price1`` gasoline/diesel
     table. It does not execute scripts, solve challenges, or call private
     endpoints. Station metadata embedded in the public ``fn_osPop`` link is
-    used for address, OPINET id, brand and KATEC coordinates.
+    used for address, OPINET id and brand. Positional coordinate arguments are
+    preserved as raw evidence; this page does not establish their CRS.
     """
     _require_bs4()
     soup = BeautifulSoup(html, "html.parser")
@@ -199,8 +200,19 @@ def parse_opinet_public_region_html(
             "diesel": diesel,
             "lpg": None,
             "opinet_id": station_code or None,
-            "katec_x": argument(11) or None,
-            "katec_y": argument(12) or None,
+            "raw_callback_x": argument(11) or None,
+            "raw_callback_y": argument(12) or None,
+            "coordinate_crs": None,
+            "source_coordinate_evidence": {
+                "source_url": source_url,
+                "native_station_id": station_code or None,
+                "source_callback": "fn_osPop",
+                "argument_indices": {"x": 11, "y": 12},
+                "raw_x": argument(11) or None,
+                "raw_y": argument(12) or None,
+                "coordinate_crs": None,
+                "coordinate_status": "unverified_callback_crs",
+            },
             "gasoline_updated_at": argument(7) or None,
             "diesel_updated_at": argument(8) or None,
             "source_url": source_url,

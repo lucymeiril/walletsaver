@@ -175,15 +175,15 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 
 | 외부 기능 | 필요한 설정·현재 한계 |
 | --- | --- |
-| Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 지원되는 비공개 credentials file. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
+| Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 `GOOGLE_CLIENT_SECRET_FILE`이 가리키는 비공개 JSON의 `web`/`installed` client 설정. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
 | Naver OAuth | 비공개 `NAVER_CLIENT_ID`·`NAVER_CLIENT_SECRET`과 해당 provider callback 등록 필요. Naver 지도 공개 브라우저 검색과 다른 기능이며 실제 OAuth 미검증 |
 | Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. `NAVER_CLIENT_ID`/`NAVER_CLIENT_SECRET`은 이 공개 검색의 필수 키가 아니라 별도 OAuth 설정 |
 | Opinet 공식 API | `OPINET_API_KEY`와 실제 공급자 권한·접근 필요. 배포된 7개 주유소·14개 가격은 각각 원래 날짜의 관측값이며 실시간 API 결과가 아님 |
-| 연료 지도 좌표 | Opinet 원본 X/Y의 CRS·변환 연결 미확인. 배포 좌표는 NULL이며 GPS 거리순 비교를 보장하지 않음. 개별 Naver 후보 x/y를 확인한 것만으로 모든 주유소 좌표나 Opinet CRS를 확정하지 않음 |
+| 연료 지도 좌표 | 공식 API의 `GIS_X_COOR`/`GIS_Y_COOR` KOTI-KATEC 변환과 수동 페이지 callback 위치필드는 구분한다. 수동 위치필드의 CRS는 미입증이므로 원문 XY만 보존하고 좌표는 NULL로 둔다. 배포 7개 좌표도 NULL이며 GPS 거리순 비교를 보장하지 않음. Naver 명칭·주소 연결만으로 x/y의 CRS를 확정하지 않음 |
 | 핫딜 | 현재 Algumon collector는 fixture placeholder이고 실제 공개 요청은 403으로 중지된 기록이 있음. 실제 post의 정상 수집·parser 연결이 필요하며, 이를 자격증명 부족이라고 단정하지 않음. demo 핫딜 라이브 갱신 미검증 |
 | 이마트 라이브 | Playwright의 `chrome` 채널·화면 모드와 명시적 세션 proxy/CA 연결이 필요. 현재 호스트의 공식 Chrome 154.0.8037.97·Xvfb 화면 모드·로컬 DOM과 별도 공개 의존성의 proxy/TLS 확인은 완료됐다. 이마트 요청은 없었으며 기존 429 중지와 허용된 다음 공급자 구간·6–7분 제한을 지킨다. 로그인·challenge 우회 없음 |
 
-TeamDemo의 외부 값은 기본적으로 공란이다. 로컬 키가 있는지 여부는 이 문서 감사에서 확인하지 않았다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
+TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와 crawler API의 Google/Naver/Opinet 이름별 설정 및 Google file locator는 공란으로 확인했다. 이는 다른 경로에 개인 키 파일이 없다는 뜻이 아니며 공급자 로그인 성공을 뜻하지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
 
 ```powershell
 .\start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local

@@ -109,6 +109,7 @@ class GasStationRecord:
     has_self_service: bool = False
     updated_at: datetime = field(default_factory=datetime.utcnow)
     prices: list[GasStationPriceRecord] = field(default_factory=list)
+    source_coordinate_evidence: dict[str, Any] = field(default_factory=dict)
 
 
 def _parse_dt(value: Any) -> datetime:
@@ -305,6 +306,7 @@ def merge_station_records(records: Iterable[GasStationRecord]) -> list[GasStatio
             has_self_service=existing.has_self_service or record.has_self_service,
             updated_at=max(existing.updated_at, record.updated_at),
             prices=sorted(price_map.values(), key=lambda item: item.fuel_type),
+            source_coordinate_evidence=existing.source_coordinate_evidence or record.source_coordinate_evidence,
         )
     return list(merged.values())
 
@@ -533,7 +535,8 @@ class OpinetCrawler:
             if not prices:
                 continue
             sido, sigungu = _split_region(address)
-            lat, lng = katec_to_wgs84(row.get("katec_x"), row.get("katec_y"))
+            # Page callback positions are not the official API's typed GIS
+            # fields. Keep raw evidence without applying an unproven CRS.
             records.append(GasStationRecord(
                 station_code=str(row.get("opinet_id") or f"{name}|{address}"),
                 brand=normalize_brand(str(row.get("brand") or "")),
@@ -541,11 +544,12 @@ class OpinetCrawler:
                 address=address,
                 sido=sido,
                 sigungu=sigungu,
-                lat=lat,
-                lng=lng,
+                lat=None,
+                lng=None,
                 has_self_service=bool(row.get("self_service")),
                 updated_at=max(price.observed_at for price in prices),
                 prices=prices,
+                source_coordinate_evidence=dict(row.get("source_coordinate_evidence") or {}),
             ))
         return merge_station_records(records)
 
