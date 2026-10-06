@@ -9,6 +9,7 @@ import json
 import math
 from threading import Lock
 from typing import Any, Iterator, Optional
+from collections.abc import Mapping
 
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.engine import Engine
@@ -146,13 +147,116 @@ def get_pending_ingestion_records(
     return records
 
 
+def load_normalized_identity_products(session: Session, public_ids: list[str]) -> dict[str, dict[str, Any]]:
+    """Resolve reviewed identity separately from a pending catalog offer.
+
+    Legacy/manual inactive products remain unavailable. A source-built product
+    whose complete listings have only pending offers may still resolve identity;
+    every caller must subsequently verify the source and exact variant. This
+    does not activate the product or make its offers comparable.
+    """
+    columns = _table_columns(session, "normalized_canonical_products")
+    if not public_ids or not {"public_product_id", "is_active"} <= columns:
+        return {}
+    result, pending = {}, {}
+    ids = list(dict.fromkeys(public_ids))
+    for offset in range(0, len(ids), 900):
+        chunk = ids[offset:offset + 900]
+        placeholders = ", ".join(f":n{i}" for i in range(len(chunk)))
+        params = {f"n{i}": value for i, value in enumerate(chunk)}
+        attrs = ", attributes" if "attributes" in columns else ""
+        details = ", ".join(field if field in columns else f"NULL AS {field}"
+                            for field in ("canonical_name", "brand", "unified_category_id"))
+        rows = session.execute(text(
+            f"SELECT public_product_id, {details}, is_active"
+            f"{attrs} FROM normalized_canonical_products WHERE public_product_id IN ({placeholders})"
+        ), params).mappings().all()
+        for row in rows:
+            item = dict(row)
+            key = str(item["public_product_id"])
+            if item["is_active"] in (True, 1):
+                result[key] = item
+                continue
+            if item["is_active"] not in (False, 0):
+                continue
+            attributes = item.get("attributes")
+            if isinstance(attributes, str):
+                try:
+                    attributes = json.loads(attributes)
+                except (ValueError, TypeError):
+                    continue
+            if not isinstance(attributes, Mapping) or not item["unified_category_id"]:
+                continue
+            evidence = attributes.get("classification_attribute_evidence")
+            if (attributes.get("identity_basis") not in {"source_scoped", "reviewed_product_group"}
+                    or not isinstance(evidence, list) or not evidence
+                    or any(not isinstance(e, Mapping) or not e.get("source_name")
+                           or not e.get("source_record_key") or not e.get("raw_record_ids")
+                           or not e.get("classification_reason") for e in evidence)):
+                continue
+            pending[key] = item
+    required = {
+        "normalized_product_variants": {"public_product_id", "public_variant_id", "is_active", "attributes"},
+        "normalized_source_listings": {"public_variant_id", "public_source_listing_id", "source_name",
+                                       "source_record_key", "source_title", "source_url", "is_active"},
+        "normalized_offer_events": {"public_source_listing_id", "offer_state"},
+    }
+    if not pending or any(not fields <= _table_columns(session, table) for table, fields in required.items()):
+        return result
+    pending_ids = list(pending)
+    from core.reviewed_source_evidence import source_review_matches
+    for offset in range(0, len(pending_ids), 900):
+        chunk = pending_ids[offset:offset + 900]
+        placeholders = ", ".join(f":p{i}" for i in range(len(chunk)))
+        params = {f"p{i}": value for i, value in enumerate(chunk)}
+        # An inactive identity must never fall through the legacy unbound-row
+        # path. Require its stored complete source proofs; the existing per-row
+        # validator below then checks the actual URL/context/quantity inputs.
+        proof_valid = dict.fromkeys(chunk, True)
+        variants = session.execute(text(
+            "SELECT public_product_id, attributes FROM normalized_product_variants "
+            f"WHERE public_product_id IN ({placeholders})"
+        ), params).fetchall()
+        for product_id, attributes in variants:
+            if isinstance(attributes, str):
+                try:
+                    attributes = json.loads(attributes)
+                except (ValueError, TypeError):
+                    attributes = None
+            reviews = attributes.get("source_evidence_reviews") if isinstance(attributes, Mapping) else None
+            scalar = (isinstance(attributes, Mapping) and 'source_evidence_reviews' not in attributes
+                      and attributes.get('specification_basis') in
+                      {'source_structured_and_explicit_text', 'reviewed_override'})
+            if (not scalar and (not isinstance(reviews, list) or not reviews
+                    or any(not isinstance(review, Mapping) or not review.get("source_name")
+                           or not review.get("source_record_key") or not source_review_matches(review, review)
+                           for review in reviews))):
+                proof_valid[str(product_id)] = False
+        rows = session.execute(text(
+            "SELECT v.public_product_id FROM normalized_product_variants v "
+            "JOIN normalized_source_listings l ON l.public_variant_id=v.public_variant_id "
+            "JOIN normalized_offer_events o ON o.public_source_listing_id=l.public_source_listing_id "
+            f"WHERE v.public_product_id IN ({placeholders}) GROUP BY v.public_product_id "
+            "HAVING COUNT(*)>0 AND SUM(CASE WHEN o.offer_state='pending_review' "
+            "AND v.is_active=1 AND l.is_active=1 AND l.source_name IS NOT NULL "
+            "AND l.source_record_key IS NOT NULL AND l.source_title IS NOT NULL "
+            "AND TRIM(l.source_url)<>'' THEN 0 ELSE 1 END)=0"
+        ), params).fetchall()
+        for row in rows:
+            key = str(row[0])
+            if proof_valid[key]:
+                result[key] = {**pending[key], "identity_only_pending_offer": True}
+    return result
+
+
 def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[str, str]:
     """Return MatchingEntry runtime status for keys that exist in the knowledge base.
 
     Key-only lookup can establish reference integrity, not source specification:
     - ``hit``: a legacy MatchingEntry resolves to an active Product;
-    - ``normalized_source_verification_required``: active normalized product and
-      variant references agree; callers must still validate each raw row;
+    - ``normalized_source_verification_required``: reviewed normalized identity
+      and active variant references agree; callers must still validate each raw
+      row. An offer-pending identity does not imply offer availability;
     - ``canonical_product_unavailable``: the MatchingEntry exists, but its
       canonical Product link is missing, malformed, deleted, or inactive.
 
@@ -214,16 +318,7 @@ def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[
 
     if key_to_public_product_id:
         public_ids = list(dict.fromkeys(key_to_public_product_id.values()))
-        active_public_ids: set[str] = set()
-        for offset in range(0, len(public_ids), 900):
-            chunk = public_ids[offset : offset + 900]
-            placeholders = ", ".join(f":n{i}" for i in range(len(chunk)))
-            params = {f"n{i}": value for i, value in enumerate(chunk)}
-            rows = session.execute(text(
-                "SELECT public_product_id FROM normalized_canonical_products "
-                f"WHERE public_product_id IN ({placeholders}) AND is_active IS TRUE"
-            ), params).fetchall()
-            active_public_ids.update(str(row[0]) for row in rows)
+        active_public_ids = set(load_normalized_identity_products(session, public_ids))
 
         active_variants: dict[str, str] = {}
         variant_ids = list(dict.fromkeys(key_to_public_variant_id.values()))

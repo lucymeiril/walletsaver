@@ -1,5 +1,5 @@
 """Authenticated account features backed by the main users database."""
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
@@ -9,10 +9,14 @@ from api.schemas.common import ApiResponse, PaginationMeta
 from services.account_feature_storage import AccountFeatureStore, AccountFeatureStoreError
 
 router = APIRouter(tags=["Account features"])
+CatalogProductId = Annotated[int, Field(ge=1)] | Annotated[str, Field(min_length=1, max_length=200)]
 
 
 class CartItemBody(BaseModel):
-    product_id: int | None = Field(default=None, ge=1)
+    product_id: CatalogProductId | None = None
+    variant_id: str | None = Field(default=None, min_length=1, max_length=200)
+    listing_id: str | None = Field(default=None, min_length=1, max_length=200)
+    offer_id: str | None = Field(default=None, min_length=1, max_length=200)
     item_name: str = Field(min_length=1, max_length=300)
     item_price: float = Field(ge=0)
     item_image_url: str | None = Field(default=None, max_length=500)
@@ -30,10 +34,14 @@ class CartUpdateBody(BaseModel):
 
 class CartMergeBody(BaseModel):
     items: list[CartItemBody] = Field(default_factory=list, max_length=200)
+    merge_id: str | None = Field(default=None, min_length=1, max_length=200)
 
 
 class WishlistItemBody(BaseModel):
-    product_id: int | None = Field(default=None, ge=1)
+    product_id: CatalogProductId | None = None
+    variant_id: str | None = Field(default=None, min_length=1, max_length=200)
+    listing_id: str | None = Field(default=None, min_length=1, max_length=200)
+    offer_id: str | None = Field(default=None, min_length=1, max_length=200)
     item_name: str = Field(min_length=1, max_length=300)
     item_image_url: str | None = Field(default=None, max_length=500)
     store_name: str | None = Field(default=None, max_length=100)
@@ -64,6 +72,14 @@ def _store(request: Request) -> AccountFeatureStore:
 
 
 def _handle_store_error(exc: AccountFeatureStoreError):
+    if str(exc) == "cart_merge_conflict":
+        raise HTTPException(status_code=409, detail="같은 장바구니 병합 ID에 다른 항목이 전달되었습니다") from exc
+    if str(exc) == "catalog_selection_invalid":
+        raise HTTPException(status_code=422, detail="선택한 규격·판매처·가격 이력을 확인할 수 없습니다") from exc
+    if str(exc) == "catalog_quote_changed":
+        raise HTTPException(status_code=409, detail="선택한 판매가격이 변경되었습니다. 상품을 다시 확인해 주세요") from exc
+    if str(exc) == "catalog_price_missing":
+        raise HTTPException(status_code=422, detail="상품 표시 가격이 확인되지 않아 장바구니 금액을 저장할 수 없습니다") from exc
     if str(exc) == "product_not_found":
         raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다") from exc
     raise HTTPException(status_code=503, detail="회원 기능 저장에 실패했습니다") from exc
@@ -116,6 +132,7 @@ async def merge_cart(request: Request, body: CartMergeBody, user: dict = Depends
         data = _store(request).merge_cart(
             int(user["id"]),
             [item.model_dump() for item in body.items],
+            merge_id=body.merge_id,
         )
     except AccountFeatureStoreError as exc:
         _handle_store_error(exc)

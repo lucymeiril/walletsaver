@@ -109,6 +109,41 @@ export function buildSubcategories(items) {
 }
 
 /** 아이템 정렬 */
+export function distanceKm(value, metres) {
+  if (typeof metres === 'number' && Number.isFinite(metres) && metres >= 0) return metres / 1000;
+  if (typeof value === 'number') return Number.isFinite(value) && value >= 0 ? value : null;
+  const match = String(value ?? '').replaceAll(',', '').trim().match(/^(\d+(?:\.\d+)?)\s*(km|m|킬로미터|미터)?$/i);
+  if (!match) return null;
+  return Number(match[1]) / (['m', '미터'].includes(match[2]?.toLowerCase()) ? 1000 : 1);
+}
+
+export function fuelStationItem(station) {
+  return {
+    id: station.station_code, name: station.name, category: '주유소',
+    address: station.address, x: station.lng, y: station.lat,
+    distance: station.distance, distance_m: station.distance_m, source: station.source,
+    petrol_info: { gasoline: station.gasoline, premium_gasoline: station.premium,
+      diesel: station.diesel, lpg: station.lpg, is_self: station.self_service,
+      brand: station.brand, updated_at: station.updated_at, price_observed_at: station.price_observed_at,
+      source: station.source },
+  };
+}
+
+export function itemsWithinRadius(items, lat, lng, radius) {
+  const radians = degrees => degrees * Math.PI / 180;
+  return (items || []).flatMap(item => {
+    const rawLat = item.y ?? item.lat;
+    const rawLng = item.x ?? item.lng;
+    if (rawLat == null || rawLng == null || rawLat === '' || rawLng === '') return [];
+    const itemLat = Number(rawLat), itemLng = Number(rawLng);
+    if (!Number.isFinite(itemLat) || !Number.isFinite(itemLng) || Math.abs(itemLat) > 90 || Math.abs(itemLng) > 180) return [];
+    const a = Math.sin(radians(itemLat - lat) / 2) ** 2
+      + Math.cos(radians(lat)) * Math.cos(radians(itemLat)) * Math.sin(radians(itemLng - lng) / 2) ** 2;
+    const metres = 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+    return metres <= radius ? [{ ...item, distance_m: Math.round(metres), distance: metres / 1000 }] : [];
+  });
+}
+
 export function sortItems(items, sortBy, sortDir) {
   const sorted = [...items];
   sorted.sort((a, b) => {
@@ -122,6 +157,11 @@ export function sortItems(items, sortBy, sortDir) {
         va = a.petrol_info?.diesel ?? Infinity;
         vb = b.petrol_info?.diesel ?? Infinity;
         break;
+      case 'premium_gasoline':
+      case 'lpg':
+        va = a.petrol_info?.[sortBy] ?? Infinity;
+        vb = b.petrol_info?.[sortBy] ?? Infinity;
+        break;
       case 'price': {
         const pa = getRepresentativePrice(a.menu_info);
         const pb = getRepresentativePrice(b.menu_info);
@@ -134,18 +174,14 @@ export function sortItems(items, sortBy, sortDir) {
         vb = -(b.rating || 0);
         break;
       case 'distance': {
-        const da = typeof a.distance === 'string'
-          ? parseFloat(a.distance.replace(/[^\d.]/g, '')) || Infinity
-          : (a.distance ?? Infinity);
-        const db = typeof b.distance === 'string'
-          ? parseFloat(b.distance.replace(/[^\d.]/g, '')) || Infinity
-          : (b.distance ?? Infinity);
-        va = da; vb = db;
+        va = distanceKm(a.distance, a.distance_m) ?? Infinity;
+        vb = distanceKm(b.distance, b.distance_m) ?? Infinity;
         break;
       }
       default:
         va = 0; vb = 0;
     }
+    if (va === Infinity || vb === Infinity) return va === vb ? 0 : va === Infinity ? 1 : -1;
     return sortDir === 'asc' ? va - vb : vb - va;
   });
   return sorted;

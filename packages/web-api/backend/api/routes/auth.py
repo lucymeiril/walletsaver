@@ -1,5 +1,6 @@
 """Authentication API backed by web-api's server-owned accounts SQLite."""
 import os
+import secrets
 
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse, RedirectResponse
@@ -11,6 +12,7 @@ from services.oauth_service import (
     get_oauth_login_url,
     get_user_info,
     validate_oauth_state,
+    OAUTH_STATE_TTL,
 )
 from services.user_storage import PublicUserStore, PublicUserStoreError
 
@@ -177,10 +179,22 @@ async def demo_login(request: Request, provider: str = "google"):
 
 
 @router.get("/oauth/{provider}")
-async def oauth_login(provider: str):
+async def oauth_login(request: Request, provider: str):
     """OAuth 로그인 URL로 리다이렉트."""
     try:
-        return RedirectResponse(url=get_oauth_login_url(provider))
+        if provider not in {"google", "kakao", "naver"}:
+            raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
+        binding = secrets.token_urlsafe(32)
+        store = PublicUserStore(getattr(request.app.state, "storage", None))
+        response = RedirectResponse(url=get_oauth_login_url(provider, binding, state_store=store))
+        response.set_cookie(
+            key=f"oauth_browser_{provider}", value=binding,
+            httponly=True, secure=_COOKIE_SECURE, samesite="lax",
+            path=f"/api/auth/oauth/{provider}", max_age=OAUTH_STATE_TTL,
+        )
+        return response
+    except PublicUserStoreError as exc:
+        raise HTTPException(status_code=503, detail="OAuth 로그인 상태 저장소를 사용할 수 없습니다") from exc
     except ValueError as exc:
         if "지원하지 않는 OAuth 공급자" in str(exc):
             raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -199,33 +213,51 @@ async def oauth_callback(
     error: str | None = None,
 ):
     """OAuth 콜백 — OAuth 계정과 accounts.sqlite 사용자를 연결한다."""
+    if provider not in {"google", "kakao", "naver"}:
+        raise HTTPException(status_code=400, detail="지원하지 않는 OAuth 공급자입니다")
+
+    def callback_response(reason: str | None = None):
+        response = RedirectResponse(url=_oauth_result_url(reason, provider if reason else None), status_code=302)
+        response.delete_cookie(f"oauth_browser_{provider}", path=f"/api/auth/oauth/{provider}", secure=_COOKIE_SECURE, httponly=True, samesite="lax")
+        return response
+
+    try:
+        store = PublicUserStore(getattr(request.app.state, "storage", None))
+        valid_state = validate_oauth_state(
+            state, provider, request.cookies.get(f"oauth_browser_{provider}"), state_store=store,
+        )
+    except PublicUserStoreError:
+        return callback_response("oauth_failed")
+    if not valid_state:
+        return callback_response("oauth_state")
     if error or not code:
-        return RedirectResponse(url=_oauth_result_url("oauth_denied", provider), status_code=302)
-    if not validate_oauth_state(state):
-        return RedirectResponse(url=_oauth_result_url("oauth_state", provider), status_code=302)
+        return callback_response("oauth_denied")
     try:
         token_data = await exchange_code_for_token(provider, code)
-        info = await get_user_info(provider, token_data["access_token"])
-        user = _store(request).upsert_oauth_user(
+        access_token = token_data.get("access_token")
+        if not isinstance(access_token, str) or not access_token:
+            return callback_response("oauth_failed")
+        info = await get_user_info(provider, access_token)
+        if info.provider != provider:
+            return callback_response("oauth_failed")
+        user = store.upsert_oauth_user(
             provider=provider,
             provider_user_id=info.provider_user_id,
             email=info.email,
             nickname=info.nickname,
             profile_image_url=info.profile_image,
+            email_verified=info.email_verified,
         )
         if not _is_active(user):
-            return RedirectResponse(
-                url=_oauth_result_url("account_disabled", provider),
-                status_code=302,
-            )
+            return callback_response("account_disabled")
         tokens = create_token_pair(user["id"], user["email"], user["role"])
-        response = RedirectResponse(url=_oauth_result_url(), status_code=302)
+        response = callback_response()
         _set_auth_cookies(response, tokens)
         return response
-    except PublicUserStoreError:
-        return RedirectResponse(url=_oauth_result_url("oauth_failed", provider), status_code=302)
+    except PublicUserStoreError as exc:
+        return callback_response("oauth_link_required" if str(exc) == "oauth_email_conflict" else "oauth_failed")
     except Exception:
-        return RedirectResponse(url=_oauth_result_url("oauth_failed", provider), status_code=302)
+        return callback_response("oauth_failed")
 
 
 @router.get("/me", response_model=UserProfile)

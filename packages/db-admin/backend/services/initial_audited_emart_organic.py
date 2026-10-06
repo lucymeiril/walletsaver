@@ -40,7 +40,7 @@ GROUPS = {
     "food.grains.rice.soybean": ("유기농 서리태 400g",),
     "food.drinks.traditional.sujeonggwa": ("유기농 수정과 1.8L",),
     "food.drinks.tea.kombucha": ("석류클렌즈콤부차(뷰티) 315ml",),
-    "food.drinks.tea.grain": ("국내산 현미로 만든 스틱 미숫가루 600g",),
+    "food.drinks.powders.grain": ("국내산 현미로 만든 스틱 미숫가루 600g",),
     "food.seasonings.spices.roasted_sesame": ("유기농 발아 깨소금 180g",),
 }
 

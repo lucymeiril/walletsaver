@@ -4,7 +4,7 @@ import { fmt } from '../../utils/helpers';
 import Modal from '../../components/common/Modal';
 import EmptyState from '../../components/common/EmptyState';
 import useStore from '../../stores/appStore';
-import { getRepresentativePrice, buildSubcategories, sortItems, isGasCategory } from './utils';
+import { getRepresentativePrice, buildSubcategories, sortItems, isGasCategory, fuelStationItem, itemsWithinRadius, distanceKm } from './utils';
 import GasDetailContent from './components/GasDetailContent';
 import RestDetailContent from './components/RestDetailContent';
 import NaverPlaceDetailContent from './components/NaverPlaceDetailContent';
@@ -28,17 +28,43 @@ const RADIUS_OPTIONS = [
   { label: '5km', value: 5000 },
   { label: '10km', value: 10000 },
 ];
+const FUEL_TYPES = ['gasoline', 'diesel', 'premium', 'lpg'];
+const PLACE_STATUS_TEXT = {
+  disabled: '장소 검색이 꺼져 있습니다. 브라우저 검색 사용을 직접 켜주세요.',
+  unavailable: '장소 검색 결과를 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.',
+  not_queried: '장소 검색 결과가 아직 확인되지 않았습니다.',
+  querying: '장소 검색 결과를 확인하고 있습니다.',
+};
+
+function savedManualRegion(location) {
+  if (!location || typeof location !== 'object' || Array.isArray(location)
+    || 'lat' in location || 'lng' in location) return null;
+  const sido = typeof location.sido === 'string' ? location.sido.trim() : '';
+  const sigungu = typeof location.sigungu === 'string' ? location.sigungu.trim() : '';
+  if (!sido && !sigungu) return null;
+  return { sido, sigungu, fuelType: FUEL_TYPES.includes(location.fuelType) ? location.fuelType : null };
+}
 
 export default function LocalPage() {
+  const { addToast, setSavedLocation, savedLocation } = useStore();
+  const initialRegion = useRef(savedManualRegion(savedLocation)).current;
   const [phase, setPhase] = useState('idle');
   const [locationInput, setLocationInput] = useState('');
-  const [locationName, setLocationName] = useState('');
+  const [locationName, setLocationName] = useState(initialRegion
+    ? [initialRegion.sido, initialRegion.sigungu].filter(Boolean).join(' ') : '');
   const [lat, setLat] = useState(37.4979);
   const [lng, setLng] = useState(127.0276);
   const [radius, setRadius] = useState(3000);
   const [loading, setLoading] = useState(false);
   const [gpsStatus, setGpsStatus] = useState('idle'); // idle | requesting | success | denied
   const [browserSearchEnabled, setBrowserSearchEnabled] = useState(false);
+  const [manualRegion, setManualRegion] = useState(initialRegion);
+  const [regionSido, setRegionSido] = useState(initialRegion?.sido || '');
+  const [regionSigungu, setRegionSigungu] = useState(initialRegion?.sigungu || '');
+  const [fuelType, setFuelType] = useState(initialRegion?.fuelType || 'gasoline');
+  const fuelTypeRef = useRef(fuelType);
+  const radiusRef = useRef(radius);
+  const browserSearchRef = useRef(browserSearchEnabled);
 
   const [exploreData, setExploreData] = useState(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
@@ -52,6 +78,7 @@ export default function LocalPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLabel, setSearchLabel] = useState('');
+  const [directSearchResult, setDirectSearchResult] = useState(null);
 
   const [iframeUrl, setIframeUrl] = useState('');
   const [mapFocusUrl, setMapFocusUrl] = useState(null);
@@ -60,20 +87,24 @@ export default function LocalPage() {
   const [selectedRest, setSelectedRest] = useState(null);
   const [selectedNaverPlace, setSelectedNaverPlace] = useState(null);
 
-  const { addToast, setSavedLocation } = useStore();
   const searchInputRef = useRef(null);
   const streamAbortRef = useRef(null);
+  const locationRequestRef = useRef(0);
 
   // Cleanup stream on unmount
   useEffect(() => {
     return () => {
+      locationRequestRef.current += 1;
       if (streamAbortRef.current) streamAbortRef.current.abort();
     };
   }, []);
 
-  const currentMapUrl = useMemo(() => mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`, [mapFocusUrl, iframeUrl, lng, lat]);
+  const currentMapUrl = useMemo(() => mapFocusUrl || iframeUrl || (manualRegion
+    ? `https://map.naver.com/p/search/${encodeURIComponent(locationName)}`
+    : `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`), [mapFocusUrl, iframeUrl, manualRegion, locationName, lng, lat]);
 
   const sortedItems = useMemo(() => sortItems(displayItems, sortBy, sortDir), [displayItems, sortBy, sortDir]);
+  const fuelStatus = exploreData?.categories?.find(category => category.name === '주유소');
   const isGas = useMemo(() => isGasCategory(displayItems), [displayItems]);
 
   const avgGasoline = useMemo(() => {
@@ -90,47 +121,79 @@ export default function LocalPage() {
   /* ── API calls ── */
   const geocodeLocation = useCallback(async (query) => {
     const res = await fetch(
-      `/api/local/geocode?query=${encodeURIComponent(query)}&browser_search=${browserSearchEnabled}`
+      `/api/local/geocode?query=${encodeURIComponent(query)}&browser_search=${browserSearchRef.current}`
     );
     const data = await res.json();
-    if (data.success && data.data) return data.data;
+    if (res.ok && data.success && data.data
+      && Number.isFinite(data.data.lat) && Number.isFinite(data.data.lng)
+      && Math.abs(data.data.lat) <= 90 && Math.abs(data.data.lng) <= 180) return data.data;
     throw new Error(data.message || '위치를 찾을 수 없습니다');
-  }, [browserSearchEnabled]);
+  }, []);
 
-  const naverSearch = useCallback(async (query) => {
+  const naverSearch = useCallback(async (query, signal) => {
+    if (manualRegion || !browserSearchEnabled) return { source: 'disabled', items: [] };
     const res = await fetch(
-      `/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${lat}&lng=${lng}&max_items=20&browser_search=${browserSearchEnabled}`
+      `/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${lat}&lng=${lng}&max_items=20&browser_search=${browserSearchEnabled}`,
+      { signal },
     );
     const data = await res.json();
-    if (data.success && data.data?.items) return data.data.items;
-    return [];
-  }, [lat, lng, browserSearchEnabled]);
+    if (res.ok && data.success && data.data?.source === 'naver' && Array.isArray(data.data.items)) {
+      return { source: 'naver', items: itemsWithinRadius(data.data.items, lat, lng, radiusRef.current) };
+    }
+    return { source: 'unavailable', items: [] };
+  }, [lat, lng, browserSearchEnabled, manualRegion]);
 
   /* ── Handlers ── */
   const runAreaExplore = useCallback(async (
     locName,
     latVal,
     lngVal,
-    browserSearchOverride = browserSearchEnabled,
+    browserSearchOverride = browserSearchRef.current,
+    radiusOverride = radiusRef.current,
   ) => {
     if (streamAbortRef.current) streamAbortRef.current.abort();
     const controller = new AbortController();
     streamAbortRef.current = controller;
 
     setPhase('exploring');
+    setSelectedGas(null);
+    setDisplayItems([]);
     setExploreData({ categories: [] });
     setStreamingCats(new Set(EXPLORE_CATEGORIES.split(',')));
 
     const params = new URLSearchParams({ max_items: '30' });
-    params.set('categories', EXPLORE_CATEGORIES);
+    params.set('categories', EXPLORE_CATEGORIES.split(',').filter(category => category !== '주유소').join(','));
     if (locName) params.set('location_name', locName);
     if (latVal != null) params.set('lat', String(latVal));
     if (lngVal != null) params.set('lng', String(lngVal));
     params.set('browser_search', String(browserSearchOverride));
     const url = `/api/local/area-explore-stream?${params}`;
+    const active = () => streamAbortRef.current === controller && !controller.signal.aborted;
+    const publishCategory = (data) => {
+      if (!active()) return;
+      const items = itemsWithinRadius(data.items, latVal, lngVal, radiusOverride);
+      const category = { ...data, items, count: items.length };
+      setExploreData(prev => ({ ...prev, categories: [
+        ...(prev?.categories || []).filter(existing => existing.name !== data.name), category,
+      ] }));
+      setStreamingCats(prev => { const next = new Set(prev); next.delete(data.name); return next; });
+    };
+    const fuelParams = new URLSearchParams({ lat: String(latVal), lng: String(lngVal),
+      radius: String(radiusOverride), fuel_type: fuelTypeRef.current, limit: '1000' });
+    const fuelRequest = (async () => {
+      try {
+        const response = await fetch(`/api/gas/nearby?${fuelParams}`, { signal: controller.signal });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.detail || '오피넷 가격 정보를 불러올 수 없습니다');
+        publishCategory({ name: '주유소', source: 'opinet', items: (payload.data || []).map(fuelStationItem), message: payload.message });
+      } catch (error) {
+        if (error.name !== 'AbortError') publishCategory({ name: '주유소', source: 'unavailable', items: [], error: error.message });
+      }
+    })();
 
     try {
       const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error('주변 탐색 응답 오류');
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -138,6 +201,7 @@ export default function LocalPage() {
       try {
         while (true) {
           const { done, value } = await reader.read();
+          if (!active()) return;
           if (done) break;
           buffer += decoder.decode(value, { stream: true });
 
@@ -151,53 +215,99 @@ export default function LocalPage() {
             try {
               const data = JSON.parse(jsonStr);
               if (data.done) {
+                await fuelRequest;
+                if (!active()) return;
                 setPhase('categories');
                 setStreamingCats(new Set());
                 return;
               }
               if (data.error && !data.name) continue;
-              setExploreData(prev => ({
-                ...prev,
-                categories: [...(prev?.categories || []), data],
-              }));
-              setStreamingCats(prev => {
-                const next = new Set(prev);
-                next.delete(data.name);
-                return next;
-              });
+              publishCategory(data);
             } catch { /* skip malformed */ }
           }
         }
       } finally {
         reader.releaseLock();
       }
+      await fuelRequest;
+      if (!active()) return;
       setPhase('categories');
       setStreamingCats(new Set());
     } catch (err) {
-      if (err.name === 'AbortError') return;
+      if (err.name === 'AbortError' || !active()) return;
+      await fuelRequest;
+      if (!active()) return;
+      setExploreData(prev => ({ ...prev, source: 'unavailable' }));
       addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
       setPhase('categories');
-      setExploreData({ categories: [] });
       setStreamingCats(new Set());
     }
-  }, [addToast, browserSearchEnabled]);
+  }, [addToast]);
 
   const handleBrowserSearchToggle = useCallback(async (event) => {
     const enabled = event.target.checked;
+    browserSearchRef.current = enabled;
     setBrowserSearchEnabled(enabled);
 
-    if (locationName) {
+    if (locationName && !manualRegion) {
       await runAreaExplore(locationName, lat, lng, enabled);
     }
-  }, [locationName, lat, lng, runAreaExplore]);
+  }, [locationName, lat, lng, runAreaExplore, manualRegion]);
+
+  const runRegionFuel = useCallback(async (sido, sigungu) => {
+    const request = ++locationRequestRef.current;
+    streamAbortRef.current?.abort();
+    const controller = new AbortController();
+    streamAbortRef.current = controller;
+    const region = { sido: sido.trim(), sigungu: sigungu.trim() };
+    const name = [region.sido, region.sigungu].filter(Boolean).join(' ');
+    setManualRegion(region);
+    setGpsStatus('idle');
+    setLocationName(name);
+    setMapFocusUrl(null);
+    setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(name)}`);
+    setSavedLocation({ ...region, locationName: name, fuelType: fuelTypeRef.current });
+    setSelectedGas(null);
+    setDisplayItems([]);
+    setExploreData({ categories: [] });
+    setStreamingCats(new Set(['주유소']));
+    setPhase('exploring');
+    setLoading(true);
+    const params = new URLSearchParams({ ...region, fuel_type: fuelTypeRef.current, limit: '1000' });
+    try {
+      const response = await fetch(`/api/gas/nearby?${params}`, { signal: controller.signal });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.detail || '오피넷 가격 정보를 불러올 수 없습니다');
+      if (request !== locationRequestRef.current || controller.signal.aborted) return;
+      setExploreData({ categories: [{ name: '주유소', source: 'opinet',
+        items: (payload.data || []).map(fuelStationItem), message: payload.message }] });
+    } catch (error) {
+      if (request !== locationRequestRef.current || controller.signal.aborted) return;
+      setExploreData({ categories: [{ name: '주유소', source: 'unavailable', items: [], error: error.message }] });
+    } finally {
+      if (request === locationRequestRef.current) {
+        setLoading(false); setStreamingCats(new Set()); setPhase('categories');
+      }
+    }
+  }, [setSavedLocation]);
+
+  useEffect(() => {
+    // Restore only an explicit manual region and known fuel, never a stored GPS position.
+    if (initialRegion?.fuelType) runRegionFuel(initialRegion.sido, initialRegion.sigungu);
+  }, [initialRegion, runRegionFuel]);
 
   const handleLocationSearch = useCallback(async (locQuery) => {
     if (!locQuery.trim()) return;
+    const request = ++locationRequestRef.current;
+    streamAbortRef.current?.abort();
+    setGpsStatus('idle');
     setPhase('locating');
     setLoading(true);
     setMapFocusUrl(null);
     try {
       const geo = await geocodeLocation(locQuery);
+      if (request !== locationRequestRef.current) return;
+      setManualRegion(null);
       setLat(geo.lat);
       setLng(geo.lng);
       setLocationName(geo.name || locQuery);
@@ -206,10 +316,11 @@ export default function LocalPage() {
       addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
       await runAreaExplore(geo.name || locQuery, geo.lat, geo.lng);
     } catch (err) {
+      if (request !== locationRequestRef.current) return;
       addToast(err.message || '위치 검색 실패', 'error');
       setPhase('idle');
     } finally {
-      setLoading(false);
+      if (request === locationRequestRef.current) setLoading(false);
     }
   }, [geocodeLocation, runAreaExplore, addToast, setSavedLocation]);
 
@@ -225,12 +336,15 @@ export default function LocalPage() {
       return;
     }
     setGpsStatus('requesting');
+    const request = ++locationRequestRef.current;
     addToast('📡 GPS 위치를 가져오는 중...', 'info');
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
+        if (request !== locationRequestRef.current) return;
         const newLat = pos.coords.latitude;
         const newLng = pos.coords.longitude;
+        setManualRegion(null);
         setLat(newLat);
         setLng(newLng);
         setGpsStatus('success');
@@ -241,22 +355,27 @@ export default function LocalPage() {
         setLoading(true);
         try {
           const geo = await geocodeLocation(`${newLat},${newLng}`);
+          if (request !== locationRequestRef.current) return;
           const locLabel = geo?.name || '현재 위치';
           setLocationName(locLabel);
           setLocationInput(locLabel);
           setSavedLocation({ lat: newLat, lng: newLng, locationName: locLabel });
           await runAreaExplore(locLabel, newLat, newLng);
         } catch {
+          if (request !== locationRequestRef.current) return;
           setLocationName('현재 위치');
           setLocationInput('현재 위치');
           setSavedLocation({ lat: newLat, lng: newLng, locationName: '현재 위치' });
           await runAreaExplore(null, newLat, newLng);
         } finally {
-          setLoading(false);
+          if (request === locationRequestRef.current) setLoading(false);
         }
       },
       (err) => {
+        if (request !== locationRequestRef.current) return;
         setGpsStatus('denied');
+        setLoading(false);
+        setPhase(locationName ? 'categories' : 'idle');
         const msg = err.code === 1
           ? '위치 권한이 거부되었습니다. 위치를 직접 입력해 주세요.'
           : '위치를 가져올 수 없습니다. 위치를 직접 입력해 주세요.';
@@ -265,19 +384,19 @@ export default function LocalPage() {
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
-  }, [geocodeLocation, runAreaExplore, addToast, setSavedLocation]);
+  }, [geocodeLocation, runAreaExplore, addToast, setSavedLocation, locationName]);
 
   const fetchSubcategoryResults = useCallback(async (location, subcategory, latVal, lngVal) => {
     const params = new URLSearchParams({
       location, subcategory,
-      ...(latVal && { lat: latVal }),
-      ...(lngVal && { lng: lngVal }),
+      ...(latVal != null && { lat: latVal }),
+      ...(lngVal != null && { lng: lngVal }),
       max_items: 30,
       browser_search: String(browserSearchEnabled),
     });
     const res = await fetch(`/api/local/subcategory-search?${params}`);
     const data = await res.json();
-    return data.data?.items || data.items || [];
+    return itemsWithinRadius(data.data?.items || data.items || [], latVal, lngVal, radiusRef.current);
   }, [browserSearchEnabled]);
 
   const handleCategoryClick = (cat) => {
@@ -299,7 +418,7 @@ export default function LocalPage() {
     setSubcategoryMap(subMap);
     setSelectedSubcategory('');
     if (isGasCategory(items)) {
-      setSortBy('gasoline');
+      setSortBy(fuelTypeRef.current === 'premium' ? 'premium_gasoline' : fuelTypeRef.current);
     } else {
       setSortBy('price');
     }
@@ -335,7 +454,7 @@ export default function LocalPage() {
     setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(`${locationName} ${subName}`)}`);
     setMapFocusUrl(null);
 
-    if (locationName && subName !== '전체') {
+    if (locationName && !manualRegion && subName !== '전체') {
       setLoading(true);
       try {
         const moreItems = await fetchSubcategoryResults(locationName, subName, lat, lng);
@@ -357,16 +476,28 @@ export default function LocalPage() {
   const handleDirectSearch = useCallback(async (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
+    const request = ++locationRequestRef.current;
+    streamAbortRef.current?.abort();
+    const controller = new AbortController();
+    streamAbortRef.current = controller;
+    const active = () => request === locationRequestRef.current
+      && streamAbortRef.current === controller && !controller.signal.aborted;
     setLoading(true);
     setPhase('search');
+    setDirectSearchResult(null);
     setSearchLabel(searchQuery);
     setMapFocusUrl(null);
     const fullQuery = locationName ? `${locationName} ${searchQuery}` : searchQuery;
     setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(fullQuery)}`);
     try {
-      const items = await naverSearch(fullQuery);
+      const result = await naverSearch(fullQuery, controller.signal);
+      if (!active()) return;
+      const { items } = result;
+      setDirectSearchResult(result);
       setDisplayItems(items);
-      if (items.length > 0) {
+      if (result.source !== 'naver') {
+        addToast(PLACE_STATUS_TEXT[result.source], 'warning');
+      } else if (items.length > 0) {
         addToast(`'${searchQuery}' 검색: ${items.length}건 발견`, 'success');
       } else {
         addToast('검색 결과 없음', 'warning');
@@ -374,11 +505,13 @@ export default function LocalPage() {
       if (isGasCategory(items)) setSortBy('gasoline');
       else setSortBy('price');
       setSortDir('asc');
-    } catch {
+    } catch (error) {
+      if (!active() || error.name === 'AbortError') return;
+      setDirectSearchResult({ source: 'unavailable', items: [] });
       setDisplayItems([]);
-      addToast('검색에 실패했습니다', 'error');
+      addToast(PLACE_STATUS_TEXT.unavailable, 'error');
     } finally {
-      setLoading(false);
+      if (active()) setLoading(false);
     }
   }, [searchQuery, locationName, naverSearch, addToast]);
 
@@ -421,6 +554,9 @@ export default function LocalPage() {
   };
 
   const focusMapOnPlace = useCallback((name, placeUrl) => {
+    locationRequestRef.current += 1;
+    setGpsStatus('idle');
+    setLoading(false);
     if (placeUrl) {
       setMapFocusUrl(placeUrl);
     } else if (name) {
@@ -429,6 +565,9 @@ export default function LocalPage() {
   }, []);
 
   const handleItemClick = useCallback((item) => {
+    locationRequestRef.current += 1;
+    setGpsStatus('idle');
+    setLoading(false);
     const petrol = item.petrol_info;
     if (petrol) {
       setSelectedGas({
@@ -436,9 +575,10 @@ export default function LocalPage() {
         gasoline: petrol.gasoline, diesel: petrol.diesel, lpg: petrol.lpg,
         is_self: petrol.is_self, is_24h: petrol.is_24h, has_car_wash: petrol.has_car_wash,
         premium_gasoline: petrol.premium_gasoline, naverUrl: item.url,
-        image_url: item.image_url, tel: item.tel, distance: item.distance,
+        image_url: item.image_url, tel: item.tel, distance: item.distance, distance_m: item.distance_m,
         updated_at: petrol.updated_at || item.updated_at,
         source: petrol.source || item.source,
+        price_observed_at: petrol.price_observed_at,
       });
     } else {
       setSelectedNaverPlace(item);
@@ -455,7 +595,7 @@ export default function LocalPage() {
   /* ── Sort options ── */
   const sortOptions = useMemo(() => {
     if (isGas) {
-      return [['gasoline', '휘발유'], ['diesel', '경유'], ['distance', '거리']];
+      return [['gasoline', '휘발유'], ['diesel', '경유'], ['premium_gasoline', '고급 휘발유'], ['lpg', 'LPG'], ['distance', '거리']];
     }
     return [['price', '가격'], ['distance', '거리'], ['rating', '평점']];
   }, [isGas]);
@@ -481,6 +621,15 @@ export default function LocalPage() {
     if (!exploreData?.categories) return [];
     return exploreData.categories.filter(cat => (cat.count || cat.items?.length || 0) > 0);
   }, [exploreData]);
+  const placeCategories = exploreData?.categories?.filter(category => category.name !== '주유소') || [];
+  const areaPlaceSource = !browserSearchEnabled ? 'disabled'
+    : streamingCats.size > 0 ? 'querying'
+    : exploreData?.source === 'unavailable' ? 'unavailable'
+    : !placeCategories.length ? 'not_queried'
+    : placeCategories.every(category => category.source === 'naver') ? 'naver' : 'unavailable';
+  const placeSearchSource = phase === 'search'
+    ? (loading ? 'querying' : directSearchResult?.source || 'not_queried') : areaPlaceSource;
+  const placeSearchMessage = PLACE_STATUS_TEXT[placeSearchSource];
   /* ── Render ── */
   return (
     <div>
@@ -496,7 +645,7 @@ export default function LocalPage() {
             <MapPin size={48} />
             <strong>{mapFocusUrl ? '선택한 장소' : (locationName || '탐색 위치를 정해주세요')}</strong>
             <p>
-              {locationName
+              {manualRegion ? '선택한 지역의 저장된 유종별 가격 정보를 확인할 수 있습니다.' : locationName
                 ? '주변 검색 결과는 이 화면에서 바로 확인할 수 있습니다.'
                 : '위치를 입력하거나 브라우저 위치 권한을 사용해 시작하세요.'}
             </p>
@@ -504,20 +653,24 @@ export default function LocalPage() {
             {locationName && (
               <div className={s.mapStatusGrid}>
                 <div>
-                  <span>탐색 반경</span>
-                  <strong>{radius / 1000}km</strong>
+                  <span>{manualRegion ? '선택 지역' : '탐색 반경'}</span>
+                  <strong>{manualRegion ? locationName : `${radius / 1000}km`}</strong>
                 </div>
                 <div>
                   <span>장소 검색</span>
-                  <strong>{browserSearchEnabled ? '사용 중' : '사용 안 함'}</strong>
+                  <strong>{manualRegion ? '위치 선택 후 사용' : placeSearchSource === 'naver'
+                    ? '조회됨' : placeSearchSource === 'disabled' ? '사용 안 함'
+                      : placeSearchSource === 'unavailable' ? '결과 미확인'
+                        : placeSearchSource === 'querying' ? '조회 중' : '조회 대기'}</strong>
                 </div>
                 <div>
                   <span>카테고리</span>
                   <strong>{visibleCategories.length}개</strong>
                 </div>
                 <div>
-                  <span>현재 결과</span>
-                  <strong>{sortedItems.length}건</strong>
+                  <span>{!manualRegion && placeSearchMessage && !visibleCategories.length ? '장소 결과' : '현재 결과'}</span>
+                  <strong>{!manualRegion && placeSearchMessage && !visibleCategories.length
+                    ? (placeSearchSource === 'disabled' ? '미조회' : '미확인') : `${sortedItems.length}건`}</strong>
                 </div>
               </div>
             )}
@@ -545,10 +698,13 @@ export default function LocalPage() {
               </a>
             )}
 
-            {locationName && !browserSearchEnabled && (
+            {locationName && !manualRegion && !browserSearchEnabled && (
               <small className={s.mapConsentHint}>
                 장소 목록이 필요하면 오른쪽의 브라우저 검색을 직접 켜주세요.
               </small>
+            )}
+            {locationName && !manualRegion && browserSearchEnabled && placeSearchMessage && (
+              <small className={s.mapConsentHint}>{placeSearchMessage}</small>
             )}
           </div>
           {mapFocusUrl && (
@@ -577,7 +733,7 @@ export default function LocalPage() {
             >
               {gpsStatus === 'requesting' ? '📡' : '📍'} 현위치
             </button>
-            <button type="submit" className={s.searchBtn} disabled={loading || !locationInput.trim()}>
+            <button type="submit" className={s.searchBtn} disabled={!locationInput.trim()}>
               {loading && phase === 'locating' ? <RefreshCw size={16} className={s.spin} /> : <Search size={16} />}
             </button>
           </form>
@@ -590,20 +746,50 @@ export default function LocalPage() {
           )}
 
           {/* Radius selector */}
-          <div className={s.radiusRow}>
+          {!manualRegion && <div className={s.radiusRow}>
             <span className={s.radiusLabel}>반경</span>
             <div className={s.radiusOptions}>
               {RADIUS_OPTIONS.map(opt => (
                 <button
                   key={opt.value}
                   className={`${s.radiusBtn} ${radius === opt.value ? s.radiusActive : ''}`}
-                  onClick={() => setRadius(opt.value)}
+                  onClick={() => {
+                    setRadius(opt.value);
+                    radiusRef.current = opt.value;
+                    if (locationName) runAreaExplore(locationName, lat, lng, browserSearchEnabled, opt.value);
+                  }}
                 >
                   {opt.label}
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
+
+          <form className={s.locationRow} onSubmit={event => {
+            event.preventDefault();
+            if (regionSido.trim() || regionSigungu.trim()) runRegionFuel(regionSido, regionSigungu);
+          }}>
+            <input className={s.locationInput} aria-label="시/도" placeholder="시/도 (예: 서울특별시)"
+              value={regionSido} onChange={event => setRegionSido(event.target.value)} />
+            <input className={s.locationInput} aria-label="시/군/구" placeholder="시/군/구 (예: 강서구)"
+              value={regionSigungu} onChange={event => setRegionSigungu(event.target.value)} />
+            <button type="submit" disabled={!regionSido.trim() && !regionSigungu.trim()}>지역 가격 조회</button>
+          </form>
+          <label>조회 유종{' '}
+            <select aria-label="조회 유종" value={fuelType} onChange={event => {
+              setFuelType(event.target.value); fuelTypeRef.current = event.target.value;
+              if (manualRegion) runRegionFuel(manualRegion.sido, manualRegion.sigungu);
+              else if (locationName) runAreaExplore(locationName, lat, lng);
+            }}>
+              <option value="gasoline">휘발유</option><option value="diesel">경유</option>
+              <option value="premium">고급 휘발유</option><option value="lpg">LPG</option>
+            </select>
+          </label>
+          {manualRegion && <p>선택 지역의 가격 정보입니다. 거리와 반경은 위치가 확인된 뒤 조회할 수 있습니다.</p>}
+
+          {(fuelStatus?.error || (!fuelStatus?.items?.length && fuelStatus?.message)) && (
+            <p role="status">{fuelStatus.error || fuelStatus.message}</p>
+          )}
 
           <label className={s.browserSearchOptIn}>
             <input
@@ -618,7 +804,7 @@ export default function LocalPage() {
           </label>
 
           {/* Direct search */}
-          {locationName && (
+          {locationName && !manualRegion && (
             <form onSubmit={handleDirectSearch} className={s.directSearchRow}>
               <input
                 className={s.directSearchInput}
@@ -693,9 +879,8 @@ export default function LocalPage() {
               ))}
               {visibleCategories.length === 0 && streamingCats.size === 0 && (
                 <div className={s.emptyMsg}>
-                  {browserSearchEnabled
-                    ? '브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.'
-                    : '네이버 장소 결과가 필요하면 위의 브라우저 검색 사용을 명시적으로 체크해 주세요.'}
+                  {manualRegion ? (fuelStatus?.error || fuelStatus?.message || '선택한 지역의 가격 정보가 없습니다')
+                    : placeSearchMessage || '브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.'}
                 </div>
               )}
             </div>
@@ -749,7 +934,7 @@ export default function LocalPage() {
 
               {/* Results count */}
               <div className={s.resultCount}>
-                {sortedItems.length}건의 결과
+                {phase === 'search' && placeSearchMessage ? placeSearchMessage : `${sortedItems.length}건의 결과`}
               </div>
 
               {/* 검색 중 스켈레톤 (항목 없을 때) */}
@@ -760,11 +945,15 @@ export default function LocalPage() {
               {/* Item list */}
               <div className={s.list}>
                 {sortedItems.length === 0 && !loading && (
-                  <div className={s.emptyMsg}>검색 결과가 없습니다</div>
+                  <div className={s.emptyMsg} role={phase === 'search' ? 'status' : undefined}
+                    aria-label={phase === 'search' ? '장소 검색 상태' : undefined}>
+                    {phase === 'search' && placeSearchMessage ? placeSearchMessage : '검색 결과가 없습니다'}
+                  </div>
                 )}
                 {sortedItems.map((item, i) => {
                   const priceInfo = getRepresentativePrice(item.menu_info);
                   const petrol = item.petrol_info;
+                  const distance = distanceKm(item.distance, item.distance_m);
                   return (
                     <div key={item.id || item.place_id || item.name || `item-${i}`} className={s.item} onClick={() => handleItemClick(item)}>
                       <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
@@ -792,6 +981,12 @@ export default function LocalPage() {
                                 <span className={s.petrolVal}>{fmt(petrol.gasoline)}</span>
                               </div>
                             )}
+                            {petrol.premium_gasoline && (
+                              <div className={s.petrolLine}>
+                                <span className={s.petrolLabel}>고급 휘발유</span>
+                                <span className={s.petrolVal}>{fmt(petrol.premium_gasoline)}</span>
+                              </div>
+                            )}
                             {petrol.diesel && (
                               <div className={s.petrolLine}>
                                 <span className={s.petrolLabel}>경유</span>
@@ -806,7 +1001,7 @@ export default function LocalPage() {
                             )}
                             {petrol.updated_at && (
                               <div className={s.petrolLineSub}>
-                                <span>갱신</span>
+                                <span>가격 관측</span>
                                 <span>{String(petrol.updated_at).slice(0, 16)}</span>
                               </div>
                             )}
@@ -823,13 +1018,9 @@ export default function LocalPage() {
                         ) : item.price > 0 ? (
                           <span className={s.itemPrice}>{fmt(item.price)}원</span>
                         ) : null}
-                        {item.distance && (
-                          <div className={s.itemDist}>
-                            📏 {typeof item.distance === 'number'
-                              ? (item.distance >= 1000 ? `${(item.distance / 1000).toFixed(1)}km` : `${item.distance}m`)
-                              : item.distance}
-                          </div>
-                        )}
+                        <div className={s.itemDist}>
+                          {distance == null ? '거리 미확인' : `📏 ${distance.toFixed(1)}km`}
+                        </div>
                       </div>
                     </div>
                   );

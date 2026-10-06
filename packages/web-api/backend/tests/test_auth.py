@@ -4,7 +4,8 @@ import os
 import sys
 import pytest
 from datetime import timedelta
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
+from urllib.parse import parse_qs, urlparse
 
 # 프로젝트 루트를 sys.path에 추가
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -18,7 +19,19 @@ from services.auth_service import (
     create_token_pair,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from services.oauth_service import get_oauth_login_url, get_oauth_redirect_uri, OAuthConfig
+from services.oauth_service import (
+    get_oauth_login_url, get_oauth_redirect_uri, OAuthConfig, OAuthUserInfo,
+    generate_oauth_state, validate_oauth_state, OAUTH_STATE_TTL,
+)
+
+
+@pytest.fixture
+def oauth_store(tmp_path):
+    from services.account_database import AccountDatabase
+    from services.user_storage import PublicUserStore
+    db = AccountDatabase(tmp_path / "oauth-accounts.sqlite")
+    yield PublicUserStore(db)
+    db.close()
 
 
 # ── 비밀번호 해싱 테스트 ──────────────────────────────────────────
@@ -271,11 +284,11 @@ class TestAuthRoutes:
 # ── OAuth URL 생성 테스트 ────────────────────────────────────────
 
 class TestOAuthURLGeneration:
-    def test_google_login_url(self, monkeypatch):
+    def test_google_login_url(self, monkeypatch, oauth_store):
         monkeypatch.setenv("GOOGLE_CLIENT_ID", "google-client")
         monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "google-secret")
         monkeypatch.setenv("OAUTH_REDIRECT_BASE", "http://localhost:8000/")
-        url = get_oauth_login_url("google")
+        url = get_oauth_login_url("google", "synthetic-browser", state_store=oauth_store)
         assert "accounts.google.com" in url
         assert "response_type=code" in url
         assert "redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fauth%2Foauth%2Fgoogle%2Fcallback" in url
@@ -298,21 +311,21 @@ class TestOAuthURLGeneration:
         assert config["client_id"] == "file-client"
         assert config["client_secret"] == "file-secret"
 
-    def test_kakao_login_url(self, monkeypatch):
+    def test_kakao_login_url(self, monkeypatch, oauth_store):
         monkeypatch.setenv("KAKAO_CLIENT_ID", "kakao-client")
         monkeypatch.setenv("KAKAO_CLIENT_SECRET", "kakao-secret")
-        url = get_oauth_login_url("kakao")
+        url = get_oauth_login_url("kakao", "synthetic-browser", state_store=oauth_store)
         assert "kauth.kakao.com" in url
 
-    def test_naver_login_url(self, monkeypatch):
+    def test_naver_login_url(self, monkeypatch, oauth_store):
         monkeypatch.setenv("NAVER_CLIENT_ID", "naver-client")
         monkeypatch.setenv("NAVER_CLIENT_SECRET", "naver-secret")
-        url = get_oauth_login_url("naver")
+        url = get_oauth_login_url("naver", "synthetic-browser", state_store=oauth_store)
         assert "nid.naver.com" in url
 
-    def test_invalid_provider_raises(self):
+    def test_invalid_provider_raises(self, oauth_store):
         with pytest.raises(ValueError, match="지원하지 않는"):
-            get_oauth_login_url("facebook")
+            get_oauth_login_url("facebook", "synthetic-browser", state_store=oauth_store)
 
     def test_oauth_config_get(self):
         config = OAuthConfig.get("google")
@@ -328,14 +341,44 @@ class TestOAuthURLGeneration:
 
 class TestOAuthRoutes:
     @pytest.fixture
-    def client(self):
+    def client(self, tmp_path):
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
         from api.routes.auth import router
+        from services.account_database import AccountDatabase
 
         app = FastAPI()
+        db = AccountDatabase(tmp_path / "accounts.sqlite")
+        app.state.storage = db
         app.include_router(router)
-        return TestClient(app, follow_redirects=False)
+        with TestClient(app, follow_redirects=False) as client:
+            yield client
+        db.close()
+
+    @pytest.fixture
+    def provider(self, monkeypatch):
+        # Only the provider calls are mocked; redirects, cookies, JWT and account
+        # storage use the existing route and temporary real SQLite schema.
+        monkeypatch.setenv("GOOGLE_CLIENT_ID", "synthetic-client")
+        monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "synthetic-secret")
+        exchange = AsyncMock(return_value={"access_token": "synthetic-provider-token"})
+        info = AsyncMock(return_value=OAuthUserInfo(
+            "google", "subject-one", "oauth@example.com", "OAuth User", email_verified=True,
+        ))
+        monkeypatch.setattr("api.routes.auth.exchange_code_for_token", exchange)
+        monkeypatch.setattr("api.routes.auth.get_user_info", info)
+        return exchange, info
+
+    @staticmethod
+    def begin(client):
+        response = client.get("/api/auth/oauth/google")
+        assert response.status_code == 307
+        state = parse_qs(urlparse(response.headers["location"]).query)["state"][0]
+        return state, response
+
+    @staticmethod
+    def callback(client, state, **params):
+        return client.get("/api/auth/oauth/google/callback", params={"state": state, "code": "synthetic-code", **params})
 
     def test_oauth_login_redirect(self, client, monkeypatch):
         monkeypatch.setenv("GOOGLE_CLIENT_ID", "google-client")
@@ -357,10 +400,357 @@ class TestOAuthRoutes:
         resp = client.get("/api/auth/oauth/facebook")
         assert resp.status_code == 400
 
-    def test_oauth_denial_redirects_to_frontend_instead_of_422(self, client, monkeypatch):
+    def test_oauth_denial_redirects_to_frontend_instead_of_422(self, client, monkeypatch, provider):
         monkeypatch.setenv("FRONTEND_URL", "http://localhost:5173/")
-        resp = client.get("/api/auth/oauth/google/callback", params={"error": "access_denied"})
+        state, _ = self.begin(client)
+        resp = self.callback(client, state, error="access_denied")
         assert resp.status_code == 302
         assert resp.headers["location"] == (
             "http://localhost:5173/auth/callback?error=oauth_denied&provider=google"
         )
+        assert "oauth_browser_google" not in client.cookies
+        assert "error=oauth_state" in self.callback(client, state).headers["location"]
+        provider[0].assert_not_awaited()
+
+    def test_oauth_bound_login_replay_and_logout(self, client, provider):
+        state, start = self.begin(client)
+        cookie = start.headers["set-cookie"]
+        assert all(value in cookie for value in ["HttpOnly", "SameSite=lax", "Max-Age=600", "Path=/api/auth/oauth/google"])
+        response = self.callback(client, state)
+        assert response.status_code == 302 and "error=" not in response.headers["location"]
+        assert "oauth_browser_google" not in client.cookies
+        assert "access_token" in client.cookies and "refresh_token" in client.cookies
+        me = client.get("/api/auth/me")
+        assert me.status_code == 200 and me.json()["email"] == "oauth@example.com"
+        assert "error=oauth_state" in self.callback(client, state).headers["location"]
+        assert provider[0].await_count == 1
+        assert client.get("/api/auth/me").status_code == 200  # failed OAuth keeps the valid session
+        assert client.post("/api/auth/logout").status_code == 200
+        assert client.get("/api/auth/me").status_code == 401
+        assert "access_token" not in client.cookies and "refresh_token" not in client.cookies
+
+    @pytest.mark.parametrize("mismatch", ["missing_cookie", "wrong_cookie", "wrong_provider", "missing_state"])
+    def test_oauth_binding_mismatch_does_not_exchange(self, client, provider, mismatch):
+        state, _ = self.begin(client)
+        path = "/api/auth/oauth/google/callback"
+        if mismatch == "missing_cookie":
+            client.cookies.clear()
+        elif mismatch == "wrong_cookie":
+            client.cookies.clear()
+            client.cookies.set("oauth_browser_google", "different-browser", path="/api/auth/oauth/google")
+        elif mismatch == "wrong_provider":
+            binding = client.cookies.get("oauth_browser_google")
+            client.cookies.set("oauth_browser_kakao", binding, path="/api/auth/oauth/kakao")
+            path = "/api/auth/oauth/kakao/callback"
+        params = {"code": "synthetic-code"}
+        if mismatch != "missing_state":
+            params["state"] = state
+        response = client.get(path, params=params)
+        assert "error=oauth_state" in response.headers["location"]
+        provider[0].assert_not_awaited()
+        if mismatch != "missing_state":
+            from services.user_storage import PublicUserStore
+            assert validate_oauth_state(state, "google", "anything", state_store=PublicUserStore(client.app.state.storage)) is False
+
+    def test_oauth_expiry_and_missing_code(self, client, provider, monkeypatch):
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000)
+        state, _ = self.begin(client)
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + OAUTH_STATE_TTL)
+        assert "error=oauth_state" in self.callback(client, state).headers["location"]
+        state, _ = self.begin(client)
+        response = client.get("/api/auth/oauth/google/callback", params={"state": state})
+        assert "error=oauth_denied" in response.headers["location"]
+        provider[0].assert_not_awaited()
+
+    def test_oauth_pending_store_unavailable_fails_closed(self, client, provider, monkeypatch):
+        from services.user_storage import PublicUserStore, PublicUserStoreError
+        with monkeypatch.context() as failure:
+            failure.setattr(PublicUserStore, "issue_oauth_state", lambda *a, **k: (_ for _ in ()).throw(PublicUserStoreError("oauth_state_store_unavailable")))
+            response = client.get("/api/auth/oauth/google")
+            assert response.status_code == 503
+            assert "oauth_browser_google" not in client.cookies
+        state, _ = self.begin(client)
+        with monkeypatch.context() as failure:
+            failure.setattr(PublicUserStore, "consume_oauth_state", lambda *a, **k: (_ for _ in ()).throw(PublicUserStoreError("oauth_state_store_unavailable")))
+            response = self.callback(client, state)
+            assert "error=oauth_failed" in response.headers["location"]
+            assert "oauth_browser_google" not in client.cookies
+        provider[0].assert_not_awaited()
+
+    def test_oauth_missing_account_store_fails_closed(self, client, provider):
+        state, _ = self.begin(client)
+        del client.app.state.storage
+        assert client.get("/api/auth/oauth/google").status_code == 503
+        response = self.callback(client, state)
+        assert "error=oauth_failed" in response.headers["location"]
+        assert "oauth_browser_google" not in client.cookies
+        provider[0].assert_not_awaited()
+
+    def test_oauth_consume_commit_failure_prevents_exchange(self, client, provider, monkeypatch):
+        from sqlalchemy.exc import OperationalError
+        from services.user_storage import PublicUserStore
+        state, _ = self.begin(client)
+        binding = client.cookies.get("oauth_browser_google")
+        session_class = client.app.state.storage.SessionLocal.session_factory.class_
+
+        def failed_commit(session):
+            raise OperationalError("synthetic commit", {}, Exception("synthetic unavailable"))
+
+        with monkeypatch.context() as failure:
+            failure.setattr(session_class, "commit", failed_commit)
+            assert "error=oauth_failed" in self.callback(client, state).headers["location"]
+        provider[0].assert_not_awaited()
+        assert "oauth_browser_google" not in client.cookies
+        # Failed commit rolls back consumption; recovering storage may accept
+        # the original binding once, but no token was exchanged during failure.
+        store = PublicUserStore(client.app.state.storage)
+        assert validate_oauth_state(state, "google", binding, state_store=store) is True
+        assert validate_oauth_state(state, "google", binding, state_store=store) is False
+
+    def test_oauth_callback_on_independent_worker(self, client, provider):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from api.routes.auth import router
+        from services.account_database import AccountDatabase
+        state, _ = self.begin(client)
+        app = FastAPI()
+        db = AccountDatabase(client.app.state.storage.path)
+        app.state.storage = db
+        app.include_router(router)
+        try:
+            with TestClient(app, follow_redirects=False) as worker:
+                worker.cookies.update(client.cookies)
+                response = self.callback(worker, state)
+                assert response.status_code == 302 and "error=" not in response.headers["location"]
+                assert "oauth_browser_google" not in worker.cookies
+                assert worker.get("/api/auth/me").status_code == 200
+            assert "error=oauth_state" in self.callback(client, state).headers["location"]
+            assert provider[0].await_count == 1
+        finally:
+            db.close()
+
+    @pytest.mark.parametrize("failure", ["token", "provider", "identity", "exception"])
+    def test_oauth_bad_provider_response_fails_closed(self, client, provider, failure):
+        exchange, info = provider
+        if failure == "token":
+            exchange.return_value = {"access_token": None}
+        elif failure == "provider":
+            info.return_value.provider = "kakao"
+        elif failure == "identity":
+            info.return_value.provider_user_id = None
+        else:
+            exchange.side_effect = RuntimeError("synthetic provider failure")
+        state, _ = self.begin(client)
+        response = self.callback(client, state)
+        assert "error=oauth_failed" in response.headers["location"]
+        assert "oauth_browser_google" not in client.cookies
+        assert client.get("/api/auth/me").status_code == 401
+
+    def test_oauth_verified_email_collision_preserves_local_session(self, client, provider):
+        registered = client.post("/api/auth/register", json={
+            "email": "oauth@example.com", "password": "synthetic123", "nickname": "Local User",
+        })
+        assert registered.status_code == 201
+        original = client.get("/api/auth/me").json()
+        state, _ = self.begin(client)
+        assert "error=oauth_link_required" in self.callback(client, state).headers["location"]
+        assert client.get("/api/auth/me").json() == original
+        from sqlalchemy import text
+        with client.app.state.storage.SessionLocal() as session:
+            assert session.execute(text("SELECT count(*) FROM users")).scalar_one() == 1
+            assert session.execute(text("SELECT count(*) FROM oauth_accounts")).scalar_one() == 0
+
+    def test_oauth_disabled_existing_link_does_not_issue_session(self, client, provider):
+        from services.user_storage import PublicUserStore
+        store = PublicUserStore(client.app.state.storage)
+        user = store.upsert_oauth_user(provider="google", provider_user_id="subject-one", email=None,
+                                      nickname="Disabled", profile_image_url=None)
+        store.soft_delete(user["id"])
+        state, _ = self.begin(client)
+        assert "error=account_disabled" in self.callback(client, state).headers["location"]
+        assert client.get("/api/auth/me").status_code == 401
+
+
+class TestOAuthIdentityStorage:
+    @pytest.fixture
+    def store(self, tmp_path):
+        from services.account_database import AccountDatabase
+        from services.user_storage import PublicUserStore
+        db = AccountDatabase(tmp_path / "accounts.sqlite")
+        yield PublicUserStore(db)
+        db.close()
+
+    @staticmethod
+    def upsert(store, **changes):
+        values = dict(provider="google", provider_user_id="subject-one", email="claimed@example.com",
+                      nickname="Synthetic OAuth", profile_image_url=None)
+        values.update(changes)
+        return store.upsert_oauth_user(**values)
+
+    @pytest.mark.parametrize("verified", [False, None, "true", 1])
+    def test_oauth_unverified_email_never_links_or_owns_local_contact(self, store, verified):
+        local = store.create_password_user(email="claimed@example.com", nickname="Local", hashed_password="synthetic-hash")
+        oauth = self.upsert(store, email_verified=verified, profile_image_url="https://example.invalid/synthetic.png")
+        assert oauth["id"] != local["id"]
+        assert oauth["email"].endswith("@oauth.walletsavior.local")
+        assert store.get_by_id(local["id"]) == local
+        assert store.get_by_email("claimed@example.com")["id"] == local["id"]
+
+    def test_oauth_explicit_provider_link_survives_changed_or_missing_email(self, store):
+        linked = self.upsert(store, email_verified=True)
+        local = store.create_password_user(email="local@example.com", nickname="Local", hashed_password="synthetic-hash")
+        for email, verified in [("local@example.com", True), ("invalid", True), (None, False)]:
+            current = self.upsert(store, email=email, email_verified=verified)
+            assert current["id"] == linked["id"] and current["email"] == "claimed@example.com"
+        assert store.get_by_id(local["id"]) == local
+
+    def test_oauth_verified_email_cannot_link_another_provider_identity(self, store):
+        from services.user_storage import PublicUserStoreError
+        linked = self.upsert(store, email_verified=True)
+        for changes in [{"provider_user_id": "other-subject"}, {"provider": "kakao"}]:
+            with pytest.raises(PublicUserStoreError, match="oauth_email_conflict"):
+                self.upsert(store, email_verified=True, **changes)
+        assert store.get_by_id(linked["id"]) == linked
+
+    @pytest.mark.parametrize("identity", [None, True, 12, "", " ", " subject "])
+    def test_oauth_invalid_subject_cannot_create_account(self, store, identity):
+        from services.user_storage import PublicUserStoreError
+        with pytest.raises(PublicUserStoreError, match="oauth_identity_invalid"):
+            self.upsert(store, provider_user_id=identity)
+        assert store.get_by_email("claimed@example.com") is None
+
+    def test_oauth_missing_email_has_provider_scoped_identity(self, store):
+        first = self.upsert(store, email=None, email_verified=True)
+        repeated = self.upsert(store, email=None)
+        another = self.upsert(store, provider="kakao", email=None)
+        assert first["id"] == repeated["id"] != another["id"]
+        assert first["email"] != another["email"]
+
+    def test_oauth_invalid_verified_email_fails_closed(self, store):
+        from services.user_storage import PublicUserStoreError
+        with pytest.raises(PublicUserStoreError, match="oauth_email_invalid"):
+            self.upsert(store, email="not-an-email", email_verified=True)
+
+
+class TestOAuthProviderClaims:
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("provider,payload,verified", [
+        ("google", {"id": "google-sub", "email": "claim@example.com", "verified_email": True}, True),
+        ("google", {"id": "google-sub", "email": "claim@example.com", "verified_email": "true"}, False),
+        ("google", {"id": "google-sub"}, False),
+        ("kakao", {"id": 123, "kakao_account": {"email": "claim@example.com", "is_email_valid": True, "is_email_verified": True}}, True),
+        ("kakao", {"id": 123, "kakao_account": {"is_email_verified": True}}, False),
+        ("kakao", {"id": 123, "kakao_account": {"is_email_valid": True, "is_email_verified": False}}, False),
+        ("naver", {"response": {"id": "naver-sub", "email": "claim@example.com", "email_verified": True}}, False),
+    ])
+    async def test_oauth_email_verification_requires_literal_provider_evidence(self, monkeypatch, provider, payload, verified):
+        import httpx
+        from services.oauth_service import get_user_info
+        monkeypatch.setattr(OAuthConfig, "get", lambda _: {"userinfo_url": "https://example.invalid/userinfo"})
+        response = httpx.Response(200, json=payload, request=httpx.Request("GET", "https://example.invalid/userinfo"))
+        with patch("services.oauth_service.httpx.AsyncClient") as http:
+            http.return_value.__aenter__.return_value.get = AsyncMock(return_value=response)
+            info = await get_user_info(provider, "synthetic-token")
+        assert info.email_verified is verified
+        assert info.provider_user_id in {"google-sub", "123", "naver-sub"}
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("payload", [{}, {"id": None}, {"id": True}, {"id": ""}])
+    async def test_oauth_missing_provider_subject_is_not_an_identity(self, monkeypatch, payload):
+        import httpx
+        from services.oauth_service import get_user_info
+        monkeypatch.setattr(OAuthConfig, "get", lambda _: {"userinfo_url": "https://example.invalid/userinfo"})
+        response = httpx.Response(200, json=payload, request=httpx.Request("GET", "https://example.invalid/userinfo"))
+        with patch("services.oauth_service.httpx.AsyncClient") as http:
+            http.return_value.__aenter__.return_value.get = AsyncMock(return_value=response)
+            with pytest.raises(ValueError, match="provider user id"):
+                await get_user_info("google", "synthetic-token")
+
+
+class TestOAuthState:
+    def test_oauth_state_restart_and_concurrent_single_use(self, tmp_path):
+        import subprocess
+        from concurrent.futures import ThreadPoolExecutor
+        from services.account_database import AccountDatabase
+        from services.user_storage import PublicUserStore
+        path = tmp_path / "restart-accounts.sqlite"
+        # Issue in a process that exits completely; no dictionary survives.
+        issue = """
+import sys
+from services.account_database import AccountDatabase
+from services.user_storage import PublicUserStore
+from services.oauth_service import generate_oauth_state
+db = AccountDatabase(sys.argv[1])
+print(generate_oauth_state('google', 'synthetic-browser', state_store=PublicUserStore(db)))
+db.close()
+"""
+        state = subprocess.run([sys.executable, "-c", issue, str(path)],
+                               capture_output=True, text=True, check=True).stdout.strip()
+        assert len(state) >= 40
+        dbs = [AccountDatabase(path), AccountDatabase(path)]
+        stores = [PublicUserStore(db) for db in dbs]
+        from threading import Barrier
+        barrier = Barrier(2)
+
+        def consume(store):
+            barrier.wait(timeout=5)
+            return validate_oauth_state(state, "google", "synthetic-browser", state_store=store)
+
+        try:
+            with ThreadPoolExecutor(max_workers=2) as workers:
+                assert sorted(workers.map(consume, stores)) == [False, True]
+        finally:
+            for db in dbs:
+                db.close()
+        # A new process after the successful consume must also reject replay.
+        replay = issue.replace('generate_oauth_state', 'validate_oauth_state').replace(
+            "validate_oauth_state('google', 'synthetic-browser', state_store=PublicUserStore(db))",
+            "validate_oauth_state(sys.stdin.read(), 'google', 'synthetic-browser', state_store=PublicUserStore(db))")
+        assert subprocess.run([sys.executable, "-c", replay, str(path)], input=state,
+                              capture_output=True, text=True, check=True).stdout.strip() == "False"
+
+    @pytest.mark.parametrize("provider,binding", [("kakao", "browser-one"), ("google", "wrong"), ("google", None)])
+    def test_oauth_mismatch_consumes_across_connections(self, oauth_store, provider, binding):
+        from services.user_storage import PublicUserStore
+        state = generate_oauth_state("google", "browser-one", state_store=oauth_store)
+        other = PublicUserStore(oauth_store)
+        assert validate_oauth_state(state, provider, binding, state_store=other) is False
+        assert validate_oauth_state(state, "google", "browser-one", state_store=oauth_store) is False
+
+    def test_oauth_expired_cleanup_hashes_and_clock_rollback(self, oauth_store, monkeypatch):
+        from hashlib import sha256
+        from sqlalchemy import text
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000)
+        old = generate_oauth_state("google", "browser-one", state_store=oauth_store)
+        with oauth_store.SessionLocal() as session:
+            row = dict(session.execute(text("SELECT * FROM oauth_pending_states")).mappings().one())
+            assert row == {"state_digest": sha256(old.encode()).hexdigest(), "provider": "google",
+                           "browser_digest": sha256(b"browser-one").hexdigest(), "created_at": 1000,
+                           "expires_at": 1000 + OAUTH_STATE_TTL}
+            assert session.execute(text("SELECT count(*) FROM users")).scalar_one() == 0
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + OAUTH_STATE_TTL)
+        assert validate_oauth_state(old, "google", "browser-one", state_store=oauth_store) is False
+        stale = generate_oauth_state("google", "browser-one", state_store=oauth_store)
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL)
+        new = generate_oauth_state("naver", "browser-two", state_store=oauth_store)
+        with oauth_store.SessionLocal() as session:
+            assert session.execute(text("SELECT count(*) FROM oauth_pending_states")).scalar_one() == 1
+        assert validate_oauth_state(stale, "google", "browser-one", state_store=oauth_store) is False
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL - 1)
+        assert validate_oauth_state(new, "naver", "browser-two", state_store=oauth_store) is False
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 2 * OAUTH_STATE_TTL)
+        assert validate_oauth_state(new, "naver", "browser-two", state_store=oauth_store) is False
+        valid = generate_oauth_state("google", "browser-one", state_store=oauth_store)
+        monkeypatch.setattr("services.oauth_service.time.time", lambda: 1000 + 3 * OAUTH_STATE_TTL - .01)
+        assert validate_oauth_state(valid, "google", "browser-one", state_store=oauth_store) is True
+
+    def test_oauth_no_cross_store_or_process_fallback(self, oauth_store, tmp_path):
+        from services.account_database import AccountDatabase
+        from services.user_storage import PublicUserStore
+        state = generate_oauth_state("google", "browser-one", state_store=oauth_store)
+        other_db = AccountDatabase(tmp_path / "unrelated-accounts.sqlite")
+        try:
+            assert validate_oauth_state(state, "google", "browser-one", state_store=PublicUserStore(other_db)) is False
+            assert validate_oauth_state(state, "google", "browser-one", state_store=oauth_store) is True
+        finally:
+            other_db.close()

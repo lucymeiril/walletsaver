@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "catalog_revision": 60,
+  "version": "2026-10-06-catalog60",
+  "source_code_base": "704a8c2c290e6fed1d7d3bbf319165f6dda2ec72",
+  "initial_catalog": {
+    "included": 9098,
+    "unresolved": 98,
+    "residual_review": "user_paused"
+  },
+  "runtime_catalog": {
+    "events": 9112,
+    "public": 8800,
+    "pending": 312
+  },
+  "data_scope": "Sanitized catalog/update knowledge and product-only public snapshot; observations retain dated quotes and conditions; private user/session stores are initialized empty.",
+  "files": {
+    "admin.sqlite": {
+      "sha256": "f64627c3e44a559af926d82d2957a56d36e41b78aaf01cccbe096fa92f4186f8",
+      "bytes": 61304832,
+      "required_tables": [
+        "normalized_canonical_products",
+        "normalized_product_variants",
+        "normalized_source_listings",
+        "normalized_offer_events",
+        "normalized_week_buckets",
+        "normalized_offer_week_links",
+        "products",
+        "categories",
+        "unified_categories",
+        "keywords",
+        "product_keywords",
+        "matching_entries",
+        "product_match_rules",
+        "product_matches",
+        "mart_category_mappings",
+        "pending_categorizations",
+        "pending_ingestions",
+        "public_snapshot_state",
+        "catalog_sync_log",
+        "imports_audit",
+        "baseline_prices",
+        "discount_history",
+        "price_history",
+        "alembic_version"
+      ],
+      "counts": {
+        "normalized_canonical_products": 6308,
+        "normalized_product_variants": 6370,
+        "normalized_source_listings": 6458,
+        "normalized_offer_events": 9112,
+        "normalized_week_buckets": 3,
+        "normalized_offer_week_links": 9087,
+        "products": 0,
+        "categories": 542,
+        "unified_categories": 1383,
+        "keywords": 1210,
+        "product_keywords": 0,
+        "matching_entries": 6371,
+        "product_match_rules": 0,
+        "product_matches": 0,
+        "mart_category_mappings": 506,
+        "pending_categorizations": 0,
+        "pending_ingestions": 11,
+        "public_snapshot_state": 1,
+        "catalog_sync_log": 43,
+        "imports_audit": 0,
+        "baseline_prices": 0,
+        "discount_history": 0,
+        "price_history": 0,
+        "alembic_version": 1
+      },
+      "archive_file": "admin.sqlite.gz",
+      "archive_sha256": "cfaab987c2bbac768dbe3929608a7fbd5ab14b60832ec1253089b98092830338",
+      "archive_bytes": 8685901
+    },
+    "public_snapshot.sqlite": {
+      "sha256": "b9a1af2a6a99f9fc00f95ac5bef9ecffbfc0894209fab0f2205c5602f6dd2cd9",
+      "bytes": 56987648,
+      "required_tables": [
+        "normalized_canonical_products",
+        "normalized_product_variants",
+        "normalized_source_listings",
+        "normalized_offer_events",
+        "normalized_week_buckets",
+        "normalized_offer_week_links",
+        "products",
+        "categories",
+        "unified_categories",
+        "keywords",
+        "product_keywords",
+        "mart_category_mappings",
+        "baseline_prices",
+        "discount_history",
+        "price_history",
+        "snapshot_meta"
+      ],
+      "counts": {
+        "normalized_canonical_products": 6308,
+        "normalized_product_variants": 6370,
+        "normalized_source_listings": 6458,
+        "normalized_offer_events": 8800,
+        "normalized_week_buckets": 3,
+        "normalized_offer_week_links": 8790,
+        "products": 0,
+        "categories": 542,
+        "unified_categories": 1383,
+        "keywords": 1210,
+        "product_keywords": 0,
+        "mart_category_mappings": 506,
+        "baseline_prices": 0,
+        "discount_history": 0,
+        "price_history": 0,
+        "snapshot_meta": 1
+      },
+      "archive_file": "public_snapshot.sqlite.gz",
+      "archive_sha256": "41462766b6746b91d591bc7a2255c373cb2035dbf1a25637d88e826afdf7eec4",
+      "archive_bytes": 8113079
+    },
+    "opinet.sqlite": {
+      "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
+      "bytes": 40960,
+      "required_tables": [
+        "fuel_stations",
+        "fuel_prices"
+      ],
+      "counts": {
+        "fuel_stations": 7,
+        "fuel_prices": 14
+      },
+      "archive_file": "opinet.sqlite.gz",
+      "archive_sha256": "0480e849605d875a673cf51b4fba38cd8507ba3b7e03790042e8f78b81406fc3",
+      "archive_bytes": 2141
+    }
+  },
+  "admin_migration_revision": "capstone_keyword_ssot_v1",
+  "fuel_data_scope": "7 published native stations and14 dated gasoline/diesel quotes; coordinates NULL pending CRS, no official API credentials/current-price guarantee",
+  "installation": "One-time validated gzip restoration into writable rawSQLite paths; subsequent starts preserve localcatalog/users"
+}

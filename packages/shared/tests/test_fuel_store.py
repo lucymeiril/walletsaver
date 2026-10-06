@@ -65,6 +65,7 @@ def test_radius_filter_never_treats_missing_coordinates_as_nearby(tmp_path):
     store.save_snapshot([
         _record("A1", "좌표있음", 1550, lat=37.5, lng=127.0),
         _record("A2", "좌표없음", 1500),
+        _record("A3", "변환되지 않은 좌표", 1400, lat=200000, lng=500000),
     ])
 
     rows = store.current_prices(
@@ -75,3 +76,24 @@ def test_radius_filter_never_treats_missing_coordinates_as_nearby(tmp_path):
     )
     assert [row["station_code"] for row in rows] == ["A1"]
     assert rows[0]["distance_m"] == 0
+
+
+def test_price_freshness_uses_selected_fuel_observation_not_station_metadata(tmp_path):
+    store = FuelStore(tmp_path / 'fuel.sqlite')
+    record = _record('A1', '관측 주유소', 1590, observed_at=datetime(2026, 8, 18, 9))
+    record['updated_at'] = datetime(2026, 10, 3, 12)
+    record['prices'].append({'fuel_type': 'diesel', 'price': 1450,
+                            'observed_at': datetime(2026, 9, 2, 10), 'source': 'opinet'})
+    missing_service = _record('A2', '셀프 여부 미확인', 1600)
+    missing_service.pop('has_self_service')
+    negative_service = _record('A3', '기존 저장값 0', 1610)
+    negative_service['has_self_service'] = False
+    store.save_snapshot([record, missing_service, negative_service])
+    gasoline = store.current_prices(fuel_type='gasoline')[0]
+    diesel = store.current_prices(fuel_type='diesel')[0]
+    assert gasoline['updated_at'] == '2026-08-18T09:00:00'
+    assert diesel['updated_at'] == '2026-09-02T10:00:00'
+    assert gasoline['station_updated_at'] == '2026-10-03T12:00:00'
+    assert gasoline['price_observed_at']['diesel'] == diesel['updated_at']
+    services = {row['station_code']: row['self_service'] for row in store.current_prices()}
+    assert services == {'A1': True, 'A2': None, 'A3': None}

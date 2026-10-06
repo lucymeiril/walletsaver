@@ -1,4 +1,5 @@
 """Exact declared grain versus cooked-food forms, not shelf-only inference."""
+from urllib.parse import urlsplit
 GROUPS={
  'food.grains.rice.white': ('김화 농협 철원 오대쌀 10kg','예산농협 삼광쌀10kg x 2','팽성농협 장원급제 쌀 4kg x 2','예산농협 황금쌀10kg x 2','여주시 농협 여주쌀 10kg','팽성농협 고시히카리쌀 10kg x 2','푸른들판 유기농쌀 골든퀸 8kg x 2'),
  'food.grains.rice.barley': ('대구농산 흰찹쌀보리쌀 5kg','유기농 쌀보리 1kg x 6'),
@@ -20,6 +21,13 @@ TITLES={title:leaf for leaf,titles in GROUPS.items() for title in titles}
 
 
 def reviewed_costco_rice_form_leaf(evidence):
+    if (evidence['mart'] == 'costco' and tuple(evidence['source_path_parts']) == ('SpecialPriceOffers',)
+            and evidence['source_title'] == '햇반 김치치즈 주먹밥 100g X 12 X 2'):
+        urls = [urlsplit(url) for url in evidence.get('source_urls', ())]
+        if urls and all(url.scheme == 'https' and url.hostname in {'costco.co.kr', 'www.costco.co.kr'}
+                        and url.path == '/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Rice-Ball-Kimchi-Cheese-100g-x-12-x-2/p/674445' for url in urls):
+            return 'food.meals.rice.rice_ball'
+        return None
     if evidence['mart']!='costco' or tuple(evidence['source_path_parts'])!=('쌀',):
         return None
     return TITLES.get(evidence['source_title'])

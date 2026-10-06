@@ -1,5 +1,6 @@
 """OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
 import json
+import hashlib
 import os
 import secrets
 import time
@@ -20,6 +21,7 @@ class OAuthUserInfo:
     email: str
     nickname: str
     profile_image: Optional[str] = None
+    email_verified: bool = False
 
 
 class OAuthConfig:
@@ -103,34 +105,39 @@ def get_oauth_redirect_uri(provider: str) -> str:
     return f"{_redirect_base()}/api/auth/oauth/{provider}/callback"
 
 
-_oauth_states: dict[str, float] = {}
-_OAUTH_STATE_TTL = 600
+OAUTH_STATE_TTL = 600
 
 
-def _cleanup_expired_states() -> None:
-    now = time.time()
-    expired = [state for state, created_at in _oauth_states.items() if now - created_at > _OAUTH_STATE_TTL]
-    for state in expired:
-        _oauth_states.pop(state, None)
-
-
-def generate_oauth_state() -> str:
-    _cleanup_expired_states()
+def generate_oauth_state(provider: str, browser_binding: str, *, state_store) -> str:
+    if provider not in OAuthConfig._PROVIDERS or not isinstance(browser_binding, str) or not browser_binding:
+        raise ValueError("OAuth state requires a supported provider and browser binding")
     state = secrets.token_urlsafe(32)
-    _oauth_states[state] = time.time()
+    now = time.time()
+    state_store.issue_oauth_state(
+        state_digest=hashlib.sha256(state.encode()).hexdigest(), provider=provider,
+        browser_digest=hashlib.sha256(browser_binding.encode()).hexdigest(),
+        created_at=now, expires_at=now + OAUTH_STATE_TTL,
+    )
     return state
 
 
-def validate_oauth_state(state: str | None) -> bool:
-    if not state:
+def validate_oauth_state(state: str | None, provider: str, browser_binding: str | None, *, state_store) -> bool:
+    if not isinstance(state, str) or not state:
         return False
-    created_at = _oauth_states.pop(state, None)
-    if created_at is None:
+    # Consume before any await/token exchange: denied, mismatched and expired
+    # callbacks cannot replay an authorization across workers or restarts.
+    entry = state_store.consume_oauth_state(hashlib.sha256(state.encode()).hexdigest())
+    if entry is None or not isinstance(browser_binding, str) or not browser_binding:
         return False
-    return time.time() - created_at <= _OAUTH_STATE_TTL
+    now = time.time()
+    return (
+        entry["provider"] == provider
+        and entry["created_at"] <= now < entry["expires_at"]
+        and secrets.compare_digest(entry["browser_digest"], hashlib.sha256(browser_binding.encode()).hexdigest())
+    )
 
 
-def get_oauth_login_url(provider: str) -> str:
+def get_oauth_login_url(provider: str, browser_binding: str, *, state_store) -> str:
     """OAuth 로그인 URL 생성"""
     config = OAuthConfig.get(provider)
     if not config["client_id"]:
@@ -142,7 +149,7 @@ def get_oauth_login_url(provider: str) -> str:
         "redirect_uri": get_oauth_redirect_uri(provider),
         "response_type": "code",
         "scope": config["scope"],
-        "state": generate_oauth_state(),
+        "state": generate_oauth_state(provider, browser_binding, state_store=state_store),
     }
     if provider == "google":
         params["access_type"] = "offline"
@@ -179,32 +186,47 @@ async def get_user_info(provider: str, access_token: str) -> OAuthUserInfo:
         response.raise_for_status()
         data = response.json()
 
+    if not isinstance(data, dict):
+        raise ValueError("Invalid OAuth userinfo response")
+
     if provider == "google":
         return OAuthUserInfo(
             provider="google",
-            provider_user_id=str(data["id"]),
-            email=data["email"],
-            nickname=data.get("name", data["email"].split("@")[0]),
+            provider_user_id=_provider_user_id(data.get("id")),
+            email=data.get("email") if isinstance(data.get("email"), str) else "",
+            nickname=data.get("name") or "google 사용자",
             profile_image=data.get("picture"),
+            email_verified=data.get("verified_email") is True,
         )
     elif provider == "kakao":
         account = data.get("kakao_account", {})
         profile = account.get("profile", {})
         return OAuthUserInfo(
             provider="kakao",
-            provider_user_id=str(data["id"]),
+            provider_user_id=_provider_user_id(data.get("id")),
             email=account.get("email", ""),
             nickname=profile.get("nickname", f"kakao_{data['id']}"),
             profile_image=profile.get("profile_image_url"),
+            email_verified=account.get("is_email_valid") is True and account.get("is_email_verified") is True,
         )
     elif provider == "naver":
         info = data.get("response", {})
         return OAuthUserInfo(
             provider="naver",
-            provider_user_id=info["id"],
+            provider_user_id=_provider_user_id(info.get("id")),
             email=info.get("email", ""),
             nickname=info.get("nickname", f"naver_{info['id']}"),
             profile_image=info.get("profile_image"),
         )
     else:
         raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
+
+
+def _provider_user_id(value) -> str:
+    """Retain the explicit subject; never turn missing/bool values into identities."""
+    if isinstance(value, bool) or not isinstance(value, (str, int)) or (isinstance(value, int) and value <= 0):
+        raise ValueError("Missing or invalid OAuth provider user id")
+    identity = str(value)
+    if not identity.strip() or identity != identity.strip():
+        raise ValueError("Missing or invalid OAuth provider user id")
+    return identity

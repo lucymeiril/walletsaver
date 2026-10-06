@@ -11,7 +11,9 @@ import math
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import desc, func
+from pydantic import Field
+from sqlalchemy import case, desc, func, text
+from sqlalchemy.orm import joinedload, selectinload
 
 from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
@@ -28,6 +30,10 @@ from services.board_storage import (
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+
+class CommunityListResponse(ApiResponse):
+    pinned_posts: list[dict] = Field(default_factory=list)
 
 
 def _session_factory():
@@ -135,9 +141,15 @@ async def list_posts(
     sort: str = Query("recent", description="정렬 (recent, popular, comments)"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
+    q: str | None = Query(None, description="제목/내용 검색"),
+    partition_pinned: bool = Query(False, description="핫딜 인기글을 일반 목록에서 분리"),
 ):
     factory = _session_factory()
     with factory() as session:
+        # SQLite's legacy transaction mode does not begin a transaction for
+        # SELECT alone. Keep pins, totals, rows and relationship counts in the
+        # same read snapshot, including concurrent votes/comments/deletions.
+        session.execute(text("BEGIN"))
         query = session.query(PostModel).filter(PostModel.is_deleted.is_(False))
         if post_type:
             try:
@@ -149,9 +161,46 @@ async def list_posts(
                 (PostModel.custom_category == category) | (PostModel.category_id == category)
             )
 
+        search = (q or "").strip()
+        if search:
+            query = query.filter(
+                PostModel.title.icontains(search, autoescape=True)
+                | PostModel.content.icontains(search, autoescape=True)
+            )
+
+        partition = partition_pinned and post_type == "hotdeal" and not search
+        if partition or (sort == "popular" and post_type == "hotdeal"):
+            votes = (
+                session.query(
+                    VoteModel.post_id,
+                    func.sum(case((VoteModel.vote_type == DBVoteType.HOT, 1), else_=0)).label("hot"),
+                    func.sum(case((VoteModel.vote_type == DBVoteType.NOT, 1), else_=0)).label("not_"),
+                )
+                .group_by(VoteModel.post_id)
+                .subquery()
+            )
+            query = query.outerjoin(votes, votes.c.post_id == PostModel.id)
+            net_votes = func.coalesce(votes.c.hot, 0) - func.coalesce(votes.c.not_, 0)
+
+        # Load only the bounded result rows' related data, avoiding one query
+        # per post while retaining the existing serialized vote/comment fields.
+        query = query.options(
+            joinedload(PostModel.author),
+            selectinload(PostModel.votes),
+            selectinload(PostModel.comments),
+        )
+        pinned = []
+        if partition:
+            pinned = query.filter(votes.c.hot > 0).order_by(
+                desc(net_votes), desc(PostModel.created_at), desc(PostModel.id)
+            ).limit(3).all()
+            if pinned:
+                query = query.filter(PostModel.id.notin_([post.id for post in pinned]))
+
         total = query.count()
         if sort == "popular":
-            query = query.order_by(desc(PostModel.view_count), desc(PostModel.created_at))
+            popularity = net_votes if post_type == "hotdeal" else PostModel.view_count
+            query = query.order_by(desc(popularity), desc(PostModel.created_at), desc(PostModel.id))
         elif sort == "comments":
             counts = (
                 session.query(CommentModel.post_id, func.count(CommentModel.id).label("comment_count"))
@@ -160,14 +209,15 @@ async def list_posts(
                 .subquery()
             )
             query = query.outerjoin(counts, counts.c.post_id == PostModel.id).order_by(
-                desc(func.coalesce(counts.c.comment_count, 0)), desc(PostModel.created_at)
+                desc(func.coalesce(counts.c.comment_count, 0)), desc(PostModel.created_at), desc(PostModel.id)
             )
         else:
-            query = query.order_by(desc(PostModel.created_at))
+            query = query.order_by(desc(PostModel.created_at), desc(PostModel.id))
 
         posts = query.offset((page - 1) * per_page).limit(per_page).all()
-        return ApiResponse(
+        return CommunityListResponse(
             data=[_post_to_dict(post) for post in posts],
+            pinned_posts=[_post_to_dict(post) for post in pinned],
             meta=PaginationMeta(
                 page=page,
                 per_page=per_page,

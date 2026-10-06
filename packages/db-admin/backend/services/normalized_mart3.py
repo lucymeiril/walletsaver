@@ -1,8 +1,9 @@
 """Minimal DB-admin normalized mart3 projection helpers."""
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import hashlib
+import json
 import math
 import re
 import unicodedata
@@ -22,7 +23,149 @@ from storage.models import (
     NormalizedSourceListing,
     NormalizedWeekBucket,
     UnifiedCategory,
+    MatchingEntry,
 )
+
+
+def publish_matched_offer_observations(
+    session: Session, rows: list[dict[str, Any]], *, observed_at: datetime | None = None,
+) -> list[dict[str, Any]]:
+    """Append source-revalidated prices to existing public identities only.
+
+    A crawler's hit and submitted public IDs are assertions, not permission to
+    create or edit products. Reuse recollection/export's exact source contract
+    against current server records before persisting any offer.
+    """
+    from core.catalog_matching import _extract_str, _match_key_for_row, _normalized_source_reason
+    from core.catalog_quantity import package_pricing_measure
+    from core.promotion_semantics import comparable_transaction_or_none
+    from core.reviewed_source_evidence import source_review_evidence, source_review_matches
+    from services.initial_catalog_seed import _price
+
+    placements = []
+    for supplied in rows:
+        row = dict(supplied)
+        fresh_key, reason = _match_key_for_row(row)
+        # Enrichment retains its verified source key while replacing brand
+        # metadata with the canonical brand. The key is only a lookup pointer;
+        # all public/source/quantity assertions are independently checked below.
+        key = row.get('match_key') or fresh_key
+        entry = session.execute(select(MatchingEntry).where(MatchingEntry.match_key == key)).scalar_one_or_none() if key else None
+        if reason or entry is None or not math.isfinite(float(entry.confidence or 0)) or float(entry.confidence or 0) < .8:
+            raise ValueError("matched offer requires a current reviewed matching entry")
+        product = session.get(NormalizedCanonicalProduct, entry.public_product_id) if entry.public_product_id else None
+        variant = session.get(NormalizedProductVariant, entry.public_variant_id) if entry.public_variant_id else None
+        if not product or not product.is_active or not variant or not variant.is_active:
+            raise ValueError("matched offer public product/variant unavailable")
+        if key != fresh_key:
+            previous_parts, fresh_parts = str(key).split('|'), str(fresh_key).split('|')
+            if (len(previous_parts) != 4 or len(fresh_parts) != 4
+                    or previous_parts[1:] != fresh_parts[1:]
+                    or not product.brand or row.get('brand') != product.brand):
+                raise ValueError("matched offer source key conflicts beyond canonical brand enrichment")
+        if (row.get('public_product_id') != product.public_product_id
+                or row.get('public_variant_id') != variant.public_variant_id):
+            raise ValueError("matched offer submitted public references conflict")
+        listings = session.execute(select(NormalizedSourceListing).where(
+            NormalizedSourceListing.public_variant_id == variant.public_variant_id,
+            NormalizedSourceListing.is_active.is_(True),
+        )).scalars().all()
+        variant_data = {field: getattr(variant, field) for field in (
+            'public_variant_id', 'public_product_id', 'package_quantity', 'package_unit',
+            'bundle_count', 'standard_unit', 'attributes',
+        )}
+        variant_data['unified_category_id'] = product.unified_category_id
+        variant_data['source_listings'] = [{field: getattr(listing, field) for field in (
+            'source_name', 'source_record_key', 'source_title',
+        )} for listing in listings]
+        reason = _normalized_source_reason(row, key, {
+            'public_product_id': product.public_product_id,
+            'public_variant_id': variant.public_variant_id,
+        }, {variant.public_variant_id: variant_data})
+        if reason:
+            raise ValueError(f"matched offer source rejected: {reason}")
+        layers = [row, *[row[field] for field in ('attributes', 'attrs') if isinstance(row.get(field), dict)]]
+        source = next((_extract_str(layer, ['source', 'source_name', 'mart']) for layer in layers
+                       if _extract_str(layer, ['source', 'source_name', 'mart'])), '')
+        source = {'이마트': 'emart', 'ssg': 'emart', '홈플러스': 'homeplus',
+                  '롯데마트': 'lottemart', '코스트코': 'costco'}.get(source, source)
+        native = next((_extract_str(layer, ['source_record_key', 'source_product_id', 'mart_native_code', 'product_id', 'id'])
+                       for layer in layers if _extract_str(layer, ['source_record_key', 'source_product_id', 'mart_native_code', 'product_id', 'id'])), None)
+        bound = [listing for listing in listings if listing.source_name == source and str(listing.source_record_key) == native]
+        if len(bound) != 1:
+            raise ValueError("matched offer source listing ambiguous")
+        listing = bound[0]
+        source_evidence = source_review_evidence(row)
+        # Reviewed multi-context variants already validate their exact approved
+        # URL/native-field pair above. Ordinary listings require their own URL.
+        url_matches = source_review_matches(source_evidence, {
+            'source_urls': [listing.source_url] if listing.source_url else [], 'source_fields': {},
+        })
+        if not url_matches and not (variant.attributes or {}).get('source_evidence_reviews'):
+            raise ValueError("matched offer source URL unavailable or conflicting")
+        if row.get('public_source_listing_id') not in (None, listing.public_source_listing_id):
+            raise ValueError("matched offer submitted listing conflicts")
+        source_stamp = row.get('crawled_at') or row.get('recorded_at')
+        try:
+            source_stamp = (source_stamp if isinstance(source_stamp, datetime)
+                            else datetime.fromisoformat(str(source_stamp).replace('Z', '+00:00'))) if source_stamp else None
+        except ValueError:
+            raise ValueError("matched offer observed timestamp malformed")
+        # An aware native timestamp is exact. A naive crawler clock requires
+        # the server's explicit receipt time; never guess its time zone.
+        stamp = source_stamp if source_stamp and source_stamp.tzinfo else observed_at
+        if stamp is None:
+            raise ValueError("matched offer observed timestamp missing")
+        stamp = (stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else stamp).astimezone(timezone.utc).replace(tzinfo=None)
+        price_fields, issues = _price(row, row.get('attributes') or {}, listing.source_name, listing.source_title)
+        if 'sale_price_missing_or_invalid' in issues or 'original_price_below_sale_price' in issues:
+            raise ValueError("matched offer price missing or conflicting")
+        from core.reviewed_source_evidence import package_publication_reason
+        publication_reason = package_publication_reason({
+            'package_quantity': variant.package_quantity, 'package_unit': variant.package_unit,
+            'bundle_count': variant.bundle_count, 'standard_unit': variant.standard_unit,
+            'attributes': variant.attributes or {}})
+        if publication_reason:
+            issues = sorted(set(issues) | {publication_reason})
+        raw_json = json.dumps(supplied, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
+        raw_hash = hashlib.sha256(raw_json.encode()).hexdigest()
+        receipt_hash = hashlib.sha256((listing.public_source_listing_id + '|' + stamp.isoformat() + '|' + raw_hash).encode()).hexdigest()
+        offer_id = 'offer-recollected-' + receipt_hash[:32]
+        existing = session.get(NormalizedOfferEvent, offer_id)
+        if existing is not None:
+            if (existing.public_source_listing_id != listing.public_source_listing_id
+                    or (existing.audit_provenance or {}).get('source_payload_sha256') != raw_hash):
+                raise ValueError("matched offer observation identity conflicts")
+            placements.append({'public_product_id': product.public_product_id,
+                'public_variant_id': variant.public_variant_id, 'public_source_listing_id': listing.public_source_listing_id,
+                'public_offer_event_id': offer_id, 'inserted': False})
+            continue
+        state = 'pending_review' if issues else 'active'
+        transaction = comparable_transaction_or_none(current_price=price_fields['price'],
+            promotion_type=price_fields['promotion_type'], promotion_conditions=price_fields['promotion_conditions']) if not issues else None
+        measure = package_pricing_measure(variant_data)
+        unit_price = round(transaction[0] * 100 / (measure[0] * transaction[1]), 4) if transaction and measure else None
+        normalized = {**price_fields, 'public_offer_event_id': offer_id, 'crawled_at': stamp,
+            'raw_record_id': 'recollected:' + receipt_hash, 'offer_state': state,
+            'standard_unit_price': unit_price, 'price_per_100g': unit_price if measure and measure[1] == 'g' else None,
+            'raw_evidence': {'promotion_conditions': price_fields['promotion_conditions'], 'observations': [{
+                'raw_record_id': 'recollected:' + receipt_hash,
+                'raw_payload': supplied, 'raw_payload_sha256': raw_hash, 'crawled_at': stamp.isoformat(),
+                'timestamp_source': 'source_crawled_at' if source_stamp and source_stamp.tzinfo else 'explicit_receipt_time',
+            }]}, 'audit_provenance': {'source_payload_sha256': raw_hash, 'review_reasons': issues,
+                'publication_status': 'not_approved', 'naive_timestamp_timezone': 'UTC',
+                'identity_basis': 'existing_source_revalidated_public_references'}}
+        offer = _upsert_offer_event(session, normalized, listing, 'recollected-offer-v1')
+        week = _upsert_week_bucket(session, normalized, 'recollected-offer-v1')
+        session.add(NormalizedOfferWeekLink(public_offer_event_id=offer.public_offer_event_id,
+            public_week_bucket_id=week.public_week_bucket_id,
+            observed_min_price=transaction[0] if transaction else None,
+            observed_max_price=transaction[0] if transaction else None))
+        placements.append({'public_product_id': product.public_product_id,
+            'public_variant_id': variant.public_variant_id, 'public_source_listing_id': listing.public_source_listing_id,
+            'public_offer_event_id': offer_id, 'inserted': True})
+    session.flush()
+    return placements
 
 
 def publish_mart3_rows(

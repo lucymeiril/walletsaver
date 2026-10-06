@@ -19,6 +19,10 @@ router = APIRouter()
 _DEFAULT_NEARBY_RADIUS_M = 10_000
 
 
+class GasResponse(ApiResponse):
+    message: str | None = None
+
+
 @router.get("/nearby")
 async def nearby_gas_stations(
     lat: float | None = Query(None, ge=-90, le=90, description="위도"),
@@ -47,9 +51,9 @@ async def nearby_gas_stations(
     use a conservative 10 km default instead of returning nationwide rows.
     """
     if (lat is None) != (lng is None):
-        return ApiResponse(data=[], message="거리 조회에는 lat와 lng가 모두 필요합니다")
+        return GasResponse(data=[], message="거리 조회에는 lat와 lng가 모두 필요합니다")
     if radius is not None and (lat is None or lng is None):
-        return ApiResponse(data=[], message="반경 조회에는 lat와 lng가 필요합니다")
+        return GasResponse(data=[], message="반경 조회에는 lat와 lng가 필요합니다")
 
     effective_radius = radius
     if lat is not None and lng is not None and effective_radius is None:
@@ -77,6 +81,8 @@ async def nearby_gas_stations(
     if not data:
         if lat is not None and lng is not None:
             message = "현재 반경에서 위치가 확인된 오피넷 가격 정보가 없습니다"
+        elif sido or sigungu:
+            message = "선택한 지역의 오피넷 가격 정보가 없습니다"
         else:
             message = "저장된 오피넷 가격 정보가 없습니다"
-    return ApiResponse(data=data, message=message)
+    return GasResponse(data=data, message=message)

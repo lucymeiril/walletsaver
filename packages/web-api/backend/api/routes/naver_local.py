@@ -64,6 +64,10 @@ def _parse_nonnegative_int(value) -> int:
     return int(number) if number is not None else 0
 
 
+def _optional_bool(value) -> bool | None:
+    return value if isinstance(value, bool) else None
+
+
 def _valid_coordinates(lat: float, lng: float) -> bool:
     return -90 <= lat <= 90 and -180 <= lng <= 180
 
@@ -98,11 +102,12 @@ def _opinet_nearby_items(lat: float, lng: float, max_items: int) -> list[dict]:
                 "premium_gasoline": row.get("premium"),
                 "diesel": row.get("diesel"),
                 "lpg": row.get("lpg"),
-                "is_self": bool(row.get("self_service")),
-                "is_24h": False,
-                "has_car_wash": False,
+                "is_self": _optional_bool(row.get("self_service")),
+                "is_24h": _optional_bool(row.get("is_24h")),
+                "has_car_wash": _optional_bool(row.get("has_car_wash")),
                 "brand": row.get("brand") or "",
                 "updated_at": row.get("updated_at"),
+                "price_observed_at": row.get("price_observed_at"),
                 "source": row.get("source") or "opinet",
             },
         }
@@ -138,14 +143,13 @@ async def geocode(
 
     if loc is None and browser_search:
         loop = asyncio.get_running_loop()
-        places = await loop.run_in_executor(
-            _executor,
-            _search_via_playwright_sync,
-            raw,
-            37.4979,
-            127.0276,
-            1,
-        )
+        try:
+            places = await loop.run_in_executor(
+                _executor, _search_via_playwright_sync, raw, None, None, 1,
+            )
+        except Exception as exc:
+            logger.warning("[네이버 검색] geocode response unavailable: %s", exc)
+            places = []
         if places:
             first = places[0]
             try:
@@ -170,7 +174,7 @@ async def geocode(
     return ApiResponse(data=loc)
 
 
-def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
+def _search_via_playwright_sync(query: str, lat: float | None, lng: float | None, max_items: int) -> list[dict]:
     """Search Naver Map in a browser and extract its structured place response."""
     from playwright.sync_api import sync_playwright
 
@@ -188,38 +192,35 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
     items: list[dict] = []
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(
-                headless=True,
-                args=["--disable-blink-features=AutomationControlled"],
-            )
-            context = browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/125.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1920, "height": 1080},
-                locale="ko-KR",
-                timezone_id="Asia/Seoul",
-                geolocation={"latitude": lat, "longitude": lng},
-                permissions=["geolocation"],
-            )
+            browser = playwright.chromium.launch(headless=True)
+            context_options = {
+                "viewport": {"width": 1920, "height": 1080},
+                "locale": "ko-KR",
+                "timezone_id": "Asia/Seoul",
+            }
+            # Unknown-location geocoding has no reference position. Only a
+            # caller's known coordinates may supply a browser location.
+            if lat is not None and lng is not None and _valid_coordinates(lat, lng):
+                context_options["geolocation"] = {"latitude": lat, "longitude": lng}
+                context_options["permissions"] = ["geolocation"]
+            context = browser.new_context(**context_options)
             page = context.new_page()
-            page.add_init_script(
-                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-            )
             page.on("response", handle_response)
-            page.goto(f"https://map.naver.com/p/search/{query}", timeout=20000)
-            page.wait_for_timeout(5000)
-            browser.close()
+            try:
+                page.goto(f"https://map.naver.com/p/search/{quote(query, safe='')}", timeout=20000)
+                page.wait_for_timeout(5000)
+            finally:
+                browser.close()
     except Exception as exc:
         logger.warning("[네이버 검색] structured search failed: %s", exc)
-        return []
+        raise RuntimeError("네이버 브라우저 검색 응답을 확인할 수 없습니다") from exc
 
     data = api_data.get("response") or {}
     result = data.get("result") or {}
-    place_data = result.get("place") or {}
-    place_list = place_data.get("list") or []
+    place_data = result.get("place") if isinstance(result, dict) else None
+    place_list = place_data.get("list") if isinstance(place_data, dict) else None
+    if not isinstance(place_list, list):
+        raise RuntimeError("네이버 장소 검색의 결과 목록을 확인할 수 없습니다")
 
     for place in place_list[:max_items]:
         category = place.get("category", "")
@@ -264,9 +265,9 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
                 "premium_gasoline": _parse_fuel_price(petrol.get("hGasPrice")),
                 "diesel": _parse_fuel_price(petrol.get("dieselPrice")),
                 "lpg": _parse_fuel_price(petrol.get("lpgPrice")),
-                "is_self": bool(petrol.get("isSelf")),
-                "is_24h": bool(petrol.get("is24Opened")),
-                "has_car_wash": bool(petrol.get("hasCarWash")),
+                "is_self": _optional_bool(petrol.get("isSelf")),
+                "is_24h": _optional_bool(petrol.get("is24Opened")),
+                "has_car_wash": _optional_bool(petrol.get("hasCarWash")),
                 "brand": (petrol.get("petrolCompany") or {}).get("name", "").strip(),
                 "updated_at": petrol.get("updateDate") or petrol.get("updatedAt"),
             }
@@ -322,7 +323,7 @@ async def naver_place_search(
             max_items,
             browser_search=browser_search,
         )
-        source = "naver" if items else "unavailable"
+        source = "naver" if browser_search else "unavailable"
     except Exception as exc:
         logger.error("[네이버 검색] search failed: %s", exc)
         items = []
@@ -372,7 +373,7 @@ async def area_explore_stream(
                         per_category,
                         browser_search=browser_search,
                     )
-                    source = "naver" if items else "unavailable"
+                    source = "naver" if browser_search else "unavailable"
             except Exception as exc:
                 logger.warning("[네이버 검색] category %s failed: %s", name, exc)
                 items = []
@@ -410,13 +411,15 @@ async def subcategory_search(
             min(max_items, 30),
             browser_search=browser_search,
         )
+        source = "naver" if browser_search else "unavailable"
     except Exception as exc:
         logger.warning("[네이버 검색] subcategory %s failed: %s", subcategory, exc)
         items = []
+        source = "unavailable"
 
     return ApiResponse(data={
         "items": items,
         "location": location,
         "subcategory": subcategory,
-        "source": "naver" if items else "unavailable",
+        "source": source,
     })

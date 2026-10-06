@@ -1,0 +1,29 @@
+# Use with: docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.yml up --build
+services:
+  catalog-init:
+    image: python:3.13-slim
+    entrypoint: ["python", "/demo/install_demo_catalog.py"]
+    command: ["--source", "/demo/catalog", "--target", "/data"]
+    volumes:
+      - ./tools/install_demo_catalog.py:/demo/install_demo_catalog.py:ro
+      - ./demo-data:/demo/catalog:ro
+      - walletsaver-demo-data:/data
+    restart: "no"
+
+  api:
+    depends_on:
+      catalog-init:
+        condition: service_completed_successfully
+    volumes:
+      - walletsaver-demo-data:/data
+    environment:
+      WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER: "false"
+      WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD: "false"
+
+  web:
+    depends_on:
+      api:
+        condition: service_started
+
+volumes:
+  walletsaver-demo-data:

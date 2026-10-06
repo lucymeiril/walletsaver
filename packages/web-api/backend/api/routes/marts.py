@@ -30,7 +30,7 @@ _STORE_ALIAS = {public_key: db_key for public_key, db_key, _, _ in _SUPPORTED_MA
 
 
 @router.get("")
-async def list_marts(request: Request):
+def list_marts(request: Request):
     """지원 마트 목록과 각 마트의 최근 프로모션 개수를 반환한다.
 
     예전 구현은 모든 마트를 합쳐 최신 50개 기록을 먼저 자른 뒤 그룹화해서,
@@ -80,7 +80,7 @@ async def get_store_flyers(store: str):
 
 
 @router.get("/{store}/promotions")
-async def get_mart_promotions(request: Request, store: str):
+def get_mart_promotions(request: Request, store: str):
     """마트별 프로모션/세일."""
     db_store = _STORE_ALIAS.get(store, store)
     storage = request.app.state.storage

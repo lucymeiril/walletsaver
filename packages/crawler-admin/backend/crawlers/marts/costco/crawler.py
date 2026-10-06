@@ -52,7 +52,8 @@ OCC_CATEGORY_CODES: tuple[str, ...] = ("SpecialPriceOffers", "OnlineDeals")
 OCC_MAX_PAGES = 3
 
 _WON_RE = re.compile(r"([0-9][0-9,]*)\s*원")
-_PRODUCT_RE = re.compile(r"/p/(\d+)(?:[/?#]|$)")
+_PRODUCT_CODE_RE = re.compile(r"\d+(?:-[A-Za-z0-9]+)*")
+_PRODUCT_RE = re.compile(r"/p/(\d+(?:-[A-Za-z0-9]+)*)/?$")
 _CATEGORY_RE = re.compile(r"/c/(cos_\d+(?:\.\d+)*)")
 _SEED_KEY = "coco" + "dalin_join_key"
 
@@ -194,7 +195,9 @@ def leaf_costco_categories(categories: Iterable[CostcoCategory]) -> list[CostcoC
 
 def _extract_product_identity(href: str) -> tuple[str, str]:
     parsed = urlparse(absolute_url(href, BASE_URL))
-    match = _PRODUCT_RE.search(parsed.path + (f"?{parsed.query}" if parsed.query else ""))
+    if parsed.hostname != urlparse(BASE_URL).hostname or parsed.scheme not in {"http", "https"}:
+        return "", ""
+    match = _PRODUCT_RE.search(parsed.path)
     if not match:
         return "", ""
     code = match.group(1)
@@ -324,15 +327,20 @@ def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
         if not isinstance(product, dict):
             continue
         name = _clean_text(str(product.get("name") or ""))
-        code = re.sub(r"\D", "", str(product.get("code") or ""))
+        # Letter/digit option suffixes are distinct native SKUs. Stripping
+        # non-digits invents another ID or aliases a selected child to its parent.
+        code = str(product.get("code") or "").strip()
         url = str(product.get("url") or "")
+        url_code, url_canonical = _extract_product_identity(url) if url else ("", "")
+        if code and not _PRODUCT_CODE_RE.fullmatch(code):
+            continue
+        if url and (not url_code or code and code != url_code):
+            continue
         if not code:
-            code, _ = _extract_product_identity(url)
+            code = url_code
         if not name or not code:
             continue
-        path = urlparse(absolute_url(url or f"/p/{code}", BASE_URL)).path
-        path_with_slug = path.split("/p/", 1)[0] if "/p/" in path else ""
-        canonical_url = normalize_costco_url(path_with_slug or f"/p", code) if path_with_slug else f"{BASE_URL}/p/{code}"
+        canonical_url = url_canonical or f"{BASE_URL}/p/{code}"
         price_data = product.get("price") or {}
         sale_price = float(price_data.get("value") or 0) if isinstance(price_data, dict) else 0
         original_price = None

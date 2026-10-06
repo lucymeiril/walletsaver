@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import BottomNav from './components/layout/BottomNav';
@@ -50,6 +50,7 @@ export default function App() {
   const login = useStore((s) => s.login);
   const logout = useStore((s) => s.logout);
   const addToast = useStore((s) => s.addToast);
+  const [restoringSession, setRestoringSession] = useState(() => authService.hasSessionMarker());
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -59,6 +60,7 @@ export default function App() {
   useEffect(() => {
     if (!authService.hasSessionMarker()) {
       authService.clearLocalSession();
+      setRestoringSession(false);
       return;
     }
 
@@ -66,6 +68,7 @@ export default function App() {
       .then(async (profile) => {
         login({ ...profile });
         authService.markSessionVerified();
+        setRestoringSession(false);
         const failures = await syncAccountData();
         if (failures.length > 0) {
           addToast(`${failures.join(', ')} 동기화에 실패했습니다.`, 'warning');
@@ -74,7 +77,8 @@ export default function App() {
       .catch(() => {
         authService.clearLocalSession();
         logout();
-      });
+      })
+      .finally(() => setRestoringSession(false));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -93,8 +97,8 @@ export default function App() {
               <Route path="/mart"      element={<Guarded name="마트"><MartPage /></Guarded>} />
               <Route path="/local"     element={<Guarded name="내주변"><LocalPage /></Guarded>} />
               <Route path="/community" element={<Guarded name="커뮤니티"><CommunityPage /></Guarded>} />
-              <Route path="/profile" element={<Guarded name="프로필"><ProfilePage /></Guarded>} />
-              <Route path="/wishlist" element={<Guarded name="찜"><WishlistPage /></Guarded>} />
+              <Route path="/profile" element={restoringSession ? <PageLoader /> : <Guarded name="프로필"><ProfilePage /></Guarded>} />
+              <Route path="/wishlist" element={restoringSession ? <PageLoader /> : <Guarded name="찜"><WishlistPage /></Guarded>} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

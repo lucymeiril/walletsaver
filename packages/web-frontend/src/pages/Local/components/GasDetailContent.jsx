@@ -1,13 +1,10 @@
 import { fmt } from '../../../utils/helpers';
+import { distanceKm } from '../utils';
 import s from '../LocalPage.module.css';
 
 export default function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap }) {
-  const isSelf = station.is_self || station.name.includes('셀프');
-  const dist = station.distance != null
-    ? (parseFloat(station.distance) > 100
-        ? (parseFloat(station.distance) / 1000).toFixed(1)
-        : parseFloat(station.distance).toFixed(1))
-    : null;
+  const isSelf = station.is_self;
+  const dist = distanceKm(station.distance, station.distance_m);
 
   const fuelRows = [
     { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
@@ -30,9 +27,9 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
           📞 <a href={`tel:${station.tel}`} className={s.telLink}>{station.tel}</a>
         </p>
       )}
-      {dist != null && <p className={s.detailDist}>📏 현재 위치에서 약 {dist}km</p>}
+      <p className={s.detailDist}>{dist != null ? `📏 탐색 위치에서 약 ${dist.toFixed(1)}km` : '거리 미확인'}</p>
       {station.updated_at && (
-        <p className={s.detailTel}>🕒 가격 갱신 {String(station.updated_at).slice(0, 16)}</p>
+        <p className={s.detailTel}>🕒 가격 관측 {String(station.updated_at).slice(0, 16)}</p>
       )}
 
       <div className={s.detailSection}>
@@ -43,17 +40,19 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
             if (!price) return (
               <div key={f.key} className={s.fuelRow}>
                 <span className={s.fuelLabel}>{f.label}</span>
-                <span className={s.fuelNA}>취급 안 함</span>
+                <span className={s.fuelNA}>가격 미확인</span>
               </div>
             );
             const diff = price - f.avg;
+            const observedAt = station.price_observed_at?.[f.key === 'premium_gasoline' ? 'premium' : f.key];
             return (
               <div key={f.key} className={s.fuelRow}>
                 <span className={s.fuelLabel}>{f.label}</span>
                 <span className={s.fuelPrice}>{fmt(price)}원/L</span>
+                {observedAt && <small>{String(observedAt).slice(0, 16)}</small>}
                 {f.avg > 0 && (
                   <span className={s.fuelDiff} style={{ color: diff <= 0 ? 'var(--green)' : 'var(--red)' }}>
-                    지역 평균 대비 {diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원
+                    조회 결과 평균 대비 {diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원
                   </span>
                 )}
               </div>
@@ -67,7 +66,7 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
         <div className={s.infoGrid}>
           <div className={s.infoItem}>
             <span className={s.infoLabel}>셀프 여부</span>
-            <span className={s.infoValue}>{isSelf ? '✅ 셀프 주유' : '❌ 일반 주유'}</span>
+            <span className={s.infoValue}>{isSelf == null ? '정보 미확인' : isSelf ? '✅ 셀프 주유' : '❌ 일반 주유'}</span>
           </div>
           <div className={s.infoItem}>
             <span className={s.infoLabel}>운영 시간</span>

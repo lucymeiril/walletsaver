@@ -10,7 +10,6 @@ import useCartStore from '../../stores/cartStore';
 import useAbortController from '../../hooks/useAbortController';
 import EmptyState from '../../components/common/EmptyState';
 import TrustBadge from '../../components/common/TrustBadge';
-import PriceGauge from '../../components/common/PriceGauge';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -950,9 +949,14 @@ export default function HomePage() {
             <p className={s.secDesc}>전문 핫딜러를 위한 심층 가격 정보</p>
           </div>
         </div>
-        <PriceGauge product={{ current_low: 1290, p10: 1200, p50: 1600, p90: 2100 }} />
+        <SectionEmpty
+          title="상품별 가격 이력을 확인하세요"
+          hint="상품의 규격과 판매처를 선택해 실제 관측 가격과 구매 조건을 확인할 수 있습니다. 관측 자료가 없는 통계는 미확인으로 표시합니다."
+          actionLabel="물가 비교에서 상품 선택"
+          onAction={() => navigate('/price')}
+        />
         <div style={{ marginTop: 8, fontSize: 13, color: '#888' }}>
-          ※ 핫딜러 모드: 상세 가격 분위수, 최저가 트래킹, 알림 설정이 활성화됩니다.
+          가격 알림은 선택한 상품 거래에서 별도로 설정하세요. 이용 조건이 확인되지 않은 거래는 목표 도달 판정을 보류합니다.
         </div>
       </section>
       )}

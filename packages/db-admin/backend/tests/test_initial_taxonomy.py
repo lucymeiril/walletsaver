@@ -22,8 +22,176 @@ from services.initial_taxonomy import (
 )
 
 
+def test_semantic_revision_leaves_are_review_only_without_unproved_specs():
+    ids={'appliances.kitchen.egg_cooker.standard','appliances.kitchen.soy_maker.standard',
+         'appliances.kitchen.coffee_machine.capsule','household.cooking.grill_accessories.kit',
+         'household.gardening.plants.potted_cactus','household.kitchen.coffee.drip_assist_set',
+         'household.kitchen.storage.rice_container','household.kitchen.drinkware.tumbler',
+         'food.seasonings.baking.food_color'}
+    leaves={leaf.id:leaf for leaf in LEAVES if leaf.id in ids}
+    assert set(leaves)==ids
+    assert all(not leaf.source_labels and not leaf.name_terms for leaf in leaves.values())
+    validate_taxonomy(taxonomy_categories(ids),ids)
+    assert not keyword_collisions(keyword_definitions(ids))
+    for title in ('계란찜기','두유제조기','원터치 텀블러','아이싱 칼라'):
+        assert classify_record(_raw('emart','베스트',title))['unified_category_id'] is None
+
+
+def test_exact_review_rejects_positive_form_not_absent_corroboration(monkeypatch):
+    from services import initial_taxonomy as taxonomy
+    from services.initial_numbered_reviews import rules
+    matches=[key for key,leaf in rules().items() if '불고기' in key[2] and '410G' in key[2] and leaf=='food.meals.rice.bibimbap']
+    assert len(matches)==1
+    mart,path,title=matches[0]
+    result=classify_record(_raw(mart,path,title))
+    assert result['unified_category_id']=='food.meals.rice.bibimbap'
+    assert result['reviewed_rejected_category_ids']==['food.meals.rice.fried']
+    assert classify_record(_raw(mart,path,title+' + 볶음밥 세트'))['unified_category_id'] is None
+    assert classify_record(_raw(mart,'다른 경로',title))['unified_category_id'] is None
+    # An old accepted listing-bound proposal is not immutable semantic truth:
+    # only this exact reviewed positive veto can remove its wrong form.
+    monkeypatch.setattr(taxonomy,'reviewed_chat_leaf',lambda record,evidence:'food.meals.rice.fried')
+    assert classify_record(_raw(mart,path,title))['unified_category_id']=='food.meals.rice.bibimbap'
+    # A URL candidate cannot be removed even if its title veto is known.
+    monkeypatch.setattr(taxonomy,'_url_candidates',lambda evidence:({'food.meals.rice.fried'},[]))
+    conflict=classify_record(_raw(mart,path,title))
+    assert conflict['unified_category_id'] is None
+    assert conflict['candidate_category_ids']==['food.meals.rice.bibimbap','food.meals.rice.fried']
+
+
+def test_ghee_oil_context_is_specific_and_all_urls_still_checked():
+    url='https://www.costco.co.kr/Foods/Processed-Food/Oils/Organic-Valley-Ghee-Butter-368g/p/689481'
+    title='ORGANIC VALLEY기버터 368G'
+    assert classify_record(_raw('costco','우유',title,canonical_url=url))['unified_category_id']=='food.dairy.cheese.butter'
+    assert classify_record(_raw('costco','우유','브랜드 그릭요거트 150g',canonical_url=url))['unified_category_id'] is None
+    assert classify_record(_raw('costco','우유',title,canonical_url=url,
+        detail_url='https://www.costco.co.kr/Appliances/Blenders/Product/p/2'))['unified_category_id'] is None
+
+
+def test_existing_topping_and_complete_noodle_recipe_do_not_disable_ingredient_veto():
+    yogurt_path=('우유/유제품','요거트/요구르트','떠먹는 요구르트','토핑요거트')
+    title='서울우유 비요뜨 쿠키앤크림 131G*2'
+    assert classify_record(_raw('homeplus',yogurt_path,title))['unified_category_id']=='food.dairy.yogurt.topping'
+    for path,changed in [(yogurt_path,title+' + 쿠키 세트'),('과자/시리얼',title)]:
+        assert classify_record(_raw('homeplus',path,changed))['unified_category_id'] is None
+    from services.initial_numbered_reviews import rules
+    noodle='면사랑 동치미육수 평양물냉면 1026G'
+    key=next(key for key,leaf in rules().items() if key[2]==noodle and leaf=='food.meals.noodles.naengmyeon')
+    assert classify_record(_raw(key[0],key[1],noodle))['unified_category_id']=='food.meals.noodles.naengmyeon'
+    assert classify_record(_raw(key[0],key[1],noodle+' + 소스 세트'))['unified_category_id'] is None
+
+
+def test_reviewed_polluted_shelves_replace_only_the_exact_old_hold_contracts():
+    contexts=[
+        ('costco','계란','보만 2단 계란찜기 EB7210WG','appliances.kitchen.egg_cooker.standard'),
+        ('emart','수산물/건해산','국산 참기름 들기름 만전재래김 4g*20봉','food.seafood.seaweed.laver'),
+        ('lottemart',['델리ㆍ즉석조리','샌드위치ㆍ햄버거','샌드위치'],'탱글탱글 소세지가 쏙! 15핫도그 (팩)','food.meals.prepared.hotdog'),
+        ('homeplus','우유/유제품 > 두유 > 일반두유','매일 아몬드브리즈 무당 950ML','food.plant.drinks.almond'),
+        ('costco','우유','마이아 프로틴 메이커 두유 제조기 800ml','appliances.kitchen.soy_maker.standard'),
+    ]
+    for mart,path,title,leaf in contexts:
+        assert classify_record(_raw(mart,path,title))['unified_category_id']==leaf
+        assert classify_record(_raw(mart,'다른 진열',title))['unified_category_id'] is None
+        assert classify_record(_raw(mart,path,title+' + 다른상품 세트'))['unified_category_id'] is None
+
+
+
+# Parent-reviewed exact Costco contexts; all other negative contexts remain held.
+_REVIEWED_LEDGER001 = {
+    ('고기', '궁한우나주식곰탕500gx3 +소스+ 갈비찜1kgx2 +당면'): 'food.meals.sets.soup_meat',
+    ('고기', '부추고기순대500Gx3 족발슬라이스 960g'): 'food.meals.sets.sundae_jokbal',
+    ('고기', '설성목장 한우불고기 덮밥소스100g x 8'): 'food.seasonings.sauces.rice_topping',
+    ('고기', '안방그릴 울트라 AB1107CO'): 'household.cooking.grills.cooking',
+    ('고기', '오크우드 장작 15kg'): 'household.outdoor.fire.firewood',
+    ('고기', '파이어폭스 BBQ 석쇠 5개입 / 최소구매 2'): 'household.cooking.grill_accessories.grate',
+    ('과일', '샤인머스캣 애플망고 사과 혼합선물세트4.6kg'): 'food.produce.assortments.fresh_fruit',
+    ('과일', '애플망고 골드키위세트'): 'food.produce.assortments.fresh_fruit',
+    ('과일', '허니듀 & 머스크 멜론 세트 4입 (각 2입)'): 'food.produce.fruit.melon',
+    ('과일', '휴롬 원액기 P310 E31ST-BFM02MM'): 'appliances.kitchen.juicer.standard',
+    ('과자', 'Delici 쿠키버터무스 76g x 6'): 'food.snacks.desserts.mousse',
+    ('과자', '락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P'): 'household.kitchen.storage.food_bottle',
+    ('과자', '카스 초음파 야채 과일 세척기 4L'): 'appliances.kitchen.produce_washer.ultrasonic',
+    ('과자', '프리미엄 제철과일 선물세트 5.5KG 이상'): 'food.produce.assortments.fresh_fruit',
+    ('과자', '프리미엄 제철과일 선물세트 총 3.4kg이상'): 'food.produce.assortments.fresh_fruit',
+    ('과자', '해품은김과 김부각 세트'): 'food.meals.sets.laver_laver_chip',
+    ('김치', '아워홈 갈치김치 800 g x 4'): 'food.preserved.kimchi.hairtail',
+    ('김치', '종가 김치공방 보쌈김치 1kg + 겉절이 1kg'): 'food.preserved.kimchi.assortment',
+    ('김치', '종가 포기김치1kg x 2열무김치900g x 1혼합팩'): 'food.preserved.kimchi.assortment',
+    ('라면', '코렐 더블링 라떼 면기 세트 4P'): 'household.kitchen.tableware.noodle_bowl',
+    ('세제', '네일메드코세정제리필세정용분말250포'): 'beauty.personal.nasal.rinse_powder',
+    ('세제', '네일메드코세정제콤보(용기3개+세정용분말250포)'): 'beauty.personal.nasal.rinse_kit',
+    ('세제', '넬리 소다세제 1.5kg + 울드라이어볼x 4'): 'household.cleaning.laundry.detergent_dryer_ball_set',
+    ('세제', '무아스 소프트 버블 & 젤 자동 디스펜서 2P'): 'household.hygiene.dispensers.automatic',
+    ('세제', '펠로우즈 문서세단기 12C 19L (꽃가루형)'): 'office.equipment.shredder.standard',
+    ('쌀', '대구농산 쌀가루 2.5kg'): 'food.seasonings.baking.plain_rice_flour',
+}
 def _raw(mart, path, name="검수할 상품", **extra):
     return {"mart": mart, "name": name, "attributes": {"mart_native_category_path": path}, **extra}
+
+
+@pytest.mark.parametrize(("mart", "path", "title", "leaf"), [
+    ("homeplus", "커피/차 > 코코아/핫초코 > 가향분말류 > 기타가향분말류",
+     "티젠 콤부차 레몬 30T (150G)", "food.drinks.powders.kombucha"),
+    ("homeplus", "커피/차 > 코코아/핫초코 > 가향분말류 > 기타가향분말류",
+     "티젠 브이핏 말차레몬 10T(40G)", "food.drinks.powders.tea_mix"),
+    ("costco", "음료", "쌍계 김동곤명인의 쑥차 파우더 15g x 40",
+     "food.drinks.powders.herbal_tea"),
+    ("emart", "커피/원두/차", "결명자차 18티백 (주전자용)", "food.drinks.tea.herbal"),
+    ("emart", "커피/원두/차", "둥글레차 50티백", "food.drinks.tea.herbal"),
+])
+def test_literal_tea_preparation_form_preserves_source_conflicts(mart, path, title, leaf):
+    assert classify_record(_raw(mart, path, title))["unified_category_id"] == leaf
+    assert classify_record(_raw(mart, "자동차", title))["unified_category_id"] != leaf
+    assert classify_record(_raw(mart, path, title + " + 젤리 세트"))["unified_category_id"] != leaf
+
+
+@pytest.mark.parametrize("title", [
+    "콤부차 315ml", "콤부차 1L", "콤부차 30티백", "콤부차 젤리 150g",
+    "말차 주스 150g", "말차 샴푸 150g",
+])
+def test_powder_shelf_does_not_override_other_declared_forms(title):
+    path = "커피/차 > 코코아/핫초코 > 가향분말류 > 기타가향분말류"
+    result = classify_record(_raw("homeplus", path, title))
+    assert result["unified_category_id"] not in {
+        "food.drinks.powders.kombucha", "food.drinks.powders.tea_mix",
+    }
+
+
+def test_iced_tea_mix_needs_typed_native_evidence_not_grams():
+    title = "4C 아이스티 복숭아맛 2.34kg"
+    url = "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/4C-Iced-Tea-Mix-Peach-234kg/p/505619"
+    leaf = "food.drinks.powders.tea_mix"
+    assert classify_record(_raw("costco", "과일", title, canonical_url=url))["unified_category_id"] == leaf
+    assert classify_record(_raw("costco", "과일", title))["unified_category_id"] != leaf
+    assert classify_record(_raw("costco", "과일", title, canonical_url=url.replace("www.costco.co.kr", "other.invalid")))["unified_category_id"] != leaf
+    conflict = classify_record(_raw("costco", "과일", title, canonical_url=url,
+        detail_url="https://www.costco.co.kr/Beauty/Razors/Blade/p/2"))
+    assert conflict["unified_category_id"] is None
+    assert "beauty.personal.shaving.razor" in conflict["candidate_category_ids"]
+
+
+@pytest.mark.parametrize(("path", "title"), [
+    ("커피/차 > 코코아/핫초코 > 가향분말류 > 가향코코아믹스", "동서 제티 쵸코스틱 20T (340G)"),
+    ("커피/차 > 코코아/핫초코 > 코코아 > 코코아믹스", "허쉬 말차 핫초코 160G"),
+])
+def test_cocoa_mix_form_is_not_a_matcha_or_ready_milk_inference(path, title):
+    leaf = "food.drinks.powders.cocoa"
+    assert classify_record(_raw("homeplus", path, title))["unified_category_id"] == leaf
+    assert classify_record(_raw("homeplus", path, "말차 우유 200ml"))["unified_category_id"] != leaf
+    assert classify_record(_raw("homeplus", "우유/유제품", title))["unified_category_id"] != leaf
+
+
+@pytest.mark.parametrize(("title", "url", "leaf"), [
+    ("커피빈 얼그레이 바닐라라떼 25g x 40ct",
+     "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Coffee-Bean-Earl-Grey-Vanilla-Latte-25g-x-40ct/p/669844", "food.drinks.powders.tea_mix"),
+    ("크라스탄 유기농 오르조 보리차 200g",
+     "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Crastan-Organic-Orzo-Barley-Tea-200g/p/680239", "food.drinks.powders.grain"),
+])
+def test_published_preparation_form_stays_bound_to_original_native_context(title, url, leaf):
+    assert classify_record(_raw("costco", "커피", title, canonical_url=url))["unified_category_id"] == leaf
+    for path, changed_url in [("다른 경로", url), ("커피", url + "-other"), ("커피", "https://[malformed")]:
+        assert classify_record(_raw("costco", path, title, canonical_url=changed_url))["unified_category_id"] != leaf
+    assert classify_record(_raw("costco", "커피", title + " + 젤리 세트", canonical_url=url))["unified_category_id"] != leaf
 
 
 _COLD_NOODLE_PATH = "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바"
@@ -37,6 +205,7 @@ _BAKING_TOPPING_PATH = "장류/양념/제빵 > 시럽/제빵믹스 > 토핑"
     ("초데리소스 260G", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.sushi_vinegar"),
     ("속초식물회소스 500G(팩)", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.mulhoe"),
     ("케이퍼 & 홀스래디쉬 소스 60G", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.horseradish"),
+    ("홀스래디쉬 소스 210G", _SEAFOOD_SAUCE_PATH, "food.seasonings.sauces.horseradish"),
     ("브레드가든스프링클 레인보우 25G", _BAKING_TOPPING_PATH, "food.seasonings.baking.sprinkles"),
     ("브레드가든스프링클 파스텔 미니 하트 25G", _BAKING_TOPPING_PATH, "food.seasonings.baking.sprinkles"),
 ])
@@ -60,8 +229,6 @@ def test_reviewed_sauce_and_sprinkle_leaves_have_four_levels(leaf, label):
 
 
 @pytest.mark.parametrize(("title", "path"), [
-    ("홀스래디쉬 소스 210G", _SEAFOOD_SAUCE_PATH),
-    ("브레드가든 아이싱 칼라 56G", _BAKING_TOPPING_PATH),
     ("오뚜기 카레 순한맛 100G", "라면/즉석식품/통조림 > 카레/짜장 > 카레/짜장/밥양념 > 카레/짜장"),
 ])
 def test_neighboring_unresolved_forms_remain_pending(title, path):
@@ -328,7 +495,7 @@ def test_additional_costco_cleaning_forms_require_exact_official_url(title, entr
     '무아스 소프트 버블 & 젤 자동 디스펜서 2P',
 ])
 def test_costco_cleaning_audit_keeps_mixed_bulk_medical_and_appliance_rows_pending(title):
-    assert classify_record(_raw('costco', '세제', title))['unified_category_id'] is None
+    assert classify_record(_raw('costco', '세제', title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('세제', title))
 
 
 from services.initial_audited_seasonings import EMART_TITLES, reviewed_seasoning_leaf
@@ -412,7 +579,7 @@ def test_costco_meat_shelf_contaminants_need_exact_official_url(title, entry):
     '마이셰프X EBS 산더미소고기콩불830g x 2',
 ])
 def test_costco_meat_shelf_does_not_guess_grills_or_mixed_food_sets(title):
-    assert classify_record(_raw('costco', '고기', title))['unified_category_id'] is None
+    assert classify_record(_raw('costco', '고기', title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('고기', title))
 
 
 @pytest.mark.parametrize('title,leaf', EMART_ORGANIC_TITLES.items())
@@ -456,7 +623,11 @@ def test_residual_reviewed_food_titles_require_exact_context(shelf, title, leaf)
     assert classify_record(_raw('emart', shelf, title + ' 혼합세트'))['unified_category_id'] != leaf
 
 
-@pytest.mark.parametrize('title,leaf', EMART_HEALTH_TITLES.items())
+@pytest.mark.parametrize('title,leaf', [
+    (title, 'food.supplements.sets.red_ginseng_bag'
+     if title == '6년근홍삼정업 2개입세트 (240g*2병) (쇼핑백동봉)' else leaf)
+    for title, leaf in EMART_HEALTH_TITLES.items()
+])
 def test_emart_health_shelf_uses_exact_product_form(title, leaf):
     result = classify_record(_raw('emart', '건강식품', title))
     assert result['unified_category_id'] == leaf
@@ -535,12 +706,17 @@ def test_costco_snack_unusual_forms_require_official_product_url(title,entry):
     assert reviewed_costco_snack_form_leaf({**evidence,'source_urls':['https://example.com/'+marker]}) is None
     url='https://www.costco.co.kr/Foods/Snack/'+marker+'item/p/1'
     assert reviewed_costco_snack_form_leaf({**evidence,'source_urls':[url]})==leaf
-    assert classify_record(_raw('costco','과자',title,canonical_url=url))['unified_category_id']==leaf
+    # The legacy URL review remains evidence; a proved literal physical form
+    # may refine its old broad biscuit leaf without weakening URL validation.
+    expected = ('food.snacks.baked.crispy_roll' if '크리스피 코코넛롤' in title else
+                'food.snacks.sweets.marshmallow' if '마시멜로우' in title else
+                'food.snacks.traditional.monaka' if '모나카' in title else leaf)
+    assert classify_record(_raw('costco','과자',title,canonical_url=url))['unified_category_id']==expected
 
 
 @pytest.mark.parametrize('title',['산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트','락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P','카스 초음파 야채 과일 세척기 4L','프리미엄 제철과일 선물세트 5.5KG 이상','말랑말랑꿀오랑오리지날480g (16g x 10 x 3pk)','말랑말랑꿀오랑780g (26g x 10 x 3pk)'])
 def test_costco_snack_url_audit_does_not_accept_pet_food_kits_or_tools(title):
-    assert classify_record(_raw('costco','과자',title))['unified_category_id'] is None
+    assert classify_record(_raw('costco','과자',title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('과자', title))
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_COFFEE_TITLES.items())
@@ -578,14 +754,17 @@ def test_costco_additional_coffee_food_requires_exact_official_url(title, entry)
     '드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)',
 ])
 def test_costco_coffee_shelf_keeps_mixed_gifts_and_cleaner_pending(title):
-    assert classify_record(_raw('costco', '커피', title))['unified_category_id'] is None
+    expected = 'household.cleaning.appliance.coffee_cleaning_capsule' if title == '드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)' else None
+    assert classify_record(_raw('costco', '커피', title))['unified_category_id'] == expected
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_BEVERAGE_TITLES.items())
 def test_costco_beverage_shelf_uses_explicit_drink_or_frozen_form(title,leaf):
     result=classify_record(_raw('costco','음료',title))
-    assert result['unified_category_id']==leaf
-    assert result['evidence_type']=='reviewed_source_shelf_and_form'
+    refined = {'델몬트 스퀴즈 사과/오렌지 에이드 240ml x 30 x 2팩': 'food.drinks.juice.fruit_ade',
+               '리퀴드 아이비 전해질드링크 파우더 믹스 16g x 30': 'food.drinks.powders.electrolyte'}
+    assert result['unified_category_id']==refined.get(title, leaf)
+    assert result['evidence_type']==('literal_beverage_preparation_form_and_context' if title in refined else 'reviewed_source_shelf_and_form')
     evidence={'mart':'costco','source_path_parts':['음료'],'source_title':title}
     assert reviewed_costco_beverage_leaf({**evidence,'mart':'emart'}) is None
     assert reviewed_costco_beverage_leaf({**evidence,'source_path_parts':['가전']}) is None
@@ -594,7 +773,12 @@ def test_costco_beverage_shelf_uses_explicit_drink_or_frozen_form(title,leaf):
 
 @pytest.mark.parametrize('title',['뉴케어 당플랜 플러스 200ml X 24개입','정관장 활기력 20ml x 16병','끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2','벤딕트 차량용 보냉 컵홀더 2개','스타벅스피지오쿨라임400ml x 6 + 피치딸기 400ml x 6'])
 def test_costco_beverage_audit_does_not_guess_supplement_cosmetic_tool_or_mixed_pack(title):
-    assert classify_record(_raw('costco','음료',title))['unified_category_id'] is None
+    expected = ('household.vehicle.accessories.cup_holder' if title == '벤딕트 차량용 보냉 컵홀더 2개'
+                else 'food.drinks.assortments.combo' if title.startswith('스타벅스피지오') else None)
+    assert classify_record(_raw('costco','음료',title))['unified_category_id'] == expected
+    if expected == 'food.drinks.assortments.combo':
+        from core.catalog_quantity import normalize_catalog_package
+        assert normalize_catalog_package({'pack_qty': 400, 'pack_unit': 'ml'}, {}, title)[1]
 
 
 def test_costco_polaretti_needs_its_official_frozen_ice_bar_url():
@@ -617,10 +801,13 @@ def test_costco_kimchi_shelf_declared_forms_do_not_become_kimchi_by_shelf(title,
 
 @pytest.mark.parametrize('title',['종가 포기김치1kg x 2열무김치900g x 1혼합팩','종가 김치공방 보쌈김치 1kg + 겉절이 1kg','LG 디오스 김치톡톡 217L- 메탈 린넨화이트','아워홈 갈치김치 800 g x 4','농협선장김치5kg x 2'])
 def test_costco_kimchi_audit_does_not_guess_mixed_unknown_types_or_appliances(title):
-    assert classify_record(_raw('costco','김치',title))['unified_category_id'] is None
+    assert classify_record(_raw('costco','김치',title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('김치', title))
 
 
-@pytest.mark.parametrize('title,leaf',EGG_MEAT_TITLES.items())
+@pytest.mark.parametrize('title,leaf',{
+    **EGG_MEAT_TITLES,
+    '국내산 냉동 돈육 한입 삼겹살 (1.0kg x 2)': 'food.meat.frozen.pork',
+}.items())
 def test_costco_egg_shelf_declared_species_and_seasoning_are_separate(title,leaf):
     result=classify_record(_raw('costco','계란',title))
     assert result['unified_category_id']==leaf
@@ -639,10 +826,13 @@ def test_ambiguous_costco_cut_requires_independent_beef_product_url(title):
     url='https://www.costco.co.kr/Foods/MeatEggs/AU-Fresh-Beef-500g/p/1'
     assert reviewed_costco_egg_meat_leaf({**evidence,'source_urls':[url]})=='food.meat.fresh.beef'
     result=classify_record(_raw('costco','계란',title,canonical_url=url))
-    assert result['unified_category_id']=='food.meat.fresh.beef'
+    assert result['unified_category_id']=={
+        '미국산 냉동 차돌박이 1.3kg x 2팩': 'food.meat.frozen.beef',
+        '미국산 냉동 척아이롤 1.5kg x 2팩': 'food.meat.frozen.beef',
+    }.get(title, 'food.meat.fresh.beef')
 
 
-@pytest.mark.parametrize('title',['보만 2단 계란찜기 EB7210WG','포크밸리 삼겹 1kg +칼집삼겹 1kg +목심 1kg (로스용)','국내산냉동돈육한입삼겹살1.0kg +등심돈가스1.0kg'])
+@pytest.mark.parametrize('title',['포크밸리 삼겹 1kg +칼집삼겹 1kg +목심 1kg (로스용)','국내산냉동돈육한입삼겹살1.0kg +등심돈가스1.0kg'])
 def test_costco_egg_meat_audit_does_not_accept_tools_or_mixed_cuts(title):
     assert classify_record(_raw('costco','계란',title))['unified_category_id'] is None
 
@@ -650,7 +840,11 @@ def test_costco_egg_meat_audit_does_not_accept_tools_or_mixed_cuts(title):
 @pytest.mark.parametrize('title,leaf',EMART_SNACK_TITLES.items())
 def test_emart_snack_shelf_only_readable_product_forms_are_classified(title,leaf):
     result=classify_record(_raw('emart','과자/간식',title))
-    assert result['unified_category_id']==leaf
+    expected = 'food.snacks.chewy.rice_cake_pie' if '찰떡파이' in title else leaf
+    expected = {'라면스낵 250g':'food.snacks.savory.noodle',
+                '도도한나쵸 155g':'food.snacks.savory.tortilla_nacho',
+                '출출할때 먹는 간식소시지 300g':'food.snacks.savory.snack_sausage'}.get(title, expected)
+    assert result['unified_category_id']==expected
     assert result['review_status']=='classified'
     evidence={'mart':'emart','source_path_parts':['과자/간식'],'source_title':title}
     assert reviewed_emart_snack_leaf({**evidence,'mart':'homeplus'}) is None
@@ -684,7 +878,8 @@ def test_emart_bakery_audit_classifies_only_exact_single_product_forms(title,lea
 
 @pytest.mark.parametrize('title',['8월 베이커리 최대 50% 특가','식사빵 & 간식빵 최대 50% 특가전','찹쌀깨찰빵 4입'])
 def test_emart_bakery_audit_keeps_promotions_mixed_packages_and_unclear_forms_pending(title):
-    assert classify_record(_raw('emart','베이커리/잼',title))['unified_category_id'] is None
+    expected = 'food.bakery.bread.glutinous_rice' if title == '찹쌀깨찰빵 4입' else None
+    assert classify_record(_raw('emart','베이커리/잼',title))['unified_category_id'] == expected
 
 
 @pytest.mark.parametrize('title,leaf',EMART_NOODLES_CANNED_TITLES.items())
@@ -716,7 +911,7 @@ def test_emart_seafood_audit_classifies_exact_single_seafood_forms(title,leaf):
 
 # Explicit frozen assortments now have their own reviewed leaf; opaque prepared
 # foods and marketing events still lack sufficient product-form evidence.
-@pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동][베트남] 슈림프링 (453g/팩)','건조 황태채 ~20%','볶음/국물용 멸치 ~40% 할인','국산 참기름 들기름 만전재래김 4g*20봉'])
+@pytest.mark.parametrize('title',['싱싱 생선회&조개류 ~50%할인','[냉동][베트남] 슈림프링 (453g/팩)','볶음/국물용 멸치 ~40% 할인'])
 def test_emart_seafood_audit_keeps_promotions_mixed_and_unclear_preparations_pending(title):
     assert classify_record(_raw('emart','수산물/건해산',title))['unified_category_id'] is None
 
@@ -732,9 +927,16 @@ def test_emart_meat_egg_audit_classifies_only_exact_species_declared_forms(title
     assert reviewed_emart_meat_egg_leaf({**evidence,'source_title':title+' 혼합세트'}) is None
 
 
-@pytest.mark.parametrize('title',['국내산 앞다리 불고기용 (100g)','국내산 등심 카레용 (100g) (팩)','국내산 냉장 갈비 찜용 (100g)','[더느림+] 무항생제 목심 (100g)','닭다리살/닭가슴살 등 ~20%','냉동 삼겹살/목심 할인행사'])
-def test_emart_meat_egg_audit_keeps_unspecified_species_promotions_and_mixed_cuts_pending(title):
-    assert classify_record(_raw('emart','정육/계란류',title))['unified_category_id'] is None
+@pytest.mark.parametrize('title,leaf',[
+    ('국내산 앞다리 불고기용 (100g)',None),
+    ('국내산 등심 카레용 (100g) (팩)',None),
+    ('국내산 냉장 갈비 찜용 (100g)',None),
+    ('[더느림+] 무항생제 목심 (100g)',None),
+    ('닭다리살/닭가슴살 등 ~20%',None),
+    ('냉동 삼겹살/목심 할인행사','food.meat.frozen.pork'),
+])
+def test_emart_meat_egg_audit_separates_declared_frozen_pork_from_unclear_forms(title,leaf):
+    assert classify_record(_raw('emart','정육/계란류',title))['unified_category_id']==leaf
 
 
 @pytest.mark.parametrize('title,leaf',LOTTE_VEGETABLE_TITLES.items())
@@ -783,7 +985,7 @@ def test_costco_rice_shelf_declared_grains_and_prepared_food_are_separate(title,
 
 @pytest.mark.parametrize('title',['세계인의 건강곡물 선물세트 1.54kg x 10세트','세계인의 건강 곡물 선물세트 1.54kg','대구농산 쌀가루 2.5kg'])
 def test_costco_rice_form_audit_does_not_guess_opaque_or_mixed_goods(title):
-    assert classify_record(_raw('costco','쌀',title))['unified_category_id'] is None
+    assert classify_record(_raw('costco','쌀',title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('쌀', title))
 
 
 @pytest.mark.parametrize('title,leaf',COSTCO_FRUIT_FORM_TITLES.items())
@@ -799,7 +1001,7 @@ def test_costco_fruit_shelf_processed_forms_are_not_fresh_fruit(title,leaf):
 
 @pytest.mark.parametrize('title',['샤인머스캣 애플망고 사과 혼합선물세트4.6kg','애플망고 골드키위세트','허니듀 & 머스크 멜론 세트 4입 (각 2입)','휴롬 원액기 P310 E31ST-BFM02MM','Tropical Maria 망고청크2.27kg X 200개'])
 def test_costco_fruit_form_audit_does_not_guess_mixed_fresh_or_frozen_form(title):
-    assert classify_record(_raw('costco','과일',title))['unified_category_id'] is None
+    assert classify_record(_raw('costco','과일',title))['unified_category_id'] == _REVIEWED_LEDGER001.get(('과일', title))
 
 
 @pytest.mark.parametrize('title,leaf',LOTTE_NUT_TITLES.items())
@@ -839,7 +1041,7 @@ def test_emart_pantry_does_not_guess_unspecified_form_or_opaque_sauce(title):
     ('lottemart','과일','한가득 정성담은 혼합과일 11종 (4KG/박스)','food.produce.assortments.fresh_fruit'),
     ('lottemart','과일','망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)','food.produce.fruit.mango'),
     ('emart','양념/오일','현미유1L','food.seasonings.oils.rice_bran'),
-    ('emart','양념/오일','백설 멸치디포리가득 육수에는 1분링 80g','food.seasonings.sauces.broth'),
+    ('emart','양념/오일','백설 멸치디포리가득 육수에는 1분링 80g','food.seasonings.stock.stock_seasoning'),
     ('emart','양념/오일','데일리갈릭디핑소스315g','food.seasonings.sauces.garlic_dip'),
     ('emart','양념/오일','장아찌간장소스 1.7L','food.seasonings.sauces.pickling_soy'),
     ('lottemart','쌀ㆍ잡곡ㆍ견과류','바프 HBAF 허니버터아몬드&땅콩 (280G)','food.grains.nuts.mixed'),
@@ -872,7 +1074,12 @@ def test_reviewed_single_fruit_titles_reuse_existing_leaves_without_approval(mar
 ])
 def test_new_fruit_table_does_not_resolve_mixed_or_variable_weight_listings(mart, title):
     result = classify_record(_raw(mart, "과일", title))
-    assert result["unified_category_id"] is None
+    expected = {'부드러운 복숭아 1.25kg 내외 (4~6입)/팩': 'food.produce.fruit.peach',
+                '까망 애플수박 1.5kg미만': 'food.produce.fruit.watermelon'}.get(title)
+    assert result["unified_category_id"] == expected
+    if expected:
+        from core.catalog_quantity import normalize_catalog_package
+        assert normalize_catalog_package({'package_quantity': 1500, 'package_unit': 'g'}, {}, title)[1]
 
 
 @pytest.mark.parametrize("title,leaf", CLEANING_TITLES.items())
@@ -893,7 +1100,7 @@ def test_reviewed_cleaning_forms_use_exact_titles_and_context_not_shelf_alone(ti
     "비트세탁세제 7kg", "넬리 소다세제 1.5kg + 울드라이어볼x 4",
 ])
 def test_cleaning_shelf_does_not_infer_devices_medical_or_opaque_forms(title):
-    assert classify_record(_raw("costco", "세제", title))["unified_category_id"] is None
+    assert classify_record(_raw("costco", "세제", title))["unified_category_id"] == _REVIEWED_LEDGER001.get(('세제', title))
 
 
 @pytest.mark.parametrize('path,title,leaf',[(path,title,leaf) for (path,title),leaf in SEAFOOD_ENTRIES.items()])
@@ -949,7 +1156,7 @@ def test_snack_and_bakery_forms_are_not_the_mixed_retail_leaf(path,title,leaf):
 @pytest.mark.parametrize('title', ['풀무원 토이쿠키 만들기 300G'])
 def test_frozen_dessert_brand_or_diy_kit_does_not_prove_ready_baked_cookie(title):
     from services.initial_audited_homeplus_snacks import FROZEN
-    assert classify_record(_raw('homeplus',list(FROZEN),title))['unified_category_id'] is None
+    assert classify_record(_raw('homeplus',list(FROZEN),title))['unified_category_id'] == 'food.bakery.kits.cookie'
 
 
 @pytest.mark.parametrize('title', ['화정당 두바이 쫀득쿠키 오리지널 160G','화정당 두바이+말차 쫀득쿠키 160G'])
@@ -970,10 +1177,58 @@ def test_operator_batch_leaves_remain_review_only(leaf_id):
     assert not leaf.name_terms and not leaf.source_labels
 
 
-@pytest.mark.parametrize('title', ['돌핀 폴라레티 후르트 400ML','돌핀 폴라레티 해피썸머 400ML','돌핀 폴라레티 후르츠 바이오 400ML','자임 콜라겐 애사비 젤리 210G','자임 콜라겐 레몬 젤리 210G'])
+@pytest.mark.parametrize('title', ['돌핀 폴라레티 후르트 400ML','돌핀 폴라레티 해피썸머 400ML','돌핀 폴라레티 후르츠 바이오 400ML'])
 def test_unknown_liquid_jelly_shelf_forms_are_not_assumed_pudding(title):
     from services.initial_audited_homeplus_snacks import JELLY
     assert classify_record(_raw('homeplus',list(JELLY),title))['unified_category_id'] is None
+
+
+def test_residual177_exact_soymilk_and_jelly_context_do_not_create_brand_guesses():
+    soy_path = ['우유/유제품', '두유', '일반두유']
+    title = '정식품 베지밀 달콤한 검은콩B 190ML*16'
+    assert classify_record(_raw('homeplus', soy_path, title))['unified_category_id'] == 'food.plant.soy.soymilk'
+    for name in ('정식품 베지밀 검은콩 190ML', '하이뮨 프로틴밸런스 액티브 딸기 250ML', '하이뮨 프로틴액티브 밀크 250ML'):
+        assert classify_record(_raw('homeplus', soy_path, name))['unified_category_id'] is None
+    assert classify_record(_raw('homeplus', ['우유/유제품'], title))['unified_category_id'] is None
+    from services.initial_audited_homeplus_snacks import ACTUAL_JELLY
+    for name in ('자임 콜라겐 레몬 젤리 210G', '자임 콜라겐 애사비 젤리 210G'):
+        assert classify_record(_raw('homeplus', list(ACTUAL_JELLY), name))['unified_category_id'] == 'food.snacks.sweets.jelly'
+        assert reviewed_homeplus_snack_leaf({'mart': 'homeplus', 'source_path_parts': ['건강식품'], 'source_title': name}) is None
+    assert classify_record(_raw('homeplus', list(ACTUAL_JELLY), '돌핀 폴라레티 후르트 400ML'))['unified_category_id'] is None
+
+
+def test_residual177_drinking_greek_conjunction_and_seokbakji_positive_veto():
+    path = ['우유ㆍ유제품', '요거트ㆍ요구르트', '마시는요구르트']
+    combined = classify_record(_raw('lottemart', path, '요즘 마시는 그릭요거트 무가당 플레인 (750ML)'))
+    assert combined['candidate_category_ids'] == ['food.dairy.yogurt.drinking_greek']
+    assert combined['unified_category_id'] == 'food.dairy.yogurt.drinking_greek'
+    assert not combined['reviewed_rejected_category_ids']  # valid broader forms are subsumed
+    plain = classify_record(_raw('lottemart', path, '그릭요거트 플레인 750ML'))
+    assert plain['unified_category_id'] is None  # drink path alone cannot prove conjunction
+    conflict = classify_record(_raw('lottemart', path + ['초코우유'], '마시는 그릭요거트 750ML'))
+    assert conflict['unified_category_id'] is None and 'food.dairy.yogurt.drinking_greek' in conflict['candidate_category_ids']
+    from services.initial_taxonomy import _suspicion_reason, source_evidence
+    evidence = source_evidence(_raw('lottemart', ['김치', '총각김치'], '대상 종가 석박지 900G'))
+    assert _suspicion_reason('food.preserved.kimchi.radish', evidence) == 'source_title_product_type_conflict'
+
+
+@pytest.mark.parametrize('mart,path,title,url,leaf', [
+    ('costco', 'SpecialPriceOffers', '정관장 홍삼원 50ml x 60포 x 5',
+     'https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Jung-Kwan-Jang-Red-Ginseng-Tonic-50ml-x-60-x-5/p/599850', 'food.supplements.extract.red_ginseng'),
+    ('costco', 'SpecialPriceOffers', '햇반 김치치즈 주먹밥 100g X 12 X 2',
+     'https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Rice-Ball-Kimchi-Cheese-100g-x-12-x-2/p/674445', 'food.meals.rice.rice_ball'),
+    ('emart', '베스트', '신라면 5입 600g (120gx5입)',
+     'https://m-emart.ssg.com/item/itemView.ssg?itemId=0000008333648&siteNo=6001&salestrNo=2037', 'food.meals.noodles.bag_ramen'),
+])
+def test_residual177_promotion_source_corroboration_requires_exact_official_listing(mart,path,title,url,leaf):
+    assert classify_record(_raw(mart,path,title,canonical_url=url,sale_price=100))['unified_category_id'] == leaf
+    assert classify_record(_raw(mart,path,title,canonical_url=url,sale_price=200))['unified_category_id'] == leaf
+    wrong_host = url.replace('www.costco.co.kr', 'example.com').replace('m-emart.ssg.com', 'example.com')
+    for actual_path, actual_title, actual_url in (
+        (path,title,''), (path,title,wrong_host), (path,title,url.replace('/p/', '/p/9').replace('itemId=', 'itemId=9')),
+        ('무관한매대',title,url), (path,title+' 변경',url),
+    ):
+        assert classify_record(_raw(mart,actual_path,actual_title,canonical_url=actual_url))['unified_category_id'] != leaf
 
 
 def test_homeplus_full_path_maps_to_a_four_level_flavoured_milk_leaf():
@@ -1200,9 +1455,6 @@ def test_milk_fat_and_sterilization_are_attributes_not_flavour_siblings():
 @pytest.mark.parametrize(("mart", "path", "title"), [
     ("homeplus", "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)", "오뚜기 3분 카레 매운맛 200G"),
     ("homeplus", "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 돈까스", "목우촌 주부9단치킨까스 360G"),
-    ("lottemart", ["델리ㆍ즉석조리", "샌드위치ㆍ햄버거", "샌드위치"], "탱글탱글 소세지가 쏙! 15핫도그 (팩)"),
-    ("homeplus", "우유/유제품 > 두유 > 일반두유", "매일 아몬드브리즈 무당 950ML"),
-    ("costco", "우유", "마이아 프로틴 메이커 두유 제조기 800ml"),
     ("homeplus", "두부/김치/반찬 > 두부/나물 > 낫또", "풀무원 국산콩 진한 콩국물 960G"),
     ("homeplus", "두부/김치/반찬 > 두부/나물 > 순두부/연두부", "씨제이 다담 순두부 찌개 양념 140G"),
     ("homeplus", "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바", "씨제이 동치미 냉면육수 300ML"),
@@ -1246,9 +1498,14 @@ def test_audited_coffee_shelves_use_explicit_product_form(mart, path, title, lea
     "맥널티 스테비아 단백질 고구마크림라떼 20T(360G)",
 ])
 def test_polluted_coffee_shelf_accessories_and_other_drinks_stay_pending(title):
+    reviewed = {
+        '프리파라 네스프레소 전용 캡슐홀더': 'household.kitchen.coffee.capsule_holder',
+        '아소부 뉴 콜드브루 커피메이커': 'household.kitchen.coffee.cold_brew_maker',
+        '쏘울핸드 커피 그라인더': 'household.kitchen.coffee.grinder',
+    }
     result = classify_record(_raw("costco", "커피", title))
-    assert result["unified_category_id"] is None
-    assert result["review_status"] == "pending"
+    assert result["unified_category_id"] == reviewed.get(title)
+    assert result["review_status"] == ("classified" if title in reviewed else "pending")
 
 
 def test_mixed_instant_and_drip_coffee_gift_set_stays_pending():
@@ -1273,7 +1530,7 @@ def test_mixed_instant_and_drip_coffee_gift_set_stays_pending():
     ("동원보성말차500ml x 24병", "food.drinks.tea.green"),
     ("동원보성홍차아이스티 500ml x 24병", "food.drinks.tea.black"),
     ("블랙보리 520ml X 24", "food.drinks.tea.barley"),
-    ("쌍계 김동곤명인의 쑥차 파우더 15g x 40", "food.drinks.tea.herbal"),
+    ("쌍계 김동곤명인의 쑥차 파우더 15g x 40", "food.drinks.powders.herbal_tea"),
     ("양반가마솥누룽지500ml x 24", "food.drinks.tea.grain"),
     ("스타벅스더블샷바닐라 275ml x 24", "food.drinks.coffee.ready"),
 ])
@@ -1294,9 +1551,20 @@ def test_audited_costco_beverage_shelf_uses_explicit_drink_form(title, leaf):
     "칠성사이다 250ml x 30 + 펩시콜라 250ml x 30 콤보팩",
 ])
 def test_audited_costco_beverage_shelf_contaminants_and_unclear_forms_stay_pending(title):
+    reviewed = {
+        '베트남 영코코넛 9입(7.5kg내외)': 'food.produce.fruit.coconut',
+        '벤딕트 차량용 보냉 컵홀더 2개': 'household.vehicle.accessories.cup_holder',
+        '정관장 홍삼원력 50ml x 30포': 'food.supplements.extract.red_ginseng',
+        '프리미어 단백질 드링크 325ml x 12팩': 'food.supplements.protein.drink',
+        '칠성사이다 250ml x 30 + 펩시콜라 250ml x 30 콤보팩': 'food.drinks.assortments.combo',
+    }
     result = classify_record(_raw("costco", "음료", title))
-    assert result["unified_category_id"] is None
-    assert result["review_status"] == "pending"
+    assert result["unified_category_id"] == reviewed.get(title)
+    assert result["review_status"] == ("classified" if title in reviewed else "pending")
+    if result['unified_category_id'] == 'food.drinks.assortments.combo':
+        from core.catalog_quantity import normalize_catalog_package
+        _, issues = normalize_catalog_package({'pack_qty':250,'pack_unit':'ml'}, {}, title)
+        assert 'mixed_package_unresolved' in issues
 
 
 def test_frozen_watermelon_juice_does_not_match_the_korean_word_for_bottled_water():
@@ -1307,7 +1575,7 @@ def test_frozen_watermelon_juice_does_not_match_the_korean_word_for_bottled_wate
 @pytest.mark.parametrize(("title", "leaf"), [
     ("초정탄산수 1.5L", "food.drinks.water_soda.sparkling"),
     ("백산수 2L", "food.drinks.water_soda.water"),
-    ("에비앙 500ml*12입+쇼퍼백 기획", "food.drinks.water_soda.water"),
+    ("에비앙 500ml*12입+쇼퍼백 기획", "food.drinks.water_sets.water_bag"),
     ("포카리스웨트900ml", "food.drinks.water_soda.sports"),
     ("칠성사이다 1.8L*2입", "food.drinks.water_soda.cider"),
     ("제로사이다 1L", "food.drinks.water_soda.cider"),
@@ -1334,9 +1602,12 @@ def test_audited_emart_beverage_shelf_uses_explicit_product_form(title, leaf):
     "처음먹는 배도라지",
     "오트몬드 프로틴 초코 250ml",
 ])
-def test_audited_emart_beverage_shelf_unclear_or_non_drinks_stay_pending(title):
+def test_audited_emart_beverage_shelf_requires_explicit_form_evidence(title):
     result = classify_record(_raw("emart", "생수/음료/주류", title))
-    assert result["unified_category_id"] is None
+    # Literal protein + measured beverage context establishes marketed drink
+    # form, not a plant/dairy base inferred from the brand.
+    expected = 'food.supplements.protein.drink' if title == '오트몬드 프로틴 초코 250ml' else None
+    assert result["unified_category_id"] == expected
 
 
 def test_explicit_bottled_water_name_stays_consistent_on_emart_promotion_shelf():
@@ -1365,14 +1636,14 @@ def test_adjacent_bottle_count_waits_until_package_parser_supports_it():
     ("커클랜드 시그니춰 무염 견과 스낵팩 945g", "food.grains.nuts.mixed"),
     ("커클랜드 시그니춰 핑크 솔트감자칩 907g", "food.snacks.savory.potato"),
     ("G.H.CRETORS 시카고 믹스 팝콘 737g", "food.snacks.savory.popcorn"),
-    ("El Sabroso 옐로우콘토티야칩851g", "food.snacks.savory.corn"),
+    ("El Sabroso 옐로우콘토티야칩851g", "food.snacks.savory.tortilla_nacho"),
     ("Jackson고구마칩454g", "food.snacks.savory.vegetable"),
     ("C-WEED다시마 부각칩 150g", "food.snacks.savory.seaweed"),
-    ("갓 튀김 어포 400g", "food.seafood.processed.dried_fish"),
+    ("갓 튀김 어포 400g", "food.seafood.processed.fish_snack"),
     ("미왕 고소한 쌀과자 250g x 5", "food.snacks.savory.grain"),
-    ("Shultz 미니 프레첼 2.72kg", "food.snacks.baked.cracker"),
+    ("Shultz 미니 프레첼 2.72kg", "food.snacks.baked.pretzel"),
     ("커피크림 웨이퍼롤 180g x 6", "food.snacks.baked.wafer"),
-    ("롯데찰떡파이 35g x 35ea", "food.snacks.baked.pie"),
+    ("롯데찰떡파이 35g x 35ea", "food.snacks.chewy.rice_cake_pie"),
     ("허쉬 초콜릿칩 쿠키 720g x 2", "food.snacks.baked.biscuits"),
     ("Sennenya 브라운버터 바움쿠헨 50g x 16", "food.snacks.baked.cake"),
     ("화과방 프리미엄 양갱 40g x 40", "food.snacks.traditional.yanggaeng"),
@@ -1391,6 +1662,45 @@ def test_audited_costco_snack_shelf_uses_explicit_product_form(title, leaf):
     assert result["unified_category_id"] == leaf
 
 
+@pytest.mark.parametrize(('title', 'leaf'), [
+    ('피넛버터 크레페 85G', 'food.snacks.baked.crepe'),
+    ('크라운 버터와플 316G', 'food.snacks.baked.waffle'),
+    ('크리스피 코코넛 롤 400g', 'food.snacks.baked.crispy_roll'),
+    ('피넛버터 프레첼 1.56kg', 'food.snacks.baked.pretzel'),
+    ('도라야끼 팬케익 310g x 3', 'food.bakery.dessert.pancake'),
+    ('명가 찰떡파이 350g (패키지랜덤발송)', 'food.snacks.chewy.rice_cake_pie'),
+    ('통밀도너츠 & 초코칩 통밀도너츠 230g x 4', 'food.bakery.dessert.donut'),
+    ('토스트 비스켓 1600g', 'food.snacks.baked.toast'),
+    ('통밀 참깨 스틱 150G', 'food.snacks.baked.stick'),
+    ('딸기 생크림 케이크 408G', 'food.snacks.baked.cake'),
+])
+def test_literal_baked_form_refines_broad_shelf_without_composition_inference(title, leaf):
+    record = _raw('homeplus', '과자/시리얼 > 과자/쿠키/파이 > 비스켓/쿠키/프레첼 > 버터비스켓', title)
+    result = classify_record(record)
+    # Unrelated path evidence stays a conflict, rather than being discarded.
+    if leaf in {'food.bakery.dessert.pancake', 'food.snacks.chewy.rice_cake_pie', 'food.snacks.baked.cake'}:
+        record = _raw('costco', '과자', title)
+        result = classify_record(record)
+    assert result['unified_category_id'] == leaf
+    assert result['evidence_type'] == 'literal_baked_product_form_and_context'
+    assert not result.get('component_allocation')
+
+
+@pytest.mark.parametrize('title', ['와플 믹스 500g', '크레페 만들기 키트 200g',
+                                  '와플 메이커', '크리스피 웨이퍼롤 200g'])
+def test_baked_form_does_not_override_ingredients_equipment_or_other_forms(title):
+    result = classify_record(_raw('homeplus', '과자/시리얼 > 과자/쿠키/파이 > 비스켓/쿠키/프레첼 > 버터비스켓', title))
+    assert result['unified_category_id'] not in {
+        'food.snacks.baked.crepe', 'food.snacks.baked.waffle', 'food.snacks.baked.crispy_roll'}
+
+
+def test_cake_flavour_on_explicit_cracker_shelf_keeps_cracker_form():
+    record = _raw('lottemart', '과자ᆞ스낵ᆞ간식 > 과자ᆞ쿠키ᆞ파이 > 크래커ᆞ샌드 > 크래커',
+                  '해태 에이스 바스크치즈케이크 (73G)')
+    assert classify_record(record)['unified_category_id'] == 'food.snacks.baked.cracker'
+    assert classify_record(_raw('homeplus', '베스트', '버터와플 316G'))['unified_category_id'] is None
+
+
 @pytest.mark.parametrize("title", [
     "프리미엄 제철과일 선물세트 총 3.4kg이상",
     "락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P", "카스 초음파 야채 과일 세척기 4L",
@@ -1400,7 +1710,14 @@ def test_audited_costco_snack_shelf_uses_explicit_product_form(title, leaf):
 ])
 def test_audited_costco_snack_shelf_contaminants_and_bad_packages_stay_pending(title):
     result = classify_record(_raw("costco", "과자", title))
-    assert result["unified_category_id"] is None
+    if '마시멜로우' in title:
+        assert result['unified_category_id'] == 'food.snacks.sweets.marshmallow'
+        # Literal form is independent of unsupported sold quantities.
+        from core.catalog_quantity import normalize_catalog_package
+        package, issues = normalize_catalog_package({}, {}, title)
+        assert package is None and 'unit_unresolved' in issues
+    else:
+        assert result["unified_category_id"] == _REVIEWED_LEDGER001.get(('과자', title))
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
@@ -1435,7 +1752,7 @@ def test_audited_costco_noodle_shelf_uses_explicit_noodle_form(title, leaf):
 ])
 def test_audited_costco_noodle_shelf_contaminants_stay_pending(title):
     result = classify_record(_raw("costco", "라면", title))
-    assert result["unified_category_id"] is None
+    assert result["unified_category_id"] == _REVIEWED_LEDGER001.get(('라면', title))
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
@@ -1472,8 +1789,14 @@ def test_audited_costco_cheese_shelf_uses_explicit_product_form(title, leaf):
     "쿠진아트 미니 중식도 & 강판 세트", "치자 2개입",
 ])
 def test_audited_costco_cheese_shelf_ambiguous_and_nonfood_items_stay_pending(title):
+    reviewed = {
+        '딩고 애견 치킨껌 2개 x 10봉': 'pet.food.treats.chew',
+        '구르메 치즈 & 초리조선물세트 875g': 'food.meals.sets.cheese_processed_meat',
+        '타카쇼 로즈아치': 'household.garden.structures.arch',
+        '쿠진아트 미니 중식도 & 강판 세트': 'household.kitchen.utensils.cleaver_grater_set',
+    }
     result = classify_record(_raw("costco", "치즈", title))
-    assert result["unified_category_id"] is None
+    assert result["unified_category_id"] == reviewed.get(title)
 
 
 def test_reviewed_ghee_is_butter_but_mixed_and_wrong_context_stay_pending():
@@ -1524,7 +1847,7 @@ def test_audited_meat_shelf_uses_food_form_not_ingredient(title, leaf):
     "설성목장 한우불고기 덮밥소스100g x 8",
 ])
 def test_meat_shelf_contaminants_and_mixed_sets_stay_pending(title):
-    assert classify_record(_raw("costco", "고기", title))["unified_category_id"] is None
+    assert classify_record(_raw("costco", "고기", title))["unified_category_id"] == _REVIEWED_LEDGER001.get(('고기', title))
 
 
 @pytest.mark.parametrize("title", [
@@ -1532,7 +1855,7 @@ def test_meat_shelf_contaminants_and_mixed_sets_stay_pending(title):
     "샤인머스캣 애플망고 사과 혼합선물세트4.6kg", "휴롬 원액기 P310 E31ST-BFM02MM",
 ])
 def test_fruit_shelf_does_not_prove_a_single_fixed_product(title):
-    assert classify_record(_raw("costco", "과일", title))["unified_category_id"] is None
+    assert classify_record(_raw("costco", "과일", title))["unified_category_id"] == _REVIEWED_LEDGER001.get(('과일', title))
 
 
 def test_audited_costco_cheese_shelf_keeps_shredded_pizza_cheese_as_cheese():
@@ -1640,7 +1963,6 @@ def test_dairy_context_does_not_override_specific_source_type_conflict():
     # Reviewed Greek-vs-spoon shelf resolution is covered by
     # test_initial_homeplus_dairy_forms; other conflicts still require review.
     for path, title in (
-        ("우유/유제품 > 두유 > 일반두유", "매일 아몬드브리즈 무당950ML"),
         ("우유/유제품 > 치즈/버터 > 슬라이스 치즈", "필라델피아 크림치즈190g"),
     ):
         assert classify_record(_raw("homeplus", path, title))["unified_category_id"] is None
@@ -1886,7 +2208,9 @@ def test_reviewed_remaining_exact_leaves_have_four_levels(leaf, expected):
 
 
 @pytest.mark.parametrize("path,title", [
-    ("채소", "무 (개)"), ("채소", "애호박 (개)"),
+    # Literal fresh 애호박 now has the bounded crop/context rule below;
+    # a vegetable promotion still cannot create an unspecified crop leaf.
+    ("채소", "무 (개)"), ("채소", "채소 특가"),
     ("기타튀김", "사세 바삭 튀긴 통새우튀김 300g"),
     ("볶음반찬", "샘표 오징어채볶음 60g"),
 ])
@@ -1934,3 +2258,346 @@ def test_review_only_grains_do_not_add_ingredient_based_automatic_assignments(ti
 def test_plant_alternatives_and_unresolved_flavours_are_not_assumed_plain_dairy(title):
     result = classify_record(_raw("emart", "우유/유제품", title))
     assert result["unified_category_id"] is None
+
+
+@pytest.mark.parametrize('title,leaf', [
+    ('귀리음료 두유 대체 1L', 'food.plant.drinks.oat'),
+    ('오트음료 두유대용 1L', 'food.plant.drinks.oat'),
+    ('아몬드음료 두유 대신 1L', 'food.plant.drinks.almond'),
+    ('베지밀 오트밀 두유 190ml', 'food.plant.soy.soymilk'),
+    ('아몬드 두유 190ml', 'food.plant.soy.soymilk'),
+])
+def test_plant_drink_form_does_not_treat_soy_comparisons_as_soy_contents(title, leaf):
+    assert classify_record(_raw('homeplus', ['우유/유제품', '두유', '일반두유'], title))['unified_category_id'] == leaf
+    assert classify_record(_raw('homeplus', ['가전'], title))['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title', [
+    '귀리음료 + 두유 190ml', '귀리음료 두유맛 1L',
+    '귀리음료 두유 대체 + 다른상품 세트', '귀리음료 + 다른상품 세트',
+    '귀리음료 아몬드음료 혼합세트', '두유 대체 음료 1L',
+    '귀리음료 두유 대체 제조기', '귀리음료 두유 대체 반려동물용 1L',
+    '귀리음료 두유 대체 분말 30g', '귀리음료 두유 대체 농축원액 100ml',
+    '아몬드음료 두유 대체 아이스크림 500ml',
+])
+def test_plant_drink_comparisons_do_not_resolve_mixtures_or_unspecified_forms(title):
+    assert classify_record(_raw('homeplus', ['우유/유제품', '두유', '일반두유'], title))['unified_category_id'] is None
+
+
+def test_literal_oat_drink_needs_compatible_context_and_preserves_url_conflicts(monkeypatch):
+    from services import initial_taxonomy as taxonomy
+    title = '귀리음료 두유 대체 1L'
+    assert classify_record(_raw('emart', '우유/유제품', '귀리음료 1L'))['unified_category_id'] == 'food.plant.drinks.oat'
+    assert classify_record(_raw('homeplus', ['우유/유제품', '반려동물'], title))['unified_category_id'] is None
+    monkeypatch.setattr(taxonomy, '_url_candidates', lambda evidence: ({'food.plant.soy.soymilk'}, []))
+    conflict = classify_record(_raw('homeplus', ['우유/유제품', '두유', '일반두유'], title))
+    assert conflict['unified_category_id'] is None
+    assert conflict['candidate_category_ids'] == ['food.plant.drinks.oat', 'food.plant.soy.soymilk']
+
+
+@pytest.mark.parametrize('path,title,leaf', [
+    ('국내산소고기', '냉동 한우 양지 500g', 'food.meat.frozen.beef'),
+    ('돼지고기', '냉동 삼겹살 500g', 'food.meat.frozen.pork'),
+    ('닭고기', '냉동 닭다리 500g', 'food.meat.frozen.chicken'),
+    ('국내산소고기', '냉장 한우 양지 500g', 'food.meat.fresh.beef'),
+    ('국내산소고기', '한우 양지 500g 냉동 보관 가능', 'food.meat.fresh.beef'),
+])
+def test_raw_meat_storage_refines_only_the_same_corroborated_species(path, title, leaf):
+    result = classify_record(_raw('lottemart', ['정육ㆍ계란', path], title))
+    assert result['unified_category_id'] == leaf
+    validate_taxonomy(taxonomy_categories({leaf}), {leaf})
+
+
+@pytest.mark.parametrize('title', [
+    '냉동 양념 소고기 500g', '냉동 훈제 닭고기 500g',
+    '냉동 소고기 만두 500g', '냉동 돼지고기 소고기 혼합 500g',
+    '강아지 냉동 닭고기 500g', '냉동 LA갈비 500g',
+])
+def test_frozen_storage_does_not_establish_raw_species_or_erase_other_forms(title):
+    result = classify_record(_raw('lottemart', ['정육ㆍ계란', '국내산소고기'], title))
+    assert not (result['unified_category_id'] or '').startswith('food.meat.frozen.')
+
+
+@pytest.mark.parametrize('shelf,title,expected', [
+    ('애호박','새산지 애호박 2입','food.produce.vegetables.zucchini'),
+    ('단호박','새산지 단호박 1통','food.produce.vegetables.pumpkin'),
+    ('호박','호박죽용 단호박 1통','food.produce.vegetables.pumpkin'),
+    ('애호박','애호박 퓨레 100g',None),
+    ('단호박','단호박 가루 100g',None),
+    ('호박','호박즙 100ml',None),
+    ('애호박','냉동 애호박 200g',None),
+    ('호박','호박씨앗 100g',None),
+    ('호박','호박잎 200g',None),
+])
+def test_specific_fresh_squash_aliases_do_not_accept_processed_forms(shelf,title,expected):
+    actual=classify_record({'source':'homeplus','name':title,'attributes':{'category_path':['채소',shelf]}})
+    assert actual['unified_category_id'] == expected
+    if expected is None:
+        assert actual['classification_reason'] == 'source_title_product_type_conflict'
+
+
+@pytest.mark.parametrize('path,title,expected', [
+    (['채소'], '새산지 애호박 2입', 'food.produce.vegetables.zucchini'),
+    (['채소','오이/가지/호박/옥수수','호박'], '새산지 애호박 2입', 'food.produce.vegetables.zucchini'),
+    (['채소','호박'], '새산지 애호박(국산/1개)', 'food.produce.vegetables.zucchini'),
+    (['채소'], '새산지 미니단호박 1통', 'food.produce.vegetables.pumpkin'),
+    (['채소','단호박'], '새산지 애호박 2입', None),
+    (['채소','애호박'], '새산지 단호박 1통', None),
+    (['채소','호박'], '애호박과 단호박', None),
+    (['채소','호박'], '애호박/오이', None),
+    (['채소','호박'], '애호박 모둠 채소', None),
+    (['채소','호박'], '애호박 밀키트 200g', None),
+    (['채소','호박'], '애호박 된장찌개 200g', None),
+    (['채소','호박'], '단호박 식빵 200g', None),
+    (['채소','호박'], '호박죽 용 단호박 1통', 'food.produce.vegetables.pumpkin'),
+    (['채소'], '애호박 퓨레 100g', None),
+    (['채소','냉동채소'], '애호박 200g', None),
+    (['반려동물'], '애호박 200g', None),
+])
+def test_fresh_squash_refines_generic_shelves_without_erasing_specific_conflicts(path,title,expected):
+    actual=classify_record({'source':'homeplus','name':title,'attributes':{'category_path':path}})
+    assert actual['unified_category_id'] == expected
+    if expected:
+        validate_taxonomy(taxonomy_categories({expected}), {expected})
+
+
+@pytest.mark.parametrize('title,path,leaf,broad', [
+    ('프리시아 메가BBQ 마시멜로우 300G', '과자/시리얼 > 캔디 > 소프트캔디',
+     'food.snacks.sweets.marshmallow', 'food.snacks.sweets.candy'),
+    ('Senoble 크렘브륄레 100g x 8', '과자',
+     'food.snacks.desserts.creme_brulee', 'food.snacks.sweets.pudding'),
+    ('종합 모나카 840g / 280g X 3', '과자',
+     'food.snacks.traditional.monaka', 'food.snacks.traditional.hangwa'),
+    ('Dorly 오란다 720g / 20g x 36', '과자',
+     'food.snacks.traditional.oranda', 'food.snacks.traditional.hangwa'),
+    ('엠앤엠즈 유리컵 기획팩 레드 145G', '과자/시리얼 > 초콜릿 > 볼초콜릿',
+     'food.snacks.sets.chocolate_glass', 'food.snacks.sweets.chocolate'),
+])
+def test_literal_confection_form_refines_only_related_leaf_and_keeps_url_conflicts(
+        title, path, leaf, broad, monkeypatch):
+    from services import initial_taxonomy as taxonomy
+    row = _raw('homeplus', path, title)
+    result = classify_record(row)
+    assert result['unified_category_id'] == leaf
+    assert result['evidence_type'] == 'literal_confection_product_form_and_context'
+    assert 'package_quantity' not in result
+    assert classify_record(_raw('homeplus', ['다른 상품'], title))['unified_category_id'] is None
+    monkeypatch.setattr(taxonomy, '_url_candidates', lambda evidence: ({broad}, []))
+    conflict = classify_record(row)
+    assert conflict['unified_category_id'] is None
+    assert set(conflict['candidate_category_ids']) == {leaf, broad}
+
+
+@pytest.mark.parametrize('title', [
+    '마시멜로우맛 쿠키 300g', '크렘브륄레맛 아이스크림 100g',
+    '모나카 만들기 믹스 280g', '오란다맛 과자 160g',
+    '빈 유리컵 기획팩 레드 145g', '마시멜로우 반려동물 간식',
+])
+def test_confection_flavour_kits_and_empty_gifts_do_not_establish_literal_form(title):
+    from services.initial_product_forms import confection_form_refinement
+    evidence = source_evidence(_raw('homeplus', '과자/시리얼 > 초콜릿 > 캔디', title))
+    assert confection_form_refinement(evidence) == (set(), set())
+
+
+@pytest.mark.parametrize('title,native,leaf', [
+    ('포스트 오레오 오즈 (500G)', '8801037065626', 'food.snacks.cereal.rings'),
+    ('포스트 오곡코코볼 컵 시리얼 (30G)', '8801037096569', 'food.snacks.cereal.balls'),
+])
+def test_reviewed_native_cereal_shape_does_not_transfer_flavour_package_or_context(title, native, leaf):
+    from services.initial_product_forms import reviewed_cereal_form_refinement
+    url = 'https://lottemartzetta.com/products/OS' + native + '/details'
+    row = {'source_name':'lottemart', 'source_title':title,
+           'source_category_path':['과자ㆍ스낵ㆍ간식','시리얼','후레이크'], 'source_url':url}
+    result = classify_record(row)
+    assert result['unified_category_id'] == leaf
+    assert result['evidence_type'] == 'reviewed_native_package_cereal_shape'
+    assert 'package_quantity' not in result
+    for change in ({'source_url':url+'-other'}, {'source_title':title.replace('G)', 'G) 맛 쿠키')},
+                   {'source_category_path':['다른 상품']}, {'source_name':'homeplus'},
+                   {'source_url':None}):
+        assert reviewed_cereal_form_refinement(source_evidence({**row, **change})) == (set(), set())
+
+
+@pytest.mark.parametrize('title,path,leaf', [
+    ('커클랜드 시그니춰 토티야 칩스 1.13kg', '과자', 'food.snacks.savory.tortilla_nacho'),
+    ('리코스 나쵸칩 454G', '과자/시리얼 > 나쵸', 'food.snacks.savory.tortilla_nacho'),
+    ('크라운 카라멜콘과땅콩 72G', '과자/시리얼 > 옥수수스낵', 'food.snacks.assortments.corn_peanut'),
+    ('우리식품 마카로니 스낵 160G', '과자/시리얼 > 기타곡물스낵', 'food.snacks.savory.noodle'),
+    ('검정고무신 왕라면스낵 160G', '과자/시리얼 > 유탕과자', 'food.snacks.savory.noodle'),
+    ('그린피스 와사비스낵 380G', '과자/시리얼 > 기타곡물스낵', 'food.snacks.savory.beans_peas'),
+    ('바싹콩콩 서리태 스낵 650G', '과자', 'food.snacks.savory.beans_peas'),
+    ('AMANOYA 쌀 크래커 600g / 25g x 24', '과자', 'food.snacks.savory.rice_cracker'),
+])
+def test_savory_preparation_refines_material_without_inventing_recipe_or_quantity(title, path, leaf, monkeypatch):
+    import services.initial_taxonomy as taxonomy
+    row = _raw('homeplus', path, title)
+    result = classify_record(row)
+    assert result['unified_category_id'] == leaf
+    assert result['evidence_type'] == 'explicit_savory_preparation_and_context'
+    assert 'package_quantity' not in result
+    monkeypatch.setattr(taxonomy, '_url_candidates', lambda evidence: ({'food.dairy.milk.chocolate'}, []))
+    assert classify_record(row)['unified_category_id'] is None
+
+
+@pytest.mark.parametrize('title', [
+    '오리온 치킨팝 닭강정맛 (65G)', '롯데 꼬깔콘 매콤달콤한맛 (52G)',
+    '나초치즈맛 감자칩 100g', '서리태맛 밀가루스낵 100g', '누룽지팝 달콤한맛 288G',
+    '나초 만들기 소스 100g', '강아지 라면스낵 100g',
+    'simplus 누룽지사탕 200G', 'CJ 햇반 누룽지닭백숙죽 (267G)',
+])
+def test_savory_native_shelf_and_flavour_are_not_physical_form_or_base(title):
+    from services.initial_product_forms import savory_form_refinement
+    assert savory_form_refinement(source_evidence(_raw('lottemart', '과자 > 나쵸', title))) == (set(), set())
+
+
+def test_puffed_native_url_form_never_transfers_package_or_to_other_source():
+    from services.initial_product_forms import savory_form_refinement
+    row = _raw('costco', '과자', '베베쿡 처음먹는 빼빼롱뻥 30g x 10')
+    row['source_url'] = 'https://www.costco.co.kr/Foods/Snack/CookieCracker/Bebecook-First-Puffed-Stick-Snack-30g-x-10/p/689543'
+    assert classify_record(row)['unified_category_id'] == 'food.snacks.savory.puffed'
+    for changed in ({'source_url':None}, {'source_url':row['source_url'].replace('costco.co.kr','other.test')}):
+        assert savory_form_refinement(source_evidence({**row, **changed})) == (set(), set())
+    wrong_context = _raw('costco', '다른 상품', '베베쿡 처음먹는 빼빼롱뻥 30g x 10')
+    wrong_context['source_url'] = row['source_url']
+    assert savory_form_refinement(source_evidence(wrong_context)) == (set(), set())
+
+
+def test_reviewed_native_snack_form_preserves_price_independence_and_context_boundary():
+    from services.initial_product_forms import reviewed_native_snack_form_refinement
+    title = '오뚜기 뿌셔뿌셔 불고기맛 1.52kg / 95g x 16'
+    url = 'https://www.costco.co.kr/Foods/Snack/CookieCracker/Ottogi-Pusho-Pusho-Bulgogi-flavor-152kg-95g-x16/p/610710'
+    row = {'source_name':'costco','source_title':title,'source_category_path':['라면'],'source_url':url}
+    for price in (13990,15990,None):
+        actual = classify_record({**row,'sale_price':price})
+        assert actual['unified_category_id'] == 'food.snacks.savory.noodle'
+        assert actual['evidence_type'] == 'reviewed_native_snack_physical_form'
+        assert 'package_quantity' not in actual
+    for change in ({'source_url':None},{'source_url':url+'-other'},
+                   {'source_url':url.replace('610710','637021')},
+                   {'source_title':title+' 만들기 재료'}, {'source_title':title.replace('불고기','떡볶이')},
+                   {'source_title':title.replace('95g x 16','95g x 20')},
+                   {'source_name':'homeplus'}, {'source_category_path':['다른 상품']}):
+        assert reviewed_native_snack_form_refinement(source_evidence({**row,**change})) == (set(),set())
+    # The stale bare/shelf-only legacy label cannot acquire the captured native form.
+    bare = classify_record({'source_name':'costco','source_title':title,'source_category_path':['라면']})
+    assert bare['unified_category_id'] == 'food.snacks.savory.wheat'
+
+
+@pytest.mark.parametrize('title,path,leaf', [
+    ('리퀴드 아이비 전해질드링크 파우더 믹스 16g x 30','음료','food.drinks.powders.electrolyte'),
+    ('델몬트 스퀴즈 사과/오렌지 에이드 240ml x 30 x 2팩','음료','food.drinks.juice.fruit_ade'),
+    ('푸르밀 웰치 사과 에이드 250ML','우유/유제품 > 냉장디저트/음료 > 냉장주스 > 냉장주스','food.drinks.juice.fruit_ade'),
+    ('팔도 뽀로로 딸기맛 235ML','생수/음료/주류 > 과일/야채음료 > 어린이음료 > 어린이음료','food.drinks.flavoured.strawberry'),
+    ('자임 비타민이 들어있는 사과당근 착즙주스 245ML','우유/유제품 > 냉장디저트/음료 > 냉장주스 > 냉장주스','food.drinks.juice.fruit_vegetable'),
+    ('[매일유업] 썬업 100% 과즙 파인애플 750mL','생수/음료/주류','food.drinks.juice.fruit'),
+])
+def test_literal_beverage_form_refines_broad_leaf_without_ingredient_or_amount_defaults(title,path,leaf):
+    actual = classify_record(_raw('costco' if path=='음료' else ('homeplus' if path.startswith('우유/') or '어린이' in path else 'emart'),path,title))
+    assert actual['unified_category_id'] == leaf
+    assert 'package_quantity' not in actual
+
+
+@pytest.mark.parametrize('title,path',[
+    ('사과 에이드 분말 100g','음료'), ('사과맛 에이드 250ml','음료'),
+    ('사과 에이드 250ml','생수/음료/주류 > 농축액'), ('사과 에이드 원액 250ml','음료'),
+    ('딸기맛 우유 235ml','생수/음료/주류 > 과일/야채음료 > 어린이음료'),
+    ('딸기맛 젤리 235g','생수/음료/주류 > 과일/야채음료 > 어린이음료'),
+    ('전해질드링크 500ml','음료'), ('전해질분말 시약 16g','음료'),
+    ('사과당근맛 주스 250ml','음료'), ('사과당근 착즙주스 파우더 20g','음료'),
+    ('100% 과즙 파인애플 농축액 250ml','음료'), ('100% 과즙 파인애플 250ml','분말/농축액'),
+])
+def test_beverage_forms_reject_flavour_ingredient_concentrate_and_unrelated_context(title,path):
+    from services.initial_product_forms import beverage_form_refinement
+    assert beverage_form_refinement(source_evidence(_raw('costco',path,title))) == (set(),set())
+
+
+@pytest.mark.parametrize('title,path,leaf',[
+    ('CJ 더건강한 닭가슴살 소시지 청양고추 (80G)','햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 닭가슴살 > 닭가슴살','food.meat.processed.sausage'),
+    ('CJ 더건강한 부드러운 닭가슴살 샌드위치햄 (90G)','햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 닭가슴살 > 닭가슴살','food.meat.processed.ham'),
+    ('진주햄 천하장사 오리지날 (448G)','햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 햄ㆍ소시지ㆍ베이컨ㆍ하몽 > 간식용소시지','food.snacks.savory.snack_sausage'),
+    ('갓 튀김 어포 900g (60g x 15봉)','과자','food.seafood.processed.fish_snack'),
+    ('정화 쥐포튀김 120G','수산물/건어물 > 건오징어/건어물/다시팩 > 쥐포/어포/육포 > 어포','food.seafood.processed.fish_snack'),
+    ('촉촉한 반건조 열빙어1.2kg X 2pack','생선','food.seafood.processed.semi_dried_fish'),
+])
+def test_declared_processed_food_shape_refines_ingredients_and_drying(title,path,leaf):
+    result = classify_record(_raw('costco' if path in {'과자','생선'} else ('homeplus' if path.startswith('수산물/') else 'lottemart'),path,title))
+    assert result['unified_category_id'] == leaf
+    assert 'package_quantity' not in result
+
+
+@pytest.mark.parametrize('title,path',[
+    ('닭가슴살 소시지 만들기 재료','닭가슴살'),
+    ('천하장사 콰트로 치즈 25g','치즈'),
+    ('강아지 간식소시지 100g','과자'),
+    ('반건조 홍시 100g','생선'),
+    ('반건조 생선 조림 밀키트','생선'),
+    ('어포튀김 소스 혼합세트','과자'),
+])
+def test_processed_shapes_do_not_guess_species_recipe_or_unrelated_form(title,path):
+    from services.initial_product_forms import processed_food_form_refinement
+    assert processed_food_form_refinement(source_evidence(_raw('costco',path,title))) == (set(),set())
+
+
+@pytest.mark.parametrize('title,path,url,leaf,helper_name',[
+    ('루카스나인 우베라떼 18g x 50','커피','https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Lookas9-Ube-Latte-18g-x-50/p/695490','food.drinks.powders.ube_latte','reviewed_native_drink_form_refinement'),
+    ('천하장사 더블링 콰트로치즈 25g X 40','치즈','https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Double-Ring-Quattro-Cheese-25g-X-40/p/691985','food.seafood.processed.fish_sausage','reviewed_native_processed_form_refinement'),
+])
+def test_reviewed_native_body_form_retains_price_independence_and_exact_source_boundary(title,path,url,leaf,helper_name):
+    from services import initial_product_forms
+    helper = getattr(initial_product_forms,helper_name)
+    row = {'source_name':'costco','source_title':title,'source_category_path':[path],'source_url':url}
+    for price in (13490,15490,None):
+        result = classify_record({**row,'sale_price':price})
+        assert result['unified_category_id'] == leaf
+        assert 'package_quantity' not in result
+    for change in ({'source_url':None},{'source_url':url+'-other'},
+                   {'source_url':url.replace('/p/','/p/0')},
+                   {'source_title':title+' 만들기 재료'}, {'source_title':title.replace('50','51').replace('40','41')},
+                   {'source_name':'homeplus'}, {'source_category_path':['다른 상품']}):
+        assert helper(source_evidence({**row,**change})) == (set(),set())
+    assert classify_record({**row,'source_url':None})['unified_category_id'] != leaf
+
+
+def test_native_ricecake_fishcake_kit_keeps_separate_components_and_exact_native_context():
+    from services.initial_product_forms import reviewed_native_processed_form_refinement
+    row = {'source_name':'homeplus', 'source_title':'환공어묵 부산명품 물떡 어묵꼬치 10입 460G',
+           'source_category_path':['두부/김치/반찬','어묵/맛살/단무지','어묵','국탕용어묵'],
+           'source_url':'https://mfront.homeplus.co.kr/item?itemNo=069798234&storeType=HYPER'}
+    for price in (9990,10990,None):
+        assert classify_record({**row,'sale_price':price})['unified_category_id'] == 'food.meals.sets.ricecake_fishcake'
+    for change in ({'source_url':None}, {'source_url':row['source_url'].replace('069798234','069798235')},
+                   {'source_name':'costco'}, {'source_category_path':['다른 상품']},
+                   {'source_title':row['source_title'].replace('460G','4600G')}):
+        assert reviewed_native_processed_form_refinement(source_evidence({**row,**change})) == (set(),set())
+
+
+def test_explicit_stock_tablets_refine_cooking_ingredient_without_soup_or_quantity_guesses():
+    from services.initial_audited_seasonings import stock_tablet_form_refinement
+    for title, leaf in [('오늘좋은 코인육수 멸치디포리 (80G)', 'stock_seasoning'),
+                        ('샘표 연두링 다시마표고야채 (80G)', 'vegetable_tablet')]:
+        row = _raw('lottemart', '양념ㆍ오일ㆍ분말류', title)
+        assert classify_record(row)['unified_category_id'] == 'food.seasonings.stock.' + leaf
+        # Unrelated source contexts and other explicit product forms are retained.
+        for changed_title in (title + ' 혼합세트', '설성목장 한우사골 곰탕 스틱 14g x10 x4'):
+            evidence = source_evidence(_raw('lottemart', '양념ㆍ오일ㆍ분말류', changed_title))
+            assert stock_tablet_form_refinement(evidence) == (set(), set())
+        assert stock_tablet_form_refinement(source_evidence(_raw('lottemart', '과자', title))) == (set(), set())
+
+
+def test_literal_portable_screen_form_preserves_unspecified_technology_and_accessory_boundary():
+    leaf = 'electronics.video.screens.portable'
+    for title, context in [('포터블스크린 카드할인 구매찬스', '오반장'),
+                           ('포터블 스크린', '디지털')]:
+        for price in (499000, 509000, None):
+            result = classify_record({**_raw('emart', context, title), 'sale_price': price})
+            assert result['unified_category_id'] == leaf
+            assert result['category_path'] == ['디지털', '영상가전', '스크린', '포터블스크린']
+    for title, context in [('포터블스크린 커버', '디지털'),
+                           ('포터블스크린 + TV 혼합세트', '디지털'),
+                           ('포터블스크린 프로젝터 세트', '디지털'),
+                           ('포터블스크린', '문구'), ('카드할인 구매찬스', '오반장')]:
+        assert classify_record(_raw('emart', context, title))['unified_category_id'] != leaf
+    # Classification and search do not infer tuner, panel technology or a sold count.
+    definitions = keyword_definitions([leaf])
+    assert definitions == [{'word': '포터블스크린', 'synonyms': [], 'unified_category_id': leaf}]
+    validate_taxonomy(taxonomy_categories([leaf]), [leaf])

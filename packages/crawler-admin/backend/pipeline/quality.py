@@ -6,6 +6,8 @@ from collections import Counter
 from typing import Any
 from uuid import uuid4
 
+from pipeline.validator import observation_key
+
 CRITICAL_FIELD_THRESHOLDS: dict[str, float] = {
     "name": 1.0,
     "sale_price": 1.0,
@@ -42,7 +44,7 @@ ZERO_RESULT_NEXT_ACTIONS: dict[str, str] = {
 }
 
 DUPLICATE_HEAVY_NEXT_ACTION = (
-    "Output is duplicate-heavy after validation. Compare duplicate keys (store/source, name/title, sale_price/price) "
+    "Output is duplicate-heavy after validation. Compare complete repeated observations (source IDs, URLs, spec and offer facts) "
     "in the fixture, fix parser pagination/card selectors or dedupe keys, and re-run until duplicates are under threshold."
 )
 
@@ -61,14 +63,6 @@ def _present(value: Any) -> bool:
 
 def _ratio(count: int, total: int) -> float:
     return round(count / total, 3) if total else 0.0
-
-
-def _discount_key(item: dict[str, Any]) -> tuple[Any, Any, Any]:
-    return (
-        item.get("store") or item.get("source") or "",
-        item.get("name") or item.get("title") or "",
-        item.get("sale_price") if item.get("sale_price") is not None else item.get("price"),
-    )
 
 
 def summarize_discount_run(
@@ -133,7 +127,7 @@ def summarize_discount_run(
             or _present((item.get("attributes") or {}).get("category_path"))
         ),
     }
-    duplicate_count = sum(count - 1 for count in Counter(_discount_key(item) for item in items).values() if count > 1)
+    duplicate_count = sum(count - 1 for count in Counter(observation_key(item) for item in items).values() if count > 1)
     invalid_ratio = _ratio(invalid_count, parsed_total)
     duplicate_ratio = _ratio(duplicate_count, total)
     coverage = {field: _ratio(count, total) for field, count in field_counts.items()}
@@ -202,7 +196,7 @@ def summarize_discount_run(
                 "code": "duplicate_heavy_output",
                 "severity": "warning",
                 "message": (
-                    f"{duplicate_count} of {total} valid rows are duplicates by store/source, name/title, and price."
+                    f"{duplicate_count} of {total} valid rows repeat the complete source/spec/offer observation."
                 ),
                 "next_action": DUPLICATE_HEAVY_NEXT_ACTION,
                 "duplicate_count": duplicate_count,

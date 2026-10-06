@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-from sqlalchemy import MetaData, create_engine, insert, select, text
+from sqlalchemy import MetaData, create_engine, insert, select, text, or_
 from sqlalchemy.engine import Connection
 
 from services.base import get_engine
@@ -101,14 +101,25 @@ def _copy_table(
     target_table,
 ) -> int:
     statement = select(source_table)
+    if source_table.name in {NormalizedOfferEvent.__tablename__, NormalizedOfferWeekLink.__tablename__}:
+        parent_variants = select(NormalizedProductVariant.public_variant_id).where(or_(
+            NormalizedProductVariant.attributes['explicit_listing_quantity_review']
+                ['source_parent_selection']['identity_scope'].as_string()
+                == 'source_selectable_parent_observation',
+            NormalizedProductVariant.attributes['explicit_listing_quantity_review']
+                ['measurement_role'].as_string().in_(('declared_outer_set_count', 'declared_nonexact_mass_specification', 'declared_incomplete_entitlement_specification', 'declared_incomplete_retail_package_specification'))))
+        parent_listings = select(NormalizedSourceListing.public_source_listing_id).where(
+            NormalizedSourceListing.public_variant_id.in_(parent_variants))
+        pending_offer_ids = select(NormalizedOfferEvent.public_offer_event_id).where(or_(
+            NormalizedOfferEvent.offer_state == 'pending_review',
+            NormalizedOfferEvent.public_source_listing_id.in_(parent_listings)))
     if source_table.name == NormalizedOfferEvent.__tablename__:
         # Pending review is an internal staging state, not public history.
         # Preserve every other state (and inactive products) unchanged.
-        statement = statement.where(source_table.c.offer_state != "pending_review")
+        # A selectable parent remains private even if a later offer review
+        # resolves a price condition; it does not select the purchased child.
+        statement = statement.where(source_table.c.public_offer_event_id.not_in(pending_offer_ids))
     elif source_table.name == NormalizedOfferWeekLink.__tablename__:
-        pending_offer_ids = select(NormalizedOfferEvent.public_offer_event_id).where(
-            NormalizedOfferEvent.offer_state == "pending_review"
-        )
         statement = statement.where(
             source_table.c.public_offer_event_id.not_in(pending_offer_ids)
         )

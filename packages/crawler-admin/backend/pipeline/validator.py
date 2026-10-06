@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import re
 from typing import Any
 from urllib.parse import urlparse
@@ -19,6 +20,7 @@ FIELD_TYPE_RULES: dict[str, tuple[type, ...]] = {
     "original_price": (int, float, str, type(None)),
     "sale_price": (int, float, str, type(None)),
     "discount_percent": (int, float, type(None)),
+    "attributes": (dict, type(None)),
 }
 
 
@@ -32,14 +34,21 @@ def validate_items(
         errors: list[str] = []
 
         # 1. Required field presence
-        missing = [f for f in required_fields if not item.get(f)]
+        missing = [
+            f for f in required_fields
+            if item.get(f) is None
+            or (isinstance(item.get(f), str) and not item[f].strip())
+        ]
         if missing:
             errors.append(f"missing fields: {missing}")
 
         # 2. Type validation for known fields
         for field, expected_types in FIELD_TYPE_RULES.items():
             val = item.get(field)
-            if val is not None and field in item and not isinstance(val, expected_types):
+            if val is not None and field in item and (
+                not isinstance(val, expected_types)
+                or (isinstance(val, bool) and int in expected_types)
+            ):
                 errors.append(
                     f"field '{field}': expected {expected_types}, got {type(val).__name__}"
                 )
@@ -65,7 +74,7 @@ def validate_price_range(
         if price is None:
             valid.append(item)
             continue
-        if isinstance(price, (int, float)) and min_price <= price <= max_price:
+        if not isinstance(price, bool) and isinstance(price, (int, float)) and math.isfinite(price) and min_price <= price <= max_price:
             valid.append(item)
         else:
             item["_validation_error"] = (
@@ -96,13 +105,26 @@ def validate_urls(
     return valid, invalid
 
 
+def observation_key(value: Any) -> tuple:
+    """Exact observation identity, including native IDs, nested spec and offer facts.
+
+    Dictionary order is incidental; list order and scalar types remain distinct.
+    No URL alias, display-name matching or sale-amount inference is performed.
+    """
+    if isinstance(value, dict):
+        return ("dict", frozenset((observation_key(k), observation_key(v)) for k, v in value.items()))
+    if isinstance(value, (list, tuple)):
+        return (type(value).__name__, tuple(observation_key(v) for v in value))
+    return (type(value).__name__, value)
+
+
 def deduplicate(
     items: list[dict[str, Any]],
     key_fields: list[str],
 ) -> list[dict[str, Any]]:
-    """중복 제거. key_fields 조합이 같으면 첫 번째만 유지.
+    """Remove only exact repeated observations, retaining full source contexts.
 
-    None/missing 필드가 포함된 키는 인덱스로 구별하여 false dedup을 방지한다.
+    If every key field is missing/None, retain each otherwise anonymous row.
     """
     seen: set[tuple] = set()
     result: list[dict[str, Any]] = []
@@ -111,16 +133,16 @@ def deduplicate(
         # If all key fields are None/missing, use index as tiebreaker
         # to prevent collapsing unrelated items
         if all(v is None for v in values):
-            key = (*values, f"__idx_{idx}__")
+            key = ("missing_identity", idx)
         else:
-            key = values
+            key = observation_key(item)
         if key not in seen:
             seen.add(key)
             result.append(item)
     return result
 
 
-_PRICE_RE = re.compile(r"[\d,]+")
+_PRICE_RE = re.compile(r"(?:₩)?([+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)(?:원)?")
 
 
 def normalize_prices(
@@ -133,12 +155,14 @@ def normalize_prices(
         if raw is None:
             continue
         if isinstance(raw, (int, float)):
-            item[price_field] = int(raw)
+            # Keep the actual amount, including invalid/nonfinite values for validation.
             continue
-        raw_str = str(raw).replace(" ", "")
-        match = _PRICE_RE.search(raw_str)
+        if not isinstance(raw, str):
+            continue
+        raw_str = raw.strip().replace(" ", "")
+        match = _PRICE_RE.fullmatch(raw_str)
         if match:
-            item[price_field] = int(match.group().replace(",", ""))
-        else:
-            item[price_field] = None
+            amount = match.group(1).replace(",", "")
+            item[price_field] = float(amount) if "." in amount else int(amount)
+        # Malformed nonempty quotes stay invalid, rather than becoming unknown prices.
     return items

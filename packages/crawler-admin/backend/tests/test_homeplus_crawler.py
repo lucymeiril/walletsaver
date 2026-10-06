@@ -105,3 +105,325 @@ async def test_envelope_preserves_unit_price_and_category(raw_json, parsed_envel
 
     assert first.attributes["unit_price_displayed"] == float(raw_first["unitPrice"])
     assert first.category == expected_category
+
+
+@pytest.fixture
+def native_detail_node():
+    # Genuine saved product-only capture; wrapper/script tests below reconstruct
+    # only its supplied data.item shape, not the discarded provider HTML.
+    root = Path(__file__).resolve().parents[4]
+    capture = json.loads((root / '.debug-artifacts/review-proposals/continuation222-homeplus-target-native-price-capture.json').read_text())
+    return capture['retained_product_containers'][0]['product_container_before_semantic_conversion']
+
+
+_DETAIL_URL = 'https://mfront.homeplus.co.kr/item?itemNo=059102628&storeType=HYPER'
+
+
+@pytest.fixture
+def disabled_display_detail_node():
+    root = Path(__file__).resolve().parents[4]
+    capture = json.loads((root / '.debug-artifacts/review-proposals/continuation227-homeplus-towel-real-source-evidence.json').read_text())
+    return capture['product_containers'][0]['retained_raw_product_before_interpretation']
+
+
+_DISABLED_DISPLAY_URL = 'https://mfront.homeplus.co.kr/item?itemNo=070914500&storeType=HYPER'
+
+
+@pytest.mark.asyncio
+async def test_disabled_display_keeps_source_quote_spec_and_conflicting_promotion_unknown(disabled_display_detail_node):
+    import hashlib
+    items = await HomeplusCrawler().parse(json.dumps({'data': {'item': disabled_display_detail_node}}), source_url=_DISABLED_DISPLAY_URL)
+    assert len(items) == 1
+    item = items[0]
+    assert item.name == 'simplus 데일리 타월 1P 그레이 150g'
+    assert item.sale_price == 2990 and item.detail_url == _DISABLED_DISPLAY_URL
+    assert item.original_price is None and item.discount_percent is None and item.price_per_100g is None
+    assert item.valid_from is None and item.valid_until is None
+    assert item.promo_type is None and item.promo_label is None
+    attrs = item.attributes
+    assert attrs['source_minimum_purchase_quantity'] == 1
+    assert attrs['source_quote_currency'] is None
+    assert attrs['promotion_conditions'] == {
+        'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+        'payable_price_unconfirmed': True, 'minimum_purchase_quantity_unconfirmed': True,
+        'coupon_application_unconfirmed': True,
+    }
+    fields = attrs['homeplus_detail_source_fields']
+    assert fields['basic']['itemNm'] == item.name
+    assert fields['etc']['unitDispYn'] == 'N' and fields['etc']['totalUnitQty'] == 0
+    assert not any(key in fields['sale'] for key in ('currency', 'currencyCode', 'priceCurrency'))
+    assert fields['sale']['purchaseLimitQty'] == 10 and fields['sale']['purchaseLimitDay'] == 1
+    event = fields['sale']['eventList'][0]
+    assert event['buyItemCount'] == event['buyItemCnt'] == 5
+    assert event['eventBenefitQty'] == 4 and event['changeAmount'] == 9990
+    assert event['eventGiveType'] is None
+    assert event['dispEventLabel'] == item.event_name == '4개 담으면, 9,990원에 구매 (최대 100개까지 행사/할인 적용)'
+    assert [row['thresholdQty'] for row in event['thresholdIntervals']] == list(range(4, 101, 4))
+    assert event['eventStartDt'] == '2026-10-01' and event['eventEndDt'] == '2026-10-14'
+    promo = fields['promo']['eventInfo']
+    assert promo['buyItemCnt'] == 5 and promo['thresholdQty'] == 4 and promo['changeAmount'] == 9990
+    assert fields['promo']['couponList'][0]['issueEndDt'].startswith('2026-10-07')
+    serialized = json.dumps(fields, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
+    assert attrs['homeplus_detail_source_fields_sha256'] == hashlib.sha256(serialized.encode()).hexdigest()
+    assert all(key not in serialized for key in ('itemList', 'currentItem', 'eventNo', 'thresholdId', 'review', 'stock'))
+    assert 'final_price' not in attrs['promotion_conditions'] and 'buy_quantity' not in attrs['promotion_conditions']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('field,value,marker', [
+    ('totalUnitQty', 150, 'N'), ('unitQty', 1, 'N'),
+    ('unitPrice', 1, 'N'), ('cardUnitPrice', 1, 'N'),
+    ('totalUnitQty', False, 'N'), ('unitQty', '0', 'N'),
+    ('unitPrice', float('inf'), 'N'), ('cardUnitPrice', {'value': 0}, 'N'),
+    ('totalUnitQty', 0, 'Y'), ('totalUnitQty', 0, None),
+])
+async def test_disabled_display_never_ignores_positive_malformed_or_active_metadata(disabled_display_detail_node, field, value, marker):
+    disabled_display_detail_node['etc'][field] = value
+    if marker is None:
+        disabled_display_detail_node['etc'].pop('unitDispYn')
+    else:
+        disabled_display_detail_node['etc']['unitDispYn'] = marker
+    assert await HomeplusCrawler().parse(json.dumps({'data': {'item': disabled_display_detail_node}}), source_url=_DISABLED_DISPLAY_URL) == []
+
+
+@pytest.mark.asyncio
+async def test_disabled_display_missing_metadata_does_not_default_minimum_or_currency(disabled_display_detail_node):
+    for key in ('totalUnitQty', 'unitQty', 'unitPrice', 'cardUnitPrice'):
+        disabled_display_detail_node['etc'][key] = None
+    disabled_display_detail_node['sale'].pop('purchaseMinQty')
+    item = (await HomeplusCrawler().parse(json.dumps({'data': {'item': disabled_display_detail_node}}), source_url=_DISABLED_DISPLAY_URL))[0]
+    assert 'source_minimum_purchase_quantity' not in item.attributes
+    assert item.attributes['source_quote_currency'] is None
+    assert item.attributes['promotion_conditions']['minimum_purchase_quantity_unconfirmed'] is True
+    assert item.sale_price == 2990 and item.price_per_100g is None
+
+
+@pytest.mark.asyncio
+async def test_disabled_display_currency_cannot_copy_unbounded_objects(disabled_display_detail_node):
+    disabled_display_detail_node['sale']['currency'] = {'account': 'DO_NOT_COPY'}
+    item = (await HomeplusCrawler().parse(json.dumps({'data': {'item': disabled_display_detail_node}}), source_url=_DISABLED_DISPLAY_URL))[0]
+    assert item.attributes['source_quote_currency'] is None
+    assert 'currency' not in item.attributes['homeplus_detail_source_fields']['sale']
+    assert 'DO_NOT_COPY' not in json.dumps(item.model_dump(mode='json'))
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('boundary', ['zero_quote', 'boolean_quote', 'threshold_overflow', 'long_promotion'])
+async def test_disabled_display_cannot_turn_zero_quote_or_truncated_terms_into_source_facts(disabled_display_detail_node, boundary):
+    if boundary == 'zero_quote': disabled_display_detail_node['sale']['salePrice'] = 0
+    if boundary == 'boolean_quote': disabled_display_detail_node['sale']['salePrice'] = False
+    if boundary == 'threshold_overflow':
+        event = disabled_display_detail_node['sale']['eventList'][0]
+        event['thresholdIntervals'] = event['thresholdIntervals'] * 2
+    if boundary == 'long_promotion':
+        disabled_display_detail_node['sale']['eventList'][0]['dispEventLabel'] = '4개 담으면, 9,990원 ' + ' ' * 256 + '5개'
+    assert await HomeplusCrawler().parse(json.dumps({'data': {'item': disabled_display_detail_node}}), source_url=_DISABLED_DISPLAY_URL) == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('script_wrapper', [False, True])
+async def test_native_detail_preserves_actual_quote_contents_and_unknown_terms(native_detail_node, script_wrapper):
+    import hashlib
+    source = json.dumps({'data': {'item': native_detail_node}}, ensure_ascii=False)
+    if script_wrapper:
+        source = '<html><script type="application/json">' + source + '</script></html>'
+    items = await HomeplusCrawler().parse(source, source_url=_DETAIL_URL)
+    assert len(items) == 1
+    item = items[0]
+    assert item.name == native_detail_node['basic']['itemNm']
+    assert item.sale_price == 2190
+    assert item.original_price is None and item.discount_percent is None and item.price_per_100g is None
+    assert item.detail_url == _DETAIL_URL
+    assert item.package_quantity == 2 and item.package_unit == 'L'
+    assert item.display_unit == '2L×6'
+    assert item.attributes['bundle_count'] == 6
+    assert item.attributes['mart_native_code'] == '059102628'
+    assert item.event_name == '' and item.promo_type is None and item.promo_label is None
+    assert item.attributes['source_event_absent'] is True
+    assert item.attributes['promotion_conditions'] == {
+        'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+        'payable_price_unconfirmed': True, 'minimum_purchase_quantity_unconfirmed': True,
+        'coupon_application_unconfirmed': True,
+    }
+    fields = item.attributes['homeplus_detail_source_fields']
+    assert fields['sale']['salePrice'] == 2190 and fields['sale']['dcPrice'] == 0
+    assert 'purchaseMinQty' not in fields['sale']
+    assert fields['etc']['totalUnitQty'] == 12000 and fields['etc']['unitMeasure'] == 'ML'
+    assert [row['discount'] for row in fields['promo']['couponList']] == [4000, 2000]
+    assert fields['promo']['couponList'][0]['issueEndDt'] == '2026-10-07 23:59:59'
+    assert item.valid_from is None and item.valid_until is None
+    assert item.attributes['homeplus_detail_source_fields_sha256'] == hashlib.sha256(json.dumps(fields, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+@pytest.mark.asyncio
+async def test_native_detail_public_purchase_declarations_are_retained_not_private_or_payable(native_detail_node, parsed_envelope):
+    source_row = parsed_envelope['data']['dataList'][0]
+    purchase_keys = [key for key in source_row if key.startswith('purchaseMin') or key.startswith('purchaseLimit')]
+    for key in purchase_keys: native_detail_node['sale'][key] = source_row[key]
+    native_detail_node['promo']['couponList'][0]['purchaseMin'] = 70000
+    native_detail_node['promo']['couponList'][0]['couponNo'] = 'OPAQUE_DO_NOT_COPY'
+    native_detail_node['partner'] = {'phone': 'PRIVATE_DO_NOT_COPY', 'email': 'PRIVATE_DO_NOT_COPY'}
+    native_detail_node['account'] = {'token': 'PRIVATE_DO_NOT_COPY'}
+    item = (await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}})))[0]
+    fields = item.attributes['homeplus_detail_source_fields']
+    assert all(fields['sale'][key] == source_row[key] for key in purchase_keys)
+    assert fields['promo']['couponList'][0]['purchaseMin'] == 70000
+    assert 'OPAQUE_DO_NOT_COPY' not in json.dumps(item.model_dump(mode="json"))
+    assert 'PRIVATE_DO_NOT_COPY' not in json.dumps(item.model_dump(mode="json"))
+    assert item.attributes['promotion_conditions']['minimum_purchase_quantity_unconfirmed'] is True
+    assert item.attributes['promotion_conditions']['payable_price_unconfirmed'] is True
+    assert item.price_per_100g is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('conflict', ['native', 'store', 'notice_native', 'contents', 'url_native', 'url_store', 'options', 'missing_options', 'malformed_depth'])
+async def test_native_detail_rejects_context_or_unselected_option_conflicts(native_detail_node, conflict):
+    url = _DETAIL_URL
+    if conflict == 'native': native_detail_node['basic']['itemNo'] = 'not-a-059102628'
+    if conflict == 'store': native_detail_node['basic']['storeType'] = 'EXP'
+    if conflict == 'notice_native':
+        native_detail_node['prop']['notice_rows_original_pointers'][1]['raw_fields']['noticeDesc'] = '062752109 (상품코드)'
+    if conflict == 'contents': native_detail_node['etc']['totalUnitQty'] = 72000
+    if conflict == 'url_native': url = _DETAIL_URL.replace('059102628', '062752109')
+    if conflict == 'url_store': url = _DETAIL_URL.replace('HYPER', 'EXP')
+    if conflict == 'options': native_detail_node['opt']['optSelUseYn'] = 'Y'
+    if conflict == 'missing_options': native_detail_node.pop('opt')
+    if conflict == 'malformed_depth': native_detail_node['opt']['optTitleDepth'] = False
+    assert await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=url) == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('quote,expected', [(2190.5, 2190.5), ('₩ 2,190.50원', 2190.5), (True, None), (False, None), ('행사 2개 2190원', None), (-2190, None), (float('inf'), None), ({'amount': 2190}, None)])
+async def test_native_detail_money_never_truncates_or_harvests_invalid_quotes(native_detail_node, quote, expected):
+    native_detail_node['sale']['salePrice'] = quote
+    items = await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}))
+    if expected is None:
+        assert items == []
+    else:
+        assert len(items) == 1 and items[0].sale_price == expected
+        assert items[0].attributes['source_record_key'] == '059102628'
+        assert items[0].attributes['promotion_conditions']['payable_price_unconfirmed'] is True
+
+
+@pytest.mark.asyncio
+async def test_native_detail_does_not_mix_siblings_or_absent_notice_with_other_products(native_detail_node):
+    unrelated = {'basic': native_detail_node['basic'], 'sale': {'salePrice': 1}, 'opt': native_detail_node['opt']}
+    source = json.dumps({'data': {'item': {'basic': native_detail_node['basic']}, 'products': [unrelated]}})
+    assert await HomeplusCrawler().parse(source, source_url=_DETAIL_URL) == []
+    source = '<script type="application/json">' + json.dumps({'data': {'item': native_detail_node}}) + '</script>'
+    source += '<script type="application/json">' + json.dumps({'data': {'item': unrelated}}) + '</script>'
+    assert await HomeplusCrawler().parse(source, source_url=_DETAIL_URL) == []
+    # Name retains the actual multiplier when the source does not supply a notice.
+    native_detail_node.pop('prop')
+    items = await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL)
+    assert len(items) == 1 and items[0].attributes['bundle_count'] == 6
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('boundary', ['absent_item', 'malformed_dc', 'unread_event'])
+async def test_native_detail_partial_markers_do_not_turn_other_rows_or_unknown_events_into_facts(native_detail_node, boundary):
+    if boundary == 'absent_item':
+        source = {'data': {'item': None, 'products': [native_detail_node]}}
+    else:
+        if boundary == 'malformed_dc': native_detail_node['sale']['dcPrice'] = True
+        if boundary == 'unread_event': native_detail_node['promo']['eventInfo'] = {'opaqueEventNo': 'DO_NOT_COPY'}
+        source = {'data': {'item': native_detail_node}}
+    items = await HomeplusCrawler().parse(json.dumps(source), source_url=_DETAIL_URL)
+    if boundary != 'unread_event':
+        assert items == []
+    else:
+        assert len(items) == 1 and items[0].event_name == ''
+        assert items[0].attributes['source_event_absent'] is False
+        fields = items[0].attributes['homeplus_detail_source_fields']
+        assert fields['event_markers']['promo_eventInfo_type'] == 'dict'
+        assert fields['event_texts'] == []
+        assert 'DO_NOT_COPY' not in json.dumps(items[0].model_dump(mode='json'))
+
+
+@pytest.mark.asyncio
+async def test_native_detail_overlong_contents_cannot_hide_conflicting_suffix(native_detail_node):
+    for row in native_detail_node['prop']['notice_rows_original_pointers']:
+        if row['raw_fields']['noticeNm'] == '포장단위별 내용물의 용량(중량), 수량':
+            row['raw_fields']['noticeDesc'] = '2L * 6입' + ' ' * 260 + ' + 7L * 7입'
+    assert await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL) == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('role,field,value', [
+    ('sale', 'itemNo', '062752109'), ('sale', 'storeType', 'EXP'),
+    ('opt', 'itemNo', '062752109'), ('prop', 'storeType', 'EXP'),
+    ('etc', 'itemNo', '062752109'), ('promo', 'storeType', 'EXP'),
+])
+async def test_native_detail_sibling_native_store_conflict_rejects_same_container(native_detail_node, role, field, value):
+    native_detail_node[role][field] = value
+    assert await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL) == []
+
+
+@pytest.mark.asyncio
+async def test_native_detail_curated_basic_sale_coupon_facts_remain_complete(native_detail_node):
+    item = (await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL))[0]
+    fields = item.attributes['homeplus_detail_source_fields']
+    assert fields['basic'] == native_detail_node['basic']
+    assert fields['sale'] == native_detail_node['sale']
+    assert fields['promo']['couponInfo'] == native_detail_node['promo']['couponInfo']
+    assert fields['promo']['couponList'] == native_detail_node['promo']['couponList']
+    assert item.sale_price == 2190 and item.promo_type is None
+    assert item.attributes['promotion_conditions']['payable_price_unconfirmed'] is True
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('declaration,location,accepted', [
+    ('simplus 물 2L*6 2팩', 'name', False),
+    ('simplus 물 2L*6 6팩', 'name', False),
+    ('simplus 물 2L*6 + 500ml', 'name', False),
+    ('simplus 물 2L*6 6병', 'name', True),
+    ('simplus 물 2L*6 + 6팩', 'name', False),
+    ('simplus 물 2L*6 6병 6팩', 'name', False),
+    ('2L * 6입 2팩', 'contents', False),
+    ('2L * 6입 6병', 'contents', True),
+])
+async def test_native_detail_unconsumed_sold_count_is_held_not_multiplied(native_detail_node, declaration, location, accepted):
+    for row in native_detail_node['prop']['notice_rows_original_pointers']:
+        fields = row['raw_fields']
+        if location == 'name' and fields['noticeNm'] == '상품명':
+            fields['noticeDesc'] = declaration
+        if location == 'contents' and fields['noticeNm'] == '포장단위별 내용물의 용량(중량), 수량':
+            fields['noticeDesc'] = declaration
+    if location == 'name':
+        native_detail_node['basic']['itemNm'] = declaration
+    items = await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL)
+    if not accepted:
+        assert items == []
+    else:
+        assert len(items) == 1
+        assert items[0].package_quantity == 2 and items[0].package_unit == 'L'
+        assert items[0].attributes['bundle_count'] == 6
+        assert items[0].sale_price == 2190 and items[0].price_per_100g is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('boundary', ['oversized', 'oversized_trailing_conflict', 'duplicate_conflict', 'other_list_conflict', 'duplicate_equivalent', 'unparsed_contents'])
+async def test_native_detail_checks_all_bounded_capacity_notices(native_detail_node, boundary):
+    prop = native_detail_node['prop']
+    rows = prop['notice_rows_original_pointers']
+    capacity_name = '포장단위별 내용물의 용량(중량), 수량'
+    if boundary.startswith('oversized'):
+        rows.extend({'raw_fields': {'noticeNm': '기타', 'noticeDesc': 'product-only'}} for _ in range(41 - len(rows)))
+        if boundary == 'oversized_trailing_conflict':
+            rows[-1] = {'raw_fields': {'noticeNm': capacity_name, 'noticeDesc': '2L * 7입'}}
+    elif boundary == 'unparsed_contents':
+        rows.append({'raw_fields': {'noticeNm': capacity_name, 'noticeDesc': '별도 표기'}})
+    else:
+        additional = {'noticeNm': capacity_name, 'noticeDesc': '2000ml * 6병' if boundary == 'duplicate_equivalent' else '2L * 7입'}
+        if boundary == 'other_list_conflict':
+            prop['noticeList'] = [additional]
+        else:
+            rows.append({'raw_fields': additional})
+    items = await HomeplusCrawler().parse(json.dumps({'data': {'item': native_detail_node}}), source_url=_DETAIL_URL)
+    if boundary == 'duplicate_equivalent':
+        assert len(items) == 1 and items[0].attributes['bundle_count'] == 6
+        assert items[0].package_quantity * (1000 if items[0].package_unit == 'L' else 1) == 2000
+        capacities = [row for row in items[0].attributes['homeplus_detail_source_fields']['notice'] if row['noticeNm'] == capacity_name]
+        assert [row['noticeDesc'] for row in capacities] == ['2L * 6입', '2000ml * 6병']
+    else:
+        assert items == []

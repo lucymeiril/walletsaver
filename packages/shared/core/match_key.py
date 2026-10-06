@@ -53,7 +53,7 @@ def normalize_pack_identity(
         return round(qty * _WEIGHT_TO_G[unit], 6), "g"
     if unit in _VOLUME_TO_ML:
         return round(qty * _VOLUME_TO_ML[unit], 6), "ml"
-    if unit in {"ea", "개"}:
+    if unit in {"ea", "개", "개입"}:
         return qty, "ea"
     return qty, unit
 

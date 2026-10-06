@@ -1,12 +1,14 @@
 """사용자 API — 메인 사용자 원장 기반 프로필, 즐겨찾기, 가격 알림."""
 from typing import Optional
+import sqlite3
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse
 from services.user_storage import PublicUserStore, PublicUserStoreError
+from services.catalog_storage import CatalogUnavailable
 
 router = APIRouter()
 
@@ -21,7 +23,26 @@ class FavoriteRequest(BaseModel):
 
 class AlertRequest(BaseModel):
     product_id: str | int
-    target_price: int = Field(gt=0)
+    target_price: int = Field(gt=0, strict=True)
+    variant_id: str | None = Field(default=None, min_length=1, max_length=200)
+    listing_id: str | None = Field(default=None, min_length=1, max_length=200)
+    offer_id: str | None = Field(default=None, min_length=1, max_length=200)
+
+    @field_validator("product_id", mode="before")
+    @classmethod
+    def valid_product_id(cls, value):
+        if (isinstance(value, bool) or not isinstance(value, (str, int))
+                or (isinstance(value, int) and value <= 0)
+                or (isinstance(value, str) and (not value.strip() or value != value.strip()))):
+            raise ValueError("invalid product id")
+        return value
+
+    @model_validator(mode="after")
+    def complete_selection(self):
+        selected = (self.variant_id, self.listing_id, self.offer_id)
+        if any(selected) and (not all(selected) or any(value != value.strip() for value in selected)):
+            raise ValueError("complete catalog selection required")
+        return self
 
 
 def _require_storage(request: Request):
@@ -106,9 +127,14 @@ async def create_alert(request: Request, body: AlertRequest, user: dict = Depend
     """가격 알림 설정."""
     try:
         result = _require_storage(request).add_price_alert(
-            user["id"], body.product_id, body.target_price
+            user["id"], body.product_id, body.target_price,
+            variant_id=body.variant_id, listing_id=body.listing_id, offer_id=body.offer_id,
         )
+    except (CatalogUnavailable, sqlite3.DatabaseError) as exc:
+        raise HTTPException(status_code=503, detail="카탈로그를 확인할 수 없습니다") from exc
     except ValueError as exc:
+        if str(exc) == "catalog_selection_invalid":
+            raise HTTPException(status_code=422, detail="상품의 규격·판매처·거래 선택을 다시 확인해주세요") from exc
         raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다") from exc
     return ApiResponse(data=result)
 

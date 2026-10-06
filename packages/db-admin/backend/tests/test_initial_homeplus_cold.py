@@ -5,7 +5,7 @@ from services.initial_taxonomy import classify_record, taxonomy_categories, vali
 @pytest.mark.parametrize("shelf,title,leaf", [
     ("냉장주스", "매일 썬업100% 과일주스 사과 750ML", "food.drinks.juice.fruit"),
     ("냉장주스", "서울우유 아침에주스 사과 1.8L", "food.drinks.juice.fruit"),
-    ("냉장주스", "자임 비타민이 들어있는 사과당근 착즙주스 245ML", "food.drinks.juice.vegetable"),
+    ("냉장주스", "자임 비타민이 들어있는 사과당근 착즙주스 245ML", "food.drinks.juice.fruit_vegetable"),
     ("냉장주스", "서울우유 프루티 홈 자몽 1L", "food.drinks.juice.fruit_drink"),
     ("냉장주스", "서울우유 프루티 홈 토마토 1L", "food.drinks.juice.vegetable_drink"),
     ("신선음료", "비락 유기농 야채사랑365 190ML*4", "food.drinks.juice.vegetable"),

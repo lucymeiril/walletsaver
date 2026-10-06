@@ -13,13 +13,14 @@ never interpreted as hierarchy separators.  In particular, an Emart label such
 as ``우유/유제품`` is one broad node, not two nested categories.
 """
 from __future__ import annotations
+from core.reviewed_source_evidence import source_review_evidence, frozen_raw_meat_category
 
 from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
 from services.initial_audited_baking import reviewed_baking_leaf
-from services.initial_audited_seasonings import reviewed_seasoning_leaf
+from services.initial_audited_seasonings import reviewed_seasoning_leaf, stock_tablet_form_refinement
 from services.initial_audited_emart_produce import reviewed_emart_produce_leaf
 from services.initial_reviewed_chat import reviewed_chat_leaf
-from services.initial_product_forms import FORM_RULES, product_form_candidates
+from services.initial_product_forms import FORM_RULES, product_form_candidates, baked_form_refinement, confection_form_refinement, reviewed_cereal_form_refinement, savory_form_refinement, reviewed_native_snack_form_refinement, beverage_form_refinement, reviewed_native_drink_form_refinement, processed_food_form_refinement, reviewed_native_processed_form_refinement
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 from services.initial_audited_costco_cleaning import reviewed_costco_cleaning_leaf
 from services.initial_audited_homeplus_seafood import reviewed_homeplus_seafood_leaf
@@ -102,7 +103,275 @@ def _group(prefix: str, path: tuple[str, str, str], contexts: str, rows: Iterabl
 # compound native leaf may consolidate to a product type (e.g. butter/chocolate
 # biscuits -> biscuits), but a mixed-type leaf has no catch-all mapping.
 LEAVES: tuple[Leaf, ...] = (
+    # Monetary cafe vouchers are entitlements, not coffee contents or an offer price.
+    Leaf("services.vouchers.cafe.monetary", ("서비스", "상품권", "카페상품권", "금액형카페상품권"), (), (), ()),
+    # Facility-use packages do not establish a stay duration or sold headcount.
+    Leaf("services.facility.camping.cabin_package", ("서비스", "시설이용서비스", "캠핑시설이용", "캐빈·카라반 이용패키지"), (), (), ("캐빈파크 이용패키지", "캐빈 이용패키지", "카라반 이용패키지")),
+    Leaf("stationery.writing.pens.ballpoint_general", ("문구", "필기용품", "필기구", "볼펜"), (), (), ()),
+    Leaf("food.snacks.sweets.candy_bar", ("식품", "과자·간식", "단과자", "캔디바"), (), (), ()),
+    Leaf("household.home_fragrance.incense.standard", ("생활용품", "실내향기용품", "향", "향·인센스"), (), (), ()),
+    Leaf("clothing.underwear.tops.undershirt", ("패션", "속옷", "속옷상의", "런닝"), (), (), ()),
+    Leaf("leisure.games.tabletop.strategy", ("취미·여가", "게임", "탁상게임", "전략보드게임"), (), ("전략보드게임", "전략 보드게임"), ()),
+    # Source-confirmed forms; empty terms keep general shelves from assigning them.
+    Leaf("food.snacks.savory.coated_seed", ("식품", "과자·간식", "스낵", "코팅씨앗스낵"), (), (), ()),
+    Leaf("food.meals.prepared.shrimp_gangjeong", ("식품", "간편식·면", "조리식품", "새우강정"), (), (), ()),
+    Leaf("food.drinks.tea_sets.assortment", ("식품", "음료", "차세트", "차모둠세트"), (), (), ()),
+    Leaf("food.drinks.nutritional.diabetic_patient", ("식품", "음료", "환자영양조제식", "당뇨환자용영양액"), (), (), ()),
+    Leaf("food.supplements.functional.astragalus_complex_liquid", ("식품", "건강식품", "건강보조식품", "황기등복합추출액"), (), (), ()),
+    Leaf("food.drinks.powders.electrolyte", ("식품", "음료", "분말음료", "전해질함유분말음료"), (), (), ()),
+    Leaf("food.drinks.tea.vinegar_solid", ("식품", "음료", "차·코코아", "식초고형차"), (), (), ()),
+    Leaf("household.hygiene.incontinence.liner", ("생활용품", "위생용품", "요실금용품", "요실금라이너"), (), (), ()),
+    Leaf("household.cleaning.tools.microfiber_cloth", ("생활용품", "청소·세탁", "청소도구", "극세사청소천"), (), (), ()),
+    Leaf("household.cooking.stove_accessories.windshield", ("생활용품", "조리용품", "버너용품", "버너바람막이"), (), (), ()),
+    Leaf("food.snacks.mixes.savory", ("식품", "과자·간식", "혼합스낵", "견과·곡물·수산혼합스낵"), (), (), ()),
+    Leaf("food.snacks.savory.shrimp_heads", ("식품", "과자·간식", "스낵", "새우머리스낵"), (), (), ()),
+    Leaf("food.drinks.nutritional.general_patient", ("식품", "음료", "환자영양조제식", "일반환자용균형영양액"), (), (), ()),
+    Leaf("food.drinks.nutritional.cancer_patient", ("식품", "음료", "환자영양조제식", "암환자용영양액"), (), (), ()),
+    Leaf("food.plant.drinks.grain_nut_blend", ("식품", "식물성식품", "식물성음료", "곡물·견과혼합음료"), (), (), ()),
+    Leaf("beauty.personal.sets.skin_body_care", ("뷰티·개인관리", "개인위생", "피부관리세트", "로션·크림·비누세트"), (), (), ()),
+    Leaf("food.drinks.sets.coffee_brewing", ("식품", "음료", "커피세트", "커피·추출도구세트"), (), (), ()),
+    Leaf("food.drinks.sets.coffee_drinkware", ("식품", "음료", "커피세트", "커피·음료식기세트"), (), (), ()),
+    Leaf("food.supplements.functional.seaweed_pomegranate_extract", ("식품", "건강식품", "건강보조식품", "미역·석류종자유복합추출보충식품"), (), (), ()),
+    Leaf("food.supplements.functional.cla", ("식품", "건강식품", "건강보조식품", "공액리놀레산보충식품"), (), (), ()),
+    Leaf("food.drinks.freeze_tubes.standard", ("식품", "음료", "냉동용음료", "튜브형냉동용음료"), (), (), ()),
+    Leaf("food.seasonings.kits.curry", ("식품", "양념·소스", "조리양념세트", "카레조리양념세트"), (), (), ()),
+    Leaf("food.meals.prepared.filled_flatbread", ("식품", "간편식·면", "조리식품", "속채운플랫브레드"), (), (), ()),
+    Leaf("food.produce.processed_vegetables.powder", ("식품", "농산물", "가공채소", "채소분말"), (), (), ()),
+    Leaf("food.seasonings.baking.mixed_powder_sweetener", ("식품", "양념·소스", "기초조미·제빵", "혼합분말감미료"), (), (), ()),
+    Leaf("food.snacks.savory.mixed_bugak", ("식품", "과자·간식", "스낵", "채소·해조혼합부각"), (), (), ()),
+    Leaf("household.pest_control.repellents.spray", ("생활용품", "해충관리", "해충기피제", "분사형해충기피제"), (), (), ()),
+    Leaf('household.pest_control.electronic.fly_swatter', ('생활용품','해충관리','전자퇴치기','전기파리채'), (), (), ()),
+    # Common forms confirmed from current immutable contexts; numbered reviews bind source evidence.
+    Leaf("appliances.climate.fan.standard", ('가전', '계절·환경가전', '선풍기', '선풍기'), (), (), ()),
+    Leaf("appliances.kitchen.griddle.electric", ('가전', '주방가전', '전기팬', '전기잔치팬'), (), (), ()),
+    Leaf("appliances.kitchen.kettle.electric", ('가전', '주방가전', '전기주전자', '전기주전자'), (), (), ()),
+    Leaf("appliances.kitchen.ramen_cooker.electric", ('가전', '주방가전', '라면조리기', '전기라면조리기'), (), (), ()),
+    Leaf("appliances.laundry.sets.combo_auxiliary_washer", ('가전', '세탁가전', '세탁가전세트', '워시콤보·보조세탁기세트'), (), (), ()),
+    Leaf("baby.toys.play.cafe", ('유아동', '완구', '역할놀이', '카페놀이세트'), (), (), ()),
+    Leaf("baby.toys.play.dessert_decoration", ('유아동', '완구', '역할놀이', '디저트꾸미기놀이세트'), (), (), ()),
+    Leaf("beauty.personal.body.cooling_sheet", ('뷰티·개인관리', '개인위생', '바디케어', '쿨링파우더시트'), (), (), ()),
+    Leaf("beauty.personal.inhalation.nasal", ('뷰티·개인관리', '개인위생', '흡입용품', '코흡입기'), (), (), ()),
+    Leaf("beauty.personal.sun.kit", ('뷰티·개인관리', '개인위생', '자외선차단', '선스틱·선크림세트'), (), (), ()),
+    Leaf("clothing.men.underwear.tshirt", ('패션', '남성의류', '속옷', '남성속옷티셔츠'), (), (), ()),
+    Leaf("food.dairy.milk.grain", ('식품', '유제품', '우유', '곡물우유'), (), (), ()),
+    Leaf("food.drinks.flavoured.chocolate", ('식품', '음료', '향미음료', '초콜릿맛음료'), (), (), ()),
+    Leaf("food.drinks.flavoured.milk", ('식품', '음료', '향미음료', '밀크맛음료'), (), (), ()),
+    Leaf("food.drinks.powders.nutritional", ('식품', '음료', '분말음료', '영양식분말'), (), (), ()),
+    Leaf("food.drinks.sets.instant_drip_coffee", ('식품', '음료', '커피세트', '인스턴트·드립커피세트'), (), (), ()),
+    Leaf("food.grains.sets.grain_gift", ('식품', '곡물·견과', '곡물세트', '곡물선물세트'), (), (), ()),
+    Leaf("food.meals.prepared.boiled_tendon", ('식품', '간편식·면', '조리식품', '삶은힘줄'), (), (), ()),
+    Leaf("food.meals.rice.soup_rice", ('식품', '간편식·면', '밥·죽', '국밥'), (), (), ()),
+    Leaf("food.meals.sets.pork_pork_cutlet", ('식품', '간편식·면', '복합식품세트', '돼지고기·돈가스세트'), (), (), ()),
+    Leaf("food.meals.sets.sushi_smoked_roll", ('식품', '간편식·면', '복합식품세트', '초밥·훈제말이세트'), (), (), ()),
+    Leaf("food.meals.sets.tuna_ham_gift", ('식품', '간편식·면', '복합식품세트', '참치·햄선물세트'), (), (), ()),
+    Leaf("food.produce.sets.mushroom_gift", ('식품', '농산물', '농산물모둠', '버섯선물세트'), (), (), ()),
+    Leaf("food.snacks.cereal.breakfast", ('식품', '과자·간식', '시리얼', '아침식사용시리얼'), (), (), ()),
+    Leaf("food.snacks.cereal.overnight_oats", ('식품', '과자·간식', '시리얼', '오버나이트오트'), (), (), ()),
+    Leaf("food.snacks.traditional.oranda", ('식품', '과자·간식', '전통간식', '오란다'), (), (), ()),
+    Leaf("food.supplements.functional.aloe_gel", ('식품', '건강식품', '건강보조식품', '알로에베라겔보충식품'), (), (), ()),
+    Leaf("food.supplements.functional.green_lipped_mussel", ('식품', '건강식품', '건강보조식품', '초록입홍합보충식품'), (), (), ()),
+    Leaf("household.cleaning.laundry.bleach", ('생활용품', '청소·세탁', '세탁용품', '세탁표백제'), (), (), ()),
+    Leaf("household.cleaning.laundry.detergent_gift_set", ('생활용품', '청소·세탁', '세탁용품', '세탁세제선물세트'), (), (), ()),
+    Leaf("household.cleaning.sets.detergent_gift", ('생활용품', '청소·세탁', '청소용품세트', '세제선물세트'), (), (), ()),
+    Leaf("household.cleaning.sets.laundry_multipurpose", ('생활용품', '청소·세탁', '청소용품세트', '세탁세제·다목적세정제세트'), (), (), ()),
+    Leaf("household.cleaning.waste.drawstring_bag", ('생활용품', '청소·세탁', '폐기물관리', '끈봉투'), (), (), ()),
+    Leaf("household.hygiene.sets.dry_wipes_pouch", ("생활용품", "위생용품", "위생용품세트", "건티슈·파우치세트"), (), (), ()),
+    Leaf("household.hygiene.care.refill_pad", ('생활용품', '위생용품', '돌봄위생용품', '리필형패드'), (), (), ()),
+    Leaf("household.hygiene.feminine.pad", ('생활용품', '위생용품', '생리용품', '생리대'), (), (), ()),
+    Leaf("household.kitchen.cookware.air_fryer_pot", ('생활용품', '주방용품', '조리용기', '에어프라이어조리용기'), (), (), ()),
+    Leaf("household.kitchen.cookware.kettle", ('생활용품', '주방용품', '조리용기', '주전자'), (), (), ()),
+    Leaf("household.kitchen.tableware.spoon_chopstick_set", ('생활용품', '주방용품', '식기', '수저세트'), (), (), ()),
+    Leaf("household.protection.gloves.nitrile", ('생활용품', '보호용품', '보호장갑', '일반니트릴보호장갑'), (), (), ()),
+    Leaf("pet.food.prepared.canned", ('반려동물', '먹거리', '조리사료', '캔사료'), (), (), ()),
+    Leaf("pet.food.sets.milk_powder_bottle", ('반려동물', '먹거리', '급여세트', '분유·보틀세트'), (), (), ()),
+    # Explicit residual forms; exact reviewed contexts, no new loose aliases.
+    Leaf("appliances.kitchen.egg_cooker.standard", ("가전", "주방가전", "계란조리기", "계란찜기"), (), (), ()),
+    Leaf("appliances.kitchen.soy_maker.standard", ("가전", "주방가전", "두유제조기", "두유제조기"), (), (), ()),
+    Leaf("household.cooking.grill_accessories.kit", ("생활용품", "조리용품", "그릴용품", "그릴액세서리세트"), (), (), ()),
+    Leaf("household.gardening.plants.potted_cactus", ("생활용품", "원예용품", "재배식물", "화분선인장"), (), (), ()),
+    Leaf("household.gardening.plants.gardenia", ("생활용품", "원예용품", "재배식물", "치자나무"), (), (), ()),
+    Leaf("beauty.skincare.serums.ampoule", ("뷰티·개인관리", "피부관리", "스킨케어", "앰플"), (), (), ()),
+    Leaf("household.kitchen.coffee.drip_assist_set", ("생활용품", "주방용품", "커피도구", "드리퍼보조세트"), (), (), ()),
+    Leaf("household.kitchen.storage.rice_container", ("생활용품", "주방용품", "식품보관용품", "밥보관용기"), (), (), ()),
+    Leaf("household.kitchen.drinkware.tumbler", ("생활용품", "주방용품", "음료용기", "텀블러"), (), (), ()),
+    Leaf("food.seasonings.baking.food_color", ("식품", "양념·소스", "기초조미·제빵", "제빵용착색료"), (), (), ()),
+    # Parent-reviewed unresolved ledger 001; exact numbered rules only.
+    Leaf("household.kitchen.cookware.microwave_set", ("생활용품", "주방용품", "조리용기", "전자레인지용조리용기세트"), (), (), ()),
+    Leaf("household.kitchen.storage.egg_container", ("생활용품", "주방용품", "식품보관용품", "계란보관용기"), (), (), ()),
+    Leaf("appliances.kitchen.oven.fish_grill", ("가전", "주방가전", "오븐", "생선구이오븐"), (), (), ()),
+    Leaf("food.meals.sets.ribs_rice_cake", ("식품", "간편식·면", "복합식품세트", "갈비·떡세트"), (), (), ()),
+    Leaf("food.meals.sets.soup_meat", ("식품", "간편식·면", "복합식품세트", "국·육류요리세트"), (), (), ()),
+    Leaf("food.meals.sets.sundae_jokbal", ("식품", "간편식·면", "복합식품세트", "순대·족발세트"), (), (), ()),
+    Leaf("food.meals.sets.sundae_soup_sundae", ("식품", "간편식·면", "복합식품세트", "순대국·순대세트"), (), (), ()),
+    Leaf("food.meals.sets.prepared_meat", ("식품", "간편식·면", "복합식품세트", "편육·족발세트"), (), (), ()),
+    Leaf("food.meat.sets.mixed_components", ("식품", "정육·계란", "육류세트", "육류구성세트"), (), (), ()),
+    Leaf("food.meals.sets.laver_laver_chip", ("식품", "간편식·면", "복합식품세트", "김·김부각세트"), (), (), ()),
+    Leaf("household.cooking.grills.charcoal", ("생활용품", "조리용품", "그릴", "차콜그릴"), (), (), ()),
+    Leaf("household.cooking.grills.gas", ("생활용품", "조리용품", "그릴", "가스그릴"), (), (), ()),
+    Leaf("household.cooking.grills.electric", ("생활용품", "조리용품", "그릴", "전기그릴"), (), (), ()),
+    Leaf("household.cooking.grills.cooking", ("생활용품", "조리용품", "그릴", "조리용그릴"), (), (), ()),
+    Leaf("household.outdoor.fire.gel_starter", ("생활용품", "야외용품", "화로용품", "젤착화제"), (), (), ()),
+    Leaf("household.outdoor.fire.cube_starter", ("생활용품", "야외용품", "화로용품", "착화큐브"), (), (), ()),
+    Leaf("household.outdoor.fire.firewood", ("생활용품", "야외용품", "화로용품", "장작"), (), (), ()),
+    Leaf("household.outdoor.fire.charcoal", ("생활용품", "야외용품", "화로용품", "숯"), (), (), ()),
+    Leaf("household.outdoor.fire.pit", ("생활용품", "야외용품", "화로용품", "화로대"), (), (), ()),
+    Leaf("household.outdoor.fire.chimney_starter", ("생활용품", "야외용품", "화로용품", "침니스타터"), (), (), ()),
+    Leaf("household.cooking.grill_accessories.grate", ("생활용품", "조리용품", "그릴용품", "그릴석쇠"), (), (), ()),
+    Leaf("household.cooking.grill_accessories.mat", ("생활용품", "조리용품", "그릴용품", "바베큐내열매트"), (), (), ()),
+    Leaf("household.cooking.grill_accessories.cover", ("생활용품", "조리용품", "그릴용품", "그릴커버"), (), (), ()),
+    Leaf("food.seasonings.sauces.rice_topping", ("식품", "양념·소스", "조미소스", "덮밥소스"), (), (), ()),
+    Leaf("appliances.kitchen.juicer.standard", ("가전", "주방가전", "착즙기", "원액기"), (), (), ()),
+    Leaf("food.snacks.desserts.mousse", ("식품", "과자·간식", "디저트", "무스디저트"), (), (), ()),
+    Leaf("food.snacks.desserts.smoothie_bowl", ("식품", "과자·간식", "디저트", "냉동스무디볼"), (), (), ()),
+    Leaf("household.kitchen.storage.food_bottle", ("생활용품", "주방용품", "식품보관용품", "휴대용식품보틀"), (), (), ()),
+    Leaf("food.produce.prepared.ready_potato", ("식품", "농산물", "간편농산물", "바로먹는감자"), (), (), ()),
+    Leaf("food.bakery.bread.rice_cake_bread", ("식품", "베이커리·스프레드", "빵", "떡빵"), (), (), ()),
+    Leaf("appliances.kitchen.produce_washer.ultrasonic", ("가전", "주방가전", "식재료세척기", "초음파야채과일세척기"), (), (), ()),
+    Leaf("food.supplements.functional.protein_ball", ("식품", "건강식품", "건강보조식품", "단백질볼"), (), (), ()),
+    Leaf("food.seasonings.sauces.kimchi_seasoning", ("식품", "양념·소스", "조미소스", "김치양념"), (), (), ()),
+    Leaf("food.preserved.kimchi.hairtail", ("식품", "반찬·저장식품", "김치", "갈치김치"), (), (), ()),
+    Leaf("food.preserved.kimchi.assortment", ("식품", "반찬·저장식품", "김치", "김치모둠"), (), (), ()),
+    Leaf("household.kitchen.storage.stainless_container", ("생활용품", "주방용품", "식품보관용품", "스테인리스저장용기"), (), (), ()),
+    Leaf("food.meals.noodles.rabokki", ("식품", "간편식·면", "면요리", "라볶이"), (), (), ()),
+    Leaf("household.kitchen.tableware.noodle_bowl", ("생활용품", "주방용품", "식기", "면기"), (), (), ()),
+    Leaf("food.seasonings.baking.waffle_mix", ("식품", "양념·소스", "기초조미·제빵", "와플믹스"), (), (), ()),
+    Leaf("appliances.kitchen.sandwich_maker.standard", ("가전", "주방가전", "샌드위치메이커", "샌드위치메이커"), (), (), ()),
+    Leaf("beauty.personal.nasal.rinse_powder", ("뷰티·개인관리", "개인위생", "코세정용품", "코세정분말"), (), (), ()),
+    Leaf("beauty.personal.nasal.rinse_kit", ("뷰티·개인관리", "개인위생", "코세정용품", "코세정용기·분말세트"), (), (), ()),
+    Leaf("household.cleaning.laundry.detergent_refill_set", ("생활용품", "청소·세탁", "세탁용품", "세탁세제·리필세트"), (), (), ()),
+    Leaf("household.cleaning.laundry.detergent_dryer_ball_set", ("생활용품", "청소·세탁", "세탁용품", "세탁세제·건조볼세트"), (), (), ()),
+    Leaf("household.hygiene.dispensers.automatic", ("생활용품", "위생용품", "디스펜서", "자동거품·젤디스펜서"), (), (), ()),
+    Leaf("household.vehicle.cleaning.tool_kit", ("생활용품", "차량용품", "세차용품", "세차도구세트"), (), (), ()),
+    Leaf("household.kitchen.filters.water", ("생활용품", "주방용품", "정수용품", "정수필터"), (), (), ()),
+    Leaf("household.kitchen.consumables.vacuum_roll", ("생활용품", "주방용품", "주방소모품", "진공포장롤"), (), (), ()),
+    Leaf("office.equipment.shredder.standard", ("문구·사무", "사무기기", "문서세단기", "문서세단기"), (), (), ()),
+    Leaf("office.equipment.shredder.manual", ("문구·사무", "사무기기", "문서세단기", "수동문서세단기"), (), (), ()),
+    Leaf("food.seasonings.baking.plain_rice_flour", ("식품", "양념·소스", "기초조미·제빵", "쌀가루"), (), (), ()),
+    # Parent-reviewed unresolved ledger 002: exact rules only, empty aliases.
+    Leaf("food.meals.broth.soybean", ("식품", "간편식·면", "조리용국물", "콩국"), (), (), ()),
+    Leaf("food.produce.processed.fruit_puree", ("식품", "농산물", "농산가공품", "과일퓨레"), (), (), ()),
+    Leaf("food.produce.processed.roasted_chestnut", ("식품", "농산물", "농산가공품", "군밤"), (), (), ()),
+    Leaf("food.produce.fruit.coconut", ("식품", "농산물", "신선과일", "코코넛"), (), (), ()),
+    Leaf("food.produce.fruit.lemon", ("식품", "농산물", "신선과일", "레몬"), (), (), ()),
+    Leaf("food.supplements.extract.red_ginseng", ("식품", "건강식품", "액상추출식품", "홍삼액"), (), (), ()),
+    Leaf("food.supplements.extract.ssanghwa", ("식품", "건강식품", "액상추출식품", "쌍화진액"), (), (), ()),
+    Leaf("food.supplements.extract.pear_bellflower", ("식품", "건강식품", "액상추출식품", "배·도라지즙"), (), (), ()),
+    Leaf("food.seasonings.sauces.guacamole", ("식품", "양념·소스", "조미소스", "과카몰리"), (), (), ()),
+    Leaf("food.seasonings.sauces.chicken_dip", ("식품", "양념·소스", "조미소스", "치킨디핑소스"), (), (), ()),
+    Leaf("food.dairy.cheese.assortment", ("식품", "유제품", "치즈·버터", "치즈모둠"), (), (), ()),
+    Leaf("food.meals.sets.cheese_processed_meat", ("식품", "간편식·면", "복합식품세트", "치즈·육가공품세트"), (), (), ()),
+    Leaf("food.meals.sets.cheese_accompaniments", ("식품", "간편식·면", "복합식품세트", "치즈·곁들임식품세트"), (), (), ()),
+    Leaf("household.electrical.power.power_strip", ("생활용품", "전기용품", "전원연결용품", "멀티탭"), (), (), ()),
+    Leaf("food.meat.frozen.pork", ("식품", "정육·계란", "냉동육", "냉동돼지고기"), (), (), ()),
+    Leaf("food.meat.frozen.beef", ("식품", "정육·계란", "냉동육", "냉동소고기"), (), (), ()),
+    Leaf("food.meat.frozen.chicken", ("식품", "정육·계란", "냉동육", "냉동닭고기"), (), (), ()),
+    Leaf("food.meals.sets.hamburger_steak_potato", ("식품", "간편식·면", "복합식품세트", "함박스테이크·감자요리세트"), (), (), ()),
+    Leaf("food.meals.prepared.eight_treasure", ("식품", "간편식·면", "조리식품", "팔보채"), (), (), ()),
+    Leaf("food.meals.prepared.corn_cheese", ("식품", "간편식·면", "조리식품", "콘치즈"), (), (), ()),
+    Leaf("food.seafood.processed.laver_flakes", ("식품", "수산물", "수산가공품", "김자반"), (), (), ()),
+    Leaf("food.seafood.processed.salted_octopus", ("식품", "수산물", "수산가공품", "낙지젓갈"), (), (), ()),
+    Leaf("food.bakery.bread.rye", ("식품", "베이커리·스프레드", "빵", "호밀빵"), (), (), ()),
+    Leaf("food.bakery.bread.glutinous_rice", ("식품", "베이커리·스프레드", "빵", "찹쌀빵"), (), (), ()),
+    Leaf("pet.food.treats.freeze_dried_vegetable", ("반려동물", "먹거리", "간식", "동결건조채소트릿"), (), (), ()),
+    Leaf("household.vehicle.accessories.cup_holder", ("생활용품", "차량용품", "차량실내용품", "차량용컵홀더"), (), (), ()),
+    Leaf("household.garden.planters.standard", ("생활용품", "원예용품", "화분", "플랜터"), (), (), ()),
+    Leaf("household.garden.structures.arch", ("생활용품", "원예용품", "정원구조물", "정원아치"), (), (), ()),
+    Leaf("household.garden.watering.hose_reel", ("생활용품", "원예용품", "관수용품", "호스릴"), (), (), ()),
+    Leaf("household.kitchen.utensils.salad_spinner", ("생활용품", "주방용품", "조리도구", "야채탈수기"), (), (), ()),
+    Leaf("household.kitchen.utensils.peeler_scissors_set", ("생활용품", "주방용품", "조리도구", "필러·가위세트"), (), (), ()),
+    Leaf("household.kitchen.utensils.cleaver_grater_set", ("생활용품", "주방용품", "조리도구", "중식도·강판세트"), (), (), ()),
+    Leaf("household.kitchen.drinkware.coffee_cup", ("생활용품", "주방용품", "음료용기", "커피잔"), (), (), ()),
+    Leaf("household.kitchen.drinkware.mug", ("생활용품", "주방용품", "음료용기", "머그컵"), (), (), ()),
+    Leaf("household.kitchen.drinkware.glass", ("생활용품", "주방용품", "음료용기", "유리컵"), (), (), ()),
+    Leaf("household.kitchen.drinkware.insulated_bottle", ("생활용품", "주방용품", "음료용기", "보온보냉병"), (), (), ()),
+    Leaf("household.kitchen.drinkware.insulated_server", ("생활용품", "주방용품", "음료용기", "보온보냉서버·포트"), (), (), ()),
+    Leaf("household.kitchen.drinkware.teapot", ("생활용품", "주방용품", "음료용기", "티포트"), (), (), ()),
+    Leaf("household.kitchen.coffee.grinder", ("생활용품", "주방용품", "커피도구", "커피그라인더"), (), (), ()),
+    Leaf("household.kitchen.coffee.drip_kettle", ("생활용품", "주방용품", "커피도구", "핸드드립주전자"), (), (), ()),
+    Leaf("household.kitchen.coffee.cold_brew_maker", ("생활용품", "주방용품", "커피도구", "콜드브루커피메이커"), (), (), ()),
+    Leaf("household.kitchen.coffee.capsule_holder", ("생활용품", "주방용품", "커피도구", "커피캡슐보관대"), (), (), ()),
+    Leaf("household.kitchen.coffee.hand_drip_set", ("생활용품", "주방용품", "커피도구", "핸드드립도구세트"), (), (), ()),
+    Leaf("household.kitchen.coffee.server", ("생활용품", "주방용품", "커피도구", "커피서버"), (), (), ()),
+    Leaf("household.cleaning.appliance.coffee_cleaning_capsule", ("생활용품", "청소·세탁", "가전세정용품", "커피머신세정캡슐"), (), (), ()),
+    Leaf("household.cleaning.waste.bin_refill_set", ("생활용품", "청소·세탁", "폐기물관리", "휴지통·리필세트"), (), (), ()),
+    Leaf("appliances.kitchen.milk_frother.standard", ("가전", "주방가전", "우유거품기", "우유거품기"), (), (), ()),
+    Leaf("appliances.kitchen.coffee_machine.capsule", ("가전", "주방가전", "커피머신", "캡슐커피머신"), (), (), ()),
+    Leaf("appliances.kitchen.coffee_machine.automatic", ("가전", "주방가전", "커피머신", "전자동커피머신"), (), (), ()),
+    Leaf("appliances.kitchen.rice_cooker.standard", ("가전", "주방가전", "밥솥", "전기밥솥"), (), (), ()),
+    Leaf("appliances.kitchen.coffee_grinder.electric", ("가전", "주방가전", "커피분쇄기", "전동커피그라인더"), (), (), ()),
+    Leaf("appliances.kitchen.blender.standard", ("가전", "주방가전", "블렌더", "블렌더"), (), (), ()),
+    Leaf("appliances.laundry.set.washer_dryer", ("가전", "세탁가전", "세탁가전세트", "세탁기·건조기세트"), (), (), ()),
+    Leaf("furniture.dining.table.set", ("가구·인테리어", "식당가구", "식탁", "식탁세트"), (), (), ()),
+    Leaf("furniture.living.tables.sofa", ("가구·인테리어", "거실가구", "거실테이블", "소파테이블"), (), (), ()),
+    Leaf("furniture.living.sofa.stool_set", ("가구·인테리어", "거실가구", "소파", "소파·스툴세트"), (), (), ()),
     # Review-only forms: no source or title alias grants these automatically.
+    *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "", (
+        ("surface_cleaner", "주방표면세정제", ""),
+    )),
+    *_group("food.seafood.assortments", ("식품", "수산물", "수산물모둠"), "", (
+        ("mixed", "해물모둠", ""),
+    )),
+    *_group("household.bath.fixtures", ("생활용품", "욕실용품", "샤워기·수전"), "", (
+        ("shower_filter_kit", "샤워헤드·교체필터세트", ""),
+    )),
+    *_group("food.bakery.ingredients", ("식품", "베이커리·스프레드", "제과재료"), "", (
+        ("chocolate_decorating_pen", "초콜릿장식펜", ""),
+    )),
+    *_group("food.meals.kits", ("식품", "간편식·면", "조리재료세트"), "", (
+        ("baeksuk", "백숙재료세트", ""),
+        ("ramen", "라멘조리재료세트", ""),
+    )),
+    *_group("household.kitchen.utensils", ("생활용품", "주방용품", "조리도구"), "", (
+        ("knife_board_set", "칼·도마세트", ""),
+    )),
+    *_group("household.kitchen.organizers", ("생활용품", "주방용품", "주방정리용품"), "", (
+        ("sponge_holder", "스펀지보관대", ""),
+    )),
+    *_group("household.kitchen.consumables", ("생활용품", "주방용품", "주방소모품"), "", (
+        ("disposable_cup_lid", "일회용컵뚜껑", ""),
+    )),
+    *_group("food.drinks.tea", ("식품", "음료", "차·코코아"), "", (
+        ("liquid", "액상차", ""),
+    )),
+    *_group("food.meals.rice", ("식품", "간편식·면", "밥·죽"), "", (
+        ("bibimbap", "비빔밥", ""), ("japchae_rice", "잡채밥", ""),
+    )),
+    *_group("food.drinks.non_alcoholic", ("식품", "음료", "논알콜표방음료"), "", (
+        ("cocktail_flavoured", "논알콜표방칵테일향음료", ""),
+    )),
+    *_group("food.produce.vegetables", ("식품", "농산물", "신선채소"), "", (
+        ("burdock", "우엉", ""),
+    )),
+    *_group("food.preserved.ingredients", ("식품", "반찬·저장식품", "조리재료"), "", (
+        ("gimbap_set", "김밥재료세트", ""),
+    )),
+    *_group("food.supplements.functional", ("식품", "건강식품", "건강보조식품"), "", (
+        ("hangover_marketed_food", "숙취해소표방식품", ""),
+    )),
+    *_group("household.organization.hangers", ("생활용품", "수납·정리", "옷걸이"), "", (
+        ("clothes", "옷걸이", ""),
+    )),
+    *_group("household.bath.fixtures", ("생활용품", "욕실용품", "샤워기·수전"), "", (
+        ("shower_head", "샤워헤드", ""),
+    )),
+    *_group("household.bath.toilets", ("생활용품", "욕실용품", "변기"), "", (
+        ("bidet_integrated", "일체형비데변기", ""),
+    )),
+    *_group("household.footwear.slippers", ("생활용품", "실내화", "슬리퍼"), "", (
+        ("general", "슬리퍼", ""),
+    )),
+    *_group("household.cleaning.laundry", ("생활용품", "청소·세탁", "세탁용품"), "", (
+        ("odor_booster", "세탁용냄새제거부스터", ""),
+    )),
+    *_group("beauty.personal.hair", ("뷰티·개인관리", "개인위생", "헤어케어"), "", (
+        ("dryer", "헤어드라이어", ""), ("scalp_cleanser", "두피세정제", ""),
+    )),
+    *_group("beauty.face.skincare", ("뷰티·개인관리", "얼굴관리", "스킨케어"), "", (
+        ("face_oil", "페이스오일", ""),
+    )),
+    *_group("beauty.personal.hygiene", ("뷰티·개인관리", "개인위생", "위생소품"), "", (
+        ("cotton_swab", "면봉", ""),
+    )),
     *_group("food.meat.fresh", ("식품", "정육·계란", "신선육"), "", (
         ("duck", "오리고기", ""),
     )),
@@ -180,6 +449,11 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.drinks.powders", ("식품", "음료", "분말음료"), "", (
         ("grain", "곡물분말음료·미숫가루", ""),
+        ("ade", "에이드분말", ""),
+        ("tea_mix", "차음료분말", ""),
+        ("herbal_tea", "허브차분말", ""),
+        ("kombucha", "콤부차분말", ""),
+        ("cocoa", "코코아음료분말", ""),
     )),
     *_group("food.snacks.chewy", ("식품", "과자·간식", "쫀득과자"), "", (
         ("cookie", "쫀득쿠키", ""),
@@ -240,6 +514,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.drinks.functional", ("식품", "음료", "기타음료"), "", (
         ("vitamin", "비타민음료", ""), ("hangover_marketed", "숙취해소표방음료", ""),
+        ("fiber", "식이섬유음료", ""),
     )),
     *_group("food.seafood.tunicates", ("식품", "수산물", "멍게류"), "", (
         ("sea_squirt", "생멍게", ""),
@@ -386,13 +661,13 @@ LEAVES: tuple[Leaf, ...] = (
         ("potato", "감자", "감자"), ("sweet_potato", "고구마", "고구마"), ("onion", "양파", "양파"),
         ("garlic", "마늘", "마늘"), ("carrot", "당근", "당근"), ("cucumber", "오이", "오이"),
         ("cabbage", "양배추", "양배추"), ("pepper", "고추·파프리카", "고추|파프리카|피망"),
-        ("pumpkin", "호박", "호박|애호박|단호박"), ("eggplant", "가지", "가지"),
+        ("pumpkin", "호박", "호박|단호박"), ("eggplant", "가지", "가지"),
         ("leaf", "쌈채소", "쌈채소|상추|깻잎"), ("sprouts", "콩나물·숙주", "콩나물|숙주|숙주나물"),
         ("mushroom", "버섯", "버섯|팽이버섯|새송이버섯|느타리버섯|표고버섯"),
         ("salad", "샐러드채소", "믹스샐러드|샐러드채소"),
         ("mixed", "모둠채소", ""),
         ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
-        ("radish", "무", ""), ("zucchini", "애호박", ""),
+        ("radish", "무", ""), ("zucchini", "애호박", "애호박"),
         ("chives", "부추", "", ""),
         ("lettuce", "양상추", ""), ("broccoli", "브로콜리", ""),
     )),
@@ -463,6 +738,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.meals.seafood", ("식품", "간편식·면", "수산요리"), "", (
         ("stir_fried", "수산볶음", ""), ("steamed", "수산찜", ""),
+        ("shrimp_sauce_set", "새우·소스세트", ""),  # Reviewed composite; no raw shrimp/name default.
     )),
     *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트|건면/생면/면요리", (
         ("cup_ramen", "컵라면", "컵라면", "컵라면"),
@@ -546,6 +822,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.snacks.savory", ("식품", "과자·간식", "스낵"), "과자/시리얼|과자/스낵/간식", (
         ("corn", "옥수수스낵", "옥수수스낵|나쵸"), ("potato", "감자스낵", "감자스낵", "감자칩"),
         ("wheat", "밀가루스낵", "밀가루스낵"), ("popcorn", "팝콘", "팝콘"),
+        ("coated_nut", "코팅견과스낵", ""),
         ("grain", "곡물스낵", ""),
         ("vegetable", "채소스낵", ""), ("seaweed", "해조스낵", ""),
         ("fruit", "과일칩", ""), ("meat", "육류스낵", ""),
@@ -597,6 +874,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("smoothie", "스무디", "", ""), ("lemonade", "레몬에이드", "", ""),
         ("fruit", "과일주스", "", ""),
         ("vegetable", "채소주스", "", ""),
+        ("fruit_vegetable", "과일·채소혼합주스", "", ""),
         ("coconut", "코코넛워터", "", ""),
         ("fruit_drink", "과일음료", "", ""),
         ("vegetable_drink", "채소음료", "", ""),
@@ -605,8 +883,8 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.drinks.traditional", ("식품", "음료", "전통음료"), "", (
         ("sikhye", "식혜", "", ""), ("sujeonggwa", "수정과", "", ""),
     )),
-    *_group("food.drinks.non_alcoholic", ("식품", "음료", "무알코올음료"), "생수/음료|생수/음료/주류", (
-        ("beer", "무알코올맥주", "", ""),
+    *_group("food.drinks.non_alcoholic", ("식품", "음료", "논알콜표방음료"), "생수/음료|생수/음료/주류", (
+        ("beer", "논알콜표방맥주형음료", "", ""),
     )),
     *_group("food.drinks.tea", ("식품", "음료", "차·코코아"), "커피/차|차/액상차/핫초코", (
         ("barley", "보리차", "보리차", "보리차"), ("herbal", "허브차", "허브차"),
@@ -784,6 +1062,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("beauty.personal.oral", ("뷰티·개인관리", "개인위생", "구강관리"), "", (
         ("toothpaste", "치약", ""), ("toothbrush", "칫솔", ""), ("floss", "치실", ""),
+        ("mouthwash", "구강청결제", "구강청결제|마우스워시", "구강청결제|마우스워시"),
     )),
     *_group("beauty.personal.body", ("뷰티·개인관리", "개인위생", "바디케어"), "", (
         ("lotion", "바디로션", ""), ("wash", "바디워시", ""),
@@ -844,6 +1123,15 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("baby.toys.figures", ("유아동", "완구", "피규어"), "", (
         ("character", "캐릭터피규어", ""),
     )),
+    *_group("baby.toys.robots", ("유아동", "완구", "로봇완구"), "", (
+        ("standard", "로봇완구", ""),
+    )),
+    *_group("baby.toys.craft", ("유아동", "완구", "공예놀이"), "", (
+        ("keyring", "키링만들기놀이세트", ""),
+    )),
+    *_group("baby.toys.games", ("유아동", "완구", "게임완구"), "", (
+        ("band", "게임연동밴드", ""),
+    )),
     *_group("baby.clothing.underwear", ("유아동", "의류", "속옷"), "", (
         ("panty", "아동팬티", ""),
     )),
@@ -897,6 +1185,9 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("furniture.bedroom.frame", ("가구·인테리어", "침실가구", "침대프레임"), "", (
         ("bed", "침대프레임", ""),
+    )),
+    *_group("furniture.bedroom.bed", ("가구·인테리어", "침실가구", "침대"), "", (
+        ("standard", "침대", ""),
     )),
     *_group("furniture.storage.drawers", ("가구·인테리어", "수납가구", "서랍장"), "", (
         ("chest", "서랍장", ""),
@@ -965,6 +1256,9 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("household.outdoor.furniture", ("생활용품", "야외용품", "캠핑가구"), "", (
         ("chair", "캠핑의자", ""),
+    )),
+    *_group("household.outdoor.lighting", ("생활용품", "야외용품", "휴대조명"), "", (
+        ("led_lantern", "LED랜턴", ""),
     )),
     *_group("beauty.sun.protection", ("뷰티·개인관리", "선케어", "자외선차단"), "", (
         ("patch", "선패치", ""),
@@ -1036,9 +1330,24 @@ LEAVES: tuple[Leaf, ...] = (
 
 LEAVES += tuple(Leaf(id,path,(),(),()) for id,path,*_ in FORM_RULES)
 LEAVES += (
+    Leaf("food.snacks.cereal.rings", ("식품", "과자·간식", "시리얼", "링시리얼"), (), (), ()),
+    Leaf("food.snacks.cereal.balls", ("식품", "과자·간식", "시리얼", "볼시리얼"), (), (), ()),
+)
+LEAVES += (
     Leaf("pet.food.treats.cat_crunchy", ("반려동물", "먹거리", "간식", "고양이크런치간식"), (), (), ()),
+    Leaf("pet.food.treats.soft_meat", ("반려동물", "먹거리", "간식", "소프트육류간식"), (), (), ()),
+    Leaf("clothing.men.underwear.trunks", ("패션", "남성의류", "속옷", "남성트렁크팬티"), (), (), ()),
     Leaf("pet.food.treats.cheese", ("반려동물", "먹거리", "간식", "치즈간식"), (), (), ()),
     Leaf("pet.food.supplement.milk", ("반려동물", "먹거리", "영양식", "펫밀크"), (), (), ()),
+)
+# continuation190: whole source-proven starter and vacuum-packaging kits.
+LEAVES += (
+    Leaf("household.outdoor.fire.starter_kit", ("생활용품", "야외용품", "화로용품", "침니스타터·점화제세트"), (), (), ()),
+    Leaf("household.kitchen.consumables.vacuum_sealing_set", ("생활용품", "주방용품", "주방소모품", "진공포장롤·백세트"), (), (), ()),
+)
+LEAVES += (
+    Leaf("household.gardening.plants.fruit_shrub", ("생활용품", "원예용품", "재배식물", "과실관목"), (), (), ()),
+    Leaf("household.cleaning.sets.dishwashing_tools", ("생활용품", "청소·세탁", "청소용품세트", "주방세제·세척도구세트"), (), (), ()),
 )
 _BY_ID = {leaf.id: leaf for leaf in LEAVES}
 _PROMO = {_label_key(v) for v in ("Best", "베스트", "Obanjang", "오반장", "SpecialPriceOffers", "OnlineDeals", "온라인할인", "행사상품")}
@@ -1068,7 +1377,7 @@ _TITLE_REQUIRED = {
     "food.meals.noodles.black_bean": r"짜장",
     "food.meals.noodles.udon": r"우동",
     "food.meals.prepared.meal_kit": r"밀키트",
-    "food.meals.prepared.pork_cutlet": r"돈까스|돈카츠|돈가스",
+    "food.meals.prepared.pork_cutlet": r"돈까스|돈카츠|돈가스|한돈.*카츠",
     "food.meals.prepared.sandwich": r"샌드위치",
     "food.meals.prepared.tteokgalbi": r"떡갈비|너비아니",
     "food.meals.rice.fried": r"볶음밥",
@@ -1078,10 +1387,24 @@ _TITLE_REQUIRED = {
     "food.preserved.kimchi.radish": r"총각",
     "food.preserved.kimchi.yeolmu": r"열무",
     "food.produce.fruit.banana": r"바나나",
+    "food.produce.vegetables.zucchini": r"애호박",
     "food.seafood.shellfish.shrimp": r"새우|쉬림프",
     "food.seasonings.baking.pepper": r"후추|페퍼",
 }
 _TITLE_FORBIDDEN = {
+    "food.meals.rice.fried": r"주먹밥|김밥|비빔밥|잡채밥",
+    "food.meals.noodles.black_bean": r"짬뽕",
+    "food.meals.noodles.udon": r"라멘",
+    "food.meals.prepared.pork_cutlet": r"치킨까스|생선까스",
+    "food.meals.prepared.tteokgalbi": r"함박|완자|미트볼",
+    "food.meals.prepared.sandwich": r"핫도그",
+    "food.plant.soy.natto": r"콩국물|콩물",
+    "food.plant.soy.soymilk": r"아몬드\s*브리즈",
+    "food.plant.soy.tofu": r"순두부|연두부",
+    "food.plant.soy.silken": r"(?:찌개용|부침용)\s*두부",
+    "food.preserved.kimchi.cabbage": r"백김치",
+    "food.preserved.kimchi.radish": r"석박지|섞박지",
+    "food.seasonings.baking.pepper": r"페페로치노|페페론치노",
     "food.dairy.cheese.sliced": r"까요까요|파르미지아노|레지아노|아페리프레|크림치즈|스트링",
     "food.dairy.yogurt.spoon": r"그릭|짜먹|짜요짜요",
     "food.drinks.coffee.mix": r"아메리카노|카누.*(?:마일드로스트|디카페인)",
@@ -1094,7 +1417,7 @@ _TITLE_FORBIDDEN = {
     "food.meat.eggs.quail": r"장조림",
     "food.meat.processed.ham": r"함박|미트볼",
     "food.meat.processed.sausage": r"미트볼|스팸|살코기햄|델리햄|김밥햄",
-    "food.preserved.kimchi.yeolmu": r"물김치",
+    "food.preserved.kimchi.yeolmu": r"물김치|석박지|섞박지",
     "food.produce.processed_fruit.dried": r"고구마",
     "food.produce.processed_fruit.frozen": r"아사이볼|망고볼",
     "food.seafood.processed.fishcake": r"곤약",
@@ -1107,6 +1430,11 @@ _TITLE_FORBIDDEN = {
     "household.cleaning.laundry.liquid": r"캡슐|시트|분말",
     "household.cleaning.laundry.softener": r"탈취제",
 }
+# Explicit fresh-squash shelves do not make a processed recipe fresh produce.
+# Culinary purpose (e.g. 호박죽용 단호박) remains a raw vegetable descriptor.
+_FRESH_SQUASH_TITLE_VETO = r"(?:퓨레|퓌레|분말|가루|즙|주스|죽|수프|스프|스낵|칩|튀김|밀키트|소스|찌개|볶음|장아찌|피클|절임|잼|빵|쿠키|케이크|과자)(?!\s*용)|냉동|건조|씨앗|호박잎|혼합|믹스|모둠|(?:애호박|단호박|밤호박|호박)\s*[/+]\s*[가-힣]|(?:애호박|단호박|호박)\s*(?:전|국|탕)(?:\s|$|[0-9])"
+for _squash_leaf in ('food.produce.vegetables.pumpkin', 'food.produce.vegetables.zucchini'):
+    _TITLE_FORBIDDEN[_squash_leaf] = _FRESH_SQUASH_TITLE_VETO
 _TITLE_REQUIRED = {key: re.compile(value, re.I) for key, value in _TITLE_REQUIRED.items()}
 _TITLE_FORBIDDEN = {key: re.compile(value, re.I) for key, value in _TITLE_FORBIDDEN.items()}
 
@@ -1119,6 +1447,7 @@ _DAIRY_TITLE_VETO = re.compile(
     r"모음전|(?:땅콩|아몬드|캐슈)버터",
     re.I,
 )
+_PLANT_DRINK_MIXED_TITLE = re.compile(r"혼합|모음전|모둠|골라|선택|(?:\+|/|&)\s*[가-힣a-z]", re.I)
 _DAIRY_CONTEXT_LABELS = frozenset(_label_key(label) for label in (
     "우유/유제품", "유제품", "dairy", "치즈/버터", "식물성음료",
 ))
@@ -1240,6 +1569,91 @@ def _contextual_audited_beverage_candidates(evidence: Mapping[str, Any]) -> set[
         return {"food.drinks.juice.aloe"}
     if re.search(r"갈아만든배|과즙|감귤음료|복숭아음료|쿨피스|쿨피치|피크닉\s*사과|델몬트\s*사과\s*드링크|(?:포도|사과)100(?:%|\b)", title, re.I):
         return {"food.drinks.juice.fruit_drink"}
+    return set()
+
+
+def _contextual_tea_form_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Preparation form needs literal powder/mix evidence, never a mass quote."""
+    title = evidence["source_title"]
+    parts = tuple(evidence["source_path_parts"])
+    tea_context = parts in {("음료",), ("커피",), ("커피/차",), ("커피/원두/차",)}
+    parsed_urls = []
+    for url in evidence["source_urls"]:
+        try:
+            parsed_urls.append(urlsplit(url))
+        except ValueError:
+            return set()
+    if re.search(r"세트|혼합|주스|쥬스|젤리|과자|사탕|소스|샴푸|반려|강아지|고양이", title):
+        return set()
+    cocoa_mix_shelf = evidence["mart"] == "homeplus" and parts in {
+        ("커피/차", "코코아/핫초코", "가향분말류", "가향코코아믹스"),
+        ("커피/차", "코코아/핫초코", "코코아", "코코아믹스"),
+    }
+    if (cocoa_mix_shelf and re.search(r"핫초코|코코아|제티", title)
+            and not re.search(r"티백|\d+(?:\.\d+)?\s*(?:ml|㎖|밀리리터|리터|ℓ|L)(?![A-Za-z])", title, re.I)):
+        return {"food.drinks.powders.cocoa"}
+    powder_shelf = evidence["mart"] == "homeplus" and parts in {
+        ("커피/차", "코코아/핫초코", "가향분말류", "기타가향분말류"),
+        ("커피/차", "녹차/보리차/기타차", "홍차/아이스티", "아이스홍차믹스"),
+    }
+    if powder_shelf and not re.search(r"티백|\d+(?:\.\d+)?\s*(?:ml|㎖|밀리리터|리터|ℓ|L)(?![A-Za-z])", title, re.I):
+        if "콤부차" in title:
+            return {"food.drinks.powders.kombucha"}
+        if re.search(r"아이스티|말차", title):
+            return {"food.drinks.powders.tea_mix"}
+    if (tea_context
+            and re.search(r"쑥차\s*(?:파우더|분말)", title)):
+        return {"food.drinks.powders.herbal_tea"}
+    if evidence["mart"] == "costco" and parts in {("커피",), ("과일",)}:
+        native_forms = {
+            ("커피빈 얼그레이 바닐라라떼 25g x 40ct",
+             "/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Coffee-Bean-Earl-Grey-Vanilla-Latte-25g-x-40ct/p/669844"):
+                "food.drinks.powders.tea_mix",
+            ("크라스탄 유기농 오르조 보리차 200g",
+             "/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Crastan-Organic-Orzo-Barley-Tea-200g/p/680239"):
+                "food.drinks.powders.grain",
+        }
+        # These original listings were on the polluted fruit shelf. Exact
+        # native whole-product facts refine form, not quantity eligibility.
+        if parts == ("과일",):
+            native_forms = {
+                ('티젠 샤인머스캣 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Shine-Muscat-Kombucha-5g-x-30ct-x-2/p/686914'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 파인애플 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Pineapple-Kombucha-5g-x-30ct-x-2/p/686915'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 피치 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Peach-Kombucha-5g-x-30ct-x-2/p/686916'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 베리 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Berry-Kombucha-5g-x-30ct-x-2/p/686921'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 유자 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Citron-Kombucha-5g-x-30ct-x-2/p/686922'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 망고구아바 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Mango-Guava-Kombucha-5g-x-30ct-x-2/p/686923'):
+                    "food.drinks.powders.kombucha",
+                ('티젠 레몬 콤부차 5g x 30ct x 2',
+                 '/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Lemon-Kombucha-5g-x-30ct-x-2/p/687043'):
+                    "food.drinks.powders.kombucha",
+            }
+        for (reviewed_title, reviewed_path), leaf in native_forms.items():
+            if title == reviewed_title and evidence["source_urls"] and all(
+                    parsed.scheme == "https"
+                    and (parsed.hostname or "").casefold() in {"costco.co.kr", "www.costco.co.kr"}
+                    and parsed.path == reviewed_path
+                    for parsed in parsed_urls):
+                return {leaf}
+    if evidence["mart"] == "costco" and parts == ("과일",) and "아이스티" in title:
+        for parsed in parsed_urls:
+            if ((parsed.hostname or "").casefold() in {"costco.co.kr", "www.costco.co.kr"}
+                    and re.search(r"/CocoaDrink-Mix/[^/]*Iced-Tea-Mix[^/]*/p/[^/]+$", parsed.path, re.I)):
+                return {"food.drinks.powders.tea_mix"}
+    if (tea_context
+            and re.search(r"(?:둥글레차|결명자차).*티백", title)):
+        return {"food.drinks.tea.herbal"}
     return set()
 
 
@@ -1638,9 +2052,21 @@ def _dairy_context(evidence: Mapping[str, Any]) -> tuple[bool, bool]:
         if not prefix:
             continue
         compatible = prefix[0] in {"food", "foods"} and set(prefix) <= _COSTCO_DAIRY_CONTEXT
+        # Clarified butter is explicitly a fat/oil product; this exact category
+        # path does not establish compatibility for other dairy words. Every
+        # additional URL still participates in the conflict check.
+        if (prefix == ["foods", "processed-food", "oils"]
+                and re.search(r"기\s*버터|ghee\s*butter", evidence["source_title"], re.I)):
+            compatible = True
         supported |= compatible
         conflicting |= not compatible
     return supported and not conflicting, conflicting
+
+
+def _soymilk_is_only_a_comparison(title: str) -> bool:
+    compact = re.sub(r"\s+", "", unicodedata.normalize("NFKC", title)).casefold()
+    without_references = re.sub(r"두유(?:대체(?:용)?|대용(?:품)?|대신|가아닌|가아니라)", "", compact)
+    return compact != without_references and "두유" not in without_references
 
 
 def _contextual_dairy_candidates(evidence: Mapping[str, Any]) -> set[str]:
@@ -1659,6 +2085,8 @@ def _contextual_dairy_candidates(evidence: Mapping[str, Any]) -> set[str]:
         candidates.add("food.plant.soy.soymilk")
     if re.search(r"아몬드(?:음료|브리즈)", title):
         candidates.add("food.plant.drinks.almond")
+    if re.search(r"(?:귀리|오트)음료", title):
+        candidates.add("food.plant.drinks.oat")
     if re.search(r"그릭요(?:거|구)트|greekyogurt", title):
         candidates.add("food.dairy.yogurt.greek")
     elif re.search(r"(?:드링킹|마시는)요(?:구르트|거트)", title):
@@ -1710,12 +2138,48 @@ def _contextual_dairy_candidates(evidence: Mapping[str, Any]) -> set[str]:
     return candidates
 
 
+def _contextual_fresh_squash_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Explicit crops in a vegetable shelf; recipes and mixtures are separate forms."""
+    path = ' > '.join(evidence['source_path_parts'])
+    title = evidence['source_title']
+    if (not re.search(r'채소', path)
+            or re.search(r'냉동|건조|가공|분말|주스|즙|반려|씨앗|종자|원예', path)
+            or re.search(_FRESH_SQUASH_TITLE_VETO, title)):
+        return set()
+    candidates = set()
+    if '애호박' in title:
+        candidates.add('food.produce.vegetables.zucchini')
+    if re.search(r'단호박|밤호박|늙은\s*호박', title):
+        candidates.add('food.produce.vegetables.pumpkin')
+    return candidates
+
+
 def _suspicion_reason(category_id: str, evidence: Mapping[str, Any]) -> str | None:
     title = evidence["source_title"]
+    if category_id == "food.plant.soy.soymilk" and _soymilk_is_only_a_comparison(title):
+        return "source_title_product_type_conflict"
+    if (category_id in {"food.plant.drinks.oat", "food.plant.drinks.almond"}
+            and _PLANT_DRINK_MIXED_TITLE.search(title)):
+        return "dairy_ingredient_accessory_or_mixed_product"
+    if (category_id in {"food.plant.drinks.oat", "food.plant.drinks.almond"}
+            and re.search(r"분말|파우더|가루|농축|원액|요거트|요구르트|아이스크림|젤리", title)):
+        return "source_title_product_type_conflict"
+    if (category_id in {'food.preserved.kimchi.cabbage','food.preserved.kimchi.radish_diced'}
+            and '/' in title and '석박지' in title and '맛김치' in title):
+        return 'selection_product_form_unresolved'
     if category_id.startswith("food.dairy.") and _PLANT_DAIRY_HINT.search(re.sub(r"\s+", "", title)):
         return "plant_alternative_not_confirmed_dairy"
-    if category_id.startswith("food.dairy.") or category_id in {"food.plant.soy.soymilk", "food.plant.drinks.almond"}:
-        if _DAIRY_TITLE_VETO.search(re.sub(r"\s+", "", title)):
+    if category_id.startswith("food.dairy.") or category_id in {"food.plant.soy.soymilk", "food.plant.drinks.almond", "food.plant.drinks.oat"}:
+        dairy_veto_title = title
+        # A previously audited, exact topping-yogurt title names its cookie
+        # topping, not a cookie listing. Changed/mixed titles and other shelves
+        # do not inherit this exception.
+        if (category_id == "food.dairy.yogurt.topping"
+                and title == "서울우유 비요뜨 쿠키앤크림 131G*2"
+                and evidence["mart"] == "homeplus"
+                and tuple(evidence["source_path_parts"]) == ("우유/유제품", "요거트/요구르트", "떠먹는 요구르트", "토핑요거트")):
+            dairy_veto_title = title.replace("쿠키앤크림", "")
+        if _DAIRY_TITLE_VETO.search(re.sub(r"\s+", "", dairy_veto_title)):
             return "dairy_ingredient_accessory_or_mixed_product"
         if _dairy_context(evidence)[1]:
             return "dairy_source_context_conflict"
@@ -1725,16 +2189,34 @@ def _suspicion_reason(category_id: str, evidence: Mapping[str, Any]) -> str | No
         return "pet_product_context"
     if category_id.startswith(("food.plant.", "food.meals.noodles.", "food.dairy.milk.")) and re.search(r"양념|드레싱|제조기", title):
         return "ingredient_or_accessory_instead_of_product"
+    if category_id.startswith("food.plant.soy.") and "밀키트" in title:
+        return "ingredient_mentioned_in_different_product"
     if category_id.startswith("food.seasonings.oils.") and re.search(r"김자반|돌자반|재래김|파래김|돌김|스낵|김밥|참치", title):
         return "ingredient_mentioned_in_different_product"
     if category_id.startswith("household.hygiene.paper.") and ("특가" in title or "일부품목제외" in title) and "/" in title:
         return "multi_product_promotion_not_listing"
-    required = _TITLE_REQUIRED.get(category_id)
-    if required is not None and not required.search(title):
-        return "source_leaf_needs_name_corroboration"
-    forbidden = _TITLE_FORBIDDEN.get(category_id)
-    if forbidden is not None and forbidden.search(title):
+    if (category_id == "food.meals.noodles.black_bean"
+            and evidence["mart"] == "homeplus"
+            and evidence["source_path_parts"][-1:] == ["짜장라면"]
+            and reviewed_numbered_leaf(evidence) == "food.meals.noodles.bag_ramen"):
         return "source_title_product_type_conflict"
+    forbidden = _TITLE_FORBIDDEN.get(category_id)
+    veto_title = title
+    if (category_id == "food.meals.noodles.naengmyeon"
+            and title == "면사랑 동치미육수 평양물냉면 1026G"
+            and evidence["mart"] == "homeplus"
+            and evidence["source_path_parts"][-1:] == ["즉석면"]):
+        veto_title = title.replace("동치미육수", "")
+    if forbidden is not None and forbidden.search(veto_title):
+        return "source_title_product_type_conflict"
+    required = _TITLE_REQUIRED.get(category_id)
+    exact_blackbean_soymilk = (
+        category_id == 'food.plant.soy.soymilk' and evidence['mart'] == 'homeplus'
+        and evidence['source_title'] in {'정식품 베지밀 달콤한 검은콩B 190ML*16', '정식품 베지밀 담백한 검은콩A 190ML*16'}
+        and tuple(evidence['source_path_parts']) == ('우유/유제품', '두유', '일반두유')
+    )
+    if required is not None and not required.search(title) and not exact_blackbean_soymilk:
+        return "source_leaf_needs_name_corroboration"
     return None
 
 
@@ -1793,7 +2275,27 @@ def keyword_definitions(category_ids: Iterable[str] | None = None) -> list[dict[
     rows = []
     for leaf_id in sorted(selected):
         leaf = _BY_ID[leaf_id]
-        terms = [leaf.path[-1], *leaf.name_terms]
+        # Search synonyms do not become context-free classifier name rules.
+        baked_search_terms = {
+            'food.snacks.baked.crepe': ('크레페',),
+            'food.snacks.baked.waffle': ('와플',),
+            'food.snacks.baked.crispy_roll': ('크리스피롤',),
+            'food.snacks.baked.pretzel': ('프레첼', '프레츠엘'),
+            'food.bakery.dessert.pancake': ('팬케이크', '팬케익', '도라야키', '도라야끼'),
+            'food.snacks.sweets.marshmallow': ('마시멜로우', '마쉬멜로', 'marshmallow'),
+            'food.snacks.desserts.creme_brulee': ('크렘브뤼레', 'creme brulee'),
+            'food.snacks.traditional.monaka': ('monaka',),
+            'food.snacks.sets.chocolate_glass': ('초콜릿 유리컵 기획팩',),
+            'food.snacks.savory.tortilla_nacho': ('나초칩', '나쵸칩', '토티야칩', '토르티야칩'),
+            'food.snacks.savory.noodle': ('라면스낵', '마카로니스낵'),
+            'food.snacks.savory.puffed': ('팽화과자', '퍼프스낵'),
+            'food.snacks.savory.beans_peas': ('서리태스낵', '완두콩스낵'),
+        }
+        terms = [leaf.path[-1], *leaf.name_terms, *baked_search_terms.get(leaf_id, ())]
+        if leaf_id == "food.drinks.tea.fruit_preserve":
+            # Keep the established lookup word; the corrected preparation
+            # label is a search synonym, not a new product identity.
+            terms.insert(0, "과일청차")
         unique: dict[tuple[str, ...], str] = {}
         for term in terms:
             if len("".join(_tokens(term))) >= 2:
@@ -2043,6 +2545,7 @@ def source_evidence(record: Mapping[str, Any]) -> dict[str, Any]:
         "raw_native_category_id": payload.get("mart_native_category_id") or attrs.get("mart_native_category_id"),
         "source_title": _text(payload.get("raw_name") or payload.get("source_title") or payload.get("name") or record.get("source_title") or record.get("name")),
         "source_urls": urls,
+        "source_review_fields": source_review_evidence(payload)['source_fields'],
         "promotion_surface": any(_label_key(part) in _PROMO for part in path),
     }
 
@@ -2114,6 +2617,31 @@ def _url_candidates(evidence: Mapping[str, Any]) -> tuple[set[str], list[str]]:
         hints.extend(part for part in taxonomy_segments if part not in hints)
         candidates.update(_COSTCO_URL_LEAVES[part] for part in taxonomy_segments if part in _COSTCO_URL_LEAVES)
     return candidates, hints
+
+
+def _refine_frozen_meat_candidates(evidence, candidates, declared_form):
+    """Refine corroborated raw meat by declared storage, preserving conflicts.
+
+    A rib name or an old species assignment alone does not establish species.
+    Exact source-bound form reviews may supply that independently audited fact.
+    Cutting and cooking-use labels do not by themselves mean cooked contents.
+    """
+    title = evidence['source_title']
+    species = {name for name, expression in {
+        'beef': r'소고기|쇠고기|한우|우삼겹|차돌|양지|척아이롤',
+        'pork': r'돼지|돈육|(?<!우)삼겹살|목살|목심',
+        'chicken': r'닭',
+    }.items() if re.search(expression, title)}
+    if declared_form and declared_form['leaf'].startswith(('food.meat.fresh.', 'food.meat.frozen.')):
+        species.add(declared_form['leaf'].rsplit('.', 1)[-1])
+    if len(species) != 1:
+        return candidates, set()
+    animal = next(iter(species))
+    fresh = f'food.meat.fresh.{animal}'
+    frozen = frozen_raw_meat_category(fresh, title)
+    if frozen not in _BY_ID or fresh not in candidates:
+        return candidates, set()
+    return (candidates - {fresh}) | {frozen}, {frozen}
 
 
 def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
@@ -2236,6 +2764,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         homeplus_shelf_ids.add(lotte_general_snack_leaf)
     numbered_leaf = reviewed_numbered_leaf(evidence)
     rejected_path_evidence = None
+    rejected_category_evidence = []
     if numbered_leaf:
         homeplus_shelf_ids.add(numbered_leaf)
         from services.initial_numbered_reviews import reviewed_rejected_path
@@ -2246,6 +2775,20 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         if rejected in path_ids and _suspicion_reason(rejected,evidence) == 'source_title_product_type_conflict':
             path_ids.discard(rejected)
             rejected_path_evidence = rejected
+        from services.initial_numbered_reviews import reviewed_rejected_categories
+        positive_vetoes = {'source_title_product_type_conflict', 'ingredient_mentioned_in_different_product',
+                           'ingredient_or_accessory_instead_of_product', 'non_food_product_or_pet_context',
+                           'dairy_ingredient_accessory_or_mixed_product'}
+        for rejected, reason in reviewed_rejected_categories(evidence).items():
+            # Exact evidence review removes only positively disproven source/
+            # name candidates. URL candidates and valid contradictions remain.
+            if reason in positive_vetoes and _suspicion_reason(rejected, evidence) == reason:
+                if rejected in path_ids or rejected in name_ids or rejected == accepted_chat_leaf:
+                    path_ids.discard(rejected)
+                    name_ids.discard(rejected)
+                    if rejected == accepted_chat_leaf:
+                        homeplus_shelf_ids.discard(rejected)
+                    rejected_category_evidence.append(rejected)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
@@ -2294,7 +2837,90 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         and product_form_candidates(evidence) == {'food.drinks.tea.fruit_preserve'}
         and _suspicion_reason('food.drinks.tea.citron', evidence) == 'source_leaf_needs_name_corroboration'):
         path_ids.discard('food.drinks.tea.citron')
+    # Literal drinking and Greek forms jointly prove a narrower conjunction.
+    # The broader valid leaves are subsumed, never reported as wrong evidence;
+    # any unrelated source/name/URL candidate still blocks classification.
+    combined_greek = 'food.dairy.yogurt.drinking_greek'
+    combined_forms = product_form_candidates(evidence)
+    if combined_greek in combined_forms:
+        broader = {'food.dairy.yogurt.drink', 'food.dairy.yogurt.greek'}
+        path_ids -= broader
+        name_ids -= broader
+        contextual_ids -= broader
+        homeplus_shelf_ids -= broader
+        homeplus_shelf_ids.add(combined_greek)
     all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids | emart_fresh_ids
+    if (contextual_ids & {"food.plant.drinks.oat", "food.plant.drinks.almond"}
+            and _soymilk_is_only_a_comparison(evidence["source_title"])
+            and not _PLANT_DRINK_MIXED_TITLE.search(evidence["source_title"])
+            and "food.plant.soy.soymilk" not in url_ids):
+        # A comparison with soy milk is not an ingredient or product form.
+        # Preserve authoritative URL evidence and actual soy blends/conflicts.
+        all_ids.discard("food.plant.soy.soymilk")
+    squash_ids = _contextual_fresh_squash_candidates(evidence)
+    if squash_ids:
+        # Retail 호박 includes both crops. A literal 애호박 refines only that
+        # generic candidate; a specific winter-squash shelf or URL still conflicts.
+        specific_winter_shelf = any(re.search(r'단호박|밤호박|늙은\s*호박', part)
+                                   for part in evidence['source_path_parts'])
+        if (squash_ids == {'food.produce.vegetables.zucchini'}
+                and not specific_winter_shelf
+                and 'food.produce.vegetables.pumpkin' not in url_ids):
+            all_ids.discard('food.produce.vegetables.pumpkin')
+        all_ids |= squash_ids
+    tea_form_ids = _contextual_tea_form_candidates(evidence)
+    if tea_form_ids:
+        # Literal preparation form refines only the old broad tea type. Other
+        # categories and authoritative URL contradictions remain conflicts.
+        old_tea_types = {"food.drinks.tea.black", "food.drinks.tea.green",
+                         "food.drinks.tea.herbal", "food.drinks.tea.kombucha", "food.drinks.tea.cocoa"}
+        if tea_form_ids == {"food.drinks.powders.grain"}:
+            old_tea_types = {"food.drinks.tea.barley"}
+        if tea_form_ids == {"food.drinks.tea.herbal"}:
+            old_tea_types = {"food.drinks.tea.grain"}
+        all_ids -= old_tea_types - url_ids
+        all_ids |= tea_form_ids
+    from services.initial_numbered_reviews import reviewed_product_form
+    declared_form = reviewed_product_form(evidence)
+    if declared_form:
+        # Exact official listing/native fields carry the audited physical form.
+        # Preserve URL contradictions and all candidates not individually reviewed.
+        all_ids -= set(declared_form.get('rejected_categories', ())) - url_ids
+    if combined_greek in combined_forms:
+        all_ids -= {'food.dairy.yogurt.drink', 'food.dairy.yogurt.greek'}
+    all_ids, frozen_meat_ids = _refine_frozen_meat_candidates(evidence, all_ids, declared_form)
+    baked_form_ids, broad_baked_ids = baked_form_refinement(evidence)
+    # Literal form replaces only a related old broad form. A contradictory
+    # authoritative URL or unrelated category remains a classification conflict.
+    all_ids -= broad_baked_ids - url_ids
+    all_ids |= baked_form_ids
+    confection_form_ids, broad_confection_ids = confection_form_refinement(evidence)
+    all_ids -= broad_confection_ids - url_ids
+    all_ids |= confection_form_ids
+    cereal_shape_ids, broad_cereal_ids = reviewed_cereal_form_refinement(evidence)
+    all_ids -= broad_cereal_ids - url_ids
+    all_ids |= cereal_shape_ids
+    savory_form_ids, broad_savory_ids = savory_form_refinement(evidence)
+    all_ids -= broad_savory_ids - url_ids
+    all_ids |= savory_form_ids
+    beverage_form_ids, broad_beverage_ids = beverage_form_refinement(evidence)
+    all_ids -= broad_beverage_ids - url_ids
+    all_ids |= beverage_form_ids
+    processed_form_ids, broad_processed_ids = processed_food_form_refinement(evidence)
+    all_ids -= broad_processed_ids - url_ids
+    all_ids |= processed_form_ids
+    native_drink_form_ids, broad_native_drink_ids = reviewed_native_drink_form_refinement(evidence)
+    all_ids -= broad_native_drink_ids - url_ids
+    all_ids |= native_drink_form_ids
+    native_processed_form_ids, broad_native_processed_ids = reviewed_native_processed_form_refinement(evidence)
+    all_ids -= broad_native_processed_ids - url_ids
+    all_ids |= native_processed_form_ids
+    native_snack_form_ids, broad_native_snack_ids = reviewed_native_snack_form_refinement(evidence)
+    all_ids -= broad_native_snack_ids - url_ids
+    all_ids |= native_snack_form_ids
+    stock_form_ids, broad_stock_ids = stock_tablet_form_refinement(evidence)
+    all_ids -= broad_stock_ids - url_ids
+    all_ids |= stock_form_ids
     form_ids = product_form_candidates(evidence) if not all_ids else set()
     all_ids |= form_ids
     result = {
@@ -2309,6 +2935,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         "candidate_category_ids": sorted(all_ids),
         "url_taxonomy_hints": url_hints,
         "reviewed_rejected_path_category": rejected_path_evidence,
+        "reviewed_rejected_category_ids": sorted(rejected_category_evidence),
     }
     if len(all_ids) > 1:
         result["classification_reason"] = "conflicting_category_evidence"
@@ -2317,6 +2944,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     if all_ids:
         category_id = next(iter(all_ids))
         suspicion = _suspicion_reason(category_id, evidence)
+        if (declared_form and category_id == declared_form['leaf']
+                and suspicion == declared_form.get('expected_target_veto')):
+            suspicion = None
         if suspicion:
             result["classification_reason"] = suspicion
             result["proposed_path"] = list(_BY_ID[category_id].path)
@@ -2345,7 +2975,36 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.90, "explicit_product_form_and_context"
         if emart_fresh_ids:
             confidence, kind = 0.90, "reviewed_emart_fresh_and_deli"
+        if frozen_meat_ids:
+            confidence, kind = 0.95, "corroborated_raw_meat_and_frozen_storage"
+        if squash_ids and category_id in squash_ids:
+            confidence, kind = 0.90, "fresh_squash_title_and_vegetable_context"
+        if tea_form_ids and category_id in tea_form_ids:
+            confidence, kind = 0.90, "literal_tea_preparation_form_and_context"
+        if baked_form_ids and category_id in baked_form_ids:
+            confidence, kind = 0.90, "literal_baked_product_form_and_context"
+        if cereal_shape_ids and category_id in cereal_shape_ids:
+            confidence, kind = 0.95, "reviewed_native_package_cereal_shape"
+        if confection_form_ids and category_id in confection_form_ids:
+            confidence, kind = 0.90, "literal_confection_product_form_and_context"
+        if savory_form_ids and category_id in savory_form_ids:
+            confidence, kind = 0.90, "explicit_savory_preparation_and_context"
+        if beverage_form_ids and category_id in beverage_form_ids:
+            confidence, kind = 0.90, "literal_beverage_preparation_form_and_context"
+        if processed_form_ids and category_id in processed_form_ids:
+            confidence, kind = 0.90, "declared_processed_food_form_and_context"
+        if native_drink_form_ids and category_id in native_drink_form_ids:
+            confidence, kind = 0.95, "reviewed_native_drink_preparation_form"
+        if native_processed_form_ids and category_id in native_processed_form_ids:
+            confidence, kind = 0.95, "reviewed_native_processed_food_form"
+        if native_snack_form_ids and category_id in native_snack_form_ids:
+            confidence, kind = 0.95, "reviewed_native_snack_physical_form"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
+        from core.reviewed_source_evidence import reviewed_listing_specification
+        payload = record.get('payload') or record.get('raw_payload') or record
+        specification = reviewed_listing_specification(payload, evidence['source_title'], category_id)
+        if specification:
+            result['classification_attributes'] = specification
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
                 "fat_content": "fat_free" if "무지방" in evidence["source_title"] else ("low_fat" if "저지방" in evidence["source_title"] else None),

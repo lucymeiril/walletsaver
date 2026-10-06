@@ -143,7 +143,9 @@ class ApiClient {
       externalSignal,
     );
 
-    if (response.status === 401) {
+    // Invalid login credentials are a public form error, not an expired session.
+    // Keep their server detail and leave protected-request recovery unchanged.
+    if (response.status === 401 && path !== '/api/auth/login') {
       const refreshed = await this.refreshToken({ timeout, signal: externalSignal });
       if (refreshed) {
         // The retry must obey the same timeout/cancellation contract as the

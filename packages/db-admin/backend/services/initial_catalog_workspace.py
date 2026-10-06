@@ -247,6 +247,8 @@ def render_review(rows: list[dict], decisions: list[dict], bundle: dict) -> str:
         variant = variants.get(listing.get("public_variant_id"), {})
         product = products.get(variant.get("public_product_id"), {})
         applied_package = {key: variant[key] for key in ("package_quantity", "package_unit", "bundle_count") if key in variant}
+        if (variant.get("attributes") or {}).get("package_components"):
+            applied_package["attributes"] = {key: variant["attributes"][key] for key in ("package_components", "component_basis")}
         values = [row["raw_record_id"], row["source_name"], row["source_title"], row["price"],
                   json.dumps(row["package"], ensure_ascii=False), json.dumps(applied_package, ensure_ascii=False),
                   product.get("canonical_name", ""), product.get("brand", ""), product.get("public_product_id", ""),

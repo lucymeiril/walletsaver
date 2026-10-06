@@ -19,7 +19,6 @@ const CATS = ['전체', '마트', '온라인', '외식', '기타'];
 const FREE_TAGS = ['질문', '정보', '후기', '잡담'];
 const WRITE_CATS = ['마트', '온라인', '외식', '기타'];
 const POSTS_PER_PAGE = 10;
-const API_PAGE_SIZE = 100;
 const PINNED_COUNT = 3;
 
 const VERIFY_STYLES = {
@@ -62,33 +61,24 @@ function mapApiPost(raw) {
   };
 }
 
-async function fetchPostPage(board, page, signal) {
+async function fetchPostPage(query, signal) {
   const params = new URLSearchParams({
-    post_type: board,
-    page: String(page),
-    per_page: String(API_PAGE_SIZE),
-    sort: 'recent',
+    post_type: query.board,
+    page: String(query.page),
+    per_page: String(POSTS_PER_PAGE),
+    sort: query.sort === 'latest' ? 'recent' : query.sort,
+    partition_pinned: 'true',
   });
+  if (query.category !== '전체') params.set('category', query.category);
+  if (query.search) params.set('q', query.search);
   const response = await fetch(`/api/posts?${params}`, { signal });
   if (!response.ok) throw new Error(`community fetch failed: ${response.status}`);
   const result = await response.json();
   return {
     posts: (result.data || []).map(mapApiPost),
+    pinnedPosts: (result.pinned_posts || []).map(mapApiPost).slice(0, PINNED_COUNT),
     totalPages: Math.max(1, Number(result.meta?.total_pages || 1)),
   };
-}
-
-async function fetchAllPosts(board, signal) {
-  const all = [];
-  let page = 1;
-  let totalPages = 1;
-  do {
-    const result = await fetchPostPage(board, page, signal);
-    all.push(...result.posts);
-    totalPages = result.totalPages;
-    page += 1;
-  } while (page <= totalPages);
-  return all;
 }
 
 export default function CommunityPage() {
@@ -101,80 +91,116 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebounce(searchQuery, 200);
+  const effectiveSearch = searchQuery.trim() ? debouncedSearch.trim() : '';
+  const query = useMemo(() => ({
+    board, page, sort: sortBy, search: effectiveSearch,
+    category: board === 'hotdeal' ? filter : freeTag,
+  }), [board, page, sortBy, effectiveSearch, filter, freeTag]);
+  const queryRef = useRef(query);
+  queryRef.current = query;
   const { isLoggedIn, user, addToast } = useStore();
 
   const [posts, setPosts] = useState([]);
+  const [pinnedPosts, setPinnedPosts] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const postsControllerRef = useRef(null);
+  const detailControllerRef = useRef(null);
   const locationOpenedPostRef = useRef(null);
 
   const refreshPosts = useCallback(() => {
     postsControllerRef.current?.abort();
     const controller = new AbortController();
     postsControllerRef.current = controller;
+    const requestedQuery = queryRef.current;
+    const isCurrent = () => !controller.signal.aborted && postsControllerRef.current === controller;
+    let clamped = false;
     setLoading(true);
     setFetchError(false);
+    setPosts([]);
+    setPinnedPosts([]);
 
-    fetchAllPosts(board, controller.signal)
-      .then(setPosts)
+    return fetchPostPage(requestedQuery, controller.signal)
+      .then((result) => {
+        if (!isCurrent()) return;
+        setTotalPages(result.totalPages);
+        if (requestedQuery.page > result.totalPages) {
+          clamped = true;
+          setPage(result.totalPages);
+          return;
+        }
+        setPosts(result.posts);
+        setPinnedPosts(result.pinnedPosts);
+      })
       .catch((error) => {
-        if (error.name === 'AbortError') return;
+        if (!isCurrent() || error.name === 'AbortError') return;
         console.error(error);
         setFetchError(true);
       })
       .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
+        if (isCurrent() && !clamped) setLoading(false);
       });
-  }, [board]);
+  }, []);
 
   const openPost = useCallback(async (post) => {
     if (!post?.id) {
       setDetail(post || null);
       return;
     }
+    detailControllerRef.current?.abort();
+    const controller = new AbortController();
+    detailControllerRef.current = controller;
     try {
-      const response = await fetch(`/api/posts/${post.id}`);
+      const response = await fetch(`/api/posts/${post.id}`, { signal: controller.signal });
       if (!response.ok) throw new Error(`post detail fetch failed: ${response.status}`);
       const result = await response.json();
+      if (controller.signal.aborted || detailControllerRef.current !== controller) return;
       const detailedPost = mapApiPost(result.data || result);
       setDetail(detailedPost);
       setPosts((current) => current.map((item) =>
         item.id === post.id ? { ...item, ...detailedPost } : item
       ));
     } catch (error) {
+      if (controller.signal.aborted || detailControllerRef.current !== controller) return;
       console.error(error);
-      setDetail(post);
+      addToast('게시글 상세를 불러오지 못했습니다.', 'error');
+      if (post.title) setDetail(post);
     }
-  }, []);
+  }, [addToast]);
 
   useEffect(() => {
     refreshPosts();
     return () => postsControllerRef.current?.abort();
-  }, [refreshPosts]);
+  }, [query, refreshPosts]);
+
+  useEffect(() => () => detailControllerRef.current?.abort(), []);
 
   useEffect(() => {
     const openPostId = location.state?.openPostId;
-    if (openPostId && posts.length > 0 && locationOpenedPostRef.current !== openPostId) {
-      const post = posts.find((item) => item.id === openPostId);
-      if (post) {
-        locationOpenedPostRef.current = openPostId;
-        void openPost(post);
-      }
+    if (openPostId && locationOpenedPostRef.current !== openPostId) {
+      const post = [...posts, ...pinnedPosts].find((item) => String(item.id) === String(openPostId));
+      locationOpenedPostRef.current = openPostId;
+      void openPost(post || { id: openPostId });
       window.history.replaceState({}, '');
     }
-  }, [location.state, posts, openPost]);
+  }, [location.state, posts, pinnedPosts, openPost]);
 
-  useEffect(() => {
-    setSortBy(board === 'hotdeal' ? 'popular' : 'latest');
+  const handleBoardChange = (nextBoard) => {
+    if (nextBoard === board) return;
+    detailControllerRef.current?.abort();
+    setBoard(nextBoard);
+    setSortBy(nextBoard === 'hotdeal' ? 'popular' : 'latest');
     setFilter('전체');
     setFreeTag('전체');
     setPage(1);
     setSearchQuery('');
     setShowWrite(false);
+    resetWriteForm();
     setDetail(null);
-  }, [board]);
+  };
 
   const [wTitle, setWTitle] = useState('');
   const [wBody, setWBody] = useState('');
@@ -184,7 +210,6 @@ export default function CommunityPage() {
   const [wLink, setWLink] = useState('');
   const [wTag, setWTag] = useState('잡담');
   const [editPostId, setEditPostId] = useState(null);
-  const debouncedSearch = useDebounce(searchQuery, 200);
 
   const resetWriteForm = useCallback(() => {
     setEditPostId(null);
@@ -202,69 +227,8 @@ export default function CommunityPage() {
     ? verifyPrice(Number(wPrice), matchedProduct.avg)
     : null;
 
-  const filteredAndSorted = useMemo(() => {
-    let items = [...posts];
-
-    if (board === 'hotdeal') {
-      if (filter !== '전체') items = items.filter((post) => post.cat === filter);
-    } else if (freeTag !== '전체') {
-      items = items.filter((post) => post.tag === freeTag);
-    }
-
-    if (debouncedSearch.trim()) {
-      const query = debouncedSearch.trim().toLowerCase();
-      items = items.filter((post) =>
-        post.title?.toLowerCase().includes(query)
-        || post.body?.toLowerCase().includes(query)
-      );
-    }
-
-    if (sortBy === 'popular') {
-      if (board === 'hotdeal') {
-        items.sort((a, b) =>
-          ((b.hotVotes || 0) - (b.coldVotes || 0))
-          - ((a.hotVotes || 0) - (a.coldVotes || 0))
-        );
-      } else {
-        items.sort((a, b) => (b.views || 0) - (a.views || 0));
-      }
-    } else if (sortBy === 'comments') {
-      items.sort((a, b) => (b.comments || 0) - (a.comments || 0));
-    }
-
-    return items;
-  }, [posts, board, filter, freeTag, debouncedSearch, sortBy]);
-
-  const pinnedPosts = useMemo(() => {
-    if (board !== 'hotdeal' || searchQuery.trim()) return [];
-    return filteredAndSorted
-      .filter((post) => (post.hotVotes || 0) > 0)
-      .map((post) => ({
-        ...post,
-        score: (post.hotVotes || 0) - (post.coldVotes || 0),
-      }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, PINNED_COUNT);
-  }, [filteredAndSorted, board, searchQuery]);
-
-  const pinnedIds = useMemo(() => new Set(pinnedPosts.map((post) => post.id)), [pinnedPosts]);
-  const nonPinnedPosts = useMemo(
-    () => filteredAndSorted.filter((post) => !pinnedIds.has(post.id)),
-    [filteredAndSorted, pinnedIds],
-  );
-  const totalPages = useMemo(
-    () => Math.max(1, Math.ceil(nonPinnedPosts.length / POSTS_PER_PAGE)),
-    [nonPinnedPosts.length],
-  );
-  const safePage = Math.min(page, totalPages);
-  const paginatedPosts = useMemo(
-    () => nonPinnedPosts.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE),
-    [nonPinnedPosts, safePage],
-  );
-
-  useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
-  }, [page, totalPages]);
+  const safePage = page;
+  const paginatedPosts = posts;
 
   const handleWrite = async () => {
     if (submitting) return;
@@ -321,8 +285,8 @@ export default function CommunityPage() {
       addToast(isEdit ? '게시글이 수정되었습니다!' : '게시글이 등록되었습니다!', 'success');
       setShowWrite(false);
       resetWriteForm();
-      refreshPosts();
-      setPage(1);
+      if (!isEdit && queryRef.current.board === board && queryRef.current.page !== 1) setPage(1);
+      else refreshPosts();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
@@ -403,7 +367,7 @@ export default function CommunityPage() {
           <button
             key={tab.id}
             className={`${s.mainTab} ${board === tab.id ? (tab.id === 'hotdeal' ? s.mainTabHotdeal : s.mainTabFree) : ''}`}
-            onClick={() => setBoard(tab.id)}
+            onClick={() => handleBoardChange(tab.id)}
           >
             {tab.label}
           </button>
@@ -667,7 +631,7 @@ export default function CommunityPage() {
         <div className={s.pagination}>
           <button
             className={s.pageBtn}
-            disabled={safePage <= 1}
+            disabled={loading || fetchError || safePage <= 1}
             onClick={() => setPage((current) => Math.max(1, current - 1))}
           >
             ← 이전
@@ -675,7 +639,7 @@ export default function CommunityPage() {
           <span className={s.pageInfo}>{safePage} / {totalPages}</span>
           <button
             className={s.pageBtn}
-            disabled={safePage >= totalPages}
+            disabled={loading || fetchError || safePage >= totalPages}
             onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
           >
             다음 →
@@ -685,9 +649,10 @@ export default function CommunityPage() {
 
       {detail && (
         <PostDetailModal
+          key={detail.id}
           post={detail}
-          onClose={() => setDetail(null)}
-          board={board}
+          onClose={() => { detailControllerRef.current?.abort(); setDetail(null); }}
+          board={detail.post_type || board}
           user={user}
           onRefresh={refreshPosts}
           onEdit={handleEdit}
@@ -710,6 +675,8 @@ const PostDetailModal = React.memo(function PostDetailModal({
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
+  const [commentsError, setCommentsError] = useState(false);
+  const commentsControllerRef = useRef(null);
   const [vote, setVote] = useState(null);
   const [hotVotes, setHotVotes] = useState(post.hotVotes || post.hot_votes || 0);
   const [coldVotes, setColdVotes] = useState(post.coldVotes || post.not_votes || 0);
@@ -723,23 +690,35 @@ const PostDetailModal = React.memo(function PostDetailModal({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  useEffect(() => {
+  const refreshComments = useCallback(() => {
+    commentsControllerRef.current?.abort();
     const controller = new AbortController();
+    commentsControllerRef.current = controller;
     setLoadingComments(true);
+    setCommentsError(false);
     fetch(`/api/posts/${post.id}/comments`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`comment fetch failed: ${response.status}`);
         return response.json();
       })
-      .then((result) => setComments(result.data || []))
+      .then((result) => {
+        if (!controller.signal.aborted) setComments(result.data || []);
+      })
       .catch((error) => {
-        if (error.name !== 'AbortError') console.error(error);
+        if (!controller.signal.aborted && error.name !== 'AbortError') {
+          console.error(error);
+          setCommentsError(true);
+        }
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoadingComments(false);
       });
-    return () => controller.abort();
   }, [post.id]);
+
+  useEffect(() => {
+    refreshComments();
+    return () => commentsControllerRef.current?.abort();
+  }, [refreshComments]);
 
   const addComment = async () => {
     const content = newComment.trim();
@@ -765,7 +744,8 @@ const PostDetailModal = React.memo(function PostDetailModal({
       setComments((current) => [...current, result.data]);
       setNewComment('');
       addToast('댓글이 등록되었습니다', 'success');
-      onPostUpdate?.(post.id, { comments: comments.length + 1 });
+      refreshComments();
+      onRefresh?.();
     } catch {
       addToast('댓글 작성 중 오류가 발생했습니다.', 'error');
     }
@@ -797,6 +777,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
         hotVotes: result.data.hot_votes,
         coldVotes: result.data.not_votes,
       });
+      onRefresh?.();
     } catch {
       addToast('투표 중 오류가 발생했습니다.', 'error');
     }
@@ -822,7 +803,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
     }
   };
 
-  const isAuthor = user && Number(post.author_id) === Number(user.id);
+  const isAuthor = isLoggedIn && user && Number(post.author_id) === Number(user.id);
 
   return (
     <div className={s.modalOverlay} onClick={onClose} role="presentation">
@@ -893,7 +874,13 @@ const PostDetailModal = React.memo(function PostDetailModal({
           <h4>💬 댓글 {comments.length}개</h4>
           <div className={s.commentList}>
             {loadingComments && <p className={s.noComment}>댓글을 불러오는 중...</p>}
-            {!loadingComments && comments.length === 0 && <p className={s.noComment}>아직 댓글이 없습니다.</p>}
+            {!loadingComments && commentsError && (
+              <div className={s.noComment}>
+                <p>댓글을 불러오지 못했습니다.</p>
+                <button onClick={refreshComments}>댓글 다시 시도</button>
+              </div>
+            )}
+            {!loadingComments && !commentsError && comments.length === 0 && <p className={s.noComment}>아직 댓글이 없습니다.</p>}
             {comments.map((comment) => (
               <div key={comment.id} className={s.comment}>
                 <strong>{comment.author_nickname || comment.author}</strong>

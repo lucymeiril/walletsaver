@@ -332,35 +332,44 @@ class FuelStore:
                     "sigungu": row["sigungu"],
                     "lat": row["lat"],
                     "lng": row["lng"],
-                    "self_service": bool(row["has_self_service"]),
+                    # Legacy zero is also the default for an absent flag;
+                    # the schema cannot distinguish a proven negative.
+                    "self_service": True if row["has_self_service"] == 1 else None,
                     "updated_at": row["updated_at"],
+                    "station_updated_at": row["updated_at"],
                     "gasoline": None,
                     "premium": None,
                     "diesel": None,
                     "kerosene": None,
                     "lpg": None,
                     "price_sources": {},
+                    "price_observed_at": {},
                 },
             )
             if row["fuel_type"]:
                 item[row["fuel_type"]] = row["price"]
                 item["price_sources"][row["fuel_type"]] = row["source"]
+                item["price_observed_at"][row["fuel_type"]] = row["observed_at"]
 
         result: list[dict] = []
         for item in stations.values():
             if item.get(fuel_type) is None:
                 continue
             item["source"] = item["price_sources"].get(fuel_type) or "opinet"
+            item["updated_at"] = item["price_observed_at"].get(fuel_type)
             if lat is not None and lng is not None:
-                if item["lat"] is None or item["lng"] is None:
-                    if radius_m is not None:
-                        continue
-                else:
-                    distance_m = _haversine_m(lat, lng, item["lat"], item["lng"])
-                    if radius_m is not None and distance_m > radius_m:
-                        continue
-                    item["distance_m"] = round(distance_m)
-                    item["distance"] = round(distance_m / 1000, 2)
+                try:
+                    station_lat, station_lng = float(item["lat"]), float(item["lng"])
+                except (TypeError, ValueError):
+                    continue
+                if not (math.isfinite(station_lat) and math.isfinite(station_lng)
+                        and -90 <= station_lat <= 90 and -180 <= station_lng <= 180):
+                    continue
+                distance_m = _haversine_m(lat, lng, station_lat, station_lng)
+                if radius_m is not None and distance_m > radius_m:
+                    continue
+                item["distance_m"] = round(distance_m)
+                item["distance"] = round(distance_m / 1000, 2)
             result.append(item)
 
         if sort_by == "distance":

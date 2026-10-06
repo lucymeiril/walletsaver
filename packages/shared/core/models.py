@@ -12,11 +12,28 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from datetime import datetime
 from enum import Enum
+from math import isfinite
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+
+def _canonical_money_value(value: Any) -> Any:
+    """Keep integral source quotes stable without truncating fractional money."""
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        raise ValueError("A boolean is not a source price")
+    try:
+        number = float(value)
+    except (TypeError, ValueError, OverflowError):
+        return value  # Leave malformed input to the field's normal validation.
+    if not isfinite(number):
+        raise ValueError("Source prices must be finite")
+    return int(number) if number.is_integer() else number
 
 
 # --- 열거형 (Enum) ---
@@ -220,7 +237,8 @@ class DataSource(str, Enum):
 
 class ProductPrice(BaseModel):
     """
-    DB에 저장되는 정규화된 가격 레코드 — 모든 가격 비교의 기본 단위.
+    원문 가격 관측과 판매 규격·조건을 보존하는 정규화 레코드.
+    price는 표시된 관측 금액이며 구매 조건이 미확인일 때 결제액을 뜻하지 않는다.
 
     왜 필요한가:
         크롤러마다 다른 형식(DiscountItem, HotdealPost 등)의 데이터를 생산하지만,
@@ -233,9 +251,9 @@ class ProductPrice(BaseModel):
     category: str = ""                          # "채소류 > 근채류"
     store: str = ""                             # "이마트", "코스트코", "쿠팡" 등 자체 수집 소스명
     source: DataSource                          # 데이터 원본 신뢰도 분류
-    price: int                                  # 가격 (원)
+    price: int | float                          # 가격 (원)
     unit: str = ""                              # "1kg", "100g", "1L"
-    original_price: Optional[int] = None        # 할인 전 정가 (할인 아닐 때 None)
+    original_price: Optional[int | float] = None # 할인 전 정가 (할인 아닐 때 None)
     discount_rate: Optional[float] = None       # 할인율 (0.0 ~ 1.0)
     recorded_date: datetime = Field(default_factory=datetime.now)
     valid_from: Optional[datetime] = None       # 할인 시작일
@@ -243,6 +261,21 @@ class ProductPrice(BaseModel):
     source_url: str = ""                        # 수집 원본 URL
     crawled_at: datetime = Field(default_factory=datetime.now)
     raw_text: str = ""                          # 원본 텍스트 (디버깅/검증용)
+    source_name: str = ""                       # 원문 마트 식별자, DataSource 분류와 별개
+    display_unit: str = ""
+    package_quantity: Optional[float] = None
+    package_unit: str = ""
+    price_per_100g: Optional[float] = None
+    unit_price_display: str = ""
+    attributes: dict[str, Any] = Field(default_factory=dict)
+    event_name: str = ""
+    promo_label: Optional[str] = None
+    promo_type: Optional[str] = None
+
+    @field_validator("price", "original_price", mode="before")
+    @classmethod
+    def canonical_money(cls, value: Any) -> Any:
+        return _canonical_money_value(value)
 
 
 class DiscountItem(BaseModel):
@@ -251,15 +284,15 @@ class DiscountItem(BaseModel):
 
     왜 별도 모델인가:
         크롤러가 수집한 원본 정보(행사명, 이미지 URL 등)를 보존해야 대시보드 표시와
-        디버깅이 가능하다. to_product_price()로 정규화하면 이런 부가 정보가 소실된다.
+        디버깅이 가능하다. to_product_price()도 원문 규격과 조건을 보존한다.
     흐름: 마트 크롤러 → DiscountItem → to_product_price() → ProductPrice → DB
     """
     name: str                                   # 상품명 (원본)
     normalized_name: str = ""                   # 표준화된 품목명 (양파, 삼겹살 등)
     source: str = ""                            # 크롤러/마트 식별자 (emart, homeplus, lottemart, costco, cocodalin)
     store: str                                  # 매장명
-    original_price: Optional[int] = None        # 정가 (원)
-    sale_price: int                             # 할인가 (원)
+    original_price: Optional[int | float] = None # 정가 (원)
+    sale_price: int | float                     # 할인가 (원)
     discount_percent: Optional[float] = None    # 할인율 (%)
     unit: str = ""                              # 단위
     display_unit: str = ""                      # 고객 표시용 판매 단위(예: 300g)
@@ -278,8 +311,16 @@ class DiscountItem(BaseModel):
     detail_url: str = ""                        # 상세 페이지 URL
     crawled_at: datetime = Field(default_factory=datetime.now)
 
+    @field_validator("sale_price", "original_price", mode="before")
+    @classmethod
+    def canonical_money(cls, value: Any) -> Any:
+        return _canonical_money_value(value)
+
     def to_product_price(self) -> ProductPrice:
-        """DiscountItem → ProductPrice 변환."""
+        """Preserve the observed quote and its source/specification conditions.
+
+        Conversion does not qualify payment, a promotion or a unit rate.
+        """
         return ProductPrice(
             product_name=self.normalized_name or self.name,
             store=self.store,
@@ -293,7 +334,18 @@ class DiscountItem(BaseModel):
             valid_until=self.valid_until,
             source_url=self.detail_url,
             crawled_at=self.crawled_at,
+            recorded_date=self.crawled_at,
             raw_text=self.name,
+            source_name=self.source,
+            display_unit=self.display_unit,
+            package_quantity=self.package_quantity,
+            package_unit=self.package_unit,
+            price_per_100g=self.price_per_100g,
+            unit_price_display=self.unit_price_display,
+            attributes=deepcopy(self.attributes),
+            event_name=self.event_name,
+            promo_label=self.promo_label,
+            promo_type=self.promo_type,
         )
 
 
@@ -367,4 +419,3 @@ class IngestionReviewRequest(BaseModel):
     notes: Optional[str] = None
     approved_item_indices: Optional[list[int]] = None   # partial 승인 시 항목 인덱스
     rejected_reason: Optional[str] = None
-

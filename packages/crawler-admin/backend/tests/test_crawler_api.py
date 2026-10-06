@@ -1,12 +1,17 @@
 """Focused API regressions for the current crawler-admin runtime."""
 from __future__ import annotations
 
+import asyncio
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
 
 from api.app import create_app
 from api.routes import crawlers as crawler_routes
 from services import crawl_orchestrator as orch
+from audit import AuditEventType
+from pipeline.pipeline import PipelineResult
 
 
 @pytest.fixture
@@ -154,3 +159,26 @@ def test_logs_endpoint_reads_canonical_orchestrator_runs(client):
     assert entry["run_id"] == run_id
     assert entry["result"]["items_found"] == 4
     assert entry["result"]["items_saved"] == 3
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("status,saved", [("failed", 0), ("partial_failure", 1), ("success", 2)])
+async def test_pipeline_result_audit_retains_failure_outcome_without_runtime_writes(monkeypatch, status, saved):
+    result = PipelineResult(crawler_name="synthetic", status=status, items_found=2, items_valid=2, items_saved=saved)
+    pipeline = MagicMock(run_crawler=AsyncMock(return_value=result))
+    audit = MagicMock()
+    history = MagicMock()
+    release = AsyncMock()
+    monkeypatch.setattr(crawler_routes, "_crawl_results", {})
+    monkeypatch.setattr(crawler_routes, "get_semaphore", lambda: asyncio.Semaphore(1))
+    monkeypatch.setattr(crawler_routes, "release_crawler_slot", release)
+    monkeypatch.setattr(crawler_routes, "_append_run_history", history)
+    monkeypatch.setattr(crawler_routes, "audit_log", audit)
+    await crawler_routes._run_and_store("synthetic", pipeline)
+    assert crawler_routes._crawl_results["synthetic"]["status"] == status
+    assert crawler_routes._crawl_results["synthetic"]["items_saved"] == saved
+    assert audit.call_args.args[0] == (AuditEventType.CRAWL_COMPLETED if status == "success" else AuditEventType.CRAWL_FAILED)
+    assert audit.call_args.kwargs["result"] == ("success" if status == "success" else "error")
+    assert audit.call_args.kwargs["detail"]["status"] == status
+    history.assert_called_once_with("synthetic", status, result.duration)
+    release.assert_awaited_once_with("synthetic")

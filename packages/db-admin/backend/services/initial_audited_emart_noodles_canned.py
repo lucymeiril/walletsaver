@@ -1,4 +1,5 @@
 """Exact food forms audited on Emart's mixed noodles and canned-food shelf."""
+from urllib.parse import urlsplit, parse_qs
 
 GROUPS = {
     "food.meals.noodles.ramen_sari": ("라면사리 110g*4입",),
@@ -16,6 +17,16 @@ TITLES = {title: leaf for leaf, titles in GROUPS.items() for title in titles}
 
 
 def reviewed_emart_noodles_canned_leaf(evidence):
+    # Same exact listing/title is corroborated under the audited noodles shelf
+    # by original ingestions89:1 and90:2; promotion alone is insufficient.
+    if (evidence['mart'] == 'emart' and tuple(evidence['source_path_parts']) == ('베스트',)
+            and evidence['source_title'] == '신라면 5입 600g (120gx5입)'):
+        urls = [urlsplit(url) for url in evidence.get('source_urls', ())]
+        if urls and all(url.scheme == 'https' and url.hostname in {'emart.ssg.com', 'm-emart.ssg.com'}
+                        and url.path == '/item/itemView.ssg'
+                        and parse_qs(url.query).get('itemId') == ['0000008333648'] for url in urls):
+            return 'food.meals.noodles.bag_ramen'
+        return None
     if evidence["mart"] != "emart" or tuple(evidence["source_path_parts"]) != ("면류/통조림",):
         return None
     return TITLES.get(evidence["source_title"])

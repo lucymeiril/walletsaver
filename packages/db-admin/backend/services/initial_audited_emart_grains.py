@@ -22,7 +22,7 @@ GROUPS = {
     "food.grains.nuts.pumpkin_seed": ("호박씨 400g",),
     "food.grains.rice.chia": ("인도산 치아씨드 400g",),
     "food.snacks.savory.corn": ("부드러운 추억의 강냉이 300g",),
-    "food.drinks.tea.grain": ("유기농 발아 미숫가루 700g",),
+    "food.drinks.powders.grain": ("유기농 발아 미숫가루 700g",),
 }
 
 TITLES = {title: leaf for leaf, titles in GROUPS.items() for title in titles}

@@ -1,6 +1,7 @@
 """기본 관리자 계정 시딩 — 최초 실행 시 admin 사용자가 없으면 생성."""
 
 import logging
+import os
 
 from storage.models import User, UserRole
 from api.auth import hash_password
@@ -26,16 +27,22 @@ def seed_default_admin() -> None:
                 logger.debug("Seed: admin user already exists (id=%s)", existing.id)
                 return
 
+            # Public team demos supply their own values; ordinary startup keeps
+            # the existing defaults and never changes an already-seeded admin.
+            admin_email = os.getenv("DB_ADMIN_EMAIL", DEFAULT_ADMIN_EMAIL).strip()
+            admin_password = os.getenv("DB_ADMIN_PASSWORD", DEFAULT_ADMIN_PASSWORD)
+            if not admin_email or not admin_password:
+                raise ValueError("Initial admin email/password must not be empty")
             admin = User(
-                email=DEFAULT_ADMIN_EMAIL,
-                hashed_password=hash_password(DEFAULT_ADMIN_PASSWORD),
+                email=admin_email,
+                hashed_password=hash_password(admin_password),
                 nickname=DEFAULT_ADMIN_NICKNAME,
                 role=UserRole.ADMIN,
                 is_active=True,
             )
             session.add(admin)
         logger.info(
-            "Seed: created default admin account (%s)", DEFAULT_ADMIN_EMAIL
+            "Seed: created default admin account (%s)", admin_email
         )
     except Exception as exc:
         logger.warning("Seed: failed to create default admin — %s", exc)

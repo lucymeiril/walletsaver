@@ -3,6 +3,8 @@ from services.initial_product_forms import FORM_RULES, product_form_candidates
 from services.initial_taxonomy import classify_record,taxonomy_categories,validate_taxonomy
 
 CASES = [
+ ('고용량 멀티탭','전기용품','household.electrical.power.power_strip'),
+ ('냉동 삼겹살/목심 할인행사','정육/계란류','food.meat.frozen.pork'),
  ('삼풍 커피필터 600매','커피','household.kitchen.consumables.coffee_filter'),
  ('하리오 V60 세라믹 컬러 드리퍼 1P','커피','household.kitchen.coffee.dripper'),
  ('하리오 V60 스이렌 드리퍼 1P','커피','household.kitchen.coffee.dripper'),
@@ -49,7 +51,51 @@ CASES = [
  ('롱치즈스틱 400G','냉동','food.meals.prepared.cheese_stick'),
  ('소프트 또띠아 320G','또띠아','food.bakery.bread.tortilla'),
  ('크링클컷 냉동감자 650G','냉동','food.meals.prepared.frozen_potato'),
+ ('바삭칩 믹스 360g','과자','food.snacks.assortments.mixed_chips'),
+ ('스낵모음 36개입','과자','food.snacks.assortments.snacks'),
+ ('통밀 토스트 레귤러 1800g','과자','food.snacks.baked.toast'),
+ ('진저샷 20g','음료','food.drinks.juice.ginger_shot'),
+ ('사이다 250ml + 콜라 250ml 콤보팩','음료','food.drinks.assortments.combo'),
+ ('바비큐 폭립 800g','치즈','food.meals.prepared.bbq_ribs'),
+ ('알부민 20g','건강식품 > 소화제/자양강장','food.supplements.functional.albumin'),
+ ('쿠키 만들기 300G','냉장/냉동/밀키트 > 아이스크림/디저트/얼음 > 디저트 > 냉동케익/푸딩/마카롱','food.bakery.kits.cookie'),
+ ('요거트맛 320ML','생수/음료/주류 > 과일/야채음료 > 기타과일','food.drinks.flavoured.yogurt'),
+ ('솔티꽈배기 90G','과자ㆍ스낵ㆍ간식','food.snacks.savory.twisted'),
+ ('마시는 그릭요거트 750ML','우유ㆍ유제품 > 요거트ㆍ요구르트 > 마시는요구르트','food.dairy.yogurt.drinking_greek'),
+ ('츄러스&소보로미니크라상22입','베이커리/잼','food.bakery.assortments.mixed'),
+ ('건조 황태채 ~20%','수산물/건해산','food.seafood.processed.dried_pollock'),
+ ('국산 건황태 300g','건어물','food.seafood.processed.dried_pollock'),
+ ('피넛버터 크레페 85G','과자','food.snacks.baked.crepe'),
+ ('버터와플 316G','과자','food.snacks.baked.waffle'),
+ ('크리스피 코코넛롤400g','과자','food.snacks.baked.crispy_roll'),
+ ('미니 프레첼 2.72kg','과자','food.snacks.baked.pretzel'),
+ ('도라야끼 팬케익 310g x 3','과자','food.bakery.dessert.pancake'),
+ ('명가 찰떡파이 350g','과자','food.snacks.chewy.rice_cake_pie'),
+ ('프리시아 메가BBQ 마시멜로우 300G','과자','food.snacks.sweets.marshmallow'),
+ ('Senoble 크렘브륄레 100g x 8','과자','food.snacks.desserts.creme_brulee'),
+ ('종합 모나카 840g','과자','food.snacks.traditional.monaka'),
+ ('Dorly 오란다 720g','과자','food.snacks.traditional.oranda'),
+ ('엠앤엠즈 유리컵 기획팩 레드 145G','초콜릿','food.snacks.sets.chocolate_glass'),
+ ('토르티야 칩 100g','과자','food.snacks.savory.tortilla_nacho'),
+ ('카라멜콘과땅콩 100g','과자','food.snacks.assortments.corn_peanut'),
+ ('라면스낵 100g','과자','food.snacks.savory.noodle'),
+ ('팽화스낵 100g','과자','food.snacks.savory.puffed'),
+ ('완두콩 스낵 100g','과자','food.snacks.savory.beans_peas'),
+ ('쌀크래커 100g','과자','food.snacks.savory.rice_cracker'),
+ ('사과/오렌지 에이드 250ml','음료','food.drinks.juice.fruit_ade'),
+ ('딸기맛 235ML','생수/음료/주류 > 과일/야채음료 > 어린이음료 > 어린이음료','food.drinks.flavoured.strawberry'),
+ ('전해질드링크 파우더 믹스 16g','음료','food.drinks.powders.electrolyte'),
+ ('우베 라떼 분말 18g','분말음료','food.drinks.powders.ube_latte'),
+ ('간식소시지 300g','과자/간식','food.snacks.savory.snack_sausage'),
+ ('갓 튀김 어포 400g','과자','food.seafood.processed.fish_snack'),
+ ('반건조 열빙어 1.2kg','생선','food.seafood.processed.semi_dried_fish'),
+ ('어육소시지 25g','수산물','food.seafood.processed.fish_sausage'),
+ ('포터블스크린 카드할인 구매찬스','오반장','electronics.video.screens.portable'),
 ]
+
+CASES.extend([('떡 어묵 조리세트 460g', '반찬 > 어묵', 'food.meals.sets.ricecake_fishcake'),
+              ('생수 500ml+쇼퍼백 기획', '생수/음료', 'food.drinks.water_sets.water_bag'),
+              ('홍삼정 240g (쇼핑백동봉)', '건강식품', 'food.supplements.sets.red_ginseng_bag')])
 
 @pytest.mark.parametrize('title,path,leaf',CASES)
 def test_explicit_form_requires_both_title_and_context(title,path,leaf):
@@ -60,6 +106,10 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
     validate_taxonomy(taxonomy_categories({leaf}),{leaf})
 
 @pytest.mark.parametrize('title,path',[
+ ('건조 황태채 육수팩','수산물/건해산'),
+ ('건조 황태채 무침','수산물/건해산'),
+ ('건조 황태 스낵','수산물/건해산'),
+ ('강아지 건황태 간식','수산물/건해산'),
  ('하리오 V60 세라믹 드리퍼 세트','커피'),
  ('하리오 전동 커피밀','커피'),
  ('삼풍 커피필터 머신 세트','커피'),
@@ -78,7 +128,7 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
  ('티앤에이드 젤리 사탕','커피/차 > 전통차/액상차/꿀 > 액상차/농축액 > 농축액'),
  ('스텐 만능채칼&가위&도마&믹싱볼 외 BEST 주방용품 특가','주방용품'),
  ('커피 필터 머신 세트','주방용품'),('궁중팬 뚜껑 세트','주방용품'),
- ('도시락 일회용 젓가락 세트','주방용품'),('에어프라이어 사각종이호일5L','주방용품'),
+ ('도시락 일회용 젓가락 세트','주방용품'),
  ('레몬청과 유자차 혼합 세트','커피/차 > 전통차/액상차/꿀 > 유자차'),
  ('한라봉차 탄산 주스','커피/차 > 전통차/액상차/꿀 > 유자차'),
 ])
@@ -89,6 +139,23 @@ def test_registry_depth_and_unique_ids():
     assert len({r[0] for r in FORM_RULES})==len(FORM_RULES)
     assert {r[0] for r in FORM_RULES}=={leaf for _,_,leaf in CASES}
     validate_taxonomy(taxonomy_categories(),{r[0] for r in FORM_RULES})
+
+
+def test_residual177_form_families_reject_ingredients_and_preserve_quantity_holds():
+    from core.catalog_quantity import normalize_catalog_package
+    for title, path in (
+        ('진저샷 분말 20g', '음료'), ('바비큐 폭립 소스 800g', '치즈'),
+        ('알부민 주사', '건강식품'), ('요거트맛 젤리', '생수/음료/주류 > 과일/야채음료'),
+        ('솔티꽈배기 만들기 믹스', '과자'), ('마시는 그릭요거트 쿠키', '요거트/요구르트 > 마시는요구르트'),
+    ):
+        assert not product_form_candidates({'source_title': title, 'source_path_parts': [path]})
+    title = '[1+1기획]뿌리또 에어프라이어 사각종이호일5L'
+    assert product_form_candidates({'source_title': title, 'source_path_parts': ['주방용품']}) == {'household.kitchen.consumables.baking_paper'}
+    # Vessel capacity is category-neutral but still not sold consumable volume.
+    assert normalize_catalog_package({'package_quantity': 5, 'package_unit': 'l'}, {}, title) == (None, ['unit_container_capacity_not_contents'])
+    mixed = '칠성사이다 250ml x 30 + 펩시콜라 250ml x 30 콤보팩'
+    assert product_form_candidates({'source_title': mixed, 'source_path_parts': ['음료']}) == {'food.drinks.assortments.combo'}
+    assert normalize_catalog_package({'pack_qty': 250, 'pack_unit': 'ml'}, {}, mixed)[1]
 
 
 @pytest.mark.parametrize('title,path,leaf',CASES[:6])

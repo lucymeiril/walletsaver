@@ -412,3 +412,11 @@
     max-width: 100vw;
   }
 }
+
+.itemSpec {
+  color: var(--text3);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  margin: 4px 0;
+}

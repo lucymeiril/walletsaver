@@ -1,8 +1,9 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import Spinner from '../../components/common/Spinner';
+import { getOfferConditionText } from '../../utils/productDecision';
 import s from './CategoryComparePage.module.css';
 
 const RANK_CONFIG = {
@@ -10,39 +11,54 @@ const RANK_CONFIG = {
   hotdeal:   { label: '핫딜',   color: '#10B981', icon: '🔥' },
   fair:      { label: '적정가', color: '#F59E0B', icon: '👍' },
   expensive: { label: '비쌈',   color: '#EF4444', icon: '💸' },
+  unknown:   { label: '비교 미확인', color: '#64748B', icon: '' },
 };
 
 const SORT_OPTIONS = [
-  { value: 'price_asc',  label: '가격↑' },
-  { value: 'price_desc', label: '가격↓' },
+  { value: 'price_asc',  label: '단위가↑' },
+  { value: 'price_desc', label: '단위가↓' },
   { value: 'discount',   label: '할인율' },
   { value: 'recent',     label: '최신' },
 ];
+
+function positive(value) {
+  return value != null && value !== '' && Number.isFinite(Number(value)) && Number(value) > 0;
+}
+
+function money(value, suffix = '') {
+  return positive(value) ? `₩${fmt(value)}${suffix}` : '미확인';
+}
+
+function basisLabel(basis) {
+  return basis?.startsWith('variant:') ? '동일 규격의 판매 단위' : basis;
+}
 
 function comparisonValue(product, summary) {
   const basis = summary?.comparison_basis;
   if (
     basis
     && product.normalized?.basis === basis
-    && product.normalized?.unit_price != null
+    && positive(product.normalized?.unit_price)
+    && product.best_offer?.current_eligible !== false
+    && (!product.best_offer?.offer_state || product.best_offer.offer_state === 'active')
   ) {
     return product.normalized.unit_price;
   }
-  return product.price?.current || 0;
+  return null;
 }
 
 function displayPrice(product) {
   const unitPrice = product.normalized?.unit_price;
   const basis = product.normalized?.basis;
-  if (unitPrice != null && basis) {
-    return { value: unitPrice, suffix: `/${basis}`, normalized: true };
+  if (positive(unitPrice) && basis) {
+    return { value: unitPrice, suffix: `/${basisLabel(basis)}`, normalized: true };
   }
-  return { value: product.price?.current || 0, suffix: '', normalized: false };
+  return { value: null, suffix: '', normalized: false };
 }
 
 function getRank(product, summary) {
   const price = comparisonValue(product, summary);
-  if (!price || !summary) return 'fair';
+  if (price == null || !positive(summary?.avg_comparison_price)) return 'unknown';
   if (summary.ultra_threshold && price <= summary.ultra_threshold) return 'ultra';
   if (summary.hotdeal_threshold && price <= summary.hotdeal_threshold) return 'hotdeal';
   if (summary.avg_comparison_price && price <= summary.avg_comparison_price) return 'fair';
@@ -50,19 +66,33 @@ function getRank(product, summary) {
 }
 
 function getPercentile(product, summary) {
-  if (product.percentile != null) return product.percentile;
   const price = comparisonValue(product, summary);
   const minimum = summary?.min_comparison_price;
   const maximum = summary?.max_comparison_price;
-  if (!price || minimum == null || maximum == null) return 50;
+  if (price == null || !positive(minimum) || !positive(maximum)) return null;
   const range = maximum - minimum;
   if (range <= 0) return 50;
-  return Math.round(((price - minimum) / range) * 100);
+  return Math.max(0, Math.min(100, Math.round(((price - minimum) / range) * 100)));
+}
+
+function OfferFacts({ product }) {
+  const offer = product.promotion || product.best_offer;
+  if (!offer) return <p className={s.offerFacts}>거래 금액·판매 수량·구매 조건 미확인</p>;
+  const conditions = { ...offer, promotion_condition: offer.promotion_condition ?? offer.condition };
+  const spend = offer.total_price ?? offer.total_spend;
+  const spec = offer.display_unit || product.normalized?.unit_price_display;
+  return <div className={s.offerFacts}>
+    {spec && <div>규격 {spec}</div>}
+    <div>거래 금액 {money(spend)}</div>
+    {positive(offer.listed_price) && <div>표시 가격 {money(offer.listed_price)}</div>}
+    <div>{getOfferConditionText(conditions)}</div>
+  </div>;
 }
 
 /* ── Sub-components ── */
 
 const PricePositionBar = React.memo(function PricePositionBar({ percentile, rank }) {
+  if (percentile == null || rank === 'unknown') return <div className={s.offerFacts}>단위 비교 미확인</div>;
   const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
   return (
     <div className={s.priceBar}>
@@ -72,10 +102,10 @@ const PricePositionBar = React.memo(function PricePositionBar({ percentile, rank
       />
       {percentile <= 50 && (
         <span className={s.priceBarRankLabel}>
-          {cfg.icon} {cfg.label}
+          {cfg.icon} {cfg.label} · 표시 조건 기준
         </span>
       )}
-      <span className={s.priceBarLabel}>하위 {percentile}%</span>
+      <span className={s.priceBarLabel}>단위가 범위 위치 {percentile}%</span>
     </div>
   );
 });
@@ -141,20 +171,20 @@ const SummaryCards = React.memo(function SummaryCards({ summary }) {
   }
 
   const basis = summary.comparison_basis;
-  const suffix = basis ? `/${basis}` : '';
+  const suffix = basis ? `/${basisLabel(basis)}` : '';
   return (
     <div className={s.summaryCards}>
       <div className={`${s.summaryCard} ${s.summaryAvg}`}>
-        <span className={s.summaryLabel}>{basis ? '평균 단위가' : '평균 판매가'}</span>
-        <span className={s.summaryValue}>₩{fmt(summary.avg_comparison_price)}{suffix}</span>
+        <span className={s.summaryLabel}>평균 단위가 · 표시 조건 기준</span>
+        <span className={s.summaryValue}>{money(basis ? summary.avg_comparison_price : null, suffix)}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryMin}`}>
-        <span className={s.summaryLabel}>{basis ? '최저 단위가' : '최저 판매가'}</span>
-        <span className={s.summaryValue}>₩{fmt(summary.min_comparison_price)}{suffix}</span>
+        <span className={s.summaryLabel}>최저 단위가 · 표시 조건 기준</span>
+        <span className={s.summaryValue}>{money(basis ? summary.min_comparison_price : null, suffix)}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryHotdeal}`}>
         <span className={s.summaryLabel}>핫딜기준</span>
-        <span className={s.summaryValue}>₩{fmt(summary.hotdeal_threshold)}{suffix}</span>
+        <span className={s.summaryValue}>{money(basis ? summary.hotdeal_threshold : null, suffix)}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryCount}`}>
         <span className={s.summaryLabel}>상품수</span>
@@ -166,7 +196,7 @@ const SummaryCards = React.memo(function SummaryCards({ summary }) {
 
 const ProductCard = React.memo(function ProductCard({ product, summary, rank, percentile, onClick }) {
   const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
-  const isBest = percentile <= 10 || rank === 'ultra';
+  const isBest = rank === 'ultra';
   const shown = displayPrice(product);
   const current = product.price?.current;
   const original = product.price?.original;
@@ -185,19 +215,15 @@ const ProductCard = React.memo(function ProductCard({ product, summary, rank, pe
       <div className={s.cardHeader}>
         <div className={s.cardTitle}>
           <span className={s.cardBadge} style={{ background: cfg.color }}>
-            {cfg.icon} {cfg.label}
+            {cfg.icon} {cfg.label}{rank !== 'unknown' ? ' · 표시 조건 기준' : ''}
           </span>
-          {isBest && <span className={s.cardBadge} style={{ background: '#10B981' }}>🏆 Best</span>}
           {product.name}
         </div>
         <span className={s.cardSource}>{product.source || product.brand || ''}</span>
       </div>
 
       <div className={s.cardPriceRow}>
-        <span className={s.cardPrice}>₩{fmt(shown.value)}{shown.suffix}</span>
-        {shown.normalized && current > 0 && (
-          <span className={s.cardOriginal}>판매가 ₩{fmt(current)}</span>
-        )}
+        <span className={s.cardPrice}>{money(shown.value, shown.suffix)}</span>
         {original && original !== current && (
           <span className={s.cardOriginal}>원가 ₩{fmt(original)}</span>
         )}
@@ -205,6 +231,8 @@ const ProductCard = React.memo(function ProductCard({ product, summary, rank, pe
           <span className={s.cardDiscount}>-{discountPct}%</span>
         )}
       </div>
+
+      <OfferFacts product={product} />
 
       {tags.length > 0 && (
         <div className={s.cardTags}>
@@ -227,7 +255,7 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
           <th>등급</th>
           <th>상품명</th>
           <th>비교가</th>
-          <th>판매가</th>
+          <th>거래 금액·구매 조건</th>
           <th>할인</th>
           <th>보관</th>
           <th>원산지</th>
@@ -243,12 +271,12 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
             <tr key={p.id} onClick={() => onRowClick(p)} style={{ cursor: 'pointer' }}>
               <td>
                 <span style={{ color: cfg.color, fontWeight: 600 }}>
-                  {cfg.icon} {cfg.label}
+                  {cfg.icon} {cfg.label}{rank !== 'unknown' ? ' · 표시 조건 기준' : ''}
                 </span>
               </td>
               <td>{p.name}</td>
-              <td className={s.tablePrice}>₩{fmt(shown.value)}{shown.suffix}</td>
-              <td>{p.price?.current ? `₩${fmt(p.price.current)}` : '-'}</td>
+              <td className={s.tablePrice}>{money(shown.value, shown.suffix)}</td>
+              <td><OfferFacts product={p} /></td>
               <td className={s.tableDiscount}>
                 {p.price?.discount_pct > 0 ? `-${p.price.discount_pct}%` : '-'}
               </td>
@@ -263,7 +291,7 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
   );
 });
 
-const AlternativesSection = React.memo(function AlternativesSection({ alternatives, navigate, currentAvg }) {
+const AlternativesSection = React.memo(function AlternativesSection({ alternatives, navigate, currentAvg, currentBasis }) {
   if (!alternatives || alternatives.length === 0) return null;
 
   return (
@@ -271,9 +299,9 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
       <div className={s.alternativesTitle}>💡 대안 카테고리</div>
       {alternatives.map((alt, i) => {
         const alternativeAvg = alt.avg_comparison_price ?? alt.avg_unit_price ?? alt.avg_per_100g;
-        const diff = currentAvg && alternativeAvg
+        const diff = currentBasis && alt.comparison_basis === currentBasis && positive(currentAvg) && positive(alternativeAvg)
           ? Math.round(((alternativeAvg - currentAvg) / currentAvg) * 100)
-          : alt.saving_pct != null ? -alt.saving_pct : null;
+          : null;
         const cheaper = diff != null && diff < 0;
         const basis = alt.comparison_basis || '';
 
@@ -285,11 +313,11 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
           >
             <span className={s.altIcon}>💡</span>
             <span>
-              {alt.name || alt.category_id}은(는) 평균 ₩{fmt(alternativeAvg)}{basis ? `/${basis}` : ''}
+              {alt.name || alt.category_id}은(는) 평균 {money(basis ? alternativeAvg : null, basis ? `/${basisLabel(basis)}` : '')}
             </span>
             {diff != null && (
               <span className={cheaper ? s.altSaving : s.altExpensive}>
-                ({Math.abs(diff)}% {cheaper ? '저렴' : '비쌈'})
+                ({Math.abs(diff)}% {cheaper ? '저렴' : '비쌈'} · 표시 조건 기준)
               </span>
             )}
           </div>
@@ -304,6 +332,8 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
 export default function CategoryComparePage() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const comparisonBasis = searchParams.get('comparison_basis') || null;
 
   const [products, setProducts] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -314,10 +344,22 @@ export default function CategoryComparePage() {
   const [error, setError] = useState(null);
   const [sort, setSort] = useState('price_asc');
   const [viewMode, setViewMode] = useState('card');
-  const [page, setPage] = useState(1);
+  const [pageState, setPageState] = useState({ key: '', page: 1 });
+  const queryKey = JSON.stringify([categoryId, comparisonBasis, sort]);
+  const page = pageState.key === queryKey ? pageState.page : 1;
+  const setPage = (value) => setPageState((previous) => ({
+    key: queryKey,
+    page: typeof value === 'function' ? value(previous.key === queryKey ? previous.page : 1) : value,
+  }));
+  const latestRequest = useRef(0);
+
+  useEffect(() => {
+    setPageState((previous) => previous.key === queryKey ? previous : { key: queryKey, page: 1 });
+  }, [queryKey]);
 
   const fetchData = useCallback(async (signal) => {
     if (!categoryId) return;
+    const requestId = ++latestRequest.current;
     setLoading(true);
     setError(null);
     try {
@@ -325,25 +367,28 @@ export default function CategoryComparePage() {
         sort,
         page,
         perPage: 20,
+        comparisonBasis,
+        signal,
       });
-      if (signal?.aborted) return;
+      if (signal?.aborted || requestId !== latestRequest.current) return;
       setSummary(data.summary || null);
       setSubcategories(data.subcategories || []);
       setProducts(data.products || []);
       setAlternatives(data.alternatives || []);
       setPagination(data.pagination || null);
     } catch (err) {
-      if (err.name === 'AbortError') return;
+      if (signal?.aborted || requestId !== latestRequest.current || err.name === 'AbortError') return;
       console.error('CategoryCompare fetch error:', err);
       setError(err.message || '카테고리 비교 데이터를 불러오는 중 오류가 발생했습니다');
       setSummary(null);
       setSubcategories([]);
       setProducts([]);
       setAlternatives([]);
+      setPagination(null);
     } finally {
-      setLoading(false);
+      if (!signal?.aborted && requestId === latestRequest.current) setLoading(false);
     }
-  }, [categoryId, sort, page]);
+  }, [categoryId, comparisonBasis, sort, page]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -351,9 +396,12 @@ export default function CategoryComparePage() {
     return () => controller.abort();
   }, [fetchData]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [sort]);
+  const selectBasis = (basis) => setSearchParams((previous) => {
+    const next = new URLSearchParams(previous);
+    if (basis) next.set('comparison_basis', basis);
+    else next.delete('comparison_basis');
+    return next;
+  });
 
   const enrichedProducts = useMemo(() => {
     return products.map((p) => ({
@@ -400,6 +448,7 @@ export default function CategoryComparePage() {
         <div className={s.errorState}>
           <div className={s.errorIcon}>⚠️</div>
           <div className={s.errorText}>데이터를 불러오는 데 실패했습니다</div>
+          <p>{error}</p>
           <button className={s.retryBtn} onClick={() => fetchData()}>
             다시 시도
           </button>
@@ -409,6 +458,32 @@ export default function CategoryComparePage() {
       {!loading && !error && (
         <>
           <SummaryCards summary={summary} />
+          {summary?.comparison_groups?.length > 0 && (
+            <div className={s.filters} role="group" aria-label="비교 단위 선택">
+              <span className={s.filterLabel}>비교 단위:</span>
+              <button
+                type="button"
+                className={`${s.filterBtn} ${!comparisonBasis ? s.filterBtnActive : ''}`}
+                aria-pressed={!comparisonBasis}
+                onClick={() => selectBasis(null)}
+              >전체 상품</button>
+              {summary.comparison_groups.map((group, index) => (
+                <button
+                  key={group.basis}
+                  type="button"
+                  className={`${s.filterBtn} ${comparisonBasis === group.basis ? s.filterBtnActive : ''}`}
+                  aria-pressed={comparisonBasis === group.basis}
+                  onClick={() => selectBasis(group.basis)}
+                >
+                  {group.basis.startsWith('variant:') ? `동일 규격 그룹 ${index + 1}` : group.basis}
+                  {' · '}{fmt(group.product_count)}개 상품
+                </button>
+              ))}
+            </div>
+          )}
+          {products.length > 0 && <p className={s.offerFacts}>{summary?.comparison_basis
+            ? `${basisLabel(summary.comparison_basis)} 기준의 표시 가격을 비교합니다. 상품별 최소 구매·회원·쿠폰 조건을 확인하세요.`
+            : '공통 비교 단위가 없어 가격 순위를 표시하지 않습니다.'}</p>}
 
           {subcategories.length > 0 && (
             <section className={s.subcategorySection}>
@@ -437,6 +512,7 @@ export default function CategoryComparePage() {
                   <button
                     key={opt.value}
                     className={`${s.sortBtn} ${sort === opt.value ? s.sortBtnActive : ''}`}
+                    disabled={opt.value.startsWith('price_') && !summary?.comparison_basis}
                     onClick={() => setSort(opt.value)}
                   >
                     {opt.label}
@@ -517,6 +593,7 @@ export default function CategoryComparePage() {
             alternatives={alternatives}
             navigate={navigate}
             currentAvg={summary?.avg_comparison_price}
+            currentBasis={summary?.comparison_basis}
           />
         </>
       )}

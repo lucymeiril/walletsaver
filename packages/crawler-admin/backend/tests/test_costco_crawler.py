@@ -191,3 +191,44 @@ async def test_live_occ_request_budget_prevents_unbounded_fallback(monkeypatch):
     assert result.items_count == 0
     assert result.quality_details["public_endpoints_attempted"] == 2
     assert result.quality_details["fetch"]["pages_attempted"] == 2
+
+
+def test_source_child_skus_survive_html_occ_dedup_and_export_without_parent_alias():
+    from crawlers.marts.source_utils import source_dedup_key
+    codes = ['641176','641176-K2','641176-K6','780235-FP','697186-PG','697186-TL','642459-CHE4','642459-PPR4']
+    # Exact native suffix families published by the source. Equal names/prices
+    # must not collapse distinct options, and suffix digits are not quantities.
+    products = [{'code':code,'url':f'/Foods/Selection/p/{code}','name':'검수 선택 상품',
+                 'price':{'value':10000}} for code in codes]
+    occ = parse_costco_occ_response({'products':products})
+    html = ''.join(f'<li class="product-list-item"><a href="/Foods/Selection/p/{code}?utm=source">검수 선택 상품</a><span class="product-price-amount">10,000원</span></li>' for code in codes)
+    cards = parse_costco_listing(html)
+    assert [card.mart_native_code for card in occ] == codes
+    assert [card.mart_native_code for card in cards] == codes
+    for group in [occ,cards]:
+        items = cards_to_discount_items(group,source_url=BASE_URL)
+        assert len({source_dedup_key(item) for item in items}) == len(codes)
+        for code,item in zip(codes,items):
+            exported = CostcoCrawler()._discount_item_to_product_record(item)
+            assert exported['mart_native_code'] == code
+            assert exported['source_record_key'] == code
+            assert exported['canonical_url'] == f'{BASE_URL}/Foods/Selection/p/{code}'
+            assert exported['pack_qty'] is None and exported['pack_unit'] is None
+    changed = [{**product,'price':{'value':12000}} for product in products]
+    assert [card.mart_native_code for card in parse_costco_occ_response({'products':changed})] == codes
+
+
+@pytest.mark.parametrize('code,url,expected', [
+    ('641176-K2','/Foods/p/641176-K2','641176-K2'),
+    ('','/Foods/p/641176-K2','641176-K2'),
+    ('641176-K2','','641176-K2'),
+    ('641176','/Foods/p/641176-K2',None),
+    ('641176-K2','/Foods/p/641176-K6',None),
+    ('junk641176-K2','/Foods/p/641176-K2',None),
+    ('641176-K2','https://other.example/Foods/p/641176-K2',None),
+    ('','/Foods/p/641176-K2.txt',None),
+    ('641176-K2','/Foods/p/641176-K2/another',None),
+])
+def test_occ_native_code_and_url_are_concordant_or_rejected(code,url,expected):
+    cards = parse_costco_occ_response({'products':[{'code':code,'url':url,'name':'검수 선택 상품','price':{'value':10000}}]})
+    assert [card.mart_native_code for card in cards] == ([] if expected is None else [expected])

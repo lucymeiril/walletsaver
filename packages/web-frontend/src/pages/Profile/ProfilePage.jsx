@@ -13,6 +13,7 @@ import useStore from '../../stores/appStore';
 import { authService } from '../../services/authService';
 import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
+import { getSavedOfferConditionText, getSavedReceiptHoldText, isSavedReceiptValid, getWishlistHoldText } from '../../utils/productDecision';
 import s from './ProfilePage.module.css';
 
 const TABS = [
@@ -22,6 +23,21 @@ const TABS = [
   { key: 'alerts', label: '가격 알림', icon: BellRing },
   { key: 'account', label: '계정 관리', icon: AlertTriangle },
 ];
+
+const ALERT_HOLDS = {
+  selected_specification_revised: '저장 당시 규격이 변경되었습니다',
+  selection_required: '규격·판매처·거래 선택 필요',
+  selection_context_missing: '저장된 거래 조건 미확인',
+  selected_listing_unavailable: '선택한 판매처 거래 없음',
+  latest_quote_unavailable: '최신 거래 미확인',
+  quote_unavailable: '선택 거래의 현재 판매 여부 미확인',
+  price_unconfirmed: '거래 금액 미확인',
+  receipt_basis_unknown: '수령 구성 미확인',
+  receipt_conditions_changed: '저장 당시 구성·이용 조건과 다름',
+  eligibility_unverified: '회원·쿠폰·최소 구매 등 이용 조건 미확인',
+  membership_or_coupon_unverified: '회원·쿠폰 이용 조건 미확인',
+  catalog_unavailable: '카탈로그를 확인할 수 없음',
+};
 
 const ACTIVITY_ICONS = {
   view: Eye,
@@ -50,6 +66,7 @@ export default function ProfilePage() {
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [alerts, setAlerts] = useState([]);
   const [alertsLoading, setAlertsLoading] = useState(false);
+  const [alertsError, setAlertsError] = useState('');
 
   // Redirect if not logged in
   useEffect(() => {
@@ -114,12 +131,13 @@ export default function ProfilePage() {
 
   const fetchAlerts = useCallback(async () => {
     setAlertsLoading(true);
+    setAlertsError('');
     try {
       const response = await api.getJson('/api/users/me/alerts', null, { silent: true });
       const rows = response?.data || response || [];
       setAlerts(Array.isArray(rows) ? rows : []);
-    } catch {
-      setAlerts([]);
+    } catch (error) {
+      setAlertsError(error?.message || '가격 알림을 불러올 수 없습니다');
     } finally {
       setAlertsLoading(false);
     }
@@ -133,6 +151,7 @@ export default function ProfilePage() {
     try {
       await api.delete(`/api/users/me/alerts/${alertId}`);
       setAlerts((rows) => rows.filter((row) => row.id !== alertId));
+      useStore.getState().removePriceAlert(alertId);
       addToast('가격 알림을 해제했습니다', 'info');
     } catch (error) {
       addToast(error?.message || '가격 알림 해제에 실패했습니다', 'error');
@@ -391,10 +410,12 @@ export default function ProfilePage() {
                     <Heart size={16} color="#ef4444" fill="#ef4444" />
                     <span className={s.wishlistItemName}>
                       {item.product_name || item.item_name || item.name || '상품'}
+                      {item.offer_context?.display_unit && <small> · {item.offer_context.display_unit}</small>}
+                      {item.current_price == null && <small> · 판정 보류: {getWishlistHoldText(item.comparison_reason)}</small>}
                     </span>
                     {(item.price_at_add ?? item.item_price ?? item.price) != null && (
                       <span className={s.wishlistItemPrice}>
-                        {fmt(item.price_at_add ?? item.item_price ?? item.price)}원
+                        저장한 관측 가격 {fmt(item.price_at_add ?? item.item_price ?? item.price)}원
                       </span>
                     )}
                   </div>
@@ -414,6 +435,8 @@ export default function ProfilePage() {
             <p className={s.accountDesc}>외부 발송 없이 현재 가격의 목표 도달 여부를 여기에서 확인합니다.</p>
             {alertsLoading ? (
               <div className={s.loadingState}>로딩 중...</div>
+            ) : alertsError ? (
+              <div role="alert"><p>{alertsError}</p><button type="button" onClick={fetchAlerts}>다시 불러오기</button></div>
             ) : alerts.length === 0 ? (
               <div className={s.emptyState}>
                 <BellRing size={40} />
@@ -425,10 +448,15 @@ export default function ProfilePage() {
                   <div key={alert.id} className={s.alertItem}>
                     <div className={s.alertInfo}>
                       <strong>{alert.product_name || alert.product?.name || `상품 ${alert.product_id}`}</strong>
-                      <span>목표 {fmt(alert.target_price)}원 · 현재 {alert.current_price != null ? `${fmt(alert.current_price)}원` : '가격 없음'}</span>
+                      {alert.variant_id && <span>{alert.offer_context?.display_unit || alert.offer_context?.variant_name || '규격 미확인'} · {alert.offer_context?.source || '판매처 미확인'}</span>}
+                      <span>목표 {fmt(alert.target_price)}원 · 현재 비교 가능 거래 금액 {isSavedReceiptValid(alert) && alert.current_price != null ? `${fmt(alert.current_price)}원` : '미확인'}</span>
+                      {alert.quoted_price != null && <span>선택 거래 표시 금액 {fmt(alert.quoted_price)}원</span>}
+                      {alert.offer_context && <small>저장한 거래 조건: {getSavedOfferConditionText(alert)}</small>}
+                      {getSavedReceiptHoldText(alert) && <small>{getSavedReceiptHoldText(alert)}</small>}
+                      {alert.current_offer_context && <small>현재 거래 조건: {getSavedOfferConditionText(alert, alert.current_offer_context)}</small>}
                     </div>
-                    <span className={alert.is_triggered ? s.alertReached : s.alertWaiting}>
-                      {alert.is_triggered ? '목표 도달' : '대기 중'}
+                    <span className={isSavedReceiptValid(alert) && alert.is_triggered ? s.alertReached : s.alertWaiting}>
+                      {isSavedReceiptValid(alert) && alert.is_triggered ? '목표 도달' : alert.trigger_reason ? `판정 보류 · ${ALERT_HOLDS[alert.trigger_reason] || '거래 조건 미확인'}` : '대기 중'}
                     </span>
                     <button type="button" className={s.alertRemove} onClick={() => removeAlert(alert.id)}>
                       해제

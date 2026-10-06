@@ -11,6 +11,7 @@ requests.Session, UA/Referer/Accept-Language, 3초 고정 sleep으로만 동작�
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -20,7 +21,7 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Optional
 from pathlib import Path
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit, urlunsplit
 
 import requests
 
@@ -29,6 +30,7 @@ from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
     DiscountItem, ErrorType, StrategyFailure,
 )
+from core.promotion_semantics import confirmed_price_or_none, conditional_selection_facts_or_none
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
@@ -158,7 +160,7 @@ class LottemartCrawler(CrawlerContract):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
                 last_resp = resp
-                if resp.status_code == 429:  # Rate limited — back off
+                if resp.status_code == 429 and attempt < max_retries - 1:  # Only back off before another allowed read
                     wait = (2 ** attempt)
                     logger.warning(f"[{self.info.name}] rate limited (429), retrying in {wait:.1f}s")
                     time.sleep(wait)
@@ -203,10 +205,375 @@ class LottemartCrawler(CrawlerContract):
             return await self._crawl_source_url_once(source_url)
         return await self.crawl()
 
+    @classmethod
+    def _exact_product_native(cls, url: Any) -> str:
+        if not isinstance(url, str):
+            return ""
+        try:
+            parts = urlsplit(url)
+        except ValueError:
+            return ""
+        if parts.scheme != "https" or parts.netloc != "lottemartzetta.com":
+            return ""
+        match = re.fullmatch(r"/products/OS(\d{13})/details/?", parts.path)
+        return match.group(1) if match else ""
+
+    def _matches_target(self, product: dict, target: str) -> bool:
+        native, _ = self._extract_lottemart_ean13(product)
+        if native != target:
+            return False
+        for key in ("retailerProductId", "stdGoodsCd"):
+            if key in product and self._coerce_lottemart_ean13(product[key]) != target:
+                return False
+        for key in ("goodsUrl", "detail_url", "detailUrl", "productUrl", "url"):
+            href = product.get(key)
+            if href:
+                if not isinstance(href, str) or self._exact_product_native(self._absolute_url(href, self.ZETTA_BASE)) != target:
+                    return False
+        return True
+
+    @staticmethod
+    def _product_only_state(value: Any, depth: int = 0) -> Any:
+        # Existing extractors recurse through saved envelopes. Exclude private namespaces
+        # before that traversal; none of this state is serialized into diagnostic output.
+        if depth > 40:
+            return None
+        if isinstance(value, dict):
+            return {key: LottemartCrawler._product_only_state(item, depth + 1)
+                    for key, item in value.items()
+                    if not re.search(r"account|auth|member|login|cart|basket|order|wishlist|review|rating|cookie|token|session|sdk", key, re.I)}
+        if isinstance(value, list):
+            return [LottemartCrawler._product_only_state(item, depth + 1) for item in value]
+        return value
+
+    @staticmethod
+    def _candidate_fields(product: dict) -> dict[str, Any]:
+        """Flat, bounded source fields only; containers retain their type, not contents."""
+        fields = {"field_names": sorted(str(key)[:64] for key in product)[:40]}
+        def retain(key, value):
+            if value is None or isinstance(value, (bool, int, float)):
+                # Invalid nonfinite money remains a type marker, not nonstandard JSON.
+                fields[key] = value if not isinstance(value, float) or value == value and abs(value) != float("inf") else "<nonfinite>"
+            elif isinstance(value, str):
+                fields[key] = value[:256]
+            else:
+                fields[key] = f"<{type(value).__name__}>"
+        for key in ("name", "goodsNm", "itemNm", "prodNm", "productName", "title", "retailerProductId", "stdGoodsCd",
+                    "salePrice", "sellprc", "sale_price", "currentPrice", "originPrice", "norprc", "original_price", "originalPrice",
+                    "unit", "capacity", "packSizeDescription", "categoryNm", "ctgNm", "categoryName", "category"):
+            if key in product:
+                retain(key, product[key])
+        for key in ("goodsUrl", "detail_url", "detailUrl", "productUrl", "url"):
+            if isinstance(product.get(key), str):
+                parts = urlsplit(product[key])
+                retain(key, urlunsplit((parts.scheme, parts.netloc, parts.path, "", "")))
+        price = product.get("price")
+        if isinstance(price, dict):
+            if "amount" in price:
+                retain("price.amount", price["amount"])
+            for kind in ("current", "original"):
+                branch = price.get(kind)
+                if isinstance(branch, dict) and "amount" in branch:
+                    retain(f"price.{kind}.amount", branch["amount"])
+                elif kind in price:
+                    retain(f"price.{kind}", branch)
+        elif "price" in product:
+            retain("price", price)
+        size = product.get("size")
+        if isinstance(size, dict) and "value" in size:
+            retain("size.value", size["value"])
+        if isinstance(product.get("categoryPath"), list):
+            fields["categoryPath"] = [value[:64] for value in product["categoryPath"][:8] if isinstance(value, str)]
+        return fields
+
+    def _parse_exact_product(self, body: str, target: str) -> tuple[list[DiscountItem], int, dict]:
+        """Use existing source shapes, binding native evidence before any conversion."""
+        if re.search(r"window\.__QUERY_INITIAL_STATE__\s*=", body):
+            return self._parse_query_exact_product(body, target)
+        candidates = []
+        state_text = self._extract_initial_state_json(body)
+        payload = None
+        try:
+            payload = self._product_only_state(json.loads(state_text or body))
+        except (ValueError, TypeError):
+            pass
+        entities = self._find_product_entities(payload)
+        if entities:
+            candidates = [(row, self._entity_to_discount_item) for row in entities.values() if isinstance(row, dict)]
+            shape = "productEntities"
+        else:
+            groups = payload.get("productGroups") if isinstance(payload, dict) else None
+            if isinstance(groups, list):
+                for group in groups:
+                    if isinstance(group, dict):
+                        for key in ("decoratedProducts", "products"):
+                            if isinstance(group.get(key), list):
+                                candidates.extend((row, self._api_product_to_discount_item) for row in group[key] if isinstance(row, dict))
+                shape = "productGroups"
+            else:
+                rows = self._extract_product_lists(payload) if payload is not None else self._extract_json_items(body)
+                candidates = [(row, self._json_to_discount_item) for row in rows if isinstance(row, dict)]
+                shape = "generic_product_list"
+        if not candidates:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(body, "html.parser")
+            cards = soup.select(".product-card-container, .product-item, .goods_item, .event_item, .item_box, .prod_wrap")
+            for card in cards:
+                row = {}
+                name = card.select_one(".product-name, .goods_name, .item_name, .prod_name, a[href*='goods'], [class*='name'], [class*='title'], h3, h4, strong")
+                link = card.select_one("a[href*='/products/OS']") or card.select_one("a[href*='products/OS']")
+                price = card.select_one(".sale_price, .price .num, .discount_price, .spc_price")
+                original = card.select_one(".origin_price, .normal_price, .org_price, .before_price")
+                if name:
+                    row["name"] = name.get_text(strip=True)
+                if link:
+                    row["url"] = link.get("href", "")
+                if price:
+                    row["salePrice"] = price.get_text(strip=True)
+                if original:
+                    row["originalPrice"] = original.get_text(strip=True)
+                category = card.get("data-category") or card.get("data-ctg-nm") or card.get("data-category-name")
+                if not category:
+                    category_el = card.select_one(".category, .breadcrumb, .location")
+                    category = category_el.get_text(" > ", strip=True) if category_el else None
+                if category:
+                    row["category"] = category
+                candidates.append((row, lambda _row, card=card: self._parse_product_card(card)))
+            shape = "html_cards"
+        matched = [(row, converter) for row, converter in candidates if self._matches_target(row, target)]
+        items = []
+        conversion_errors = 0
+        for row, converter in matched:
+            try:
+                item = converter(row)
+                if item: items.append(item)
+            except (TypeError, ValueError, AttributeError):
+                conversion_errors += 1
+        captured = [self._candidate_fields(row) for row, _ in matched[:5]]
+        diagnostic = {
+            "diagnostic_kind": "lottemart_exact_product_parse",
+            "schema_marker": shape,
+            "initial_state_marker_present": bool(re.search(r"window\.__INITIAL_STATE__\s*=", body)),
+            "source_candidate_count": len(candidates),
+            "exact_native_candidate_count": len(matched),
+            "conversion_exception_count": conversion_errors,
+            "capture_truncated": len(matched) > len(captured),
+        }
+        if captured:
+            diagnostic["matched_candidate_fields"] = captured
+            diagnostic["captured_fields_sha256"] = hashlib.sha256(json.dumps(captured, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        return items, len(candidates), diagnostic
+
+    @staticmethod
+    def _query_source_fields(product: dict) -> dict:
+        """Whitelist complete bounded product facts, never query/user state."""
+        def bounded(value, depth=0):
+            if depth > 4:
+                raise ValueError("source product nesting exceeds bound")
+            if isinstance(value, str):
+                if len(value) > 256:
+                    raise ValueError("source product text exceeds bound")
+                return value
+            if value is None or type(value) in (bool, int):
+                return value
+            if type(value) is float and value == value and abs(value) != float("inf"):
+                return value
+            if isinstance(value, list) and len(value) <= 8:
+                return [bounded(entry, depth + 1) for entry in value]
+            if isinstance(value, dict) and len(value) <= 16:
+                return {key: bounded(entry, depth + 1) for key, entry in value.items()}
+            raise ValueError("unsupported source product field")
+        def subset(node, keys):
+            if not isinstance(node, dict):
+                raise ValueError("source product container is not an object")
+            return {key: bounded(node[key]) for key in keys if key in node}
+        result = subset(product, ("productId", "retailerProductId", "stdGoodsCd", "name", "brand", "type",
+                                   "packSizeDescription", "countryOfOrigin", "categoryPath", "available", "timeRestricted"))
+        for key in ("goodsUrl", "detail_url", "detailUrl", "productUrl", "url"):
+            if key in product:
+                result[key] = bounded(product[key])
+        result["price"] = subset(product.get("price"), ("amount", "currency"))
+        if "unitPrice" in product:
+            unit_price = product["unitPrice"]
+            result["unitPrice"] = subset(unit_price, ("unit",))
+            if "price" in unit_price:
+                result["unitPrice"]["price"] = subset(unit_price["price"], ("amount", "currency"))
+        if "quantityRestrictionGroup" in product:
+            result["quantityRestrictionGroup"] = subset(product["quantityRestrictionGroup"], ("quantityRestrictionGroupId", "contribution"))
+        promotions = product.get("promotions", [])
+        if not isinstance(promotions, list) or len(promotions) > 8:
+            raise ValueError("source promotions exceed bound")
+        result["promotions"] = [subset(promo, ("promoId", "retailerPromotionId", "description", "type", "presentationMode",
+            "requiredProductQuantity", "validFrom", "validUntil", "startDate", "endDate", "conditionText", "qualificationText",
+            "membershipRequired", "couponRequired", "paymentCardText", "minimumSpend")) for promo in promotions]
+        # Public product purchase declarations are source facts, not private state.
+        for key in ("minimumPurchaseQuantity", "maximumPurchaseQuantity", "purchaseMinQuantity", "purchaseLimitQuantity"):
+            if key in product:
+                result[key] = bounded(product[key])
+        return result
+
+    @staticmethod
+    def _query_quantity(name: str, pack: str) -> dict | None:
+        metadata = None
+        for text in (name, pack):
+            current = normalize_unit_metadata(name=text)
+            matched = current.get("raw_match")
+            remainder = text.replace(matched, "", 1) if matched else text
+            # Hold extra declarations instead of guessing a multiplier or taking
+            # only the last measurement. A selection threshold is never a pack.
+            if re.search(r"[xX×*]\s*\d|(?<![\d.,])\d+(?:\.\d+)?\s*(?:kg|ml|g|l|리터|그램|개입|박스|세트|팩|봉|병|입|개|포|장)(?![A-Za-z])", remainder, re.I):
+                return None
+            if current.get("package_quantity") is None:
+                if text == pack and pack:
+                    return None
+                continue
+            def receipt(value):
+                quantity, unit = value["package_quantity"], value["package_unit"].lower()
+                if unit in {"l", "kg"}:
+                    quantity, unit = quantity * 1000, {"l": "ml", "kg": "g"}[unit]
+                return quantity, unit, value.get("bundle_count", 1)
+            if metadata is not None and receipt(current) != receipt(metadata):
+                return None
+            metadata = current
+        return metadata
+
+    def _query_product_to_discount_item(self, product: dict, pointer: str) -> Optional[DiscountItem]:
+        source = self._query_source_fields(product)
+        name, pack, price = source.get("name"), source.get("packSizeDescription"), source["price"]
+        if (not isinstance(name, str) or len(name.strip()) < 2 or not isinstance(pack, str)
+                or not isinstance(source.get("retailerProductId"), str)
+                or not self._coerce_lottemart_ean13(source["retailerProductId"])
+                or price.get("currency") != "KRW" or set(product["price"]) != {"amount", "currency"}
+                or self._to_int(price.get("amount")) is None):
+            return None
+        quantity = self._query_quantity(name, pack)
+        if quantity is None:
+            return None
+        descriptions = []
+        for promo in source["promotions"]:
+            description = promo.get("description")
+            if not isinstance(description, str) or not description:
+                return None
+            required = promo.get("requiredProductQuantity")
+            if required is not None and (type(required) is not int or required < 1):
+                return None
+            selection = conditional_selection_facts_or_none(description)
+            if selection and required is not None and required != selection["required_selection_quantity"]:
+                return None
+            descriptions.append(description)
+        item = self._api_product_to_discount_item(product)
+        if item is None:
+            return None
+        # API compatibility helpers may clean names or infer badges/rates. The
+        # modern detail adapter emits original facts only, for formal review.
+        item.name = name
+        item.event_name = " · ".join(descriptions)
+        item.promo_label = item.promo_type = None
+        item.original_price = item.discount_percent = item.price_per_100g = None
+        item.package_quantity, item.package_unit = quantity["package_quantity"], quantity["package_unit"]
+        item.unit = item.display_unit = quantity["display_unit"]
+        item.attributes.pop("promo_label", None)
+        item.attributes.update({"raw_name": name, "bundle_count": quantity.get("bundle_count"),
+            "canon_hash": compute_canon_hash(product.get("brand") or None, name, item.package_quantity, item.package_unit),
+            "lottemart_detail_source_fields": source, "lottemart_detail_source_pointer": pointer,
+            "lottemart_detail_source_fields_sha256": hashlib.sha256(json.dumps(source, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()})
+        return item
+
+    def _parse_query_exact_product(self, body: str, target: str) -> tuple[list[DiscountItem], int, dict]:
+        from bs4 import BeautifulSoup
+        candidates = []
+        malformed = False
+        for index, script in enumerate(BeautifulSoup(body, "html.parser").find_all("script")):
+            text = script.get_text()
+            for assignment in re.finditer(r"window\.__QUERY_INITIAL_STATE__\s*=\s*", text):
+                try:
+                    payload, _ = json.JSONDecoder().raw_decode(text[assignment.end():])
+                    queries = payload.get("queries") if isinstance(payload, dict) else None
+                    if not isinstance(queries, list):
+                        raise ValueError("query state lacks declared queries")
+                    for query_index, query in enumerate(queries):
+                        state = query.get("state") if isinstance(query, dict) else None
+                        data = state.get("data") if isinstance(state, dict) else None
+                        if isinstance(data, dict) and "product" in data:
+                            if not isinstance(data["product"], dict):
+                                raise ValueError("declared product is not an object")
+                            candidates.append((data["product"], f"script{index}/window.__QUERY_INITIAL_STATE__/queries/{query_index}/state/data/product"))
+                except (TypeError, ValueError):
+                    malformed = True
+        matched = [(product, pointer) for product, pointer in candidates if self._matches_target(product, target)]
+        for product, _ in candidates:
+            if (any(self._coerce_lottemart_ean13(product.get(key)) == target for key in ("retailerProductId", "stdGoodsCd"))
+                    and not self._matches_target(product, target)):
+                malformed = True
+        items, source_versions = [], set()
+        conversion_errors = 0
+        for product, pointer in matched:
+            try:
+                item = self._query_product_to_discount_item(product, pointer)
+                if item is None:
+                    malformed = True
+                else:
+                    items.append(item)
+                    source_versions.add(item.attributes["lottemart_detail_source_fields_sha256"])
+            except (TypeError, ValueError, AttributeError):
+                conversion_errors += 1
+                malformed = True
+        conflict = len(source_versions) > 1
+        if malformed or conflict:
+            items = []
+        elif items:
+            items = items[:1]
+        diagnostic = {"diagnostic_kind": "lottemart_exact_product_parse", "schema_marker": "query_state_product",
+            "initial_state_marker_present": bool(re.search(r"window\.__INITIAL_STATE__\s*=", body)),
+            "query_initial_state_marker_present": True, "source_candidate_count": len(candidates),
+            "exact_native_candidate_count": len(matched), "conversion_exception_count": conversion_errors,
+            "conflicting_target_versions": conflict, "malformed_query_source": malformed, "capture_truncated": len(matched) > 5}
+        if matched:
+            captured = [self._candidate_fields(product) for product, _ in matched[:5]]
+            diagnostic["matched_candidate_fields"] = captured
+            diagnostic["captured_fields_sha256"] = hashlib.sha256(json.dumps(captured, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        return items, len(candidates), diagnostic
+
+    @staticmethod
+    def _finish_target_diagnostic(diagnostic: dict | None, quality: dict) -> str | None:
+        if diagnostic is None:
+            return None
+        zero = quality.get("zero_result_diagnostic") or {}
+        diagnostic["stage"] = zero.get("stage") or "valid_target_rows"
+        diagnostic["counts"] = zero.get("counts") or quality.get("item_counts")
+        quality["collection"]["target_diagnostic"] = diagnostic
+        # This is a diagnostic envelope, never an ingestible products/items list.
+        return json.dumps(diagnostic, ensure_ascii=False, sort_keys=True, allow_nan=False)
+
+    @staticmethod
+    def _zero_result_error(quality: dict) -> str:
+        zero = quality.get("zero_result_diagnostic") or {}
+        counts = zero.get("counts") or {}
+        return (f"LotteMart zero valid rows: {zero.get('stage', 'zero_valid_items_unknown')} "
+                f"(source_raw={counts.get('source_raw', 0)}, parsed={counts.get('parsed', 0)}, "
+                f"valid={counts.get('valid', 0)}, invalid_or_dropped={counts.get('invalid_or_dropped', 0)})")
+
+    @staticmethod
+    def _has_visible_access_challenge(body: str) -> bool:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(body, "html.parser")
+        for element in soup.select("script, style, noscript"):
+            element.decompose()
+        visible = soup.get_text(" ", strip=True).lower()
+        return any(marker in visible for marker in (
+            "request blocked", "access denied", "verify you are human", "complete the captcha",
+            "web firewall", "접근이 차단", "비정상적인 접근",
+        )) or bool(soup.select_one("input[type='password']") and re.search(r"login required|로그인이 필요", visible))
+
     async def _crawl_saved_source_input(self, source_input: str, *, source_url: str | None = None) -> CrawlResult:
         started_at = datetime.now()
-        raw_count = self.count_raw_candidates(source_input)
-        parsed = await self.parse(source_input)
+        target = self._exact_product_native(source_url)
+        diagnostic = None
+        if target:
+            parsed, raw_count, diagnostic = self._parse_exact_product(source_input, target)
+        else:
+            raw_count = self.count_raw_candidates(source_input)
+            parsed = await self.parse(source_input)
         valid_items = await self.validate(parsed)
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
         for _d in items_as_dict:
@@ -229,6 +596,7 @@ class LottemartCrawler(CrawlerContract):
             "source_url": source_url,
             "auth_bypass_attempted": False,
         }
+        raw_diagnostic = self._finish_target_diagnostic(diagnostic, quality_details)
         quality_details["source_map"] = self._source_map_manifest(quality_details)
         finished_at = datetime.now()
         return CrawlResult(
@@ -240,7 +608,8 @@ class LottemartCrawler(CrawlerContract):
             started_at=started_at,
             finished_at=finished_at,
             duration_seconds=(finished_at - started_at).total_seconds(),
-            error_msg=None if valid_items else "saved source input produced zero valid LotteMart items",
+            error_msg=None if valid_items else self._zero_result_error(quality_details),
+            raw_data=raw_diagnostic,
             quality_score=quality_details["score"],
             quality_details=quality_details,
         )
@@ -254,6 +623,8 @@ class LottemartCrawler(CrawlerContract):
         parsed: list[DiscountItem] = []
         waf_blocker: dict[str, object] | None = None
         response: requests.Response | None = None
+        target = self._exact_product_native(source_url)
+        diagnostic = None
 
         session = requests.Session()
         try:
@@ -263,7 +634,7 @@ class LottemartCrawler(CrawlerContract):
                 session=session,
                 timeout=20,
                 max_retries=1,
-                allow_redirects=True,
+                allow_redirects=not bool(target),
             )
             if response.status_code != 200:
                 message = f"source_url HTTP {response.status_code}"
@@ -282,6 +653,19 @@ class LottemartCrawler(CrawlerContract):
                     error_msg=message,
                     status_code=response.status_code,
                 ))
+            elif target and self._has_visible_access_challenge(response.text):
+                message = "source_url HTTP 200 active access challenge"
+                errors.append(message)
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="requests", error_type=ErrorType.HTTP_ERROR,
+                    error_msg=message, status_code=200,
+                ))
+                waf_blocker = self._waf_blocker_details(
+                    message, request_url=source_url, status_code=200,
+                    blocker="visible_access_challenge",
+                )
+            elif target:
+                parsed, raw_count, diagnostic = self._parse_exact_product(response.text, target)
             else:
                 raw_count = self.count_raw_candidates(response.text)
                 parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
@@ -323,6 +707,7 @@ class LottemartCrawler(CrawlerContract):
         })
         if waf_blocker:
             self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+        raw_diagnostic = self._finish_target_diagnostic(diagnostic, quality_details)
         quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
         finished_at = datetime.now()
         return CrawlResult(
@@ -334,7 +719,8 @@ class LottemartCrawler(CrawlerContract):
             started_at=started_at,
             finished_at=finished_at,
             duration_seconds=(finished_at - started_at).total_seconds(),
-            error_msg="; ".join(errors) if errors and not valid_items else None,
+            error_msg=None if valid_items else ("; ".join(errors) or self._zero_result_error(quality_details)),
+            raw_data=raw_diagnostic,
             errors=strategy_failures,
             quality_score=quality_details["score"],
             quality_details=quality_details,
@@ -1369,12 +1755,12 @@ class LottemartCrawler(CrawlerContract):
             clean_name = name
 
         # 가격 추출
-        price_data = product.get("price", {})
-        current = price_data.get("current", {})
-        original = price_data.get("original", {})
+        price_data = product.get("price") if isinstance(product.get("price"), dict) else {}
+        current = price_data.get("current")
+        original = price_data.get("original")
 
-        sale_price = self._parse_price_str(current.get("amount"))
-        original_price = self._parse_price_str(original.get("amount"))
+        sale_price = self._parse_price_str(current.get("amount") if isinstance(current, dict) else current)
+        original_price = self._parse_price_str(original.get("amount") if isinstance(original, dict) else original)
 
         if not sale_price or sale_price <= 0:
             return None
@@ -1461,7 +1847,9 @@ class LottemartCrawler(CrawlerContract):
             return None
         clean_name = self._clean_product_name(name) or name
         price_obj = prod.get("price") if isinstance(prod.get("price"), dict) else {}
-        sale_price = self._to_int(price_obj.get("amount") or prod.get("salePrice") or prod.get("price"))
+        sale_price = self._to_int(next((value for value in (
+            price_obj.get("amount"), prod.get("salePrice"), prod.get("price"),
+        ) if value is not None), None))
         if not sale_price or sale_price <= 0:
             return None
         ean13, ean_source_key = self._extract_lottemart_ean13(prod)
@@ -1628,21 +2016,17 @@ class LottemartCrawler(CrawlerContract):
             return None
 
         price = product.get("price") if isinstance(product.get("price"), dict) else {}
-        sale_price = self._to_int(
-            product.get("salePrice")
-            or product.get("sellprc")
-            or product.get("sale_price")
-            or product.get("currentPrice")
-            or (price.get("current") or {}).get("amount")
-            or (product.get("price") if not isinstance(product.get("price"), dict) else None)
-        )
-        original_price = self._to_int(
-            product.get("originPrice")
-            or product.get("norprc")
-            or product.get("original_price")
-            or product.get("originalPrice")
-            or (price.get("original") or {}).get("amount")
-        )
+        current = price.get("current")
+        original = price.get("original")
+        sale_price = self._to_int(next((value for value in (
+            product.get("salePrice"), product.get("sellprc"), product.get("sale_price"),
+            product.get("currentPrice"), current.get("amount") if isinstance(current, dict) else current,
+            product.get("price") if not isinstance(product.get("price"), dict) else None,
+        ) if value is not None), None))
+        original_price = self._to_int(next((value for value in (
+            product.get("originPrice"), product.get("norprc"), product.get("original_price"),
+            product.get("originalPrice"), original.get("amount") if isinstance(original, dict) else original,
+        ) if value is not None), None))
 
         if not sale_price or sale_price <= 0:
             return None
@@ -1810,8 +2194,8 @@ class LottemartCrawler(CrawlerContract):
             event_name="롯데마트 할인",
         )
 
-    def _extract_price_from_element(self, card, selectors: str) -> Optional[int]:
-        """CSS 셀렉터로 가격 요소를 찾아 정수 변환."""
+    def _extract_price_from_element(self, card, selectors: str) -> int | float | None:
+        """Validate the complete text of a declared price element."""
         for selector in selectors.split(","):
             el = card.select_one(selector.strip())
             if el:
@@ -1820,47 +2204,30 @@ class LottemartCrawler(CrawlerContract):
                     return price
         return None
 
-    def _parse_price_str(self, value) -> Optional[int]:
-        """'29,780' 또는 '29780' 형태의 가격 문자열을 정수로 변환."""
-        if value is None:
+    def _parse_price_str(self, value) -> int | float | None:
+        """Validate a complete quote; currency formatting is not marketing text."""
+        if isinstance(value, str):
+            text = value.strip()
+            match = re.fullmatch(r"(?:₩\s*)?((?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)\s*(?:원)?", text)
+            if not match:
+                return None
+            value = match.group(1).replace(",", "")
+        # Validate before coercion: bool/container/NaN/malformed money is not a quote.
+        if confirmed_price_or_none(value) is None:
             return None
-        text = str(value).replace(",", "").replace("원", "").strip()
-        match = re.search(r"(\d+)", text)
-        if match:
-            return int(match.group(1))
-        return None
+        number = float(value)
+        return int(number) if number.is_integer() else number
 
     def _absolute_url(self, url: str, base_url: str) -> str:
         """Normalize source-relative URLs while preserving absolute URLs."""
         return absolute_url(url, base_url)
 
-    def _extract_price(self, text: str) -> Optional[int]:
-        """텍스트에서 가격(원)을 추출한다."""
-        if not text:
-            return None
-        patterns = [
-            r"(\d{1,3}(?:,\d{3})+)",
-            r"(\d{3,})",
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                return int(match.group(1).replace(",", ""))
-        return None
+    def _extract_price(self, text: str) -> int | float | None:
+        return self._parse_price_str(text)
 
-    def _to_int(self, value) -> Optional[int]:
-        """안전한 정수 변환."""
-        if value is None:
-            return None
-        if isinstance(value, str):
-            value = value.replace(",", "").replace("원", "").strip()
-            match = re.search(r"\d+", value)
-            if match:
-                value = match.group(0)
-        try:
-            return int(value)
-        except (ValueError, TypeError):
-            return None
+    def _to_int(self, value) -> int | float | None:
+        # Legacy name; these call sites are money, never quantity/count conversion.
+        return self._parse_price_str(value)
 
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:
         """유효한 할인 상품만 필터링."""

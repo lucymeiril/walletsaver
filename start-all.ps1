@@ -4,6 +4,7 @@
 .DESCRIPTION
     -Web   : web-api(8000) + web-frontend(5173)만 실행
     -Admin : crawler-admin(8001/5174) + db-admin(8002/5175)만 실행
+    -TeamDemo : 공개 demo.env + 정제 catalog를 별도 .demo-runtime에 최초 설치
     -ForcePorts : 필요한 포트를 점유한 기존 프로세스를 명시적으로 종료
     옵션이 없으면 둘 다 실행합니다.
 
@@ -15,13 +16,17 @@
 param(
     [switch]$Web,
     [switch]$Admin,
-    [switch]$ForcePorts
+    [switch]$ForcePorts,
+    [switch]$TeamDemo,
+    [string]$DemoDataDir,
+    [string]$DemoEnvFile
 )
 
 $ErrorActionPreference = "Continue"
 $Root = $PSScriptRoot
 if (-not $Root) { $Root = Get-Location }
 if (-not $Web -and -not $Admin) { $Web = $true; $Admin = $true }
+if (($DemoDataDir -or $DemoEnvFile) -and -not $TeamDemo) { throw "-DemoDataDir/-DemoEnvFile require -TeamDemo" }
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
@@ -55,6 +60,59 @@ $DbFrontend      = Join-Path $Root "packages\db-admin\frontend"
 $DbBackend       = Join-Path $Root "packages\db-admin\backend"
 $SharedDir       = Join-Path $Root "packages\shared"
 $DataDir         = Join-Path $Root ".walletsavior"
+if ($TeamDemo) {
+    # Default public values, or an explicitly selected private copy, use the same allowlist.
+    $demoEnvPath = if ($DemoEnvFile) { $DemoEnvFile } else { Join-Path $Root "demo.env" }
+    $demoAllowedKeys = @(
+        "JWT_SECRET_KEY", "JWT_SECRET", "WALLETSAVIOR_REMOTE_ADMIN_TOKEN",
+        "DB_ADMIN_API_KEY", "DB_ADMIN_API_KEY_ROLE", "CRAWLER_ADMIN_API_KEY", "DB_ADMIN_EMAIL", "DB_ADMIN_PASSWORD",
+        "REQUIRE_AUTH", "WALLETSAVER_WEB_PORT", "COOKIE_SECURE",
+        "WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER", "WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD",
+        "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_SECRET_FILE",
+        "NAVER_CLIENT_ID", "NAVER_CLIENT_SECRET", "KAKAO_CLIENT_ID", "KAKAO_CLIENT_SECRET", "OPINET_API_KEY"
+    )
+    if (-not (Test-Path -LiteralPath $demoEnvPath -PathType Leaf)) { throw "Selected demo env file is missing" }
+    foreach ($rawLine in (Get-Content -LiteralPath $demoEnvPath -Encoding UTF8)) {
+        $line = $rawLine.Trim()
+        if (-not $line -or $line.StartsWith("#")) { continue }
+        if ($line -notmatch '^([A-Z][A-Z0-9_]*)=(.*)$') { throw "Invalid demo.env entry" }
+        $demoKey = $Matches[1]
+        $demoValue = $Matches[2]
+        if ($demoAllowedKeys -notcontains $demoKey) { throw "Unsupported demo.env key: $demoKey" }
+        [Environment]::SetEnvironmentVariable($demoKey, $demoValue, "Process")
+    }
+    foreach ($demoKey in @("JWT_SECRET_KEY", "JWT_SECRET", "WALLETSAVIOR_REMOTE_ADMIN_TOKEN", "DB_ADMIN_API_KEY", "CRAWLER_ADMIN_API_KEY")) {
+        if (-not [Environment]::GetEnvironmentVariable($demoKey, "Process")) { throw "Missing public demo key: $demoKey" }
+    }
+    if (-not $DemoDataDir) { $DemoDataDir = Join-Path $Root ".demo-runtime" }
+    $DataDir = [System.IO.Path]::GetFullPath($DemoDataDir)
+    if ($DataDir.TrimEnd('\', '/') -eq (Join-Path $Root ".walletsavior").TrimEnd('\', '/')) {
+        throw "TeamDemo must not use the ordinary .walletsavior data directory"
+    }
+    & $PyExe (Join-Path $Root "tools\install_demo_catalog.py") --source (Join-Path $Root "demo-data") --target $DataDir
+    if ($LASTEXITCODE -ne 0) { throw "Demo catalog installation refused" }
+    # Override inherited paths explicitly: all selected services share this demo catalog only.
+    $demoAdminPath = (Join-Path $DataDir "admin.sqlite").Replace("\", "/")
+    $env:DATABASE_URL = "sqlite:///$demoAdminPath"
+    $env:DB_ADMIN_DATABASE_URL = $env:DATABASE_URL
+    $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $DataDir "public_snapshot.sqlite"
+    $env:WALLETSAVIOR_ACCOUNT_DB = Join-Path $DataDir "accounts.sqlite"
+    $env:WALLETSAVIOR_INTERACTION_DB = Join-Path $DataDir "interactions.sqlite"
+    $env:WALLETSAVIOR_BOARD_DB = Join-Path $DataDir "board.sqlite"
+    $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
+    $env:WALLETSAVIOR_WEEKLY_STATE_DB = Join-Path $DataDir "weekly_state.sqlite"
+    $env:OPINET_DB_PATH = Join-Path $DataDir "opinet.sqlite"
+    $env:DB_ADMIN_URL = "http://127.0.0.1:8002"
+    $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk"
+    $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions"
+    $env:WALLETSAVIOR_REMOTE_ADMIN_URL = "http://127.0.0.1:8000"
+    $env:WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD = "false"
+    $env:WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER = "false"
+    $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+    $env:FRONTEND_URL = "http://127.0.0.1:5173"
+    $env:OAUTH_REDIRECT_BASE = "http://127.0.0.1:5173"
+    Write-Host "  Public demo credentials loaded; use separate credentials for real deployment." -ForegroundColor Yellow
+}
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
 
 # crawler-admin과 web-api가 반드시 같은 로컬 OPINET snapshot을 보게 합니다.
@@ -332,7 +390,10 @@ if ($Admin) {
 Write-Host ""
 Write-Host "⏳ 백엔드 준비 확인 중..." -ForegroundColor Yellow
 $checks = @()
-if ($Web) { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/openapi.json"; Ready = $false } }
+if ($Web) {
+    $webReadyPath = if ($TeamDemo) { "api/health" } else { "openapi.json" }
+    $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/$webReadyPath"; Ready = $false }
+}
 if ($Admin) {
     $checks += @{ Name = "크롤러"; Url = "http://127.0.0.1:8001/health"; Ready = $false }
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }

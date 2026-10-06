@@ -463,3 +463,12 @@
 @media (max-width: 480px) {
   .summaryCards { grid-template-columns: 1fr; }
 }
+
+.offerFacts {
+  color: var(--text3);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.sortBtn:disabled { opacity: 0.5; cursor: default; }

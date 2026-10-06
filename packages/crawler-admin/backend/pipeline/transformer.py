@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from datetime import datetime
 from typing import Any
 
@@ -16,22 +17,27 @@ def to_discount_history(
     records = []
     now = datetime.now().isoformat()
     for item in items:
-        record = {
+        # Retain the curated observation independently, including native/spec
+        # binding and purchase-condition uncertainty. Legacy display aliases
+        # must not turn the source quote into a confirmed payable price.
+        record = deepcopy(item)
+        aliases = {
             "product_name": item.get("normalized_name") or item.get("name", ""),
             "store": item.get("store", ""),
             "original_price": item.get("original_price"),
-            "sale_price": item.get("sale_price") or item.get("price"),
+            "sale_price": item["sale_price"] if "sale_price" in item else item.get("price"),
             "discount_percent": item.get("discount_percent"),
             "category": item.get("category", ""),
             "event_name": item.get("event_name", ""),
             "valid_from": item.get("valid_from"),
             "valid_until": item.get("valid_until"),
-            "source": source,
+            "source": item.get("source") or source,
             "source_url": item.get("detail_url") or item.get("source_url", ""),
-            "recorded_at": now,
+            "recorded_at": item.get("recorded_at") or item.get("crawled_at") or now,
         }
+        record.update(sanitize_record(aliases))
         records.append(record)
-    return [sanitize_record(r) for r in records]
+    return records
 
 
 def to_hotdeal_prices(

@@ -4,8 +4,10 @@ import { ChevronLeft, ChevronRight, ExternalLink, Heart, RefreshCw, ZoomIn, Zoom
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
+import useCartStore from '../../stores/cartStore';
 import { api } from '../../services/api';
-import { buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
+import { buildWishlistPayload, buildCartPayload, normalizeProduct, selectProductOffer, getProductSelection } from '../../utils/productActions';
+import { getOfferUnitPrice, getOfferConditionText } from '../../utils/productDecision';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
 import ProductDetailModal from '../../components/ProductDetailModal';
@@ -79,17 +81,24 @@ function formatItemPeriod(item) {
 
 function normalizeItem(d) {
   if (!d) return null;
-  const priceObservationOnly = Boolean(d.price_observation_only);
+  const normalizedCatalog = Boolean(d.public_product_id || Object.hasOwn(d, 'best_offer'));
+  const quote = d.best_offer;
+  const priceObservationOnly = Boolean(d.price_observation_only) || (normalizedCatalog && !d.has_discount_metadata);
   const hasDiscountMetadata = Boolean(d.has_discount_metadata)
     || (!priceObservationOnly && d.original_price != null && (d.discount_rate ?? d.disc ?? d.discount) != null);
   const orig = hasDiscountMetadata ? safePrice(d.original_price ?? d.orig ?? d.regular_price) : 0;
   const disc = hasDiscountMetadata ? safeDiscount(d.discount_rate ?? d.disc ?? d.discount) : 0;
   return {
+    ...d,
+    id: d.product_id || d.public_product_id || d.id,
+    selected_variant_id: d.variant_id,
+    selected_listing_id: d.listing_id,
+    selected_offer_id: d.offer_id,
     name: d.name || d.product_name || '상품명 없음',
-    sale: safePrice(d.price ?? d.sale ?? d.sale_price),
+    sale: normalizedCatalog ? (quote?.total_price ?? quote?.listed_price ?? null) : (d.price ?? d.sale ?? d.sale_price ?? null),
     orig,
     disc,
-    event: d.event_name ?? d.event ?? d.promotion ?? d.record_label ?? '관측 가격',
+    event: priceObservationOnly ? (d.record_label || '관측 가격') : (d.event_name ?? d.event ?? d.promotion ?? d.record_label ?? '관측 가격'),
     img: d.image_url ?? d.img ?? d.thumbnail ?? '',
     detailUrl: d.source_url ?? d.detail_url ?? d.url ?? '',
     unit: d.display_unit ?? d.unit ?? d.spec ?? '',
@@ -106,6 +115,16 @@ function normalizeItem(d) {
     recordLabel: d.record_label ?? (priceObservationOnly ? '관측 가격' : '가격 정보'),
     claimStatusLabel: d.claim_status_label ?? (priceObservationOnly ? '할인 여부 미확인' : ''),
   };
+}
+
+function comparisonQuote(item) {
+  const quote = item.best_offer;
+  if (!item.product_id || !item.variant_id || !quote || quote.current_eligible !== true
+    || quote.offer_state !== 'active') return null;
+  const unit = getOfferUnitPrice(quote);
+  if (!unit || !(unit.price > 0)) return null;
+  return { value: unit.price, basis: ['100g', '100ml', '100m'].includes(unit.unit)
+    ? unit.unit : `variant:${item.variant_id}`, unit: unit.unit };
 }
 
 function getCategories(items) {
@@ -130,11 +149,15 @@ function findCommonProducts(martDeals, targetMarts = COMPARE_MARTS) {
     const martInfo = MARTS.find(m => m.key === martKey);
     for (const item of items) {
       if (!item?.name) continue;
-      const base = normalizeProductName(item.name);
+      const comparable = comparisonQuote(item);
+      const base = item.product_id ? `${item.product_id}:${comparable?.basis || 'unranked'}` : normalizeProductName(item.name);
       if (!base) continue;
       if (!productNames[base]) productNames[base] = {};
+      const prior = productNames[base][martKey];
+      if (prior && (!comparable || (prior.comparison && prior.comparison.value <= comparable.value))) continue;
       productNames[base][martKey] = {
         ...item,
+        comparison: comparable,
         mart: martInfo?.name || martKey,
         color: martInfo?.color || '#666',
       };
@@ -142,7 +165,7 @@ function findCommonProducts(martDeals, targetMarts = COMPARE_MARTS) {
   }
   return Object.entries(productNames)
     .filter(([, marts]) => Object.keys(marts).length >= 2)
-    .map(([name, marts]) => ({ name, marts }))
+    .map(([key, marts]) => ({ key, name: Object.values(marts)[0].name, marts }))
     .sort((a, b) => Object.keys(b.marts).length - Object.keys(a.marts).length);
 }
 
@@ -178,9 +201,10 @@ export default function MartPage() {
   const [saleDetail, setSaleDetail] = useState(null);
 
   const {
-    addToShoppingList, addToast, isLoggedIn, favorites, favoriteItems,
+    addToast, isLoggedIn, favorites, favoriteItems,
     addFavorite, removeFavorite, setFavoriteRemoteId,
   } = useStore();
+  const addCartItem = useCartStore(state => state.addItem);
   const favoriteIds = Array.isArray(favorites) ? favorites : [];
 
   const [martDeals, setMartDeals] = useState({});
@@ -318,7 +342,30 @@ export default function MartPage() {
     return `상품별 기간 상이 (${periods.length}개 기간)`;
   }, [martItems]);
 
-  const toggleWishlist = useCallback((product) => {
+  const resolveSelectedProduct = async (product) => {
+    if (!product.public_product_id && !Object.hasOwn(product, 'best_offer')) return product;
+    if (!product.product_id || !product.variant_id || !product.listing_id || !product.offer_id)
+      throw new Error('규격·판매처·거래 선택을 확인할 수 없습니다');
+    const result = await api.getJson(`/api/products/${encodeURIComponent(product.product_id)}`);
+    const detail = result?.data || result;
+    if (detail?.id !== product.product_id || !getProductSelection(detail, {
+      variantId: product.variant_id, listingId: product.listing_id, offerId: product.offer_id,
+    })) throw new Error('선택한 판매처 거래가 변경되었습니다. 목록을 다시 불러와 주세요');
+    return selectProductOffer(detail, { variantId: product.variant_id, listingId: product.listing_id, offerId: product.offer_id });
+  };
+
+  const addSelectedToCart = async (product) => {
+    try {
+      const selected = await resolveSelectedProduct(product);
+      const saved = await addCartItem(buildCartPayload(selected));
+      if (saved === false) return;
+      addToast(`${product.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+    } catch (error) {
+      addToast(error.message || '장바구니 저장에 실패했습니다', 'error');
+    }
+  };
+
+  const toggleWishlist = useCallback(async (product) => {
     const normalized = normalizeProduct(product);
     const favoriteId = normalized.favoriteId;
     const isFav = favoriteIds.includes(favoriteId);
@@ -326,24 +373,30 @@ export default function MartPage() {
       addToast('로그인이 필요합니다', 'warning');
       return;
     }
-    if (isFav) {
-      const remoteId = favoriteItems?.[favoriteId]?.remote_id;
-      removeFavorite(favoriteId);
-      if (remoteId) api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
-      addToast('찜 목록에서 제거했어요', 'info');
-      return;
-    }
-    const payload = buildWishlistPayload(product);
-    addFavorite(favoriteId, payload);
-    api.post('/api/wishlist', payload).then(async (res) => {
-      const json = res?.json ? await res.json().catch(() => null) : null;
+    try {
+      if (isFav) {
+        let remoteId = favoriteItems?.[favoriteId]?.remote_id;
+        if (!remoteId) {
+          const result = await api.getJson('/api/wishlist');
+          remoteId = (result?.data || []).find(row => normalizeProduct(row).favoriteId === favoriteId)?.id;
+        }
+        if (!remoteId) throw new Error('저장된 찜 항목을 확인할 수 없습니다');
+        await api.delete(`/api/wishlist/${remoteId}`);
+        removeFavorite(favoriteId);
+        addToast('찜 목록에서 제거했어요', 'info');
+        return;
+      }
+      const payload = buildWishlistPayload(await resolveSelectedProduct(product));
+      const res = await api.post('/api/wishlist', payload);
+      const json = await res.json();
       const remoteId = json?.data?.id || json?.id;
-      if (remoteId) setFavoriteRemoteId(favoriteId, remoteId);
-    }).catch(() => {
-      removeFavorite(favoriteId);
+      if (!remoteId) throw new Error('찜 저장 결과를 확인할 수 없습니다');
+      addFavorite(favoriteId, payload);
+      setFavoriteRemoteId(favoriteId, remoteId);
+      addToast(`${normalized.name} 찜했어요 ❤️`, 'success');
+    } catch {
       addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
-    });
-    addToast(`${normalized.name} 찜했어요 ❤️`, 'success');
+    }
   }, [isLoggedIn, favoriteIds, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, addToast]);
 
   const currentFlyer = useMemo(() => flyerData[flyerMart], [flyerData, flyerMart]);
@@ -779,10 +832,12 @@ export default function MartPage() {
               />
             )}
             {filteredItems.map((item, i) => {
-              const matched = products.find(p => item.name?.includes(p.name));
-              const diff = matched ? item.sale - matched.avg : null;
+              const matched = !item.public_product_id ? products.find(p => item.name?.includes(p.name)) : null;
+              const diff = matched?.avg > 0 && item.sale > 0 ? item.sale - matched.avg : null;
               const onlineUrl = getOnlineMallUrl(activeMart, item.name);
-              const common = commonProducts.find(cp => cp.name === normalizeProductName(item.name));
+              const comparison = comparisonQuote(item);
+              const common = commonProducts.find(cp => cp.key === (item.product_id
+                ? `${item.product_id}:${comparison?.basis || 'unranked'}` : normalizeProductName(item.name)));
               const itemPeriod = formatItemPeriod(item);
               const comparableOffers = common
                 ? Object.entries(common.marts).map(([key, offer]) => ({
@@ -815,10 +870,10 @@ export default function MartPage() {
                 };
               const fav = favoriteIds.includes(normalizeProduct(productData).favoriteId);
               return (
-                <div key={item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail(productData)}>
+                <div key={item.offer_id || item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail(productData)}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
-                    <span className={s.sale}>{fmt(item.sale)}원</span>
+                    <span className={s.sale}>{item.sale != null ? `${fmt(item.sale)}원` : '관측 가격 미확인'}</span>
                     {item.hasDiscountMetadata && item.orig > 0 && <span className={s.orig}>{fmt(item.orig)}원</span>}
                     {item.hasDiscountMetadata && item.disc > 0 && <span className={s.disc}>-{item.disc}%</span>}
                   </div>
@@ -828,6 +883,9 @@ export default function MartPage() {
                     </span>
                     {item.unit && <span>{item.unit}</span>}
                     {formatLastUpdate(item.crawledAt) && <span>{formatLastUpdate(item.crawledAt)} 수집</span>}
+                    {item.best_offer && <span>{getOfferConditionText(item.best_offer)}</span>}
+                    {item.best_offer?.availability_reason === 'expired' && <span>판매 기간 종료 · 과거 관측 가격</span>}
+                    {item.best_offer?.current_eligible === false && item.best_offer?.availability_reason !== 'expired' && <span>현재 비교 대상 아님</span>}
                   </div>
                   {diff !== null && (
                     <div className={s.vs}>
@@ -853,8 +911,7 @@ export default function MartPage() {
                          className={s.cartMini}
                          onClick={(e) => {
                            e.stopPropagation();
-                           addToShoppingList({ ...productData, icon: '🏪' });
-                           addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                           addSelectedToCart(productData);
                          }}
                          title="장보기에 추가"
                        >
@@ -884,7 +941,7 @@ export default function MartPage() {
       {mode === 'compare' && (
         <div className={s.compareSection}>
           <h3 className={s.compareTitle}>⚖️ 이마트 · 홈플러스 · 롯데마트 가격 비교</h3>
-          <p className={s.compareDesc}>동일 상품을 한눈에 비교하세요. 최저가 마트가 강조 표시됩니다.</p>
+          <p className={s.compareDesc}>같은 상품의 확인된 단위 기준과 표시된 구매 조건에서 비교합니다. 단위가 미확인인 거래는 순위를 매기지 않습니다.</p>
 
           {commonProducts.length > 0 ? (
             <div className={s.compareTableWrap}>
@@ -901,26 +958,26 @@ export default function MartPage() {
                         </th>
                       );
                     })}
-                    <th className={s.compareTh}>최저가</th>
+                    <th className={s.compareTh}>단위 기준·표시 조건 최저</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {commonProducts.map(({ name, marts: martPrices }) => {
+                  {commonProducts.map(({ key, name, marts: martPrices }) => {
                     const prices = COMPARE_MARTS
                       .filter(key => martPrices[key])
-                      .map(key => ({ key, sale: safePrice(martPrices[key]?.sale) }))
+                      .map(key => ({ key, sale: martPrices[key]?.comparison?.value }))
                       .filter(p => p.sale > 0);
                     const lowestPrice = prices.length > 0 ? Math.min(...prices.map(p => p.sale)) : 0;
                     const lowestMartInfo = prices.length > 0
                       ? MARTS.find(m => m.key === prices.find(p => p.sale === lowestPrice)?.key)
                       : null;
                     return (
-                      <tr key={name} className={s.compareTr}>
+                      <tr key={key} className={s.compareTr}>
                         <td className={s.compareTdProduct}>{name}</td>
                         {COMPARE_MARTS.map(key => {
                           const item = martPrices[key];
-                          const price = item ? safePrice(item.sale) : 0;
-                          const isLowest = item && price > 0 && price === lowestPrice;
+                          const price = item?.sale;
+                          const isLowest = item?.comparison?.value > 0 && item.comparison.value === lowestPrice;
                           return (
                             <td
                               key={key}
@@ -940,7 +997,11 @@ export default function MartPage() {
                               {item && price > 0 ? (
                                 <>
                                   <span className={s.compareCellPrice}>{fmt(price)}원</span>
-                                  {isLowest && <span className={s.compareCellBadge}>🏆</span>}
+                                  {item.comparison && <small> · {fmt(item.comparison.value)}원/{item.comparison.unit}</small>}
+                                  {isLowest && <span className={s.compareCellBadge}>표시 조건 단위 최저</span>}
+                                  {item.unit && <small> · {item.unit}</small>}
+                                  {item.best_offer && <small> · {getOfferConditionText(item.best_offer)}</small>}
+                                  {!item.comparison && <small> · 비교 기준 미확인</small>}
                                 </>
                               ) : (
                                 <span className={s.compareCellEmpty}>—</span>
@@ -977,7 +1038,7 @@ export default function MartPage() {
         <ProductDetailModal
           product={saleDetail}
           onClose={() => setSaleDetail(null)}
-          mode="preview"
+          mode={saleDetail.public_product_id || Object.hasOwn(saleDetail, 'best_offer') ? 'product' : 'preview'}
         />
       )}
     </div>

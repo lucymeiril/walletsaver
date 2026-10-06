@@ -163,6 +163,10 @@ class CrawlPipeline:
                     strategy_used=crawl_result.strategy_used,
                     quality_details=crawl_result.quality_details,
                 )
+                # An offline fixture can exercise the parser, but cannot become
+                # live collection evidence or trigger another provider attempt.
+                if crawl_result.quality_details.get("fixture_fallback") is True:
+                    break
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
                 errors.append(f"attempt {attempt}: status={crawl_result.status.value}")
@@ -195,6 +199,48 @@ class CrawlPipeline:
                 if attempt < retry_count:
                     await asyncio.sleep(min(attempt * 2, 10))
 
+        if crawl_result is not None and crawl_result.quality_details.get("fixture_fallback") is True:
+            reason = "fixture_fallback_not_live"
+            message = "Offline fixture fallback is not live source collection; no rows were validated or submitted."
+            next_action = "Keep fixture input for offline parser checks; require genuine source evidence before live submission."
+            errors.append(message)
+            quality_details = {
+                "fixture_fallback": True,
+                "fixture_items_count": len(crawl_result.items),
+                "strategy_used": crawl_result.strategy_used,
+                "source_quality_details": crawl_result.quality_details,
+                "alerts": [reason],
+                "zero_result_diagnostic": {
+                    "stage": reason,
+                    "message": message,
+                    "next_action": next_action,
+                    # The real source's row count is unknown; fixture rows are
+                    # neither parsed live rows nor validation failures.
+                    "counts": {"source_raw": None, "parsed": 0, "valid": 0, "invalid_or_dropped": 0},
+                },
+                "operator_diagnostics": [{"code": reason, "severity": "error", "message": message, "next_action": next_action}],
+                "next_actions": [next_action],
+                "quality_summary": {"status": "failing", "registered_vs_collecting": "failing"},
+            }
+            result = PipelineResult(
+                crawler_name=crawler_name,
+                status="failed",
+                duration=time.monotonic() - start,
+                errors=errors,
+                quality_score=0,
+                quality_details=quality_details,
+            )
+            await self._emit_progress(
+                progress_callback, stage="failed", items_found=0, items_valid=0,
+                items_saved=0, errors=list(errors), quality_details=quality_details,
+            )
+            await self.event_bus.publish(Event(
+                event_type=CRAWL_FAILED,
+                data={**result.to_dict(), "error": message},
+                source="pipeline",
+            ))
+            return result
+
         if crawl_result is None or crawl_result.status != CrawlStatus.SUCCESS:
             await self._emit_progress(
                 progress_callback,
@@ -218,20 +264,10 @@ class CrawlPipeline:
             quality_details=crawl_result.quality_details,
         )
         if items_found == 0:
-            no_items_errors = [*errors, "no items collected"]
-            await self._emit_progress(
-                progress_callback,
-                stage="failed",
-                items_found=0,
-                errors=no_items_errors,
-            )
-            return self._fail(crawler_name, "no items collected", start, errors)
+            errors.append("no items collected")
 
         items = [dict(item) for item in raw_items]
         for item in items:
-            for key, value in list(item.items()):
-                if isinstance(value, str) and len(value) > 5000:
-                    item[key] = value[:5000]
             if item.get("valid_to") in (None, "") and item.get("valid_until") not in (None, ""):
                 item["valid_to"] = item["valid_until"]
 
@@ -245,13 +281,20 @@ class CrawlPipeline:
         )
 
         required_fields = output_conf.get("required_fields", [])
-        if required_fields:
-            items, invalid = validate_items(items, required_fields)
-            if invalid:
-                errors.append(f"validation: {len(invalid)} items missing fields")
+        items, invalid = validate_items(items, required_fields)
+        if invalid:
+            errors.append(f"validation: {len(invalid)} items missing or invalid fields")
 
-        items = normalize_prices(items, price_field=price_field)
-        items, price_invalid = validate_price_range(items, price_field=price_field)
+        # A mixed raw batch may contain both legacy price and sale_price rows.
+        # Never ignore a row's actual quote because another row uses a different field.
+        price_valid, price_invalid = [], []
+        for item in items:
+            row_price_field = "price" if model_type == "HotdealPost" or "sale_price" not in item else "sale_price"
+            normalize_prices([item], price_field=row_price_field)
+            valid_rows, invalid_rows = validate_price_range([item], price_field=row_price_field)
+            price_valid.extend(valid_rows)
+            price_invalid.extend(invalid_rows)
+        items = price_valid
         if price_invalid:
             errors.append(f"price_range: {len(price_invalid)} items out of range")
 
@@ -262,12 +305,14 @@ class CrawlPipeline:
         )
         dedup_before = len(items)
         items = deduplicate(items, key_fields=dedup_fields)
+        deduplicated_count = dedup_before - len(items)
         items = enrich_with_category(items)
 
         # The persistent matching table is the current automatic knowledge base.
         # Hits receive canonical product/category metadata; misses remain explicit
         # so the raw-batch export can send only unresolved rows to external AI.
-        items = enrich_items_with_matching_entries(items)
+        if items:
+            items = enrich_items_with_matching_entries(items)
         matching_hits = sum(
             1 for item in items if item.get("matching_status") == "hit"
         )
@@ -287,63 +332,93 @@ class CrawlPipeline:
         quality_details = summarize_discount_run(
             items,
             raw_count=items_found,
-            invalid_count=max(0, items_found - len(items)),
+            invalid_count=len(invalid) + len(price_invalid),
             errors=errors,
             strategy_used=crawl_result.strategy_used,
             fallback_used="fallback" in (crawl_result.strategy_used or "").lower(),
         )
         quality_details = {
             **quality_details,
-            "deduplicated_count": max(0, dedup_before - items_valid),
+            "deduplicated_count": deduplicated_count,
             "matching": {
                 "hits": matching_hits,
                 "misses": matching_misses,
             },
         }
 
-        records = (
-            to_hotdeal_prices(items, source="hotdeal")
-            if model_type == "HotdealPost"
-            else to_discount_history(items, source="mart_discount")
-        )
-
-        await self._emit_progress(
-            progress_callback,
-            stage="storing",
-            items_found=items_found,
-            items_valid=items_valid,
-            items_saved=0,
-        )
-        if SKIP_REVIEW:
-            items_saved = await self._store(records, errors)
+        # Mart observations require the source/spec/condition-aware review
+        # contract; the legacy bulk writer cannot represent those facts.
+        direct_store = SKIP_REVIEW and model_type != "DiscountItem"
+        items_saved = 0
+        if items_valid == 0:
+            if items_found:
+                errors.append("validation rejected all collected items")
         else:
-            items_saved = await self._store_to_ingestion(
-                crawler_name=crawler_name,
-                crawl_status="success",
-                items=items,
-                schema_type=model_type,
-                strategy_used=crawl_result.strategy_used,
-                duration_seconds=time.monotonic() - start,
-                errors=errors,
-                quality_score=quality_details["score"],
-                quality_details=quality_details,
+            await self._emit_progress(
+                progress_callback,
+                stage="storing",
+                items_found=items_found,
+                items_valid=items_valid,
+                items_saved=0,
             )
+            if direct_store:
+                records = (
+                    to_hotdeal_prices(items, source="hotdeal")
+                    if model_type == "HotdealPost"
+                    else to_discount_history(items, source="mart_discount")
+                )
+                items_saved = await self._store(records, errors)
+            else:
+                items_saved = await self._store_to_ingestion(
+                    crawler_name=crawler_name,
+                    crawl_status="success",
+                    items=items,
+                    schema_type=model_type,
+                    strategy_used=crawl_result.strategy_used,
+                    duration_seconds=time.monotonic() - start,
+                    errors=errors,
+                    quality_score=quality_details["score"],
+                    quality_details=quality_details,
+                )
+
+        final_status = (
+            "failed" if items_valid == 0 or items_saved == 0
+            else "partial_failure" if items_saved < items_valid
+            else "success"
+        )
+        quality_details["delivery"] = {
+            "target": "direct_store" if direct_store else "pending_review",
+            "status": final_status,
+            "attempted": items_valid,
+            "acknowledged": items_saved,
+        }
+        if items_valid and items_saved < items_valid:
+            message = f"storage acknowledged {items_saved} of {items_valid} valid items"
+            errors.append(message)
+            quality_details["alerts"].append("zero_items_saved" if items_saved == 0 else "partial_items_saved")
+            quality_details["operator_diagnostics"].append({
+                "code": "storage_no_acknowledged_items" if items_saved == 0 else "storage_partial_acknowledgement",
+                "severity": "error" if items_saved == 0 else "warning",
+                "message": message,
+                "next_action": "Inspect storage acknowledgement and errors before resubmitting; collection is distinct from storage.",
+            })
+            quality_details["quality_summary"]["status"] = "failing" if items_saved == 0 else "warning"
+            quality_details["quality_summary"]["registered_vs_collecting"] = quality_details["quality_summary"]["status"]
+            quality_details["quality_summary"]["diagnostic_count"] = len(quality_details["operator_diagnostics"])
+            storage_action = quality_details["operator_diagnostics"][-1]["next_action"]
+            quality_details["next_actions"].append(storage_action)
+            quality_details["quality_summary"]["next_actions"] = quality_details["next_actions"]
 
         duration = time.monotonic() - start
         await self._emit_progress(
             progress_callback,
-            stage="stored",
+            stage="stored" if final_status == "success" else final_status,
             items_found=items_found,
             items_valid=items_valid,
             items_saved=items_saved,
             errors=list(errors),
         )
 
-        final_status = (
-            "partial_failure"
-            if items_valid > 0 and items_saved < items_valid
-            else "success"
-        )
         result = PipelineResult(
             crawler_name=crawler_name,
             status=final_status,
@@ -355,10 +430,13 @@ class CrawlPipeline:
             quality_score=quality_details["score"],
             quality_details=quality_details,
         )
+        event_data = result.to_dict()
+        if final_status == "failed":
+            event_data["error"] = errors[-1]
         await self.event_bus.publish(
             Event(
-                event_type=CRAWL_COMPLETED,
-                data=result.to_dict(),
+                event_type=CRAWL_FAILED if final_status == "failed" else CRAWL_COMPLETED,
+                data=event_data,
                 source="pipeline",
             )
         )
@@ -444,7 +522,14 @@ class CrawlPipeline:
                             headers=headers,
                         )
                     response.raise_for_status()
-                    return len(records)
+                    saved = response.json().get("saved")
+                    if type(saved) is not int or not 0 <= saved <= len(records):
+                        raise ValueError("invalid direct-store saved acknowledgement; reconcile before retry")
+                    return saved
+            except (ValueError, AttributeError) as exc:
+                # HTTP succeeded: an ambiguous acknowledgement must not trigger additive retries.
+                last_exc = exc
+                break
             except httpx.HTTPStatusError as exc:
                 last_exc = exc
                 if exc.response.status_code < 500:
@@ -541,20 +626,34 @@ class CrawlPipeline:
                                 headers=headers,
                             )
                         response.raise_for_status()
-                        total_saved += len(chunk)
+                        acknowledgement = response.json()
+                        ids = acknowledgement.get("ids") or [acknowledgement.get("id")]
+                        if acknowledgement.get("status") != "pending" or not all(type(value) is int and value > 0 for value in ids):
+                            raise ValueError("invalid pending-review acknowledgement; reconcile before retry")
+                        accepted = acknowledgement.get("total_items", len(chunk))
+                        if type(accepted) is not int or not 0 <= accepted <= len(chunk):
+                            raise ValueError("invalid pending-review item count; reconcile before retry")
+                        if "items_per_chunk" in acknowledgement:
+                            counts = acknowledgement["items_per_chunk"]
+                            if not isinstance(counts, list) or len(counts) != len(ids) or not all(type(value) is int and value > 0 for value in counts) or sum(counts) != accepted:
+                                raise ValueError("inconsistent pending-review chunk acknowledgement; reconcile before retry")
+                        total_saved += accepted
                         chunk_saved = True
                         last_exc = None
                         audit_log(
                             AuditEventType.DATA_SUBMISSION,
                             resource=crawler_name,
                             detail={
-                                "item_count": len(chunk),
+                                "item_count": accepted,
                                 "schema_type": schema_type,
                                 "strategy": strategy_used,
                                 "chunk_index": chunk_index,
                             },
                         )
                         break
+                except (ValueError, AttributeError) as exc:
+                    last_exc = exc
+                    break
                 except httpx.HTTPStatusError as exc:
                     last_exc = exc
                     if exc.response.status_code == 429 and attempt < _max_retries:

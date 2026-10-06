@@ -7,6 +7,7 @@ concurrency, and 429 handling only by sleeping longer before retrying.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import random
@@ -21,6 +22,7 @@ import requests
 
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, DiscountItem
+from core.promotion_semantics import confirmed_price_or_none
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
@@ -464,12 +466,12 @@ class HomeplusCrawler(CrawlerContract):
             },
         }
 
-    async def parse(self, raw_data: str, store_type: str = "HYPER") -> list[DiscountItem]:
+    async def parse(self, raw_data: str, store_type: str = "HYPER", *, source_url: str | None = None) -> list[DiscountItem]:
         items: list[DiscountItem] = []
         json_items = self._extract_json_items(raw_data)
         if json_items:
             for product in json_items:
-                item = self._json_to_discount_item(product, store_type=store_type)
+                item = self._json_to_discount_item(product, store_type=store_type, source_url=source_url)
                 if item:
                     items.append(item)
             return items
@@ -490,6 +492,20 @@ class HomeplusCrawler(CrawlerContract):
                 return items
         except Exception:
             pass
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(raw_data, "html.parser")
+        detail_rows = []
+        for script in soup.find_all("script"):
+            try:
+                payload = json.loads(script.get_text())
+            except (ValueError, TypeError):
+                continue
+            rows = self._json_items_from_obj(payload)
+            detail_rows.extend(row for row in rows if isinstance(row, dict) and ("basic" in row or "sale" in row))
+        if detail_rows:
+            # A detail response must identify a single product container. Never
+            # combine native/price/option siblings from separate scripts.
+            return detail_rows if len(detail_rows) == 1 else [{}]
         patterns = [
             r'var\s+(?:itemList|prodList|goodsList)\s*=\s*(\[.*?\]);',
             r'"(?:itemList|goods|products|dataList)"\s*:\s*(\[.*?\])',
@@ -510,6 +526,10 @@ class HomeplusCrawler(CrawlerContract):
             return [row for row in obj if isinstance(row, dict)]
         if not isinstance(obj, dict):
             return []
+        if "basic" in obj:
+            return [obj]
+        if "item" in obj:
+            return [obj["item"]] if isinstance(obj["item"], dict) else [{}]
         for key in ("dataList", "itemList", "goodsList", "products", "items"):
             value = obj.get(key)
             if isinstance(value, list):
@@ -519,7 +539,9 @@ class HomeplusCrawler(CrawlerContract):
             return self._json_items_from_obj(data)
         return []
 
-    def _json_to_discount_item(self, product: dict, store_type: str = "HYPER") -> Optional[DiscountItem]:
+    def _json_to_discount_item(self, product: dict, store_type: str = "HYPER", *, source_url: str | None = None) -> Optional[DiscountItem]:
+        if "basic" in product or "sale" in product:
+            return self._detail_to_discount_item(product, store_type=store_type, source_url=source_url)
         name = str(product.get("itemNm") or product.get("goodsNm") or product.get("prodNm") or product.get("name") or "").strip()
         if len(name) < 2:
             return None
@@ -604,6 +626,261 @@ class HomeplusCrawler(CrawlerContract):
             detail_url=detail_url,
             promo_label=promo_label,
         )
+
+    @staticmethod
+    def _bounded_source_fields(node: dict, keys: tuple[str, ...]) -> dict:
+        result = {}
+        for key in keys:
+            value = node.get(key)
+            if key not in node:
+                continue
+            if value is None or isinstance(value, (str, bool, int)):
+                result[key] = value[:256] if isinstance(value, str) else value
+            elif isinstance(value, float) and value == value and abs(value) != float("inf"):
+                result[key] = value
+        return result
+
+    @staticmethod
+    def _detail_quantity_complete(text: str, metadata: dict) -> bool:
+        # The common parser reports the declaration it consumed. An additional
+        # sold count is not permission to guess an outer pack multiplier.
+        matched = metadata.get("raw_match")
+        remainder = text.replace(matched, "", 1) if matched else text
+        if re.search(r"[xX×*]\s*\d", remainder):
+            return False
+        if matched and re.search(r"\d+(?:\.\d+)?\s*(?:kg|g|ml|l)\b", remainder, re.IGNORECASE):
+            return False
+        counts = re.findall(
+            r"(?<![\d.,])(\d+(?:\.\d+)?)\s*"
+            r"(개입|봉지|인분|세트|마리|회분|박스|스틱|티백|구|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|ct|pk|ea)"
+            r"(?![A-Za-z0-9가-힣])", remainder, re.IGNORECASE,
+        )
+        if not counts:
+            return True
+        # One repeated count can corroborate a declared measure bundle (6병
+        # alongside 2L×6). Additive terms or further counts remain unresolved.
+        return (bool(matched) and metadata.get("package_unit") in {"L", "ml", "g", "kg"}
+                and len(counts) == 1 and counts[0][0].isdigit()
+                and counts[0][1] in {"병", "캔"}
+                and int(counts[0][0]) == metadata.get("bundle_count")
+                and "+" not in remainder)
+
+    def _detail_event_source_fields(self, event: dict) -> dict:
+        keys = ("eventNm", "eventName", "eventBtnText", "description", "dispEventLabel", "dispEventTitle",
+                "dispDiscountItemNm", "eventSticker", "eventKind", "eventStartDt", "eventEndDt", "name",
+                "buyItemCount", "buyItemCnt", "eventBenefitQty", "changeAmount", "changePercent", "changeType",
+                "thresholdType", "thresholdQty", "thresholdAmount", "thresholdQtyMax", "thresholdAmountMax",
+                "buyItemType", "buyItemValue", "evnItemKind", "eventGiveType")
+        for key in keys:
+            if key in event:
+                value = event[key]
+                if (not (value is None or type(value) in (str, bool, int, float))
+                        or isinstance(value, str) and len(value) > 256
+                        or type(value) is float and (value != value or abs(value) == float("inf"))):
+                    raise ValueError("unbounded source event field")
+        result = self._bounded_source_fields(event, keys)
+        if "thresholdIntervals" in event:
+            rows = event["thresholdIntervals"]
+            if not isinstance(rows, list) or len(rows) > 40:
+                raise ValueError("unbounded source event thresholds")
+            result["thresholdIntervals"] = []
+            for row in rows:
+                if not isinstance(row, dict):
+                    raise ValueError("source event threshold is not an object")
+                result["thresholdIntervals"].append(self._detail_event_source_fields({
+                    key: row[key] for key in ("thresholdQty", "thresholdAmount", "changePercent", "changeAmount") if key in row}))
+        return result
+
+    def _detail_to_discount_item(self, node: dict, *, store_type: str, source_url: str | None) -> Optional[DiscountItem]:
+        basic, sale, options = node.get("basic"), node.get("sale"), node.get("opt")
+        if not isinstance(basic, dict) or not isinstance(sale, dict) or not isinstance(options, dict):
+            return None
+        native, name, declared_store = basic.get("itemNo"), basic.get("itemNm"), basic.get("storeType")
+        if (not isinstance(native, str) or not re.fullmatch(r"\d{9}", native)
+                or not isinstance(name, str) or len(name.strip()) < 2
+                or declared_store not in {"HYPER", "EXP"} or declared_store != self._normalize_store_type(store_type)):
+            return None
+        identity_layers = [node, basic, sale, options]
+        identity_layers.extend(node[key] for key in ("prop", "etc", "promo") if isinstance(node.get(key), dict))
+        for layer in identity_layers:
+            if (("itemNo" in layer and layer["itemNo"] != native)
+                    or ("storeType" in layer and layer["storeType"] != declared_store)):
+                return None
+        declared_hrefs = [layer[key] for layer in identity_layers for key in ("detail_url", "source_url") if key in layer]
+        for href in [source_url, *declared_hrefs]:
+            if href is None:
+                continue
+            if not isinstance(href, str):
+                return None
+            try:
+                parts = urlparse(href)
+                query = parse_qs(parts.query, keep_blank_values=True)
+            except ValueError:
+                return None
+            if (parts.scheme != "https" or parts.netloc != "mfront.homeplus.co.kr" or parts.path != "/item"
+                    or query.get("itemNo") != [native] or query.get("storeType") != [declared_store]):
+                return None
+        # Actual no-option declarations are required; an omitted selection state
+        # is not permission to attach the container's quote to a default variant.
+        if any(options.get(key) != "N" for key in ("groupUseYn", "optSelUseYn", "optTxtUseYn")):
+            return None
+        if (options.get("optSelList") not in (None, []) or options.get("frontGroupItemList") not in (None, [])
+                or any(options.get(key) is not None and (type(options[key]) is not int or options[key] != 0)
+                       for key in ("optTitleDepth", "optTxtDepth"))):
+            return None
+        dc_raw = sale.get("dcPrice")
+        dc = self._to_int(dc_raw, allow_zero=True) if dc_raw is not None else None
+        if dc_raw is not None and dc is None:
+            return None
+        listed = self._to_int(sale.get("salePrice"))
+        if listed is None:
+            return None
+        quote = dc if dc is not None and dc > 0 else listed
+        prop = node.get("prop") if isinstance(node.get("prop"), dict) else {}
+        notices = []
+        notice_names = {"상품명", "상품코드/모델", "식품의 유형", "포장단위별 내용물의 용량(중량), 수량", "원재료 및 함량", "영양성분(영양정보)"}
+        rows = []
+        for key in ("noticeList", "notice_rows_original_pointers"):
+            declared_rows = prop.get(key)
+            if declared_rows is None:
+                continue
+            if not isinstance(declared_rows, list) or len(rows) + len(declared_rows) > 40:
+                return None
+            rows.extend(declared_rows)
+        for entry in rows:
+            fields = entry.get("raw_fields", entry) if isinstance(entry, dict) else {}
+            if not isinstance(fields, dict) or fields.get("noticeNm") not in notice_names:
+                continue
+            desc = fields.get("noticeDesc")
+            if not isinstance(desc, str):
+                return None
+            if fields["noticeNm"] == "포장단위별 내용물의 용량(중량), 수량" and len(desc) > 256:
+                # Identity cannot be established from a truncated contents prefix.
+                return None
+            if fields["noticeNm"] == "상품코드/모델":
+                codes = re.findall(r"(?<!\d)\d{9}(?!\d)", desc)
+                if codes and codes != [native]:
+                    return None
+            if fields["noticeNm"] == "상품명" and desc.strip() != name.strip():
+                return None
+            notices.append({"noticeNm": fields["noticeNm"], "noticeDesc": desc[:256]})
+        contents_declarations = [entry["noticeDesc"] for entry in notices if entry["noticeNm"] == "포장단위별 내용물의 용량(중량), 수량"]
+        contents = contents_declarations[0] if contents_declarations else ""
+        unit_metadata = normalize_unit_metadata(name=name)
+        if not self._detail_quantity_complete(name, unit_metadata):
+            return None
+        def receipt(meta):
+            quantity, unit = meta.get("package_quantity"), (meta.get("package_unit") or "").lower()
+            if unit in {"l", "kg"}:
+                quantity, unit = quantity * 1000, {"l": "ml", "kg": "g"}[unit]
+            return quantity, unit, meta.get("bundle_count", 1)
+        for declaration in contents_declarations:
+            notice_metadata = normalize_unit_metadata(name="", raw_unit=declaration)
+            if (notice_metadata.get("package_quantity") is None
+                    or not self._detail_quantity_complete(declaration, notice_metadata)):
+                return None
+            if unit_metadata.get("package_quantity") is not None and receipt(unit_metadata) != receipt(notice_metadata):
+                return None
+            unit_metadata = notice_metadata
+        etc = node.get("etc") if isinstance(node.get("etc"), dict) else {}
+        disabled_unit_display = etc.get("unitDispYn") == "N"
+        if disabled_unit_display and any(
+                etc.get(key) is not None and (type(etc[key]) not in (int, float) or etc[key] != 0)
+                for key in ("totalUnitQty", "unitQty", "unitPrice", "cardUnitPrice")):
+            return None
+        if not disabled_unit_display and etc.get("totalUnitQty") is not None and etc.get("unitMeasure") is not None and unit_metadata.get("package_quantity") is not None:
+            raw_total = etc["totalUnitQty"]
+            total = raw_total if type(raw_total) in (int, float) and raw_total > 0 and raw_total == raw_total and abs(raw_total) != float("inf") else None
+            source_unit = str(etc["unitMeasure"]).lower()
+            expected_quantity, expected_unit, count = receipt(unit_metadata)
+            if source_unit in {"l", "kg"} and total is not None:
+                total, source_unit = total * 1000, {"l": "ml", "kg": "g"}[source_unit]
+            if total is None or source_unit != expected_unit or total != expected_quantity * count:
+                return None
+        # Only product business fields are curated. Public purchase declarations
+        # are not account secrets; absence remains unknown, never minimum one.
+        source = {
+            "basic": self._bounded_source_fields(basic, ("itemNo", "itemNm", "storeKind", "storeType", "storeId", "docId", "itemType", "itemStatus", "mallType", "rcateCd", "rcateNm", "lcateNm", "mcateNm", "scateNm", "dcateNm")),
+            "sale": self._bounded_source_fields(sale, ("salePrice", "dcPrice", "dcRate", "currency", "currencyCode", "priceCurrency", "priceSuffix", "giftYn", "rsvYn", "rsvStartDt", "rsvEndDt", "stickerEvent", "recomMsg", "frontDcPriceInfo", "frontCardDcPriceInfo", "clearanceYn", "clearanceDiscountRate", "saleUnit", "saleUnitMeasure", "totalUnitQty", "couponYn", "purchaseMinQty", "purchaseMin", "purchaseLimitYn", "purchaseLimitDuration", "purchaseLimitDay", "purchaseLimitQty", "cartLimitYn", "itemPurchaseLimitMessage", "salePeriodYn", "saleStartDt", "saleEndDt")),
+            "opt": self._bounded_source_fields(options, ("groupUseYn", "optSelUseYn", "optTxtUseYn", "optTitleDepth", "optTxtDepth")),
+            "notice": notices,
+            "etc": self._bounded_source_fields(etc, ("totalUnitQty", "unitMeasure", "unitQty", "unitDispYn", "unitPrice", "cardUnitPrice", "sameClassLimitYn", "sameClassLimitQty", "scgLimitYn", "scgLimitQty", "scgUnitMeasure")),
+        }
+        # Preserve actual empty public business lists without copying opaque event
+        # identifiers or arbitrary nested benefit/account objects.
+        for key in ("dcPriceInfo", "eventList", "stickerEventList", "labelList"):
+            if sale.get(key) == []:
+                source["sale"][key] = []
+        promo = node.get("promo") if isinstance(node.get("promo"), dict) else {}
+        coupon_keys = ("displayCouponNm", "manageCouponNm", "storeType", "couponType", "purchaseMin", "discount", "discountType", "discountMax", "validType", "validDay", "validStartDt", "validEndDt", "issueStartDt", "issueEndDt", "downloadAvailYn", "issueYn", "issueLimitType", "issueMaxCnt", "issueTimeYn", "issueStartTime", "issueEndTime", "limitPerCnt", "limitPerDayYn", "limitPerDayCnt", "liquorExceptYn", "localLiquorExceptYn")
+        source["promo"] = self._bounded_source_fields(promo, ("couponCnt",))
+        if isinstance(promo.get("couponInfo"), dict):
+            source["promo"]["couponInfo"] = self._bounded_source_fields(promo["couponInfo"], coupon_keys)
+        if isinstance(promo.get("couponList"), list):
+            source["promo"]["couponList"] = [self._bounded_source_fields(coupon, coupon_keys) for coupon in promo["couponList"][:8] if isinstance(coupon, dict)]
+        event_values = []
+        event_list = sale.get("eventList", []) if isinstance(sale.get("eventList"), list) else []
+        if len(event_list) > 8:
+            return None
+        curated_events = []
+        for entry in event_list:
+            if isinstance(entry, str):
+                if len(entry) > 256:
+                    return None
+                event_values.append(entry[:256])
+                curated_events.append(entry)
+            elif isinstance(entry, dict):
+                try:
+                    curated_events.append(self._detail_event_source_fields(entry))
+                except ValueError:
+                    return None
+                event_values.extend(value for key, value in entry.items() if key in {"eventNm", "eventName", "eventBtnText", "description", "dispEventLabel"} and isinstance(value, str))
+        if event_list:
+            source["sale"]["eventList"] = curated_events
+        event_info = promo.get("eventInfo")
+        if isinstance(event_info, dict):
+            try:
+                source["promo"]["eventInfo"] = self._detail_event_source_fields(event_info)
+            except ValueError:
+                return None
+            event_values.extend(value for key, value in event_info.items() if key in {"eventNm", "eventName", "eventBtnText", "description", "dispEventLabel"} and isinstance(value, str))
+        if len(event_values) > 8:
+            return None
+        source["event_texts"] = event_values[:8]
+        source["event_markers"] = {
+            "sale_eventList_present": "eventList" in sale,
+            "sale_eventList_count": len(sale["eventList"]) if isinstance(sale.get("eventList"), list) else None,
+            "promo_eventInfo_present": "eventInfo" in promo,
+            "promo_eventInfo_type": type(promo.get("eventInfo")).__name__,
+        }
+        detail_url = normalize_homeplus_url(native, declared_store)
+        category_path = [basic[key] for key in ("lcateNm", "mcateNm", "scateNm", "dcateNm") if isinstance(basic.get(key), str)]
+        display_unit = unit_metadata.get("display_unit") or contents
+        attrs = build_source_attributes("homeplus", source_record_key=native, detail_url=detail_url,
+                                        category=self._category_from_product(basic))
+        attrs.update(unit_metadata.get("attributes") or {})
+        attrs.update({"source": "homeplus", "storeType": declared_store, "mart_native_code": native,
+                      "bundle_count": unit_metadata.get("bundle_count"),
+                      "canonical_url": detail_url, "raw_name": name, "docId": basic.get("docId") or "",
+                      "mart_native_category_id": str(basic.get("rcateCd") or ""),
+                      "mart_native_category_path": " > ".join(category_path),
+                      "homeplus_detail_source_fields": source,
+                      "homeplus_detail_source_fields_sha256": hashlib.sha256(json.dumps(source, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest(),
+                      "promotion_conditions": {"source_condition_kind": "source_quote_purchase_conditions_unverified",
+                          "payable_price_unconfirmed": True, "minimum_purchase_quantity_unconfirmed": True,
+                          "coupon_application_unconfirmed": True},
+                      "source_event_absent": sale.get("eventList") in (None, []) and promo.get("eventInfo") is None})
+        minimum = sale.get("purchaseMinQty")
+        if type(minimum) is int and minimum > 0:
+            # Product-level source minimum is separate from an unresolved basket
+            # promotion's payable/selection conditions. Never default to one.
+            attrs["source_minimum_purchase_quantity"] = minimum
+        attrs["source_quote_currency"] = next((source["sale"][key] for key in ("currency", "currencyCode", "priceCurrency") if key in source["sale"]), None)
+        return DiscountItem(name=name, store="홈플러스", source="homeplus", sale_price=quote,
+                            original_price=None, discount_percent=None, unit=display_unit, display_unit=display_unit,
+                            package_quantity=unit_metadata.get("package_quantity"), package_unit=unit_metadata.get("package_unit") or "",
+                            price_per_100g=None, category=self._category_from_product(basic), attributes=attrs,
+                            detail_url=detail_url, event_name=" · ".join(event_values[:8]), promo_type=None, promo_label=None)
 
     def _image_url_from_product(self, product: dict) -> str:
         for key in (
@@ -942,13 +1219,22 @@ class HomeplusCrawler(CrawlerContract):
                 return int(match.group(1).replace(",", ""))
         return None
 
-    def _to_int(self, value) -> Optional[int]:
-        if value in (None, ""):
-            return None
-        try:
-            return int(float(str(value).replace(",", "")))
-        except (ValueError, TypeError):
-            return None
+    def _to_int(self, value, *, allow_zero: bool = False) -> int | float | None:
+        """Legacy money helper name; retain fractions and validate complete quotes."""
+        if isinstance(value, str):
+            match = re.fullmatch(r"(?:₩\s*)?((?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)\s*(?:원)?", value.strip())
+            if not match:
+                return None
+            value = match.group(1).replace(",", "")
+        number = confirmed_price_or_none(value)
+        if number is not None:
+            return number
+        if allow_zero and not isinstance(value, bool):
+            if isinstance(value, (int, float)) and value == 0:
+                return 0
+            if isinstance(value, str) and re.fullmatch(r"0+(?:\.0+)?", value):
+                return 0
+        return None
 
     def _to_float(self, value) -> Optional[float]:
         if value in (None, ""):

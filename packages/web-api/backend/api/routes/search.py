@@ -39,13 +39,24 @@ def _relevance(title: str, query: str) -> int:
     return 3
 
 
-def _product_observed_times(storage, product_ids: list[int]) -> dict[int, str]:
+def _product_observed_times(storage, product_ids: list[str | int]) -> dict[str | int, str]:
     catalog = getattr(storage, "catalog", None)
     if catalog is None or not hasattr(catalog, "connection") or not product_ids:
         return {}
 
     marks = ",".join("?" for _ in product_ids)
     with catalog.connection() as connection:
+        if catalog._table(connection, "normalized_canonical_products"):
+            rows = connection.execute(
+                "SELECT v.public_product_id, MAX(e.crawled_at) AS observed_at "
+                "FROM normalized_product_variants v "
+                "JOIN normalized_source_listings l ON l.public_variant_id=v.public_variant_id "
+                "JOIN normalized_offer_events e ON e.public_source_listing_id=l.public_source_listing_id "
+                f"WHERE v.public_product_id IN ({marks}) AND v.is_active=1 "
+                "AND l.is_active=1 GROUP BY v.public_product_id",
+                tuple(product_ids),
+            ).fetchall()
+            return {str(row["public_product_id"]): str(row["observed_at"] or "") for row in rows}
         parts: list[str] = []
         if catalog._table(connection, "discount_history"):
             parts.append(
@@ -103,16 +114,17 @@ def _product_results(storage, query: str, limit: int | None) -> tuple[list[dict]
 
     observed = _product_observed_times(
         storage,
-        [int(product["id"]) for product in rows if product.get("id") is not None],
+        [product["id"] if product.get("public_product_id") else int(product["id"])
+         for product in rows if product.get("id") is not None],
     )
     results = []
     for product in rows:
         unit = str(product.get("unit") or "").strip()
-        current = product.get("cur") or product.get("price") or 0
-        description = f"현재가 {current}원"
+        current = (product.get("best_offer") or {}).get("comparable_price") if product.get("public_product_id") else product.get("cur") or product.get("price") or 0
+        description = f"현재가 {current}원" if current is not None else "비교 가능한 현재가 미확인"
         if unit:
             description = f"{unit} / {description}"
-        product_id = int(product["id"])
+        product_id = product["id"] if product.get("public_product_id") else int(product["id"])
         results.append({
             "type": "product",
             "id": product_id,

@@ -1,12 +1,20 @@
 import { ExternalLink } from 'lucide-react';
 import { fmt } from '../../../utils/helpers';
-import { parseMenuItems, getRepresentativePrice } from '../utils';
+import { parseMenuItems, getRepresentativePrice, distanceKm } from '../utils';
 import SafeImage from '../../../components/common/SafeImage';
 import s from '../LocalPage.module.css';
 
 export default function NaverPlaceDetailContent({ place, onFocusMap }) {
   const { items: menuItems, rawText: menuRawText } = parseMenuItems(place.menu_info);
   const priceInfo = getRepresentativePrice(place.menu_info);
+  // Bare provider values do not declare a unit. Local radius filtering supplies
+  // explicit distance_m; unit-bearing distance text is also usable.
+  const knownDistance = typeof place.distance === 'string'
+    && /(?:km|m|킬로미터|미터)$/i.test(place.distance.trim())
+    ? place.distance : null;
+  const distance = distanceKm(knownDistance, place.distance_m);
+  const rating = typeof place.rating === 'number' && Number.isFinite(place.rating)
+    && place.rating >= 0 && place.rating <= 5 ? place.rating : null;
 
   return (
     <div className={s.modalDetail}>
@@ -27,8 +35,10 @@ export default function NaverPlaceDetailContent({ place, onFocusMap }) {
           📞 <a href={`tel:${place.tel}`} className={s.telLink}>{place.tel}</a>
         </p>
       )}
-      {place.distance && <p className={s.detailDist}>📏 {place.distance}</p>}
-      {place.rating > 0 && <p className={s.detailRating}>⭐ 리뷰 {place.rating}개</p>}
+      <p className={s.detailDist}>
+        {distance == null ? '거리 미확인' : `📏 ${distance.toFixed(1)}km`}
+      </p>
+      {rating != null && <p className={s.detailRating}>⭐ 평점 {rating}</p>}
 
       {priceInfo && (
         <div className={s.priceSummary}>

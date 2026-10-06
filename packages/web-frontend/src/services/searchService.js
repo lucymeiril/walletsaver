@@ -38,15 +38,16 @@ export const searchService = {
    * 보관/원산지 같은 속성 필터는 public snapshot에 계약된 필드가 생기기 전까지
    * 보내지 않는다. 화면에만 있는 가짜 필터를 API 계약처럼 취급하지 않기 위함이다.
    * @param {string} categoryId 카테고리 ID (예: livestock.pork.neck)
-   * @param {{ sort?: string, page?: number, perPage?: number }} params
+   * @param {{ sort?: string, page?: number, perPage?: number, comparisonBasis?: string, signal?: AbortSignal }} params
    */
-  async categoryCompare(categoryId, { sort, page, perPage } = {}) {
+  async categoryCompare(categoryId, { sort, page, perPage, comparisonBasis, signal } = {}) {
     const params = new URLSearchParams();
     if (sort) params.set('sort', sort);
     if (page) params.set('page', page);
     if (perPage) params.set('per_page', perPage);
+    if (comparisonBasis) params.set('comparison_basis', comparisonBasis);
 
-    const res = await api.get(`/api/products/category/${categoryId}/compare`, Object.fromEntries(params));
+    const res = await api.get(`/api/products/category/${categoryId}/compare`, Object.fromEntries(params), { signal });
     const data = await res.json();
     return data.data || data;
   },

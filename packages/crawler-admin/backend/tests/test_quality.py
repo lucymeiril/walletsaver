@@ -54,6 +54,18 @@ def test_quality_summary_reports_duplicate_heavy_output():
     assert "high_duplicate_rate" in summary["alerts"]
 
 
+def test_quality_preserves_distinct_source_spec_and_condition_contexts():
+    base = {"name": "같은 상품", "sale_price": 1000, "native_product_id": "sku-a", "detail_url": "https://example.test/a",
+            "attributes": {"quantity": 50, "unit": "g", "coupon_required": False}}
+    rows = [base, {**base, "native_product_id": "sku-b"}, {**base, "detail_url": "https://example.test/b"},
+            {**base, "attributes": {"quantity": 100, "unit": "g", "coupon_required": False}},
+            {**base, "attributes": {"quantity": 50, "unit": "g", "coupon_required": True}}]
+    summary = summarize_discount_run(rows, raw_count=len(rows))
+    assert summary["item_counts"]["duplicates_after_validation"] == 0
+    assert "high_duplicate_rate" not in summary["alerts"]
+    assert summary["quality_summary"]["status"] == "collecting"
+
+
 def test_quality_summary_distinguishes_source_and_parser_zero_results():
     source_empty = summarize_discount_run([], raw_count=0, source_raw_count=0)
     parser_empty = summarize_discount_run([], raw_count=0, source_raw_count=3)

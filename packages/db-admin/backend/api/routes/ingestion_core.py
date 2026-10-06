@@ -20,7 +20,7 @@ from api.auth import (
     get_current_identity,
 )
 from services.audit import log_action
-from services.normalized_mart3 import publish_mart3_rows
+from services.normalized_mart3 import publish_mart3_rows, publish_matched_offer_observations
 from services.product_match_rules import (
     apply_rule_to_product,
     find_matching_rule,
@@ -341,7 +341,8 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
                         })
                         continue
                     items = json.loads(row.items_json) if row.items_json else []
-                    saved = _insert_items(session, items, row.schema_type)
+                    saved = _insert_items(session, items, row.schema_type, **({"observed_at": row.crawled_at}
+                        if any(item.get("public_product_id") or item.get("public_variant_id") for item in items) else {}))
                     row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
                     row.db_reviewed_at = datetime.utcnow()
                     if saved == len(items):
@@ -630,7 +631,8 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
         items = json.loads(row.items_json) if row.items_json else []
 
         if body.action == "approve":
-            saved = _insert_items(session, items, row.schema_type)
+            saved = _insert_items(session, items, row.schema_type, **({"observed_at": row.crawled_at}
+                        if any(item.get("public_product_id") or item.get("public_variant_id") for item in items) else {}))
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
             if saved != len(items):
@@ -658,7 +660,8 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
                 for i in body.approved_item_indices
                 if i < len(items)
             ]
-            saved = _insert_items(session, approved, row.schema_type)
+            saved = _insert_items(session, approved, row.schema_type, **({"observed_at": row.crawled_at}
+                if any(item.get("public_product_id") or item.get("public_variant_id") for item in approved) else {}))
             row.approved_items_json = json.dumps(
                 approved, ensure_ascii=False, default=str
             )
@@ -1587,7 +1590,7 @@ def _apply_approved_product_metadata(
     product.categorization_confidence = product.categorization_confidence or 1.0
 
 
-def _insert_items(session, items: list[dict], schema_type: str) -> int:
+def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: datetime | None = None) -> int:
     """승인된 항목을 최종 DB 테이블에 삽입."""
     saved = 0
     for idx, item in enumerate(items):
@@ -1647,6 +1650,10 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                         )
                     else:
                         # 마트 할인 데이터 → DiscountHistory
+                        if item.get('public_product_id') or item.get('public_variant_id') or item.get('public_source_listing_id'):
+                            publish_matched_offer_observations(session, [item], observed_at=observed_at)
+                            saved += 1
+                            continue
                         product_name = item.get("name", "")
                         _validate_discount_item_for_publish(item)
                         price = _coerce_positive_number(
@@ -1918,6 +1925,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
     )
     promotion_type = item.get("promotion_type") or item.get("promo_type") or raw_data.get("promotion_type") or raw_data.get("promo_type") or "final_price"
     return {
+        **{field: item[field] for field in ('public_product_id', 'public_variant_id', 'public_source_listing_id') if field in item},
         "raw_record_id": item.get("raw_record_id") or raw_data.get("raw_record_id"),
         "source": source,
         "source_name": source,

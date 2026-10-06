@@ -6,15 +6,20 @@ files directly.
 """
 from __future__ import annotations
 
+import asyncio
 import hmac
 import os
+import shutil
 import sqlite3
+import tempfile
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterable
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from sqlalchemy import func, text
+from starlette.concurrency import run_in_threadpool
 
 from services.board_storage import (
     Comment as CommentModel,
@@ -400,32 +405,116 @@ def _replace_with_retry(source: Path, target: Path, *, timeout: float = 5.0) -> 
             time.sleep(0.05)
 
 
-def _install_uploaded_snapshot(uploading: Path, target: Path) -> Path | None:
-    previous = target.with_suffix(target.suffix + ".previous")
-    had_target = target.exists()
-    if previous.exists():
-        previous.unlink()
-    if had_target:
-        _replace_with_retry(target, previous)
+@contextmanager
+def _snapshot_lock(target: Path, *, timeout: float = 5.0):
+    """Serialize local workers using a persistent per-target OS lock file."""
+    target = target.resolve()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = target.with_suffix(target.suffix + ".snapshot.lock")
+    with lock_path.open("a+b") as handle:
+        if os.name == "nt":
+            import msvcrt
+            handle.seek(0, os.SEEK_END)
+            if handle.tell() == 0:
+                handle.write(b"\0")
+                handle.flush()
+            def acquire():
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            def release():
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            def acquire():
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            def release():
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        deadline = time.monotonic() + timeout
+        while True:
+            try:
+                acquire()
+                break
+            except (BlockingIOError, PermissionError):
+                if time.monotonic() >= deadline:
+                    raise HTTPException(status_code=503, detail="snapshot 교체 작업이 진행 중입니다")
+                time.sleep(0.05)
+        try:
+            yield
+        finally:
+            release()
+    # Never unlink the lock file: another worker may already hold its inode.
+
+
+def _snapshot_copy(source: Path, target: Path, role: str) -> Path:
+    """Prepare a synced same-filesystem copy without moving a reader's path."""
+    descriptor, name = tempfile.mkstemp(prefix=target.name + f".{role}-", dir=target.parent)
+    copied = Path(name)
     try:
-        _replace_with_retry(uploading, target)
-    except Exception:
-        if had_target and previous.exists():
-            _replace_with_retry(previous, target)
+        with os.fdopen(descriptor, "wb") as output, source.open("rb") as input_file:
+            shutil.copyfileobj(input_file, output)
+            output.flush()
+            os.fsync(output.fileno())
+        return copied
+    except BaseException:
+        copied.unlink(missing_ok=True)
         raise
-    return previous if had_target else None
+
+
+def _install_snapshot_locked(uploading: Path, target: Path) -> Path | None:
+    previous = target.with_suffix(target.suffix + ".previous")
+    backup = _snapshot_copy(target, target, "previous") if target.is_file() else None
+    retain_backup = False
+    try:
+        # Readers keep the old inode until replacement, then open the complete
+        # candidate. Never rename current away before installing its successor.
+        _replace_with_retry(uploading, target)
+        if backup is not None:
+            try:
+                _replace_with_retry(backup, previous)
+            except Exception:
+                try:
+                    _replace_with_retry(backup, target)
+                except Exception:
+                    # Keep the old valid copy if the recovery rename also
+                    # fails. Do not claim success or discard recovery evidence.
+                    retain_backup = True
+                    raise
+                raise
+        return previous if backup is not None else None
+    finally:
+        if backup is not None and not retain_backup:
+            backup.unlink(missing_ok=True)
+
+
+def _install_uploaded_snapshot(uploading: Path, target: Path) -> Path | None:
+    with _snapshot_lock(target):
+        return _install_snapshot_locked(uploading, target)
+
+
+def _complete_uploaded_snapshot(uploading: Path, target: Path, required_tables: set[str]):
+    # The worker owns the completed file until validation/replacement finishes.
+    # An HTTP task cancellation must not unlink a file it is still using.
+    try:
+        validation = _validate_sqlite(uploading, required_tables)
+        previous = _install_uploaded_snapshot(uploading, target)
+        return validation, previous
+    finally:
+        uploading.unlink(missing_ok=True)
 
 
 @router.put("/snapshots/{kind}", dependencies=[Depends(require_remote_admin)])
 async def upload_snapshot(request: Request, kind: str):
     target, required_tables = _snapshot_target(kind)
     target.parent.mkdir(parents=True, exist_ok=True)
-    uploading = target.with_suffix(target.suffix + ".uploading")
     max_bytes = int(os.getenv("WALLETSAVIOR_SNAPSHOT_MAX_BYTES", str(512 * 1024 * 1024)))
+    descriptor, name = tempfile.mkstemp(prefix=target.name + ".uploading-", dir=target.parent)
+    uploading = Path(name)
     written = 0
+    work = None
 
     try:
-        with uploading.open("wb") as handle:
+        with os.fdopen(descriptor, "wb") as handle:
             async for chunk in request.stream():
                 if not chunk:
                     continue
@@ -439,8 +528,21 @@ async def upload_snapshot(request: Request, kind: str):
         if written == 0:
             raise HTTPException(status_code=400, detail="빈 snapshot 파일은 업로드할 수 없습니다")
 
-        validation = _validate_sqlite(uploading, required_tables)
-        previous = _install_uploaded_snapshot(uploading, target)
+        work = asyncio.create_task(run_in_threadpool(
+            _complete_uploaded_snapshot, uploading, target, required_tables,
+        ))
+        # Anyio shields its own cancellation scopes by default, but native
+        # asyncio cancellation can still interrupt the threadpool await. Keep
+        # the offload task alive and its file ownership independent of that.
+        work.add_done_callback(lambda task: None if task.cancelled() else task.exception())
+        try:
+            validation, previous = await asyncio.shield(work)
+        except asyncio.CancelledError:
+            try:
+                await asyncio.shield(work)
+            except (Exception, asyncio.CancelledError):
+                pass
+            raise
         return {
             "ok": True,
             "kind": kind,
@@ -450,7 +552,7 @@ async def upload_snapshot(request: Request, kind: str):
             "previous_path": str(previous) if previous else None,
         }
     finally:
-        if uploading.exists():
+        if work is None and uploading.exists():
             uploading.unlink(missing_ok=True)
 
 
@@ -458,31 +560,25 @@ async def upload_snapshot(request: Request, kind: str):
 def snapshot_status(kind: str):
     target, required_tables = _snapshot_target(kind)
     previous = target.with_suffix(target.suffix + ".previous")
-    return {
-        "kind": kind,
-        "current": _validate_sqlite(target, required_tables) if target.is_file() else None,
-        "rollback": _validate_sqlite(previous, required_tables) if previous.is_file() else None,
-    }
+    with _snapshot_lock(target):
+        return {
+            "kind": kind,
+            "current": _validate_sqlite(target, required_tables) if target.is_file() else None,
+            "rollback": _validate_sqlite(previous, required_tables) if previous.is_file() else None,
+        }
 
 
 @router.post("/snapshots/{kind}/rollback", dependencies=[Depends(require_remote_admin)])
 def rollback_snapshot(kind: str):
     target, required_tables = _snapshot_target(kind)
     previous = target.with_suffix(target.suffix + ".previous")
-    if not previous.is_file():
-        raise HTTPException(status_code=409, detail="되돌릴 snapshot이 없습니다")
-    validation = _validate_sqlite(previous, required_tables)
-    displaced = target.with_suffix(target.suffix + ".rollback")
-    if displaced.exists():
-        displaced.unlink()
-    if target.exists():
-        _replace_with_retry(target, displaced)
-    try:
-        _replace_with_retry(previous, target)
-        if displaced.exists():
-            _replace_with_retry(displaced, previous)
-    except Exception:
-        if displaced.exists() and not target.exists():
-            _replace_with_retry(displaced, target)
-        raise
+    with _snapshot_lock(target):
+        if not previous.is_file():
+            raise HTTPException(status_code=409, detail="되돌릴 snapshot이 없습니다")
+        validation = _validate_sqlite(previous, required_tables)
+        candidate = _snapshot_copy(previous, target, "rollback")
+        try:
+            _install_snapshot_locked(candidate, target)
+        finally:
+            candidate.unlink(missing_ok=True)
     return {"ok": True, "kind": kind, "validation": validation}

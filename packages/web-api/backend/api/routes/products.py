@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 import math
+from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Query, Request
 
 from api.schemas.common import ApiResponse, PaginationMeta
-from services.catalog_storage import CatalogUnavailable
+from services.catalog_storage import CatalogUnavailable, rank_normalized_offers
 
 router = APIRouter()
 
@@ -113,15 +114,15 @@ def _normalized_unit_price(current: float, metadata: dict) -> tuple[int | None, 
     return None, None
 
 
-def _comparison_value(product: dict, common_basis: str | None) -> float:
+def _comparison_value(product: dict, common_basis: str | None) -> float | None:
     normalized = product.get("normalized") or {}
     if (
         common_basis
         and normalized.get("basis") == common_basis
-        and normalized.get("unit_price") is not None
+        and _positive_float(normalized.get("unit_price")) is not None
     ):
         return float(normalized["unit_price"])
-    return float((product.get("price") or {}).get("current") or 0)
+    return None
 
 
 @router.get("/search")
@@ -181,6 +182,7 @@ async def get_popular_products(
 async def compare_category_products(
     request: Request,
     category_id: str,
+    comparison_basis: str | None = Query(None, description="입증된 동일 단위 또는 동일 규격 비교 그룹"),
     sort: Literal["price_asc", "price_desc", "discount", "recent"] = Query("price_asc"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
@@ -195,67 +197,88 @@ async def compare_category_products(
             # Sorting must happen before pagination. The existing catalog method
             # pages by name, so load this leaf category once, compute honest
             # comparison values, then sort/page below.
-            fetch_count = max(1, int(category_total_count or per_page))
+            fetch_count = min(1000, max(1, int(category_total_count or per_page)))
+            fetch_page = lambda page, size: storage.get_category_products(category_id, page=page, per_page=size)
             raw_products, total_rows = storage.get_category_products(
                 category_id, page=1, per_page=fetch_count
             )
-            if total_rows > len(raw_products):
-                raw_products, total_rows = storage.get_category_products(
-                    category_id, page=1, per_page=total_rows
-                )
             if not raw_products:
                 search_page = getattr(storage, "search_products_page", None)
                 if callable(search_page):
+                    fetch_page = lambda page, size: search_page("", category=category_id, page=page, per_page=size)
                     raw_products, total_rows = search_page(
-                        "", category=category_id, page=1, per_page=min(fetch_count, 1000)
+                        "", category=category_id, page=1, per_page=fetch_count
                     )
                 else:
-                    raw_products = storage.search_products(
-                        "", category=category_id, page=1, per_page=min(fetch_count, 1000)
+                    fetch_page = lambda page, size: (
+                        storage.search_products("", category=category_id, page=page, per_page=size),
+                        category_total_count,
                     )
-                    total_rows = len(raw_products)
+                    raw_products = storage.search_products(
+                        "", category=category_id, page=1, per_page=fetch_count
+                    )
+                    total_rows = category_total_count or len(raw_products)
+            # Resolve the comparison basis across the complete leaf before
+            # sorting/paging: later rows can contain a different unit basis.
+            if total_rows > len(raw_products):
+                chunk_size = len(raw_products)
+                if not chunk_size:
+                    raise CatalogUnavailable("category comparison rows are incomplete")
+                for fetch_number in range(2, math.ceil(total_rows / chunk_size) + 1):
+                    chunk, _ = fetch_page(fetch_number, chunk_size)
+                    raw_products.extend(chunk)
+                if len(raw_products) != total_rows or len({row.get("id") for row in raw_products}) != total_rows:
+                    raise CatalogUnavailable("category comparison rows are incomplete")
     except Exception as exc:
         raise _catalog_error(exc) from exc
 
-    normalized_rows = any(row.get("public_product_id") for row in raw_products)
     legacy_ids: list[int] = []
-    if not normalized_rows:
-        for row in raw_products:
-            try:
-                legacy_ids.append(int(row["id"]))
-            except (KeyError, TypeError, ValueError):
-                continue
+    for row in raw_products:
+        if row.get("public_product_id"):
+            continue
+        try:
+            legacy_ids.append(int(row["id"]))
+        except (KeyError, TypeError, ValueError):
+            continue
     metadata = _comparison_metadata(storage, legacy_ids)
 
     products = []
     for row in raw_products:
         best_offer = row.get("best_offer") or {}
-        current = (
+        selected_variant = next((variant for variant in row.get("variants", []) if variant.get("id") == best_offer.get("variant_id")), {})
+        current = best_offer.get("comparable_price") if row.get("public_product_id") else (
             best_offer.get("comparable_price")
             or best_offer.get("total_price")
             or row.get("cur")
             or row.get("price")
-            or 0
+            or None
         )
-        original = best_offer.get("original_price") or row.get("original_price") or row.get("avg") or current
+        current = _positive_float(current)
+        original = _positive_float(best_offer.get("original_price") or row.get("original_price"))
         discount_pct = row.get("discount_pct")
         if discount_pct is None and current and original and original > current:
             discount_pct = round((1 - current / original) * 100)
 
         meta = {}
-        if not normalized_rows:
+        if not row.get("public_product_id"):
             try:
                 meta = metadata.get(int(row.get("id") or 0), {})
             except (TypeError, ValueError):
                 meta = {}
-        if best_offer.get("per_100g") is not None:
+        if current is not None and _positive_float(best_offer.get("per_100g")) is not None:
             unit_price, basis = best_offer["per_100g"], "100g"
-        elif best_offer.get("per_100ml") is not None:
+        elif current is not None and _positive_float(best_offer.get("per_100ml")) is not None:
             unit_price, basis = best_offer["per_100ml"], "100ml"
+        elif current is not None and _positive_float(best_offer.get("per_100m")) is not None:
+            unit_price, basis = best_offer["per_100m"], "100m"
         else:
             unit_price, basis = _normalized_unit_price(float(current or 0), meta)
         products.append({
             "id": row.get("id"),
+            "variant_id": best_offer.get("variant_id"),
+            "listing_id": best_offer.get("listing_id"),
+            "offer_id": best_offer.get("id"),
+            "best_offer": dict(best_offer) if best_offer else None,
             "name": row.get("name", ""),
             "source": row.get("source") or "",
             "brand": row.get("brand") or "",
@@ -263,13 +286,14 @@ async def compare_category_products(
             "price": {
                 "current": current,
                 "original": original,
-                "discount_pct": discount_pct or 0,
+                "discount_pct": discount_pct,
             },
             "normalized": {
                 "unit_price": unit_price,
                 "basis": basis,
                 "per_100g": unit_price if basis == "100g" else None,
                 "per_100ml": unit_price if basis == "100ml" else None,
+                "per_100m": unit_price if basis == "100m" else None,
                 "unit_price_display": (
                     row.get("unit_price_display")
                     or row.get("display_unit")
@@ -280,6 +304,18 @@ async def compare_category_products(
             "attributes": row.get("attributes") or {},
             "image_url": row.get("img") or row.get("image_url") or "",
             "promotion": {
+                **{key: best_offer.get(key) for key in (
+                    "variant_id", "listing_id", "listed_price", "total_price", "total_quantity",
+                    "quantity_unit", "received_package_count", "promotion_condition", "promotion_conditions", "promotion_type",
+                    "per_100m",
+                    "quantity_basis", "scalar_basis", "received_package_count_scope",
+                    "pricing_measure_quantity", "pricing_measure_unit", "pricing_measure_basis", "quantity_components",
+                )},
+                "offer_id": best_offer.get("id"),
+                "display_unit": selected_variant.get("display_unit") or row.get("unit") or None,
+                "package_quantity": selected_variant.get("package_quantity"),
+                "package_unit": selected_variant.get("package_unit"),
+                "bundle_count": selected_variant.get("bundle_count", best_offer.get("bundle_count")),
                 "condition": best_offer.get("promotion_condition"),
                 "minimum_quantity": best_offer.get("minimum_quantity"),
                 "membership_required": best_offer.get("membership_required"),
@@ -291,33 +327,54 @@ async def compare_category_products(
             # cross-product comparison rank, so let the client derive this from
             # the comparison summary instead of mixing the two concepts.
             "price_rank": None,
-            "observed_at": best_offer.get("crawled_at") or meta.get("observed_at") or "",
+            "observed_at": best_offer.get("crawled_at") or row.get("observed_at") or meta.get("observed_at") or "",
         })
+
+    # Count prices may compare only the same explicit variant, including in a
+    # leaf that also contains measured offers. Never mix them with g/ml prices.
+    for product in products:
+        if not product["normalized"].get("basis") and product["variant_id"]:
+            per_item = _positive_float((product["best_offer"] or {}).get("per_item"))
+            if product["price"]["current"] is not None and per_item is not None:
+                product["normalized"].update(unit_price=per_item, basis=f"variant:{product['variant_id']}")
 
     bases = {
         product["normalized"]["basis"]
         for product in products
-        if product["normalized"].get("unit_price") is not None
+        if _positive_float(product["normalized"].get("unit_price")) is not None
         and product["normalized"].get("basis")
     }
     common_basis = next(iter(bases)) if len(bases) == 1 else None
+    comparison_groups = []
+    for basis in sorted(bases):
+        group = [product for product in products if _comparison_value(product, basis) is not None]
+        values = [_comparison_value(product, basis) for product in group]
+        group_avg = round(sum(values) / len(values))
+        comparison_groups.append({
+            "basis": basis, "product_count": len(group), "comparable_count": len(group),
+            "avg_comparison_price": group_avg, "min_comparison_price": round(min(values)),
+            "max_comparison_price": round(max(values)),
+            "hotdeal_threshold": round(group_avg * 0.85), "ultra_threshold": round(group_avg * 0.7),
+        })
+    if comparison_basis is not None:
+        if comparison_basis not in bases:
+            raise HTTPException(status_code=422, detail="이 카테고리에서 확인된 비교 그룹이 아닙니다")
+        common_basis = comparison_basis
+        # Group selection precedes sorting, count and pagination. The group
+        # summary above always represents the full leaf, never a visible page.
+        products = [product for product in products if _comparison_value(product, common_basis) is not None]
 
     unit_prices = [
         float(product["normalized"]["unit_price"])
         for product in products
         if common_basis
         and product["normalized"].get("basis") == common_basis
-        and product["normalized"].get("unit_price") is not None
+        and _positive_float(product["normalized"].get("unit_price")) is not None
     ]
-    current_prices = [
-        float(product["price"]["current"])
-        for product in products
-        if product["price"].get("current")
-    ]
-    comparison_prices = unit_prices if unit_prices else current_prices
-    avg = round(sum(comparison_prices) / len(comparison_prices)) if comparison_prices else 0
-    minimum = round(min(comparison_prices)) if comparison_prices else 0
-    maximum = round(max(comparison_prices)) if comparison_prices else 0
+    comparison_prices = unit_prices
+    avg = round(sum(comparison_prices) / len(comparison_prices)) if comparison_prices else None
+    minimum = round(min(comparison_prices)) if comparison_prices else None
+    maximum = round(max(comparison_prices)) if comparison_prices else None
 
     if sort == "discount":
         products.sort(
@@ -329,26 +386,16 @@ async def compare_category_products(
         )
     elif sort == "recent":
         products.sort(key=lambda item: item.get("observed_at") or "", reverse=True)
-    elif sort == "price_desc":
-        products.sort(
-            key=lambda item: (
-                _comparison_value(item, common_basis) > 0,
-                _comparison_value(item, common_basis),
-            ),
-            reverse=True,
-        )
-    else:
-        products.sort(
-            key=lambda item: (
-                _comparison_value(item, common_basis) <= 0,
-                _comparison_value(item, common_basis) or float("inf"),
-            )
-        )
+    elif common_basis:
+        comparable = [item for item in products if _comparison_value(item, common_basis) is not None]
+        unranked = [item for item in products if _comparison_value(item, common_basis) is None]
+        comparable.sort(key=lambda item: _comparison_value(item, common_basis), reverse=sort == "price_desc")
+        products = comparable + unranked
 
     total = len(products) if not children else 0
     start = (page - 1) * per_page
     page_products = products[start:start + per_page]
-    product_count = category_total_count if children else (total_rows or total)
+    product_count = category_total_count if children else (total if comparison_basis else (total_rows or total))
 
     summary = {
         "category_id": category_id,
@@ -359,6 +406,8 @@ async def compare_category_products(
         "product_count": product_count,
         "is_leaf": not bool(children),
         "comparison_basis": common_basis,
+        "comparison_groups": comparison_groups,
+        "category_product_count": category_total_count if children else (total_rows or total),
         "avg_comparison_price": avg,
         "min_comparison_price": minimum,
         "max_comparison_price": maximum,
@@ -370,8 +419,8 @@ async def compare_category_products(
         "avg_price_per_100g": avg if common_basis == "100g" else None,
         "min_price_per_100g": minimum if common_basis == "100g" else None,
         "max_price_per_100g": maximum if common_basis == "100g" else None,
-        "hotdeal_threshold": round(avg * 0.85) if avg else 0,
-        "ultra_threshold": round(avg * 0.7) if avg else 0,
+        "hotdeal_threshold": round(avg * 0.85) if avg is not None else None,
+        "ultra_threshold": round(avg * 0.7) if avg is not None else None,
         "normalized_product_count": len(unit_prices),
         "comparison_product_count": len(comparison_prices),
     }
@@ -401,13 +450,14 @@ def _normalized_events(product: dict, *, latest_only: bool = False) -> list[dict
     return events
 
 
-def _normalized_comparison_sort_key(event: dict) -> tuple[float, float, str]:
-    unit_price = event.get("per_100g") or event.get("per_100ml") or event.get("per_item")
-    return (
-        float(unit_price) if unit_price is not None else float("inf"),
-        float(event.get("comparable_price") or float("inf")),
-        str(event.get("source") or ""),
-    )
+def _observed_in_period(event: dict, start: datetime, end: datetime) -> bool:
+    try:
+        observed = datetime.fromisoformat(str(event.get("crawled_at") or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if observed.tzinfo is None:
+        observed = observed.replace(tzinfo=timezone.utc)
+    return start <= observed <= end
 
 
 @router.get("/{product_id}")
@@ -431,18 +481,51 @@ async def get_price_history(
     try:
         product = storage.get_product_detail(product_id)
         if product and product.get("public_product_id"):
+            end = datetime.now(timezone.utc)
+            start = end - timedelta(days=days)
             history = [
                 {
+                    "id": event.get("id"),
+                    "listing_id": event.get("listing_id"),
+                    "offer_state": event.get("offer_state"),
+                    "is_latest": event.get("is_latest"),
+                    "current_eligible": event.get("current_eligible"),
+                    "valid_from": event.get("valid_from"), "valid_to": event.get("valid_to"),
+                    "availability_reason": event.get("availability_reason"),
+                    "listed_price": event.get("listed_price"),
                     "date": event.get("crawled_at"),
                     "observed_at": event.get("crawled_at"),
-                    "price": event.get("total_price"),
+                    "price": event.get("listed_price"),
+                    "total_price": event.get("total_price"),
                     "comparable_price": event.get("comparable_price"),
                     "source": event.get("source"),
                     "source_url": event.get("source_url"),
                     "variant_id": event.get("variant_id"),
                     "promotion_condition": event.get("promotion_condition"),
+                    "promotion_conditions": event.get("promotion_conditions"),
+                    "minimum_quantity": event.get("minimum_quantity"),
+                    "received_package_count": event.get("received_package_count"),
+                    "membership_required": event.get("membership_required"),
+                    "coupon_required": event.get("coupon_required"),
+                    "total_quantity": event.get("total_quantity"),
+                    "quantity_unit": event.get("quantity_unit"),
+                    "per_100m": event.get("per_100m"),
+                    "per_100g": event.get("per_100g"),
+                    "per_100ml": event.get("per_100ml"),
+                    "per_item": event.get("per_item"),
+                    "observation_receipt_eligible": event.get("observation_receipt_eligible"),
+                    "observation_receipt_reason": event.get("observation_receipt_reason"),
+                    "quantity_comparison_reason": event.get("quantity_comparison_reason"),
+                    "quantity_basis": event.get("quantity_basis"),
+                    "scalar_basis": event.get("scalar_basis"),
+                    "received_package_count_scope": event.get("received_package_count_scope"),
+                    "pricing_measure_quantity": event.get("pricing_measure_quantity"),
+                    "pricing_measure_unit": event.get("pricing_measure_unit"),
+                    "pricing_measure_basis": event.get("pricing_measure_basis"),
+                    "quantity_components": event.get("quantity_components"),
                 }
                 for event in _normalized_events(product)
+                if _observed_in_period(event, start, end)
             ]
         else:
             history = storage.get_price_history(int(product_id), days) if product else []
@@ -459,9 +542,10 @@ async def get_price_compare(request: Request, product_id: str):
     try:
         product = storage.get_product_detail(product_id)
         if product and product.get("public_product_id"):
-            compare = sorted(
-                [event for event in _normalized_events(product, latest_only=True) if event.get("comparable_price") is not None],
-                key=_normalized_comparison_sort_key,
+            compare = rank_normalized_offers(
+                [event for event in _normalized_events(product, latest_only=True)
+                 if event.get("comparable_price") is not None and event.get("current_eligible") is True],
+                reference_group=(product.get("comparison_reference") or {}).get("group"),
             )
         else:
             compare = storage.get_price_compare(int(product_id)) if product else []
@@ -489,7 +573,7 @@ async def get_product_trust(request: Request, product_id: str):
     if product is None:
         raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
 
-    current = product.get("cur") or product.get("price") or 0
+    current = product.get("cur") if product.get("public_product_id") else product.get("cur") or product.get("price") or 0
     prices = [row.get("price") for row in history if row.get("price")]
     avg = round(sum(prices) / len(prices)) if prices else product.get("avg") or current
     low = min(prices) if prices else product.get("low") or current

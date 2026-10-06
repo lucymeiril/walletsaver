@@ -111,7 +111,7 @@ if not getattr(_core, "_canonical_product_resolution_installed", False):
             product.promo_type = str(promo_type)
         return product.id
 
-    def _insert_items(session, items: list[dict], schema_type: str) -> int:
+    def _insert_items(session, items: list[dict], schema_type: str, *, observed_at=None) -> int:
         """Set canonical Product context per row, preserving legacy insert semantics."""
         saved = 0
         for item in items:
@@ -122,7 +122,9 @@ if not getattr(_core, "_canonical_product_resolution_installed", False):
             )
             token = _CANONICAL_PRODUCT_ID.set(canonical_id)
             try:
-                saved += _original_insert_items(session, [item], schema_type)
+                saved += _original_insert_items(session, [item], schema_type, **(
+                    {"observed_at": observed_at} if observed_at is not None and (item.get("public_product_id") or item.get("public_variant_id")) else {}
+                ))
             finally:
                 _CANONICAL_PRODUCT_ID.reset(token)
         return saved

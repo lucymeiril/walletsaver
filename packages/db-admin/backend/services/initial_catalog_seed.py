@@ -26,7 +26,13 @@ from typing import Any, Iterable, Mapping
 from core.match_key import build_match_key
 from core.product_units import parse_package_quantity
 from core.promotion_semantics import comparable_transaction_or_none
-from core.catalog_quantity import normalize_catalog_package as _package, _sheet_roll_package
+from services.initial_numbered_reviews import source_reviews
+from core.reviewed_source_evidence import (source_observation_eligibility_review,
+                                          source_identity_context_review,
+                                          listing_title_history, valid_count_interval_variant,
+                                          valid_source_component_variant, source_component_signature,
+                                          source_review_evidence, source_review_matches)
+from core.catalog_quantity import normalize_catalog_package as _package, _sheet_roll_package, reviewed_price_basis_identity, component_signature, package_pricing_measure, uses_reviewed_component_rules, valid_physical_device_variant
 
 SCHEMA_VERSION = "walletsaver-catalog-v2"
 BUILDER_VERSION = "initial-catalog-seed-v1"
@@ -127,7 +133,20 @@ def validated_brand(value: Any) -> str | None:
 def _package_signature(package: Mapping[str, Any] | None) -> tuple[Any, ...] | None:
     if package is None:
         return None
-    return (package["package_quantity"], package["package_unit"], package["bundle_count"])
+    scalar = (package["package_quantity"], package["package_unit"], package["bundle_count"])
+    from core.reviewed_source_evidence import source_selection_alternatives
+    alternatives = source_selection_alternatives(package)
+    if alternatives:
+        return (*scalar, 'source-exclusive-alternatives-v1', alternatives)
+    from core.reviewed_source_evidence import source_entitlement_specification, source_partial_retail_specification
+    partial_retail = source_partial_retail_specification(package)
+    if partial_retail:
+        return (*scalar, 'source-partial-retail-package-v1', json.dumps(partial_retail, sort_keys=True, ensure_ascii=False))
+    entitlement = source_entitlement_specification(package)
+    if entitlement:
+        return (*scalar, 'source-incomplete-entitlement-v1', json.dumps(entitlement, sort_keys=True, ensure_ascii=False))
+    components = component_signature(package)
+    return scalar if components is None else (*scalar, components)
 
 
 
@@ -201,6 +220,13 @@ def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str, titl
         # the minimum order as the physical bundle size. No current promotion
         # type establishes that this textual condition has been modelled.
         conditions["source_title_purchase_condition"] = title
+        # This partial entitlement review separately proves the purchase
+        # condition. Other unreviewed minimum-order listings stay pending.
+        from core.reviewed_source_evidence import reviewed_listing_specification
+        entitlement = reviewed_listing_specification(payload, title, 'services.vouchers.cafe.monetary')
+        minimum = re.search(r"최소\s*구매\s*(?:수량\s*)?[:：]?\s*([1-9]\d*)(?:\s*개)?(?=\s|$|[/,)])", title)
+        if entitlement and minimum:
+            conditions["minimum_quantity"] = int(minimum[1])
     has_conditions = any(bool(value) for value in conditions.values())
     if title_purchase_condition or (has_conditions and promotion in {"final_price", "was_now_price"}):
         promotion = "unknown"
@@ -301,6 +327,10 @@ def _runtime_match_key(row: Mapping[str, Any]) -> str | None:
     payload = row["raw_payload"]
     if not isinstance(payload, Mapping):
         return None
+    title = _text(_first((payload,), ("source_title", "name", "productName", "itemName", "prdtName", "goodsName", "title")))
+    reviewed = reviewed_price_basis_identity(payload, title)
+    if reviewed:
+        return build_match_key(_first((payload,), ("brand", "brandName", "brandNm", "brand_name")), title, *reviewed)
     existing = _text(payload.get("match_key"))
     if existing and payload.get("matching_status") == "miss":
         return existing
@@ -315,6 +345,48 @@ def _runtime_match_key(row: Mapping[str, Any]) -> str | None:
         float(quantity) if quantity is not None else None,
         _first((payload,), ("pack_unit", "packUnit", "unitName", "unit")),
     )
+
+
+def _physical_title_history_alias_keys(history, package, members, category_id):
+    """Reconstruct only reviewed source aliases, keeping the primary proof intact.
+
+    Source quote amounts are absent from this identity check. A registered
+    title history alone cannot change a physical role, sold count or source.
+    """
+    proof = package['attributes']['physical_device_specification']
+    expected = {key: value for key, value in proof.items() if key != 'title'}
+    if proof['category_id'] != category_id or any(
+            not valid_physical_device_variant(row['package'])
+            or {key: value for key, value in row['package']['attributes']['physical_device_specification'].items()
+                if key != 'title'} != expected for row in members):
+        return None
+    keys = set()
+    for alias in history['aliases']:
+        source, attrs = {}, {}
+        for name, value in {**alias['required_source']['source_fields'], **alias['quantity_fields']}.items():
+            layer, field = (attrs, name[11:]) if name.startswith('attributes.') else (source, name)
+            if field in {'unit_price_display', 'unit_price_basis', 'unit_price_basis_raw', 'unit_price_text', 'unit_price_unit'} and isinstance(value, list) and len(value) == 2:
+                value = f'{value[0] or ""}{value[1]}'
+            layer[field] = deepcopy(value)
+        urls = alias['required_source']['source_urls']
+        if len(urls) > 6:
+            return None
+        for index, url in enumerate(urls):
+            (source if index < 3 else attrs)[('canonical_url', 'detail_url', 'source_url')[index % 3]] = url
+        attrs['source_record_key'] = history['source_record_key']
+        source.update(name=alias['title'], source=history['source_name'], attributes=attrs)
+        derived, issues = _package(source, attrs, alias['title'], category_id=category_id)
+        if (issues or not valid_physical_device_variant(derived)
+                or {key: value for key, value in derived['attributes']['physical_device_specification'].items()
+                    if key != 'title'} != expected):
+            return None
+        # Use the same raw brand input as the original key, without copying
+        # stale match_key/name_core values into an unobserved alias.
+        source['brand'] = _first((members[0]['raw_payload'],), ('brand', 'brandName', 'brandNm', 'brand_name'))
+        match_key = _runtime_match_key({'raw_payload': source})
+        if match_key:
+            keys.add(match_key)
+    return keys
 
 
 def _classification_attributes(assignment: Mapping[str, Any]) -> tuple[dict[str, Any], bool]:
@@ -369,6 +441,23 @@ def build_initial_catalog_bundle(
     rows = normalize_pending_ingestions(ingestions)
     category_rows = sorted((deepcopy(dict(row)) for row in categories), key=lambda row: row["id"])
     leaves = _leaf_ids(category_rows)
+    # Classification establishes appliance specification and service-occupancy
+    # roles. Recompute only their quantity issues, keeping every
+    # raw observation and all price/source diagnostics intact.
+    for row in rows:
+        category_id = (assignments.get((row['source_name'], row['source_record_key'])) or {}).get('unified_category_id')
+        if category_id in leaves:
+            payload = row['raw_payload']
+            if not isinstance(payload, Mapping):
+                continue
+            attrs = payload.get('attributes') or {}
+            attrs = attrs if isinstance(attrs, Mapping) else {}
+            package, issues = _package(payload, attrs, row['source_title'], category_id=category_id)
+            if (package and 'physical_device_specification' in package.get('attributes', {})
+                    or any(issue.startswith(('physical_device_', 'unit_service_')) for issue in issues)):
+                row['package'] = package
+                row['issues'] = [issue for issue in row['issues'] if not issue.startswith(
+                    ('unit_', 'bundle_', 'mixed_package_', 'multiple_package_', 'count_range_', 'bulk_package_'))] + issues
     bundle: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION, "builder_version": BUILDER_VERSION, "run_id": run_id,
         "source_ingestion_ids": sorted({row["ingestion_id"] for row in rows}),
@@ -378,9 +467,23 @@ def build_initial_catalog_bundle(
         "mart_category_mappings": sorted((deepcopy(dict(row)) for row in mart_category_mappings), key=lambda row: (row["mart"], str(row["mart_native_id"]))),
         "unresolved": [], "observation_accounting": [], "review_issues": [],
     }
-    groups: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    groups: dict[tuple[str, ...], list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
-        groups[(row["source_name"], row["source_record_key"])].append(row)
+        key = (row["source_name"], row["source_record_key"])
+        context = source_identity_context_review(*key, row['raw_payload'], row['source_title'])
+        if context and context['partition_key']:
+            key += (context['partition_key'],)
+        groups[key].append(row)
+    assignments = dict(assignments)
+    for key in groups:
+        if len(key) == 3:
+            # A source SKU's old classified form may establish the leaf, but
+            # cannot transfer its name, grade, cultivar, package override or
+            # cross-mart identity to a separately reviewed context.
+            original = assignments.get(key[:2]) or {}
+            assignments[key] = {field: deepcopy(original[field]) for field in (
+                'unified_category_id', 'classification_confidence', 'classification_reason',
+                'review_status') if field in original}
     products: dict[str, dict[str, Any]] = {}
     variants: dict[str, dict[str, Any]] = {}
     weeks: dict[str, dict[str, Any]] = {}
@@ -405,6 +508,26 @@ def build_initial_catalog_bundle(
             "classification_attribute_conflicts": deepcopy(attribute_conflicts.get(group_key, {})),
         })
         bundle["observation_accounting"].append({"raw_record_id": row["raw_record_id"], "ingestion_id": row["ingestion_id"], "status": "unresolved", "reasons": reasons})
+
+    # A registered incomplete observation is still accounted for, but cannot
+    # erase another independently exact observation of the same source SKU.
+    # Every unreviewed conflict continues through the whole-group guards.
+    for key, members in list(groups.items()):
+        eligible_members = []
+        for row in members:
+            payload = row['raw_payload']
+            eligibility = (source_observation_eligibility_review(
+                payload, payload.get('attributes') or {}, row['source_title'])
+                if isinstance(payload, Mapping) else None)
+            if (eligibility is not None
+                    and 'source_observation_factual_hold' in eligibility[1]):
+                hold(row, eligibility[1] + row['issues'])
+            else:
+                eligible_members.append(row)
+        if eligible_members:
+            groups[key] = eligible_members
+        else:
+            del groups[key]
 
     # Detect explicit cross-listing group disagreements before emitting either
     # side; otherwise input order could decide which classification survives.
@@ -468,8 +591,16 @@ def build_initial_catalog_bundle(
             reasons.append("classification_pending_review")
         if key in invalid_attribute_keys:
             reasons.append("classification_attributes_invalid")
-        if len({_normalized_text(row["source_title"]) for row in members}) > 1:
-            reasons.append("source_title_changed")
+        title_history = None
+        multiple_titles = len({_normalized_text(row["source_title"]) for row in members}) > 1
+        physical_members = all(valid_physical_device_variant(row['package']) for row in members)
+        if multiple_titles or physical_members:
+            histories = [listing_title_history(*key[:2], row['raw_payload'], row['source_title']) for row in members]
+            if (histories and histories[0] and all(review == histories[0] for review in histories)
+                    and histories[0]['category_id'] == category_id):
+                title_history = histories[0]
+            elif multiple_titles:
+                reasons.append("source_title_changed")
         if len({_json(_package_signature(row["package"])) for row in members}) > 1:
             reasons.append("source_specification_changed")
         group_key = _text(assignment.get("product_group_key"))
@@ -480,12 +611,129 @@ def build_initial_catalog_bundle(
         if group_key and not _text(assignment.get("canonical_name")):
             reasons.append("product_group_name_missing")
         latest = max(members, key=lambda row: (row["crawled_at"] or "", row["raw_record_id"]))
+        from services.initial_numbered_reviews import form_reviews
+        from services.initial_taxonomy import normalize_source_path as review_source_path
+        form_review = form_reviews().get((key[0], review_source_path(latest['source_category_path']), latest['source_title']))
+        reviewed_name = ''
+        if form_review and isinstance(form_review.get('canonical_name'), str):
+            reviewed_name = form_review['canonical_name'].strip()
+            required = source_reviews().get((key[0], review_source_path(latest['source_category_path']), latest['source_title']))
+            if reviewed_name and (form_review['leaf'] != category_id or not required or any(
+                    not source_review_matches(source_review_evidence(row['raw_payload']), required)
+                    for row in members)):
+                reasons.append('reviewed_product_name_source_conflict')
         package = deepcopy(assignment.get("package") or latest["package"])
+        contexts = [source_identity_context_review(*key[:2], row['raw_payload'], row['source_title'])
+                    for row in members]
+        if any(contexts):
+            if (not all(context == contexts[0] for context in contexts)
+                    or contexts[0]['category_id'] != category_id
+                    or package is None
+                    or [package.get('package_quantity'), package.get('package_unit'), package.get('bundle_count')]
+                       != contexts[0]['normalized']):
+                reasons.append('reviewed_source_identity_context_conflict')
+            elif contexts[0]['partition_key']:
+                package.setdefault('attributes', {})['source_identity_context'] = deepcopy(contexts[0])
         if assignment.get("package"):
-            package, override_issues = _package(assignment["package"], {}, "")
+            component_override = "package_components" in (assignment["package"].get("attributes") or {})
+            if component_override and not uses_reviewed_component_rules(latest["source_title"]):
+                package, override_issues = None, ["unit_component_override_requires_reviewed_title"]
+            else:
+                package, override_issues = _package(assignment["package"], {}, latest["source_title"] if component_override else "")
             reasons.extend(override_issues)
+        from core.reviewed_source_evidence import source_parent_selection, source_outer_set_count, source_observational_raw_hashes, source_nonexact_contents_specification, source_entitlement_specification, source_partial_retail_specification
+        parent_selection = source_parent_selection(package) if package else None
+        outer_count = source_outer_set_count(package) if package else None
+        nonexact = source_nonexact_contents_specification(package) if package else None
+        entitlement = source_entitlement_specification(package) if package else None
+        partial_retail = source_partial_retail_specification(package) if package else None
+        if outer_count or nonexact or entitlement or partial_retail:
+            outer_review = package['attributes']['explicit_listing_quantity_review']
+            if (assignment.get('package') or group_key or outer_review['category_id'] != category_id
+                    or any(row['source_name'] != outer_review['source_name']
+                           or row['source_record_key'] != outer_review['source_record_key']
+                           or source_observational_raw_hashes(package).get(row['raw_record_id']) != row['raw_payload_sha256']
+                           or not row['package'] or source_outer_set_count(row['package']) != outer_count
+                           or source_nonexact_contents_specification(row['package']) != nonexact
+                           or source_entitlement_specification(row['package']) != entitlement
+                           or source_partial_retail_specification(row['package']) != partial_retail
+                           for row in members)):
+                reasons.append('source_partial_retail_evidence_conflict' if partial_retail else 'source_entitlement_evidence_conflict' if entitlement else 'source_nonexact_contents_evidence_conflict' if nonexact else 'source_outer_set_evidence_conflict')
+        if parent_selection:
+            parent_review = package['attributes']['explicit_listing_quantity_review']
+            if (assignment.get('package') or group_key
+                    or parent_review['category_id'] != category_id
+                    or any(row['source_name'] != parent_review['source_name']
+                           or row['source_record_key'] != parent_review['source_record_key']
+                           or parent_selection['original_raw_payload_hashes'].get(row['raw_record_id'])
+                              != row['raw_payload_sha256']
+                           or not row['package'] or source_parent_selection(row['package']) != parent_selection
+                           for row in members)):
+                reasons.append('source_option_parent_evidence_conflict')
+        if form_review and form_review.get('quantity_hold_reason'):
+            quantity_hold = form_review['quantity_hold_reason']
+            # The old missing-composition judgment is fulfilled only by a
+            # complete reviewed vector validated against every original row.
+            # Scalar aggregates, manual overrides and other holds still block.
+            complete_vector = (
+                quantity_hold in {'mixed_package_component_contents_unresolved',
+                                  'distinct_tea_recipe_sold_count_allocation_not_declared'}
+                and not assignment.get('package') and package
+                and form_review.get('leaf') == category_id
+                and valid_source_component_variant(package)
+                and package['attributes']['source_component_listing']['category_id'] == category_id
+                and all(row['package'] and valid_source_component_variant(row['package'])
+                        and row['package']['attributes']['source_component_listing']['category_id'] == category_id
+                        and source_component_signature(row['package']['attributes']['source_components'])
+                        == source_component_signature(package['attributes']['source_components']) for row in members)
+            )
+            # Original declared whole contents can also be retained when the
+            # recipes are unknown. This does not fulfill recipe allocation or
+            # permit homogeneous pricing; every source row must carry the same
+            # registered, source-bound scalar comparison hold.
+            from core.reviewed_source_evidence import (valid_explicit_listing_variant, package_comparison_reason,
+                                                      original_quantity_assertion)
+            original_assertion = original_quantity_assertion(package) if package else None
+            original_scope = (quantity_hold == 'source_declared_package_quantity_contradiction'
+                and original_assertion is not None
+                and all(original_assertion['raw_payload_hashes'].get(row['raw_record_id'])
+                        == row['raw_payload_sha256'] for row in members))
+            complete_scalar = (
+                (quantity_hold == 'distinct_recipe_sold_count_allocation_not_declared' or original_scope)
+                and not assignment.get('package') and package
+                and form_review.get('leaf') == category_id
+                and valid_explicit_listing_variant(package)
+                and package_comparison_reason(package) == 'contents_identity_and_allocation_unverified'
+                and package['attributes']['explicit_listing_quantity_review']['category_id'] == category_id
+                and all(row['package'] and valid_explicit_listing_variant(row['package'])
+                        and row['package']['attributes']['explicit_listing_quantity_review']
+                        == package['attributes']['explicit_listing_quantity_review'] for row in members)
+            )
+            complete_parent = (parent_selection is not None
+                and quantity_hold == parent_selection['original_selection_hold_reason']
+                and form_review.get('leaf') == category_id)
+            complete_outer = (outer_count is not None
+                and quantity_hold == 'mixed_package_component_contents_unresolved'
+                and form_review.get('leaf') == category_id)
+            complete_entitlement = ((entitlement is not None or partial_retail is not None)
+                and quantity_hold == package['attributes']['explicit_listing_quantity_review']['original_quantity_hold_reason']
+                and form_review.get('leaf') == category_id)
+            if not (complete_vector or complete_scalar or complete_parent or complete_outer or complete_entitlement):
+                reasons.append(quantity_hold)
+        physical_alias_keys = set()
+        if title_history and valid_physical_device_variant(package):
+            physical_alias_keys = _physical_title_history_alias_keys(title_history, package, members, category_id)
+            if physical_alias_keys is None:
+                title_history = None
+                physical_alias_keys = set()
+                if multiple_titles:
+                    reasons.append('source_title_changed')
         if package is None:
             reasons.append("unit_unresolved")
+        elif title_history and not valid_physical_device_variant(package):
+            # Physical aliases are consumed from the source-bound code registry.
+            # Even additive audit attributes would alter the historical variant.
+            package.setdefault('attributes', {})['source_title_history'] = deepcopy(title_history)
         if reasons:
             for row in members:
                 hold(row, reasons + row["issues"])
@@ -499,21 +747,58 @@ def build_initial_catalog_bundle(
             if blocking_issues:
                 hold(row, issues)
             else:
-                review_reasons = sorted(set(issues) & PROMOTION_REVIEW_ISSUES)
+                from core.reviewed_source_evidence import package_publication_reason
+                promotion_reasons = set(issues) & PROMOTION_REVIEW_ISSUES
+                publication_reason = package_publication_reason(package)
+                review_reasons = sorted(promotion_reasons | ({publication_reason} if publication_reason else set()))
                 valid.append({
                     **row,
                     "offer_state": "pending_review" if review_reasons else "active",
                     "offer_review_reasons": review_reasons,
-                    "promotion_type": "unknown" if review_reasons else row["promotion_type"],
-                    "discount_rate": None if review_reasons else row["discount_rate"],
+                    "promotion_type": "unknown" if promotion_reasons else row["promotion_type"],
+                    "discount_rate": None if promotion_reasons else row["discount_rate"],
                 })
         if not valid:
             continue
-        canonical_name = _text(assignment.get("canonical_name")) or latest["source_title"]
+        canonical_name = _text(assignment.get("canonical_name")) or reviewed_name or latest["source_title"]
         brand = validated_brand(assignment.get("brand")) if "brand" in assignment else latest["brand"]
         # An explicit reviewed group is the only route to a cross-mart merge.
         product_id = stable_id("prod", "reviewed", group_key) if group_key else stable_id("prod", "source", *key)
-        variant_id = stable_id("var", product_id, package["package_quantity"], package["package_unit"], package["bundle_count"])
+        components = component_signature(package)
+        # Keep all pre-existing scalar IDs byte-for-byte stable. The sold set's
+        # exact multiset, not its pricing total, identifies new component variants.
+        from core.reviewed_source_evidence import valid_nonmeasured_variant, source_selection_alternatives
+        alternatives = source_selection_alternatives(package)
+        # Nonexact numbers are descriptive evidence, never exact mass identity.
+        # Voucher face value is a known entitlement descriptor, never quote price.
+        entitlement_identity = ((entitlement['kind'], entitlement['denomination_amount'],
+                                 entitlement['denomination_currency'], entitlement['certificate_medium'])
+                                if entitlement and entitlement['kind'] == 'stored_value_voucher'
+                                else (entitlement['kind'],) if entitlement else None)
+        variant_id = (stable_id('var', product_id, 'source-partial-retail-observation-v1') if partial_retail else
+                      stable_id('var', product_id, 'source-incomplete-entitlement-observation-v1', entitlement_identity)
+                      if entitlement else
+                      stable_id('var', product_id, 'source-nonexact-contents-observation-v1', nonexact['kind'])
+                      if nonexact else
+                      stable_id('var', product_id, 'source-outer-set-count-v1', outer_count)
+                      if outer_count else
+                      stable_id('var', product_id, 'source-selectable-alternatives-v1', alternatives)
+                      if alternatives else
+                      stable_id('var', product_id, 'source-selectable-parent-v1', parent_selection['dimension'],
+                               package['package_quantity'], package['package_unit'], package['bundle_count'])
+                      if parent_selection else
+                      stable_id('var', product_id, 'physical-device-specification-v1', package['attributes']['physical_device_specification'])
+                      if valid_physical_device_variant(package) else
+                      stable_id('var', product_id, 'nonmeasured-listing-v1', package['attributes']['nonmeasured_listing'])
+                      if valid_nonmeasured_variant(package) else
+                      stable_id('var', product_id, 'declared-count-interval-unit-v2', package['attributes']['count_interval'])
+                      if valid_count_interval_variant(package) and package['attributes']['count_interval_listing'].get('identity_basis') == 'declared_interval_unit_v2' else
+                      stable_id('var', product_id, 'declared-count-interval-v1', package['attributes']['count_interval_listing'])
+                      if valid_count_interval_variant(package) else
+                      stable_id('var', product_id, 'source-component-vector-v1', source_component_signature(package['attributes']['source_components']))
+                      if valid_source_component_variant(package) else
+                      stable_id("var", product_id, package["package_quantity"], package["package_unit"], package["bundle_count"])
+                      if components is None else stable_id("var", product_id, "component-set-v1", components))
         listing_id = stable_id("listing", *key)
         product = products.setdefault(product_id, {
             "public_product_id": product_id, "unified_category_id": category_id,
@@ -522,7 +807,7 @@ def build_initial_catalog_bundle(
             "classification_confidence": float(confidence), "review_status": assignment.get("review_status") or "classified",
             "primary_image_url": latest["image_url"] or None,
             "is_active": False,
-            "attributes": {"identity_basis": "reviewed_product_group" if group_key else "source_scoped", "product_group_key": group_key or None, "classification_reason": assignment.get("classification_reason"), "classification_attributes": {}, "classification_attribute_evidence": [], "source_ingestion_ids": []},
+            "attributes": {"identity_basis": "source_partial_retail_observation" if partial_retail else "source_incomplete_entitlement_observation" if entitlement else "source_nonexact_contents_observation" if nonexact else "source_incomplete_set_observation" if outer_count else "source_selectable_parent_observation" if parent_selection else "reviewed_product_group" if group_key else "source_scoped", "product_group_key": group_key or None, "classification_reason": assignment.get("classification_reason"), "classification_attributes": {}, "classification_attribute_evidence": [], "source_ingestion_ids": []},
         })
         product["attributes"]["classification_attributes"] = _merge_classification_attributes(
             product["attributes"]["classification_attributes"], assignment_attributes[key],
@@ -537,8 +822,26 @@ def build_initial_catalog_bundle(
         product["aliases"] = sorted(set(product["aliases"]) | set(assignment.get("aliases") or []))
         product["keywords"] = sorted(set(product["keywords"]) | set(assignment.get("keywords") or []))
         product["attributes"]["source_ingestion_ids"] = sorted(set(product["attributes"]["source_ingestion_ids"]) | {row["ingestion_id"] for row in valid})
-        variant_name = f"{canonical_name} {package['package_quantity']:g}{package['package_unit']}×{package['bundle_count']}" if assignment.get("canonical_name") else latest["source_title"]
-        variants.setdefault(variant_id, {"public_variant_id": variant_id, "public_product_id": product_id, "variant_name": variant_name, **package, "attributes": {"specification_basis": "reviewed_override" if assignment.get("package") else "source_structured_and_explicit_text"}})
+        variant_name = (canonical_name if partial_retail or entitlement or nonexact or alternatives or valid_nonmeasured_variant(package) or valid_count_interval_variant(package) or valid_physical_device_variant(package) else
+                        f"{canonical_name} {package['package_quantity']:g}{package['package_unit']}×{package['bundle_count']}") if assignment.get("canonical_name") or reviewed_name else latest["source_title"]
+        variants.setdefault(variant_id, {"public_variant_id": variant_id, "public_product_id": product_id, "variant_name": variant_name, **package, "attributes": {**package.get("attributes", {}), "specification_basis": "reviewed_override" if assignment.get("package") else "source_structured_and_explicit_text"}})
+        if parent_selection or outer_count or nonexact or entitlement or partial_retail:
+            variants[variant_id]['is_active'] = False
+        # Every accepted observation may have its own reviewed URL/native path.
+        # The listing's common normalized specification was checked above.
+        for row in valid:
+            review = source_reviews().get((key[0], tuple(row['source_category_path']), row['source_title']))
+            if review is None:
+                eligibility = source_observation_eligibility_review(
+                    row['raw_payload'], row['raw_payload'].get('attributes') or {}, row['source_title'])
+                if (eligibility is not None and not eligibility[1]
+                        and eligibility[0]['category_id'] == category_id):
+                    review = eligibility[0]['required_source']
+            if review:
+                evidence_review = {'source_name': key[0], 'source_record_key': key[1], **deepcopy(review)}
+                reviews = variants[variant_id]['attributes'].setdefault('source_evidence_reviews', [])
+                if evidence_review not in reviews:
+                    reviews.append(evidence_review)
         bundle["source_listings"].append({
             "public_source_listing_id": listing_id, "public_variant_id": variant_id,
             "source_name": key[0], "source_record_key": key[1], "source_title": latest["source_title"],
@@ -546,6 +849,7 @@ def build_initial_catalog_bundle(
             "source_unit_text": package["display_unit"] or None,
             "source_category_paths": [list(path) for path in sorted({tuple(row["source_category_path"]) for row in members})],
             "source_ingestion_ids": sorted({row["ingestion_id"] for row in members}),
+            **({'is_active': False} if parent_selection or outer_count or nonexact or entitlement or partial_retail else {}),
         })
         offers: dict[str, list[dict[str, Any]]] = defaultdict(list)
         for row in valid:
@@ -568,15 +872,18 @@ def build_initial_catalog_bundle(
                 current_price=first["price"], promotion_type=first["promotion_type"],
                 promotion_conditions=first["promotion_conditions"],
             ) if first["offer_state"] == "active" else None
-            if transaction and package["package_unit"] in {"g", "ml"}:
+            measure = package_pricing_measure(package)
+            if transaction and measure:
                 total_spend, received_packages = transaction
-                offer["standard_unit_price"] = round(total_spend * 100 / (package["package_quantity"] * package["bundle_count"] * received_packages), 4)
-                if package["package_unit"] == "g":
+                offer["standard_unit_price"] = round(total_spend * 100 / (measure[0] * received_packages), 4)
+                if measure[1] == "g":
                     offer["price_per_100g"] = offer["standard_unit_price"]
             bundle["offers"].append(offer)
             if first["offer_state"] == "pending_review":
                 bundle["review_issues"].append({
-                    "reason": "promotion_pending_review", "reasons": first["offer_review_reasons"],
+                    "reason": ("source_selection_pending_review" if parent_selection else
+                               "source_version_pending_review" if package_publication_reason(package)
+                               else "promotion_pending_review"), "reasons": first["offer_review_reasons"],
                     "public_product_id": product_id, "public_variant_id": variant_id,
                     "public_source_listing_id": listing_id, "public_offer_event_id": offer_id,
                     "source_ingestion_ids": sorted({row["ingestion_id"] for row in evidence_rows}),
@@ -592,8 +899,11 @@ def build_initial_catalog_bundle(
             for row in evidence_rows:
                 bundle["observation_accounting"].append({"raw_record_id": row["raw_record_id"], "ingestion_id": row["ingestion_id"], "status": "included", "offer_state": row["offer_state"], "reasons": row["offer_review_reasons"], "publication_status": "not_approved", "public_source_listing_id": listing_id, "public_offer_event_id": offer_id})
                 match_key = _runtime_match_key(row)
-                if match_key:
+                if match_key and not (parent_selection or outer_count or nonexact or entitlement or partial_retail):
                     rule_candidates[match_key].append({"match_key": match_key, "public_product_id": product_id, "public_variant_id": variant_id, "brand": brand, "name_core": canonical_name, "pack_qty": package["package_quantity"], "pack_unit": package["package_unit"], "confidence": float(confidence), "raw_record_id": row["raw_record_id"]})
+        for match_key in sorted(physical_alias_keys):
+            for row in valid:
+                rule_candidates[match_key].append({"match_key": match_key, "public_product_id": product_id, "public_variant_id": variant_id, "brand": brand, "name_core": canonical_name, "pack_qty": package["package_quantity"], "pack_unit": package["package_unit"], "confidence": float(confidence), "raw_record_id": row["raw_record_id"]})
     for match_key, candidates in sorted(rule_candidates.items()):
         destinations = {(row["public_product_id"], row["public_variant_id"]) for row in candidates}
         if len(destinations) > 1:

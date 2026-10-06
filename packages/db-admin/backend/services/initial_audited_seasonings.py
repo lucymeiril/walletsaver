@@ -70,3 +70,25 @@ def reviewed_seasoning_leaf(evidence):
     if evidence["mart"] != "homeplus" or len(path) < 3 or path[0] != "장류/양념/제빵" or path[1] not in {"고추가루/깨/향신료", "다시다/미원/맛소금", "식초/물엿/맛술/액젓"}:
         return None
     return TITLES.get(evidence["source_title"])
+
+
+def stock_tablet_form_refinement(evidence):
+    """An explicit cooking-stock tablet refines generic stock, not ready soup.
+
+    The preserved431 국물내기한알 labels remain unchanged pending their separate
+    decision authority. Quantity and recipe allocation are never inferred here.
+    """
+    import re
+    title = re.sub(r"\s+", "", evidence["source_title"])
+    path = " ".join(evidence["source_path_parts"])
+    if not (evidence["mart"] in {"homeplus", "lottemart", "emart"}
+            and re.search(r"장류|양념|조미료|다시다", path)):
+        return set(), set()
+    literal_tablet = ("코인육수" in title or "육수한알" in title
+                      or "1분링" in title and ("육수" in title or "요리" in title)
+                      or "연두링" in title and re.search(r"멸치|디포리|다시마|표고|야채", title))
+    if not literal_tablet or re.search(r"곰탕|설렁탕|냉면육수|장국|완제품|혼합세트|[+]", title):
+        return set(), set()
+    leaf = ("food.seasonings.stock.vegetable_tablet" if "야채" in title
+            else "food.seasonings.stock.stock_seasoning")
+    return {leaf}, {"food.seasonings.baking.stock", "food.seasonings.sauces.broth"}

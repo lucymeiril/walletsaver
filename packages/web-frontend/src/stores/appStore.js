@@ -173,14 +173,18 @@ const useStore = create(
 
       // 가격 알림 설정 (계정별 상태이므로 로그아웃 시 초기화)
       priceAlerts: [],
-      addPriceAlert: (productId, targetPrice) => set((state) => ({
-        priceAlerts: [
-          ...state.priceAlerts.filter(a => a.productId !== productId),
-          { productId, targetPrice }
-        ]
-      })),
-      removePriceAlert: (productId) => set((state) => ({
-        priceAlerts: state.priceAlerts.filter(a => a.productId !== productId)
+      addPriceAlert: (savedAlert, legacyTarget) => set((state) => {
+        const alert = typeof savedAlert === 'object' && savedAlert
+          ? savedAlert : { product_id: savedAlert, target_price: legacyTarget };
+        const key = row => JSON.stringify([String(row.product_id ?? row.productId),
+          row.variant_id ?? null, row.listing_id ?? null, row.offer_id ?? null]);
+        return { priceAlerts: [...state.priceAlerts.filter(row => key(row) !== key(alert)
+          && !(alert.id != null && row.id === alert.id)), alert] };
+      }),
+      removePriceAlert: (alertId) => set((state) => ({
+        priceAlerts: state.priceAlerts.filter(row => row.id != null ? String(row.id) !== String(alertId)
+          : !(String(row.product_id ?? row.productId) === String(alertId)
+            && !row.variant_id && !row.listing_id && !row.offer_id))
       })),
 
       // 커뮤니티 상태

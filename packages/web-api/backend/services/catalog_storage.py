@@ -2,13 +2,17 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import sqlite3
+import math
 from contextlib import contextmanager
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from core.promotion_semantics import comparable_transaction_or_none
+from core.promotion_semantics import comparable_transaction_or_none, confirmed_price_or_none
+from core.reviewed_source_evidence import valid_linear_contents_variant, valid_source_component_variant, package_comparison_reason
+from core.catalog_quantity import normalize_catalog_package, canonical_components, package_pricing_measure
 
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
@@ -58,13 +62,90 @@ def _json(value, fallback):
         return fallback
 
 
+def _homogeneous_contents(variant: dict) -> tuple[list[dict], tuple[float, str] | None]:
+    """Validate a measured multiset separately from its whole-vector wrapper."""
+    attributes = _json(variant.get("attributes"), {})
+    if not isinstance(attributes, dict) or "package_components" not in attributes:
+        return [], None
+    if (attributes.get("component_basis") != "reviewed_homogeneous_contents"
+            or isinstance(variant.get("package_quantity"), bool) or isinstance(variant.get("bundle_count"), bool)
+            or variant.get("package_quantity") != 1 or variant.get("package_unit") != "세트"
+            or variant.get("bundle_count") != 1):
+        return [], None
+    try:
+        components = canonical_components(attributes["package_components"])
+        measure = package_pricing_measure({**variant, "attributes": attributes})
+    except (ValueError, TypeError, OverflowError):
+        return [], None
+    if measure is None or variant.get("standard_unit") != measure[1]:
+        return [], None
+    return components, measure
+
+
 def _normalized_offer_sort_key(offer: dict) -> tuple[float, float, str]:
-    unit_price = offer.get("per_100g") or offer.get("per_100ml") or offer.get("per_item")
+    unit_price = offer.get("per_100g") or offer.get("per_100ml") or offer.get("per_100m") or offer.get("per_item")
     return (
         float(unit_price) if unit_price is not None else float("inf"),
         float(offer.get("comparable_price") or float("inf")),
-        str(offer.get("source") or offer.get("id") or ""),
+        str(offer.get("listing_id") or offer.get("source") or "") + ":" + str(offer.get("id") or ""),
     )
+
+
+def _offer_reference_key(offer: dict) -> tuple[str, str, str]:
+    return (str(offer.get("variant_id") or ""), str(offer.get("listing_id") or ""),
+            str(offer.get("id") or ""))
+
+
+def _offer_comparison_group(offer: dict) -> tuple[str, str | None, str]:
+    unit = offer.get("quantity_unit")
+    if (offer.get("pricing_measure_basis") == "reviewed_homogeneous_contents"
+            and offer.get("received_package_count_scope") == "complete_declared_vector"
+            and (offer.get("pricing_measure_quantity") or 0) > 0):
+        unit = offer.get("pricing_measure_unit")
+    for field, dimension, basis in (("per_100g", "g", "100g"),
+                                    ("per_100ml", "ml", "100ml"),
+                                    ("per_100m", "m", "100m")):
+        if unit == dimension and offer.get(field) is not None and offer[field] > 0:
+            return basis, basis, "same_measured_unit"
+    variant_id = offer.get("variant_id")
+    if (variant_id and unit in _COUNT_QUANTITY_UNITS and offer.get("per_item") is not None
+            and offer["per_item"] > 0 and (offer.get("total_quantity") or 0) > 0):
+        receipt = {field: offer.get(field) for field in (
+            "total_quantity", "quantity_unit", "bundle_count", "received_package_count",
+            "minimum_quantity", "membership_required", "coupon_required",
+            "promotion_condition", "promotion_conditions",
+        )}
+        digest = hashlib.sha256(json.dumps(receipt, ensure_ascii=False, sort_keys=True,
+                                           separators=(",", ":")).encode()).hexdigest()
+        basis = f"variant:{variant_id}"
+        return f"{basis}:receipt:{digest}", basis, "same_variant_receipt"
+    # A positive transaction quote alone does not prove an equal sold amount.
+    return f"quote:{variant_id}:{offer.get('listing_id') or offer.get('id')}", None, "source_quote_only"
+
+
+def rank_normalized_offers(offers: list[dict], *, reference_group: str | None = None) -> list[dict]:
+    """Rank inside proven groups; group selection never uses a money amount."""
+    if not offers:
+        return []
+    groups: dict[str, list[dict]] = {}
+    metadata: dict[str, tuple[str | None, str]] = {}
+    for offer in offers:
+        group, basis, scope = _offer_comparison_group(offer)
+        groups.setdefault(group, []).append(offer)
+        metadata[group] = basis, scope
+    if reference_group not in groups:
+        reference_group = _offer_comparison_group(min(offers, key=_offer_reference_key))[0]
+    ordered_groups = sorted(groups, key=lambda group: (
+        group != reference_group, _offer_reference_key(min(groups[group], key=_offer_reference_key))))
+    ranked = []
+    for group in ordered_groups:
+        basis, scope = metadata[group]
+        members = sorted(groups[group], key=_offer_reference_key if basis is None else _normalized_offer_sort_key)
+        for index, offer in enumerate(members):
+            ranked.append({**offer, "comparison_group": group, "comparison_basis": basis,
+                           "comparison_scope": scope, "is_reference_group": group == reference_group,
+                           "rank_within_group": index + 1 if basis is not None else None})
+    return ranked
 
 
 class PublicCatalogStore:
@@ -202,6 +283,15 @@ class PublicCatalogStore:
         ).fetchall()
         for variant_row in variants:
             variant = dict(variant_row)
+            variant_attributes = _json(variant.get("attributes"), {})
+            variant_attributes = variant_attributes if isinstance(variant_attributes, dict) else {}
+            quantity_components = []
+            if variant_attributes.get("source_component_listing"):
+                from core.reviewed_source_evidence import valid_source_component_variant
+                if valid_source_component_variant({**variant, "attributes": variant_attributes}):
+                    quantity_components = variant_attributes["source_component_listing"]["components"]
+            else:
+                quantity_components, _ = _homogeneous_contents(variant)
             listings_payload = []
             listings = connection.execute(
                 "SELECT * FROM normalized_source_listings WHERE public_variant_id=? AND is_active=1",
@@ -212,16 +302,24 @@ class PublicCatalogStore:
                 events_payload = []
                 events = connection.execute(
                     "SELECT * FROM normalized_offer_events WHERE public_source_listing_id=? "
-                    "AND offer_state='active' ORDER BY crawled_at DESC, public_offer_event_id DESC",
+                    "ORDER BY crawled_at DESC, public_offer_event_id DESC",
                     (listing["public_source_listing_id"],),
                 ).fetchall()
                 for event_row in events:
-                    event = self._normalized_offer(dict(event_row), variant)
+                    event = self._normalized_offer(
+                        dict(event_row), variant,
+                        category_id=product.get("unified_category_id"), source_listing=listing,
+                    )
+                    event["variant_id"] = variant["public_variant_id"]
+                    event["listing_id"] = listing["public_source_listing_id"]
+                    event["is_latest"] = not events_payload
+                    event["current_eligible"] = (event["is_latest"] and event["comparable_price"] is not None
+                                                 and event["validity_eligible"])
                     events_payload.append(event)
                     # Historical lows belong in history, not today's card.
                     # The newest event may itself be non-comparable; do not
                     # fall back to a prior price in that case.
-                    if len(events_payload) == 1 and event["comparable_price"] is not None:
+                    if event["current_eligible"]:
                         comparable_offers.append({**event, "source": listing["source_name"], "source_url": listing.get("source_url"), "variant_id": variant["public_variant_id"]})
                 listings_payload.append({
                     "id": listing["public_source_listing_id"],
@@ -238,11 +336,12 @@ class PublicCatalogStore:
                 "name": variant["variant_name"],
                 "package_quantity": variant.get("package_quantity"),
                 "package_unit": variant.get("package_unit"),
-                "bundle_count": int(variant.get("bundle_count") or 1),
+                "bundle_count": variant.get("bundle_count"),
                 "display_unit": variant.get("display_unit"),
+                "quantity_components": quantity_components,
                 "listings": listings_payload,
             })
-        comparable_offers.sort(key=_normalized_offer_sort_key)
+        comparable_offers = rank_normalized_offers(comparable_offers)
         best = comparable_offers[0] if comparable_offers else {}
         best_variant = next((variant for variant in variants_payload if variant["id"] == best.get("variant_id")), None)
         best_unit = ""
@@ -250,7 +349,7 @@ class PublicCatalogStore:
             best_unit = best_variant.get("display_unit") or ""
             if not best_unit and best_variant.get("package_quantity") and best_variant.get("package_unit"):
                 best_unit = f"{best_variant['package_quantity']:g}{best_variant['package_unit']}"
-                if best_variant["bundle_count"] > 1:
+                if best_variant["bundle_count"] is not None and best_variant["bundle_count"] > 1:
                     best_unit += f"×{best_variant['bundle_count']}"
         warning = bool(attributes.get("classification_warning"))
         return {
@@ -262,8 +361,11 @@ class PublicCatalogStore:
             "cat": str(category["name_ko"] if category else ""),
             "img": product.get("primary_image_url") or "",
             "image_url": product.get("primary_image_url") or "",
-            "cur": best.get("comparable_price") or 0,
-            "price": best.get("comparable_price") or 0,
+            "cur": best.get("comparable_price"),
+            "price": best.get("comparable_price"),
+            "observed_at": max((str(listing["offers"][0].get("crawled_at") or "")
+                                for variant in variants_payload for listing in variant["listings"]
+                                if listing["offers"]), default=""),
             "source": best.get("source") or "",
             "source_url": best.get("source_url") or "",
             "unit": best_unit,
@@ -272,53 +374,194 @@ class PublicCatalogStore:
             "attributes": attributes,
             "variants": variants_payload if include_all else variants_payload[:3],
             "best_offer": best or None,
+            "comparison_reference": {
+                "group": best.get("comparison_group"), "basis": best.get("comparison_basis"),
+                "scope": best.get("comparison_scope"),
+                "selection_method": "stable_identity_group_then_within_group_price",
+                "comparable_count": sum(offer["comparison_group"] == best["comparison_group"]
+                                        for offer in comparable_offers),
+            } if best else None,
         }
 
     @staticmethod
-    def _normalized_offer(event: dict, variant: dict) -> dict:
-        price = float(event["price"]) if event.get("price") is not None else None
+    def _offer_validity(event: dict, *, reference_time: datetime | None = None) -> tuple[bool, str | None]:
+        now = (reference_time or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        for key in ("valid_from", "valid_to"):
+            raw = event.get(key)
+            if raw in (None, ""):
+                continue
+            try:
+                value = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+            except (ValueError, TypeError):
+                return False, "validity_unconfirmed"
+            if value.tzinfo is None:
+                value = value.replace(tzinfo=timezone.utc)
+            # A source date without a time denotes the whole calendar day.
+            if len(str(raw)) == 10:
+                outside = now.date() < value.date() if key == "valid_from" else now.date() > value.date()
+            else:
+                outside = now < value if key == "valid_from" else now > value
+            if outside:
+                return False, "not_yet_valid" if key == "valid_from" else "expired"
+        return True, None
+
+    @staticmethod
+    def _normalized_offer(event: dict, variant: dict, *, category_id: str | None = None,
+                          source_listing: dict | None = None) -> dict:
+        price = confirmed_price_or_none(event.get("price"))
         evidence = _json(event.get("raw_evidence"), {})
         conditions = evidence.get("promotion_conditions") if isinstance(evidence.get("promotion_conditions"), dict) else evidence
         transaction = comparable_transaction_or_none(
             current_price=price,
             promotion_type=event.get("promotion_type"),
             promotion_conditions=conditions,
-        ) if event.get("price_state") in {"normal", "sale_price_only"} else None
-        comparable = float(transaction[0]) if transaction else None
+        ) if (event.get("price_state") in {"normal", "sale_price_only"}
+              and event.get("offer_state", "active") == "active") else None
+        # A quote collected after a purchase-count rule expired does not prove
+        # the promotional spend or received amount, even as a historical receipt.
+        # Preserve the quote, rule and immutable event; hold only their derived
+        # transaction. Today's expiry alone does not invalidate an observation
+        # that was actually made within the source period.
+        receipt_eligible = None
+        receipt_reason = None
+        count_rule = (event.get("promotion_type") == "buy_x_get_y"
+                      or (type(conditions.get("minimum_quantity")) is int
+                          and conditions["minimum_quantity"] > 1))
+        if count_rule and any(event.get(key) not in (None, "") for key in ("valid_from", "valid_to")):
+            try:
+                observed_raw = str(event.get("crawled_at") or "")
+                observed = datetime.fromisoformat(observed_raw.replace("Z", "+00:00"))
+                if observed.tzinfo is None:
+                    observed = observed.replace(tzinfo=timezone.utc)
+                # A date-only observation cannot establish a time within a
+                # partly valid day; do not silently assign it midnight.
+                if len(observed_raw) == 10 and any(
+                    value not in (None, "") and len(str(value)) != 10
+                    for value in (event.get("valid_from"), event.get("valid_to"))
+                ):
+                    raise ValueError("observation time unconfirmed")
+                receipt_eligible, observation_reason = PublicCatalogStore._offer_validity(
+                    event, reference_time=observed)
+                if not receipt_eligible:
+                    receipt_reason = ("promotion_observation_outside_period"
+                                      if observation_reason in {"expired", "not_yet_valid"}
+                                      else "promotion_observation_validity_unconfirmed")
+            except (TypeError, ValueError, OverflowError):
+                receipt_eligible = False
+                receipt_reason = "promotion_observation_validity_unconfirmed"
+            if not receipt_eligible:
+                transaction = None
+        purpose_reason = None
+        if isinstance(category_id, str) and category_id.startswith("services.facility."):
+            listing = source_listing or {}
+            attributes = _json(variant.get("attributes"), {})
+            package = {**variant, "attributes": attributes if isinstance(attributes, dict) else {},
+                       "source": listing.get("source_name"),
+                       "source_record_key": listing.get("source_record_key"),
+                       "source_url": listing.get("source_url")}
+            _, purpose_issues = normalize_catalog_package(
+                package, package["attributes"],
+                listing.get("source_title") or variant.get("variant_name") or "",
+                category_id=category_id,
+            )
+            if "unit_service_occupancy_not_entitlement" in purpose_issues:
+                purpose_reason = "unit_service_occupancy_not_entitlement"
+        comparable = float(transaction[0]) if transaction and not purpose_reason else None
         received_packages = int(transaction[1]) if transaction else 1
-        quantity = float(variant["package_quantity"]) if variant.get("package_quantity") else None
-        bundle = int(variant.get("bundle_count") or 1)
-        total_quantity = quantity * bundle * received_packages if quantity else None
-        unit = str(variant.get("package_unit") or "").lower()
-        per_100 = (round(comparable / total_quantity * 100) if comparable and total_quantity and unit in {"g", "ml"} else None)
-        per_item_divisor = (
-            total_quantity
-            if unit in _COUNT_QUANTITY_UNITS
-            else bundle * received_packages
-        )
+        quantity = float(variant["package_quantity"]) if variant.get("package_quantity") is not None else None
+        quantity = quantity if quantity is not None and quantity > 0 else None
+        bundle = int(variant["bundle_count"]) if variant.get("bundle_count") is not None else None
+        bundle = bundle if bundle is not None and bundle > 0 else None
+        total_quantity = quantity * bundle * received_packages if transaction and quantity and bundle and not purpose_reason else None
+        attributes = _json(variant.get("attributes"), {})
+        attributes = attributes if isinstance(attributes, dict) else {}
+        declared_vector = valid_source_component_variant({**variant, "attributes": attributes})
+        homogeneous_components, homogeneous_measure = _homogeneous_contents(variant)
+        homogeneous_vector = bool(homogeneous_components)
+        components_payload = (attributes["source_component_listing"]["components"]
+                              if declared_vector else homogeneous_components)
+        composition_reason = package_comparison_reason({
+            **variant, 'attributes': attributes})
+        if "package_components" in attributes and not homogeneous_vector:
+            composition_reason = "quantity_evidence_unverified"
+        unit = str(variant.get("package_unit") or "").strip().lower()
+        linear_contents = unit == "m" and valid_linear_contents_variant({
+            **variant, "attributes": _json(variant.get("attributes"), {})})
+        per_100 = (round(comparable / total_quantity * 100)
+                   if comparable is not None and total_quantity
+                   and not composition_reason
+                   and (unit in {"g", "ml"} or linear_contents) else None)
+        pricing_quantity = (homogeneous_measure[0] * received_packages
+                            if homogeneous_measure and transaction and not purpose_reason else None)
+        if linear_contents:
+            pricing_quantity = total_quantity
+        if pricing_quantity is not None and not math.isfinite(pricing_quantity):
+            pricing_quantity = None
+        pricing_unit = ("m" if linear_contents else homogeneous_measure[1]) if pricing_quantity is not None else None
+        if pricing_quantity and pricing_unit in {"g", "ml"} and comparable is not None:
+            per_100 = round(comparable / pricing_quantity * 100)
+        # Package count is not evidence of the unknown content/sold-piece count.
+        # Known count products divide by received pieces. Known g/ml packages
+        # retain the established per-package quote; all unknown bases stay NULL.
+        per_item_divisor = None
+        if total_quantity is not None and not composition_reason:
+            if unit in _COUNT_QUANTITY_UNITS:
+                per_item_divisor = total_quantity
+            elif unit in {"g", "ml"}:
+                per_item_divisor = bundle * received_packages
         condition = conditions.get("condition_text") or evidence.get("condition_text") or evidence.get("promotion_condition")
+        validity_eligible, availability_reason = PublicCatalogStore._offer_validity(event)
         return {
             "id": event["public_offer_event_id"],
             "price_state": event.get("price_state"),
+            "offer_state": event.get("offer_state"),
             "promotion_type": event.get("promotion_type"),
+            "observation_receipt_eligible": receipt_eligible,
+            "observation_receipt_reason": receipt_reason,
             "listed_price": price,
-            "total_price": comparable if transaction else price,
+            "total_price": float(transaction[0]) if transaction else None,
             "comparable_price": comparable,
             "original_price": event.get("original_price"),
             "discount_rate": event.get("discount_rate"),
             "total_quantity": total_quantity,
-            "quantity_unit": unit or None,
-            "bundle_count": bundle,
-            "per_item": round(comparable / per_item_divisor) if comparable and per_item_divisor else None,
-            "per_100g": per_100 if unit == "g" else None,
-            "per_100ml": per_100 if unit == "ml" else None,
+            "quantity_unit": (unit or None) if not purpose_reason else None,
+            "bundle_count": bundle if not purpose_reason else None,
+            "per_item": round(comparable / per_item_divisor) if comparable is not None and per_item_divisor else None,
+            "per_100g": per_100 if (pricing_unit or unit) == "g" else None,
+            "per_100ml": per_100 if (pricing_unit or unit) == "ml" else None,
+            "per_100m": per_100 if linear_contents else None,
+            "pricing_measure_quantity": pricing_quantity,
+            "pricing_measure_unit": pricing_unit,
+            "pricing_measure_basis": (("reviewed_declared_linear_contents" if linear_contents else
+                                       "reviewed_homogeneous_contents") if pricing_quantity is not None else None),
+            "quantity_components": components_payload,
             "promotion_condition": condition,
-            "minimum_quantity": conditions.get("minimum_quantity") or evidence.get("minimum_quantity"),
-            "received_package_count": received_packages if transaction else None,
-            "membership_required": conditions.get("membership_required") or evidence.get("membership_required"),
-            "coupon_required": conditions.get("coupon_required") or evidence.get("coupon_required"),
+            "promotion_conditions": conditions if isinstance(evidence.get("promotion_conditions"), dict) else {
+                key: conditions[key] for key in (
+                    "condition_text", "minimum_quantity", "buy_quantity", "free_quantity",
+                    "membership_required", "coupon_required", "coupon_text", "membership_text",
+                ) if key in conditions
+            },
+            "minimum_quantity": conditions.get("minimum_quantity", evidence.get("minimum_quantity")),
+            "received_package_count": received_packages if transaction and not purpose_reason else None,
+            # This integer repeats the whole declared contents vector. It does
+            # not establish the number of physical containers or pieces.
+            "received_package_count_scope": ("declared_linear_package_repetitions" if linear_contents else
+                                             "complete_declared_vector" if declared_vector or homogeneous_vector else None),
+            "quantity_basis": ("reviewed_declared_linear_contents" if linear_contents else
+                               "reviewed_homogeneous_contents" if homogeneous_vector else
+                               attributes.get("quantity_basis") if declared_vector else None),
+            "scalar_basis": ("declared_linear_contents_not_physical_dimensions" if linear_contents else
+                             "one_complete_declared_vector_not_piece_count" if homogeneous_vector else
+                             attributes.get("scalar_basis") if declared_vector else None),
+            "quantity_purpose_reason": purpose_reason,
+            "quantity_comparison_reason": composition_reason,
+            "membership_required": conditions.get("membership_required", evidence.get("membership_required")),
+            "coupon_required": conditions.get("coupon_required", evidence.get("coupon_required")),
             "event_name": event.get("event_name"),
             "crawled_at": event.get("crawled_at"),
+            "valid_from": event.get("valid_from"), "valid_to": event.get("valid_to"),
+            "validity_eligible": validity_eligible, "availability_reason": availability_reason,
         }
 
     def _category(self, connection, product: dict) -> tuple[str, str, str]:
@@ -805,24 +1048,38 @@ class PublicCatalogStore:
         clauses = [
             "p.is_active=1", "v.is_active=1", "l.is_active=1",
             "e.offer_state='active'",
-            "NOT EXISTS (SELECT 1 FROM normalized_offer_events newer "
-            "WHERE newer.public_source_listing_id=e.public_source_listing_id "
-            "AND newer.offer_state='active' AND (newer.crawled_at>e.crawled_at "
-            "OR (newer.crawled_at=e.crawled_at "
-            "AND newer.public_offer_event_id>e.public_offer_event_id)))",
+            "e.listing_recency=1",
         ]
         params: list[object] = []
+        # Apply validity before LIMIT so expired observations cannot crowd out
+        # later valid listings. Minimal legacy fixtures may omit these columns.
+        columns = {row[1] for row in connection.execute("PRAGMA table_info(normalized_offer_events)")}
+        for key, operator in (("valid_from", "<="), ("valid_to", ">=")):
+            if key in columns:
+                clauses.append(f"(e.{key} IS NULL OR e.{key}='' OR "
+                               f"(CASE WHEN length(e.{key})=10 THEN date(e.{key}) {operator} date('now') "
+                               f"ELSE datetime(e.{key}) {operator} datetime('now') END))")
         if store:
             clauses.append("l.source_name=?")
             params.append(store)
         params.append(max(1, min(int(limit), self.MAX_RESULT_LIMIT)))
+        # Rank once across every observation state before selecting active rows.
+        # A pending/inactive latest observation must suppress an older active
+        # offer; a correlated scan per candidate also stalls existing snapshots.
+        variant_columns = {row[1] for row in connection.execute("PRAGMA table_info(normalized_product_variants)")}
+        variant_attributes = "v.attributes" if "attributes" in variant_columns else "NULL"
         rows = connection.execute(
+            "WITH ranked_events AS (SELECT events.*, ROW_NUMBER() OVER ("
+            "PARTITION BY public_source_listing_id "
+            "ORDER BY crawled_at DESC, public_offer_event_id DESC"
+            ") AS listing_recency FROM normalized_offer_events events) "
             "SELECT e.*, l.source_name, l.source_title, l.source_url, "
             "l.image_url AS listing_image_url, l.source_unit_text, "
             "v.public_variant_id, v.variant_name, v.package_quantity, "
             "v.package_unit, v.display_unit, v.bundle_count, "
-            "p.canonical_name, p.primary_image_url, c.name_ko AS category_name "
-            "FROM normalized_offer_events e "
+            f"{variant_attributes} AS variant_attributes, "
+            "p.public_product_id, p.unified_category_id, p.canonical_name, p.primary_image_url, c.name_ko AS category_name "
+            "FROM ranked_events e "
             "JOIN normalized_source_listings l "
             "ON l.public_source_listing_id=e.public_source_listing_id "
             "JOIN normalized_product_variants v "
@@ -839,13 +1096,37 @@ class PublicCatalogStore:
         latest: dict[str, str] = {}
         for raw_row in rows:
             row = dict(raw_row)
-            offer = self._normalized_offer(row, row)
+            offer = self._normalized_offer(
+                row, {**row, "attributes": row.get("variant_attributes")},
+                category_id=row.get("unified_category_id"), source_listing=row,
+            )
             # Ambiguous or non-final promotion text is retained in the DB but
             # never ranked or presented as a calculable mart benefit.
-            if offer["comparable_price"] is None:
+            if offer["comparable_price"] is None or not offer["validity_eligible"]:
                 continue
             source = str(row.get("source_name") or "")
+            selected_offer = {
+                **offer, "variant_id": row["public_variant_id"],
+                "listing_id": row["public_source_listing_id"],
+                "source": source, "source_url": row.get("source_url") or "",
+                "is_latest": True, "current_eligible": True,
+            }
             grouped.setdefault(source, []).append({
+                "id": row["public_product_id"],
+                "product_id": row["public_product_id"],
+                "public_product_id": row["public_product_id"],
+                "category_id": row.get("unified_category_id"),
+                "variant_id": row["public_variant_id"],
+                "listing_id": row["public_source_listing_id"],
+                "offer_id": offer["id"],
+                "best_offer": selected_offer,
+                "current_eligible": True,
+                "valid_from": offer.get("valid_from"),
+                "valid_to": offer.get("valid_to"),
+                "availability_reason": offer.get("availability_reason"),
+                "package_quantity": row.get("package_quantity"),
+                "package_unit": row.get("package_unit"),
+                "bundle_count": row.get("bundle_count"),
                 "name": row.get("source_title") or row.get("canonical_name") or "",
                 "canonical_name": row.get("canonical_name") or "",
                 "orig": row.get("original_price"),
@@ -862,6 +1143,7 @@ class PublicCatalogStore:
                 "per_item": offer.get("per_item"),
                 "per_100g": offer.get("per_100g"),
                 "per_100ml": offer.get("per_100ml"),
+                "per_100m": offer.get("per_100m"),
                 "promotion_condition": offer.get("promotion_condition"),
                 "minimum_quantity": offer.get("minimum_quantity"),
                 "membership_required": offer.get("membership_required"),

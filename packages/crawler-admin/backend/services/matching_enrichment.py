@@ -1,8 +1,9 @@
 """Enrich crawler rows from completed MatchingEntry knowledge.
 
 A runtime hit is deliberately stricter than "matching_entries contains this
-key".  The entry must resolve to an active Product; otherwise the row stays a
-miss so it can return to the external-classification workflow and be repaired.
+key". The entry must resolve to a usable identity and the verified variant.
+Reviewed offer-pending normalized identities stay distinct from available
+offers; legacy/manual inactive products remain misses.
 The db-admin database is read only from this module.
 """
 from __future__ import annotations
@@ -14,14 +15,22 @@ import re
 import unicodedata
 from decimal import Decimal, InvalidOperation
 from typing import Any, Optional
+from collections.abc import Mapping
 
 from sqlalchemy import text
 
 from core.match_key import NO_BRAND_SENTINEL, build_match_key, normalize_pack_identity
 from core.product_units import parse_package_quantity
-from core.catalog_quantity import normalize_catalog_package, uses_reviewed_quantity_rules
+from core.reviewed_source_evidence import source_review_evidence, source_review_matches, nonmeasured_listing_review, valid_nonmeasured_variant, explicit_listing_package, valid_explicit_listing_variant, source_observation_eligibility_review
+from core.reviewed_source_evidence import (count_interval_listing_package, valid_count_interval_variant,
+                                          listing_title_history, valid_listing_title_history,
+                                          source_component_listing_package, valid_source_component_variant)
+from core.catalog_quantity import normalize_catalog_package, uses_reviewed_quantity_rules, reviewed_price_basis_identity
+from core.catalog_quantity import component_signature, uses_reviewed_component_rules
+from core.catalog_quantity import uses_reviewed_residual_quantity_rules, uses_approximate_measurement_rules
+from core.catalog_quantity import physical_device_package, valid_physical_device_variant
 from services.db_admin_readonly import (
-    _table_columns, bulk_lookup_match_statuses, get_db_admin_session,
+    _table_columns, bulk_lookup_match_statuses, get_db_admin_session, load_normalized_identity_products,
 )
 
 logger = logging.getLogger(__name__)
@@ -35,46 +44,7 @@ def _extract_str(row: dict[str, Any], keys: list[str]) -> Optional[str]:
     return None
 
 
-def _extract_float(row: dict[str, Any], keys: list[str]) -> Optional[float]:
-    for key in keys:
-        value = row.get(key)
-        if value is None:
-            continue
-        try:
-            return float(value)
-        except (TypeError, ValueError):
-            continue
-    return None
-
-
-def _match_key_for_row(row: dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
-    brand = _extract_str(row, ["brand", "brandName", "brandNm", "brand_name"])
-    name = _extract_str(
-        row,
-        [
-            "name_core",
-            "normalized_name",
-            "name",
-            "nameCore",
-            "productName",
-            "itemName",
-            "prdtName",
-            "goodsName",
-            "title",
-        ],
-    )
-    pack_qty = _extract_float(
-        row,
-        ["pack_qty", "packQty", "pack_quantity", "packQuantity"],
-    )
-    pack_unit = _extract_str(row, ["pack_unit", "packUnit", "unitName", "unit"])
-
-    if not name:
-        return None, "no_name"
-    if not brand:
-        row["brand"] = NO_BRAND_SENTINEL
-        brand = NO_BRAND_SENTINEL
-    return build_match_key(brand, name, pack_qty, pack_unit), None
+from core.catalog_matching import _extract_float, _match_key_for_row
 
 
 def _load_matching_entries(session, keys: list[str]) -> dict[str, dict[str, Any]]:
@@ -170,27 +140,22 @@ def _load_products(session, canonical_ids: list[str]) -> dict[str, dict[str, Any
 
 
 def _load_normalized_products(session, public_ids: list[str]) -> dict[str, dict[str, Any]]:
-    if not public_ids or not _table_columns(session, "normalized_canonical_products"):
-        return {}
-    result: dict[str, dict[str, Any]] = {}
-    for offset in range(0, len(set(public_ids)), 900):
-        chunk = list(dict.fromkeys(public_ids))[offset : offset + 900]
-        placeholders = ", ".join(f":p{i}" for i in range(len(chunk)))
-        params = {f"p{i}": value for i, value in enumerate(chunk)}
-        rows = session.execute(text(
-            "SELECT public_product_id, canonical_name, brand, unified_category_id "
-            "FROM normalized_canonical_products "
-            f"WHERE public_product_id IN ({placeholders}) AND is_active=1"
-        ), params).mappings().all()
-        result.update({str(row["public_product_id"]): dict(row) for row in rows})
-    return result
+    return load_normalized_identity_products(session, public_ids)
 
 
-def _load_normalized_variants(session, variant_ids: list[str]) -> dict[str, dict[str, Any]]:
+def _load_normalized_variants(session, variant_ids: list[str], pending_product_ids: set[str] | None = None) -> dict[str, dict[str, Any]]:
     required = {"public_variant_id", "public_product_id", "package_quantity", "package_unit", "bundle_count", "is_active"}
     if not variant_ids or not required <= _table_columns(session, "normalized_product_variants"):
         return {}
     result: dict[str, dict[str, Any]] = {}
+    variant_columns = _table_columns(session, 'normalized_product_variants')
+    optional_columns = [column for column in ('attributes', 'standard_unit') if column in variant_columns]
+    optional_select = ''.join(', v.' + column for column in optional_columns)
+    parent_columns = _table_columns(session, 'normalized_canonical_products')
+    has_parent_category = {'public_product_id', 'unified_category_id'} <= parent_columns
+    parent_select = ', p.unified_category_id' if has_parent_category else ', NULL AS unified_category_id'
+    parent_join = (' LEFT JOIN normalized_canonical_products p ON p.public_product_id=v.public_product_id '
+                   if has_parent_category else ' ')
     listing_columns = _table_columns(session, "normalized_source_listings")
     has_listing_evidence = {"public_variant_id", "source_name", "source_record_key", "source_title", "is_active"} <= listing_columns
     unique_ids = list(dict.fromkeys(variant_ids))
@@ -199,17 +164,25 @@ def _load_normalized_variants(session, variant_ids: list[str]) -> dict[str, dict
         placeholders = ", ".join(f":v{i}" for i in range(len(chunk)))
         params = {f"v{i}": value for i, value in enumerate(chunk)}
         rows = session.execute(text(
-            "SELECT public_variant_id, public_product_id, package_quantity, package_unit, bundle_count "
-            "FROM normalized_product_variants "
-            f"WHERE public_variant_id IN ({placeholders}) AND is_active=1"
+            "SELECT v.public_variant_id, v.public_product_id, v.package_quantity, v.package_unit, v.bundle_count " + optional_select + parent_select + ' '
+            "FROM normalized_product_variants v" + parent_join +
+            f"WHERE v.public_variant_id IN ({placeholders}) AND v.is_active=1"
         ), params).mappings().all()
         result.update({str(row["public_variant_id"]): dict(row) for row in rows})
+        for row in rows:
+            variant = result[str(row['public_variant_id'])]
+            if 'attributes' in variant and isinstance(variant['attributes'], str):
+                try:
+                    variant['attributes'] = json.loads(variant['attributes'])
+                except (ValueError, TypeError):
+                    variant['attributes'] = None  # malformed component data must miss
         if has_listing_evidence:
             for variant_id in chunk:
                 if variant_id in result:
                     result[variant_id]["source_listings"] = []
             listings = session.execute(text(
                 "SELECT public_variant_id, source_name, source_record_key, source_title "
+                + (", source_url " if 'source_url' in listing_columns else '') +
                 "FROM normalized_source_listings "
                 f"WHERE public_variant_id IN ({placeholders}) AND is_active=1"
             ), params).mappings().all()
@@ -217,199 +190,26 @@ def _load_normalized_variants(session, variant_ids: list[str]) -> dict[str, dict
                 variant = result.get(str(listing["public_variant_id"]))
                 if variant is not None:
                     variant.setdefault("source_listings", []).append(dict(listing))
+            # Old scalar variants retain reviewed classification and native
+            # listing URLs rather than the later source_evidence_reviews field.
+            # Bind only offer-pending identities to those exact persisted URLs;
+            # existing richer reviews retain their native-context requirements.
+            for variant_id in chunk:
+                variant = result.get(variant_id)
+                if not variant or str(variant['public_product_id']) not in (pending_product_ids or set()):
+                    continue
+                attrs = variant.get('attributes')
+                if isinstance(attrs, dict) and 'source_evidence_reviews' not in attrs:
+                    attrs['source_evidence_reviews'] = [
+                        {'source_name': listing['source_name'], 'source_record_key': listing['source_record_key'],
+                         'source_urls': [listing.get('source_url')], 'source_fields': {}}
+                        for listing in variant.get('source_listings', [])]
     return result
 
 
-_COUNT_UNITS = {"ea", "개", "개입", "봉지", "인분", "세트", "마리", "회분", "구", "입", "팩", "봉", "병", "캔", "손", "매", "롤", "포", "장", "족", "통", "인", "p", "t", "모", "두", "알", "미", "포기", "단", "망", "박스", "쌍", "켤레"}
-_COUNT_UNIT_PATTERN = "(?:" + "|".join(re.escape(unit) for unit in sorted(_COUNT_UNITS, key=len, reverse=True)) + ")"
-_COUNT_RANGE_RE = re.compile(rf"(?<![\d.])\d+(?:\.\d+)?\s*(?:{_COUNT_UNIT_PATTERN})?\s*[~～〜–—-]\s*\d+(?:\.\d+)?\s*{_COUNT_UNIT_PATTERN}", re.I)
-_UNIT_ALIASES = {"킬로그램": "kg", "그램": "g", "리터": "l", "밀리리터": "ml", "미리리터": "ml"}
-_QUANTITY_KEYS = ("package_quantity", "pack_qty", "packQty", "pack_quantity", "packQuantity")
-_UNIT_KEYS = ("package_unit", "pack_unit", "packUnit", "unitName", "unit")
-
-
-def _positive_number(value: Any) -> float | None:
-    if isinstance(value, bool) or value is None or value == "":
-        return None
-    try:
-        number = Decimal(str(value).replace(",", ""))
-    except (InvalidOperation, ValueError):
-        return None
-    if not number.is_finite() or number <= 0:
-        return None
-    value = float(number)
-    return value if math.isfinite(value) else None
-
-
-def _package_identity(quantity: Any, unit: Any) -> tuple[float, str] | None:
-    quantity = _positive_number(quantity)
-    unit = str(unit or "").strip().lower()
-    unit = _UNIT_ALIASES.get(unit, unit)
-    if unit == "개입":
-        unit = "ea"
-    if quantity is None or unit not in {"kg", "g", "mg", "l", "ml", "cc", *_COUNT_UNITS}:
-        return None
-    # Catalog T means a count (tea bags/sticks), not the mass unit ton accepted
-    # by the general match-key canonicalizer. Keep all count dimensions intact.
-    if unit in _COUNT_UNITS and unit not in {"ea", "개"}:
-        return quantity, unit
-    return normalize_pack_identity(quantity, unit)
-
-
-def _source_package(row: dict[str, Any]) -> tuple[tuple[float, str, int] | None, str | None]:
-    """Require structured quantity/unit; title text may disprove, not invent it.
-
-    Old DiscountItem rows omitted bundle_count but retained explicit ×N in
-    display_unit. Restore only that explicit multiplier, checking all evidence.
-    """
-    layers = [row, *[row[key] for key in ("attributes", "attrs") if isinstance(row.get(key), dict)]]
-    title = _extract_str(row, ["source_title", "name", "productName", "itemName", "prdtName", "goodsName", "title"]) or ""
-    reviewed_quantity = uses_reviewed_quantity_rules(title)
-    attrs = {key: value for layer in layers[1:] for key, value in layer.items()}
-    quantities = [layer[key] for layer in layers for key in _QUANTITY_KEYS if layer.get(key) not in (None, "")]
-    units = [layer[key] for layer in layers for key in _UNIT_KEYS if layer.get(key) not in (None, "")]
-    if not quantities or not units:
-        if reviewed_quantity:
-            package, issues = normalize_catalog_package(row, attrs, title)
-            if package and not issues:
-                canonical = _package_identity(package['package_quantity'], package['package_unit'])
-                return (*canonical, package['bundle_count']), None
-        return None, "normalized_unit_unresolved"
-    identity = next((_package_identity(quantities[0], unit) for unit in units if _package_identity(quantities[0], unit)), None)
-    if identity is None:
-        return None, "normalized_unit_unresolved"
-    # Distinct structured values are conflicts, including a stale legacy pack
-    # field alongside a newer package field. Display strings (120ml×24) are
-    # validated below rather than being mistaken for a unit vocabulary value.
-    structured = []
-    for layer in layers:
-        qty = next((layer[key] for key in _QUANTITY_KEYS if layer.get(key) not in (None, "")), None)
-        unit = next((layer[key] for key in _UNIT_KEYS if layer.get(key) not in (None, "")), None)
-        if qty is not None and unit is not None:
-            pair = _package_identity(qty, unit)
-            if pair is None:
-                return None, "normalized_unit_unresolved"
-            structured.append(pair)
-        for qty_key, unit_key in (("package_quantity", "package_unit"), ("pack_qty", "pack_unit"), ("packQty", "packUnit"), ("pack_quantity", "pack_unit"), ("packQuantity", "packUnit")):
-            if layer.get(qty_key) not in (None, ""):
-                pair = _package_identity(layer[qty_key], layer.get(unit_key) or unit)
-                if pair is None:
-                    return None, "normalized_unit_unresolved"
-                structured.append(pair)
-    if any(pair != identity for pair in structured):
-        return None, "normalized_variant_conflict"
-
-    if reviewed_quantity:
-        # Preserve independent structured-field conflicts above. Use the same
-        # bounded content/container/roll repairs as staging only after exact
-        # reviewed source identity is checked by _normalized_source_reason.
-        explicit_counts = [layer['bundle_count'] for layer in layers if layer.get('bundle_count') not in (None, '')]
-        if any((count := _positive_number(value)) is None or not count.is_integer() for value in explicit_counts):
-            return None, 'normalized_unit_unresolved'
-        if len({int(float(value)) for value in explicit_counts}) > 1:
-            return None, 'normalized_variant_conflict'
-        canonical_row = {**row, 'package_quantity': identity[0], 'package_unit': identity[1]}
-        package, issues = normalize_catalog_package(canonical_row, attrs, title)
-        if not package or issues:
-            return None, 'normalized_variant_conflict'
-        expected = (package['package_quantity'], package['package_unit'], package['bundle_count'])
-        for layer in layers:
-            for field in ('display_unit', 'unit'):
-                value = layer.get(field)
-                if value and parse_package_quantity(str(value)):
-                    candidate, conflicts = normalize_catalog_package({**canonical_row, 'display_unit': value}, attrs, title)
-                    if not candidate or conflicts or (candidate['package_quantity'], candidate['package_unit'], candidate['bundle_count']) != expected:
-                        return None, 'normalized_variant_conflict'
-        canonical = _package_identity(package['package_quantity'], package['package_unit'])
-        return (*canonical, package['bundle_count']), None
-
-    texts = list(dict.fromkeys(str(layer[key]) for layer in layers for key in ("source_title", "name", "title", "display_unit", "unit") if layer.get(key)))
-    parsed = [value for text_value in texts if (value := parse_package_quantity(text_value))]
-    counts = []
-    for layer in layers:
-        if layer.get("bundle_count") not in (None, ""):
-            count = _positive_number(layer["bundle_count"])
-            if count is None or not count.is_integer():
-                return None, "normalized_unit_unresolved"
-            counts.append(int(count))
-    counts.extend(int(value["bundle_count"]) for value in parsed if value.get("bundle_count"))
-    if len(set(counts)) > 1:
-        return None, "normalized_variant_conflict"
-    if identity[1] not in {"g", "ml"} and any(_COUNT_RANGE_RE.search(text_value) for text_value in texts):
-        return None, "normalized_unit_unresolved"
-    for text_value in texts:
-        # Keep the initial catalog's review boundary on recollection too:
-        # the convenience parser only reads the first factor of ×3×2.
-        if len(re.findall(r"[x×*]\s*\d+", text_value, re.I)) > 1:
-            return None, "normalized_variant_conflict"
-        if re.search(r"(?<![A-Za-z0-9])[x×*]\s*\d+", text_value, re.I) and not (parse_package_quantity(text_value) or {}).get("bundle_count"):
-            return None, "normalized_variant_conflict"
-        if "+" in text_value and len(re.findall(rf"(?<![A-Za-z0-9])\d+\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z])", text_value, re.I)) > 1:
-            return None, "normalized_variant_conflict"
-    count = counts[0] if counts else 1
-    allowed = {identity, (round(identity[0] * count, 6), identity[1])}
-    for value in parsed:
-        pair = _package_identity(value["package_quantity"], value["package_unit"])
-        if pair is not None and pair not in allowed:
-            return None, "normalized_variant_conflict"
-        if value.get("bundle_count") and pair != identity:
-            return None, "normalized_variant_conflict"
-    # The shared convenience parser picks one expression. Inspect every weight
-    # or volume expression too, so mixed/refill packages cannot hide a conflict.
-    for text_value in texts:
-        measures = []
-        for match in re.finditer(r"(?<![\d.,])(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)\s*(kg|킬로그램|그램|g|ml|밀리리터|미리리터|리터|l)(?![A-Za-z])", text_value, re.I):
-            if re.match(r"\s*(?:당|기준|/\s*(?:당|[0-9,]+\s*원|원))", text_value[match.end():]):
-                continue
-            measures.append(_package_identity(match.group(1), match.group(2)))
-        if any(measure not in allowed for measure in measures) or ("+" in text_value and len(measures) > 1):
-            return None, "normalized_variant_conflict"
-    return (*identity, count), None
-
-
-def _normalized_source_reason(row: dict[str, Any], key: str, entry: dict[str, Any], variants: dict[str, dict[str, Any]]) -> str | None:
-    variant_id = str(entry.get("public_variant_id") or "")
-    variant = variants.get(variant_id)
-    if variant is None:
-        return "normalized_variant_unavailable"
-    if str(variant.get("public_product_id")) != str(entry.get("public_product_id")):
-        return "normalized_variant_product_conflict"
-    # Raw names are authoritative. A stale normalized_name/name_core or stored
-    # match_key must not conceal a changed source title on the next collection.
-    names = [_extract_str(row, [field]) for field in ("source_title", "name", "productName", "itemName", "prdtName", "goodsName", "title")]
-    names = [name for name in names if name]
-    if not names:
-        return "normalized_source_name_unresolved"
-    listings = variant.get("source_listings") or []
-    if "source_listings" in variant:
-        layers = [row, *[row[field] for field in ("attributes", "attrs") if isinstance(row.get(field), dict)]]
-        mart = next((_extract_str(layer, ["source", "source_name", "mart"]) for layer in layers if _extract_str(layer, ["source", "source_name", "mart"])), "")
-        mart = {"이마트": "emart", "ssg": "emart", "홈플러스": "homeplus", "롯데마트": "lottemart", "코스트코": "costco"}.get(mart, mart)
-        source_key = next((_extract_str(layer, ["source_record_key", "source_product_id", "mart_native_code", "product_id", "id"]) for layer in layers if _extract_str(layer, ["source_record_key", "source_product_id", "mart_native_code", "product_id", "id"])), None)
-        matches = [listing for listing in listings if listing["source_name"] == mart and str(listing["source_record_key"]) == source_key]
-        if len(matches) != 1 or not matches[0].get("source_title"):
-            return "normalized_source_listing_unavailable"
-        def source_name(value):
-            return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", str(value))).strip().casefold()
-        expected_name = source_name(matches[0]["source_title"])
-        if any(source_name(name) != expected_name for name in names):
-            return "normalized_source_name_conflict"
-    else:
-        # Older manually reviewed normalized entries may lack listing evidence.
-        # They can use only their exact reviewed key name, never a guessed alias.
-        key_name = key.split("|")[1] if len(key.split("|")) == 4 else None
-        if any(build_match_key(None, name, None, None).split("|")[1] != key_name for name in names):
-            return "normalized_source_name_conflict"
-    package, reason = _source_package(row)
-    if reason:
-        return reason
-    target = _package_identity(variant.get("package_quantity"), variant.get("package_unit"))
-    target_count = _positive_number(variant.get("bundle_count"))
-    if target is None or target_count is None or not target_count.is_integer():
-        return "normalized_variant_unavailable"
-    if package != (*target, int(target_count)):
-        return "normalized_variant_conflict"
-    return None
+from core.catalog_matching import (
+    _positive_number, _package_identity, _source_package, _normalized_source_reason,
+)
 
 
 def lookup_row_match_statuses(session, keyed_rows: list[tuple[dict[str, Any], str]]) -> list[str]:
@@ -417,7 +217,9 @@ def lookup_row_match_statuses(session, keyed_rows: list[tuple[dict[str, Any], st
     keys = [key for _, key in keyed_rows]
     statuses = bulk_lookup_match_statuses(session, keys)
     entries = _load_matching_entries(session, keys)
-    variants = _load_normalized_variants(session, [str(entry["public_variant_id"]) for entry in entries.values() if entry.get("public_variant_id")])
+    products = load_normalized_identity_products(session, [str(entry['public_product_id']) for entry in entries.values() if entry.get('public_product_id')])
+    pending = {key for key, product in products.items() if product.get('identity_only_pending_offer')}
+    variants = _load_normalized_variants(session, [str(entry["public_variant_id"]) for entry in entries.values() if entry.get("public_variant_id")], pending)
     result = []
     for row, key in keyed_rows:
         status = statuses.get(key, "key_not_found")
@@ -435,10 +237,12 @@ def _mark_miss(item: dict[str, Any], reason: str) -> None:
     item.pop("canonical_name", None)
     item.pop("public_product_id", None)
     item.pop("public_variant_id", None)
+    item.pop("matching_catalog_offer_state", None)
+    item.pop("matching_catalog_offer_available", None)
 
 
 def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Annotate rows only when a MatchingEntry resolves to an active Product."""
+    """Annotate verified identity references without approving catalog offers."""
     if not items:
         return items
 
@@ -469,6 +273,7 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
         normalized_variants = _load_normalized_variants(
             session,
             [str(entry["public_variant_id"]) for entry in entries.values() if entry.get("public_variant_id")],
+            {key for key, product in normalized_products.items() if product.get('identity_only_pending_offer')},
         )
 
         for item, key, reason in keyed:
@@ -519,6 +324,12 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
                 if public_variant_id:
                     item["public_variant_id"] = str(public_variant_id)
                 item["canonical_name"] = normalized_product.get("canonical_name")
+                if normalized_product.get("identity_only_pending_offer"):
+                    item["matching_catalog_offer_state"] = "pending_review"
+                    item["matching_catalog_offer_available"] = False
+                else:
+                    item.pop("matching_catalog_offer_state", None)
+                    item.pop("matching_catalog_offer_available", None)
                 if normalized_product.get("brand"):
                     item["brand"] = normalized_product["brand"]
                 if normalized_product.get("unified_category_id"):

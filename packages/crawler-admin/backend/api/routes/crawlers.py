@@ -498,10 +498,13 @@ async def _run_and_store(
         _crawl_results[crawler_id] = final_payload
         _append_run_history(crawler_id, result.status, result.duration)
         audit_log(
-            AuditEventType.CRAWL_COMPLETED,
+            AuditEventType.CRAWL_COMPLETED if result.status == "success" else AuditEventType.CRAWL_FAILED,
             resource=crawler_id,
+            result="success" if result.status == "success" else "error",
             detail={
+                "status": result.status,
                 "items_found": result.items_found,
+                "items_valid": result.items_valid,
                 "items_saved": result.items_saved,
                 "duration": result.duration,
             },

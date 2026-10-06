@@ -13,6 +13,8 @@ import { api } from '../../services/api';
 import SafeImage from '../../components/common/SafeImage';
 import ProductDetailModal from '../../components/ProductDetailModal';
 import { fmt } from '../../utils/helpers';
+import { asNumericId } from '../../utils/productActions';
+import { getSavedOfferConditionText, getSavedReceiptHoldText, isSavedReceiptValid, getWishlistHoldText } from '../../utils/productDecision';
 import s from './WishlistPage.module.css';
 
 const TREND_ICONS = {
@@ -20,6 +22,26 @@ const TREND_ICONS = {
   down: { icon: TrendingDown, color: '#22c55e', label: '하락' },
   stable: { icon: Minus, color: '#94a3b8', label: '유지' },
 };
+
+function cartQuote(item) {
+  const selected = item.variant_id || item.listing_id || item.offer_id;
+  const normalized = item.product_id != null && asNumericId(item.product_id) == null;
+  if (selected || normalized) {
+    const context = item.current_offer_context;
+    return isSavedReceiptValid(item) && item.variant_id && item.listing_id && item.current_offer_id
+      && context?.current_eligible === true && !item.comparison_reason
+      && Number(item.current_price) > 0 && Number(context.total_price) > 0
+      ? { price: Number(context.total_price), offer_id: item.current_offer_id, context } : null;
+  }
+  const price = item.current_price !== undefined ? item.current_price : item.item_price;
+  return price != null && Number.isFinite(Number(price)) && Number(price) >= 0
+    ? { price: Number(price) } : null;
+}
+
+function detailSelection(item) {
+  return { ...item, selected_variant_id: item.variant_id, selected_listing_id: item.listing_id,
+    selected_offer_id: item.current_offer_id || item.offer_id };
+}
 
 export default function WishlistPage() {
   const navigate = useNavigate();
@@ -58,8 +80,8 @@ export default function WishlistPage() {
         ...item,
         product_name: item.item_name || item.product_name || item.name || '상품',
         image: item.item_image_url || item.image || '',
-        price_at_add: item.price_at_add || item.item_price || 0,
-        current_price: item.current_price || item.item_price || 0,
+        price_at_add: item.price_at_add !== undefined ? item.price_at_add : (item.item_price ?? null),
+        current_price: item.current_price !== undefined ? item.current_price : (item.item_price ?? null),
       })) : [];
       hydrateFavorites(wishItems);
       setItems(wishItems);
@@ -109,11 +131,20 @@ export default function WishlistPage() {
 
   const handleAddToCart = async (item) => {
     try {
+      const quote = cartQuote(item);
+      if (!quote) throw new Error('선택한 거래의 현재 금액과 이용 조건을 확인한 뒤 담을 수 있습니다');
       await addCartItem({
         ...(item.product_id ? { product_id: item.product_id } : {}),
+        ...(quote.offer_id ? { variant_id: item.variant_id, listing_id: item.listing_id,
+          offer_id: quote.offer_id, offer_context: quote.context } : {}),
         name: item.product_name || item.item_name || item.name,
-        price: item.current_price || item.item_price || item.price_at_add || 0,
+        price: quote.price,
+        item_price: quote.price,
+        quantity: 1,
         store_name: item.store_name || '',
+        source_url: item.source_url || '',
+        source_title: quote.context?.source_title || item.source_title || '',
+        unit: quote.context?.display_unit || item.unit || '',
         image: item.image || item.item_image_url || '',
         category: item.category || '',
       });
@@ -124,14 +155,14 @@ export default function WishlistPage() {
   };
 
   const getTrend = (item) => {
-    if (!item.price_at_add || !item.current_price) return 'stable';
+    if (item.price_at_add == null || item.current_price == null) return 'stable';
     if (item.current_price > item.price_at_add) return 'up';
     if (item.current_price < item.price_at_add) return 'down';
     return 'stable';
   };
 
   const getPriceDelta = (item) => {
-    if (!item.price_at_add || !item.current_price) return null;
+    if (item.price_at_add == null || item.current_price == null) return null;
     const delta = item.current_price - item.price_at_add;
     if (delta === 0) return null;
     return delta;
@@ -173,15 +204,17 @@ export default function WishlistPage() {
           <div className={s.list}>
             {items.map((item) => {
               const pid = item.id;
-              const trend = getTrend(item);
-              const delta = getPriceDelta(item);
+              const receiptValid = isSavedReceiptValid(item);
+              const currentPrice = receiptValid ? item.current_price : null;
+              const trend = getTrend({ ...item, current_price: currentPrice });
+              const delta = getPriceDelta({ ...item, current_price: currentPrice });
               const TrendIcon = TREND_ICONS[trend].icon;
 
               return (
                 <div key={pid} className={s.card}>
                   <div
                     className={s.cardMain}
-                    onClick={() => setSelectedProduct(item)}
+                    onClick={() => setSelectedProduct(detailSelection(item))}
                     role="button"
                     tabIndex={0}
                   >
@@ -198,6 +231,13 @@ export default function WishlistPage() {
                       {item.store_name && (
                         <div className={s.storeName}>🏪 {item.store_name}</div>
                       )}
+                      {item.offer_context && (
+                        <div className={s.storeName}>
+                          {item.offer_context.display_unit || item.offer_context.variant_name || '규격 미확인'}
+                          <div>저장한 거래 조건 · {getSavedOfferConditionText(item)}</div>
+                        </div>
+                      )}
+                      {getSavedReceiptHoldText(item) && <div className={s.storeName}>{getSavedReceiptHoldText(item)}</div>}
                       {(item.unit || item.source_type || item.period) && (
                         <div className={s.storeName}>
                           {[item.source_type, item.unit, item.period].filter(Boolean).join(' · ')}
@@ -208,17 +248,34 @@ export default function WishlistPage() {
                         <div className={s.priceGroup}>
                           <span className={s.priceLabel}>찜할 때</span>
                           <span className={s.priceValue}>
-                            {item.price_at_add ? `${fmt(item.price_at_add)}원` : '-'}
+                            {item.price_at_add != null ? `${fmt(item.price_at_add)}원` : '미확인'}
                           </span>
                         </div>
                         <span className={s.priceArrow}>→</span>
                         <div className={s.priceGroup}>
-                          <span className={s.priceLabel}>현재가</span>
+                          <span className={s.priceLabel}>비교 가능한 현재가</span>
                           <span className={`${s.priceValue} ${s.currentPrice}`}>
-                            {item.current_price ? `${fmt(item.current_price)}원` : '-'}
+                            {currentPrice != null ? `${fmt(currentPrice)}원` : '미확인'}
                           </span>
                         </div>
                       </div>
+                      {item.quoted_price > 0 && (
+                        <div className={s.storeName}>선택한 판매처 관측 가격 · {fmt(item.quoted_price)}원</div>
+                      )}
+                      {item.current_offer_context && (
+                        <div className={s.storeName}>최신 관측 거래 조건 · {getSavedOfferConditionText(item, item.current_offer_context)}</div>
+                      )}
+                      {item.current_offer_context?.availability_reason === 'expired' && (
+                        <div className={s.storeName}>판매 기간 종료 · 과거 관측 가격
+                          {item.current_offer_context.valid_to ? ` · 종료 ${item.current_offer_context.valid_to}` : ''}
+                        </div>
+                      )}
+                      {item.current_offer_context?.crawled_at && (
+                        <div className={s.storeName}>관측 시각 · {item.current_offer_context.crawled_at}</div>
+                      )}
+                      {currentPrice == null && (
+                        <div className={s.storeName}>판정 보류 · {getWishlistHoldText(item.comparison_reason)}</div>
+                      )}
 
                       {delta !== null && (
                         <div className={`${s.delta} ${delta < 0 ? s.deltaDown : s.deltaUp}`}>
@@ -232,7 +289,7 @@ export default function WishlistPage() {
                         <div className={s.targetRow}>
                           <Target size={12} />
                           <span>목표가: {fmt(item.target_price)}원</span>
-                          {item.current_price && item.current_price <= item.target_price && (
+                          {currentPrice != null && !item.comparison_reason && currentPrice <= item.target_price && (
                             <span className={s.targetReached}>🎉 목표 달성!</span>
                           )}
                         </div>
@@ -278,6 +335,8 @@ export default function WishlistPage() {
                     )}
                     <button
                       className={s.actionBtn}
+                      disabled={!cartQuote(item)}
+                      title={!cartQuote(item) ? '현재 거래 금액과 이용 조건 미확인' : '선택한 현재 거래 담기'}
                       onClick={() => handleAddToCart(item)}
                     >
                       <ShoppingCart size={14} /> 담기
@@ -299,6 +358,7 @@ export default function WishlistPage() {
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
+          mode={selectedProduct.product_id ? 'product' : 'preview'}
           onClose={() => setSelectedProduct(null)}
         />
       )}

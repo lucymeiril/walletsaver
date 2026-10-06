@@ -1,0 +1,25 @@
+# WalletSaver team demo
+
+The shipped `demo-data/admin.sqlite.gz` contains the sanitized complete catalog and its management/update metadata. `demo-data/public_snapshot.sqlite.gz` is the corresponding Web catalog (revision 60); `demo-data/opinet.sqlite.gz` supplies 7 stations and 14 dated gasoline/diesel quotes; coordinates remain unknown because their source coordinate system was not established. `manifest.json` pins both the compressed files and their byte-identical restored SQLite contents. The first launch automatically decompresses them once into writable raw `.sqlite` files; no manual extraction or secret configuration is needed. Original accounts, sessions, private logs and external provider credentials are not included. The installer verifies hashes, schema, row counts and foreign keys before the first copy. Subsequent starts preserve writable catalog and user data; a different shipped catalog requires the existing admin update workflow, not a reset.
+
+Windows (Python 3.11+ and Node/npm installed), Web + crawler/DB management:
+
+```powershell
+.\start-all.ps1 -TeamDemo
+```
+
+Use `-Web` for Web only or `-Admin` for management only. Writable files live in `.demo-runtime` (override with `-DemoDataDir`). The existing launcher installs its dependencies and runs migrations. Open `http://127.0.0.1:5173` for TeamDemo Web. Windows startup has not been executed in this Linux environment.
+
+Docker Compose, Web/API only:
+
+```sh
+docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.yml up --build
+```
+
+Open `http://localhost:8080` (the default Compose OAuth/frontend origin). The lightweight one-shot `catalog-init` installs into the separate persistent `walletsaver-demo-data` volume before API startup. It creates no test accounts; the API initializes empty private account/board/interaction stores. The Web proxy stays reachable for authenticated snapshot import even while catalog readiness is unavailable. Management containers are not part of this Compose stack. After successful initialization, its stopped container may be removed with `docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.yml rm -f catalog-init`; the volume is retained. Do not use `down -v` to restart a populated demo.
+
+`demo.env` is automatically read by `-TeamDemo`, and Compose reads it via `--env-file`. Its internal JWT/admin/service keys are **publicly known demo values**, not production secrets. A fresh management instance seeds `demo-admin@walletsaver.example` / `demo-local-admin-260-known-value`; Web user accounts start empty. Crawler Admin has its own API-key login: enter `walletsaver-public-team-demo-crawler-260-known-value` (the existing development auto-login key is different). Use separate credentials before a real deployment. External OAuth/maps/fuel credentials are blank: no external-provider or live-price guarantee is made. Catalog/fuel quotes, original per-fuel dates, periods and eligibility limits retain their source meaning; these are observations, not a fresh checkout/current station-price guarantee. Unknown station distance/coordinates stay unknown; public map handoff and OAuth require their own available external services/configuration.
+
+For a compatible measured comparison, open `/price/category/food.dairy.yogurt.spoon?comparison_basis=100g`: the demonstrated 2,200/340g, 5,922/900g and 6,990/900g source quotes rank by about 647, 658 and 777 per 100g. This compares the displayed unit basis, not identical recipes or verified customer eligibility. On `/price/prod-c11b80dd2262bce41a86021456e2776a`, select one-year history: two original 8,980 quotes retain the source 2+1/minimum-2 rule. The earlier in-period observation permits a separate source-condition calculation; the later observation is outside the source period and holds derived spend/received contents/unit rates. Neither demonstrates actual buyer payment or a currently available promotion.
+
+Google OAuth additionally requires private `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` values and an authorized callback matching `OAUTH_REDIRECT_BASE` + `/api/auth/oauth/google/callback`: TeamDemo uses origin `http://127.0.0.1:5173` and callback `http://127.0.0.1:5173/api/auth/oauth/google/callback`; Compose defaults to origin `http://localhost:8080` and callback `http://localhost:8080/api/auth/oauth/google/callback`. `FRONTEND_URL` is the post-login frontend destination. The default TeamDemo file explicitly loads blank external values, so preset shell keys are not retained. For local configuration, copy `demo.env` to ignored `.env.demo.local`, edit only that private copy, then use `./start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local` (or Compose `--env-file .env.demo.local`). Never commit that copy or provider secrets; keep callback/origin/frontend settings consistent if changing Compose URLs. Use the same hostname for the browser, origin and callback; `localhost` and `127.0.0.1` are distinct cookie origins. Local demo email/password authentication works independently; real external OAuth remains unverified.

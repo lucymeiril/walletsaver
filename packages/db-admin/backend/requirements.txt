@@ -16,3 +16,6 @@ bcrypt>=4.0.0,<4.1.0
 
 # Stability & monitoring
 psutil>=5.9.0
+
+# Runtime matching import also uses YAML.
+PyYAML>=6.0,<7

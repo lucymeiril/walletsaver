@@ -16,8 +16,8 @@ import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
-import { buildCartPayload, buildWishlistPayload, normalizeProduct } from '../utils/productActions';
-import { buildProductDecision } from '../utils/productDecision';
+import { buildCartPayload, buildWishlistPayload, normalizeProduct, selectProductOffer, getProductSelection } from '../utils/productActions';
+import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
 
 const STORE_ICONS = {
@@ -30,7 +30,7 @@ const CATEGORY_ICONS = {
   패션: '👗', default: '📦',
 };
 
-export default function ProductDetailModal({ product, onClose, mode: modeProp }) {
+export default function ProductDetailModal({ product: suppliedProduct, onClose, mode: modeProp }) {
   const addToast = useStore((st) => st.addToast);
   const isLoggedIn = useStore((st) => st.isLoggedIn);
   const rawFavorites = useStore((st) => st.favorites);
@@ -50,8 +50,20 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   const [showAlertForm, setShowAlertForm] = useState(false);
   const [alertTarget, setAlertTarget] = useState('');
   const [savingAlert, setSavingAlert] = useState(false);
-
-  if (!product) return null;
+  const [detail, setDetail] = useState(null);
+  const [offerSelection, setOfferSelection] = useState({});
+  const suppliedIdentity = normalizeProduct(suppliedProduct || {});
+  const productId = suppliedIdentity.catalogProductId || suppliedIdentity.numericProductId;
+  const baseProduct = detail && String(detail.id) === String(productId)
+    ? { ...suppliedProduct, ...detail } : suppliedProduct || {};
+  const chosen = getProductSelection(baseProduct, offerSelection);
+  const product = selectProductOffer(baseProduct, offerSelection);
+  const normalizedAlert = Boolean(baseProduct.public_product_id || Object.hasOwn(baseProduct, 'best_offer'));
+  const alertQuote = isObservationReceiptEligible(chosen?.offer) ? chosen?.offer?.total_price : null;
+  const alertQuotePrice = typeof alertQuote !== 'boolean' && Number.isFinite(Number(alertQuote)) && Number(alertQuote) > 0 ? Number(alertQuote) : null;
+  useEffect(() => { setAlertTarget(''); setShowAlertForm(false); },
+    [productId, chosen?.variant?.id, chosen?.listing?.id, chosen?.offer?.id]);
+  useEffect(() => { setOfferSelection({}); }, [productId]);
 
   // Normalize product data (supports public catalog, mart deals, hotdeals, and cart items)
   const normalized = normalizeProduct(product);
@@ -72,8 +84,6 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     keywords,
     sourceTitle,
     description,
-    numericProductId,
-    catalogProductId,
     favoriteId,
     priceObservationOnly,
     hasDiscountMetadata,
@@ -81,12 +91,11 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     claimStatusLabel,
     unitPriceDisplay,
   } = normalized;
-  const productId = catalogProductId || numericProductId;
   const standardUnitPrice = normalized.standardUnitPrice ?? priceTrust?.standard_unit_price ?? null;
   const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? null;
 
   // Determine mode: if explicitly set use that, otherwise auto-detect
-  const mode = modeProp || (productId && !product.martKey && !product.source && product.type !== 'hotdeal' ? 'product' : 'preview');
+  const mode = modeProp || (productId && !suppliedProduct?.martKey && !suppliedProduct?.source && suppliedProduct?.type !== 'hotdeal' ? 'product' : 'preview');
 
   const verifiedDiscount = hasDiscountMetadata && !priceObservationOnly;
   const savingsAmount = verifiedDiscount && origPrice > price && price > 0 ? origPrice - price : 0;
@@ -103,14 +112,24 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   // Fetch additional data (only in product mode)
   useEffect(() => {
     if (mode !== 'product' || !productId) return;
+    let active = true;
+    setDetail(null);
+    setPriceCompare(null);
+    setPriceHistory([]);
+    setPriceTrust(null);
     setLoading(true);
     const fetchExtra = async () => {
       try {
+        const response = await api.getJson(`/api/products/${encodeURIComponent(productId)}`).catch(() => null);
+        const resolved = response?.data || response;
+        if (!active) return;
+        if (resolved && String(resolved.id) === String(productId)) setDetail(resolved);
         const [compRes, histRes, trustRes] = await Promise.allSettled([
           api.getJson(`/api/products/${encodeURIComponent(productId)}/price-compare`).catch(() => null),
           api.getJson(`/api/products/${encodeURIComponent(productId)}/price-history`).catch(() => null),
           api.getJson(`/api/products/${encodeURIComponent(productId)}/trust`).catch(() => null),
         ]);
+        if (!active) return;
         if (compRes.status === 'fulfilled' && compRes.value) {
           const compData = compRes.value.data || compRes.value;
           setPriceCompare(compData);
@@ -123,9 +142,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
           setPriceTrust(trustRes.value.data || trustRes.value);
         }
       } catch { /* ignore */ }
-      setLoading(false);
+      if (active) setLoading(false);
     };
     fetchExtra();
+    return () => { active = false; };
   }, [productId, mode]);
 
   const handleAddToCart = useCallback(async () => {
@@ -133,8 +153,8 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       await addItem(buildCartPayload(product));
       trackCartAdd(productId || favoriteId, name);
       addToast(`${name} 장바구니에 추가했어요 🛒`, 'success');
-    } catch {
-      addToast('장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+    } catch (error) {
+      addToast(error?.message || '장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
     }
   }, [product, productId, favoriteId, name, addItem, trackCartAdd, addToast]);
 
@@ -185,7 +205,15 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   }, [isLoggedIn, isFav, product, productId, favoriteId, name, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, addToast, trackWishlistAdd]);
 
   const handleShare = useCallback(async () => {
-    const text = `${name} - ${fmt(price)}원 ${storeName ? `(${storeName})` : ''}`;
+    const quote = chosen?.offer;
+    const receiptEligible = isObservationReceiptEligible(quote);
+    const amount = normalizedAlert ? (receiptEligible ? quote?.total_price ?? quote?.listed_price : quote?.listed_price) : price;
+    const known = amount != null && Number.isFinite(Number(amount)) && (!normalizedAlert || Number(amount) > 0);
+    const moneyLabel = normalizedAlert ? (receiptEligible && quote?.total_price != null ? getOfferAmountLabel(quote) : '관측 표시 가격') : '표시 가격';
+    const spec = chosen?.variant?.display_unit || unit;
+    const text = [name, spec, `${moneyLabel} ${known ? getObservedOfferPriceText(quote, amount) : '미확인'}`,
+      storeName && `판매처 ${storeName}`, quote?.availability_reason === 'expired' && '판매 기간 종료 · 과거 관측 가격',
+      quote && getOfferConditionText(quote)].filter(Boolean).join(' · ');
     const url = sourceUrl || window.location.href;
     if (navigator.share) {
       try {
@@ -193,13 +221,14 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       } catch { /* cancelled */ }
     } else {
       try {
-        await navigator.clipboard?.writeText(`${text}\n${url}`);
+        if (typeof navigator.clipboard?.writeText !== 'function') throw new Error('clipboard unavailable');
+        await navigator.clipboard.writeText(`${text}\n${url}`);
         addToast('상품 링크를 복사했어요 📋', 'success');
       } catch {
         addToast('이 브라우저에서는 링크 복사를 사용할 수 없습니다', 'warning');
       }
     }
-  }, [name, price, storeName, sourceUrl, addToast]);
+  }, [name, price, storeName, sourceUrl, unit, chosen, normalizedAlert, addToast]);
 
   const handleSaveAlert = useCallback(async () => {
     if (!isLoggedIn) {
@@ -210,6 +239,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       addToast('공개 카탈로그 상품만 가격 알림을 설정할 수 있습니다', 'warning');
       return;
     }
+    if (normalizedAlert && (!chosen?.variant?.id || !chosen?.listing?.id || !chosen?.offer?.id)) {
+      addToast('규격·판매처·거래를 먼저 선택해주세요', 'warning');
+      return;
+    }
     const target = Number(alertTarget);
     if (!Number.isInteger(target) || target <= 0) {
       addToast('목표 가격을 1원 이상의 정수로 입력해주세요', 'warning');
@@ -217,11 +250,12 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     }
     setSavingAlert(true);
     try {
-      await api.postJson('/api/users/me/alerts', {
+      const response = await api.postJson('/api/users/me/alerts', {
         product_id: productId,
         target_price: target,
+        ...(normalizedAlert ? { variant_id: chosen.variant.id, listing_id: chosen.listing.id, offer_id: chosen.offer.id } : {}),
       });
-      addPriceAlert(productId, target);
+      addPriceAlert(response?.data || response);
       setShowAlertForm(false);
       addToast(`${fmt(target)}원 이하 가격 알림을 저장했습니다`, 'success');
     } catch (error) {
@@ -229,7 +263,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     } finally {
       setSavingAlert(false);
     }
-  }, [isLoggedIn, productId, alertTarget, addPriceAlert, addToast]);
+  }, [isLoggedIn, productId, alertTarget, normalizedAlert, chosen, addPriceAlert, addToast]);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') onClose();
@@ -244,25 +278,14 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     };
   }, [handleKeyDown]);
 
-  // Unit price calc
-  let unitPrice = null;
-  if (unit && price > 0) {
-    const match = unit.match(/(\d+(?:\.\d+)?)\s*(g|kg|ml|l|개|입)/i);
-    if (match) {
-      const amount = parseFloat(match[1]);
-      const unitType = match[2].toLowerCase();
-      if (unitType === 'kg' || unitType === 'l') {
-        unitPrice = `${fmt(Math.round(price / amount * 0.1))}원/100${unitType === 'kg' ? 'g' : 'ml'}`;
-      } else if (unitType === 'g' || unitType === 'ml') {
-        unitPrice = `${fmt(Math.round(price / amount * 100))}원/100${unitType}`;
-      } else {
-        unitPrice = `${fmt(Math.round(price / amount))}원/${unitType}`;
-      }
-    }
-  }
-  const displayUnitPrice = unitPriceDisplay || (standardUnitPrice && standardUnit
-    ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}`
-    : unitPrice);
+  // Public normalized prices already include reviewed package/promotion math.
+  // Display text is a label, never independent evidence of a sold quantity.
+  const isNormalizedCatalog = Boolean(product.public_product_id || Object.hasOwn(product, 'best_offer'));
+  const verifiedUnitPrice = getOfferUnitPrice(product.best_offer, chosen?.variant.quantity_components || []);
+  const displayUnitPrice = isNormalizedCatalog
+    ? (verifiedUnitPrice ? `${fmt(Math.round(verifiedUnitPrice.price))}원/${verifiedUnitPrice.unit}` : null)
+    : (unitPriceDisplay || (standardUnitPrice && standardUnit
+      ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}` : null));
   const decision = buildProductDecision(product, { priceCompare, priceHistory, priceTrust });
   const {
     historySummary,
@@ -272,8 +295,28 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     currentOffer,
   } = decision;
   const otherOffers = comparableOffers.filter((offer) => !offer.current);
-  const bestOffer = comparableOffers[0];
-  const currentIsBest = bestOffer && bestOffer.price >= price;
+  const comparableRows = comparableOffers.filter(offer => offer.comparisonValue != null);
+  const bestValue = comparableRows.length > 1 ? Math.min(...comparableRows.map(offer => offer.comparisonValue)) : null;
+  const selectedValue = comparableRows.find(offer => offer.current)?.comparisonValue;
+  const currentIsBest = bestValue != null && selectedValue != null && selectedValue <= bestValue;
+  const hasCheaperOffer = bestValue != null && selectedValue != null && bestValue < selectedValue;
+  const offerFacts = (offer = {}, components = offer.quantity_components || []) => <small>
+    {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
+    {offer.current_eligible === false && offer.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
+    {isObservationReceiptEligible(offer) && offer.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}
+    <span> · {getOfferReceiptText(offer, { components })}</span>
+    {offer.minimum_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}최소 구매 {offer.minimum_quantity}</span>}
+    {offer.promotion_condition && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}{offer.promotion_condition}</span>}
+    {getConditionalOfferConditionText(offer) && <span> · {getConditionalOfferConditionText(offer)}</span>}
+    {offer.promotion_conditions?.buy_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}구매 {offer.promotion_conditions.buy_quantity}</span>}
+    {offer.promotion_conditions?.free_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}추가 증정 {offer.promotion_conditions.free_quantity}</span>}
+    {offer.membership_required === true && <span> · 회원 필요</span>}
+    {offer.membership_required === false && <span> · 회원 제한 없음</span>}
+    {offer.membership_required == null && <span> · 회원 조건 미확인</span>}
+    {offer.coupon_required === true && <span> · 쿠폰 필요</span>}
+    {offer.coupon_required === false && <span> · 쿠폰 필요 없음</span>}
+    {offer.coupon_required == null && <span> · 쿠폰 조건 미확인</span>}
+  </small>;
   const trendLabel = {
     down: '최근 하락',
     up: '최근 상승',
@@ -286,6 +329,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     return text.length >= 10 ? text.slice(5, 10) : text;
   };
 
+  if (!suppliedProduct) return null;
   return createPortal(
     <div className={s.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className={s.modal} role="dialog" aria-modal="true" aria-label={name}>
@@ -324,10 +368,13 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
             {product.classification_warning && (
               <div className={s.classificationWarning}>분류 확인 필요</div>
             )}
+            {['selection_context_missing', 'selection_required'].includes(product.comparison_reason) && !chosen && (
+              <p>저장된 규격·판매처 선택이 없습니다. 아래에서 원하는 거래를 직접 선택하세요.</p>
+            )}
 
             <div className={s.priceBlock}>
               <div className={s.priceMain}>
-                <span className={s.salePrice}>{fmt(price)}원</span>
+                <span className={s.salePrice}>{isNormalizedCatalog && (price <= 0 || !isObservationReceiptEligible(chosen?.offer)) ? '비교 가격 미확인' : `${fmt(price)}원`}</span>
                 {verifiedDiscount && origPrice > 0 && origPrice !== price && (
                   <span className={s.origPrice}>{fmt(origPrice)}원</span>
                 )}
@@ -364,6 +411,37 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                 ))}
               </div>
             )}
+            {isNormalizedCatalog && product.variants?.length > 0 && (
+              <div className={s.metaRow}>
+                <span className={s.metaLabel}>판매 규격</span>
+                <div>
+                  {product.variants.map((variant) => (
+                    <div key={variant.id}>
+                      <button type="button" aria-label={`규격 선택: ${variant.name || variant.display_unit || '규격 미확인'}`} aria-pressed={chosen?.variant.id === variant.id} onClick={() => {
+                        const candidate = getVariantBestOffer(variant);
+                        const listing = variant.listings?.find(row => row.id === candidate?.listingId) || variant.listings?.[0];
+                        setOfferSelection({ variantId: variant.id, listingId: listing?.id, offerId: listing?.offers?.[0]?.id });
+                      }}><strong>{variant.name || variant.display_unit || '규격 미확인'}</strong></button>
+                      {variant.package_quantity == null && <small> · 판매 수량 미확인</small>}
+                      {(variant.listings || []).map((listing) => {
+                        const offer = listing.offers?.[0];
+                        return <div key={listing.id}>
+                          <button type="button" aria-label={`판매처 선택: ${listing.source} · ${listing.title}`} aria-pressed={chosen?.listing.id === listing.id} onClick={() => setOfferSelection({ variantId: variant.id, listingId: listing.id, offerId: offer?.id })}>{listing.source} · {listing.title}</button>
+                          {offer?.listed_price != null && <span> · 표시 가격 {getObservedOfferPriceText(offer)}</span>}
+                          {offer && offer.comparable_price == null && <small> · 비교 조건 미확인</small>}
+                          {offer && offerFacts(offer, variant.quantity_components || [])}
+                        </div>;
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {chosen?.variant.quantity_components?.length > 0 && <div aria-label="선택 규격 구성">
+              <strong>선택 규격 구성 · 구성별 수량</strong>
+              {getQuantityComponentTexts(chosen.variant.quantity_components).map((text, index) => <div key={index}>{text}</div>)}
+              <small>구성품의 내용량·수량을 개별 표시합니다. 전체 구성의 정확한 단위가는 표시하지 않습니다.</small>
+            </div>}
             {description && (
               <div className={s.description}>
                 {description}
@@ -398,7 +476,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
               </div>
               <div>
                 <span>다음 행동</span>
-                <strong>{currentIsBest ? '현재 상품 확인' : '더 싼 판매처 확인'}</strong>
+                <strong>{currentIsBest ? '현재 선택 확인' : hasCheaperOffer ? '비교 기준·조건 확인' : '가격·조건 확인'}</strong>
                 <small>{sourceUrl ? '원본 이동 가능' : '찜/장바구니로 추적'}</small>
               </div>
             </div>
@@ -415,11 +493,12 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
             <h3 className={s.sectionTitle}>📈 가격 이력 요약</h3>
             {historySummary.hasData ? (
               <>
+                {isNormalizedCatalog && <p>선택 규격·같은 수령 및 행사 조건의 관측 통계 · {historySummary.comparableCount}건</p>}
                 <div className={s.historySummary}>
                   <div><span>최저</span><strong>{historySummary.min ? `${fmt(historySummary.min)}원` : '-'}</strong></div>
                   <div><span>평균</span><strong>{historySummary.avg ? `${fmt(historySummary.avg)}원` : '-'}</strong></div>
                   <div><span>최고</span><strong>{historySummary.max ? `${fmt(historySummary.max)}원` : '-'}</strong></div>
-                  <div><span>최근</span><strong>{historySummary.latest ? `${fmt(historySummary.latest)}원` : `${fmt(price)}원`}</strong></div>
+                  <div><span>최근</span><strong>{historySummary.latest ? getObservedOfferPriceText(historySummary.history.at(-1), historySummary.latest) : '미확인'}</strong></div>
                 </div>
                 <div className={s.historyNote}>
                   <span>{trendLabel}</span>
@@ -437,7 +516,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                         <div key={`${p.date}-${i}`} className={s.chartBar}>
                           <div className={s.barFill} style={{ height: `${height}%` }} />
                           <span className={s.barLabel}>{formatDate(p.date)}</span>
-                          <span className={s.barPrice}>{fmt(p.price)}</span>
+                          {isNormalizedCatalog && (!isObservationReceiptEligible(p) || !(p.comparablePrice > 0) || (p.offerState && p.offerState !== 'active')) && <small>비교 조건 미확인</small>}
+                          <span className={s.barPrice}>{isNormalizedCatalog ? getObservedOfferPriceText(p, p.price) : fmt(p.price)}</span>
+                          {isNormalizedCatalog && <small>{getOfferConditionText(p)}{isObservationReceiptEligible(p) && p.total_price > 0 ? ` · ${getOfferAmountLabel(p, '실제 거래 금액')} ${fmt(p.total_price)}원` : ''}</small>}
                         </div>
                       );
                     })}
@@ -461,8 +542,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                       {offer.title && <small>{offer.title}</small>}
                     </span>
                     <span className={s.osPrice}>{fmt(offer.price)}원</span>
-                    {offer.price < price && <span className={s.osCheaper}>더 저렴</span>}
-                    {offer.price === bestOffer?.price && <span className={s.osBest}>최저</span>}
+                    {offer.unitPrice != null && offer.unit && <small>{fmt(offer.unitPrice)}원/{offer.unit}</small>}
+                    {offerFacts({ total_price: offer.totalPrice, total_quantity: offer.totalQuantity, quantity_unit: offer.quantityUnit, quantity_basis: offer.quantityBasis, scalar_basis: offer.scalarBasis, received_package_count_scope: offer.receivedPackageCountScope, quantity_components: offer.quantityComponents, pricing_measure_quantity: offer.pricingMeasureQuantity, pricing_measure_unit: offer.pricingMeasureUnit, pricing_measure_basis: offer.pricingMeasureBasis, minimum_quantity: offer.minimumQuantity, received_package_count: offer.receivedPackageCount, promotion_condition: offer.promotionCondition, promotion_conditions: offer.promotionConditions, membership_required: offer.membershipRequired, coupon_required: offer.couponRequired })}
+                    {selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <span className={s.osCheaper}>{offer.comparisonBasis} 기준 표시 조건에서 더 저렴</span>}
+                    {bestValue != null && offer.comparisonValue === bestValue && <span className={s.osBest}>{offer.comparisonBasis} 기준 표시 조건의 관측 최저</span>}
                   </div>
                 ))}
               </div>
@@ -489,6 +572,11 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
         {/* Action buttons */}
         {showAlertForm && (
           <div className={s.alertForm}>
+            {normalizedAlert && <>
+              <strong>{chosen ? `${chosen.variant.display_unit || chosen.variant.name || '규격 미확인'} · ${chosen.listing.source || '판매처 미확인'}` : '규격·판매처·거래 선택 필요'}</strong>
+              <small>{chosen ? getOfferConditionText(chosen.offer) : '선택한 거래를 기준으로 저장합니다.'}</small>
+              <small>{alertQuotePrice != null ? `선택 거래 표시 금액 ${fmt(alertQuotePrice)}원` : '선택 거래 금액 미확인'} · 수령 구성이나 이용 조건이 확인되지 않으면 목표 도달 판정을 보류합니다.</small>
+            </>}
             <label htmlFor="product-alert-target">목표 가격</label>
             <input
               id="product-alert-target"
@@ -497,9 +585,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
               step="1"
               value={alertTarget}
               onChange={(event) => setAlertTarget(event.target.value)}
-              placeholder={price > 0 ? String(Math.round(price)) : '예: 5000'}
+              placeholder={(normalizedAlert ? alertQuotePrice : price) > 0 ? String(Math.round(normalizedAlert ? alertQuotePrice : price)) : '예: 5000'}
             />
-            <button type="button" onClick={handleSaveAlert} disabled={savingAlert}>
+            <button type="button" onClick={handleSaveAlert} disabled={savingAlert || (normalizedAlert && !chosen)}>
               {savingAlert ? '저장 중' : '저장'}
             </button>
           </div>
@@ -522,7 +610,8 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
           <button
             className={s.actionIcon}
             onClick={() => {
-              setAlertTarget((current) => current || (price > 0 ? String(Math.round(price)) : ''));
+              const quote = normalizedAlert ? alertQuotePrice : price;
+              setAlertTarget((current) => current || (quote > 0 ? String(Math.round(quote)) : ''));
               setShowAlertForm((current) => !current);
             }}
             aria-label="가격 알림 설정"
