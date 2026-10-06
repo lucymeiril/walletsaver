@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import random
@@ -35,6 +36,7 @@ from crawlers.marts.source_utils import (
     absolute_url,
     build_source_map_manifest,
     build_source_attributes,
+    commercial_product_evidence,
     normalize_source_key,
     parse_period_fields,
     source_dedup_key,
@@ -47,6 +49,10 @@ logger = logging.getLogger(__name__)
 
 class _CategoryRequestStateError(RuntimeError):
     """Raised when the durable category-request throttle cannot be saved."""
+
+
+class _SourceAccessStopped(RuntimeError):
+    """An explicit source denial ends this run, including later surfaces."""
 
 
 class EmartCrawler(CrawlerContract):
@@ -307,16 +313,22 @@ class EmartCrawler(CrawlerContract):
             return
         sess = self._get_session()
         try:
-            sess.get(self.BASE_URL + "/", timeout=15)
+            response = sess.get(self.BASE_URL + "/", timeout=15)
+            if response.status_code in {401, 403, 429}:
+                raise _SourceAccessStopped(f"HTTP {response.status_code} at session warmup")
+            if self._html_challenge_marker(response.text):
+                raise _SourceAccessStopped("visible challenge at session warmup")
             time.sleep(3.0)
             self._session_warmed = True
+        except _SourceAccessStopped:
+            raise
         except Exception as e:
             logger.warning(f"[{self.info.name}] session warmup failed: {e}")
 
     def _retry_request(self, url: str, *, headers: dict | None = None,
                        session: requests.Session | None = None,
                        timeout: int = 15, max_retries: int = 3) -> requests.Response:
-        """HTTP GET with exponential backoff. On 429: slow down (NEVER add concurrency).
+        """Retry bounded transport errors, never an explicit access denial.
         Returns the last response (200/429/other) rather than raising on exhaustion."""
         requester = session or self._get_session()
         last_exc: Optional[BaseException] = None
@@ -325,11 +337,6 @@ class EmartCrawler(CrawlerContract):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout)
                 last_resp = resp
-                if resp.status_code == 429:
-                    wait = 5.0 + (2 ** attempt) + random.uniform(1.0, 3.0)
-                    logger.warning(f"[{self.info.name}] Rate limited (429), backing off {wait:.1f}s")
-                    time.sleep(wait)
-                    continue
                 return resp
             except (requests.exceptions.ConnectionError,
                     requests.exceptions.Timeout) as e:
@@ -371,7 +378,7 @@ class EmartCrawler(CrawlerContract):
         source_raw_count = self._count_raw_candidates(source_input)
         parsed = await self.parse(source_input)
         valid_items = await self.validate(parsed)
-        items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        items_as_dict = [self._emit_item(item) for item in valid_items]
         for _d in items_as_dict:
             _d["source"] = _d.get("source") or "emart"
         quality_details = summarize_discount_run(
@@ -431,14 +438,23 @@ class EmartCrawler(CrawlerContract):
         source_raw_count = 0
         out_of_scope_external_seller_count = 0
         pages_attempted = 0
-        consecutive_forbidden = 0
-        blocked_by_waf = False
+        source_stop_reason = None
         category_diagnostics: dict = {}
         import asyncio as _asyncio
 
         try:
-            self._warmup_session()
-            for source_request in self._build_source_requests():
+            try:
+                self._warmup_session()
+            except _SourceAccessStopped as exc:
+                source_stop_reason = str(exc)
+                errors.append(source_stop_reason)
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="requests", error_type=ErrorType.HTTP_ERROR,
+                    error_msg=source_stop_reason,
+                    status_code=int(re.search(r"HTTP (\d+)", source_stop_reason).group(1))
+                    if re.search(r"HTTP (\d+)", source_stop_reason) else None,
+                ))
+            for source_request in ([] if source_stop_reason else self._build_source_requests()):
                 query = source_request["query"]
                 page_num = source_request["page"]
                 url = source_request["url"]
@@ -458,6 +474,7 @@ class EmartCrawler(CrawlerContract):
                         await _asyncio.sleep(delay + random.uniform(0, 0.5))
 
                     response = self._retry_request(url, headers=headers, timeout=20)
+                    received_at = datetime.now(timezone.utc)
                     response.encoding = "utf-8"
 
                     if response.status_code != 200:
@@ -470,30 +487,25 @@ class EmartCrawler(CrawlerContract):
                             error_msg=message,
                             status_code=response.status_code,
                         ))
-                        if response.status_code == 403:
-                            consecutive_forbidden += 1
-                            if consecutive_forbidden >= self.MAX_CONSECUTIVE_FORBIDDEN:
-                                stop_message = (
-                                    f"HTTP 403이 {consecutive_forbidden}회 연속 발생해 "
-                                    "현재 실행을 중단합니다."
-                                )
-                                logger.warning("[이마트] %s", stop_message)
-                                errors.append(stop_message)
-                                blocked_by_waf = True
-                                if self._session is not None:
-                                    self._session.close()
-                                self._session = None
-                                self._session_warmed = False
-                                break
-                        else:
-                            consecutive_forbidden = 0
+                        if response.status_code in {401, 403, 429}:
+                            source_stop_reason = message
+                            break
                         continue
 
-                    consecutive_forbidden = 0
+                    challenge = self._html_challenge_marker(response.text)
+                    if challenge:
+                        source_stop_reason = challenge
+                        errors.append(challenge)
+                        strategy_failures.append(StrategyFailure(
+                            strategy_name="requests", error_type=ErrorType.HTTP_ERROR,
+                            error_msg=challenge,
+                        ))
+                        break
 
                     raw_candidates = self._count_raw_candidates(response.text)
                     source_raw_count += raw_candidates
-                    items = await self.parse(response.text)
+                    receipt = self._transport_receipt(response, received_at)
+                    items = await self.parse(response.text, **receipt)
                     new_count = 0
                     for item in items:
                         if bool((item.attributes or {}).get("external_seller")):
@@ -539,9 +551,12 @@ class EmartCrawler(CrawlerContract):
             remaining_budget = None
             if self.MAX_REQUESTS is not None:
                 remaining_budget = max(0, int(self.MAX_REQUESTS) - pages_attempted)
-            category_items, category_diagnostics = await self._fetch_category_pages_via_browser(
-                request_budget=remaining_budget,
-            )
+            if source_stop_reason:
+                category_items, category_diagnostics = [], {"requests": [], "stop_reason": source_stop_reason}
+            else:
+                category_items, category_diagnostics = await self._fetch_category_pages_via_browser(
+                    request_budget=remaining_budget,
+                )
             category_pages_attempted = int(category_diagnostics.get("pages_attempted") or 0)
             category_requests_attempted = int(
                 category_diagnostics.get("requests_attempted")
@@ -561,26 +576,23 @@ class EmartCrawler(CrawlerContract):
                     continue
                 seen_ids.add(key)
                 all_items.append(item)
-            if category_diagnostics.get("blocked"):
-                blocked_by_waf = True
             if category_diagnostics.get("stop_reason"):
                 category_stop_message = (
                     f"카테고리 수집 중단: {category_diagnostics['stop_reason']}"
                 )
                 errors.append(category_stop_message)
-                category_error_type = (
-                    ErrorType.IP_BANNED
-                    if category_diagnostics.get("blocked")
-                    else ErrorType.UNKNOWN
-                )
+                denied_status = next((row.get("status_code") for row in reversed(category_diagnostics.get("requests", []))
+                                      if row.get("status_code") in {401, 403, 429}), None)
+                category_error_type = ErrorType.HTTP_ERROR if denied_status else ErrorType.UNKNOWN
                 strategy_failures.append(StrategyFailure(
                     strategy_name="playwright_category",
                     error_type=category_error_type,
                     error_msg=category_stop_message,
+                    status_code=denied_status,
                 ))
 
             valid_items = await self.validate(all_items)
-            items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+            items_as_dict = [self._emit_item(item) for item in valid_items]
             for _d in items_as_dict:
                 _d["source"] = _d.get("source") or "emart"
             quality_details = summarize_discount_run(
@@ -595,7 +607,16 @@ class EmartCrawler(CrawlerContract):
                 live_enabled=True,
                 fixture_available=False,
             )
-            if blocked_by_waf:
+            access_stopped = bool(source_stop_reason or category_diagnostics.get("blocked"))
+            quality_details.update({
+                "source_stopped": access_stopped,
+                "source_stop_status": next((failure.status_code for failure in strategy_failures
+                                            if failure.status_code in {401, 403, 429}), None)
+                if access_stopped else None,
+                "source_stop_reason": (source_stop_reason or category_diagnostics.get("stop_reason"))
+                if access_stopped else None,
+            })
+            if access_stopped:
                 quality_details["fetch"]["blocked"] = True
                 quality_details["fetch"]["auth_bypass_attempted"] = False
             quality_details["category_browser"] = category_diagnostics
@@ -619,7 +640,7 @@ class EmartCrawler(CrawlerContract):
             duration = (finished_at - started_at).total_seconds()
             if not valid_items:
                 status = CrawlStatus.FAILED
-            elif category_diagnostics.get("stop_reason"):
+            elif source_stop_reason or category_diagnostics.get("stop_reason"):
                 status = CrawlStatus.PARTIAL
             else:
                 status = CrawlStatus.SUCCESS
@@ -874,7 +895,7 @@ class EmartCrawler(CrawlerContract):
                     )
                     status_code = response.status if response else None
                     row["status_code"] = status_code
-                    if status_code in {403, 429}:
+                    if status_code in {401, 403, 429}:
                         diagnostics["blocked"] = True
                         diagnostics["stop_reason"] = f"HTTP {status_code} at {category_name}"
                         row["error"] = diagnostics["stop_reason"]
@@ -882,6 +903,19 @@ class EmartCrawler(CrawlerContract):
                     if status_code != 200:
                         row["error"] = f"HTTP {status_code}"
                         continue
+
+                    # Hash the actual transport body, not the later rendered DOM.
+                    receipt = {}
+                    try:
+                        body = await response.body()
+                        receipt = {
+                            "response_url": response.url,
+                            "response_body_sha256": hashlib.sha256(body).hexdigest(),
+                            "received_at": datetime.now(timezone.utc),
+                        }
+                    except Exception:
+                        # Missing body receipt is unknown; never substitute parse time.
+                        pass
 
                     try:
                         await page.wait_for_selector(
@@ -903,7 +937,7 @@ class EmartCrawler(CrawlerContract):
 
                     row["raw_count"] = self._count_category_cards(html)
                     category_path = self._extract_category_path(html, category_name)
-                    parsed = await self.parse(html)
+                    parsed = await self.parse(html, **receipt)
                     row["external_seller_count"] = sum(
                         1
                         for item in parsed
@@ -969,9 +1003,77 @@ class EmartCrawler(CrawlerContract):
             pass
         return fallback
 
-    async def parse(self, raw_data: str) -> list[DiscountItem]:
+    @staticmethod
+    def _transport_receipt(response, received_at: datetime) -> dict:
+        body, url = getattr(response, "content", None), getattr(response, "url", None)
+        if not isinstance(body, bytes) or not isinstance(url, str) or not url:
+            return {}
+        return {"response_url": url, "response_body_sha256": hashlib.sha256(body).hexdigest(),
+                "received_at": received_at}
+
+    @staticmethod
+    def _html_challenge_marker(html: str) -> str | None:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, "html.parser")
+        for element in soup.select("script, style"):
+            element.decompose()
+        text = soup.get_text(" ", strip=True)
+        if re.search(r"verify you are human|access denied|자동입력 방지|비정상적인 접근", text, re.I):
+            return "visible source access challenge"
+        if soup.select_one("form input[name='captcha'], form input[name='captchaResponse']"):
+            return "visible source CAPTCHA form"
+        return None
+
+    @staticmethod
+    def _record_node(item: DiscountItem, node: dict, pointer: str, *, partial=False) -> DiscountItem:
+        evidence = commercial_product_evidence(
+            node, pointer, response_url=None, response_body_sha256=None, received_at=None,
+        )
+        evidence["source_node_scope"] = "available_card_declaration_partial" if partial else "source_product_node"
+        if partial:
+            evidence["purchase_declaration_completeness"] = "unconfirmed"
+        item.attributes["submission_business_evidence"] = [evidence]
+        return item
+
+    @staticmethod
+    def _finish_parsed(items: list[DiscountItem], receipt: dict) -> list[DiscountItem]:
+        metadata = commercial_product_evidence({}, "", **receipt)
+        keys = ("source_response_url", "source_response_body_sha256", "source_response_received_at", "http_receipt_status")
+        for item in items:
+            for evidence in item.attributes.get("submission_business_evidence", []):
+                evidence.update({key: metadata[key] for key in keys})
+            if "source_response_metadata" in item.attributes:
+                item.attributes["source_response_metadata"].update({key: metadata[key] for key in keys})
+            if metadata["http_receipt_status"] == "supplied_response_metadata":
+                item.crawled_at = datetime.fromisoformat(metadata["source_response_received_at"])
+        return items
+
+    @staticmethod
+    def _emit_item(item: DiscountItem) -> dict:
+        record = item.model_dump(mode="json")
+        supplied = any(e.get("http_receipt_status") == "supplied_response_metadata"
+                       for e in item.attributes.get("submission_business_evidence", []))
+        supplied = supplied or item.attributes.get("source_response_metadata", {}).get("http_receipt_status") == "supplied_response_metadata"
+        if not supplied:
+            record.pop("crawled_at", None)
+        return record
+
+    @staticmethod
+    def _record_html_projection(item: DiscountItem) -> DiscountItem:
+        item.attributes["source_response_metadata"] = {
+            "version": 1, "source_projection": "html_card_projection_only",
+            "native_business_node_status": "unavailable", "http_receipt_status": "not_recorded",
+            "source_response_url": None, "source_response_body_sha256": None,
+            "source_response_received_at": None,
+        }
+        return item
+
+    async def parse(self, raw_data: str, *, response_url=None, response_body_sha256=None,
+                    received_at=None) -> list[DiscountItem]:
         """SSG __NEXT_DATA__ JSON에서 상품을 추출한다."""
         items: list[DiscountItem] = []
+        receipt = dict(response_url=response_url, response_body_sha256=response_body_sha256,
+                       received_at=received_at)
 
         # 1) __NEXT_DATA__ JSON 추출
         next_data_items = self._extract_next_data_items(raw_data)
@@ -981,7 +1083,7 @@ class EmartCrawler(CrawlerContract):
                 if item:
                     items.append(item)
             if items:
-                return items
+                return self._finish_parsed(items, receipt)
 
         # 2) Fallback: 기존 임베디드 JSON 패턴
         json_items = self._extract_json_items(raw_data)
@@ -991,7 +1093,7 @@ class EmartCrawler(CrawlerContract):
                 if item:
                     items.append(item)
             if items:
-                return items
+                return self._finish_parsed(items, receipt)
 
         # 3) Fallback: HTML 파싱
         try:
@@ -1002,7 +1104,7 @@ class EmartCrawler(CrawlerContract):
         except Exception as e:
             logger.warning(f"[이마트] HTML 파싱 실패: {e}")
 
-        return items
+        return self._finish_parsed(items, receipt)
 
     def _count_raw_candidates(self, raw_data: str) -> int:
         """Count source candidate rows before DiscountItem parsing/validation."""
@@ -1054,9 +1156,11 @@ class EmartCrawler(CrawlerContract):
         unique_products: list[dict] = []
         seen_keys: set[str] = set()
 
-        for query in queries:
+        for index, query in enumerate(queries):
             state_data = query.get("state", {}).get("data", {})
-            collected.extend(self._collect_product_lists(state_data))
+            collected.extend(self._collect_product_lists(
+                state_data, pointer=f"/props/pageProps/dehydratedState/queries/{index}/state/data",
+            ))
 
         for product in collected:
             key = normalize_source_key(
@@ -1078,7 +1182,7 @@ class EmartCrawler(CrawlerContract):
 
         return []
 
-    def _collect_product_lists(self, node, *, category_hint: str = "") -> list[dict]:
+    def _collect_product_lists(self, node, *, category_hint: str = "", pointer="") -> list[dict]:
         products: list[dict] = []
         if isinstance(node, dict):
             local_category = (
@@ -1094,18 +1198,20 @@ class EmartCrawler(CrawlerContract):
                 item_candidates = node.get(list_key)
                 if isinstance(item_candidates, list) and item_candidates and isinstance(item_candidates[0], dict):
                     if "itemId" in item_candidates[0] and ("itemName" in item_candidates[0] or "itemNm" in item_candidates[0]):
-                        for product in item_candidates:
+                        for index, product in enumerate(item_candidates):
                             enriched = dict(product)
+                            enriched["_emart_source_node"] = product
+                            enriched["_emart_source_pointer"] = f"{pointer}/{list_key}/{index}"
                             if local_category and not (
                                 enriched.get("categoryName") or enriched.get("dispCtgName") or enriched.get("ctgNm")
                             ):
                                 enriched["_category_hint"] = local_category
                             products.append(enriched)
-            for value in node.values():
-                products.extend(self._collect_product_lists(value, category_hint=local_category))
+            for key, value in node.items():
+                products.extend(self._collect_product_lists(value, category_hint=local_category, pointer=f"{pointer}/{key}"))
         elif isinstance(node, list):
-            for value in node:
-                products.extend(self._collect_product_lists(value, category_hint=category_hint))
+            for index, value in enumerate(node):
+                products.extend(self._collect_product_lists(value, category_hint=category_hint, pointer=f"{pointer}/{index}"))
         return products
 
     def _legacy_extract_next_data_items(self, queries: list[dict]) -> list[dict]:
@@ -1318,7 +1424,7 @@ class EmartCrawler(CrawlerContract):
             extra=attributes,
         )
 
-        return DiscountItem(
+        return self._record_node(DiscountItem(
             name=name,
             store=site or "이마트",
             original_price=original_price,
@@ -1336,7 +1442,7 @@ class EmartCrawler(CrawlerContract):
             valid_until=valid_until,
             image_url=image_url,
             detail_url=detail_url,
-        )
+        ), product.get("_emart_source_node", product), product.get("_emart_source_pointer", "next_data/product"))
 
     def _absolute_url(self, url: str, base_url: str) -> str:
         """Normalize source-relative URLs while preserving absolute URLs."""
@@ -1406,7 +1512,7 @@ class EmartCrawler(CrawlerContract):
         )
         display_unit = unit_metadata.get("display_unit") or raw_unit
 
-        return DiscountItem(
+        return self._record_node(DiscountItem(
             name=name,
             store="이마트",
             original_price=original_price,
@@ -1430,7 +1536,7 @@ class EmartCrawler(CrawlerContract):
             event_name=product.get("eventNm", "이마트 할인"),
             image_url=image_url,
             detail_url=detail_url,
-        )
+        ), product, "embedded_json/product")
 
     def _parse_html(self, soup) -> list[DiscountItem]:
         """HTML에서 상품 정보를 파싱한다 (fallback)."""
@@ -1440,9 +1546,9 @@ class EmartCrawler(CrawlerContract):
         )
         logger.info(f"[이마트] HTML 상품 카드: {len(product_cards)}개")
 
-        for card in product_cards:
+        for index, card in enumerate(product_cards):
             try:
-                item = self._parse_product_card(card)
+                item = self._parse_product_card(card, source_pointer=f"html/card/{index}")
                 if item:
                     items.append(item)
             except Exception as e:
@@ -1450,7 +1556,7 @@ class EmartCrawler(CrawlerContract):
                 continue
         return items
 
-    def _parse_product_card(self, card) -> Optional[DiscountItem]:
+    def _parse_product_card(self, card, *, source_pointer="html/card") -> Optional[DiscountItem]:
         """개별 상품 카드 HTML → DiscountItem."""
         cart_data_el = card.select_one(".disp_cart_data")
         if cart_data_el:
@@ -1501,7 +1607,7 @@ class EmartCrawler(CrawlerContract):
                 }
                 item = self._next_data_to_discount_item(product)
                 if item:
-                    return item
+                    return self._record_node(item, cart_data, f"{source_pointer}/disp_cart_data", partial=True)
 
         name_el = card.select_one(
             (
@@ -1550,7 +1656,7 @@ class EmartCrawler(CrawlerContract):
             category_el = card.select_one(".category, .breadcrumb, .location")
             category = category_el.get_text(" > ", strip=True) if category_el else ""
 
-        return DiscountItem(
+        return self._record_html_projection(DiscountItem(
             name=name,
             store="이마트",
             original_price=original_price,
@@ -1573,7 +1679,7 @@ class EmartCrawler(CrawlerContract):
             image_url=image_url,
             detail_url=detail_url,
             event_name="이마트 할인",
-        )
+        ))
 
     def _extract_price_from_element(self, card, selectors: str) -> Optional[int]:
         """CSS 셀렉터로 가격 요소를 찾아 정수 변환."""

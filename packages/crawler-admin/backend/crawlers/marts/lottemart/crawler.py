@@ -604,7 +604,9 @@ class LottemartCrawler(CrawlerContract):
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
         for _d in items_as_dict:
             evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
-            if evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence):
+            response_metadata = (_d.get("attributes") or {}).get("source_response_metadata")
+            if ((evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence))
+                    or (response_metadata and response_metadata.get("http_receipt_status") == "not_recorded")):
                 _d.pop("crawled_at", None)  # DTO construction clock is not a source receipt.
             _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
@@ -720,7 +722,9 @@ class LottemartCrawler(CrawlerContract):
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
         for _d in items_as_dict:
             evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
-            if evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence):
+            response_metadata = (_d.get("attributes") or {}).get("source_response_metadata")
+            if ((evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence))
+                    or (response_metadata and response_metadata.get("http_receipt_status") == "not_recorded")):
                 _d.pop("crawled_at", None)  # DTO construction clock is not a source receipt.
             _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
@@ -866,8 +870,12 @@ class LottemartCrawler(CrawlerContract):
                             max_retries=1,
                             allow_redirects=True,
                         )
+                        received_at = datetime.now(timezone.utc)
+                        response_body = response.content
+                        receipt = dict(response_url=getattr(response, 'url', None),
+                            response_body_sha256=hashlib.sha256(response_body).hexdigest(), received_at=received_at)
                         last_status_code = response.status_code
-                        last_bytes = len(response.content)
+                        last_bytes = len(response_body)
 
                         if response.status_code != 200:
                             waf_action = str((getattr(response, 'headers', None) or {}).get('x-amzn-waf-action', '')).lower()
@@ -901,15 +909,15 @@ class LottemartCrawler(CrawlerContract):
                             break
 
                         if request_type == "product_pages":
-                            page_items, next_page_token, raw_candidates = self._extract_product_page_api_items(response.text)
+                            page_items, next_page_token, raw_candidates = self._extract_product_page_api_items(response.text, **receipt)
                             source_raw_count += raw_candidates
                             if not page_items:
                                 source_raw_count += self.count_raw_candidates(response.text)
-                                page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+                                page_items = self._extract_from_initial_state(response.text, **receipt) or await self.parse(response.text, **receipt)
                                 next_page_token = None
                         else:
                             source_raw_count += self.count_raw_candidates(response.text)
-                            page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+                            page_items = self._extract_from_initial_state(response.text, **receipt) or await self.parse(response.text, **receipt)
                             next_page_token = None
                             if request_type == "html_category":
                                 self._clear_waf_blocked_category(url)
@@ -1000,6 +1008,11 @@ class LottemartCrawler(CrawlerContract):
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
             for _d in items_as_dict:
+                evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
+                response_metadata = (_d.get("attributes") or {}).get("source_response_metadata")
+                if ((evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence))
+                        or (response_metadata and response_metadata.get("http_receipt_status") == "not_recorded")):
+                    _d.pop("crawled_at", None)
                 _d["source"] = _d.get("source") or "lottemart"
             quality_details = summarize_discount_run(
                 items_as_dict,
@@ -1107,22 +1120,42 @@ class LottemartCrawler(CrawlerContract):
                 return ("id_or_url", text)
         return ("name_store", f"{item.name}|{item.store}")
 
-    def _extract_product_page_api_items(self, raw_data: str) -> tuple[list[DiscountItem], str | None, int]:
+    def _attach_business_evidence(self, item: DiscountItem | None, product: dict, pointer: str, *,
+                                  response_url: str | None = None, response_body_sha256: str | None = None,
+                                  received_at: datetime | None = None) -> DiscountItem | None:
+        if item is not None:
+            evidence = commercial_product_evidence(product, pointer, response_url=response_url,
+                response_body_sha256=response_body_sha256, received_at=received_at)
+            evidence['native_context'] = self._extract_lottemart_ean13(product)[0]
+            item.attributes['submission_business_evidence'] = [evidence]
+            if evidence['http_receipt_status'] == 'supplied_response_metadata':
+                item.crawled_at = datetime.fromisoformat(evidence['source_response_received_at'])
+        return item
+
+    def _extract_product_page_api_items(self, raw_data: str, *, response_url: str | None = None,
+                                       response_body_sha256: str | None = None,
+                                       received_at: datetime | None = None) -> tuple[list[DiscountItem], str | None, int]:
         try:
             payload = json.loads(raw_data)
         except json.JSONDecodeError:
             return [], None, 0
         if not isinstance(payload, dict):
             return [], None, 0
-        products: list[dict] = []
-        for group in payload.get("productGroups") or []:
+        products: list[tuple[dict, str]] = []
+        for group_index, group in enumerate(payload.get("productGroups") or []):
             if not isinstance(group, dict):
                 continue
             for key in ("decoratedProducts", "products"):
                 rows = group.get(key)
                 if isinstance(rows, list):
-                    products.extend(row for row in rows if isinstance(row, dict))
-        items = [item for product in products if (item := self._api_product_to_discount_item(product))]
+                    products.extend((row, f'json/productGroups/{group_index}/{key}/{index}')
+                        for index, row in enumerate(rows) if isinstance(row, dict))
+        items = []
+        for product, pointer in products:
+            item = self._attach_business_evidence(self._api_product_to_discount_item(product), product, pointer,
+                response_url=response_url, response_body_sha256=response_body_sha256, received_at=received_at)
+            if item:
+                items.append(item)
         metadata = payload.get("metadata") if isinstance(payload.get("metadata"), dict) else {}
         next_page_token = metadata.get("nextPageToken") or payload.get("nextPageToken")
         return items, str(next_page_token) if next_page_token else None, len(products)
@@ -1572,7 +1605,9 @@ class LottemartCrawler(CrawlerContract):
         quality_details["operator_diagnostics"] = diagnostics
         quality_summary["diagnostic_count"] = len(diagnostics)
 
-    def _extract_from_initial_state(self, html: str) -> list[DiscountItem]:
+    def _extract_from_initial_state(self, html: str, *, response_url: str | None = None,
+                                    response_body_sha256: str | None = None,
+                                    received_at: datetime | None = None) -> list[DiscountItem]:
         """window.__INITIAL_STATE__ Redux 상태에서 productEntities를 추출한다.
 
         lottemartzetta.com은 서버사이드에서 Redux 상태를 window.__INITIAL_STATE__에 직렬화한다.
@@ -1590,7 +1625,9 @@ class LottemartCrawler(CrawlerContract):
             logger.warning("[롯데마트] __INITIAL_STATE__ JSON 파싱 실패")
             return items
 
-        product_entities = self._find_product_entities(data)
+        pointers = {}
+        product_entities = self._find_product_entities(data, _product_pointers=pointers,
+            _pointer='window.__INITIAL_STATE__')
 
         if not product_entities:
             del data  # Free large JSON from memory
@@ -1600,6 +1637,8 @@ class LottemartCrawler(CrawlerContract):
 
         for product_id, product in product_entities.items():
             item = self._entity_to_discount_item(product, product_id)
+            item = self._attach_business_evidence(item, product, pointers[id(product)],
+                response_url=response_url, response_body_sha256=response_body_sha256, received_at=received_at)
             if item:
                 items.append(item)
 
@@ -1662,6 +1701,8 @@ class LottemartCrawler(CrawlerContract):
         _seen: set[int] | None = None,
         _depth: int = 0,
         _max_depth: int = 40,
+        _product_pointers: dict | None = None,
+        _pointer: str = 'json',
     ) -> dict[str, Any]:
         """Find productEntities even when an operator-saved export wraps app state."""
         if not isinstance(data, dict):
@@ -1676,12 +1717,19 @@ class LottemartCrawler(CrawlerContract):
         direct_data = data.get("data") if isinstance(data.get("data"), dict) else {}
         products = direct_data.get("products") if isinstance(direct_data.get("products"), dict) else {}
         if isinstance(products.get("productEntities"), dict):
+            if _product_pointers is not None:
+                _product_pointers.update({id(row): f'{_pointer}/data/products/productEntities/{key}'
+                    for key, row in products['productEntities'].items()})
             return products["productEntities"]
         if isinstance(data.get("productEntities"), dict):
+            if _product_pointers is not None:
+                _product_pointers.update({id(row): f'{_pointer}/productEntities/{key}'
+                    for key, row in data['productEntities'].items()})
             return data["productEntities"]
-        for value in data.values():
+        for key, value in data.items():
             if isinstance(value, dict):
-                found = self._find_product_entities(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+                found = self._find_product_entities(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth,
+                    _product_pointers=_product_pointers, _pointer=f'{_pointer}/{key}')
                 if found:
                     return found
         return {}
@@ -1957,25 +2005,30 @@ class LottemartCrawler(CrawlerContract):
             promo_type="buy_x_get_y" if promo_label else None,
         )
 
-    async def parse(self, raw_data: str) -> list[DiscountItem]:
+    async def parse(self, raw_data: str, *, response_url: str | None = None,
+                    response_body_sha256: str | None = None, received_at: datetime | None = None) -> list[DiscountItem]:
         """HTML/JSON 응답에서 할인 상품을 파싱한다."""
         items: list[DiscountItem] = []
 
         # 1) __INITIAL_STATE__ 추출 (lottemartzetta.com)
-        state_items = self._extract_from_initial_state(raw_data)
+        receipt = dict(response_url=response_url, response_body_sha256=response_body_sha256, received_at=received_at)
+        state_items = self._extract_from_initial_state(raw_data, **receipt)
         if state_items:
             return state_items
 
         # 2) product-page API JSON 추출 시도
-        api_items, _next_page_token, _raw_count = self._extract_product_page_api_items(raw_data)
+        api_items, _next_page_token, _raw_count = self._extract_product_page_api_items(raw_data, **receipt)
         if api_items:
             return api_items
 
         # 3) JSON 데이터 블록 추출 시도
-        json_items = self._extract_json_items(raw_data)
+        original_nodes = {}
+        json_items = self._extract_json_items(raw_data, original_nodes=original_nodes)
         if json_items:
-            for product in json_items:
+            for index, product in enumerate(json_items):
                 item = self._json_to_discount_item(product)
+                original, pointer = original_nodes.get(id(product), (product, f'embedded_json_items/{index}'))
+                item = self._attach_business_evidence(item, original, pointer, **receipt)
                 if item:
                     items.append(item)
             return items
@@ -1985,27 +2038,51 @@ class LottemartCrawler(CrawlerContract):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
             items = self._parse_html(soup)
+            # HTML cards do not supply a full original commercial JSON node.
+            # Preserve an actual response time without fabricating such a node.
+            response_hash = (response_body_sha256 if isinstance(response_body_sha256, str)
+                and re.fullmatch(r'[0-9a-f]{64}', response_body_sha256) else None)
+            stamp = (received_at.astimezone(timezone.utc).isoformat()
+                if received_at is not None and received_at.tzinfo is not None else None)
+            complete_receipt = bool(response_url and response_hash and stamp)
+            for item in items:
+                item.attributes['source_response_metadata'] = {
+                    'version': 1, 'source_projection': 'html_card_projection_only',
+                    'native_business_node_status': 'unavailable',
+                    'http_receipt_status': 'supplied_response_metadata' if complete_receipt else 'not_recorded',
+                    'source_response_url': response_url, 'source_response_body_sha256': response_hash,
+                    'source_response_received_at': stamp if complete_receipt else None,
+                }
+                if complete_receipt:
+                    item.crawled_at = datetime.fromisoformat(stamp)
             del soup  # Free parsed HTML tree from memory
         except Exception as e:
             logger.warning(f"[롯데마트] HTML 파싱 실패: {e}")
 
         return items
 
-    def _extract_json_items(self, raw_data: str) -> list[dict]:
+    def _extract_json_items(self, raw_data: str, *, original_nodes: dict | None = None) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출."""
         try:
             payload = json.loads(raw_data)
             if isinstance(payload, list):
+                if original_nodes is not None:
+                    original_nodes.update({id(row): (row, f'json/{index}') for index, row in enumerate(payload)
+                        if isinstance(row, dict)})
                 return [item for item in payload if isinstance(item, dict)]
             if isinstance(payload, dict):
-                product_entities = self._find_product_entities(payload)
+                pointers = {}
+                product_entities = self._find_product_entities(payload, _product_pointers=pointers)
                 if product_entities:
-                    return [
-                        {"_source_product_id": product_id, **product}
-                        for product_id, product in product_entities.items()
-                        if isinstance(product, dict)
-                    ]
-                extracted = self._extract_product_lists(payload)
+                    rows = []
+                    for product_id, product in product_entities.items():
+                        if isinstance(product, dict):
+                            row = {"_source_product_id": product_id, **product}
+                            rows.append(row)
+                            if original_nodes is not None:
+                                original_nodes[id(row)] = (product, pointers[id(product)])
+                    return rows
+                extracted = self._extract_product_lists(payload, original_nodes=original_nodes)
                 if extracted:
                     return extracted
         except json.JSONDecodeError:
@@ -2020,7 +2097,11 @@ class LottemartCrawler(CrawlerContract):
             match = re.search(pattern, raw_data, re.DOTALL)
             if match:
                 try:
-                    return json.loads(match.group(1))
+                    rows = json.loads(match.group(1))
+                    if original_nodes is not None and isinstance(rows, list):
+                        original_nodes.update({id(row): (row, f'embedded_json_block/{match.start(1)}/{index}')
+                            for index, row in enumerate(rows) if isinstance(row, dict)})
+                    return rows
                 except json.JSONDecodeError:
                     continue
         return []
@@ -2032,9 +2113,14 @@ class LottemartCrawler(CrawlerContract):
         _seen: set[int] | None = None,
         _depth: int = 0,
         _max_depth: int = 40,
+        original_nodes: dict | None = None,
+        _pointer: str = 'json',
     ) -> list[dict]:
         """Extract product rows from common saved-source JSON envelopes."""
         if isinstance(payload, list):
+            if original_nodes is not None:
+                original_nodes.update({id(row): (row, f'{_pointer}/{index}') for index, row in enumerate(payload)
+                    if isinstance(row, dict)})
             return [item for item in payload if isinstance(item, dict)]
         if not isinstance(payload, dict):
             return []
@@ -2048,13 +2134,18 @@ class LottemartCrawler(CrawlerContract):
         for key in ("items", "products", "records", "raw_items", "productList", "goodsList", "itemList"):
             value = payload.get(key)
             if isinstance(value, list):
+                if original_nodes is not None:
+                    original_nodes.update({id(row): (row, f'{_pointer}/{key}/{index}')
+                        for index, row in enumerate(value) if isinstance(row, dict)})
                 return [item for item in value if isinstance(item, dict)]
             if isinstance(value, dict):
-                nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+                nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth,
+                    original_nodes=original_nodes, _pointer=f'{_pointer}/{key}')
                 if nested:
                     return nested
-        for value in payload.values():
-            nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+        for key, value in payload.items():
+            nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth,
+                original_nodes=original_nodes, _pointer=f'{_pointer}/{key}')
             if nested:
                 return nested
         return []

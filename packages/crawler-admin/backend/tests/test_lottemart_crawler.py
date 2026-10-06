@@ -594,6 +594,144 @@ async def test_exact_product_http_provenance_uses_receipt_before_parsing(crawler
     assert item['promo_type'] is None and item['price_per_100g'] is None
 
 
+def _normal_provenance_source(shape, amount=3590):
+    product = deepcopy(_API_PRODUCT_SAMPLE)
+    product['categoryPath'] = ['정육ㆍ계란', '닭고기']
+    product.update(cartLimitQty=5, orderMinQty=2, membershipRequired=False,
+        basketMinimumSpend=70000, productReferences=[{'retailerProductId': 'OS8809251334535'}],
+        quantityInBasket=9, ratingSummary={'rating': 5}, session={'cookie': 'PRIVATE'})
+    if shape == 'initial':
+        product['price'] = {'current': {'amount': str(amount), 'currency': 'KRW'}}
+        product['size'] = {'value': '110g'}
+        product['offer'] = {'description': product['promotions'][0]['description']}
+        body = '<script>window.__INITIAL_STATE__ = ' + json.dumps(
+            {'data': {'products': {'productEntities': {'actual-source-key': product}}}}) + ';</script>'
+        pointer = 'window.__INITIAL_STATE__/data/products/productEntities/actual-source-key'
+    elif shape == 'api':
+        product['price']['amount'] = str(amount)
+        body = json.dumps({'productGroups': [{'decoratedProducts': [product]}]})
+        pointer = 'json/productGroups/0/decoratedProducts/0'
+    else:
+        product['salePrice'] = str(amount)
+        body = json.dumps({'goods': {'items': [product]}})
+        pointer = 'json/goods/items/0'
+    return product, body, pointer
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('shape,amount', [('initial', 3590), ('api', 3590), ('api', 4100.5), ('generic', 3590)])
+async def test_normal_request_retains_original_business_node_and_http_receipt(crawler, monkeypatch, shape, amount):
+    import requests
+    import crawlers.marts.lottemart.crawler as module
+
+    product, body, pointer = _normal_provenance_source(shape, amount)
+    converter = {'initial': crawler._entity_to_discount_item,
+        'api': crawler._api_product_to_discount_item, 'generic': crawler._json_to_discount_item}[shape]
+    baseline = converter(product).model_dump(mode='json')
+    received = datetime(2026, 10, 6, 15, 24, 36, 654321, tzinfo=timezone.utc)
+    events = []
+    response_url = 'https://lottemartzetta.com/actual-public-response'
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            if tz is not None:
+                events.append('receipt')
+                return received
+            return datetime(2026, 10, 6, 15, 24, 37)
+    class Response:
+        status_code, headers, content, url = 200, {}, body.encode(), response_url
+        @property
+        def text(self):
+            events.append('body')
+            return body
+    calls = []
+    def get(_session, url, **kwargs):
+        calls.append(url)
+        return Response()
+    crawler._source_requests_override = [{'query': 'source fixture', 'page': 1,
+        'request_type': 'product_pages' if shape == 'api' else 'html_search',
+        'url': 'https://lottemartzetta.com/requested-public-page'}]
+    monkeypatch.setattr(module, 'datetime', Clock)
+    monkeypatch.setattr(requests.Session, 'get', get)
+    result = await crawler.crawl()
+    assert len(calls) == 1 and result.status.name == 'SUCCESS' and result.items_count == 1
+    assert events[0] == 'receipt' and events.index('receipt') < events.index('body')
+    item = result.items[0]
+    evidence, = item['attributes']['submission_business_evidence']
+    node = evidence['raw_product_node']
+    for key in ('price', 'cartLimitQty', 'orderMinQty', 'membershipRequired', 'basketMinimumSpend', 'productReferences'):
+        assert node[key] == product[key]
+    for key in ('quantityInBasket', 'ratingSummary', 'session'):
+        assert key not in node
+        assert any(entry['path'] == '/' + key for entry in evidence['removed_fields'])
+    assert evidence['native_context'] == '8809251334528' and evidence['source_pointer'] == pointer
+    assert evidence['source_response_url'] == response_url and response_url != calls[0]
+    assert evidence['source_response_body_sha256'] == hashlib.sha256(body.encode()).hexdigest()
+    assert evidence['http_receipt_status'] == 'supplied_response_metadata'
+    assert datetime.fromisoformat(item['crawled_at'].replace('Z', '+00:00')) == received
+    assert datetime.fromisoformat(evidence['source_response_received_at']) == received
+    for key in ('name', 'sale_price', 'original_price', 'package_quantity', 'package_unit',
+                'detail_url', 'event_name', 'promo_type', 'price_per_100g'):
+        assert item[key] == baseline[key]
+    assert item['attributes']['source_record_key'] == baseline['attributes']['source_record_key']
+    assert 'membership_required' not in item['attributes'] and 'minimum_quantity' not in item['attributes']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('shape', ['initial', 'api', 'generic'])
+async def test_normal_saved_source_provenance_has_no_transport_observation_time(crawler, shape):
+    product, body, pointer = _normal_provenance_source(shape)
+    result = await crawler._crawl_saved_source_input(body)
+    assert result.items_count == 1
+    item = result.items[0]
+    evidence, = item['attributes']['submission_business_evidence']
+    assert evidence['raw_product_node']['price'] == product['price']
+    assert evidence['source_pointer'] == pointer
+    assert evidence['http_receipt_status'] == 'not_recorded'
+    assert evidence['source_response_received_at'] is None
+    assert evidence['source_response_url'] is None and evidence['source_response_body_sha256'] is None
+    assert 'crawled_at' not in item
+    assert item['sale_price'] == 3590 and item['package_quantity'] == 110
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('transport', ['saved', 'normal_http'])
+async def test_normal_html_card_projection_exports_only_known_response_time(crawler, monkeypatch, transport):
+    import requests
+    source = '''<div class="product-item" data-category="정육ㆍ계란">
+      <a href="/products/OS8809251334528/details"><h3>오늘좋은 닭가슴살 (110G)</h3></a>
+      <span class="sale_price">3590원</span></div>'''
+    response_url = 'https://lottemartzetta.com/actual-public-html'
+    class Response:
+        status_code, headers, text, content, url = 200, {}, source, source.encode(), response_url
+    if transport == 'normal_http':
+        crawler._source_requests_override = [{'query': 'public HTML fixture', 'page': 1,
+            'request_type': 'html_search', 'url': 'https://lottemartzetta.com/requested-public-html'}]
+        monkeypatch.setattr(requests.Session, 'get', lambda *_args, **_kwargs: Response())
+        result = await crawler.crawl()
+    else:
+        result = await crawler._crawl_saved_source_input(source)
+    assert result.items_count == 1
+    item, = result.items
+    metadata = item['attributes']['source_response_metadata']
+    assert metadata['version'] == 1 and metadata['source_projection'] == 'html_card_projection_only'
+    assert metadata['native_business_node_status'] == 'unavailable'
+    assert 'submission_business_evidence' not in item['attributes'] and 'raw_product_node' not in metadata
+    assert item['sale_price'] == 3590 and item['package_quantity'] == 110
+    assert item['attributes']['source_record_key'] == '8809251334528'
+    if transport == 'saved':
+        assert metadata['http_receipt_status'] == 'not_recorded'
+        assert metadata['source_response_url'] is None and metadata['source_response_body_sha256'] is None
+        assert metadata['source_response_received_at'] is None and 'crawled_at' not in item
+    else:
+        assert metadata['http_receipt_status'] == 'supplied_response_metadata'
+        assert metadata['source_response_url'] == response_url
+        assert metadata['source_response_body_sha256'] == hashlib.sha256(source.encode()).hexdigest()
+        stamp = datetime.fromisoformat(metadata['source_response_received_at'])
+        assert stamp.tzinfo is not None
+        assert datetime.fromisoformat(item['crawled_at'].replace('Z', '+00:00')) == stamp
+
+
 @pytest.mark.parametrize("quote", [True, False, {"amount": 3590}, "행사 2개 3590원", "2026-10-04", "3,59원", "NaN", float("inf")])
 @pytest.mark.parametrize("shape", ["entity", "api", "generic"])
 def test_source_money_rejects_malformed_quotes_before_conversion(crawler, quote, shape):

@@ -133,6 +133,21 @@ def test_recollected_offer_uses_aware_source_or_explicit_receipt_time(matched_of
         offer = session.get(NormalizedOfferEvent, receipt['public_offer_event_id'])
         assert offer.crawled_at == datetime(2026, 10, 3, 8, 1)
         assert offer.raw_evidence['observations'][0]['timestamp_source'] == 'explicit_receipt_time'
+        evidence = {'submission_business_evidence': [{'http_receipt_status': 'not_recorded',
+            'source_response_received_at': None, 'raw_product_node': {'code': '111'}}]}
+        before = session.execute(text('SELECT COUNT(*) FROM normalized_offer_events')).scalar_one()
+        html_evidence = {'source_response_metadata': {'http_receipt_status': 'not_recorded',
+            'source_projection': 'html_card_projection_only', 'source_response_received_at': None}}
+        for attributes in (evidence, html_evidence):
+            for unknown in (None, '2026-10-03T17:00:00'):
+                with pytest.raises(ValueError, match='source observation timestamp not recorded'):
+                    publish_matched_offer_observations(session, [{**row, 'attributes': attributes,
+                        'crawled_at': unknown}], observed_at=datetime(2026, 10, 3, 8, 2))
+        assert session.execute(text('SELECT COUNT(*) FROM normalized_offer_events')).scalar_one() == before
+        # Saved source evidence with an independently known aware observation
+        # retains that time; missing HTTP metadata alone is not an identity hold.
+        historical = publish_matched_offer_observations(session, [{**row, 'attributes': evidence}])[0]
+        assert session.get(NormalizedOfferEvent, historical['public_offer_event_id']).crawled_at == datetime(2026, 10, 3, 8)
 
 
 def test_recollected_offer_accepts_only_server_canonical_brand_enrichment(matched_offer_source):

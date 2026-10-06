@@ -205,7 +205,7 @@ async def test_validate_rejects_explicit_external_seller(crawler):
 
 
 @pytest.mark.asyncio
-async def test_crawl_stops_after_consecutive_403_responses():
+async def test_crawl_stops_after_first_403_response():
     anti_detect = MagicMock()
     anti_detect.get_random_delay.return_value = 0
     crawler = EmartCrawler(anti_detect=anti_detect)
@@ -227,9 +227,9 @@ async def test_crawl_stops_after_consecutive_403_responses():
     with patch("asyncio.sleep", new_callable=AsyncMock):
         result = await crawler.crawl()
 
-    assert crawler._retry_request.call_count == crawler.MAX_CONSECUTIVE_FORBIDDEN
+    assert crawler._retry_request.call_count == 1
     assert result.status.value == "failed"
-    assert "403이 3회 연속" in (result.error_msg or "")
+    assert "HTTP 403" in (result.error_msg or "")
 
 
 @pytest.mark.live
@@ -729,7 +729,7 @@ async def test_parse_modern_category_cards_and_reject_external_marketplace(crawl
     assert crawler._extract_category_path(html, "fallback") == "과일 > 냉동/간편과일 > 간편과일"
 
 
-@pytest.mark.parametrize("blocked_status", [403, 429])
+@pytest.mark.parametrize("blocked_status", [401, 403, 429])
 @pytest.mark.asyncio
 async def test_category_browser_stops_entire_run_on_first_block_response(
     crawler,
@@ -994,3 +994,164 @@ async def test_external_category_sellers_are_reported_as_out_of_scope_not_invali
     assert result.items_count == 1
     assert result.quality_details["item_counts"]["invalid_or_dropped"] == 0
     assert result.quality_details["filters"]["out_of_scope_external_seller_count"] == 1
+
+
+@pytest.mark.asyncio
+async def test_266_actual_receipt_and_original_business_survive_dto_export(crawler):
+    from datetime import datetime, timezone
+    import hashlib
+    from api.routes.raw_batch_export import _record_to_export_row
+
+    product = {"itemId": "266-source", "itemName": "원문 음료 500ml", "finalPrice": "2190",
+               "siteNo": "7009", "priceInfo": {"primaryPrice": "2190", "minimumOrder": 2},
+               "purchaseConditions": {"coupon": {"threshold": 70000, "deduction": 4000}},
+               "customerToken": "synthetic-private-omitted"}
+    body = '<script id="__NEXT_DATA__">' + json.dumps({"props": {"pageProps": {
+        "dehydratedState": {"queries": [{"state": {"data": {"itemList": [product]}}}]}}}}) + '</script>'
+    stamp = datetime(2026, 10, 6, 7, 0, tzinfo=timezone.utc)
+    digest = hashlib.sha256(body.encode()).hexdigest()
+    [item] = await crawler.parse(body, response_url="https://emart.ssg.com/source",
+                                response_body_sha256=digest, received_at=stamp)
+    evidence = item.attributes["submission_business_evidence"][0]
+    assert evidence["raw_product_node"]["purchaseConditions"] == product["purchaseConditions"]
+    assert "customerToken" not in evidence["raw_product_node"]
+    assert evidence["removed_fields"]
+    assert evidence["source_pointer"].endswith("/queries/0/state/data/itemList/0")
+    assert item.crawled_at == stamp
+    dto = item.to_product_price()
+    assert dto.crawled_at == stamp and dto.attributes == item.attributes
+    record = crawler._emit_item(item)
+    row = _record_to_export_row({"raw_payload": record, "crawled_at": record["crawled_at"]}, None, None)
+    assert row["raw_payload"]["attributes"]["submission_business_evidence"] == [evidence]
+    assert row["crawled_at"] == stamp.isoformat().replace("+00:00", "Z")
+    [saved] = await crawler.parse(body)
+    assert "crawled_at" not in crawler._emit_item(saved)
+    assert saved.attributes["submission_business_evidence"][0]["http_receipt_status"] == "not_recorded"
+
+
+@pytest.mark.asyncio
+async def test_266_html_projection_is_partial_and_browser_transport_is_real(crawler):
+    import hashlib
+    body = b"actual transport body, distinct from rendered DOM"
+    html = '<li class="mnemitem_grid_item"><span class="title">음료 500ml</span><span class="sale_price">2190</span><a href="/item/itemView.ssg?itemId=266-html">상품</a></li>'
+    page = MagicMock(goto=AsyncMock(return_value=MagicMock(status=200, url="https://emart.ssg.com/category",
+                        body=AsyncMock(return_value=body))), content=AsyncMock(return_value=html),
+                     wait_for_selector=AsyncMock(), close=AsyncMock())
+    context = MagicMock(new_page=AsyncMock(return_value=page))
+    crawler._wait_for_category_request_slot = AsyncMock(return_value=0)
+    crawler._advance_category_cursor = MagicMock()
+    crawler._category_challenge_marker = AsyncMock(return_value=None)
+    items, diagnostics = await crawler._crawl_category_requests_in_context(
+        context, crawler._build_category_source_requests()[:1], _category_diagnostics())
+    [item] = items
+    marker = item.attributes["source_response_metadata"]
+    assert marker["source_projection"] == "html_card_projection_only"
+    assert marker["native_business_node_status"] == "unavailable"
+    assert marker["source_response_body_sha256"] == hashlib.sha256(body).hexdigest()
+    assert "submission_business_evidence" not in item.attributes
+    assert item.crawled_at.tzinfo is not None and "crawled_at" in crawler._emit_item(item)
+    [saved] = await crawler.parse(html)
+    assert "crawled_at" not in crawler._emit_item(saved)
+    assert saved.attributes["source_response_metadata"]["http_receipt_status"] == "not_recorded"
+
+
+@pytest.mark.parametrize("status", [401, 403, 429])
+@pytest.mark.asyncio
+async def test_266_promotional_denial_retains_prior_rows_without_browser(crawler, html, status):
+    crawler._warmup_session = MagicMock()
+    crawler._anti_detect = MagicMock()
+    crawler._anti_detect.get_random_delay.return_value = 0
+    crawler._build_source_requests = MagicMock(return_value=[
+        {"query": "first", "page": 1, "url": "https://emart.ssg.com/first", "category_hint": ""},
+        {"query": "denied", "page": 1, "url": "https://emart.ssg.com/denied", "category_hint": ""},
+        {"query": "must-not-request", "page": 1, "url": "https://emart.ssg.com/later", "category_hint": ""}])
+    crawler._retry_request = MagicMock(side_effect=[
+        MagicMock(status_code=200, text=html, content=html.encode(), url="https://emart.ssg.com/first"),
+        MagicMock(status_code=status, text="denied")])
+    crawler._fetch_category_pages_via_browser = AsyncMock()
+    result = await crawler.crawl()
+    assert result.status.name == "PARTIAL" and result.items_count == 5
+    assert crawler._retry_request.call_count == 2
+    crawler._fetch_category_pages_via_browser.assert_not_awaited()
+    assert f"HTTP {status}" in result.error_msg
+    assert all("crawled_at" in row for row in result.items)
+
+
+@pytest.mark.parametrize("status", [401, 403, 429])
+def test_266_explicit_denial_never_retries_or_warms_again(crawler, status):
+    from crawlers.marts.emart.crawler import _SourceAccessStopped
+    response = MagicMock(status_code=status, text="denied")
+    session = MagicMock(get=MagicMock(return_value=response))
+    with patch("time.sleep") as sleep:
+        assert crawler._retry_request("https://emart.ssg.com/source", session=session) is response
+        session.get.assert_called_once()
+        sleep.assert_not_called()
+        # Plain object prevents the historical test-Mock warmup bypass.
+        crawler._anti_detect = object()
+        crawler._get_session = MagicMock(return_value=session)
+        with pytest.raises(_SourceAccessStopped, match=f"HTTP {status}"):
+            crawler._warmup_session()
+        assert not crawler._session_warmed
+        sleep.assert_not_called()
+
+
+def test_266_visible_challenge_not_sdk_string(crawler):
+    assert crawler._html_challenge_marker('<script>captchaSDK(); access denied</script><body>상품</body>') is None
+    assert crawler._html_challenge_marker('<body>Verify you are human</body>')
+
+
+@pytest.mark.asyncio
+async def test_266_partial_card_json_and_naive_receipt_remain_unconfirmed(crawler):
+    from datetime import datetime
+    from bs4 import BeautifulSoup
+    import hashlib
+    html = CATEGORY_FIXTURE_HTML.read_text()
+    [first, *others] = await crawler.parse(html, response_url="https://emart.ssg.com/category",
+        response_body_sha256=hashlib.sha256(html.encode()).hexdigest(), received_at=datetime(2026, 10, 6))
+    original = json.loads(BeautifulSoup(html, "html.parser").select_one(".disp_cart_data").get_text())
+    evidence = first.attributes["submission_business_evidence"][0]
+    assert evidence["raw_product_node"] == original
+    assert evidence["source_node_scope"] == "available_card_declaration_partial"
+    assert evidence["purchase_declaration_completeness"] == "unconfirmed"
+    assert evidence["http_receipt_status"] == "not_recorded"
+    assert evidence["source_response_received_at"] is None
+    assert "crawled_at" not in crawler._emit_item(first)
+
+
+@pytest.mark.asyncio
+async def test_266_warmup_denial_ends_whole_empty_source(crawler):
+    crawler._anti_detect = object()
+    crawler._get_session = MagicMock(return_value=MagicMock(get=MagicMock(
+        return_value=MagicMock(status_code=429, text="denied"))))
+    crawler._build_source_requests = MagicMock()
+    crawler._retry_request = MagicMock()
+    crawler._fetch_category_pages_via_browser = AsyncMock()
+    with patch("time.sleep") as sleep:
+        result = await crawler.crawl()
+    assert result.status.name == "FAILED" and result.items_count == 0
+    assert any(error.status_code == 429 for error in result.errors)
+    assert result.quality_details["source_stopped"] is True
+    assert result.quality_details["source_stop_status"] == 429
+    assert result.quality_details["source_stop_reason"] == "HTTP 429 at session warmup"
+    crawler._build_source_requests.assert_not_called()
+    crawler._retry_request.assert_not_called()
+    crawler._fetch_category_pages_via_browser.assert_not_awaited()
+    sleep.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_266_visible_200_challenge_exports_pipeline_stop_marker(crawler):
+    crawler._warmup_session = MagicMock()
+    crawler._anti_detect = MagicMock()
+    crawler._anti_detect.get_random_delay.return_value = 0
+    crawler._retry_request = MagicMock(return_value=MagicMock(
+        status_code=200, text='<html><body>Verify you are human</body></html>'))
+    crawler._fetch_category_pages_via_browser = AsyncMock()
+    result = await crawler.crawl()
+    assert result.status.name == "FAILED" and result.items_count == 0
+    assert result.quality_details["source_stopped"] is True
+    assert result.quality_details["source_stop_status"] is None
+    assert result.quality_details["source_stop_reason"] == "visible source access challenge"
+    assert result.quality_details["fetch"]["blocked"] is True
+    crawler._retry_request.assert_called_once()
+    crawler._fetch_category_pages_via_browser.assert_not_awaited()

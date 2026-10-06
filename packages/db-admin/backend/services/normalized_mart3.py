@@ -111,6 +111,14 @@ def publish_matched_offer_observations(
                             else datetime.fromisoformat(str(source_stamp).replace('Z', '+00:00'))) if source_stamp else None
         except ValueError:
             raise ValueError("matched offer observed timestamp malformed")
+        source_attributes = row.get('attributes') or {}
+        source_provenance = (source_attributes.get('submission_business_evidence')
+                             or source_attributes.get('source_response_metadata'))
+        if source_provenance and not (source_stamp and source_stamp.tzinfo):
+            # New native-provenance producers distinguish transport observation
+            # from saved parsing. Intake/review time cannot create an observation
+            # timestamp when that producer did not supply one.
+            raise ValueError("matched offer source observation timestamp not recorded")
         # An aware native timestamp is exact. A naive crawler clock requires
         # the server's explicit receipt time; never guess its time zone.
         stamp = source_stamp if source_stamp and source_stamp.tzinfo else observed_at
