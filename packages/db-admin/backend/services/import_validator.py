@@ -27,6 +27,7 @@ class ValidationResult:
     valid_rows: list[dict] = field(default_factory=list)
     errors: list[tuple[int, str]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    normalized_targets: list[dict] = field(default_factory=list)
 
     @property
     def is_valid(self) -> bool:
@@ -83,6 +84,7 @@ def _validate_single_row(
     row_idx: int,
     valid_category_ids: set[str],
     valid_keyword_ids: set[int],
+    normalized_target: bool = False,
 ) -> list[str]:
     errs: list[str] = []
 
@@ -96,7 +98,7 @@ def _validate_single_row(
             "필수 필드 누락: match_key 또는 (name_core+pack_qty+pack_unit) 중 하나 필요"
         )
 
-    if row.get("category_id") is None or str(row.get("category_id", "")).strip() == "":
+    if not normalized_target and (row.get("category_id") is None or str(row.get("category_id", "")).strip() == ""):
         errs.append("필수 필드 누락: category_id")
 
     if row.get("confidence") is None:
@@ -142,6 +144,69 @@ def _validate_single_row(
     return errs
 
 
+def _normalized_target(row: dict, session: Session) -> tuple[dict | None, list[str]]:
+    """Review an existing normalized mapping without inventing a legacy FK.
+
+    New normalized targets/keys require the catalog-bundle review, whose source
+    and specification guards establish that mapping. This matching-only import
+    may change review metadata, but cannot retarget an existing source identity.
+    """
+    from storage.models import (
+        MatchingEntry, NormalizedCanonicalProduct, NormalizedProductVariant,
+        UnifiedCategory,
+    )
+
+    existing = session.query(MatchingEntry).filter(MatchingEntry.match_key == row.get("match_key")).first()
+    product_id, variant_id = row.get("public_product_id"), row.get("public_variant_id")
+    if existing is not None and existing.public_product_id:
+        if (("public_product_id" in row and not product_id)
+                or ("public_variant_id" in row and not variant_id)):
+            return None, ["normalized target: 기존 상품·규격 참조를 비울 수 없습니다"]
+        product_id = product_id or existing.public_product_id
+        variant_id = variant_id or existing.public_variant_id
+    if not product_id and not variant_id:
+        return None, []
+    product = session.get(NormalizedCanonicalProduct, product_id) if product_id else None
+    variant = session.get(NormalizedProductVariant, variant_id) if variant_id else None
+    if (product is None or variant is None or not product.is_active or not variant.is_active
+            or variant.public_product_id != product.public_product_id):
+        return None, ["normalized target: 활성 상품·소속 규격 참조가 필요합니다"]
+
+    leaf_id = product.unified_category_id
+    if row.get("unified_category_id") not in (None, "", leaf_id):
+        return None, ["normalized target: 상품의 통합 분류를 이 Import에서 변경할 수 없습니다"]
+    if session.query(UnifiedCategory).filter(UnifiedCategory.parent_id == leaf_id).first():
+        return None, ["normalized target: 통합 분류가 리프가 아닙니다"]
+    path, seen, node_id = [], set(), leaf_id
+    while node_id:
+        node = session.get(UnifiedCategory, node_id)
+        if node is None or node_id in seen or len(path) >= 4:
+            return None, ["normalized target: 통합 분류 조상 참조가 유효하지 않습니다"]
+        seen.add(node_id)
+        path.append({"id": node.id, "name": node.name_ko})
+        node_id = node.parent_id
+    if not path:
+        return None, ["normalized target: 통합 리프 분류가 필요합니다"]
+
+    if (existing is None or existing.public_product_id != product_id
+            or existing.public_variant_id != variant_id
+            or _build_match_key(row) != existing.match_key
+            or row.get("canonical_product_id") not in (None, existing.canonical_product_id)
+            or row.get("category_id") != existing.category_id):
+        return None, ["normalized target: 기존 원문 키·규격 참조가 다릅니다; 신규/변경 매칭은 카탈로그 번들 검토가 필요합니다"]
+    return {
+        "match_key": existing.match_key,
+        "public_product_id": product_id,
+        "public_variant_id": variant_id,
+        "unified_category_id": leaf_id,
+        "category_path": list(reversed(path)),
+        "package_quantity": variant.package_quantity,
+        "package_unit": variant.package_unit,
+        "bundle_count": variant.bundle_count,
+        "display_unit": variant.display_unit,
+    }, []
+
+
 def _deduplicate_by_match_key(rows: list[dict]) -> tuple[list[dict], list[str]]:
     """Deduplicate canonical keys, keeping the last row in the uploaded file."""
     warnings: list[str] = []
@@ -177,8 +242,11 @@ def validate_strict(rows: list[dict], session: Session) -> ValidationResult:
     valid_category_ids, valid_keyword_ids = _preload_valid_ids(session)
 
     for index, row in enumerate(deduped_rows):
-        for message in _validate_single_row(row, index, valid_category_ids, valid_keyword_ids):
+        target, target_errors = _normalized_target(row, session)
+        for message in target_errors + _validate_single_row(row, index, valid_category_ids, valid_keyword_ids, target is not None):
             result.errors.append((index, message))
+        if target is not None:
+            result.normalized_targets.append(target)
 
     if not result.errors:
         result.valid_rows = deduped_rows
@@ -192,10 +260,13 @@ def validate_lenient(rows: list[dict], session: Session) -> ValidationResult:
     valid_category_ids, valid_keyword_ids = _preload_valid_ids(session)
 
     for index, row in enumerate(deduped_rows):
-        errs = _validate_single_row(row, index, valid_category_ids, valid_keyword_ids)
+        target, target_errors = _normalized_target(row, session)
+        errs = target_errors + _validate_single_row(row, index, valid_category_ids, valid_keyword_ids, target is not None)
         if errs:
             for message in errs:
                 result.errors.append((index, message))
         else:
             result.valid_rows.append(row)
+            if target is not None:
+                result.normalized_targets.append(target)
     return result

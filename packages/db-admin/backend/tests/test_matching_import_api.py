@@ -19,7 +19,8 @@ for path in (str(BACKEND_ROOT), str(SHARED_ROOT)):
         sys.path.insert(0, path)
 
 from core.match_key import build_match_key
-from storage.models import Category, Keyword, MatchingEntry
+from storage.models import (Category, Keyword, MatchingEntry, UnifiedCategory,
+                            NormalizedCanonicalProduct, NormalizedProductVariant)
 
 
 MODERATOR_KEY = "test-only-matching-moderator-key"
@@ -122,6 +123,31 @@ def unauthenticated_client(api_app):
     # when an individual request supplies headers={}.
     with TestClient(api_app) as test_client:
         yield test_client
+
+
+def test_normalized_mapping_list_uses_real_refs_bounded_pages_and_literal_search(client, db_fixture):
+    with db_fixture() as session:
+        session.add(UnifiedCategory(id="review", slug="review", name_ko="검토", level=0))
+        session.add(NormalizedCanonicalProduct(public_product_id="prod-review", canonical_name="원문 상품", unified_category_id="review"))
+        session.flush()
+        session.add(NormalizedProductVariant(public_variant_id="var-review", public_product_id="prod-review", variant_name="원문 근사 규격", package_quantity=None, package_unit=None, bundle_count=1, display_unit="350g 내외"))
+        session.flush()
+        session.add_all([
+            MatchingEntry(match_key="source|100%", source="external-ai", confidence=0.9, public_product_id="prod-review", public_variant_id="var-review"),
+            MatchingEntry(match_key="source|other", source="human", confidence=1, public_product_id="prod-review", public_variant_id="var-review"),
+            MatchingEntry(match_key="legacy|only", source="human", confidence=1),
+        ])
+        session.commit()
+    response = client.get("/api/import/classified/mappings", params={"per_page": 1})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 2 and body["total_pages"] == 2 and len(body["items"]) == 1
+    item = body["items"][0]
+    assert item["public_variant_id"] == "var-review" and item["unified_category_id"] == "review"
+    assert item["display_unit"] == "350g 내외" and item["package_quantity"] is None
+    assert client.get("/api/import/classified/mappings", params={"q": "100%"}).json()["total"] == 1
+    assert client.get("/api/import/classified/mappings", params={"per_page": 101}).status_code == 422
+    assert client.get("/api/import/classified/mappings", headers={"X-API-Key": VIEWER_KEY}).status_code == 403
 
 
 def test_jsonl_preview_recomputes_legacy_key(client, db_fixture):

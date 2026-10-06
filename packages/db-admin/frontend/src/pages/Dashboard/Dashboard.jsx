@@ -18,8 +18,10 @@ export default function Dashboard() {
   const {
     totalProducts, totalPriceRecords, totalCategories, totalKeywords,
     lastUpdated, qualityScore, qualityDetails, recentIngestions,
-    alerts, freshness, changes,
+    alerts, freshness, changes, source_scope, offerStates, catalogCounts,
   } = dashboardStats;
+  const normalized = source_scope === 'admin_normalized_catalog';
+  const knownQuality = typeof qualityScore === 'number' && Number.isFinite(qualityScore) && qualityScore >= 0 && qualityScore <= 100;
   const navigate = useNavigate();
   const getSignal = useAbortController([]);
 
@@ -65,7 +67,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {!loading && totalProducts === 0 && totalPriceRecords === 0 && (
+      {normalized && <p>활성 카탈로그 상품·통합 분류와 저장된 전체 관측 이력 기준입니다. 현재 판매 가능 여부나 실시간 매장 가격을 뜻하지 않습니다.</p>}
+      {normalized && catalogCounts?.products && <p>보존 상품 총 {catalogCounts.products.total}개 · 비활성 {catalogCounts.products.inactive}개</p>}
+      {!loading && lastFetchedAt.dashboard && (catalogCounts?.products?.total ?? totalProducts) === 0 && totalPriceRecords === 0 && (
         <EmptyState
           icon={LayoutDashboard}
           title="데이터 없음"
@@ -93,9 +97,9 @@ export default function Dashboard() {
 
       {/* 요약 카드 */}
       <div className={s.cards}>
-        <StatCard icon={Package} label="총 상품 수" value={totalProducts} color="var(--accent)" change={changes?.products} />
-        <StatCard icon={DollarSign} label="가격 이력 수" value={(totalPriceRecords ?? 0).toLocaleString()} color="var(--green)" change={changes?.priceRecords} />
-        <StatCard icon={FolderTree} label="카테고리 수" value={totalCategories} color="var(--yellow)" change={changes?.categories} />
+        <StatCard icon={Package} label={normalized ? "활성 카탈로그 상품 수" : "총 상품 수"} value={totalProducts} color="var(--accent)" change={changes?.products} />
+        <StatCard icon={DollarSign} label={normalized ? "저장된 관측 이력 수" : "가격 이력 수"} value={(totalPriceRecords ?? 0).toLocaleString()} color="var(--green)" change={changes?.priceRecords} />
+        <StatCard icon={FolderTree} label={normalized ? "통합 분류 수" : "카테고리 수"} value={totalCategories} color="var(--yellow)" change={changes?.categories} />
         <StatCard icon={Search} label="키워드 수" value={totalKeywords} color="var(--pink)" change={changes?.keywords} />
       </div>
 
@@ -119,7 +123,7 @@ export default function Dashboard() {
       <div className={s.grid}>
         {/* 데이터 신선도 패널 — 소스별 */}
         <div className={s.card}>
-          <h3 className={s.cardTitle}><Zap size={16} /> 데이터 신선도</h3>
+          <h3 className={s.cardTitle}><Zap size={16} /> {normalized ? "저장된 출처별 관측 시각" : "데이터 신선도"}</h3>
           {freshness && freshness.length > 0 ? (
             <div className={s.freshnessList}>
               {freshness.map((f) => (
@@ -127,11 +131,14 @@ export default function Dashboard() {
                   <span className={`${s.dot} ${s[f.status]}`} />
                   <span className={s.freshnessSource}>{f.source}</span>
                   <span className={s.freshnessTime}>
-                    {f.hoursSince <= 1
+                    {typeof f.hoursSince !== 'number' || !Number.isFinite(f.hoursSince)
+                      ? '관측 시각 미확인'
+                      : f.hoursSince <= 1
                       ? '방금 전'
                       : f.hoursSince <= 24
                         ? `${Math.floor(f.hoursSince)}시간 전`
                         : `${Math.floor(f.hoursSince / 24)}일 전`}
+                    {normalized && f.lastUpdate && Number.isFinite(Date.parse(f.lastUpdate)) && <time dateTime={f.lastUpdate}> · {new Date(f.lastUpdate).toLocaleString('ko-KR')}</time>}
                   </span>
                 </div>
               ))}
@@ -140,7 +147,7 @@ export default function Dashboard() {
             <div className={s.freshnessWrap}>
               <span className={`${s.dot} ${s[overallFreshness]}`} />
               <span className={s.freshnessText}>
-                {overallFreshness === 'fresh' ? '최신 상태' : overallFreshness === 'normal' ? '정상' : '업데이트 필요'}
+                {normalized ? (lastUpdated ? `마지막 관측 · ${timeSince.text}` : '관측 시각 미확인') : overallFreshness === 'fresh' ? '최신 상태' : overallFreshness === 'normal' ? '정상' : '업데이트 필요'}
               </span>
             </div>
           )}
@@ -153,19 +160,19 @@ export default function Dashboard() {
           <div className={s.gaugeWrap}>
             <svg viewBox="0 0 120 70" className={s.gauge}>
               <path d="M 10 65 A 50 50 0 0 1 110 65" fill="none" stroke="var(--border2)" strokeWidth="8" strokeLinecap="round" />
-              <path
+              {knownQuality && <path
                 d="M 10 65 A 50 50 0 0 1 110 65"
                 fill="none"
                 stroke={qualityScore >= 80 ? 'var(--green)' : qualityScore >= 60 ? 'var(--yellow)' : 'var(--red)'}
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={`${qualityScore * 1.57} 157`}
-              />
+              />}
             </svg>
-            <span className={s.gaugeValue}>{qualityScore}점</span>
+            <span className={s.gaugeValue}>{knownQuality ? `${qualityScore}점` : "미확인"}</span>
           </div>
           <p className={s.gaugeLabel}>
-            {qualityScore >= 80 ? '양호' : qualityScore >= 60 ? '보통' : '주의 필요'}
+            {knownQuality ? (qualityScore >= 80 ? '양호' : qualityScore >= 60 ? '보통' : '주의 필요') : '품질 점수 미산출'}
           </p>
           {qualityDetails && (
             <div className={s.qualityBreakdown}>
@@ -178,12 +185,13 @@ export default function Dashboard() {
 
         {/* 최근 데이터 수집 활동 */}
         <div className={`${s.card} ${s.wideCard}`}>
-          <h3 className={s.cardTitle}>최근 데이터 수집 활동</h3>
+          <h3 className={s.cardTitle}>{normalized ? "최근 관리 활동" : "최근 데이터 수집 활동"}</h3>
+          {normalized && offerStates && <p>저장된 이력 상태: {Object.entries(offerStates).map(([state, count]) => `${state} ${count}`).join(" · ")}</p>}
           <table className={s.table}>
             <thead>
               <tr>
                 <th>출처</th>
-                <th>수집 건수</th>
+                <th>{normalized ? "활동 건수" : "수집 건수"}</th>
                 <th>날짜</th>
                 <th>상태</th>
               </tr>
@@ -192,11 +200,11 @@ export default function Dashboard() {
               {recentIngestions.map((item) => (
                 <tr key={item.id}>
                   <td>{item.source}</td>
-                  <td>{(item.count ?? 0).toLocaleString()}</td>
+                  <td>{item.count == null ? "미확인" : item.count.toLocaleString()}{item.countKind === "received" ? " · 접수" : ""}</td>
                   <td>{item.date}</td>
                   <td>
                     <span className={`${s.status} ${s[item.status]}`}>
-                      {item.status === 'success' ? '성공' : item.status === 'warning' ? '경고' : '오류'}
+                      {{ success: '성공', warning: '경고', error: '오류', approved: '승인', crawler_approved: '수집기 승인', pending: '승인 대기', rejected: '거절' }[item.status] || '상태 미확인'}
                     </span>
                   </td>
                 </tr>
@@ -219,7 +227,7 @@ function StatCard({ icon: Icon, label, value, color, change }) {
         <p className={s.statLabel}>{label}</p>
         <div className={s.statRow}>
           <p className={s.statValue}>{value}</p>
-          {change !== undefined && change !== 0 && (
+          {typeof change === 'number' && Number.isFinite(change) && change !== 0 && (
             <span className={`${s.changeBadge} ${change > 0 ? s.changeUp : s.changeDown}`}>
               △{change > 0 ? '+' : ''}{change}
             </span>
@@ -231,7 +239,8 @@ function StatCard({ icon: Icon, label, value, color, change }) {
 }
 
 function QualityBar({ label, value, invert }) {
-  const displayVal = value ?? 0;
+  const known = typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 100;
+  const displayVal = known ? value : 0;
   const barColor = invert
     ? (displayVal <= 5 ? 'var(--green)' : displayVal <= 20 ? 'var(--yellow)' : 'var(--red)')
     : (displayVal >= 80 ? 'var(--green)' : displayVal >= 50 ? 'var(--yellow)' : 'var(--red)');
@@ -242,7 +251,7 @@ function QualityBar({ label, value, invert }) {
       <div className={s.qualityBarBg}>
         <div className={s.qualityBarFill} style={{ width: `${Math.min(displayVal, 100)}%`, background: barColor }} />
       </div>
-      <span className={s.qualityVal}>{displayVal}%</span>
+      <span className={s.qualityVal}>{known ? `${displayVal}%` : "미확인"}</span>
     </div>
   );
 }

@@ -894,7 +894,7 @@ class EmartCrawler(CrawlerContract):
                         pass
 
                     html = await page.content()
-                    challenge_marker = self._category_challenge_marker(html)
+                    challenge_marker = await self._category_challenge_marker(page)
                     if challenge_marker:
                         diagnostics["blocked"] = True
                         diagnostics["stop_reason"] = challenge_marker
@@ -943,20 +943,9 @@ class EmartCrawler(CrawlerContract):
         return collected, diagnostics
 
     @staticmethod
-    def _category_challenge_marker(html: str) -> str | None:
-        lower = (html or "")[:100_000].lower()
-        for marker in (
-            "captcha",
-            "recaptcha",
-            "awswaf",
-            "aws-waf",
-            "접근이 제한되었습니다",
-            "로봇이 아닙니다",
-            "access denied",
-        ):
-            if marker in lower:
-                return f"challenge detected: {marker}"
-        return None
+    async def _category_challenge_marker(page) -> str | None:
+        from engine.playwright_helper import rendered_challenge_marker
+        return await rendered_challenge_marker(page)
 
     @staticmethod
     def _count_category_cards(html: str) -> int:

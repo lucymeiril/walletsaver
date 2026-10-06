@@ -1,131 +1,177 @@
-# WalletSaver 정출 실행 안내
+# WalletSaver 교수·팀 실행 안내
 
-이 문서는 실제 수집 데이터와 승인된 공개 snapshot을 사용하는 정출 운영 절차다. 합성 데이터는 parser/matching 회귀 테스트 fixture에만 사용하며 공개 DB에 넣지 않는다.
+교수·팀 시연의 기본 경로는 **TeamDemo**다. 저장소에 포함된 정제 catalog·관리 DB·오피넷 관측 데이터를 처음 실행할 때 검증·복원하여 사용한다. 개발용 빈 DB와 운영 배포 설정은 아래에서 별도로 설명한다. 원래 사용자 계정·세션·비공개 로그·외부 공급자 자격증명은 배포 데이터에 포함하지 않는다.
 
-## 1. Windows 로컬 전체 실행
+## 1. 기본: Windows TeamDemo 전체 실행
 
-필수 도구는 Python 3, Node.js/npm이다. 저장 DB와 공개 snapshot은 저장소 밖의 생성 영역인 `.walletsavior/`에 만들어진다.
-
-```powershell
-.\start-all.bat
-```
-
-기본 실행 주소:
-
-- 공개 웹/API: `http://localhost:5173`, `http://localhost:8000`
-- 크롤러 관리자/API: `http://localhost:5174`, `http://localhost:8001`
-- DB 관리자/API: `http://localhost:5175`, `http://localhost:8002`
-
-필요한 포트가 이미 사용 중이면 실행은 해당 PID를 표시하고 안전하게 중단한다. 기존 프로세스를 의도적으로 종료해도 되는 경우에만 다음처럼 실행한다.
+Python 3.11 이상과 Node.js/npm이 필요하다. 저장소 루트에서 실행한다.
 
 ```powershell
-.\start-all.bat -ForcePorts
+.\start-all.ps1 -TeamDemo
 ```
 
-공개 catalog가 아직 승인되지 않은 새 환경에서는 API 프로세스 자체는 기동하지만 상품 API는 snapshot 미설정 오류를 반환한다. 샘플 상품을 대신 노출하지 않는다.
+이 경로는 `demo.env`의 공개 데모 설정을 읽고 `demo-data`의 압축 DB와 manifest를 검증한 뒤 `.demo-runtime`에 최초 설치한다. 기존 writable 데이터와 사용자가 만든 계정은 재시작 시 유지한다. 다른 catalog를 설치하려고 기존 데이터 디렉터리를 지우지 말고 관리자의 검수·snapshot 갱신 절차를 사용한다.
 
-## 2. 수집·분류·승인 순서
+| 역할 | UI | API |
+| --- | --- | --- |
+| 공개 웹 | `http://127.0.0.1:5173` | `http://127.0.0.1:8000` |
+| 크롤러 관리 | `http://127.0.0.1:5174` | `http://127.0.0.1:8001` |
+| DB 관리 | `http://127.0.0.1:5175` | `http://127.0.0.1:8002` |
 
-1. 크롤러 관리자에서 이마트·홈플러스·롯데마트·코스트코를 각각 실행한다.
-   이마트 전체 실행이 카테고리 403으로 부분 종료되면 이마트 카드의
-   `카테고리 목록`에서 통합할 원본 카테고리를 하나씩 선택해 저빈도로
-   실행한다. 등록된 29개 ID만 실행할 수 있고, 성공한 카테고리 다음 위치는
-   생성 영역의 커서에 저장되어 다음 전체 실행이 이어서 시작한다. 이마트
-   카테고리 수집은 로컬에 설치된 안정판 Chrome 창을 사용한다.
-2. 실행별 0건 여부, 필수 필드, URL·이미지 존재율, 잘못된 행과 중복률을 확인하고 crawler 승인한다.
-3. raw batch를 export하고 `walletsaver-raw-batch-v3` bundle과 원본 증거를 별도 작업 디렉터리에서 분류한다.
-4. DB 관리자의 catalog bundle preview와 CSV/HTML 검수 보고서를 확인한다.
-5. 미분류·저신뢰·충돌 행을 처리한 뒤 apply한다. 동일 bundle 재적용은 상태를 바꾸지 않는다.
-6. 공개 snapshot을 명시적으로 승인한다.
+Web만 실행하려면 `-TeamDemo -Web`, 관리 프로그램만 실행하려면 `-TeamDemo -Admin`을 사용한다. `-DemoDataDir`로 독립 데이터 경로를 지정할 수 있다. 포트 충돌은 먼저 해당 프로세스를 확인하고 중단한다. `-ForcePorts`는 기존 프로세스를 종료해도 되는 경우에만 직접 선택한다.
+
+DB 관리자 데모 계정은 `demo-admin@walletsaver.example` / `demo-local-admin-260-known-value`다. 크롤러 관리자 API-key 로그인에는 `walletsaver-public-team-demo-crawler-260-known-value`를 입력한다. Web 사용자 계정은 처음에는 비어 있으므로 로컬 회원가입으로 만든다. 이 값들은 누구나 아는 데모 값이며 실제 운영에는 별도 키·계정이 필요하다.
+
+Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에서는 아래 별도 경로로 세 backend·세 UI를 시작하고 관리자 수동 인증 및 읽기 화면을 확인했다. 저장 원문 bundle replay·snapshot 61/62 소비, 기존 matching Import confirm/replay와 아래 실제 사용자·관리 화면은 확인됐다. 최신 4마트 live 갱신과 외부 인증/지도 등은 여전히 미확인으로 구분한다. 아래 Compose는 관리 UI/API를 실행하지 않는다.
+
+## 2. Linux: 공개 소스의 전체 6-process 실행
+
+이 환경의 실제 포트는 Web API `28000` / UI `27173`, 크롤러 API `8001` / UI `5174`, DB 관리자 API `8002` / UI `5175`였다. 아래는 같은 공개 소스·설치 helper·저장소 내부의 독립 `.demo-runtime`을 사용하는 명령이다. 검증 환경에서 재사용한 다른 checkout의 venv·비공개 디렉터리가 필요하지 않다. Python 3.11 이상과 Vite 8을 지원하는 Node.js(20.19 이상 또는 22.12 이상)가 필요하다.
+
+저장소 루트에서 최초 의존성과 데이터를 준비한다. 기존 `.demo-runtime` 데이터는 지우지 않는다.
+
+```sh
+export WS_ROOT="$PWD"
+export WS_DEMO_DIR="$WS_ROOT/.demo-runtime"
+python3 -m venv .venv
+export WS_PY="$WS_ROOT/.venv/bin/python"
+"$WS_PY" -m pip install -r packages/web-api/backend/requirements.txt -r packages/db-admin/backend/requirements.txt -r packages/crawler-admin/requirements.txt
+for ws_frontend in packages/web-frontend packages/crawler-admin/frontend packages/db-admin/frontend; do
+  (cd "$ws_frontend" && npm ci) || exit 1
+done
+set -a
+. ./demo.env
+set +a
+"$WS_PY" tools/install_demo_catalog.py --source demo-data --target "$WS_DEMO_DIR"
+```
+
+이후 같은 shell에서 명시적인 저장 경로·내부 서비스 주소를 설정한다. `BACKUP_DIR`와 `WALLETSAVIOR_ORCHESTRATOR_DB`도 데모 경로에 묶어 다른 설치의 관리 저장소를 사용하지 않는다.
+
+```sh
+export PYTHONPATH="$WS_ROOT/packages/shared${PYTHONPATH:+:$PYTHONPATH}"
+export DATABASE_URL="sqlite:///$WS_DEMO_DIR/admin.sqlite"
+export DB_ADMIN_DATABASE_URL="$DATABASE_URL"
+export WALLETSAVIOR_PUBLIC_DB="$WS_DEMO_DIR/public_snapshot.sqlite"
+export WALLETSAVIOR_ACCOUNT_DB="$WS_DEMO_DIR/accounts.sqlite"
+export WALLETSAVIOR_INTERACTION_DB="$WS_DEMO_DIR/interactions.sqlite"
+export WALLETSAVIOR_BOARD_DB="$WS_DEMO_DIR/board.sqlite"
+export WALLETSAVIOR_EXTERNAL_HOTDEAL_DB="$WS_DEMO_DIR/external_hotdeals.sqlite"
+export WALLETSAVIOR_WEEKLY_STATE_DB="$WS_DEMO_DIR/weekly_state.sqlite"
+export OPINET_DB_PATH="$WS_DEMO_DIR/opinet.sqlite"
+export WALLETSAVIOR_ORCHESTRATOR_DB="$WS_DEMO_DIR/orchestrator.sqlite"
+export BACKUP_DIR="$WS_DEMO_DIR/backups"
+export DB_ADMIN_URL="http://127.0.0.1:8002"
+export DB_ADMIN_API_URL="$DB_ADMIN_URL/api/prices/bulk"
+export INGESTION_API_URL="$DB_ADMIN_URL/api/ingestions"
+export WALLETSAVIOR_REMOTE_ADMIN_URL="http://127.0.0.1:28000"
+export WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD=false
+export WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER=false
+export WALLETSAVIOR_CORS_ORIGINS="http://127.0.0.1:27173"
+export FRONTEND_URL="http://127.0.0.1:27173"
+export OAUTH_REDIRECT_BASE="$FRONTEND_URL"
+export CORS_ALLOWED_ORIGINS="http://127.0.0.1:5175"
+export CORS_ORIGINS="http://127.0.0.1:5174"
+(cd packages/db-admin/backend && "$WS_PY" -m alembic upgrade head)
+```
+
+명시된 포트가 비어 있는지 확인한 후 여섯 프로세스를 시작한다. 각 UI는 기존 proxy 설정으로 대응하는 API에 연결되며 Web만 `VITE_API_PROXY_TARGET`을 지정한다.
+
+```sh
+(cd packages/web-api/backend && exec "$WS_PY" -m uvicorn main:app --host 127.0.0.1 --port 28000 --no-access-log) > "$WS_DEMO_DIR/web-api.log" 2>&1 &
+(cd packages/crawler-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
+(cd packages/db-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8002 --no-access-log) > "$WS_DEMO_DIR/db-api.log" 2>&1 &
+(cd packages/web-frontend && VITE_API_PROXY_TARGET=http://127.0.0.1:28000 exec npm run dev -- --host 127.0.0.1 --port 27173 --strictPort) > "$WS_DEMO_DIR/web-ui.log" 2>&1 &
+(cd packages/crawler-admin/frontend && exec npm run dev -- --host 127.0.0.1 --port 5174 --strictPort) > "$WS_DEMO_DIR/crawler-ui.log" 2>&1 &
+(cd packages/db-admin/frontend && exec npm run dev -- --host 127.0.0.1 --port 5175 --strictPort) > "$WS_DEMO_DIR/db-ui.log" 2>&1 &
+```
+
+이마트 일반 화면 모드 수집을 준비할 때는 실제 설치한 안정판 Chrome의 실행 경로를 지정할 수 있다. 아래 값은 예시 자리이며 자신의 설치 경로로 바꾼다. `DISPLAY`가 없는 Linux에서는 크롤러 API를 이미 실행한 뒤 중복으로 실행하지 말고, 위 크롤러 시작 명령을 `xvfb-run -a`로 감싸 화면 모드를 제공한다.
+
+```sh
+export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrome"
+# DISPLAY가 없을 때 위 crawler-api 시작 명령 대신 사용
+(cd packages/crawler-admin/backend && exec xvfb-run -a "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
+```
+
+공용 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 환경의 정상 CA 신뢰를 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
+
+Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 저장된 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐으며 snapshot 61을 공개 Web이 소비했다. 새 라이브 가격을 만든 결과가 아니고 배포 압축 데이터는 revision 60을 유지한다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. trial snapshot62와 복원 뒤 data_revision64(dirty)는 배포 revision60과 별도이며 이미 확인한 publish를 반복하지 않는다.
+
+## 3. Docker Compose: 공개 Web/API만 실행
+
+```sh
+docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.yml up --build
+```
+
+`http://localhost:8080`을 연다. `catalog-init`이 배포 데이터를 별도의 `walletsaver-demo-data` 영속 볼륨에 설치한 뒤 API가 시작한다. 계정·게시판·상호작용 저장소는 별도로 초기화되며 원래 계정 데이터는 복사하지 않는다. 관리 프로그램은 이 Compose에 포함되지 않는다.
+
+현재 환경에서는 빈 볼륨 최초 설치, 실제 상품·이력 조회, 동일 볼륨의 새 API 컨테이너에서 데이터·합성 계정 유지가 확인됐다. Windows, 다른 새 클라우드 호스트, 외부 공개 배포의 실행 검증은 별개다. 이미 설치한 데모를 다시 켤 때 `down -v`로 볼륨을 지우지 않는다.
+
+## 4. 네 판매처의 실제 증거 범위
+
+아래는 2026-10-05에 저장한 제한된 재수집과 정식 갱신 결과다. 현재의 실시간 결제 가격이나 전체 카테고리 수집 성공을 뜻하지 않는다. 과거 catalog가 포함돼 있다는 사실과 새 라이브 재수집의 성공도 구분한다.
+
+| 판매처·대상 native | 실제 원문 캡처 | 상품 identity | 검수·export | 이력·공개 snapshot | 남은 조건 |
+| --- | --- | --- | --- | --- | --- |
+| 홈플러스 `059102628` | 실제 2L×6 원문, 관측 금액 2,190 | hit | 3건 export 중 1건, 정식 검수 완료 | 동일 event로 append·재실행 보존, revision 60 | 구매 최소 1·최대 2와 쿠폰 조건은 별도 원문이다. 관측 금액의 통화 필드·실제 쿠폰 적용·결제가는 미확인 |
+| 롯데마트 `0000049320367` | 실제 140ml 원문, 3,900 KRW, “3개씩 골라 담으면, 그 중 1개는 무료” | hit | 3건 export 중 1건, 정식 검수 완료 | 동일 event로 append·재실행 보존, revision 60 | 선택 장바구니·무료 상품 가치·자격·실제 결제가는 미확인 |
+| 코스트코 `649298` | 실제 80개입 원문, 40,990 KRW | hit | 3건 export 중 1건, 정식 검수 완료 | 동일 event로 append·재실행 보존, revision 60 | 회원 자격 및 일부 최대 주문 mode·기간 flag 값이 캡처에서 누락돼 미확인. 최소 1·최대 500은 구매 조건이며 내용물 수량이 아님 |
+| 이마트 | 이 검증 구간의 새 캡처 없음: 기존 429 중지 유지 | 새 행 미검증 | 새 행 없음 | 기존 이마트 이력은 보존; 새 갱신 미검증 | 허용되는 다음 공급자 구간과 보이는 안정판 Chrome·6–7분(360–420초) 제한 필요. 현재 호스트의 공식 안정판 Chrome·화면 모드 Xvfb·proxy/TLS 선행 조건은 설치·확인됨. 공급자 새 요청은 0건이므로 라이브 성공 아님. 전략은 일반 Playwright이며 headless Chromium으로 대신하지 않음 |
+
+세 새 관측은 quoted-price 이력으로 보존한다. 조건이 불명확한 event의 실제 payable·단위 비교 가격은 NULL로 유지한다. 0건 수집, SDK 문자열이 있는 HTTP 200, 상품 정보가 없는 shell을 성공 또는 WAF로 판정하지 않는다. 실제 403·429·로그인·CAPTCHA·challenge가 있으면 해당 공급자 요청을 중단하며 우회하지 않는다.
+
+## 5. 갱신 경로: 수집에서 승인 snapshot까지
+
+1. 허용되는 판매처·원본 범위만 저빈도로 실행하고 수집 0건·필수 필드·URL·native/spec·잘못된 행을 확인한다. 이마트는 위 Chrome·시간 제한을 따른다. 현재 중지된 공급자에 재시도하지 않는다.
+2. 크롤러 결과를 검수한 뒤 raw batch를 export한다. 금액은 offer 관측값이며 상품 identity에 사용하지 않는다.
+3. `walletsaver-raw-batch-v3` 원본과 matching 문맥을 유지해 분류·검토한다. 누락·충돌·미분류를 임의 기본값으로 채우지 않는다.
+4. DB 관리자의 catalog bundle preview와 검수 보고서를 확인한 뒤 인증된 관리자 흐름으로 apply한다. 같은 bundle을 다시 적용해 별도 event를 만들지 않는다.
+5. snapshot 검증 후 인증된 관리자 흐름으로 명시적으로 publish한다. 상태와 직전 승인본 rollback 가능 여부를 확인한다.
+
+분류 결과 JSONL의 **matching-only import**는 기존 public mapping의 검수 정보 경로다. legacy 분류 행은 기존 `category_id` 검증을 유지한다. normalized 행은 기존 key와 실제 알려진 active product·unified leaf 계층·해당 product의 variant·명칭·수량이 일치할 때만 server가 참조를 검증하고 legacy category NULL을 허용한다. 임의 public ID·다른 variant·다른 수량이나 추정 legacy category를 입력하지 않는다. 현재 저장된 Costco mapping 한 건의 UI preview·confirm은 HTTP 200·변경없음 1건(신규/수정 0건)이 확인됐고, 같은 trace 재확인은 idempotent=true였다. 기존 graph·키워드·계정 참조는 보존됐다. 이는 새 상품 추가 성공이 아니다.
+
+새 product·variant·normalized key 또는 분류 변경은 기존 원본 검수 **catalog bundle preview → apply → replay → snapshot** 경로로 처리한다. 현재 확인한 saved-bundle replay/snapshot 61과 배포 데이터 revision 60을 구분한다. 두 경로의 기능을 하나의 import 성공으로 합쳐 표시하지 않는다.
+
+관리 UI의 인증된 실행을 기본으로 사용한다. 직접 API를 사용할 때도 `REQUIRE_AUTH=true`이므로 익명 POST/GET은 401을 반환한다. 다음 PowerShell 예시는 공개 데모 계정으로 로그인한 뒤 같은 설치의 관리자 API에 인증 헤더를 전달한다. JWT를 출력하거나 로그·Git에 저장하지 않는다.
 
 ```powershell
-Invoke-RestMethod -Method Post `
-  -Uri http://127.0.0.1:8002/api/catalog-bundles/snapshot/publish
+$adminBase = 'http://127.0.0.1:8002'
+$loginBody = @{ email = 'demo-admin@walletsaver.example'; password = 'demo-local-admin-260-known-value' } | ConvertTo-Json
+$adminLogin = Invoke-RestMethod -Method Post -Uri "$adminBase/api/auth/login" -ContentType 'application/json' -Body $loginBody
+$adminHeaders = @{ Authorization = "Bearer $($adminLogin.access_token)" }
+Invoke-RestMethod -Method Get -Headers $adminHeaders -Uri "$adminBase/api/catalog-bundles/snapshot/status"
+# 검수·apply를 완료하고 publish하려는 경우에만 실행
+Invoke-RestMethod -Method Post -Headers $adminHeaders -Uri "$adminBase/api/catalog-bundles/snapshot/publish"
+# 직전 승인본으로 되돌리기로 결정한 경우에만 실행
+Invoke-RestMethod -Method Post -Headers $adminHeaders -Uri "$adminBase/api/catalog-bundles/snapshot/rollback"
 ```
 
-승인본과 rollback 가능 여부는 다음으로 확인한다.
+TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`와 혼용하지 않는다. 운영 설치에서는 공개 데모 계정 대신 해당 설치의 별도 관리자 인증을 사용한다.
+
+## 6. 개발·운영 모드와 외부 설정
+
+개발자가 배포 catalog 없이 시작할 때만 `start-all.bat` 또는 `start-all.ps1`의 `-TeamDemo` 없는 실행을 사용한다. 이 경로의 `.walletsavior`는 새 환경에서 빈 상태다. 공개 catalog가 아직 없으면 상품 API는 readiness 오류를 반환하며 샘플 상품으로 대체하지 않는다. 교수·팀 데모의 기본 실행으로 사용하지 않는다.
+
+운영 Web/API는 `.env.docker.example`을 비공개 `.env.docker`로 복사하고 JWT·remote-admin 키를 서로 다른 운영용 값으로 설정한 뒤 base Compose를 사용한다. 새 볼륨은 catalog가 없으므로 인증된 `PUT /api/admin/remote/snapshots/catalog`로 승인된 snapshot을 설치한다. external-hotdeals와 opinet도 각각 별도의 승인된 SQLite 업로드 대상이며, 미확인 자료를 넣지 않는다. 계정·찜·알림·게시판 데이터는 catalog 교체와 분리한다.
+
+| 외부 기능 | 필요한 설정·현재 한계 |
+| --- | --- |
+| Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 지원되는 비공개 credentials file. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
+| Naver OAuth | 비공개 `NAVER_CLIENT_ID`·`NAVER_CLIENT_SECRET`과 해당 provider callback 등록 필요. Naver 지도 공개 브라우저 검색과 다른 기능이며 실제 OAuth 미검증 |
+| Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 설치된 브라우저·공급자 접근·지도 링크 서비스가 필요하며, OAuth 키가 이 공개 검색의 필수 키라는 주장은 하지 않음 |
+| Opinet 공식 API | `OPINET_API_KEY`와 실제 공급자 권한·접근 필요. 배포된 7개 주유소·14개 가격은 각각 원래 날짜의 관측값이며 실시간 API 결과가 아님 |
+| 연료 지도 좌표 | Opinet 원본 X/Y의 CRS·변환 연결 미확인. 배포 좌표는 NULL이며 GPS 거리순 비교를 보장하지 않음. 개별 Naver 후보 x/y를 확인한 것만으로 모든 주유소 좌표나 Opinet CRS를 확정하지 않음 |
+| 핫딜 | 현재 Algumon collector는 fixture placeholder이고 실제 공개 요청은 403으로 중지된 기록이 있음. 실제 post의 정상 수집·parser 연결이 필요하며, 이를 자격증명 부족이라고 단정하지 않음. demo 핫딜 라이브 갱신 미검증 |
+| 이마트 라이브 | Playwright의 `chrome` 채널·화면 모드와 명시적 세션 proxy/CA 연결이 필요. 현재 호스트의 공식 Chrome 154.0.8037.97·Xvfb 화면 모드·로컬 DOM과 별도 공개 의존성의 proxy/TLS 확인은 완료됐다. 이마트 요청은 없었으며 기존 429 중지와 허용된 다음 공급자 구간·6–7분 제한을 지킨다. 로그인·challenge 우회 없음 |
+
+TeamDemo의 외부 값은 기본적으로 공란이다. 로컬 키가 있는지 여부는 이 문서 감사에서 확인하지 않았다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
 
 ```powershell
-Invoke-RestMethod `
-  -Uri http://127.0.0.1:8002/api/catalog-bundles/snapshot/status
+.\start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local
 ```
 
-직전 승인본으로 즉시 되돌리기:
+Compose에서는 `--env-file .env.demo.local`을 사용한다. TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callback`, Compose 기본 callback은 `http://localhost:8080/api/auth/oauth/google/callback`이다. 위 Linux 전체 실행의 callback은 `http://127.0.0.1:27173/api/auth/oauth/google/callback`이다. `localhost`와 `127.0.0.1`은 다른 cookie origin이므로 브라우저·origin·callback을 일치시킨다. 기본 TeamDemo loader가 외부 공란을 읽으므로 미리 설정한 shell 키가 자동으로 유지된다고 가정하지 않는다.
 
-```powershell
-Invoke-RestMethod -Method Post `
-  -Uri http://127.0.0.1:8002/api/catalog-bundles/snapshot/rollback
-```
+## 7. 검증 상태
 
-공개 교체 전에는 SQLite `quick_check`, 필수 테이블, snapshot 메타데이터, 활성 상품의 통합 리프 카테고리 귀속을 다시 검증한다. 현재 승인본은 `.walletsavior/public_snapshot.sqlite`, 직전 승인본은 `.walletsavior/public_snapshot.sqlite.previous`다.
-
-## 3. Docker 공개 웹/API
-
-Docker 환경은 로컬 관리자 DB에 의존하지 않는다. 공개 read-only snapshot 세 개와 서버 소유 쓰기 DB 세 개를 `/data` 영속 볼륨에 분리한다.
-
-```powershell
-Copy-Item .env.docker.example .env.docker
-# .env.docker의 JWT_SECRET_KEY와 WALLETSAVIOR_REMOTE_ADMIN_TOKEN을 서로 다른 긴 난수로 교체
-docker compose --env-file .env.docker up -d --build
-```
-
-새 볼륨에는 catalog가 없으므로 컨테이너는 기동되지만 샘플 데이터를 만들지 않는다. 승인된 snapshot을 인증된 관리 API로 올린다.
-
-```powershell
-$token = (Get-Content .env.docker | Where-Object { $_ -like 'WALLETSAVIOR_REMOTE_ADMIN_TOKEN=*' }).Split('=', 2)[1]
-$headers = @{ 'X-WalletSavior-Admin-Token' = $token }
-
-Invoke-WebRequest -Method Put -Headers $headers -ContentType 'application/octet-stream' `
-  -InFile .walletsavior\public_snapshot.sqlite `
-  -Uri http://localhost:8080/api/admin/remote/snapshots/catalog
-
-Invoke-WebRequest -Method Put -Headers $headers -ContentType 'application/octet-stream' `
-  -InFile .walletsavior\external_hotdeals.sqlite `
-  -Uri http://localhost:8080/api/admin/remote/snapshots/external-hotdeals
-
-Invoke-WebRequest -Method Put -Headers $headers -ContentType 'application/octet-stream' `
-  -InFile .walletsavior\opinet.db `
-  -Uri http://localhost:8080/api/admin/remote/snapshots/opinet
-```
-
-업로드는 최대 크기, SQLite 헤더, `quick_check`, 종류별 필수 테이블을 확인한 뒤 원자적으로 교체한다. 계정·찜·알림은 `accounts.sqlite`와 `interactions.sqlite`, 커뮤니티는 `board.sqlite`에 남아 snapshot 교체의 영향을 받지 않는다.
-
-상태 확인:
-
-```powershell
-Invoke-RestMethod http://localhost:8080/api/health
-docker compose --env-file .env.docker ps
-```
-
-## 4. 로그인과 지역 데이터
-
-Google 로그인은 `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `OAUTH_REDIRECT_BASE`가 모두 설정돼야 한다. 누락 시 가짜 로그인을 만들지 않고 설정 오류를 표시한다.
-
-오피넷은 발급 키가 있으면 공식 API를 사용한다. 키가 없을 때 공개 지역 페이지를 한 번 읽는 수동 fallback은 명시적으로만 켠다.
-
-```powershell
-$env:OPINET_PUBLIC_FALLBACK_ENABLED = 'true'
-```
-
-fallback은 공개 HTML만 저빈도로 요청하고 6시간 캐시를 사용한다. 로그인, CAPTCHA, WAF 우회는 하지 않는다. 가격 화면에는 출처와 관측 시각을 표시한다.
-
-네이버 장소 공개 페이지 기반 브라우저 검색은 기본 비활성이다. 지역 화면의
-`네이버 공개 페이지 브라우저 검색 사용` 체크박스를 사용자가 직접 선택한
-요청에만 실행된다. 서버 환경변수로 몰래 활성화하지 않으며, 검색 결과는
-지역 화면 안에서 먼저 보여준다. 외부 네이버 지도는 선택한 위치를 추가로
-확인하는 보조 링크일 뿐 장소 검색 기능을 대신하지 않는다.
-
-이 fallback은 공개 웹 검색 보조일 뿐 정출 catalog나 OPINET 가격의 원천으로 사용하지 않는다.
-
-## 5. 정출 전 회귀 확인
-
-```powershell
-# 각 backend 디렉터리에서
-py -3 -m pytest -q
-
-# 각 frontend 디렉터리에서
-npm.cmd test -- --run
-npm.cmd run build
-```
-
-라이브 수집 검사는 네 마트별 요청 수를 작게 제한해 별도로 수행한다. 결정적 parser fixture 회귀와 섞지 않으므로 외부 사이트 장애가 전체 테스트 결과를 가리지 않는다.
+이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 배포 데이터는 revision 60이며 새 라이브 수집이나 전체 품질 통과로 선언하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.

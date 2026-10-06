@@ -126,12 +126,16 @@ function generateKeywordsFromCategory(node, categories) {
 /* ── 메인 컴포넌트 ── */
 export default function ClassificationPage() {
   const {
-    categories, addCategory, updateCategory, deleteCategory, moveCategory, fetchCategories,
+    categories: legacyCategories, unifiedCategories, fetchUnifiedCategories, unifiedCategoryError,
+    addCategory, updateCategory, deleteCategory, moveCategory, fetchCategories,
     keywords, addKeyword, updateKeyword, deleteKeyword,
     fetchKeywords, fetchKeywordStats, keywordStats,
-    loadingCategories, loadingKeywords, lastFetchedAt,
+    loadingCategories, loadingUnifiedCategories, loadingKeywords, lastFetchedAt, error,
   } = useDbAdminStore();
-  const loading = loadingCategories || loadingKeywords;
+  const [namespace, setNamespace] = useState('unified');
+  const isUnified = namespace === 'unified';
+  const categories = isUnified ? unifiedCategories : legacyCategories;
+  const loading = (isUnified ? loadingUnifiedCategories : loadingCategories) || loadingKeywords;
 
   // 카테고리 트리 상태
   const [expanded, setExpanded] = useState(new Set());
@@ -153,22 +157,29 @@ export default function ClassificationPage() {
   // 토스트
   const [toast, setToast] = useState(null);
   const debounceRef = useRef(null);
-  const getSignal = useAbortController([selectedCatId]);
+  const getSignal = useAbortController([selectedCatId, namespace]);
 
   // 데이터 로드
   useEffect(() => {
     const signal = getSignal();
-    fetchCategories({ signal });
+    if (isUnified) fetchUnifiedCategories({ signal });
+    else fetchCategories({ signal });
     fetchKeywordStats({ signal });
-  }, [fetchCategories, fetchKeywordStats, getSignal]);
+  }, [isUnified, fetchUnifiedCategories, fetchCategories, fetchKeywordStats, getSignal]);
+
+  const keywordParams = useMemo(() => ({
+    [isUnified ? 'unified_category_id' : 'category_id']: selectedCatId,
+    per_page: 100, sort_by: 'search_count', sort_dir: 'desc',
+  }), [isUnified, selectedCatId]);
 
   // 카테고리 선택 시 키워드 로드
   useEffect(() => {
-    if (selectedCatId) {
+    const node = selectedCatId ? findNode(categories, selectedCatId) : null;
+    if (selectedCatId && (!isUnified || (node && !node.children?.length))) {
       const signal = getSignal();
-      fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' }, { signal });
+      fetchKeywords(keywordParams, { signal });
     }
-  }, [selectedCatId, fetchKeywords, getSignal]);
+  }, [selectedCatId, isUnified, categories, keywordParams, fetchKeywords, getSignal]);
 
   // 트리 필터
   const filteredCategories = useMemo(
@@ -195,10 +206,16 @@ export default function ClassificationPage() {
     [categories, selectedCatId],
   );
 
+  const canEditKeywords = !!selectedNode && (!isUnified || !selectedNode.children?.length);
+  const changeNamespace = (value) => {
+    setNamespace(value); setSelectedCatId(null); setExpanded(new Set()); setSearchQuery('');
+    setKwSearch(''); setKwModal(null); setCatModal(null); setGeneratedKws([]);
+  };
+
   // 선택된 카테고리의 키워드 필터링
   const categoryKeywords = useMemo(() => {
     if (!selectedCatId) return [];
-    let filtered = keywords.filter(k => (k.categoryId || k.category_id) === selectedCatId);
+    let filtered = keywords.filter(k => (isUnified ? (k.unifiedCategoryId ?? k.unified_category_id) : (k.categoryId ?? k.category_id)) === selectedCatId);
     if (kwSearch) {
       const q = kwSearch.toLowerCase();
       filtered = filtered.filter(k =>
@@ -207,7 +224,7 @@ export default function ClassificationPage() {
       );
     }
     return filtered;
-  }, [keywords, selectedCatId, kwSearch]);
+  }, [keywords, selectedCatId, kwSearch, isUnified]);
 
   const toggle = (id) => {
     setExpanded(prev => {
@@ -237,6 +254,7 @@ export default function ClassificationPage() {
 
   /* ── 카테고리 CRUD ── */
   const openAddCat = (parentId = null) => {
+    if (isUnified) return;
     setCatForm({ name: '', parentId, attributes: { origin: '', storage: '', grade: '' }, autoKeywords: true });
     setCatModal({ mode: 'add' });
   };
@@ -252,6 +270,7 @@ export default function ClassificationPage() {
   };
 
   const handleSaveCat = async () => {
+    if (isUnified) return;
     if (catModal.mode === 'add') {
       const parentId = catForm.parentId || null;
       const parentNode = parentId ? findNode(categories, parentId) : null;
@@ -298,13 +317,18 @@ export default function ClassificationPage() {
 
   /* ── 키워드 CRUD ── */
   const openAddKw = () => {
-    setKwForm({ keyword: '', searchCount: 0, synonyms: [], categoryId: selectedCatId || '' });
+    if (!canEditKeywords) return;
+    setKwForm({ keyword: '', searchCount: 0, synonyms: [], [isUnified ? 'unifiedCategoryId' : 'categoryId']: selectedCatId || '' });
     setSynonymInput('');
     setKwModal({ mode: 'add' });
   };
 
   const openEditKw = (kw) => {
-    setKwForm({ ...kw });
+    if (!canEditKeywords) return;
+    setKwForm({ keyword: kw.keyword || kw.word, synonyms: kw.synonyms || [],
+      [isUnified ? 'unifiedCategoryId' : 'categoryId']: isUnified ? (kw.unifiedCategoryId ?? kw.unified_category_id) : (kw.categoryId ?? kw.category_id),
+      ...(typeof kw.is_active === 'boolean' ? { is_active: kw.is_active } : {}),
+    });
     setSynonymInput('');
     setKwModal({ mode: 'edit', keyword: kw });
   };
@@ -323,45 +347,55 @@ export default function ClassificationPage() {
   };
 
   const handleSaveKw = async () => {
-    const data = { ...kwForm, searchCount: Number(kwForm.searchCount) };
+    if (!canEditKeywords) return;
+    const selectedRef = kwForm[isUnified ? 'unifiedCategoryId' : 'categoryId'];
+    if (isUnified && ((kwModal.mode === 'add' && !selectedRef) || (selectedRef && (!findNode(categories, selectedRef) || findNode(categories, selectedRef).children?.length)))) {
+      showToast('통합 말단 분류를 선택하세요.', 'error'); return;
+    }
+    const data = { ...kwForm };
+    delete data.searchCount;
+    if (kwModal.mode === 'add') delete data.is_active;
     if (kwModal.mode === 'add') {
       const result = await addKeyword(data);
-      if (result?.status === 409) {
-        showToast(result.message, 'error');
+      if (!result?.ok) {
+        showToast(result?.message || '키워드를 추가하지 못했습니다.', 'error');
         return;
       }
       showToast('키워드가 추가되었습니다.', 'success');
     } else {
-      await updateKeyword(kwModal.keyword.id, data);
+      const result = await updateKeyword(kwModal.keyword.id, data);
+      if (!result?.ok) { showToast(result?.message || '키워드를 수정하지 못했습니다.', 'error'); return; }
       showToast('키워드가 수정되었습니다.', 'success');
     }
     setKwModal(null);
     if (selectedCatId) {
-      fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' });
+      fetchKeywords(keywordParams);
     }
   };
 
   const handleDeleteKw = async (id) => {
     if (confirm('키워드를 삭제하시겠습니까?')) {
-      await deleteKeyword(id);
+      const result = await deleteKeyword(id);
+      if (!result?.ok) { showToast(result?.message || '키워드를 삭제하지 못했습니다.', 'error'); return; }
       showToast('키워드가 삭제되었습니다.', 'success');
       if (selectedCatId) {
-        fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' });
+        fetchKeywords(keywordParams);
       }
     }
   };
 
   const handleUnlinkKw = async (kw) => {
-    await updateKeyword(kw.id, { ...kw, categoryId: '' });
+    const result = await updateKeyword(kw.id, { [isUnified ? 'unified_category_id' : 'category_id']: null });
+    if (!result?.ok) { showToast(result?.message || '연결을 해제하지 못했습니다.', 'error'); return; }
     showToast('키워드 연결이 해제되었습니다.', 'success');
     if (selectedCatId) {
-      fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' });
+      fetchKeywords(keywordParams);
     }
   };
 
   /* ── 일괄 키워드 생성 ── */
   const handleBulkGenerate = async () => {
-    if (!selectedNode) return;
+    if (!selectedNode || isUnified) return;
     setGenerating(true);
     const suggestions = generateKeywordsFromCategory(selectedNode, categories);
     const existing = categoryKeywords.map(k => (k.keyword || k.word || '').toLowerCase());
@@ -371,12 +405,13 @@ export default function ClassificationPage() {
   };
 
   const confirmBulkGenerate = async () => {
+    if (isUnified) return;
     for (const word of generatedKws) {
       await addKeyword({ keyword: word, categoryId: selectedCatId, synonyms: [] });
     }
     showToast(`${generatedKws.length}개 키워드가 생성되었습니다.`, 'success');
     setGeneratedKws([]);
-    fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' });
+    fetchKeywords(keywordParams);
   };
 
   /* ── 빈 카테고리 수 ── */
@@ -395,9 +430,14 @@ export default function ClassificationPage() {
   // 부모 경로 구하기
   const getCategoryPath = useCallback((node) => {
     if (!node) return '';
-    const parts = node.id.split('.');
-    return parts.join(' > ');
-  }, []);
+    const path = [];
+    let current = node;
+    const seen = new Set();
+    while (current && !seen.has(current.id)) {
+      seen.add(current.id); path.unshift(current.name); current = findNode(categories, current.parent_id);
+    }
+    return path.join(' > ');
+  }, [categories]);
 
   return (
     <div className={s.page}>
@@ -415,30 +455,39 @@ export default function ClassificationPage() {
             상품 카테고리 트리와 검색 키워드를 관리합니다. 왼쪽에서 카테고리를 선택하면 오른쪽에 키워드가 표시됩니다.
           </p>
           <LastUpdated
-            timestamp={lastFetchedAt.categories}
-            onRefresh={() => { fetchCategories(); fetchKeywordStats(); }}
+            timestamp={lastFetchedAt[isUnified ? 'unifiedCategories' : 'categories']}
+            onRefresh={() => { (isUnified ? fetchUnifiedCategories : fetchCategories)(); fetchKeywordStats(); if (selectedCatId && canEditKeywords) fetchKeywords(keywordParams); }}
             isLoading={loading}
           />
         </div>
         <div className={s.headerActions}>
-          <button className={s.addBtn} onClick={() => openAddCat(null)}>
+          {!isUnified && <button className={s.addBtn} onClick={() => openAddCat(null)}>
             <Plus size={16} /> 최상위 카테고리 추가
-          </button>
+          </button>}
         </div>
       </div>
 
-      {!loading && categories.length === 0 && (
+      <label>분류 체계
+        <select aria-label="분류 체계" value={namespace} onChange={e => changeNamespace(e.target.value)}>
+          <option value="unified">통합 분류 · 조회 전용</option>
+          <option value="legacy">기존 분류 · 편집 가능</option>
+        </select>
+      </label>
+      {isUnified && <p>통합 분류는 공식 카탈로그 번들에서 관리합니다. 말단 분류를 선택하면 키워드를 편집할 수 있습니다.</p>}
+      {isUnified && unifiedCategoryError && <p role="alert">{unifiedCategoryError}</p>}
+      {error && <p role="alert">{error}</p>}
+      {!loading && !(isUnified ? unifiedCategoryError : error) && categories.length === 0 && (
         <EmptyState
           icon={FolderTree}
-          title="카테고리 없음"
-          description="카테고리를 추가하여 상품을 분류하세요."
-          action={() => openAddCat(null)}
+          title={isUnified ? "통합 분류 없음" : "기존 카테고리 없음"}
+          description={isUnified ? "현재 통합 분류 트리가 비어 있습니다." : "기존 카테고리를 추가하여 상품을 분류하세요."}
+          action={isUnified ? undefined : () => openAddCat(null)}
           actionLabel="+ 카테고리 추가"
         />
       )}
 
       {/* 빈 카테고리 안내 */}
-      {emptyCount > 0 && (
+      {!isUnified && emptyCount > 0 && (
         <div className={s.emptyBanner}>
           <AlertTriangle size={16} />
           <span>상품이 없는 빈 카테고리가 <strong>{emptyCount}개</strong> 있습니다.</span>
@@ -481,6 +530,7 @@ export default function ClassificationPage() {
               filteredCategories.map(cat => (
                 <TreeNode
                   key={cat.id}
+                  readOnly={isUnified}
                   node={cat}
                   depth={0}
                   expanded={effectiveExpanded}
@@ -518,8 +568,8 @@ export default function ClassificationPage() {
                   <div className={s.metaRow}>
                     <span className={s.metaLabel}>상품 수</span>
                     <span className={s.metaValue}>
-                      <Package size={14} /> {countProducts(selectedNode)}개
-                      {selectedNode.productCount != null && selectedNode.productCount !== countProducts(selectedNode) && (
+                      {isUnified ? '통합 상품 수 미조회' : <><Package size={14} /> {countProducts(selectedNode)}개</>}
+                      {!isUnified && selectedNode.productCount != null && selectedNode.productCount !== countProducts(selectedNode) && (
                         <span className={s.metaSub}> (직접 {selectedNode.productCount}개)</span>
                       )}
                     </span>
@@ -558,7 +608,7 @@ export default function ClassificationPage() {
                   )}
                 </div>
 
-                <div className={s.detailActions}>
+                {!isUnified && <div className={s.detailActions}>
                   <button className={s.editBtn} onClick={() => openEditCat(selectedNode)}>
                     <Pencil size={14} /> 편집
                   </button>
@@ -571,7 +621,7 @@ export default function ClassificationPage() {
                   <button className={s.deleteBtn} onClick={() => handleDeleteCat(selectedNode)}>
                     <Trash2 size={14} /> 삭제
                   </button>
-                </div>
+                </div>}
               </div>
             </>
           ) : (
@@ -591,7 +641,7 @@ export default function ClassificationPage() {
                 <h3 className={s.panelTitle}>
                   <Key size={16} /> 연결된 키워드
                 </h3>
-                <button className={s.kwAddBtn} onClick={openAddKw} title="키워드 추가">
+                <button className={s.kwAddBtn} disabled={!canEditKeywords} onClick={openAddKw} title="키워드 추가">
                   <Plus size={14} />
                 </button>
               </div>
@@ -609,7 +659,7 @@ export default function ClassificationPage() {
               <div className={s.kwList}>
                 {categoryKeywords.length === 0 ? (
                   <div className={s.emptyKw}>
-                    {kwSearch ? '검색 결과가 없습니다.' : '연결된 키워드가 없습니다.'}
+                    {!canEditKeywords ? '키워드 편집은 말단 분류를 선택하세요.' : kwSearch ? '검색 결과가 없습니다.' : '연결된 키워드가 없습니다.'}
                   </div>
                 ) : (
                   categoryKeywords.map(kw => (
@@ -618,6 +668,7 @@ export default function ClassificationPage() {
                         <span className={s.kwName}>
                           <Tag size={12} /> {kw.keyword || kw.word}
                         </span>
+                        <span>{typeof kw.is_active === 'boolean' ? (kw.is_active ? '활성' : '비활성') : '활성 상태 미확인'}</span>
                         <span className={s.kwCount}>검색 {(kw.searchCount ?? 0).toLocaleString()}회</span>
                         {(kw.synonyms || []).length > 0 && (
                           <div className={s.kwSynonyms}>
@@ -638,7 +689,7 @@ export default function ClassificationPage() {
               </div>
 
               {/* 일괄 키워드 생성 */}
-              <div className={s.bulkSection}>
+              {!isUnified && <div className={s.bulkSection}>
                 <button
                   className={s.bulkBtn}
                   onClick={handleBulkGenerate}
@@ -667,7 +718,7 @@ export default function ClassificationPage() {
                     </div>
                   </div>
                 )}
-              </div>
+              </div>}
             </>
           ) : (
             <div className={s.emptyPanel}>
@@ -681,7 +732,7 @@ export default function ClassificationPage() {
 
       {/* 하단 안내 */}
       <div className={s.footer}>
-        💡 카테고리를 추가하면 키워드가 자동 생성됩니다. 카테고리 선택 후 키워드를 직접 추가하거나 일괄 생성할 수 있습니다.
+        {isUnified ? '통합 분류 키워드는 선택한 말단 분류에 연결됩니다. 기존 분류 연결은 별도로 보존됩니다.' : '기존 카테고리 선택 후 키워드를 직접 추가하거나 일괄 생성할 수 있습니다.'}
       </div>
 
       {/* ── 카테고리 모달 ── */}
@@ -826,18 +877,23 @@ export default function ClassificationPage() {
                 <input value={kwForm.keyword || ''} onChange={e => setKwForm({ ...kwForm, keyword: e.target.value })} />
               </label>
               <label>
-                검색 횟수
-                <input type="number" value={kwForm.searchCount || 0} onChange={e => setKwForm({ ...kwForm, searchCount: e.target.value })} />
-              </label>
-              <label>
-                연결 카테고리
-                <select value={kwForm.categoryId || ''} onChange={e => setKwForm({ ...kwForm, categoryId: e.target.value })}>
+                {isUnified ? '연결 통합 말단 분류' : '연결 기존 카테고리'}
+                <select value={kwForm[isUnified ? 'unifiedCategoryId' : 'categoryId'] || ''}
+                  onChange={e => setKwForm({ ...kwForm, [isUnified ? 'unifiedCategoryId' : 'categoryId']: e.target.value || null })}>
                   <option value="">선택 안 함</option>
-                  {flatList.map(c => (
+                  {flatList.filter(c => !isUnified || !findNode(categories, c.id)?.children?.length).map(c => (
                     <option key={c.id} value={c.id}>{'─'.repeat(c.depth)} {c.name}</option>
                   ))}
                 </select>
               </label>
+              {kwModal.mode === 'edit' && <label>
+                활성 상태
+                <select value={kwForm.is_active === undefined ? '' : String(kwForm.is_active)}
+                  onChange={e => setKwForm({ ...kwForm, is_active: e.target.value === '' ? undefined : e.target.value === 'true' })}>
+                  <option value="">현재 값 유지 · 미확인</option>
+                  <option value="true">활성</option><option value="false">비활성</option>
+                </select>
+              </label>}
               <label>동의어</label>
               <div className={s.synonymEditor}>
                 <div className={s.synonymTags}>
@@ -860,7 +916,7 @@ export default function ClassificationPage() {
               </div>
               <div className={s.formActions}>
                 <button className={s.cancelBtn} onClick={() => setKwModal(null)}>취소</button>
-                <button className={s.saveBtn} onClick={handleSaveKw}>저장</button>
+                <button className={s.saveBtn} disabled={!kwForm.keyword?.trim()} onClick={handleSaveKw}>저장</button>
               </div>
             </div>
           </div>
@@ -871,13 +927,13 @@ export default function ClassificationPage() {
 }
 
 /* ── 트리 노드 컴포넌트 ── */
-function TreeNode({ node, depth, expanded, toggle, selectedId, onSelect, onAdd, onEdit, onDelete, onMove }) {
+function TreeNode({ readOnly = false, node, depth, expanded, toggle, selectedId, onSelect, onAdd, onEdit, onDelete, onMove }) {
   const hasChildren = node.children && node.children.length > 0;
   const isOpen = expanded.has(node.id);
   const isSelected = node.id === selectedId;
   const totalCount = countProducts(node);
   const ownCount = node.productCount ?? 0;
-  const isEmpty = totalCount === 0;
+  const isEmpty = !readOnly && totalCount === 0;
 
   return (
     <div className={s.treeNode}>
@@ -894,20 +950,21 @@ function TreeNode({ node, depth, expanded, toggle, selectedId, onSelect, onAdd, 
           {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         </button>
         <span className={`${s.nodeName} ${isEmpty ? s.emptyName : ''}`}>{node.name}</span>
-        <span className={`${s.badge} ${ownCount === 0 ? s.badgeEmpty : ''}`}>
+        {!readOnly && <span className={`${s.badge} ${ownCount === 0 ? s.badgeEmpty : ''}`}>
           {ownCount}
-        </span>
-        <div className={s.nodeActions}>
+        </span>}
+        {!readOnly && <div className={s.nodeActions}>
           <button title="하위 추가" onClick={e => { e.stopPropagation(); onAdd(node.id); }}><Plus size={12} /></button>
           <button title="수정" onClick={e => { e.stopPropagation(); onEdit(node); }}><Pencil size={12} /></button>
           <button title="삭제" onClick={e => { e.stopPropagation(); onDelete(node); }}><Trash2 size={12} /></button>
-        </div>
+        </div>}
       </div>
       {isOpen && hasChildren && (
         <div className={s.children}>
           {node.children.map(child => (
             <TreeNode
               key={child.id}
+              readOnly={readOnly}
               node={child}
               depth={depth + 1}
               expanded={expanded}

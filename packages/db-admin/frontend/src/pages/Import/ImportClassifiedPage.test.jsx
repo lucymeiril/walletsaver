@@ -127,6 +127,57 @@ describe('ImportClassifiedPage', () => {
     expect(screen.getByText('mk_001')).toBeTruthy();
   });
 
+  it('reviews server-resolved unified targets and reports unchanged matching without claiming a new import', async () => {
+    const targets = [{ match_key: 'existing-source-key', public_product_id: 'prod-existing',
+      public_variant_id: 'var-existing', unified_category_id: 'food.drinks.water',
+      category_path: [{ id: 'food', name: '식품' }, { id: 'food.drinks', name: '음료' }, { id: 'food.drinks.water', name: '생수' }],
+      package_quantity: 2000, package_unit: 'ml', bundle_count: 6, display_unit: '2L×6' }];
+    api.previewImport.mockResolvedValueOnce({ ...PREVIEW_OK, total_rows: 1, valid_rows: 1,
+      normalized_targets: targets, diff: { added: 0, updated: 0, conflicts: 0, unchanged: 1,
+        total_incoming: 1, preview_rows: [{ match_key: 'existing-source-key', action: 'unchanged', category_id: null }] } });
+    api.confirmImport.mockResolvedValueOnce({ ...CONFIRM_OK, total_rows: 1, valid_rows: 1,
+      inserted: 0, updated: 0, conflicts: 0, skipped: 1, normalized_targets: targets });
+    renderPage();
+    fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), { dataTransfer: { files: [makeFile()] } });
+    fireEvent.click(screen.getByTestId('preview-btn'));
+    const review = await screen.findByRole('region', { name: '서버 검증 대상' });
+    expect(review.textContent).toContain('식품 → 음료 → 생수');
+    expect(review.textContent).toContain('food.drinks.water');
+    expect(review.textContent).toContain('prod-existing');
+    expect(review.textContent).toContain('var-existing');
+    expect(review.textContent).toContain('판매 규격: 2L×6');
+    expect(review.textContent).not.toContain('2000ml ×6');
+    expect(review.querySelector('input, select')).toBeNull();
+    fireEvent.click(screen.getByTestId('confirm-btn'));
+    await screen.findByTestId('result-counts');
+    expect(screen.getByRole('region', { name: '서버 검증 대상' }).textContent).toContain('var-existing');
+    expect(screen.getByRole('alert').textContent).toContain('변경 없음 · 기존 매칭 유지');
+    expect(screen.queryByText('분류 결과 적용 완료')).toBeNull();
+  });
+
+  it('preserves nonexact display contents and never presents a null scalar bookkeeping multiplier as sold quantity', async () => {
+    api.previewImport.mockResolvedValueOnce({ ...PREVIEW_OK, normalized_targets: [
+      { match_key: 'unknown-contents', public_product_id: 'prod-unknown', public_variant_id: 'var-unknown',
+        unified_category_id: 'food.fruit.grape', category_path: [{ id: 'food.fruit.grape', name: '포도' }],
+        package_quantity: null, package_unit: null, bundle_count: 1, display_unit: null },
+      { match_key: 'approximate-contents', public_product_id: 'prod-approximate', public_variant_id: 'var-approximate',
+        unified_category_id: 'food.fruit.grape', category_path: [{ id: 'food.fruit.grape', name: '포도' }],
+        package_quantity: null, package_unit: null, bundle_count: 1, display_unit: '씨없는블랙포도3.6kg내외' },
+      { match_key: 'known-scalar', public_product_id: 'prod-scalar', public_variant_id: 'var-scalar',
+        unified_category_id: 'food.drinks.water', category_path: [],
+        package_quantity: 2000, package_unit: 'ml', bundle_count: 6, display_unit: '' },
+    ] });
+    renderPage();
+    fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), { dataTransfer: { files: [makeFile()] } });
+    fireEvent.click(screen.getByTestId('preview-btn'));
+    const review = await screen.findByRole('region', { name: '서버 검증 대상' });
+    expect(review.textContent).toContain('판매 규격: 미확인');
+    expect(review.textContent).toContain('판매 규격: 씨없는블랙포도3.6kg내외');
+    expect(review.textContent).toContain('판매 규격: 2000ml ×6');
+    expect(review.textContent).not.toContain('미확인 ×1');
+    expect(review.textContent).not.toContain('3.6kg내외 ×1');
+  });
+
   it('shows conflicts from the matching diff', async () => {
     renderPage();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {

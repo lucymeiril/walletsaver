@@ -44,13 +44,17 @@ def _recent_dashboard_products(storage, limit: int = 8) -> list[dict]:
             ).fetchone() is not None
         ):
             rows = connection.execute(
-                "SELECT p.*, COALESCE((SELECT MAX(e.crawled_at) "
-                "FROM normalized_product_variants v "
-                "JOIN normalized_source_listings l ON l.public_variant_id=v.public_variant_id "
-                "JOIN normalized_offer_events e ON e.public_source_listing_id=l.public_source_listing_id "
-                "WHERE v.public_product_id=p.public_product_id AND v.is_active=1 "
-                "AND l.is_active=1 AND e.offer_state='active'), '') AS _dashboard_observed_at "
-                "FROM normalized_canonical_products p WHERE p.is_active=1 "
+                "WITH latest_observations AS ("
+                "SELECT v.public_product_id, MAX(e.crawled_at) AS observed_at "
+                "FROM normalized_offer_events e "
+                "JOIN normalized_source_listings l ON l.public_source_listing_id=e.public_source_listing_id "
+                "JOIN normalized_product_variants v ON v.public_variant_id=l.public_variant_id "
+                "WHERE e.offer_state='active' AND l.is_active=1 AND v.is_active=1 "
+                "GROUP BY v.public_product_id) "
+                "SELECT p.*, COALESCE(latest.observed_at, '') AS _dashboard_observed_at "
+                "FROM normalized_canonical_products p "
+                "LEFT JOIN latest_observations latest ON latest.public_product_id=p.public_product_id "
+                "WHERE p.is_active=1 "
                 "ORDER BY _dashboard_observed_at DESC, p.public_product_id DESC LIMIT ?",
                 (max(1, int(limit)),),
             ).fetchall()

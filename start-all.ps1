@@ -101,6 +101,8 @@ if ($TeamDemo) {
     $env:WALLETSAVIOR_BOARD_DB = Join-Path $DataDir "board.sqlite"
     $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
     $env:WALLETSAVIOR_WEEKLY_STATE_DB = Join-Path $DataDir "weekly_state.sqlite"
+    $env:WALLETSAVIOR_ORCHESTRATOR_DB = Join-Path $DataDir "orchestrator.sqlite"
+    $env:BACKUP_DIR = Join-Path $DataDir "backups"
     $env:OPINET_DB_PATH = Join-Path $DataDir "opinet.sqlite"
     $env:DB_ADMIN_URL = "http://127.0.0.1:8002"
     $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk"

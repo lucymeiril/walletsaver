@@ -14,6 +14,23 @@ from audit import AuditEventType
 from pipeline.pipeline import PipelineResult
 
 
+@pytest.mark.parametrize("configured,explicit,expected", [
+    (None, None, "default"),
+    ("  /separated/demo/orchestrator.db  ", None, "/separated/demo/orchestrator.db"),
+    ("  ", None, "default"),
+    ("/separated/demo/orchestrator.db", "/explicit/orchestrator.db", "/explicit/orchestrator.db"),
+])
+def test_orchestrator_store_external_path_selector(monkeypatch, configured, explicit, expected):
+    if configured is None:
+        monkeypatch.delenv("WALLETSAVIOR_ORCHESTRATOR_DB", raising=False)
+    else:
+        monkeypatch.setenv("WALLETSAVIOR_ORCHESTRATOR_DB", configured)
+    # Selecting the runtime location must not require creating a real management DB.
+    monkeypatch.setattr(orch.OrchestratorStore, "_init_schema", lambda self: None)
+    store = orch.OrchestratorStore(explicit)
+    assert store.db_path == (orch._DEFAULT_DB_PATH if expected == "default" else expected)
+
+
 @pytest.fixture
 def client(monkeypatch):
     monkeypatch.setenv("REQUIRE_AUTH", "false")

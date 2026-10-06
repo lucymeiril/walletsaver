@@ -79,6 +79,42 @@ function ErrorList({ errors = [], warnings = [] }) {
   );
 }
 
+function targetSpecification(target) {
+  const display = typeof target.display_unit === 'string' ? target.display_unit.trim() : '';
+  if (display) return display;
+  const unit = typeof target.package_unit === 'string' ? target.package_unit.trim() : '';
+  if (typeof target.package_quantity !== 'number' || !Number.isFinite(target.package_quantity)
+    || target.package_quantity <= 0 || !unit) return '미확인';
+  const scalar = `${target.package_quantity}${unit}`;
+  return Number.isInteger(target.bundle_count) && target.bundle_count > 0
+    ? `${scalar} ×${target.bundle_count}` : `${scalar} · 묶음 수 미확인`;
+}
+
+function NormalizedTargetReview({ targets }) {
+  if (!Array.isArray(targets) || targets.length === 0) return null;
+  return (
+    <Collapsible title={`서버 검증 통합 분류·규격 (${targets.length}건)`}>
+      <div role="region" aria-label="서버 검증 대상">
+        <p>기존 상품·규격에 연결된 매칭 대상입니다. 통합 분류는 기존 category_id와 별개이며, 여기서 대상을 변경하거나 상품을 생성하지 않습니다.</p>
+        {targets.map((target, index) => (
+          <div key={`${target.match_key}:${target.public_variant_id}:${index}`}>
+            <p><strong>{target.match_key}</strong></p>
+            <p>통합 경로: {Array.isArray(target.category_path) && target.category_path.length > 0
+              ? target.category_path.map(node => node.name || node.id).join(' → ') : '미확인'}</p>
+            <p>통합 분류 ID: {target.unified_category_id || '미확인'}</p>
+            <p>상품: {target.public_product_id || '미확인'} · 규격 ID: {target.public_variant_id || '미확인'}</p>
+            <p>판매 규격: {targetSpecification(target)}</p>
+          </div>
+        ))}
+      </div>
+    </Collapsible>
+  );
+}
+
+function importChanged(result) {
+  return Number(result.inserted || 0) + Number(result.updated || 0) > 0;
+}
+
 export default function ImportClassifiedPage() {
   const [step, setStep] = useState(0);
   const [file, setFile] = useState(null);
@@ -147,7 +183,7 @@ export default function ImportClassifiedPage() {
       );
       setResult(data);
       setStep(2);
-      if (data.ok) showToast('분류 결과 적용 완료', 'success');
+      if (data.ok) showToast(importChanged(data) ? '매칭 변경 적용 완료' : '변경 없음 · 기존 매칭 유지', importChanged(data) ? 'success' : 'info');
     } catch (error) {
       showToast(error.message || '적용 요청 실패', 'error');
     } finally {
@@ -302,6 +338,8 @@ export default function ImportClassifiedPage() {
             <ImportDiffTable rows={preview.diff?.preview_rows ?? []} maxRows={20} />
           </Collapsible>
 
+          <NormalizedTargetReview targets={preview.normalized_targets} />
+
           <p className={s.fileSummary}>
             파일: <strong>{file?.name}</strong> · 모드: <strong>{mode}</strong> · 총 {preview.total_rows}행 중 유효 {preview.valid_rows}행
           </p>
@@ -326,7 +364,7 @@ export default function ImportClassifiedPage() {
         <div className={s.card}>
           <div className={`${s.resultBanner} ${result.ok ? s.resultSuccess : s.resultError}`}>
             {result.ok
-              ? <><CheckCircle2 size={20} /> 적용 완료{result.idempotent ? ' (이미 적용됨)' : ''}</>
+              ? <><CheckCircle2 size={20} /> {importChanged(result) ? '매칭 변경 적용 완료' : '변경 없음 · 기존 매칭 유지'}{result.idempotent ? ' (이미 적용됨)' : ''}</>
               : <><AlertTriangle size={20} /> 적용 실패</>}
           </div>
 
@@ -342,6 +380,8 @@ export default function ImportClassifiedPage() {
               <ErrorList errors={result.errors} warnings={result.warnings} />
             </Collapsible>
           )}
+
+          <NormalizedTargetReview targets={result.normalized_targets} />
 
           {result.failure_csv_url && (
             <a

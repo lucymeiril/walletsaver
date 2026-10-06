@@ -21,8 +21,48 @@ import logging
 import os
 from pathlib import Path
 from typing import Optional, Callable
+from urllib.parse import unquote, urlsplit
 
 logger = logging.getLogger(__name__)
+
+
+def _environment_proxy() -> dict | None:
+    """Use the normal process proxy, without logging URL credentials."""
+    value = next((os.getenv(key, "").strip() for key in
+                  ("HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy")
+                  if os.getenv(key, "").strip()), "")
+    if not value:
+        return None
+    parsed = urlsplit(value)
+    if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+            or parsed.path not in {"", "/"} or parsed.query or parsed.fragment):
+        raise ValueError("Browser proxy must be an HTTP(S) proxy server URL")
+    proxy = {"server": f"{parsed.scheme}://{parsed.netloc.rsplit('@', 1)[-1]}"}
+    if parsed.username is not None:
+        proxy["username"] = unquote(parsed.username)
+    if parsed.password is not None:
+        proxy["password"] = unquote(parsed.password)
+    bypass = os.getenv("NO_PROXY", os.getenv("no_proxy", "")).strip()
+    if bypass:
+        proxy["bypass"] = bypass
+    return proxy
+
+
+async def rendered_challenge_marker(page) -> str | None:
+    """Inspect rendered visible text/widgets, never SDK scripts or raw markup."""
+    text = (await page.inner_text("body")).lower()
+    for marker in ("captcha", "recaptcha", "접근이 제한되었습니다", "로봇이 아닙니다",
+                   "access denied", "verify you are human", "verify that you are human"):
+        if marker in text:
+            return f"challenge detected: {marker}"
+    widgets = await page.query_selector_all(
+        'iframe[src*="recaptcha"], iframe[src*="hcaptcha"], '
+        'iframe[src*="captcha"], #awswaf-captcha-container'
+    )
+    for widget in widgets:
+        if await widget.is_visible():
+            return "challenge detected: visible captcha widget"
+    return None
 
 
 class PlaywrightHelper:
@@ -51,6 +91,7 @@ class PlaywrightHelper:
         self._viewport = viewport or {"width": 1920, "height": 1080}
         self._user_agent = user_agent
         self._browser_channel = browser_channel
+        self._browser_executable = os.getenv("CRAWLER_BROWSER_EXECUTABLE_PATH", "").strip() or None
         env_profile = os.getenv("CRAWLER_BROWSER_PROFILE_DIR")
         self._persistent_user_data_dir = Path(persistent_user_data_dir or env_profile) if (persistent_user_data_dir or env_profile) else None
         self._playwright = None
@@ -78,8 +119,13 @@ class PlaywrightHelper:
                 ],
                 **ctx_options,
             }
-            if self._browser_channel:
+            if self._browser_executable:
+                launch_options["executable_path"] = self._browser_executable
+            elif self._browser_channel:
                 launch_options["channel"] = self._browser_channel
+            proxy = _environment_proxy()
+            if proxy:
+                launch_options["proxy"] = proxy
             self._context = await self._playwright.chromium.launch_persistent_context(
                 str(self._persistent_user_data_dir),
                 **launch_options,
@@ -92,8 +138,13 @@ class PlaywrightHelper:
                     "--disable-dev-shm-usage",
                 ],
             }
-            if self._browser_channel:
+            if self._browser_executable:
+                launch_options["executable_path"] = self._browser_executable
+            elif self._browser_channel:
                 launch_options["channel"] = self._browser_channel
+            proxy = _environment_proxy()
+            if proxy:
+                launch_options["proxy"] = proxy
             self._browser = await self._playwright.chromium.launch(**launch_options)
             self._context = await self._browser.new_context(**ctx_options)
 
@@ -188,8 +239,8 @@ class PlaywrightHelper:
             html = await page.content()
             final_url = page.url
             status = response.status if response else None
-            lower = (html or "")[:20000].lower()
-            challenge = any(marker in lower for marker in ("captcha", "recaptcha", "awswaf", "aws-waf", "access denied"))
+            lower = (await page.inner_text("body")).lower()
+            challenge = await rendered_challenge_marker(page) is not None
             login_required = any(marker in lower for marker in ("로그인", "sign in", "login required"))
             return {
                 "url": url,

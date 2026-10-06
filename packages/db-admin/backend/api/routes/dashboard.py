@@ -1,6 +1,6 @@
 """대시보드 전용 API — 요약 카드, 긴급 알림, 신선도, 품질 점수"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, func, case, or_, literal
@@ -16,9 +16,83 @@ from storage.models import (
     Keyword,
     CrawlLog,
     CrawlStatus,
+    UnifiedCategory,
+    NormalizedCanonicalProduct,
+    NormalizedOfferEvent,
+    NormalizedSourceListing,
+    PendingIngestion,
 )
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
+
+
+def _utc_iso(value):
+    if value is None:
+        return None
+    return (value.replace(tzinfo=timezone.utc) if value.tzinfo is None
+            else value.astimezone(timezone.utc)).isoformat()
+
+
+def _normalized_dashboard_stats(session, now, total_products):
+    """Admin graph statistics, not public projection or checkout eligibility."""
+    active_products = session.scalar(select(func.count()).select_from(
+        NormalizedCanonicalProduct).where(NormalizedCanonicalProduct.is_active.is_(True))) or 0
+    total_offers = session.scalar(select(func.count()).select_from(NormalizedOfferEvent)) or 0
+    states = dict(session.execute(select(NormalizedOfferEvent.offer_state, func.count()).group_by(
+        NormalizedOfferEvent.offer_state)).all())
+    last_observation = session.scalar(select(func.max(NormalizedOfferEvent.crawled_at)))
+    last_crawl = session.scalar(select(func.max(CrawlLog.started_at)))
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    observed_today = session.scalar(select(func.count()).select_from(NormalizedOfferEvent).where(
+        NormalizedOfferEvent.crawled_at >= today, NormalizedOfferEvent.crawled_at <= now)) or 0
+    source_rows = session.execute(select(NormalizedSourceListing.source_name,
+        func.max(NormalizedOfferEvent.crawled_at), func.count(NormalizedOfferEvent.public_offer_event_id))
+        .outerjoin(NormalizedOfferEvent, NormalizedOfferEvent.public_source_listing_id ==
+                   NormalizedSourceListing.public_source_listing_id)
+        .group_by(NormalizedSourceListing.source_name)).all()
+    freshness = []
+    for source, stamp, count in source_rows:
+        hours = (now - stamp).total_seconds() / 3600 if stamp and stamp <= now else None
+        status = ("unknown" if hours is None else "fresh" if hours <= 24 else
+                  "warning" if hours <= 72 else "stale")
+        freshness.append({"source": source, "lastUpdate": _utc_iso(stamp),
+            "hoursSince": round(hours, 1) if hours is not None else None, "status": status,
+            "observationCount": count, "timestampScope": "source_observation"})
+    failures = session.scalars(select(CrawlLog).where(CrawlLog.status == CrawlStatus.FAILED,
+        CrawlLog.started_at >= now - timedelta(hours=24)).order_by(CrawlLog.started_at.desc()).limit(10)).all()
+    alerts = [{"id": row.id, "crawler": row.crawler_name,
+        "message": row.error_message or f"{row.crawler_name} 크롤링 실패",
+        "time": _utc_iso(row.started_at), "severity": "error"} for row in failures]
+    activities = []
+    for row in session.scalars(select(CrawlLog).order_by(CrawlLog.started_at.desc()).limit(10)):
+        state = {CrawlStatus.SUCCESS: "success", CrawlStatus.PARTIAL: "warning",
+                 CrawlStatus.FAILED: "error"}.get(row.status, "unknown")
+        activities.append((row.started_at, {"id": f"ri-{row.id}", "source": row.crawler_name,
+            "count": row.items_saved, "itemsFound": row.items_found, "itemsSaved": row.items_saved,
+            "date": row.started_at.strftime("%Y-%m-%d") if row.started_at else "",
+            "status": state, "activityKind": "crawl", "countKind": "saved"}))
+    for row in session.scalars(select(PendingIngestion).order_by(PendingIngestion.crawled_at.desc()).limit(10)):
+        activities.append((row.crawled_at, {"id": f"intake-{row.id}", "source": row.crawler_name,
+            "count": row.items_count, "date": row.crawled_at.strftime("%Y-%m-%d") if row.crawled_at else "",
+            "status": row.status.value if row.status else "unknown", "activityKind": "ingestion_receipt",
+            "countKind": "received"}))
+    activities.sort(key=lambda row: row[0] or datetime.min, reverse=True)
+    return {
+        "source_scope": "admin_normalized_catalog",
+        "snapshot_scope": "separate_public_projection_not_counted",
+        "publicSnapshotCounts": None,
+        "totalProducts": active_products, "totalPriceRecords": total_offers,
+        "totalCategories": session.scalar(select(func.count()).select_from(UnifiedCategory)) or 0,
+        "totalKeywords": session.scalar(select(func.count()).select_from(Keyword)) or 0,
+        "catalogCounts": {"products": {"total": total_products, "active": active_products,
+                                      "inactive": total_products - active_products}},
+        "offerStates": states, "lastUpdated": _utc_iso(last_observation), "lastCrawlAt": _utc_iso(last_crawl),
+        "qualityScore": None,
+        "qualityDetails": {"status": "unavailable", "reason": "normalized_quality_not_assessed",
+            "source_scope": "admin_normalized_catalog", "fillRate": None, "dupRate": None, "noCategoryRate": None},
+        "freshness": freshness, "alerts": alerts, "recentIngestions": [row[1] for row in activities[:10]],
+        "changes": {"products": None, "priceRecords": observed_today, "categories": None, "keywords": None},
+    }
 
 
 @router.get("/stats")
@@ -28,6 +102,9 @@ def dashboard_stats(identity: dict = Depends(require_viewer)):
     try:
         now = datetime.utcnow()
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        normalized_products = session.scalar(select(func.count()).select_from(NormalizedCanonicalProduct)) or 0
+        if normalized_products:
+            return _normalized_dashboard_stats(session, now, normalized_products)
 
         # ── 기본 카운트 ──
         total_products = (

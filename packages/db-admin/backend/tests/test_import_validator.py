@@ -21,7 +21,9 @@ from services.import_validator import (  # noqa: E402
     validate_lenient,
     validate_strict,
 )
-from storage.models import Base, Category, Keyword  # noqa: E402
+from storage.models import (Base, Category, Keyword, MatchingEntry,
+                            NormalizedCanonicalProduct, NormalizedProductVariant,
+                            UnifiedCategory)  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -114,6 +116,65 @@ def test_strict_rejects_missing_category(seeded_session):
     assert not result.is_valid
     assert result.valid_rows == []
     assert any("category_id" in message for _, message in result.errors)
+
+
+@pytest.fixture
+def normalized_mapping(seeded_session):
+    session = seeded_session
+    session.add_all([
+        UnifiedCategory(id="review.food", slug="food", name_ko="식품", level=0),
+        UnifiedCategory(id="review.food.coffee", parent_id="review.food", slug="coffee", name_ko="커피", level=1),
+        UnifiedCategory(id="review.food.coffee.capsule", parent_id="review.food.coffee", slug="capsule", name_ko="캡슐커피", level=2),
+        NormalizedCanonicalProduct(public_product_id="prod-review", canonical_name="캡슐커피 80개입", unified_category_id="review.food.coffee.capsule"),
+        NormalizedCanonicalProduct(public_product_id="prod-other", canonical_name="다른 상품", unified_category_id="review.food.coffee.capsule"),
+        NormalizedProductVariant(public_variant_id="var-review", public_product_id="prod-review", variant_name="80개입", package_quantity=80, package_unit="개", bundle_count=1),
+        MatchingEntry(match_key="__no_brand__|캡슐커피 80개입|80.0|ea", name_core="캡슐커피 80개입", pack_qty=80, pack_unit="개", public_product_id="prod-review", public_variant_id="var-review", confidence=0.9, source="external-ai"),
+    ])
+    session.flush()
+    row = _good_row(brand=None, name_core="캡슐커피 80개입", pack_qty=80, pack_unit="ea", category_id=None, public_product_id="prod-review", public_variant_id="var-review")
+    yield session, row
+    session.rollback()
+
+
+@pytest.mark.parametrize("validator", [validate_strict, validate_lenient])
+def test_normalized_existing_mapping_reviews_real_leaf_without_legacy_fk(normalized_mapping, validator):
+    session, row = normalized_mapping
+    result = validator([row], session)
+    assert result.is_valid and len(result.valid_rows) == 1
+    assert result.valid_rows[0]["category_id"] is None
+    target = result.normalized_targets[0]
+    assert target["public_variant_id"] == "var-review"
+    assert [node["name"] for node in target["category_path"]] == ["식품", "커피", "캡슐커피"]
+    assert (target["package_quantity"], target["package_unit"], target["bundle_count"]) == (80, "개", 1)
+    assert session.query(MatchingEntry).filter_by(public_product_id="prod-review").one().category_id is None
+
+
+@pytest.mark.parametrize("case", ["missing_variant", "cleared_refs", "crossed_product", "inactive_variant", "nonleaf", "missing_ancestor", "wrong_leaf", "wrong_quantity", "wrong_name", "new_key"])
+def test_normalized_import_cannot_retarget_or_invent_source_spec(normalized_mapping, case):
+    session, row = normalized_mapping
+    if case == "missing_variant": row["public_variant_id"] = None
+    elif case == "cleared_refs": row.update(public_product_id=None, public_variant_id=None, category_id="food.rice")
+    elif case == "crossed_product": row["public_product_id"] = "prod-other"
+    elif case == "inactive_variant": session.get(NormalizedProductVariant, "var-review").is_active = False
+    elif case == "nonleaf": session.get(NormalizedCanonicalProduct, "prod-review").unified_category_id = "review.food.coffee"
+    elif case == "missing_ancestor": session.get(UnifiedCategory, "review.food.coffee").parent_id = "absent"
+    elif case == "wrong_leaf": row["unified_category_id"] = "review.food"
+    elif case == "wrong_quantity": row["pack_qty"] = 81
+    elif case == "wrong_name": row["name_core"] = "다른 캡슐"
+    elif case == "new_key": row.update(brand="unreviewed", match_key="__no_brand__|캡슐커피 80개입|80.0|ea")
+    strict = validate_strict([row], session)
+    lenient = validate_lenient([row], session)
+    assert strict.errors and strict.valid_rows == []
+    assert lenient.errors and lenient.valid_rows == []
+
+
+def test_review_metadata_omission_preserves_existing_normalized_refs(normalized_mapping):
+    session, row = normalized_mapping
+    del row["public_product_id"], row["public_variant_id"]
+    result = validate_strict([row], session)
+    assert result.is_valid
+    assert "public_product_id" not in result.valid_rows[0]
+    assert result.normalized_targets[0]["public_product_id"] == "prod-review"
 
 
 def test_strict_rejects_unknown_or_inactive_category(seeded_session):

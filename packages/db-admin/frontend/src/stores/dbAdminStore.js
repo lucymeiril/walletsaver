@@ -1,12 +1,24 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
 
+let keywordRequest = 0;
+const keywordRefs = (data) => {
+  const refs = {};
+  for (const [camel, snake] of [['categoryId', 'category_id'], ['unifiedCategoryId', 'unified_category_id']]) {
+    if (data[snake] !== undefined) refs[snake] = data[snake] || null;
+    else if (data[camel] !== undefined) refs[snake] = data[camel] || null;
+  }
+  return refs;
+};
+
 const useDbAdminStore = create((set, get) => ({
   // Loading / Error — per-domain flags
   loading: false,
   error: null,
   loadingProducts: false,
   loadingCategories: false,
+  loadingUnifiedCategories: false,
+  unifiedCategoryError: null,
   loadingKeywords: false,
   loadingPrices: false,
   loadingAnalytics: false,
@@ -124,6 +136,21 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 카테고리 (트리 구조) ── */
   categories: [],
+  unifiedCategories: [],
+  fetchUnifiedCategories: async ({ signal } = {}) => {
+    set({ loadingUnifiedCategories: true, unifiedCategoryError: null });
+    try {
+      const data = await api.getUnifiedCategoryTree({ signal });
+      if (signal?.aborted) return;
+      if (!Array.isArray(data)) throw new Error('통합 분류 응답 형식 미확인');
+      const adapt = (nodes) => nodes.map(n => ({ ...n, name: n.name_ko, children: adapt(n.children || []) }));
+      set({ unifiedCategories: adapt(data), lastFetchedAt: { ...get().lastFetchedAt, unifiedCategories: Date.now() } });
+    } catch (err) {
+      if (err.name !== 'AbortError') set({ unifiedCategoryError: `통합 분류 로드 실패: ${err.message}` });
+    } finally {
+      set({ loadingUnifiedCategories: false });
+    }
+  },
   addCategory: async (parentId, category) => {
     const autoId = category.id || `cat-${category.name.replace(/\s+/g, '-')}-${Date.now()}`;
     try {
@@ -177,6 +204,7 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 키워드 ── */
   keywords: [],
+  keywordQuery: {},
   keywordPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
   keywordStats: { total: 0, unused_count: 0 },
 
@@ -186,11 +214,11 @@ const useDbAdminStore = create((set, get) => ({
     const apiData = {
       word,
       synonyms: kw.synonyms || [],
-      category_id: (kw.categoryId || kw.category_id) || null,
+      ...keywordRefs(kw),
     };
     try {
       await api.createKeyword(apiData);
-      await get().fetchKeywords();
+      await get().fetchKeywords(get().keywordQuery);
       await get().fetchKeywordStats();
       return { ok: true };
     } catch (err) {
@@ -206,13 +234,15 @@ const useDbAdminStore = create((set, get) => ({
     if (data.keyword !== undefined) apiData.word = data.keyword;
     if (data.word !== undefined) apiData.word = data.word;
     if (data.synonyms !== undefined) apiData.synonyms = data.synonyms;
-    if (data.categoryId !== undefined) apiData.category_id = data.categoryId;
-    if (data.category_id !== undefined) apiData.category_id = data.category_id;
+    Object.assign(apiData, keywordRefs(data));
+    if (typeof data.is_active === 'boolean') apiData.is_active = data.is_active;
     try {
       await api.updateKeyword(id, apiData);
-      await get().fetchKeywords();
+      await get().fetchKeywords(get().keywordQuery);
+      return { ok: true };
     } catch (err) {
       set({ error: `키워드 수정 실패: ${err.message}` });
+      return { ok: false, message: err.message };
     }
   },
   deleteKeyword: async (id) => {
@@ -220,14 +250,16 @@ const useDbAdminStore = create((set, get) => ({
       await api.deleteKeyword(id);
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
       await get().fetchKeywordStats();
+      return { ok: true };
     } catch (err) {
       set({ error: `키워드 삭제 실패: ${err.message}` });
+      return { ok: false, message: err.message };
     }
   },
   bulkDeleteKeywords: async (ids) => {
     try {
       const result = await api.bulkDeleteKeywords(ids);
-      await get().fetchKeywords();
+      await get().fetchKeywords(get().keywordQuery);
       await get().fetchKeywordStats();
       return result;
     } catch (err) {
@@ -237,16 +269,19 @@ const useDbAdminStore = create((set, get) => ({
   },
 
   fetchKeywords: async (params = {}, { signal } = {}) => {
-    set({ loadingKeywords: true, error: null });
+    const request = ++keywordRequest;
+    set({ loadingKeywords: true, error: null, keywordQuery: { ...params } });
     try {
       const data = await api.getKeywords(params, { signal });
+      if (request !== keywordRequest || signal?.aborted) return;
       const list = data.items ?? (Array.isArray(data) ? data : data.keywords ?? data.data ?? []);
       const mapped = list.map((kw) => ({
         ...kw,
         keyword: kw.keyword || kw.word || '',
         searchCount: kw.searchCount ?? kw.search_count ?? 0,
         synonyms: kw.synonyms || [],
-        categoryId: kw.categoryId || kw.category_id || '',
+        categoryId: kw.categoryId ?? kw.category_id ?? '',
+        unifiedCategoryId: kw.unifiedCategoryId ?? kw.unified_category_id ?? null,
         productCount: kw.productCount ?? kw.product_count ?? 0,
       }));
       set({
@@ -261,9 +296,9 @@ const useDbAdminStore = create((set, get) => ({
       });
     } catch (err) {
       if (err.name === 'AbortError') return;
-      set({ error: `키워드 로드 실패: ${err.message}` });
+      if (request === keywordRequest) set({ error: `키워드 로드 실패: ${err.message}` });
     } finally {
-      set({ loadingKeywords: false });
+      if (request === keywordRequest) set({ loadingKeywords: false });
     }
   },
 
@@ -447,8 +482,8 @@ const useDbAdminStore = create((set, get) => ({
     totalCategories: 0,
     totalKeywords: 0,
     lastUpdated: null,
-    qualityScore: 0,
-    qualityDetails: { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
+    qualityScore: null,
+    qualityDetails: null,
     recentIngestions: [],
     alerts: [],
     freshness: [],
@@ -462,13 +497,20 @@ const useDbAdminStore = create((set, get) => ({
       if (data) {
         set({
           dashboardStats: {
+            source_scope: data.source_scope ?? null,
+            snapshot_scope: data.snapshot_scope ?? null,
+            lastCrawlAt: data.lastCrawlAt ?? null,
+            offerStates: data.offerStates ?? null,
+            catalogCounts: data.catalogCounts ?? null,
+            publicSnapshotCounts: data.publicSnapshotCounts ?? null,
+            timestampScope: data.timestampScope ?? null,
             totalProducts: data.totalProducts ?? 0,
             totalPriceRecords: data.totalPriceRecords ?? 0,
             totalCategories: data.totalCategories ?? 0,
             totalKeywords: data.totalKeywords ?? 0,
             lastUpdated: data.lastUpdated ?? null,
-            qualityScore: data.qualityScore ?? 0,
-            qualityDetails: data.qualityDetails ?? { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
+            qualityScore: data.qualityScore ?? null,
+            qualityDetails: data.qualityDetails ?? null,
             recentIngestions: data.recentIngestions ?? [],
             alerts: data.alerts ?? [],
             freshness: data.freshness ?? [],

@@ -95,7 +95,7 @@ export default function OperatorDashboard() {
       <div className={s.quickRow}>
         <QuickBtn icon={FolderTree} label="카테고리 드릴다운 탐색" onClick={() => navigate('/explorer')} />
         <QuickBtn icon={Activity}   label="정합성 점검 실행"      onClick={() => navigate('/health-check')} />
-        <QuickBtn icon={Database}   label="외부 LLM 결과 업로드"  onClick={() => navigate('/triple-import')} />
+        <QuickBtn icon={Database}   label="외부 LLM 결과 업로드"  onClick={() => navigate('/import')} />
       </div>
     </div>
   );

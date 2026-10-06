@@ -70,6 +70,7 @@ def search_keywords(session: Session, query: str, limit: int = 10) -> list[dict]
             "word": kw.word,
             "search_count": kw.search_count,
             "category_id": kw.category_id,
+            "unified_category_id": kw.unified_category_id,
             "match_type": "prefix",
         })
 
@@ -91,6 +92,7 @@ def search_keywords(session: Session, query: str, limit: int = 10) -> list[dict]
                         "word": kw.word,
                         "search_count": kw.search_count,
                         "category_id": kw.category_id,
+                        "unified_category_id": kw.unified_category_id,
                         "match_type": "synonym",
                         "matched_synonym": syn,
                     })
@@ -108,6 +110,7 @@ def add_keyword(
     word: str,
     synonyms: Optional[list[str]] = None,
     category_id: Optional[str] = None,
+    unified_category_id: Optional[str] = None,
 ) -> dict:
     """키워드 추가 — 유효성 검사 후 이미 존재하는 단어라면 동의어/카테고리를 병합하여 갱신한다."""
     word = (word or "").strip()
@@ -134,6 +137,8 @@ def add_keyword(
         existing.synonyms = merged_syns
         if category_id:
             existing.category_id = category_id
+        if unified_category_id is not None:
+            existing.unified_category_id = unified_category_id
         session.commit()
         session.refresh(existing)
         return {
@@ -141,6 +146,7 @@ def add_keyword(
             "word": existing.word,
             "synonyms": existing.synonyms,
             "category_id": existing.category_id,
+            "unified_category_id": existing.unified_category_id,
             "merged": True,
         }
 
@@ -148,6 +154,7 @@ def add_keyword(
         word=word,
         synonyms=clean_synonyms,
         category_id=category_id,
+        unified_category_id=unified_category_id,
         search_count=0,
         is_active=True,
     )
@@ -159,6 +166,7 @@ def add_keyword(
         "word": kw.word,
         "synonyms": kw.synonyms,
         "category_id": kw.category_id,
+        "unified_category_id": kw.unified_category_id,
     }
 
 
@@ -186,6 +194,7 @@ def get_popular_keywords(session: Session, limit: int = 20) -> list[dict]:
             "word": kw.word,
             "search_count": kw.search_count,
             "category_id": kw.category_id,
+            "unified_category_id": kw.unified_category_id,
         }
         for kw in rows
     ]

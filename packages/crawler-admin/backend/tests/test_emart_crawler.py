@@ -42,6 +42,8 @@ def category_context():
         goto=AsyncMock(return_value=MagicMock(status=200)),
         wait_for_selector=AsyncMock(),
         content=AsyncMock(return_value="<html><body></body></html>"),
+        inner_text=AsyncMock(return_value=""),
+        query_selector_all=AsyncMock(return_value=[]),
         close=AsyncMock(),
     )
     return MagicMock(page=page, new_page=AsyncMock(return_value=page))
@@ -346,6 +348,12 @@ async def test_category_requests_are_spaced_360_seconds_and_saved_before_navigat
         async def content(self):
             return "<html><body></body></html>"
 
+        async def inner_text(self, selector):
+            return ""
+
+        async def query_selector_all(self, selector):
+            return []
+
         async def close(self):
             return None
 
@@ -492,6 +500,7 @@ async def test_failed_category_navigation_keeps_restart_cooldown(
         category_context.page.goto.return_value.status = failure
     elif failure == "challenge":
         category_context.page.content.return_value = "<html>access denied</html>"
+        category_context.page.inner_text.return_value = "access denied"
     else:
         category_context.page.goto.side_effect = (
             asyncio.CancelledError() if failure == "cancelled" else RuntimeError("network failed")
@@ -744,6 +753,12 @@ async def test_category_browser_stops_entire_run_on_first_block_response(
         async def content(self):
             return "<html><head><title>과일 - 이마트몰</title></head><body></body></html>"
 
+        async def inner_text(self, selector):
+            return ""
+
+        async def query_selector_all(self, selector):
+            return []
+
         async def close(self):
             return None
 
@@ -802,6 +817,12 @@ async def test_successful_category_advances_persistent_cursor(crawler):
         async def content(self):
             return category_html
 
+        async def inner_text(self, selector):
+            return "상품 목록"
+
+        async def query_selector_all(self, selector):
+            return []
+
         async def close(self):
             return None
 
@@ -835,6 +856,23 @@ async def test_successful_category_advances_persistent_cursor(crawler):
     assert result["next_category_id"] == expected_next_id
     restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
     assert restored._build_category_source_requests()[0]["category_id"] == expected_next_id
+
+
+@pytest.mark.parametrize("visible_text,blocked", [("상품 목록", False), ("Access denied", True)])
+@pytest.mark.asyncio
+async def test_category_sdk_is_not_challenge_but_visible_denial_stops(crawler, category_context, monkeypatch, visible_text, blocked):
+    html = CATEGORY_FIXTURE_HTML.read_text(encoding="utf-8")
+    category_context.page.content.return_value = html + '<script src="awswaf/captcha-sdk.js"></script>'
+    category_context.page.inner_text.return_value = visible_text
+    monkeypatch.setattr(crawler, "_wait_for_category_request_slot", AsyncMock(return_value=0))
+    items, diagnostics = await crawler._crawl_category_requests_in_context(
+        category_context, crawler._build_category_source_requests()[:1], _category_diagnostics())
+    assert diagnostics["blocked"] is blocked
+    assert len(items) == (0 if blocked else 2)
+    assert diagnostics["requests_attempted"] == 1
+    if blocked:
+        assert diagnostics["stop_reason"].startswith("challenge detected:")
+    category_context.page.close.assert_awaited_once()
 
 
 @pytest.mark.asyncio

@@ -219,6 +219,10 @@ export const api = {
   bulkUpdateCategory: (ids, categoryId, opts) =>
     postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }, opts),
 
+  getClassifiedMappings: (params = {}, opts) => {
+    const qs = new URLSearchParams(params).toString();
+    return get(`${API_BASE}/import/classified/mappings${qs ? `?${qs}` : ''}`, opts);
+  },
   getMatchingRules: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/matching-rules${qs ? `?${qs}` : ''}`, opts);
@@ -228,6 +232,7 @@ export const api = {
   updateMatchingRule: (id, data, opts) => putJson(`${API_BASE}/matching-rules/${id}`, data, opts),
   deleteMatchingRule: (id, opts) => del(`${API_BASE}/matching-rules/${id}`, opts),
 
+  getUnifiedCategoryTree: (opts) => get(`${API_BASE}/categories/unified/tree`, opts),
   getCategories: (opts) => get(`${API_BASE}/categories/`, opts),
   createCategory: (data, opts) => postJson(`${API_BASE}/categories/`, data, opts),
   updateCategory: (id, data, opts) => putJson(`${API_BASE}/categories/${id}`, data, opts),

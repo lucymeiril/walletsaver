@@ -279,6 +279,7 @@ def _existing_submission_result(submission_key: str) -> dict | None:
             "id": row.id,
             "items_count": row.items_count,
             "quality_score": row.quality_score,
+            "current_status": row.status.value,
             "idempotent": True,
         }
     finally:
@@ -360,6 +361,7 @@ def _submit_ingestion_idempotent_impl(body, identity: dict) -> dict:
                     "id": row.id,
                     "items_count": row.items_count,
                     "quality_score": quality_score,
+                    "current_status": row.status.value,
                     "idempotent": False,
                 }
 
@@ -407,6 +409,9 @@ def _submit_ingestion_idempotent_impl(body, identity: dict) -> dict:
         return {
             "id": row["id"],
             "status": "pending",
+            # Legacy status acknowledges the intake target; this field reports
+            # the persisted review state, including already-approved retries.
+            "current_status": row["current_status"],
             "quality_score": row["quality_score"],
             "idempotent": bool(row.get("idempotent")),
         }
@@ -414,6 +419,7 @@ def _submit_ingestion_idempotent_impl(body, identity: dict) -> dict:
     return {
         "ids": [row["id"] for row in created_rows],
         "status": "pending",
+        "current_statuses": [row["current_status"] for row in created_rows],
         "chunks": len(created_rows),
         "chunk_size": _core.INGESTION_SERVER_CHUNK_SIZE,
         "total_items": len(body.items),

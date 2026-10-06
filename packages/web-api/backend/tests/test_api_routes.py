@@ -695,3 +695,54 @@ def test_mart_sql_read_does_not_block_health_and_preserves_lotte_alias(client, a
     marts = client.get("/api/marts").json()["data"]
     assert [mart["key"] for mart in marts] == ["emart", "homeplus", "lotte", "costco"]
     assert all(mart["deals_count"] == 1 for mart in marts)
+
+
+def test_dashboard_recent_observations_keep_active_order_without_per_product_scan():
+    from contextlib import contextmanager
+    from types import SimpleNamespace
+    from api.app import _recent_dashboard_products
+    db = sqlite3.connect(":memory:")
+    db.row_factory = sqlite3.Row
+    db.executescript("""
+        CREATE TABLE normalized_canonical_products(public_product_id TEXT PRIMARY KEY, is_active INTEGER);
+        CREATE TABLE normalized_product_variants(public_variant_id TEXT PRIMARY KEY, public_product_id TEXT, is_active INTEGER);
+        CREATE TABLE normalized_source_listings(public_source_listing_id TEXT PRIMARY KEY, public_variant_id TEXT, is_active INTEGER);
+        CREATE TABLE normalized_offer_events(public_offer_event_id TEXT PRIMARY KEY, public_source_listing_id TEXT, offer_state TEXT, crawled_at TEXT);
+        CREATE INDEX ix_norm_offer_state ON normalized_offer_events(offer_state);
+    """)
+    for i in range(400):
+        key = f"p{i:03}"
+        db.execute("INSERT INTO normalized_canonical_products VALUES (?,1)", (key,))
+        db.execute("INSERT INTO normalized_product_variants VALUES (?,?,1)", (key,key))
+        db.execute("INSERT INTO normalized_source_listings VALUES (?,?,1)", (key,key))
+        db.execute("INSERT INTO normalized_offer_events VALUES (?,?,'active','2026-01-01')", (key,key))
+    db.execute("UPDATE normalized_offer_events SET crawled_at='2026-02-01' WHERE public_offer_event_id IN ('p398','p399')")
+    # Newer held observations/inactive graph nodes must not win recency.
+    db.execute("INSERT INTO normalized_offer_events VALUES ('held','p000','pending_review','2030-01-01')")
+    db.execute("INSERT INTO normalized_product_variants VALUES ('inactive-v','p001',0)")
+    db.execute("INSERT INTO normalized_source_listings VALUES ('inactive-v','inactive-v',1)")
+    db.execute("INSERT INTO normalized_offer_events VALUES ('inactive-v','inactive-v','active','2030-01-01')")
+    db.execute("INSERT INTO normalized_source_listings VALUES ('inactive-l','p002',0)")
+    db.execute("INSERT INTO normalized_offer_events VALUES ('inactive-l','inactive-l','active','2030-01-01')")
+    db.execute("UPDATE normalized_canonical_products SET is_active=0 WHERE public_product_id='p397'")
+    db.execute("INSERT INTO normalized_canonical_products VALUES ('empty',1)")
+    ticks = 0
+    def bounded_work():
+        nonlocal ticks
+        ticks += 1
+        return ticks > 200  # Fail quadratic scans, independent of wall-clock speed.
+    db.set_progress_handler(bounded_work, 1000)
+    @contextmanager
+    def connection():
+        yield db
+    catalog = SimpleNamespace(connection=connection,
+        _table=lambda conn, name: True,
+        _normalized_product=lambda conn, row, include_all: {'id':row['public_product_id']})
+    try:
+        result = _recent_dashboard_products(SimpleNamespace(catalog=catalog), limit=3)
+        assert [row['id'] for row in result] == ['p399','p398','p396']
+        assert result[0]['observed_at'] == '2026-02-01'
+        result = _recent_dashboard_products(SimpleNamespace(catalog=catalog), limit=405)
+        assert len(result) == 400 and result[-1] == {'id':'empty','observed_at':''}
+    finally:
+        db.close()

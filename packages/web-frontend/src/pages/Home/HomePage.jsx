@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
+import { api } from '../../services/api';
+import { buildCartPayload, getProductSelection, selectProductOffer } from '../../utils/productActions';
+import { getOfferConditionText, getObservedOfferPriceText } from '../../utils/productDecision';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useModalStore from '../../stores/modalStore';
@@ -32,11 +35,12 @@ function normalizeMartItems(data) {
   const raw = Array.isArray(data) ? data : data?.items || data?.data || [];
   const list = Array.isArray(raw) ? raw : [];
   return list.map(d => ({
+    ...d,
     name: d.name || d.title || '',
-    sale: d.price ?? d.sale ?? d.sale_price ?? 0,
+    sale: d.price ?? d.sale ?? d.sale_price ?? null,
     orig: d.original_price ?? d.orig ?? d.origin_price ?? 0,
     disc: d.discount_rate ?? d.disc ?? d.discount ?? 0,
-    event: d.event || d.promotion || '할인',
+    event: d.event || d.promotion || d.event_name || '가격 관측',
   }));
 }
 
@@ -82,7 +86,7 @@ export default function HomePage() {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
     recentSearches, addRecentSearch, clearRecentSearches,
-    addToShoppingList, addToast, setLocation,
+    addToast, setLocation,
     savedLocation, setSavedLocation,
     hotdealerMode,
   } = useStore();
@@ -318,6 +322,34 @@ export default function HomePage() {
     navigate(`/price/${p.id}`);
   }, [navigate, setSelectedProduct, addRecentSearch]);
 
+  const resolveSelectedProduct = async (product) => {
+    if (product.variants?.length || (!product.public_product_id && !Object.hasOwn(product, 'best_offer'))) return product;
+    const productId = product.product_id || product.id;
+    const selection = { variantId: product.variant_id, listingId: product.listing_id, offerId: product.offer_id };
+    if (!productId || !selection.variantId || !selection.listingId || !selection.offerId)
+      throw new Error('규격·판매처·거래 선택을 확인할 수 없습니다');
+    const result = await api.getJson(`/api/products/${encodeURIComponent(productId)}`);
+    const detail = result?.data || result;
+    if (detail?.id !== productId || !getProductSelection(detail, selection))
+      throw new Error('선택한 판매처 거래가 변경되었습니다. 목록을 다시 불러와 주세요');
+    return selectProductOffer(detail, selection);
+  };
+
+  const addSelectedToCart = async (product) => {
+    try {
+      const selected = await resolveSelectedProduct(product);
+      const saved = await addCartItem(buildCartPayload(selected));
+      if (saved !== false) addToast(`${product.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+    } catch (error) {
+      addToast(error.message || '장바구니 저장에 실패했습니다', 'error');
+    }
+  };
+
+  const openSelectedMartProduct = async (product) => {
+    try { openProductDetailModal(await resolveSelectedProduct(product)); }
+    catch (error) { addToast(error.message || '상품 상세를 불러오지 못했습니다', 'error'); }
+  };
+
   const quickTags = ['양파', '삼겹살', '계란', '휘발유', '사과', '우유'];
 
   const activeMartInfo = useMemo(() => MARTS.find(m => m.key === martTab), [martTab]);
@@ -546,7 +578,7 @@ export default function HomePage() {
         <div className={s.secHead}>
           <div>
             <h2 className={s.secTitle}>🔥 오늘의 핫딜 TOP 3</h2>
-            <p className={s.secDesc}>할인율 기준 실시간 최고의 딜</p>
+            <p className={s.secDesc}>등록된 할인율 기준 · 현재 구매 조건은 원문 확인</p>
           </div>
           <button className={s.secMore} onClick={() => navigate('/hotdeal')}>전체보기 <ArrowRight size={14} /></button>
         </div>
@@ -559,7 +591,7 @@ export default function HomePage() {
         ) : topHotdeals.length === 0 ? (
           <SectionEmpty
             title="오늘 표시할 핫딜이 아직 모이지 않았어요"
-            hint="크롤러가 첫 데이터를 적재 중일 수 있어요. 잠시 후 새로고침해 주세요."
+            hint="현재 연결된 핫딜 자료가 없습니다."
             actionLabel="전체 핫딜 보기"
             onAction={() => navigate('/hotdeal')}
           />
@@ -620,7 +652,7 @@ export default function HomePage() {
         <div className={s.secHead}>
           <div>
             <h2 className={s.secTitle}>오늘의 물가</h2>
-            <p className={s.secDesc}>카테고리별 평균 · 최저가 비교</p>
+            <p className={s.secDesc}>상품별 규격과 출처 조건 · 같은 단위끼리 비교</p>
           </div>
           <button className={s.secMore} onClick={() => navigate('/price')}>전체보기 <ArrowRight size={14} /></button>
         </div>
@@ -654,27 +686,18 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        ) : categorySummary.length > 0 ? (
-          <SectionEmpty
-            title="모든 카테고리의 가격이 아직 적재되지 않았어요"
-            hint="크롤링 → AI 매칭 파이프가 첫 가격 데이터를 수집 중입니다. 잠시 후 새로고침해 주세요."
-            actionLabel="전체 물가 페이지로 이동"
-            onAction={() => navigate('/price')}
-          />
         ) : (
           <div className={s.priceGrid}>
-            {products.filter(p => {
-              const price = p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0;
-              return price > 0;
-            }).slice(0, 8).map(p => {
-              const price = p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0;
-              const avg = p.avg ?? price;
+            {categorySummary.length > 0 && <p role="status">카테고리별 비교 통계 미확인 · 상품 규격을 선택해 같은 단위끼리 비교하세요.</p>}
+            {products.slice(0, 8).map(p => {
+              const price = p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? null;
+              const avg = p.avg ?? null;
               const diff = price - avg;
               const pct = avg > 0 ? ((diff / avg) * 100).toFixed(1) : '0.0';
               let trend = 'same', icon = <Minus size={12} />;
               if (avg > 0 && diff < -avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
               else if (avg > 0 && diff > avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
-              const fav = isFavorite(p.id);
+
               return (
                 <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
                   <div className={s.priceCardTop}>
@@ -684,25 +707,24 @@ export default function HomePage() {
                         className={s.cartSmall}
                         onClick={(e) => {
                           e.stopPropagation();
-                          addToShoppingList({ ...p, productId: p.id, price, unit: p.unit, icon: p.icon });
-                          addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                          addSelectedToCart(p);
                         }}
                         title="장보기에 추가"
                       >
                         🛒
                       </button>
                       <button
-                        className={`${s.favBtn} ${fav ? s.favActive : ''}`}
-                        onClick={(e) => { e.stopPropagation(); fav ? removeFavorite(p.id) : addFavorite(p.id); }}
-                        title={fav ? '관심 해제' : '관심 등록'}
+                        className={s.favBtn}
+                        onClick={(e) => { e.stopPropagation(); openProductDetailModal(p); }}
+                        title="규격을 선택해 찜하기"
                       >
-                        <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
+                        <Heart size={14} />
                       </button>
                     </div>
                   </div>
-                  <div className={s.priceCardName}>{p.name} ({p.unit})</div>
+                  <div className={s.priceCardName}>{p.name}{p.unit ? ` (${p.unit})` : ''}</div>
                   <div className={s.priceCardPrice}>
-                    {price > 0 ? `${fmt(price)}원` : '가격 미정'}
+                    {price > 0 ? getObservedOfferPriceText(p.best_offer, price) : '현재 가격 미확인'}
                   </div>
                   {price > 0 && avg > 0 && (
                     <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
@@ -710,10 +732,10 @@ export default function HomePage() {
                 </div>
               );
             })}
-            {products.filter(p => (p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0) > 0).length === 0 && (
+            {products.length === 0 && (
               <SectionEmpty
                 title="물가 데이터가 아직 없어요"
-                hint="크롤러/매칭 파이프가 첫 적재 중일 수 있어요."
+                hint="표시할 상품 자료가 없습니다."
                 actionLabel="전체 물가 페이지로 이동"
                 onAction={() => navigate('/price')}
               />
@@ -811,24 +833,23 @@ export default function HomePage() {
           <div className={s.martSaleGrid}>
             {activeMartItems.slice(0, 4).map((item, i) => (
               <div key={item.id || item.name || `mart-${i}`} className={s.martSaleCard} onClick={() => {
-                const productData = { ...item, martKey: martTab, martName: activeMartInfo?.name };
-                navigate(`/mart?mart=${encodeURIComponent(martTab)}&product=${encodeURIComponent(item.id || item.name)}`);
-                openMartModal(productData);
+                openSelectedMartProduct({ ...item, martKey: martTab, martName: activeMartInfo?.name });
               }}>
                 <div className={s.martSaleName}>{item.name}</div>
                 <div className={s.martSalePrices}>
-                  <span className={s.martSalePrice}>{item.sale ? `${fmt(item.sale)}원` : '가격 미정'}</span>
+                  <span className={s.martSalePrice}>{item.sale > 0 ? getObservedOfferPriceText(item.best_offer, item.sale) : '현재 가격 미확인'}</span>
                   {item.orig > 0 && <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>}
                   {item.disc > 0 && <span className={s.martSaleDisc}>-{item.disc}%</span>}
                 </div>
+                {item.display_unit && <div>{item.display_unit}</div>}
+                {item.best_offer && <div>{getOfferConditionText(item.best_offer)}</div>}
                 <div className={s.martSaleBottom}>
                   <span className={s.martSaleEvent}>{activeMartInfo?.name} · {item.event}</span>
                   <button
                     className={s.cartSmall}
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToShoppingList({ ...item, icon: '🏪', martKey: martTab, martName: activeMartInfo?.name });
-                      addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                      addSelectedToCart({ ...item, martKey: martTab, martName: activeMartInfo?.name });
                     }}
                     title="장보기에 추가"
                   >

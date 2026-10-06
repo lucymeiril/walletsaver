@@ -13,9 +13,11 @@ import io
 import json
 import logging
 import uuid
+import math
 from typing import Optional
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, Query
+from sqlalchemy import select, func, or_
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from api.auth import require_moderator
@@ -33,6 +35,36 @@ logger = logging.getLogger(__name__)
 MAX_IMPORT_FILE_BYTES: int = 50 * 1024 * 1024
 _confirmed_traces: dict[str, dict] = {}
 _failure_rows_store: dict[str, list[tuple[int, str]]] = {}
+
+
+@router.get("/classified/mappings")
+def normalized_matching_mappings(
+    page: int = Query(1, ge=1), per_page: int = Query(25, ge=1, le=100),
+    q: str = Query("", max_length=200),
+) -> dict:
+    """Read the actual normalized source-key mappings, separate from old rules."""
+    from storage.models import MatchingEntry, NormalizedCanonicalProduct, NormalizedProductVariant
+
+    with managed_session() as session:
+        filters = [MatchingEntry.public_product_id.isnot(None)]
+        if q.strip():
+            filters.append(or_(MatchingEntry.match_key.contains(q.strip(), autoescape=True),
+                               MatchingEntry.name_core.contains(q.strip(), autoescape=True)))
+        total = session.scalar(select(func.count()).select_from(MatchingEntry).where(*filters)) or 0
+        rows = session.execute(select(
+            MatchingEntry.match_key, MatchingEntry.public_product_id, MatchingEntry.public_variant_id,
+            MatchingEntry.source, MatchingEntry.confidence,
+            NormalizedCanonicalProduct.canonical_name, NormalizedCanonicalProduct.unified_category_id,
+            NormalizedCanonicalProduct.is_active.label("product_active"),
+            NormalizedProductVariant.variant_name, NormalizedProductVariant.display_unit,
+            NormalizedProductVariant.package_quantity, NormalizedProductVariant.package_unit,
+            NormalizedProductVariant.bundle_count,
+            NormalizedProductVariant.is_active.label("variant_active"),
+        ).outerjoin(NormalizedCanonicalProduct, MatchingEntry.public_product_id == NormalizedCanonicalProduct.public_product_id)
+         .outerjoin(NormalizedProductVariant, MatchingEntry.public_variant_id == NormalizedProductVariant.public_variant_id)
+         .where(*filters).order_by(MatchingEntry.id).offset((page - 1) * per_page).limit(per_page)).mappings().all()
+        return {"items": [dict(row) for row in rows], "total": total,
+                "page": page, "per_page": per_page, "total_pages": max(1, math.ceil(total / per_page))}
 
 
 def _parse_uploaded_file(content: bytes, filename: str) -> list[dict]:
@@ -188,6 +220,7 @@ async def preview_import(
             "total_rows": len(rows),
             "valid_rows": len(result.valid_rows),
             "diff": _diff_to_summary(diff),
+            "normalized_targets": result.normalized_targets,
             "errors": [{"row": row, "message": message} for row, message in result.errors],
             "warnings": result.warnings,
         },
@@ -251,6 +284,7 @@ async def confirm_import(
             else None
         ),
         "idempotent": False,
+        "normalized_targets": result.normalized_targets,
     }
     _confirmed_traces[effective_trace_id] = response_body
     return JSONResponse(status_code=200, content=response_body)

@@ -17,14 +17,14 @@ from services.autocomplete import (
     get_popular_keywords,
     suggest_categories,
 )
-from storage.models import Keyword, Product
+from storage.models import Keyword, Product, Category, UnifiedCategory
 
 from api.security import (
     escape_like, make_error,
     MAX_KEYWORD_LEN, MAX_CATEGORY_ID_LEN, MAX_SYNONYM_COUNT, MAX_BULK_IDS,
 )
 
-ALLOWED_KEYWORD_SORT_FIELDS = {"word", "search_count", "is_active", "id", "category_id"}
+ALLOWED_KEYWORD_SORT_FIELDS = {"word", "search_count", "is_active", "id", "category_id", "unified_category_id"}
 
 router = APIRouter(prefix="/keywords", tags=["keywords"])
 
@@ -33,17 +33,49 @@ class KeywordCreate(BaseModel):
     word: str = Field(..., min_length=1, max_length=MAX_KEYWORD_LEN)
     synonyms: Optional[list[str]] = Field(None, max_length=MAX_SYNONYM_COUNT)
     category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
+    unified_category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
 
 
 class KeywordUpdate(BaseModel):
     word: Optional[str] = Field(None, min_length=1, max_length=MAX_KEYWORD_LEN)
     synonyms: Optional[list[str]] = Field(None, max_length=MAX_SYNONYM_COUNT)
     category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
+    unified_category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
     is_active: Optional[bool] = None
 
 
 class BulkDeleteRequest(BaseModel):
     ids: Optional[list[int]] = Field(None, max_length=MAX_BULK_IDS)
+
+
+def _validate_keyword_category_refs(session, changes: dict) -> None:
+    """Validate explicit namespaces without changing an omitted reference."""
+    legacy = changes.get("category_id")
+    if legacy is not None and session.get(Category, legacy) is None:
+        raise HTTPException(422, "Unknown legacy category_id")
+    unified = changes.get("unified_category_id")
+    if unified is None:
+        return
+    leaf = session.get(UnifiedCategory, unified)
+    if leaf is None:
+        raise HTTPException(422, "Unknown unified_category_id")
+    if session.execute(select(UnifiedCategory.id).where(
+            UnifiedCategory.parent_id == unified).limit(1)).scalar_one_or_none() is not None:
+        raise HTTPException(422, "unified_category_id must reference a leaf")
+    chain, seen = [], set()
+    node = leaf
+    while node is not None:
+        if node.id in seen or len(chain) >= 4:
+            raise HTTPException(422, "Invalid unified category ancestry")
+        seen.add(node.id)
+        chain.append(node)
+        if node.parent_id is None:
+            break
+        node = session.get(UnifiedCategory, node.parent_id)
+        if node is None:
+            raise HTTPException(422, "Missing unified category ancestor")
+    if any(node.level != level for level, node in enumerate(reversed(chain))):
+        raise HTTPException(422, "Invalid unified category level")
 
 
 @router.get("/")
@@ -52,6 +84,7 @@ def list_keywords(
     per_page: int = 20,
     q: str = "",
     category_id: Optional[str] = None,
+    unified_category_id: Optional[str] = None,
     sort_by: str = "search_count",
     sort_dir: str = "desc",
     show_unused: bool = False,
@@ -72,6 +105,9 @@ def list_keywords(
 
         if category_id:
             base = base.where(Keyword.category_id == category_id)
+        if unified_category_id is not None:
+            _validate_keyword_category_refs(session, {"unified_category_id": unified_category_id})
+            base = base.where(Keyword.unified_category_id == unified_category_id)
 
         if show_unused:
             base = base.where(Keyword.search_count == 0)
@@ -109,6 +145,7 @@ def list_keywords(
                 "word": kw.word,
                 "synonyms": kw.synonyms or [],
                 "category_id": kw.category_id,
+                "unified_category_id": kw.unified_category_id,
                 "search_count": kw.search_count,
                 "is_active": kw.is_active,
                 "product_count": product_counts.get(kw.category_id, 0),
@@ -163,6 +200,7 @@ def keyword_search(q: str = "", limit: int = 10, identity: dict = Depends(requir
 def create_keyword(body: KeywordCreate, identity: dict = Depends(require_moderator)):
     """키워드 추가 — 유효성 검사 실패 시 422, 중복 시 409 반환."""
     with managed_session() as session:
+        _validate_keyword_category_refs(session, body.model_dump())
         existing = session.execute(
             select(Keyword).where(Keyword.word == body.word)
         ).scalar_one_or_none()
@@ -174,7 +212,8 @@ def create_keyword(body: KeywordCreate, identity: dict = Depends(require_moderat
             )
 
         try:
-            return add_keyword(session, body.word, body.synonyms, body.category_id)
+            return add_keyword(session, body.word, body.synonyms, body.category_id,
+                               unified_category_id=body.unified_category_id)
         except ValueError:
             raise HTTPException(**make_error("VALIDATION_ERROR", 422))
 
@@ -235,7 +274,9 @@ def update_keyword(keyword_id: int, body: KeywordUpdate, identity: dict = Depend
         kw = session.get(Keyword, keyword_id)
         if not kw:
             raise HTTPException(404, "Keyword not found")
-        for key, val in body.model_dump(exclude_unset=True).items():
+        changes = body.model_dump(exclude_unset=True)
+        _validate_keyword_category_refs(session, changes)
+        for key, val in changes.items():
             setattr(kw, key, val)
         session.flush()
         session.refresh(kw)
@@ -244,7 +285,9 @@ def update_keyword(keyword_id: int, body: KeywordUpdate, identity: dict = Depend
             "word": kw.word,
             "synonyms": kw.synonyms or [],
             "category_id": kw.category_id,
+            "unified_category_id": kw.unified_category_id,
             "search_count": kw.search_count,
+            "is_active": kw.is_active,
         }
 
 

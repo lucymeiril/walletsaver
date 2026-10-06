@@ -6,6 +6,7 @@ import asyncio
 import inspect
 import json
 import logging
+import os
 import sqlite3
 import threading
 import uuid
@@ -104,7 +105,9 @@ def _now_iso() -> str:
 class OrchestratorStore:
     """SQLite 기반 영속 스토어 — 스케줄, 런, ad-hoc 요청."""
 
-    def __init__(self, db_path: str = _DEFAULT_DB_PATH) -> None:
+    def __init__(self, db_path: str | None = None) -> None:
+        if db_path is None:
+            db_path = os.getenv("WALLETSAVIOR_ORCHESTRATOR_DB", "").strip() or _DEFAULT_DB_PATH
         self.db_path = db_path
         self._is_memory = db_path == ":memory:"
         if self._is_memory:

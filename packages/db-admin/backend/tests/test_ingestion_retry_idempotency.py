@@ -123,6 +123,29 @@ def test_same_retry_identity_reuses_pending_ingestion(ingestion_db):
         assert json.loads(rows[0].items_json)[0]["name"] == "테스트 상품"
 
 
+def test_reviewed_capture_retry_reports_persisted_state_without_reset(ingestion_db):
+    body = _body("ingrun-reviewed-retry")
+    first = ingestion_routes._submit_ingestion_idempotent_impl(body, {"role": "service"})
+    assert first["current_status"] == "pending"
+    with ingestion_db.begin() as session:
+        row = session.get(PendingIngestion, first["id"])
+        row.status = IngestionStatus.APPROVED
+        row.db_reviewer_notes = "source-bound review retained"
+        before = (row.items_json, row.crawled_at, dict(row.quality_details))
+
+    replay = ingestion_routes._submit_ingestion_idempotent_impl(body, {"role": "service"})
+    assert replay["id"] == first["id"]
+    assert replay["idempotent"] is True
+    assert replay["current_status"] == "approved"
+    assert replay["status"] == "pending"  # Existing acknowledgement contract.
+    with ingestion_db() as session:
+        assert session.query(PendingIngestion).count() == 1
+        row = session.get(PendingIngestion, first["id"])
+        assert row.status == IngestionStatus.APPROVED
+        assert row.db_reviewer_notes == "source-bound review retained"
+        assert (row.items_json, row.crawled_at, row.quality_details) == before
+
+
 def test_new_crawler_run_with_same_items_creates_new_submission(ingestion_db):
     first = ingestion_routes._submit_ingestion_idempotent_impl(
         _body("ingrun-first"),
