@@ -517,3 +517,54 @@ async def test_storage_counts_only_actual_acknowledgements_without_ambiguous_ret
     client.post.assert_awaited_once()
     if body.get("saved") is True or body.get("status") == "ok":
         assert any("acknowledgement" in error for error in errors)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('saved', [0, 1])
+async def test_source_partial_keeps_prior_rows_once_and_preserves_submission_status(saved):
+    rows = [{'name': '이미 수집한 원문 상품', 'sale_price': 1200, 'source_record_key': 'retained-native'}]
+    registry = _registry(rows)
+    registry._registry['test_crawler']['config']['schedule']['retry_count'] = 3
+    crawler = registry.get_crawler.return_value
+    source_quality = {'source_stopped': True, 'source_stop_status': 429, 'source_stop_reason': 'http_access_denied'}
+    crawler.crawl.return_value = CrawlResult(status=CrawlStatus.PARTIAL, crawler_name='test_crawler',
+        items=rows, items_count=1, error_msg='HTTP 429; source run stopped', quality_details=source_quality)
+    events = MagicMock(publish=AsyncMock())
+    pipeline = CrawlPipeline(registry=registry, event_bus=events)
+    with patch('pipeline.pipeline.enrich_items_with_matching_entries', side_effect=_matching_passthrough), patch.object(
+        pipeline, '_store_to_ingestion', new_callable=AsyncMock, return_value=saved
+    ) as store:
+        result = await pipeline.run_crawler('test_crawler')
+    crawler.crawl.assert_awaited_once()
+    store.assert_awaited_once()
+    assert store.await_args.kwargs['crawl_status'] == 'partial'
+    assert store.await_args.kwargs['items'][0]['source_record_key'] == 'retained-native'
+    assert result.status == ('partial_failure' if saved else 'failed')
+    assert result.items_found == result.items_valid == 1 and result.items_saved == saved
+    assert result.quality_details['source_collection'] == {'status': 'partial', 'error': 'HTTP 429; source run stopped'}
+    assert result.quality_details['source_quality_details'] == source_quality
+    assert result.quality_details['delivery']['target'] == 'pending_review'
+    assert result.quality_details['delivery']['status'] == result.status
+    assert 'source_collection_partial' in result.quality_details['alerts']
+    assert any('partial source collection' in error for error in result.errors)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('shape', ['strategy429', 'homeplus_structured', 'explicit_source_stop'])
+async def test_failed_explicit_source_access_stop_is_not_a_whole_collector_retry(shape):
+    registry = _registry([])
+    registry._registry['test_crawler']['config']['schedule']['retry_count'] = 3
+    quality = ({'fetch': {'source_distribution': {'access_stop': {'http_status': 429, 'reason': 'explicit_source_access_denial'}}}}
+               if shape == 'homeplus_structured' else {'source_stopped': True, 'source_stop_status': 202} if shape == 'explicit_source_stop' else {})
+    failures = [StrategyFailure(strategy_name='requests', error_type=ErrorType.HTTP_ERROR, error_msg='HTTP429', status_code=429)] if shape == 'strategy429' else []
+    crawler = registry.get_crawler.return_value
+    crawler.crawl.return_value = CrawlResult(status=CrawlStatus.FAILED, crawler_name='test_crawler',
+        error_msg='explicit source stop', quality_details=quality, errors=failures)
+    pipeline = CrawlPipeline(registry=registry, event_bus=MagicMock(publish=AsyncMock()))
+    with patch.object(pipeline, '_store_to_ingestion', new_callable=AsyncMock) as store:
+        result = await pipeline.run_crawler('test_crawler')
+    crawler.crawl.assert_awaited_once()
+    store.assert_not_awaited()
+    assert result.status == 'failed' and result.items_saved == 0
+    assert result.quality_details['source_quality_details'] == quality
+    assert any('not retrying' in error for error in result.errors)

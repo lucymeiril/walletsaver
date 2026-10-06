@@ -3,15 +3,24 @@ import { api } from '../../api/client';
 import styles from './RunHistory.module.css';
 
 const STATUS_LABELS = {
-  success: '성공',
-  partial: '부분 성공',
+  success: '수집·저장 완료',
+  partial: '부분 완료',
+  partial_failure: '부분 완료',
   failed: '실패',
   running: '실행 중',
 };
 
-function StatusBadge({ status }) {
-  const cls = styles[`badge_${status}`] || styles.badge_default;
-  return <span className={`${styles.badge} ${cls}`}>{STATUS_LABELS[status] || status}</span>;
+const countText = value => typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : '미확인';
+
+function StatusBadge({ run }) {
+  const incomplete = run.status === 'success' && !(typeof countText(run.items_found) === 'number' && run.items_found > 0
+    && typeof countText(run.items_saved) === 'number' && run.items_saved > 0
+    && (!Object.hasOwn(run, 'items_valid') || (typeof countText(run.items_valid) === 'number' && run.items_valid > 0)));
+  const styleStatus = run.status === 'partial_failure' || incomplete ? 'partial' : run.status;
+  const cls = styles[`badge_${styleStatus}`] || styles.badge_default;
+  return <span className={`${styles.badge} ${cls}`} title={`서버 실행 상태: ${run.status}`}>
+    {incomplete ? '완료 확인 미충족' : STATUS_LABELS[run.status] || `상태 미확인 (${run.status || '미기록'})`}
+  </span>;
 }
 
 export default function RunHistory() {
@@ -81,6 +90,7 @@ export default function RunHistory() {
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>실행 히스토리</h1>
+      <p>실행 기록의 발견·유효·저장 진단입니다. 저장 수는 검토 승인·공개 업데이트 수를 뜻하지 않습니다. 미기록 수치는 미확인으로 표시합니다.</p>
 
       <div className={styles.filters}>
         <select value={pluginFilter} onChange={(e) => setPluginFilter(e.target.value)}>
@@ -91,8 +101,9 @@ export default function RunHistory() {
         </select>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="">모든 상태</option>
-          <option value="success">성공</option>
-          <option value="partial">부분 성공</option>
+          <option value="success">수집·저장 완료</option>
+          <option value="partial">부분 완료 (partial)</option>
+          <option value="partial_failure">부분 완료 (partial_failure)</option>
           <option value="failed">실패</option>
           <option value="running">실행 중</option>
         </select>
@@ -113,13 +124,15 @@ export default function RunHistory() {
               <th>시작시각</th>
               <th>종료시각</th>
               <th>수집건수</th>
+              <th>유효건수</th>
               <th>저장건수</th>
+              <th>실행 진단</th>
               <th>작업</th>
             </tr>
           </thead>
           <tbody>
             {runs.length === 0 && (
-              <tr><td colSpan={8} className={styles.empty}>실행 이력이 없습니다.</td></tr>
+              <tr><td colSpan={10} className={styles.empty}>실행 이력이 없습니다.</td></tr>
             )}
             {runs.map((run) => (
               <Fragment key={run.run_id}>
@@ -129,11 +142,14 @@ export default function RunHistory() {
                 >
                   <td className={styles.mono}>{run.run_id}</td>
                   <td>{run.plugin_name}</td>
-                  <td><StatusBadge status={run.status} /></td>
+                  <td><StatusBadge run={run} /></td>
                   <td>{run.started_at || '-'}</td>
                   <td>{run.finished_at || '-'}</td>
-                  <td>{run.items_found ?? 0}</td>
-                  <td>{run.items_saved ?? 0}</td>
+                  <td>{countText(run.items_found)}</td>
+                  <td>{countText(run.items_valid)}</td>
+                  <td>{countText(run.items_saved)}</td>
+                  <td>{Array.isArray(run.failure_reasons) && run.failure_reasons.length > 0
+                    ? <ul>{run.failure_reasons.map((reason, index) => <li key={index}>{String(reason)}</li>)}</ul> : '진단 미기록'}</td>
                   <td>
                     {run.status === 'failed' && (
                       <button className={styles.retry} onClick={(e) => retry(run.run_id, e)}>
@@ -144,7 +160,7 @@ export default function RunHistory() {
                 </tr>
                 {expandedId === run.run_id && (
                   <tr>
-                    <td colSpan={8} className={styles.logPanel}>
+                    <td colSpan={10} className={styles.logPanel}>
                       {logDetail ? (
                         <div>
                           <div className={styles.logTitle}>로그</div>

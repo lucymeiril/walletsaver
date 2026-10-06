@@ -186,6 +186,147 @@ async def test_requests_waf_result_is_failed_without_fake_success(monkeypatch):
     assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize('denial', [401, 403, 429, 202])
+@pytest.mark.parametrize('prior_success', [False, True])
+async def test_requests_access_stop_ends_whole_source_run(monkeypatch, html, denial, prior_success):
+    import requests
+    html = html.replace('생수/음료', '생수ㆍ음료').replace('계란/유제품', '정육ㆍ계란')
+    calls, sessions, closes, sleeps, queued = [], [], [], [], []
+    denied_body = '<html><body>awswaf challenge: access denied</body></html>' if denial == 202 else '<html><body>Denied</body></html>'
+
+    class Response:
+        def __init__(self, status, body):
+            self.status_code, self.text, self.content = status, body, body.encode()
+
+    class Session:
+        def __init__(self):
+            sessions.append(self)
+
+        def get(self, url, **kwargs):
+            calls.append(url)
+            return Response(200, html) if prior_success and len(calls) == 1 else Response(denial, denied_body)
+
+        def close(self):
+            closes.append(self)
+
+    async def sleep(delay):
+        sleeps.append((len(calls), delay))
+
+    crawler = LottemartCrawler()
+    crawler._source_requests_override = [{'query': f'category-{index}', 'page': 1,
+        'request_type': 'html_category', 'url': f'https://lottemartzetta.com/categories/fixture-{index}'} for index in range(4)]
+    monkeypatch.setattr(requests, 'Session', Session)
+    monkeypatch.setattr('asyncio.sleep', sleep)
+    monkeypatch.setattr('crawlers.marts.lottemart.crawler.time.sleep', lambda delay: pytest.fail('denied response must not retry'))
+    monkeypatch.setattr(crawler, '_queue_waf_blocked_category', lambda *args: queued.append(args))
+    monkeypatch.setattr(crawler, '_clear_waf_blocked_category', lambda *args: None)
+    result = await crawler.crawl()
+    expected_calls = 2 if prior_success else 1
+    assert len(calls) == expected_calls and sessions == closes and len(sessions) == 1
+    assert all(at_call < expected_calls for at_call, _ in sleeps)
+    assert result.status.name == ('PARTIAL' if prior_success else 'FAILED')
+    assert result.quality_details['source_stopped'] is True
+    assert result.quality_details['source_stop_status'] == denial
+    assert result.quality_details['source_stop_reason'] == ('aws_waf_challenge' if denial == 202 else 'http_access_denied')
+    assert result.errors[-1].status_code == denial
+    assert len(queued) == (1 if denial == 202 else 0)
+    if prior_success:
+        assert {row['attributes']['mart_native_code']: row['sale_price'] for row in result.items} == {
+            '8801045440040': 2990, '8809214203632': 6990}
+    else:
+        assert result.items == [] and result.items_count == 0
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('first_kind', ['sdk_only200', 'ordinary500'])
+async def test_requests_access_stop_preserves_sdk_and_ordinary_error_controls(monkeypatch, html, first_kind):
+    import requests
+    html = html.replace('생수/음료', '생수ㆍ음료').replace('계란/유제품', '정육ㆍ계란')
+    calls = []
+
+    class Response:
+        def __init__(self, status, body):
+            self.status_code, self.text, self.content = status, body, body.encode()
+
+    def get(session, url, **kwargs):
+        calls.append(url)
+        if len(calls) == 1:
+            return Response(200, html + '<script>awsWafCookieDomainList=[];captchaSDK={};</script>') if first_kind == 'sdk_only200' else Response(500, 'ordinary error')
+        return Response(200, html)
+
+    async def no_wait(delay):
+        pass
+
+    crawler = LottemartCrawler()
+    crawler._source_requests_override = [{'query': f'page-{index}', 'page': 1,
+        'request_type': 'html_search', 'url': f'https://lottemartzetta.com/fixture-{index}'} for index in range(2)]
+    monkeypatch.setattr(requests.Session, 'get', get)
+    monkeypatch.setattr('asyncio.sleep', no_wait)
+    result = await crawler.crawl()
+    assert len(calls) == 2 and result.status.name == 'SUCCESS' and result.items
+    assert 'source_stopped' not in result.quality_details and not result.quality_details['fetch'].get('blocked')
+    assert [failure.status_code for failure in result.errors] == ([500] if first_kind == 'ordinary500' else [])
+
+
+def test_request_helper_429_returns_first_denial_without_backoff(monkeypatch):
+    calls = []
+
+    class Response:
+        status_code = 429
+
+    class Session:
+        def get(self, url, **kwargs):
+            calls.append(url)
+            return Response()
+
+    monkeypatch.setattr('crawlers.marts.lottemart.crawler.time.sleep', lambda delay: pytest.fail('429 must not back off for another request'))
+    response = LottemartCrawler()._retry_request('https://lottemartzetta.com/fixture', session=Session(), max_retries=3)
+    assert response.status_code == 429 and len(calls) == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('kind', ['sdk_only202', 'header_challenge202'])
+async def test_requests_202_stops_without_inventing_sdk_waf(monkeypatch, kind):
+    import requests
+    calls, closes, queued = [], [], []
+
+    class Response:
+        status_code = 202
+        text = '<html><script>awsWafCookieDomainList=[];captchaSDK={};</script><body></body></html>'
+        content = text.encode()
+        headers = {'x-amzn-waf-action': 'challenge'} if kind == 'header_challenge202' else {}
+
+    class Session:
+        def get(self, url, **kwargs):
+            calls.append(url)
+            return Response()
+
+        def close(self):
+            closes.append(True)
+
+    async def forbidden_sleep(delay):
+        pytest.fail('202 stop must not wait for another request')
+
+    crawler = LottemartCrawler()
+    crawler._source_requests_override = [{'query': f'category-{index}', 'page': 1,
+        'request_type': 'html_category', 'url': f'https://lottemartzetta.com/fixture-{index}'} for index in range(2)]
+    monkeypatch.setattr(requests, 'Session', Session)
+    monkeypatch.setattr('asyncio.sleep', forbidden_sleep)
+    monkeypatch.setattr(crawler, '_queue_waf_blocked_category', lambda *args: queued.append(args))
+    result = await crawler.crawl()
+    assert len(calls) == 1 and closes == [True] and result.status.name == 'FAILED'
+    assert result.quality_details['source_stopped'] is True and result.quality_details['source_stop_status'] == 202
+    if kind == 'sdk_only202':
+        assert result.quality_details['source_stop_reason'] == 'nonproduct_response'
+        assert result.quality_details['fetch']['nonproduct_response'] is True
+        assert not result.quality_details['fetch'].get('blocked') and queued == []
+        assert 'AWS WAF' not in result.errors[0].error_msg
+    else:
+        assert result.quality_details['source_stop_reason'] == 'aws_waf_challenge'
+        assert result.quality_details['fetch']['blocked'] is True and len(queued) == 1
+
+
 _API_PRODUCT_SAMPLE = {
     "productId": "8660fc78-ce61-42f8-856e-645d9984ef30",
     "retailerProductId": "OS8809251334528",

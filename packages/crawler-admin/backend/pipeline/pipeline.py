@@ -30,7 +30,7 @@ from services.matching_enrichment import enrich_items_with_matching_entries
 
 logger = logging.getLogger(__name__)
 ProgressCallback = Callable[[dict[str, Any]], Any]
-NON_RETRYABLE_CRAWL_HTTP_STATUSES = frozenset({400, 401, 403, 404})
+NON_RETRYABLE_CRAWL_HTTP_STATUSES = frozenset({400, 401, 403, 404, 429})
 
 DB_ADMIN_API_URL = os.getenv(
     "DB_ADMIN_API_URL",
@@ -167,6 +167,9 @@ class CrawlPipeline:
                 # live collection evidence or trigger another provider attempt.
                 if crawl_result.quality_details.get("fixture_fallback") is True:
                     break
+                if crawl_result.status == CrawlStatus.PARTIAL:
+                    errors.append(f"partial source collection: {crawl_result.error_msg or 'source run incomplete'}")
+                    break  # Preserve these rows; do not repeat the whole supplier.
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
                 errors.append(f"attempt {attempt}: status={crawl_result.status.value}")
@@ -177,6 +180,14 @@ class CrawlPipeline:
                         if failure.status_code in NON_RETRYABLE_CRAWL_HTTP_STATUSES
                     }
                 )
+                source_quality = crawl_result.quality_details
+                access_stop = ((source_quality.get("fetch") or {}).get("source_distribution") or {}).get("access_stop") or {}
+                if access_stop.get("http_status") in {401, 403, 429}:
+                    non_retryable_statuses.append(access_stop["http_status"])
+                    non_retryable_statuses = sorted(set(non_retryable_statuses))
+                if source_quality.get("source_stopped") is True and not non_retryable_statuses:
+                    errors.append("not retrying explicit source-run stop")
+                    break
                 if non_retryable_statuses:
                     errors.append(
                         "not retrying non-retryable HTTP status: "
@@ -241,7 +252,7 @@ class CrawlPipeline:
             ))
             return result
 
-        if crawl_result is None or crawl_result.status != CrawlStatus.SUCCESS:
+        if crawl_result is None or crawl_result.status not in {CrawlStatus.SUCCESS, CrawlStatus.PARTIAL}:
             await self._emit_progress(
                 progress_callback,
                 stage="failed",
@@ -252,6 +263,8 @@ class CrawlPipeline:
                 crawl_result.error_msg if crawl_result else "all retries failed",
                 start,
                 errors,
+                quality_details={"source_collection": {"status": crawl_result.status.value},
+                                 "source_quality_details": crawl_result.quality_details} if crawl_result else None,
             )
 
         raw_items = crawl_result.items or []
@@ -339,6 +352,9 @@ class CrawlPipeline:
         )
         quality_details = {
             **quality_details,
+            "source_collection": {"status": crawl_result.status.value,
+                                  "error": crawl_result.error_msg},
+            "source_quality_details": crawl_result.quality_details,
             "deduplicated_count": deduplicated_count,
             "matching": {
                 "hits": matching_hits,
@@ -371,7 +387,7 @@ class CrawlPipeline:
             else:
                 items_saved = await self._store_to_ingestion(
                     crawler_name=crawler_name,
-                    crawl_status="success",
+                    crawl_status=crawl_result.status.value,
                     items=items,
                     schema_type=model_type,
                     strategy_used=crawl_result.strategy_used,
@@ -383,7 +399,7 @@ class CrawlPipeline:
 
         final_status = (
             "failed" if items_valid == 0 or items_saved == 0
-            else "partial_failure" if items_saved < items_valid
+            else "partial_failure" if items_saved < items_valid or crawl_result.status == CrawlStatus.PARTIAL
             else "success"
         )
         quality_details["delivery"] = {
@@ -392,6 +408,10 @@ class CrawlPipeline:
             "attempted": items_valid,
             "acknowledged": items_saved,
         }
+        if crawl_result.status == CrawlStatus.PARTIAL:
+            quality_details["alerts"].append("source_collection_partial")
+            quality_details["quality_summary"]["status"] = "failing" if final_status == "failed" else "warning"
+            quality_details["quality_summary"]["registered_vs_collecting"] = quality_details["quality_summary"]["status"]
         if items_valid and items_saved < items_valid:
             message = f"storage acknowledged {items_saved} of {items_valid} valid items"
             errors.append(message)
@@ -702,6 +722,7 @@ class CrawlPipeline:
         message: str,
         start: float,
         errors: list[str] | None = None,
+        quality_details: dict | None = None,
     ) -> PipelineResult:
         all_errors = list(errors or [])
         all_errors.append(message)
@@ -710,7 +731,7 @@ class CrawlPipeline:
             self.event_bus.publish(
                 Event(
                     event_type=CRAWL_FAILED,
-                    data={"crawler_name": crawler_name, "error": message},
+                    data={"crawler_name": crawler_name, "error": message, "quality_details": quality_details or {}},
                     source="pipeline",
                 )
             )
@@ -720,4 +741,5 @@ class CrawlPipeline:
             status="failed",
             duration=duration,
             errors=all_errors,
+            quality_details=quality_details,
         )

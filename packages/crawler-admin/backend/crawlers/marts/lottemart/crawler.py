@@ -160,11 +160,6 @@ class LottemartCrawler(CrawlerContract):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
                 last_resp = resp
-                if resp.status_code == 429 and attempt < max_retries - 1:  # Only back off before another allowed read
-                    wait = (2 ** attempt)
-                    logger.warning(f"[{self.info.name}] rate limited (429), retrying in {wait:.1f}s")
-                    time.sleep(wait)
-                    continue
                 return resp
             except (requests.exceptions.ConnectionError,
                     requests.exceptions.Timeout) as e:
@@ -743,9 +738,9 @@ class LottemartCrawler(CrawlerContract):
         last_status_code: int | None = None
         last_bytes = 0
         previous_category_fingerprints: list[set[tuple[str, ...]]] = []
-        category_html_blocked = False
         category_requests_attempted = 0
-        consecutive_category_waf = 0
+        source_stop_status: int | None = None
+        source_stop_reason: str | None = None
 
         session = requests.Session()
         try:
@@ -763,10 +758,6 @@ class LottemartCrawler(CrawlerContract):
                 if not isinstance(category_path_hint, list):
                     category_path_hint = [category_hint] if category_hint else []
                 request_type = str(source_request.get("request_type") or "html_search")
-                if request_type == "html_category" and category_html_blocked:
-                    logger.info("[롯데마트] %s skipped: previous category HTML request hit WAF", query)
-                    continue
-
                 try:
                     pages_in_source = 0
                     while True:
@@ -819,7 +810,9 @@ class LottemartCrawler(CrawlerContract):
                         last_bytes = len(response.content)
 
                         if response.status_code != 200:
-                            is_waf = response.status_code in {202, 403, 429} and self._is_aws_waf_challenge(response.text)
+                            waf_action = str((getattr(response, 'headers', None) or {}).get('x-amzn-waf-action', '')).lower()
+                            is_waf = response.status_code in {202, 403, 429} and (
+                                waf_action in {'challenge', 'captcha'} or self._is_aws_waf_challenge(response.text))
                             suffix = " (AWS WAF challenge)" if is_waf else ""
                             message = f"{query} p{page_num} HTTP {response.status_code}{suffix}"
                             logger.warning("[롯데마트] %s", message)
@@ -830,6 +823,10 @@ class LottemartCrawler(CrawlerContract):
                                 error_msg=message,
                                 status_code=response.status_code,
                             ))
+                            if response.status_code in {202, 401, 403, 429}:
+                                source_stop_status = response.status_code
+                                source_stop_reason = ('aws_waf_challenge' if is_waf else
+                                    'nonproduct_response' if response.status_code == 202 else 'http_access_denied')
                             if is_waf:
                                 waf_blocker = self._waf_blocker_details(
                                     message,
@@ -841,23 +838,6 @@ class LottemartCrawler(CrawlerContract):
                                 )
                                 if request_type == "html_category":
                                     self._queue_waf_blocked_category(source_request, response.status_code)
-                                    consecutive_category_waf += 1
-                                    cooldown = self._category_group_cooldown()
-                                    logger.warning(
-                                        "[롯데마트] category HTML blocked at %s; closing session and cooling down %.2fs (consecutive=%d)",
-                                        query,
-                                        cooldown,
-                                        consecutive_category_waf,
-                                    )
-                                    session.close()
-                                    session = requests.Session()
-                                    await _asyncio.sleep(cooldown)
-                                    if consecutive_category_waf >= 3:
-                                        category_html_blocked = True
-                                        logger.warning(
-                                            "[롯데마트] stopping category HTML after %d consecutive WAF blocks",
-                                            consecutive_category_waf,
-                                        )
                             break
 
                         if request_type == "product_pages":
@@ -872,7 +852,6 @@ class LottemartCrawler(CrawlerContract):
                             page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
                             next_page_token = None
                             if request_type == "html_category":
-                                consecutive_category_waf = 0
                                 self._clear_waf_blocked_category(url)
                         page_items = [item for item in page_items if self._is_food_item(item)]
                         if request_type == "html_category":
@@ -952,8 +931,10 @@ class LottemartCrawler(CrawlerContract):
                     message = f"{query} p{page_num}: {type(exc).__name__}: {exc}"
                     logger.warning("[롯데마트] %s", message)
                     errors.append(message)
+                    if source_stop_status is not None:
+                        break
                     continue
-                if waf_blocker and (request_type != "html_category" or category_html_blocked):
+                if source_stop_status is not None:
                     break
 
             valid_items = await self.validate(all_items)
@@ -990,11 +971,22 @@ class LottemartCrawler(CrawlerContract):
             }
             if waf_blocker:
                 self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+            if source_stop_status is not None:
+                quality_details.update(source_stopped=True, source_stop_reason=source_stop_reason,
+                                       source_stop_status=source_stop_status)
+                if source_stop_reason != 'nonproduct_response':
+                    quality_details['fetch']['blocked'] = True
+                else:
+                    quality_details['fetch']['nonproduct_response'] = True
+                if not waf_blocker and source_stop_reason != 'nonproduct_response':
+                    quality_details['fetch']['blocker'] = f'http_{source_stop_status}'
             quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
+            if source_stop_status is not None and valid_items:
+                status = CrawlStatus.PARTIAL
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
@@ -1446,9 +1438,14 @@ class LottemartCrawler(CrawlerContract):
         )
 
     def _is_aws_waf_challenge(self, html: str) -> bool:
-        """Return true for CloudFront/AWS WAF challenge shells, not product pages."""
-        sample = (html or "")[:5000].lower()
-        return "awswaf" in sample or "aws-waf" in sample or "aws waf" in sample
+        """Visible vendor challenge evidence; script SDK names alone do not prove WAF."""
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html or '', 'html.parser')
+        for element in soup.select('script, style, noscript'):
+            element.decompose()
+        visible = soup.get_text(' ', strip=True).lower()
+        return (any(marker in visible for marker in ('awswaf', 'aws-waf', 'aws waf'))
+                and any(marker in visible for marker in ('challenge', 'captcha', 'access denied', 'request blocked')))
 
     def _waf_blocker_details(
         self,

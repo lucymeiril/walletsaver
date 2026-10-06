@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { act, cleanup, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 vi.mock('../api/client', () => ({
   api: {
@@ -33,6 +33,59 @@ function seed(wafBlockedCount) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+});
+
+afterEach(() => { cleanup(); vi.useRealTimers(); });
+
+describe('Crawlers pipeline outcome diagnostics', () => {
+  async function finish(data) {
+    vi.useFakeTimers();
+    seed(0);
+    api.runCrawler.mockResolvedValue({ status: 'running' });
+    api.getCrawlerStatus.mockResolvedValue(data);
+    render(<Crawlers />);
+    await act(async () => {});
+    fireEvent.click(screen.getByRole('button', { name: '실행', exact: true }));
+    await act(async () => {});
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+  }
+
+  it.each(['partial', 'partial_failure'])('finishes %s once with source-stop counts and no approval claim', async status => {
+    await finish({ status, items_found: 5, items_valid: 4, items_saved: 2, duration: 1.2,
+      errors: ['Source access stopped after HTTP429'], quality_details: {
+        delivery: { target: 'pending_review', acknowledged: 2 },
+        operator_diagnostics: [{ message: 'Remaining source context not collected.' }],
+      } });
+    const message = screen.getByText(/부분 완료 — 발견 5건, 유효 4건, 저장 2건/);
+    expect(message.parentElement.parentElement.className).toContain('runResultFail');
+    expect(screen.getByText('Source access stopped after HTTP429')).toBeInTheDocument();
+    expect(screen.getByText('Remaining source context not collected.')).toBeInTheDocument();
+    expect(screen.getByText('저장 대상: 검토 대기 접수 · 승인·공개 반영 미확인')).toBeInTheDocument();
+    expect(screen.queryByText(/✅ 수집·저장 단계 완료/)).not.toBeInTheDocument();
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+    expect(api.getCrawlerStatus).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    [{ status: 'success', items_found: 0, items_valid: 0, items_saved: 0, errors: [] }, /완료 확인 미충족 — 발견 0건, 유효 0건, 저장 0건/],
+    [{ status: 'failed', items_found: 3, items_valid: 0, items_saved: 0, errors: ['validation rejected all collected items'] }, /수집·저장 실패 — 발견 3건, 유효 0건, 저장 0건/],
+    [{ status: 'success', items_found: 3, items_saved: 2, errors: [] }, /완료 확인 미충족 — 발견 3건, 유효 미확인, 저장 2건/],
+  ])('keeps zero or missing acknowledgement diagnostics honest (%s)', async (data, text) => {
+    await finish(data);
+    const message = screen.getByText(text);
+    expect(message.parentElement.parentElement.className).toContain('runResultFail');
+    expect(screen.queryByText(/✅ 수집·저장 단계 완료/)).not.toBeInTheDocument();
+    expect(screen.getByText('중복 미확인')).toBeInTheDocument();
+    if (data.errors.length) expect(screen.getByText(data.errors[0])).toBeInTheDocument();
+  });
+
+  it('shows positive validated pending-review acknowledgement without calling it catalog approval', async () => {
+    await finish({ status: 'success', items_found: 3, items_valid: 2, items_saved: 2, errors: [],
+      quality_details: { delivery: { target: 'pending_review' } } });
+    const message = screen.getByText(/✅ 수집·저장 단계 완료 — 발견 3건, 유효 2건, 저장 2건/);
+    expect(message.parentElement.parentElement.className).toContain('runResultSuccess');
+    expect(screen.getByText('저장 대상: 검토 대기 접수 · 승인·공개 반영 미확인')).toBeInTheDocument();
+  });
 });
 
 describe('Crawlers 페이지 - 현재 WAF 보류 재시도 계약', () => {

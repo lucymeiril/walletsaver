@@ -26,7 +26,19 @@ const MART_LABELS = {
   lottemart: '롯데마트',
   costco: '코스트코',
 };
-const SUCCESS_STATUSES = new Set(['success', 'partial_failure']);
+const TERMINAL_STATUSES = new Set(['success', 'partial', 'partial_failure', 'failed', 'cancelled']);
+
+const firstCount = (...values) => values.find(value => typeof value === 'number' && Number.isInteger(value) && value >= 0) ?? null;
+const countText = value => value == null ? '미확인' : `${value.toLocaleString()}건`;
+
+function runDiagnostics(data) {
+  const quality = data.quality_details || {};
+  return [...new Set([
+    ...(Array.isArray(data.errors) ? data.errors : []), data.error,
+    quality.zero_result_diagnostic?.message,
+    ...(Array.isArray(quality.operator_diagnostics) ? quality.operator_diagnostics.map(item => item.message) : []),
+  ].filter(value => typeof value === 'string' && value.trim()))];
+}
 
 function inferMart(crawler) {
   const haystack = `${crawler.id || ''} ${crawler.name || ''}`.toLowerCase();
@@ -40,21 +52,12 @@ function buildCounterSummary(data = {}, crawler) {
   const mart = data.mart || inferMart(crawler);
   const errors = Array.isArray(data.errors)
     ? data.errors.length
-    : (data.error_count ?? quality.error_count ?? 0);
-  const found = data.total_collected
-    ?? data.items_found
-    ?? data.items_count
-    ?? data.source_raw_count
-    ?? quality.source_raw_count
-    ?? data.total
-    ?? 0;
-  const valid = data.items_valid ?? data.valid_items ?? data.new_items ?? 0;
-  const saved = data.items_saved ?? data.saved_items ?? 0;
-  const duplicates = data.duplicates
-    ?? data.duplicate_count
-    ?? data.deduplicated_count
-    ?? quality.deduplicated_count
-    ?? 0;
+    : firstCount(data.error_count, quality.error_count);
+  const found = firstCount(data.total_collected, data.items_found, data.items_count,
+    data.source_raw_count, quality.source_raw_count, data.total);
+  const valid = firstCount(data.items_valid, data.valid_items);
+  const saved = firstCount(data.items_saved, data.saved_items);
+  const duplicates = firstCount(data.duplicates, data.duplicate_count, data.deduplicated_count, quality.deduplicated_count);
 
   return { mart, total: found, valid, saved, duplicates, errors };
 }
@@ -74,7 +77,7 @@ function CounterChips({ summary }) {
       <span className={styles.counterMart}>{label}</span>
       {chips.map(([name, value]) => (
         <span key={name} className={styles.counterChip}>
-          {name} {Number(value || 0).toLocaleString()}
+          {name} {value == null ? '미확인' : value.toLocaleString()}
         </span>
       ))}
     </div>
@@ -102,7 +105,7 @@ const MiniTimeline = memo(function MiniTimeline({ runs }) {
           <span
             key={index}
             className={success ? styles.timelineDotSuccess : styles.timelineDotFail}
-            title={`${success ? '성공' : '실패'}${run.duration ? ` (${run.duration.toFixed(1)}초)` : ''}`}
+            title={`${run.status === 'partial' || run.status === 'partial_failure' ? '부분 완료' : success ? '서버 기록: 성공' : run.status === 'failed' ? '실패' : '상태 미확인'}${run.duration ? ` (${run.duration.toFixed(1)}초)` : ''}`}
           />
         );
       })}
@@ -174,25 +177,20 @@ export default function Crawlers() {
     const poll = async () => {
       try {
         const data = await api.getCrawlerStatus(id);
-        if (SUCCESS_STATUSES.has(data.status)) {
-          const partial = data.status === 'partial_failure';
+        if (TERMINAL_STATUSES.has(data.status)) {
+          const partial = data.status === 'partial' || data.status === 'partial_failure';
+          const summary = buildCounterSummary(data, { id });
+          const completed = data.status === 'success' && summary.total > 0 && summary.valid > 0 && summary.saved > 0;
+          const label = partial ? '⚠️ 부분 완료' : data.status === 'failed' ? '❌ 수집·저장 실패'
+            : data.status === 'cancelled' ? '실행 취소' : completed ? '✅ 수집·저장 단계 완료' : '⚠️ 완료 확인 미충족';
           setRunState(id, {
             phase: 'done',
-            success: !partial,
-            message: `${partial ? '⚠️ 부분 완료' : '✅ 크롤링 완료'} — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
-            summary: buildCounterSummary(data, { id }),
-          });
-          delete pollRefs.current[id];
-          await fetchCrawlers();
-          clearRunState(id);
-          return;
-        }
-        if (data.status === 'failed') {
-          setRunState(id, {
-            phase: 'done',
-            success: false,
-            message: `❌ 크롤링 실패: ${(data.errors || []).join(', ') || data.error || '알 수 없는 오류'}`,
-            summary: buildCounterSummary(data, { id }),
+            success: completed,
+            message: `${label} — 발견 ${countText(summary.total)}, 유효 ${countText(summary.valid)}, 저장 ${countText(summary.saved)} (${typeof data.duration === 'number' && Number.isFinite(data.duration) && data.duration >= 0 ? `${data.duration.toFixed(1)}초` : '소요 시간 미확인'})`,
+            summary,
+            serverStatus: data.status,
+            diagnostics: runDiagnostics(data),
+            deliveryTarget: data.quality_details?.delivery?.target,
           });
           delete pollRefs.current[id];
           await fetchCrawlers();
@@ -535,6 +533,9 @@ export default function Crawlers() {
               {elapsedSec != null && <span className={styles.elapsedBadge}>{elapsedSec}초 경과</span>}
             </div>
             <CounterChips summary={runState.summary} />
+            {runState.serverStatus && <p>서버 실행 상태: {runState.serverStatus} · 저장 수는 승인·공개 업데이트 수를 뜻하지 않습니다.</p>}
+            {runState.deliveryTarget === 'pending_review' && <p>저장 대상: 검토 대기 접수 · 승인·공개 반영 미확인</p>}
+            {runState.diagnostics?.length > 0 && <ul aria-label="실행 진단">{runState.diagnostics.map((message, index) => <li key={index}>{message}</li>)}</ul>}
           </div>
         )}
 
