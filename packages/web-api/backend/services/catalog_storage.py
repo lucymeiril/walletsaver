@@ -253,21 +253,29 @@ class PublicCatalogStore:
                          "EXISTS (SELECT 1 FROM json_each(CASE WHEN json_valid(p.aliases) "
                          "THEN CASE WHEN json_type(p.aliases)='array' THEN p.aliases ELSE '[]' END "
                          "ELSE '[]' END) a WHERE a.type='text' AND candidate_search_text(a.value) LIKE ? ESCAPE '\\')")
+                literal_params = [f"%{escaped}%"] * 3
+                brand_line = self._reviewed_brand_line_pattern(query)
+                if brand_line is not None:
+                    # A declared brand plus literal line can have a year or
+                    # other source text between them. Keep every query term,
+                    # in order, within one field; never merge product identities.
+                    names = "(" + names + ") OR (" + names + ")"
+                    literal_params.extend([brand_line] * 3)
                 scope = self._keyword_search_scope(connection, query, categories)
                 if scope:
                     # An exact registered concept searches its category scope.
                     # A snack whose title mentions milk is not a milk product.
                     scoped = "p.unified_category_id IN (" + ",".join("?" for _ in scope) + ")"
-                    if self._query_names_reviewed_identity(query):
+                    if brand_line is not None or self._query_names_reviewed_identity(query):
                         # Named brand/group synonyms are not interchangeable
                         # with every product in the keyword's concept category.
                         names = "(" + names + ") AND " + scoped
-                        params.extend([f"%{escaped}%"] * 3)
+                        params.extend(literal_params)
                     else:
                         names = scoped
                     params.extend(sorted(scope))
                 else:
-                    params.extend([f"%{escaped}%"] * 3)
+                    params.extend(literal_params)
                 clauses.append("(" + names + ")")
             category = str(category or "").strip()
             if category:
@@ -296,6 +304,32 @@ class PublicCatalogStore:
                 payloads.append(self._normalized_product(connection, full, include_all=False,
                                                         group_member_ids=representatives[key][1]))
             return payloads, len(ordered)
+
+    @staticmethod
+    def _reviewed_brand_line_pattern(query: str) -> str | None:
+        from core.catalog_identity import reviewed_registry
+        parts = query.split()
+        if not 2 <= len(parts) <= 9:
+            return None
+        registry = reviewed_registry()
+        groups = registry.get("groups") if isinstance(registry, Mapping) else None
+        if not isinstance(groups, list):
+            return None
+        brands = {group.get("brand") for group in groups if isinstance(group, Mapping)
+                  and isinstance(group.get("brand"), str)}
+        for brand in sorted(brands, key=lambda value: (-len(value), value)):
+            brand_parts = brand.split()
+            size = len(brand_parts)
+            recognized = _candidate_search_text(unicodedata.normalize("NFKC", brand))
+            prefix = " ".join(parts[:size])
+            if (len(recognized) < 2 or not size or size >= len(parts)
+                    or _candidate_search_text(unicodedata.normalize("NFKC", prefix)) != recognized):
+                continue
+            terms = [prefix, *parts[size:]]
+            escaped = [_candidate_search_text(term).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+                       for term in terms]
+            return "%" + "%".join(escaped) + "%"
+        return None
 
     @staticmethod
     def _query_names_reviewed_identity(query: str) -> bool:

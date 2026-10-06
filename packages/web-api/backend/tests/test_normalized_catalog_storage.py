@@ -911,3 +911,57 @@ def test_whitespace_literal_candidates_preserve_distinct_lines_and_source_identi
             assert row['name'] == originals[row['id']]
             assert row['canonical_public_product_id'] == row['id']
             assert row['group_member_product_ids'] == [row['id']]
+
+
+@pytest.mark.parametrize('query,category,expected', [
+    ('하기스 매직컴포트', None, {'year-2026','year-2025','unmarked','source-alias'}),
+    ('하기스 2026 매직컴포트', None, {'year-2026','source-alias'}),
+    ('하기스 2025 매직컴포트', None, {'year-2025'}),
+    ('하기스 2027 매직컴포트', None, set()),
+    ('하기스매직컴포트', None, {'unmarked'}),
+    ('하기스 매직%컴포트', None, {'literal-percent'}),
+    ('하기스 매직_컴포트', None, {'literal-underscore'}),
+    ('ABCs 매직컴포트', None, set()),
+    ('유 매직컴포트', None, set()),
+    ('하기스 매직컴포트', 'food.milk', set()),
+    ('ARM  &   HAMMER CLEAN WASH', None, {'multiword-brand'}),
+])
+def test_reviewed_brand_line_candidates_allow_intervening_year_keep_all_literal_terms(scoped_group_catalog, monkeypatch, query, category, expected):
+    import core.catalog_identity as identity
+    groups = identity.reviewed_registry()['groups']
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: {'groups':groups + [
+        {'brand':'하기스','canonical_name':'하기스 2026 매직컴포트 팬티 공용'},
+        {'brand':'ABC','canonical_name':'ABC other line'},
+        {'brand':'유','canonical_name':'한 글자 브랜드'},
+        {'brand':'ARM & HAMMER','canonical_name':'ARM & HAMMER other line'},
+    ]})
+    originals = [
+        ('year-2026','하기스2026매직컴포트 팬티 공용','하기스',[]),
+        ('year-2025','하기스2025매직컴포트 팬티 공용','하기스',[]),
+        ('unmarked','하기스 매직컴포트 팬티 공용','하기스',[]),
+        ('other-brand','다른브랜드2026매직컴포트 팬티 공용','다른브랜드',[]),
+        ('other-line','하기스2026네이처메이드 팬티 공용','하기스',[]),
+        ('split-fields','출처 상품','하기스',['매직컴포트']),
+        ('source-alias','원문 출처 이름',None,['하기스2026매직컴포트']),
+        ('literal-percent','하기스2026매직%컴포트',None,[]),
+        ('literal-underscore','하기스2026매직_컴포트',None,[]),
+        ('ascii-continuation','ABCs2026매직컴포트',None,[]),
+        ('short-brand','유2026매직컴포트',None,[]),
+        ('multiword-brand','ARM & HAMMER2026 CLEAN WASH','ARM & HAMMER',[]),
+        ('multiword-other-brand','다른브랜드2026 CLEAN WASH','다른브랜드',[]),
+    ]
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("INSERT INTO unified_categories VALUES('baby.diaper','food','기저귀',0)")
+        for key, name, brand, aliases in originals:
+            db.execute('INSERT INTO normalized_canonical_products VALUES(?,?,?,?,?,?,?,?,?)',
+                       (key,'baby.diaper',name,brand,json.dumps(aliases),'[]','{}',None,1))
+        # Even a named query that is a legacy concept synonym stays constrained
+        # by the brand/line literals, not all diaper products in that scope.
+        db.execute('INSERT INTO keywords VALUES(20,?,?,1,?)',
+                   ('기저귀',json.dumps(['하기스 매직컴포트','ARM & HAMMER CLEAN WASH']),'baby.diaper'))
+    rows, total = PublicCatalogStore(scoped_group_catalog).search_normalized_products_page(query, category=category)
+    assert total == len(expected) and {row['id'] for row in rows} == expected
+    source_names = {key:name for key,name,_,_ in originals}
+    for row in rows:
+        assert row['name'] == source_names[row['id']]
+        assert row['group_member_product_ids'] == [row['id']]
