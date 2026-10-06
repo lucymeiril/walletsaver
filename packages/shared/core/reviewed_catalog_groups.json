@@ -7391,6 +7391,999 @@
         "prod-d2b4636cbbcf9e3ceb636793979521b1",
         "prod-e88dc4a52dfcc10d2b6bd4f7052fd7eb"
       ]
+    },
+    {
+      "key": "orion-pocachip-onion",
+      "canonical_product_id": "prod-00f5be68bc84a8172972a4dfb310c493",
+      "member_product_ids": [
+        "prod-00f5be68bc84a8172972a4dfb310c493",
+        "prod-5952b9d6c0d8c60974aca3709680e0ce",
+        "prod-cf0bca32fcf8df87d4b47585f6779a0e"
+      ],
+      "canonical_name": "오리온 포카칩 어니언",
+      "brand": "오리온",
+      "leaf": "food.snacks.savory.potato",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-00f5be68bc84a8172972a4dfb310c493": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008104635",
+            "source_titles": [
+              "포카칩 어니언맛 66g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008104635&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5952b9d6c0d8c60974aca3709680e0ce": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117188702",
+            "source_titles": [
+              "오리온 포카칩 어니언 (50G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117188702/details"
+            ]
+          }
+        ],
+        "prod-cf0bca32fcf8df87d4b47585f6779a0e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115046885",
+            "source_titles": [
+              "오리온 포카칩 양파맛 137G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115046885&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "40b90676ac3d3ca3d0b2058c865dcf7672c3946fddd6c78097ea9a22feb7d638",
+      "derived_alias_member_ids": [
+        "prod-00f5be68bc84a8172972a4dfb310c493",
+        "prod-5952b9d6c0d8c60974aca3709680e0ce",
+        "prod-cf0bca32fcf8df87d4b47585f6779a0e"
+      ]
+    },
+    {
+      "key": "orion-pocachip-original",
+      "canonical_product_id": "prod-3ad855c782d5954b95465d0b1594c3d2",
+      "member_product_ids": [
+        "prod-3ad855c782d5954b95465d0b1594c3d2",
+        "prod-73d7c6a0927ccc89799cabc60afc85c3",
+        "prod-a5d1233007631bf378d638cf1eb40cfd",
+        "prod-edf9fa645df178a9222747f1e519331e"
+      ],
+      "canonical_name": "오리온 포카칩 오리지널",
+      "brand": "오리온",
+      "leaf": "food.snacks.savory.potato",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3ad855c782d5954b95465d0b1594c3d2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115046842",
+            "source_titles": [
+              "오리온 포카칩 오리지날 137G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115046842&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-73d7c6a0927ccc89799cabc60afc85c3": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127003748",
+            "source_titles": [
+              "오리온 포카칩 오리지널 4번들 38G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127003748&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a5d1233007631bf378d638cf1eb40cfd": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117188603",
+            "source_titles": [
+              "오리온 포카칩 오리지널 (50G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117188603/details"
+            ]
+          }
+        ],
+        "prod-edf9fa645df178a9222747f1e519331e": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008104634",
+            "source_titles": [
+              "포카칩 오리지널 137g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008104634&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9f2c6c637e885dc0ce07c7625c98247fa4b71202a4469cc051f2bf12326d29af",
+      "derived_alias_member_ids": [
+        "prod-3ad855c782d5954b95465d0b1594c3d2",
+        "prod-73d7c6a0927ccc89799cabc60afc85c3",
+        "prod-a5d1233007631bf378d638cf1eb40cfd",
+        "prod-edf9fa645df178a9222747f1e519331e"
+      ]
+    },
+    {
+      "key": "orion-swingchip-gochujang",
+      "canonical_product_id": "prod-1939d029befde2b69cd71f12956b31a8",
+      "member_product_ids": [
+        "prod-1939d029befde2b69cd71f12956b31a8",
+        "prod-84b7b470bd49af98c5055ad978141bc5"
+      ],
+      "canonical_name": "오리온 스윙칩 볶음고추장",
+      "brand": "오리온",
+      "leaf": "food.snacks.savory.potato",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1939d029befde2b69cd71f12956b31a8": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117188801",
+            "source_titles": [
+              "오리온 스윙칩 볶음고추장 (45G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117188801/details"
+            ]
+          }
+        ],
+        "prod-84b7b470bd49af98c5055ad978141bc5": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000010760062",
+            "source_titles": [
+              "스윙칩 볶음고추장 124g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000010760062&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "cf0d2d76690a3e97bffe4045b234a8efacf9a000582af64e4b76b96cae981819",
+      "derived_alias_member_ids": [
+        "prod-1939d029befde2b69cd71f12956b31a8",
+        "prod-84b7b470bd49af98c5055ad978141bc5"
+      ]
+    },
+    {
+      "key": "haitai-roasted-potato",
+      "canonical_product_id": "prod-59a6cee6e958e5eac6affd76c46e0844",
+      "member_product_ids": [
+        "prod-59a6cee6e958e5eac6affd76c46e0844",
+        "prod-aec400d12d3e266518deb37e13be45e5"
+      ],
+      "canonical_name": "해태 구운감자",
+      "brand": "해태",
+      "leaf": "food.snacks.savory.potato",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-59a6cee6e958e5eac6affd76c46e0844": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128155036",
+            "source_titles": [
+              "해태 구운감자 27G*5입"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128155036&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-aec400d12d3e266518deb37e13be45e5": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123111822",
+            "source_titles": [
+              "해태 구운감자 48G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123111822&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5bc9ebbc4bed82bbdf6fc141297becc0f0259996aaebfe651d6aaf7a37352a1e",
+      "derived_alias_member_ids": [
+        "prod-59a6cee6e958e5eac6affd76c46e0844",
+        "prod-aec400d12d3e266518deb37e13be45e5"
+      ]
+    },
+    {
+      "key": "crown-caramel-corn-peanut",
+      "canonical_product_id": "prod-23d85aa00ce96a7277841f120b04950d",
+      "member_product_ids": [
+        "prod-23d85aa00ce96a7277841f120b04950d",
+        "prod-34b7c6974af2dba0de2c9f7eefc4fb75",
+        "prod-a6b1e92a7fff02f7c7be52005f58985e"
+      ],
+      "canonical_name": "크라운 카라멜콘과땅콩",
+      "brand": "크라운",
+      "leaf": "food.snacks.assortments.corn_peanut",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-23d85aa00ce96a7277841f120b04950d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801111180986",
+            "source_titles": [
+              "크라운 카라멜콘 땅콩 (72G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801111180986/details"
+            ]
+          }
+        ],
+        "prod-34b7c6974af2dba0de2c9f7eefc4fb75": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009940634",
+            "source_titles": [
+              "크라운 카라멜콘과땅콩 72G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009940634&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a6b1e92a7fff02f7c7be52005f58985e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126843976",
+            "source_titles": [
+              "크라운 카라멜콘과땅콩 150G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126843976&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef06e938f81d05aa4a00f8c90ec771f1a526544b9852441699b490820b8e8e0e",
+      "derived_alias_member_ids": [
+        "prod-23d85aa00ce96a7277841f120b04950d",
+        "prod-34b7c6974af2dba0de2c9f7eefc4fb75",
+        "prod-a6b1e92a7fff02f7c7be52005f58985e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:lotte-kkokkalkon-roasted-corn",
+      "canonical_product_id": "prod-7c2d2819ec4c5b53d87c5829c2016747",
+      "member_product_ids": [
+        "prod-7c2d2819ec4c5b53d87c5829c2016747",
+        "prod-a952185125e6909c574e4117797e47b1"
+      ],
+      "canonical_name": "롯데 꼬깔콘 군옥수수맛",
+      "brand": "롯데",
+      "leaf": "food.snacks.savory.corn",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7c2d2819ec4c5b53d87c5829c2016747": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069731095",
+            "source_titles": [
+              "롯데 꼬깔콘 군옥수수맛 52G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069731095&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "homeplus",
+            "source_record_key": "122398541",
+            "source_titles": [
+              "롯데 꼬깔콘 군옥수수맛 134G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=122398541&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801062861897",
+            "source_titles": [
+              "롯데 꼬깔콘 군옥수수맛 (52G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801062861897/details"
+            ]
+          }
+        ],
+        "prod-a952185125e6909c574e4117797e47b1": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008329005",
+            "source_titles": [
+              "롯데 꼬깔콘 군옥수수 67g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008329005&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "44eb610422f3966d4b7a7165fadf1f714b3a8ca1a01d2747824f165c61d69cd6",
+      "derived_alias_member_ids": [
+        "prod-7c2d2819ec4c5b53d87c5829c2016747",
+        "prod-a952185125e6909c574e4117797e47b1"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:haitai-honey-butter-chip",
+      "canonical_product_id": "prod-85a367b86b0d33f839f6d7c8764b5a16",
+      "member_product_ids": [
+        "prod-85a367b86b0d33f839f6d7c8764b5a16",
+        "prod-1920fbae8d1bd708b090b501d711f1dd"
+      ],
+      "canonical_name": "해태 허니버터칩",
+      "brand": "해태",
+      "leaf": "food.snacks.savory.potato",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-85a367b86b0d33f839f6d7c8764b5a16": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069090846",
+            "source_titles": [
+              "해태 허니버터칩 44G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069090846&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069090852",
+            "source_titles": [
+              "해태 허니버터칩 4번들 40G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069090852&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801019611278",
+            "source_titles": [
+              "해태 허니버터칩 (44G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801019611278/details"
+            ]
+          }
+        ],
+        "prod-1920fbae8d1bd708b090b501d711f1dd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124035467",
+            "source_titles": [
+              "해태 허니버터 감자칩 120G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124035467&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "202a5a51699135d41fc98897dd30c1d3add4d82d49de875ce82a52710feb3cc5",
+      "derived_alias_member_ids": [
+        "prod-85a367b86b0d33f839f6d7c8764b5a16",
+        "prod-1920fbae8d1bd708b090b501d711f1dd"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:orion-sun-hot-spicy",
+      "canonical_product_id": "prod-db148b639b7dc10f77a5ff6d5dfd900b",
+      "member_product_ids": [
+        "prod-db148b639b7dc10f77a5ff6d5dfd900b",
+        "prod-b7cb39e3e590ad313bd55d34bb6bc110"
+      ],
+      "canonical_name": "오리온 썬 핫스파이시",
+      "brand": "오리온",
+      "leaf": "food.snacks.savory.corn",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-db148b639b7dc10f77a5ff6d5dfd900b": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069684242",
+            "source_titles": [
+              "오리온 썬 핫스파이시맛 66G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117165802",
+            "source_titles": [
+              "오리온 썬핫스파이시맛 (66G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117165802/details"
+            ]
+          }
+        ],
+        "prod-b7cb39e3e590ad313bd55d34bb6bc110": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128456170",
+            "source_titles": [
+              "오리온 썬 핫스파이시 135G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128456170&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f0ee09e88fff2e98569464d229072697e7b8c1df4129338cd583b9080fbfd640",
+      "derived_alias_member_ids": [
+        "prod-db148b639b7dc10f77a5ff6d5dfd900b",
+        "prod-b7cb39e3e590ad313bd55d34bb6bc110"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:paldo-birak-sikhye",
+      "canonical_product_id": "prod-a892858bf9bccb88623706c55705f3e7",
+      "member_product_ids": [
+        "prod-a892858bf9bccb88623706c55705f3e7",
+        "prod-ce7029e1a1755ae69b7aae08f90a7ded"
+      ],
+      "canonical_name": "팔도 비락식혜",
+      "brand": "팔도",
+      "leaf": "food.drinks.traditional.sikhye",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a892858bf9bccb88623706c55705f3e7": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "068766736",
+            "source_titles": [
+              "팔도 비락 식혜 1.5L"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=068766736&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ce7029e1a1755ae69b7aae08f90a7ded": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000026425",
+            "source_titles": [
+              "팔도 비락식혜 238ML*6"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000026425&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1dee4d176ae80d0834e8ed6e10b381e6e41f865c6896197904d13dadf75c337f",
+      "derived_alias_member_ids": [
+        "prod-a892858bf9bccb88623706c55705f3e7",
+        "prod-ce7029e1a1755ae69b7aae08f90a7ded"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:clausthaler-nonalcoholic",
+      "canonical_product_id": "prod-7388a79ec658fe33520627ca7811739f",
+      "member_product_ids": [
+        "prod-7388a79ec658fe33520627ca7811739f",
+        "prod-fbfbb41175726f9adc667da89da97426"
+      ],
+      "canonical_name": "클라우스탈러 논알콜",
+      "brand": "클라우스탈러",
+      "leaf": "food.drinks.non_alcoholic.beer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7388a79ec658fe33520627ca7811739f": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "0000040534794",
+            "source_titles": [
+              "크라우스탈러 논알콜 (캔) (330ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS0000040534794/details"
+            ]
+          }
+        ],
+        "prod-fbfbb41175726f9adc667da89da97426": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008448004",
+            "source_titles": [
+              "[논알콜] 클라우스탈러 330ml(캔)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008448004&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c71afcb067fa067beabaaceb3b01422253fbaabb026098c5aa92394d7042e4dc",
+      "derived_alias_member_ids": [
+        "prod-7388a79ec658fe33520627ca7811739f",
+        "prod-fbfbb41175726f9adc667da89da97426"
+      ]
+    },
+    {
+      "key": "baeksul-one-minute-ring-bone-stock",
+      "canonical_product_id": "prod-67a31700acd2e44ca65803eae70efce8",
+      "member_product_ids": [
+        "prod-67a31700acd2e44ca65803eae70efce8",
+        "prod-c67e86b0e1737b2cdfd4ec40de153cc4"
+      ],
+      "canonical_name": "백설 사골가득 육수에는 1분링",
+      "brand": "백설",
+      "leaf": "food.seasonings.stock.stock_seasoning",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-67a31700acd2e44ca65803eae70efce8": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070141446",
+            "source_titles": [
+              "CJ 백설 사골가득 육수에는 1분링 (코인육수) 80G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070141446&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c67e86b0e1737b2cdfd4ec40de153cc4": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801392061646",
+            "source_titles": [
+              "백설 사골가득 육수에는 1분링 (80G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801392061646/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "8eebe75ea4c948073981e73956ae807aee65e3c45354c53830000e8739bd6aa7",
+      "derived_alias_member_ids": [
+        "prod-67a31700acd2e44ca65803eae70efce8",
+        "prod-c67e86b0e1737b2cdfd4ec40de153cc4"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-half-mayonnaise",
+      "canonical_product_id": "prod-04d8d4ecbfe84e4f9be5e11b050c86f0",
+      "member_product_ids": [
+        "prod-04d8d4ecbfe84e4f9be5e11b050c86f0",
+        "prod-cf57d007345867e1112595fafd17ced0"
+      ],
+      "canonical_name": "오뚜기 1/2 하프 마요네스",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.sauces.mayo",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-04d8d4ecbfe84e4f9be5e11b050c86f0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000053597",
+            "source_titles": [
+              "오뚜기 1/2하프마요네스 525G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000053597&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cf57d007345867e1112595fafd17ced0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100084547",
+            "source_titles": [
+              "오뚜기 1/2하프마요네스 315G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100084547&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "91a8ad207b69f0f0903b71756e6bbb881ef25718acf2f0de34362578c8b9fa8d",
+      "derived_alias_member_ids": [
+        "prod-04d8d4ecbfe84e4f9be5e11b050c86f0",
+        "prod-cf57d007345867e1112595fafd17ced0"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-lightjoy-half-mayonnaise",
+      "canonical_product_id": "prod-091b21e08a00273f67a07a41219d5085",
+      "member_product_ids": [
+        "prod-091b21e08a00273f67a07a41219d5085",
+        "prod-32475c01bbd40c0f79a7ad90339c8b91"
+      ],
+      "canonical_name": "오뚜기 LIGHT&JOY 1/2 하프 마요네스",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.sauces.mayo",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-091b21e08a00273f67a07a41219d5085": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045166117",
+            "source_titles": [
+              "오뚜기 LIGHT&JOY 1/2 하프 마요네스 (315G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045166117/details"
+            ]
+          }
+        ],
+        "prod-32475c01bbd40c0f79a7ad90339c8b91": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045166216",
+            "source_titles": [
+              "오뚜기 LIGHT&JOY 1/2 하프 마요네스 (525G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045166216/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6217fb5ce53fbcac6dbc62288c83af34a64903bbc860ffe621d7bd2c0dbf7876",
+      "derived_alias_member_ids": [
+        "prod-091b21e08a00273f67a07a41219d5085",
+        "prod-32475c01bbd40c0f79a7ad90339c8b91"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-ketchup",
+      "canonical_product_id": "prod-17618795483e128ec329b5462bee2054",
+      "member_product_ids": [
+        "prod-17618795483e128ec329b5462bee2054",
+        "prod-1c4ab16afce7cb4426130a5c3728b848",
+        "prod-cdac6d2b11aeb85a8690352cd11074f4",
+        "prod-e9fe50826e6f26c5d39ae0fb4637c798"
+      ],
+      "canonical_name": "오뚜기 케찹",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.sauces.ketchup",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-17618795483e128ec329b5462bee2054": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000053627",
+            "source_titles": [
+              "오뚜기 케찹 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000053627&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-1c4ab16afce7cb4426130a5c3728b848": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100084740",
+            "source_titles": [
+              "오뚜기 케찹 800G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100084740&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cdac6d2b11aeb85a8690352cd11074f4": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000055158",
+            "source_titles": [
+              "오뚜기 케찹 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000055158&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e9fe50826e6f26c5d39ae0fb4637c798": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009566317",
+            "source_titles": [
+              "오뚜기 케찹 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009566317&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1eaa2616cb872a9f08dae26944d5363c62c37229db98f6ef4df043ebc0fd2174",
+      "derived_alias_member_ids": [
+        "prod-17618795483e128ec329b5462bee2054",
+        "prod-1c4ab16afce7cb4426130a5c3728b848",
+        "prod-cdac6d2b11aeb85a8690352cd11074f4",
+        "prod-e9fe50826e6f26c5d39ae0fb4637c798"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-gold-mayonnaise",
+      "canonical_product_id": "prod-196efbdab41b654424f70a912e0b61c1",
+      "member_product_ids": [
+        "prod-196efbdab41b654424f70a912e0b61c1",
+        "prod-1b1c7851ade6aa4d60eb016f91b62083",
+        "prod-68ceca1e9ecf9ec58ab67db983d48916"
+      ],
+      "canonical_name": "오뚜기 골드 마요네즈",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.sauces.mayo",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-196efbdab41b654424f70a912e0b61c1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000053570",
+            "source_titles": [
+              "오뚜기 골드 마요네즈 800G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000053570&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-1b1c7851ade6aa4d60eb016f91b62083": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000055115",
+            "source_titles": [
+              "오뚜기 골드 마요네즈 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000055115&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-68ceca1e9ecf9ec58ab67db983d48916": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009566309",
+            "source_titles": [
+              "오뚜기 골드 마요네즈 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009566309&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d2c26bbcf187cebca4cce2c0f7e15e8ede2ec294749f30d4a0a0aebb3f74229a",
+      "derived_alias_member_ids": [
+        "prod-196efbdab41b654424f70a912e0b61c1",
+        "prod-1b1c7851ade6aa4d60eb016f91b62083",
+        "prod-68ceca1e9ecf9ec58ab67db983d48916"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:ottogi-lightjoy-half-ketchup",
+      "canonical_product_id": "prod-1a8cfe25a52243909be3b6d8d1f2da00",
+      "member_product_ids": [
+        "prod-1a8cfe25a52243909be3b6d8d1f2da00",
+        "prod-f1cc9f58caeedc2e6cfbdd3fd48c8d04"
+      ],
+      "canonical_name": "오뚜기 LIGHT&JOY 1/2 하프 케찹",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.sauces.ketchup",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1a8cfe25a52243909be3b6d8d1f2da00": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045104126",
+            "source_titles": [
+              "오뚜기 LIGHT&JOY 1/2 하프 케찹 (475G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045104126/details"
+            ]
+          }
+        ],
+        "prod-f1cc9f58caeedc2e6cfbdd3fd48c8d04": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045104119",
+            "source_titles": [
+              "오뚜기 LIGHT&JOY 1/2 하프 케찹 (280G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045104119/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "88377f993b648c10c1e99ceced18d83dff2c11dcaf50a73b576aff3aa0a6cef8",
+      "derived_alias_member_ids": [
+        "prod-1a8cfe25a52243909be3b6d8d1f2da00",
+        "prod-f1cc9f58caeedc2e6cfbdd3fd48c8d04"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:baeksul-premium-oyster-sauce",
+      "canonical_product_id": "prod-251b765519718bb4c36f6f30bc41a233",
+      "member_product_ids": [
+        "prod-251b765519718bb4c36f6f30bc41a233",
+        "prod-f18a297a0f2b5639ae3b121ef029f8a6"
+      ],
+      "canonical_name": "백설 프리미엄 굴소스",
+      "brand": "백설",
+      "leaf": "food.seasonings.sauces.oyster",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-251b765519718bb4c36f6f30bc41a233": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128454080",
+            "source_titles": [
+              "CJ 백설 프리미엄 굴소스 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128454080&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f18a297a0f2b5639ae3b121ef029f8a6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "105406120",
+            "source_titles": [
+              "CJ 백설 프리미엄 굴소스 350G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=105406120&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "4d9f5f1a94454b703ab6f2d39291ff251ab160dfb8fa476be564c99f7254bb69",
+      "derived_alias_member_ids": [
+        "prod-251b765519718bb4c36f6f30bc41a233",
+        "prod-f18a297a0f2b5639ae3b121ef029f8a6"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:chungjungone-savory-mayonnaise",
+      "canonical_product_id": "prod-195494c9276a2185ee8c455d7ebec476",
+      "member_product_ids": [
+        "prod-195494c9276a2185ee8c455d7ebec476",
+        "prod-2f36fac3ef411f48784bc80716e9ad0e",
+        "prod-d4faa16913447dcb1102782cc5158231"
+      ],
+      "canonical_name": "청정원 고소한 마요네즈",
+      "brand": "청정원",
+      "leaf": "food.seasonings.sauces.mayo",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-195494c9276a2185ee8c455d7ebec476": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007022265",
+            "source_titles": [
+              "고소한 마요네즈 300g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007022265&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-2f36fac3ef411f48784bc80716e9ad0e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104904936",
+            "source_titles": [
+              "대상 청정원 고소한 마요네즈 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104904936&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-d4faa16913447dcb1102782cc5158231": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104904910",
+            "source_titles": [
+              "대상 청정원 고소한 마요네즈 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104904910&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef1435dd3bfcc0994f1406b80547c2f9e2fd74e8dd2bf6d18a483b3f16cd4a55",
+      "derived_alias_member_ids": [
+        "prod-195494c9276a2185ee8c455d7ebec476",
+        "prod-2f36fac3ef411f48784bc80716e9ad0e",
+        "prod-d4faa16913447dcb1102782cc5158231"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:lee-kum-kee-panda-oyster-sauce",
+      "canonical_product_id": "prod-1d13aa75b122498bab8126ba8905f1b0",
+      "member_product_ids": [
+        "prod-1d13aa75b122498bab8126ba8905f1b0",
+        "prod-23374c78e14196c77e965f9ee0ff7b95",
+        "prod-363f093c316a11883166ff4903a24ab4"
+      ],
+      "canonical_name": "이금기 팬더 굴소스",
+      "brand": "이금기",
+      "leaf": "food.seasonings.sauces.oyster",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1d13aa75b122498bab8126ba8905f1b0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000055166",
+            "source_titles": [
+              "오뚜기 이금기 팬더 굴소스 255G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000055166&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-23374c78e14196c77e965f9ee0ff7b95": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "005210240",
+            "source_titles": [
+              "오뚜기 이금기 팬더 굴소스 510G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=005210240&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-363f093c316a11883166ff4903a24ab4": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045197319",
+            "source_titles": [
+              "이금기 팬더굴소스 (320G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045197319/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "74aaf4301da31aec715f1e493f9b36d97d0feb5ff483c266da63649249834d99",
+      "derived_alias_member_ids": [
+        "prod-1d13aa75b122498bab8126ba8905f1b0",
+        "prod-23374c78e14196c77e965f9ee0ff7b95",
+        "prod-363f093c316a11883166ff4903a24ab4"
+      ]
     }
   ],
   "leaf_reviews": [
@@ -7603,6 +8596,21 @@
       ],
       "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
       "evidence_sha256": "b951963e3b8ead1d47377f4603f3863128f9a9decac238b4ac6d99848d007c1b"
+    },
+    {
+      "product_id": "prod-23d85aa00ce96a7277841f120b04950d",
+      "old_leaf": "food.snacks.savory.corn",
+      "new_leaf": "food.snacks.assortments.corn_peanut",
+      "source_name": "lottemart",
+      "source_record_key": "8801111180986",
+      "source_titles": [
+        "크라운 카라멜콘 땅콩 (72G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801111180986/details"
+      ],
+      "reason": "Explicit same Crown caramelcorn-and-peanut mixed snack line, original Lotte title includes peanut, both current Homeplus native titles use corn_peanut leaf. Preserve measured package quantities; no component proportions guessed.",
+      "evidence_sha256": "4fd68245af1f92a6f48e2218c8239efd4b7c84cf0919ae33666e13d16b2ba801"
     }
   ]
 }
