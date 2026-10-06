@@ -427,3 +427,115 @@ async def test_native_detail_checks_all_bounded_capacity_notices(native_detail_n
         assert [row['noticeDesc'] for row in capacities] == ['2L * 6입', '2000ml * 6병']
     else:
         assert items == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('denied_status', [401, 403, 429])
+@pytest.mark.parametrize('keep_first', [False, True])
+async def test_access_denial_stops_source_run_without_retry_or_next_query(monkeypatch, raw_json, denied_status, keep_first):
+    from types import SimpleNamespace
+    import crawlers.marts.homeplus.crawler as module
+    from core.models import CrawlStatus
+    crawler = HomeplusCrawler()
+    plan = [{'request_type': 'search', 'query': q, 'max_pages': 1} for q in ('one', 'two', 'three')]
+    monkeypatch.setattr(crawler, '_build_source_requests', lambda: plan)
+    monkeypatch.setattr(crawler, '_headers', lambda: {})
+    monkeypatch.setattr(crawler, '_polite_sleep', lambda: None)
+    monkeypatch.setattr(module.time, 'sleep', lambda _: pytest.fail('Access denial must not sleep/retry'))
+    calls = []
+    class LocalSession:
+        closed = False
+        def get(self, url, **kwargs):
+            calls.append(url)
+            if keep_first and len(calls) == 1:
+                return SimpleNamespace(status_code=200, text=raw_json)
+            return SimpleNamespace(status_code=denied_status, text='access denied')
+        def close(self):self.closed = True
+    local = LocalSession()
+    monkeypatch.setattr(module.requests, 'Session', lambda: local)
+    result = await crawler.crawl()
+    assert len(calls) == (2 if keep_first else 1)
+    assert local.closed
+    assert result.status == (CrawlStatus.PARTIAL if keep_first else CrawlStatus.FAILED)
+    assert result.items_count == (3 if keep_first else 0)
+    assert result.quality_details['fetch']['source_distribution']['access_stop']['http_status'] == denied_status
+    assert f'HTTP {denied_status}' in result.error_msg
+    if keep_first:
+        first_source = json.loads(raw_json)['data']['dataList'][0]
+        assert result.items[0]['sale_price'] == (first_source['dcPrice'] or first_source['salePrice'])
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('receipt_kind', ['complete', 'missing', 'naive'])
+async def test_parser_preserves_safe_business_node_and_actual_receipt(raw_json, receipt_kind):
+    from datetime import datetime, timezone
+    import hashlib
+    stamp = datetime(2026, 10, 6, 4, 15, 43, 32158, tzinfo=timezone.utc)
+    product = json.loads(raw_json)['data']['dataList'][0]
+    product.update(cartLimitMax=2, customerSession={'token': 'do-not-export'},
+                   opt={'optSelUseYn': 'N'}, prop={'noticeList': [{'noticeNm': '테스트 내용물', 'noticeDesc': 'test schema only'}]})
+    body = json.dumps({'data': {'dataList': [product]}}, ensure_ascii=False)
+    receipt = None if receipt_kind == 'missing' else {
+        'response_url': HomeplusCrawler.SEARCH_API,
+        'response_body_sha256': hashlib.sha256(body.encode()).hexdigest(),
+        'received_at': stamp if receipt_kind == 'complete' else stamp.replace(tzinfo=None)}
+    item, = await HomeplusCrawler().parse(body, capture_receipt=receipt)
+    exported = item.model_dump(mode='json')
+    evidence, = exported['attributes']['submission_business_evidence']
+    node = evidence['raw_product_node']
+    assert node['opt'] == product['opt'] and node['prop'] == product['prop']
+    assert node['cartLimitMax'] == 2 and 'customerSession' not in node
+    assert evidence['removed_fields'] == [
+        {'path': '/reviewCnt', 'reason': 'noncommercial_private_branch'},
+        {'path': '/customerSession', 'reason': 'noncommercial_private_branch'}]
+    assert evidence['source_pointer_kind'] == 'parser_selected_product_projection'
+    assert evidence['raw_product_node_sha256'] == hashlib.sha256(json.dumps(node, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    assert item.sale_price == (product['dcPrice'] or product['salePrice'])
+    assert exported['attributes']['mart_native_code'] == product['itemNo']
+    if receipt_kind == 'complete':
+        assert item.crawled_at == stamp and datetime.fromisoformat(exported['crawled_at']) == stamp
+        assert evidence['source_response_url'] == HomeplusCrawler.SEARCH_API
+        assert evidence['source_response_body_sha256'] == receipt['response_body_sha256']
+        assert evidence['source_response_received_at'] == stamp.isoformat()
+    else:
+        assert evidence['source_response_received_at'] is None and evidence['http_receipt_status'] == 'not_recorded'
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('has_receipt', [True, False])
+async def test_http_transport_receipt_survives_crawl_serializer_without_default_clock(monkeypatch, raw_json, has_receipt):
+    from types import SimpleNamespace
+    from datetime import datetime
+    import hashlib
+    import crawlers.marts.homeplus.crawler as module
+    crawler = HomeplusCrawler()
+    crawler.MAX_ITEMS = 1  # Early cap must also close its owned HTTP session.
+    monkeypatch.setattr(crawler, '_build_source_requests', lambda: [{'request_type': 'search', 'query': 'one', 'max_pages': 1}])
+    monkeypatch.setattr(crawler, '_headers', lambda: {})
+    calls = []
+    class LocalSession:
+        closed = False
+        def get(self, url, **kwargs):
+            calls.append(url)
+            fields = {'status_code': 200, 'text': raw_json}
+            if has_receipt:
+                fields.update(content=raw_json.encode(), url=url+'?keyword=one')
+            return SimpleNamespace(**fields)
+        def close(self): self.closed = True
+    session = LocalSession()
+    monkeypatch.setattr(module.requests, 'Session', lambda: session)
+    result = await crawler.crawl()
+    assert len(calls) == 1 and session.closed and result.items_count == 1
+    row = result.items[0]
+    evidence, = row['attributes']['submission_business_evidence']
+    native = json.loads(raw_json)['data']['dataList'][0]
+    assert evidence['raw_product_node'] == {key: value for key, value in native.items() if key != 'reviewCnt'}
+    assert evidence['removed_fields'] == [{'path': '/reviewCnt', 'reason': 'noncommercial_private_branch'}]
+    assert row['sale_price'] == (native['dcPrice'] or native['salePrice'])
+    if has_receipt:
+        assert datetime.fromisoformat(row['crawled_at']).tzinfo is not None
+        assert datetime.fromisoformat(row['crawled_at']) == datetime.fromisoformat(evidence['source_response_received_at'])
+        assert evidence['source_response_body_sha256'] == hashlib.sha256(raw_json.encode()).hexdigest()
+        assert evidence['source_response_url'] == calls[0]+'?keyword=one'
+    else:
+        assert 'crawled_at' not in row and evidence['http_receipt_status'] == 'not_recorded'

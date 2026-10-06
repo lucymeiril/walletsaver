@@ -1,8 +1,8 @@
 """
 홈플러스 크롤러 — requests-only legacy flow restored for mfront JSON APIs.
 
-Round T keeps Homeplus on the old HTTP parser path: no Playwright, no added
-concurrency, and 429 handling only by sleeping longer before retrying.
+Homeplus retains its HTTP parser without added concurrency. Explicit access
+denials stop this source run; they are not retried through another query.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ import random
 import re
 import time
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import parse_qs, quote, urlencode, urlparse
 
@@ -26,6 +26,7 @@ from core.promotion_semantics import confirmed_price_or_none
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
+    commercial_product_evidence,
     build_source_attributes,
     build_source_map_manifest,
     classify_external_seller_homeplus,
@@ -108,6 +109,9 @@ class HomeplusCrawler(CrawlerContract):
             valid_items = await self.validate(items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
             for _d in items_as_dict:
+                evidence = (_d.get("attributes") or {}).get("submission_business_evidence")
+                if evidence and not any(row.get("http_receipt_status") == "supplied_response_metadata" for row in evidence):
+                    _d.pop("crawled_at", None)  # DTO construction clock is not a source receipt.
                 _d["source"] = _d.get("source") or "homeplus"
             quality_details = summarize_discount_run(
                 items_as_dict,
@@ -136,7 +140,8 @@ class HomeplusCrawler(CrawlerContract):
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             return CrawlResult(
-                status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
+                status=(CrawlStatus.PARTIAL if source_diagnostics.get('access_stop') else CrawlStatus.SUCCESS)
+                       if valid_items else CrawlStatus.FAILED,
                 crawler_name=self.info.name,
                 strategy_used=strategy,
                 items_count=len(valid_items),
@@ -144,7 +149,8 @@ class HomeplusCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=duration,
-                error_msg=None if valid_items else "상품 수집 실패",
+                error_msg=(f"공급자 요청 중단: HTTP {source_diagnostics['access_stop']['http_status']}"
+                           if source_diagnostics.get('access_stop') else None if valid_items else "상품 수집 실패"),
                 quality_score=quality_details["score"],
                 quality_details=quality_details,
             )
@@ -175,11 +181,8 @@ class HomeplusCrawler(CrawlerContract):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
                 last_resp = resp
-                if resp.status_code == 429:
-                    wait = 8 + (attempt * 8) + random.uniform(1.0, 3.0)
-                    logger.warning("[홈플러스] 429 rate limit, sleeping %.1fs before retry", wait)
-                    time.sleep(wait)
-                    continue
+                # Return access denial to the source-run boundary immediately.
+                # A different category/query must not bypass a host rate limit.
                 return resp
             except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as exc:
                 last_exc = exc
@@ -229,9 +232,22 @@ class HomeplusCrawler(CrawlerContract):
                         params=params,
                         allow_redirects=True,
                     )
+                    if response.status_code in {401, 403, 429}:
+                        diagnostics['access_stop'] = {'http_status': response.status_code,
+                                                     'reason': 'explicit_source_access_denial'}
+                        self._record_source_request_result(diagnostics, source_request, page_num, 0, 0,
+                                                        error=f"HTTP {response.status_code}")
+                        session.close()
+                        return self._limit_items(items), requests_attempted, diagnostics
                     if response.status_code != 200:
                         raise requests.HTTPError(f"HTTP {response.status_code}")
-                    page_items = await self.parse(response.text, store_type=str(source_request.get("store_type") or "HYPER"))
+                    received_at = datetime.now(timezone.utc)
+                    response_body = getattr(response, "content", None)
+                    receipt = {"response_url": getattr(response, "url", None),
+                               "response_body_sha256": hashlib.sha256(response_body).hexdigest() if isinstance(response_body, bytes) else None,
+                               "received_at": received_at}
+                    page_items = await self.parse(response.text, store_type=str(source_request.get("store_type") or "HYPER"),
+                                                  capture_receipt=receipt)
                     raw_count = len(page_items)
                     for item in page_items:
                         if source_request.get("category_hint") and not item.category:
@@ -249,6 +265,7 @@ class HomeplusCrawler(CrawlerContract):
                         if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
                             diagnostics["item_cap_reached"] = True
                             self._record_source_request_result(diagnostics, source_request, page_num, raw_count, new_count)
+                            session.close()
                             return items[: self.MAX_ITEMS], requests_attempted, diagnostics
                     self._record_source_request_result(diagnostics, source_request, page_num, raw_count, new_count)
                     if not self._has_next_page(response.text, page_num):
@@ -259,6 +276,7 @@ class HomeplusCrawler(CrawlerContract):
                     break
                 page_num += 1
                 self._polite_sleep()
+        session.close()
         return self._limit_items(items), requests_attempted, diagnostics
 
     def _headers(self) -> dict:
@@ -466,13 +484,26 @@ class HomeplusCrawler(CrawlerContract):
             },
         }
 
-    async def parse(self, raw_data: str, store_type: str = "HYPER", *, source_url: str | None = None) -> list[DiscountItem]:
+    async def parse(self, raw_data: str, store_type: str = "HYPER", *, source_url: str | None = None,
+                    capture_receipt: dict | None = None) -> list[DiscountItem]:
         items: list[DiscountItem] = []
         json_items = self._extract_json_items(raw_data)
         if json_items:
-            for product in json_items:
+            for node_index, product in enumerate(json_items):
                 item = self._json_to_discount_item(product, store_type=store_type, source_url=source_url)
                 if item:
+                    receipt = capture_receipt or {}
+                    evidence = commercial_product_evidence(
+                        product, f"parser_selected_product_nodes/{node_index}",
+                        response_url=receipt.get("response_url"),
+                        response_body_sha256=receipt.get("response_body_sha256"),
+                        received_at=receipt.get("received_at"))
+                    # This pointer is explicitly to the parser projection, not a
+                    # guessed JSON/HTML-script pointer into the original body.
+                    evidence["source_pointer_kind"] = "parser_selected_product_projection"
+                    item.attributes["submission_business_evidence"] = [evidence]
+                    if evidence["http_receipt_status"] == "supplied_response_metadata":
+                        item.crawled_at = datetime.fromisoformat(evidence["source_response_received_at"])
                     items.append(item)
             return items
         try:

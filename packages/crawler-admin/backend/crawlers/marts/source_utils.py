@@ -3,9 +3,83 @@
 from __future__ import annotations
 
 import hashlib
+import json
+from copy import deepcopy
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
+
+
+def commercial_product_evidence(product: dict, pointer: str, *, response_url: str | None,
+                                 response_body_sha256: str | None, received_at: datetime | None) -> dict:
+    """Keep one source product, with exclusions explicit rather than false defaults."""
+    removed, omitted = [], object()
+    removed_count = 0
+    sensitive = re.compile(r'account|session|customer|auth|credential|password|cookie|token|review|wishlist|contact', re.I)
+    private_cart_fields = {'cart', 'shoppingcart', 'cartid', 'cartitems', 'cartentries', 'cartentry'}
+
+    def omit(path, reason):
+        nonlocal removed_count
+        removed_count += 1
+        if len(removed) < 128:
+            removed.append({'path': path, 'reason': reason})
+
+    def curate(value, path='', depth=0):
+        if depth > 10:
+            omit(path, 'depth_limit')
+            return omitted
+        if isinstance(value, dict):
+            output = {}
+            for key, item in value.items():
+                field_path = f'{path}/{key}'
+                if sensitive.search(str(key)) or re.sub(r'[^a-z]', '', str(key).lower()) in private_cart_fields:
+                    omit(field_path, 'noncommercial_private_branch')
+                elif len(output) >= 256:
+                    omit(field_path, 'field_limit')
+                else:
+                    curated = curate(item, field_path, depth + 1)
+                    if curated is not omitted:
+                        output[key] = curated
+            return output
+        if isinstance(value, list):
+            output = []
+            for index, item in enumerate(value):
+                field_path = f'{path}/{index}'
+                # Classification feature contact information is not commercial specification.
+                if isinstance(item, dict) and sensitive.search(str(item.get('code', ''))):
+                    omit(field_path, 'noncommercial_feature')
+                elif index >= 64:
+                    omit(field_path, 'list_limit')
+                else:
+                    curated = curate(item, field_path, depth + 1)
+                    if curated is not omitted:
+                        output.append(curated)
+            return output
+        if isinstance(value, str) and len(value.encode('utf-8')) > 16384:
+            omit(path, 'string_limit_no_prefix_retained')
+            return omitted
+        return deepcopy(value)
+
+    node = curate(product)
+    encoded = json.dumps(node, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
+    if len(encoded) > 65536:
+        # Do not present a prefix as a complete quote or specification.
+        omit('/', 'commercial_node_size_limit')
+        node, encoded = None, b'null'
+    stamp = (received_at.astimezone(timezone.utc).isoformat()
+             if isinstance(received_at, datetime) and received_at.tzinfo is not None else None)
+    response_hash = (response_body_sha256 if isinstance(response_body_sha256, str)
+                     and re.fullmatch(r'[0-9a-f]{64}', response_body_sha256) else None)
+    complete_receipt = bool(stamp and response_hash and response_url)
+    return {'source_pointer': pointer, 'raw_product_node': node,
+            'raw_product_node_sha256': hashlib.sha256(encoded).hexdigest(),
+            'original_product_field_names': sorted(product)[:256], 'removed_fields': removed,
+            'removed_field_count': removed_count, 'omission_report_truncated': removed_count > len(removed),
+            'original_field_names_truncated': max(0, len(product) - 256),
+            'truncated_fields': [], 'commercial_node_complete': removed_count == 0,
+            'source_response_url': response_url, 'source_response_body_sha256': response_hash,
+            'source_response_received_at': stamp if complete_receipt else None,
+            'http_receipt_status': 'supplied_response_metadata' if complete_receipt else 'not_recorded'}
 
 
 def absolute_url(url: str | None, base_url: str) -> str:

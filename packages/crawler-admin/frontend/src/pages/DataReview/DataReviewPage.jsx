@@ -21,6 +21,46 @@ const FILTER_TABS = [
 
 const ITEMS_PER_PAGE = 10;
 
+function StructuredValue({ value }) {
+  if (value == null) return <span>미확인</span>;
+  if (typeof value !== 'object') return <span>{String(value)}</span>;
+  const text = JSON.stringify(value, null, 2);
+  return <div><pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', maxHeight: 240, overflow: 'auto' }}>{text.slice(0, 6000)}</pre>
+    {text.length > 6000 && <small>일부 표시 · 원본 값은 변경되지 않습니다.</small>}</div>;
+}
+
+function IntakeSourceContext({ row, index }) {
+  const attrs = row.attributes || {};
+  const conditions = row.promotion_conditions || attrs.promotion_conditions || {};
+  const hasConditions = typeof conditions === 'object' && Object.keys(conditions).length > 0;
+  const quote = Object.hasOwn(row, 'sale_price') ? row.sale_price : row.price;
+  const currency = conditions.source_quote_currency;
+  const quoteText = typeof quote === 'number' && Number.isFinite(quote) && quote > 0
+    ? `${quote.toLocaleString('ko-KR')}${currency === 'KRW' ? '원' : currency ? ` ${currency}` : Object.hasOwn(conditions, 'source_quote_currency') ? ' (통화 미명시)' : ' (통화 미확인)'}`
+    : '미확인';
+  const source = row.source || row.mart || attrs.source_name || attrs.source;
+  const native = row.mart_native_code || row.source_record_key || attrs.mart_native_code || attrs.source_record_key;
+  const url = row.canonical_url || row.source_url || row.detail_url || attrs.canonical_url || attrs.source_url;
+  const positiveCount = value => Number.isInteger(value) && value > 0;
+  return <section aria-label={`원 출처·정규화 연결 ${index + 1}`} className={styles.section}>
+    <h4 className={styles.sectionTitle}>원 출처·정규화 연결 — 행 {index + 1}</h4>
+    <p>출처: {source || '미확인'} · 원 출처 키: <code>{native || '미확인'}</code></p>
+    <p>공개 상품 ID: <code>{row.public_product_id || '미확인'}</code></p>
+    <p>공개 규격 ID: <code>{row.public_variant_id || '미확인'}</code></p>
+    <p>출처 연결 ID: <code>{row.public_source_listing_id || '미확인'}</code> · 행사 관측 ID: <code>{row.public_offer_event_id || '미확인'}</code></p>
+    <p>출처 규격 표기: {row.display_unit || row.unit || '미확인'} · 원 관측가: {quoteText}</p>
+    <p>원 출처 URL: {url || '미확인'}</p>
+    <p>검토 승인은 실제 고객 결제액·현재 구매 가능 여부를 보장하지 않습니다.</p>
+    {conditions.payable_price_unconfirmed === true && <p>관측가만 확인 · 총지출·실제 결제 금액 미확인</p>}
+    {(conditions.customer_eligibility_unconfirmed === true || conditions.membership_eligibility_unconfirmed === true) && <p>고객·회원 이용 자격 미확인</p>}
+    {(conditions.selected_product_scope_unconfirmed === true || conditions.selection_group_eligibility_unconfirmed === true) && <p>선택 상품 구성·행사 적용 자격 미확인</p>}
+    {conditions.coupon_application_unconfirmed === true && <p>쿠폰 자격·실제 적용 미확인</p>}
+    {positiveCount(conditions.source_minimum_purchase_quantity) && <p>출처 주문 최소 {conditions.source_minimum_purchase_quantity}개 · 판매 묶음 수량 아님</p>}
+    {positiveCount(conditions.source_maximum_order_quantity) && <p>출처 주문 수량 상한 {conditions.source_maximum_order_quantity}개 · 재고·할인 한도 아님</p>}
+    {hasConditions && <details><summary>원문 구매·행사 조건</summary><StructuredValue value={conditions} /></details>}
+  </section>;
+}
+
 const isMissingValue = (val) => val === null || val === undefined || val === '';
 const isOutlierValue = (key, val) => {
   if (typeof val !== 'number') return false;
@@ -829,6 +869,14 @@ export default function DataReviewPage() {
                         </div>
                       )}
 
+                      {detail && <section aria-label="검토 해석 메모" className={styles.section}>
+                        <h4 className={styles.sectionTitle}>검토 해석 메모</h4>
+                        <p>수집 관리자: {detail.crawler_reviewer_notes || '미기록'}</p>
+                        <p>DB 관리자: {detail.db_reviewer_notes || '미기록'}</p>
+                        <p>승인 상태는 접수 처리 상태이며 현재 결제·구매 자격의 확인을 뜻하지 않습니다.</p>
+                      </section>}
+                      {items.map((row, index) => <IntakeSourceContext key={index} row={row} index={index} />)}
+
                       {items.length > 0 && (
                         <div className={styles.section}>
                           <h4 className={styles.sectionTitle}>📋 스키마 정보</h4>
@@ -837,7 +885,7 @@ export default function DataReviewPage() {
                               <div key={key} className={`${styles.schemaItem} ${getCellClassName(key, val)}`}>
                                 <span className={styles.schemaKey}>{key}</span>
                                 <span className={styles.schemaType}>{typeof val}</span>
-                                <span className={styles.schemaValueFull}>{String(val)}</span>
+                                <div className={styles.schemaValueFull}><StructuredValue value={val} /></div>
                               </div>
                             ))}
                           </div>
@@ -899,7 +947,7 @@ export default function DataReviewPage() {
                                       <td className={styles.rowNum}>{idx + 1}</td>
                                       {allKeys.map((key) => (
                                         <td key={key} className={`${styles.dataCell} ${getCellClassName(key, row[key])}`}>
-                                          {String(row[key] ?? '')}
+                                          <StructuredValue value={row[key]} />
                                         </td>
                                       ))}
                                       {issueCounts.all > 0 && (

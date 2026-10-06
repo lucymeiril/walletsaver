@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 import logging
 import re
+from copy import deepcopy
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Iterable, Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
@@ -18,6 +21,7 @@ from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, Dis
 from core.product_units import parse_package_quantity
 from crawlers.marts.source_utils import (
     absolute_url,
+    commercial_product_evidence as _commercial_product_evidence,
     build_source_attributes,
     build_source_map_manifest,
     compute_canon_hash,
@@ -86,6 +90,8 @@ class CostcoCard:
     mart_native_category_id: str = ""
     mart_native_category_path: str = ""
     promo_label: Optional[str] = None
+    business_evidence: Optional[dict] = None
+
 
 
 def _parse_won(text: Optional[str]) -> Optional[float]:
@@ -321,9 +327,11 @@ def parse_costco_listing(
     return cards
 
 
-def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
+def parse_costco_occ_response(data: dict, *, response_url: str | None = None,
+                             response_body_sha256: str | None = None,
+                             received_at: datetime | None = None) -> list[CostcoCard]:
     cards: list[CostcoCard] = []
-    for product in data.get("products") or []:
+    for index, product in enumerate(data.get("products") or []):
         if not isinstance(product, dict):
             continue
         name = _clean_text(str(product.get("name") or ""))
@@ -387,6 +395,8 @@ def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
             mart_native_category_id=category_keys[-1] if category_keys else "",
             mart_native_category_path=category_path,
             promo_label=promo_label,
+            business_evidence=_commercial_product_evidence(product, f'products/{index}',
+                response_url=response_url, response_body_sha256=response_body_sha256, received_at=received_at),
         ))
     return cards
 
@@ -491,8 +501,14 @@ def cards_to_discount_items(
                 "unit_price_display": record.get("unit_price_display"),
             },
         )
+        if card.business_evidence is not None:
+            attrs['submission_business_evidence'] = [deepcopy(card.business_evidence)]
+        receipt = (card.business_evidence or {}).get('source_response_received_at')
+        receipt_fields = ({'crawled_at': datetime.fromisoformat(receipt)}
+            if receipt and card.business_evidence.get('http_receipt_status') == 'supplied_response_metadata' else {})
         items.append(
             DiscountItem(
+                **receipt_fields,
                 name=card.name,
                 normalized_name=record["normalized_name"],
                 store="코스트코",
@@ -634,7 +650,8 @@ class CostcoCrawler(CrawlerContract):
                 occ_result = None
             else:
                 occ_result = await self._crawl_occ_live(started)
-            if occ_result is not None and occ_result.items_count > 0:
+            if occ_result is not None and (occ_result.items_count > 0
+                    or (occ_result.quality_details or {}).get('source_stopped') is True):
                 return occ_result
             if (
                 occ_result is not None
@@ -706,6 +723,7 @@ class CostcoCrawler(CrawlerContract):
         pages = 0
         breakdown: dict[str, int] = {}
         failures: list[StrategyFailure] = []
+        denied_status = None
         session = requests.Session()
         headers = self._headers()
         headers.update({"Accept": "application/json,text/plain,*/*"})
@@ -731,7 +749,13 @@ class CostcoCrawler(CrawlerContract):
                         resp = session.get(OCC_SEARCH_URL, headers=headers, params=params, timeout=self.REQUEST_TIMEOUT)
                         if resp.status_code != 200:
                             failures.append(StrategyFailure(strategy_name="occ_api", error_type=ErrorType.HTTP_ERROR, error_msg=f"{label}: HTTP {resp.status_code}", status_code=resp.status_code))
+                            if resp.status_code in {401, 403, 429}:
+                                denied_status = resp.status_code
                             break
+                        received_at = datetime.now(timezone.utc)
+                        response_url = getattr(resp, 'url', None)
+                        response_body = getattr(resp, 'content', None)
+                        response_hash = hashlib.sha256(response_body).hexdigest() if isinstance(response_body, bytes) else None
                         data = resp.json()
                     except Exception as exc:
                         failures.append(StrategyFailure(strategy_name="occ_api", error_type=ErrorType.UNKNOWN, error_msg=f"{label}: {exc}"))
@@ -739,7 +763,8 @@ class CostcoCrawler(CrawlerContract):
                     pages += 1
                     current_page, total_pages = _occ_pagination(data)
                     new_count = 0
-                    for item in cards_to_discount_items(parse_costco_occ_response(data), source_url=OCC_SEARCH_URL):
+                    for item in cards_to_discount_items(parse_costco_occ_response(data,
+                        response_url=response_url, response_body_sha256=response_hash, received_at=received_at), source_url=OCC_SEARCH_URL):
                         attrs = item.attributes or {}
                         attrs.setdefault("mart_native_category_id", label)
                         if not attrs.get("mart_native_category_path"):
@@ -763,12 +788,19 @@ class CostcoCrawler(CrawlerContract):
                     if self.PAGE_SLEEP_SECONDS > 0:
                         await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
                 breakdown[label] = len(items) - before
+                if denied_status is not None:
+                    break
                 if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
                     break
         finally:
             session.close()
         valid = await self.validate(items)
-        return self._build_result(started_at, valid, failures, pages, breakdown, "occ_live")
+        result = self._build_result(started_at, valid, failures, pages, breakdown, "occ_live")
+        if denied_status is not None:
+            result.status = CrawlStatus.PARTIAL if valid else CrawlStatus.FAILED
+            result.quality_details.update(source_stopped=True, source_stop_reason='http_access_denied',
+                                          source_stop_status=denied_status)
+        return result
 
     async def _crawl_occ_data_mode(self, started_at: datetime, mock_responses: dict) -> CrawlResult:
         items: list[DiscountItem] = []
@@ -858,6 +890,11 @@ class CostcoCrawler(CrawlerContract):
         record["source_url"] = record["detail_url"]
         record["category"] = item.category or record.get("mart_native_category_path") or "costco"
         record["unit_price_display"] = record.get("unit_price_display") or item.unit_price_display or record.get("unit_price_text")
+        if 'submission_business_evidence' in attrs:
+            record['attributes'] = {'submission_business_evidence': deepcopy(attrs['submission_business_evidence'])}
+            if any(row.get('http_receipt_status') == 'supplied_response_metadata'
+                   for row in attrs['submission_business_evidence']):
+                record['crawled_at'] = item.crawled_at.astimezone(timezone.utc).isoformat()
         return record
 
     async def parse(self, raw_data: str, *, category_id: str = "", category_path: str = "") -> list[DiscountItem]:
