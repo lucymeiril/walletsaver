@@ -1,0 +1,3189 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation364-reviewed-group-keyword-spec",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-001f71d8f677012ad5ddf1654de1c9bd",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "category_id": null,
+      "canonical_name": "씨제이 백설 생칼국수 550G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 백설 생칼국수"
+      ],
+      "keywords": [
+        "칼국수"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:10:13",
+              "ingestion:59:51"
+            ],
+            "source_ingestion_ids": [
+              10,
+              59
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "120794357"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          10,
+          59
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "칼국수"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.cj-baeksul-fresh-kalguksu",
+          "canonical_product_id": "prod-001f71d8f677012ad5ddf1654de1c9bd",
+          "member_product_ids": [
+            "prod-001f71d8f677012ad5ddf1654de1c9bd",
+            "prod-8bc617c3a89d73d9e9283bea98a1649a"
+          ],
+          "canonical_name": "CJ 백설 생칼국수",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1a592885569cf94096f674f767d0d7ea",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 파인애플 콤부차 5g x 30ct x 2",
+      "brand": null,
+      "aliases": [
+        "티젠 콤부차 파인애플"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:74"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "686915"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-pineapple",
+          "canonical_product_id": "prod-1a592885569cf94096f674f767d0d7ea",
+          "member_product_ids": [
+            "prod-1a592885569cf94096f674f767d0d7ea",
+            "prod-4d3df5094222edd5ce058467eba41171"
+          ],
+          "canonical_name": "티젠 콤부차 파인애플",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hfc/h38/433255548911646.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1cf04a49a4f7ba3020780b6d4997823e",
+      "unified_category_id": "food.meals.prepared.black_bean",
+      "category_id": null,
+      "canonical_name": "오뚜기 3분 쇠고기짜장",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 3분 쇠고기 짜장 (200G)",
+        "오뚜기 3분 쇠고기 짜장 200G",
+        "오뚜기 3분 쇠고기짜장"
+      ],
+      "keywords": [
+        "오뚜기 3분 쇠고기짜장",
+        "즉석짜장"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+            "raw_record_ids": [
+              "ingestion:21:30",
+              "ingestion:70:78"
+            ],
+            "source_ingestion_ids": [
+              21,
+              70
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "000044458"
+          },
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+            "raw_record_ids": [
+              "ingestion:31:36"
+            ],
+            "source_ingestion_ids": [
+              31
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801045291314"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+        "identity_basis": "reviewed_product_group",
+        "product_group_key": "reviewed-family-v1:ottogi-3min-beef-jajang",
+        "source_ingestion_ids": [
+          21,
+          31,
+          70
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "즉석짜장"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.ottogi-three-minute-beef-jjajang",
+          "canonical_product_id": "prod-1cf04a49a4f7ba3020780b6d4997823e",
+          "member_product_ids": [
+            "prod-1cf04a49a4f7ba3020780b6d4997823e",
+            "prod-a28d79cc7ed2d35e1613bec00042bdcf"
+          ],
+          "canonical_name": "오뚜기 3분 쇠고기짜장",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-27d00e17e57d6a5574c2f847828cd979",
+      "unified_category_id": "food.meals.prepared.hamburger_steak",
+      "category_id": null,
+      "canonical_name": "씨제이 고메 함박스테이크 152G",
+      "brand": "CJ",
+      "aliases": [
+        "고메 함박스테이크"
+      ],
+      "keywords": [
+        "함박스테이크"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:12:79",
+              "ingestion:62:20"
+            ],
+            "source_ingestion_ids": [
+              12,
+              62
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127554147"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          12,
+          62
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "함박스테이크"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-hamburger-steak",
+          "canonical_product_id": "prod-27d00e17e57d6a5574c2f847828cd979",
+          "member_product_ids": [
+            "prod-27d00e17e57d6a5574c2f847828cd979",
+            "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+            "prod-ad0852fb41459c2be6f1ab7fb268013d"
+          ],
+          "canonical_name": "고메 함박스테이크",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-360a328e651db7bd340f58af28987fbd",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 유자 콤부차 5g x 30ct x 2",
+      "brand": null,
+      "aliases": [
+        "티젠 콤부차 유자"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:76"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "686922"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-citron",
+          "canonical_product_id": "prod-360a328e651db7bd340f58af28987fbd",
+          "member_product_ids": [
+            "prod-360a328e651db7bd340f58af28987fbd",
+            "prod-a3fe5ec55b4573a20f0ea5afa5a6c474"
+          ],
+          "canonical_name": "티젠 콤부차 유자",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h6a/h3b/433255550844958.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4939d552d63975511e3c2e9148ba6312",
+      "unified_category_id": "food.meals.prepared.black_bean",
+      "category_id": null,
+      "canonical_name": "오뚜기 3분 짜장",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 3분 짜장",
+        "오뚜기 3분 짜장 (200G)",
+        "오뚜기 3분 짜장 200G"
+      ],
+      "keywords": [
+        "오뚜기 3분 짜장",
+        "즉석짜장"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+            "raw_record_ids": [
+              "ingestion:21:59",
+              "ingestion:71:36"
+            ],
+            "source_ingestion_ids": [
+              21,
+              71
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "000043613"
+          },
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+            "raw_record_ids": [
+              "ingestion:35:18"
+            ],
+            "source_ingestion_ids": [
+              35
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801045291307"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 양 마트의 오뚜기 3분 제품선·전체 맛 이름·200g 단품과 즉석식품 경로를 전체 관측에서 확인. 쇠고기형/일반형, 순한맛/약간매운맛/매운맛은 각각 독립 상품군으로 유지. 분말 카레·짜장 조리재료와 구분. 롯데 미해석 행사 가격의 검수 상태를 변경하지 않음.",
+        "identity_basis": "reviewed_product_group",
+        "product_group_key": "reviewed-family-v1:ottogi-3min-jajang",
+        "source_ingestion_ids": [
+          21,
+          35,
+          71
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "즉석짜장"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.ottogi-three-minute-jjajang",
+          "canonical_product_id": "prod-4939d552d63975511e3c2e9148ba6312",
+          "member_product_ids": [
+            "prod-4939d552d63975511e3c2e9148ba6312",
+            "prod-6e747c07d1d12488250702f856604bbf"
+          ],
+          "canonical_name": "오뚜기 3분 짜장",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4d3df5094222edd5ce058467eba41171",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 콤부차 파인애플 30T(150G)",
+      "brand": "티젠",
+      "aliases": [
+        "티젠 콤부차 파인애플"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:16:3",
+              "ingestion:65:33"
+            ],
+            "source_ingestion_ids": [
+              16,
+              65
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "069206769"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          16,
+          65
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-pineapple",
+          "canonical_product_id": "prod-1a592885569cf94096f674f767d0d7ea",
+          "member_product_ids": [
+            "prod-1a592885569cf94096f674f767d0d7ea",
+            "prod-4d3df5094222edd5ce058467eba41171"
+          ],
+          "canonical_name": "티젠 콤부차 파인애플",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4ef42235b120ee81da366ea4dc9b84bd",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 레몬 콤부차 5g x 30ct x 2",
+      "brand": null,
+      "aliases": [
+        "티젠 콤부차 레몬"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:84"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "687043"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-lemon",
+          "canonical_product_id": "prod-4ef42235b120ee81da366ea4dc9b84bd",
+          "member_product_ids": [
+            "prod-4ef42235b120ee81da366ea4dc9b84bd",
+            "prod-cf3e22f25d866e99599e9d6d3ef67ab4"
+          ],
+          "canonical_name": "티젠 콤부차 레몬",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h2b/h59/433255551860766.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5175e3b5efccc94b6f23f35e179725f8",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "category_id": null,
+      "canonical_name": "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개",
+      "brand": null,
+      "aliases": [
+        "오뚜기 동대문식 닭한마리 칼국수"
+      ],
+      "keywords": [
+        "칼국수"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:13",
+              "ingestion:90:18"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000852538693"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "칼국수"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-dongdaemun-chicken-kalguksu",
+          "canonical_product_id": "prod-5175e3b5efccc94b6f23f35e179725f8",
+          "member_product_ids": [
+            "prod-5175e3b5efccc94b6f23f35e179725f8",
+            "prod-cd11f7cbb200f945ebbcd50ea9d3ba50"
+          ],
+          "canonical_name": "오뚜기 동대문식 닭한마리 칼국수",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/93/86/53/item/1000852538693_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "category_id": null,
+      "canonical_name": "CJ 도톰 동그랑땡795g",
+      "brand": null,
+      "aliases": [
+        "CJ 도톰 동그랑땡"
+      ],
+      "keywords": [
+        "동그랑땡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:84:44",
+              "ingestion:85:44"
+            ],
+            "source_ingestion_ids": [
+              84,
+              85
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000005923818"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          84,
+          85
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "동그랑땡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-thick-donggeurangttaeng",
+          "canonical_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+          "member_product_ids": [
+            "prod-54895c23f898c2461bc2440d8b1eddb0",
+            "prod-5953858578fd334d0546382a0d7c0168",
+            "prod-9f3a4e25d8739679d56d14778efaf343",
+            "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+          ],
+          "canonical_name": "CJ 도톰 동그랑땡",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/18/38/92/item/1000005923818_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-55dbd90eea412ded54de1f892e5f847e",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "백설 햇당면 500g",
+      "brand": null,
+      "aliases": [
+        "CJ 햇당면"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:90:17"
+            ],
+            "source_ingestion_ids": [
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000007113664"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.cj-haet-glass-noodles",
+          "canonical_product_id": "prod-55dbd90eea412ded54de1f892e5f847e",
+          "member_product_ids": [
+            "prod-55dbd90eea412ded54de1f892e5f847e",
+            "prod-8b57335426990b9d1b3e0a1cced1f575"
+          ],
+          "canonical_name": "CJ 햇당면",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/64/36/11/item/0000007113664_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-57f3d5f815c82999fc769af6248bb229",
+      "unified_category_id": "food.preserved.sides.braised",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고 메추리알 장조림 170G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 비비고 메추리알 장조림"
+      ],
+      "keywords": [
+        "조림반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:57",
+              "ingestion:63:40"
+            ],
+            "source_ingestion_ids": [
+              13,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "066061080"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조림반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-quail-egg-soy-braise",
+          "canonical_product_id": "prod-9aadf7067675bc7831fa26f6c542d12e",
+          "member_product_ids": [
+            "prod-57f3d5f815c82999fc769af6248bb229",
+            "prod-9aadf7067675bc7831fa26f6c542d12e"
+          ],
+          "canonical_name": "CJ 비비고 메추리알 장조림",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": false,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5953858578fd334d0546382a0d7c0168",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고도톰동그랑땡 340G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 도톰 동그랑땡"
+      ],
+      "keywords": [
+        "동그랑땡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:9:77",
+              "ingestion:59:15"
+            ],
+            "source_ingestion_ids": [
+              9,
+              59
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "070263077"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          9,
+          59
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "동그랑땡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-thick-donggeurangttaeng",
+          "canonical_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+          "member_product_ids": [
+            "prod-54895c23f898c2461bc2440d8b1eddb0",
+            "prod-5953858578fd334d0546382a0d7c0168",
+            "prod-9f3a4e25d8739679d56d14778efaf343",
+            "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+          ],
+          "canonical_name": "CJ 도톰 동그랑땡",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": false,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+      "unified_category_id": "household.maintenance.window.screen_material",
+      "category_id": null,
+      "canonical_name": "스카치 방충망 보수테이프 소형 7X7cm",
+      "brand": null,
+      "aliases": [
+        "스카치 방충망 보수테이프 정사각형"
+      ],
+      "keywords": [
+        "방충망보수·틈새차단재"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:10"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000328785184"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "방충망보수·틈새차단재"
+        ],
+        "catalog_group": {
+          "key": "reviewed.home_maintenance.scotch-screen-repair-square-tape",
+          "canonical_product_id": "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+          "member_product_ids": [
+            "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+            "prod-d4ec1e057afd63eedec11ebf96ec74e7"
+          ],
+          "canonical_name": "스카치 방충망 보수테이프 정사각형",
+          "brand": "스카치",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/84/51/78/item/1000328785184_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5e970b59d2664c6c773ff886ecc7f237",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 콤부차 망고구아바 30T(150G)",
+      "brand": "티젠",
+      "aliases": [
+        "티젠 콤부차 망고구아바"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:16:31",
+              "ingestion:65:69"
+            ],
+            "source_ingestion_ids": [
+              16,
+              65
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "071111256"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          16,
+          65
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-mango-guava",
+          "canonical_product_id": "prod-5e970b59d2664c6c773ff886ecc7f237",
+          "member_product_ids": [
+            "prod-5e970b59d2664c6c773ff886ecc7f237",
+            "prod-8c1f4077f1993d89d32f8012af3fdc7a"
+          ],
+          "canonical_name": "티젠 콤부차 망고구아바",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5ede7905eb68a07206750ab439295d45",
+      "unified_category_id": "food.preserved.sides.braised",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고 소고기 장조림 125G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 비비고 소고기 장조림"
+      ],
+      "keywords": [
+        "조림반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:83",
+              "ingestion:63:38"
+            ],
+            "source_ingestion_ids": [
+              13,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "137230773"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조림반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-beef-soy-braise",
+          "canonical_product_id": "prod-8c1a104eca06e5e84e7dce8af207cea7",
+          "member_product_ids": [
+            "prod-5ede7905eb68a07206750ab439295d45",
+            "prod-8c1a104eca06e5e84e7dce8af207cea7"
+          ],
+          "canonical_name": "CJ 비비고 소고기 장조림",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": false,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6a6640a910236397d0d43367db63be32",
+      "unified_category_id": "household.maintenance.window.screen_material",
+      "category_id": null,
+      "canonical_name": "스카치 방충망 보수테이프 롤타입 5X50cm",
+      "brand": null,
+      "aliases": [
+        "스카치 방충망 보수테이프 롤타입"
+      ],
+      "keywords": [
+        "방충망보수·틈새차단재"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:11"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000328785147"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "방충망보수·틈새차단재"
+        ],
+        "catalog_group": {
+          "key": "reviewed.home_maintenance.scotch-screen-repair-roll-tape",
+          "canonical_product_id": "prod-6a6640a910236397d0d43367db63be32",
+          "member_product_ids": [
+            "prod-6a6640a910236397d0d43367db63be32",
+            "prod-c063af1ea4ac6c489d460f46494fbea6"
+          ],
+          "canonical_name": "스카치 방충망 보수테이프 롤타입",
+          "brand": "스카치",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/47/51/78/item/1000328785147_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6e747c07d1d12488250702f856604bbf",
+      "unified_category_id": "food.meals.prepared.black_bean",
+      "category_id": null,
+      "canonical_name": "3분 짜장 200g",
+      "brand": null,
+      "aliases": [
+        "오뚜기 3분 짜장"
+      ],
+      "keywords": [
+        "즉석짜장"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:84:1",
+              "ingestion:85:1"
+            ],
+            "source_ingestion_ids": [
+              84,
+              85
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000006609552"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          84,
+          85
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "즉석짜장"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.ottogi-three-minute-jjajang",
+          "canonical_product_id": "prod-4939d552d63975511e3c2e9148ba6312",
+          "member_product_ids": [
+            "prod-4939d552d63975511e3c2e9148ba6312",
+            "prod-6e747c07d1d12488250702f856604bbf"
+          ],
+          "canonical_name": "오뚜기 3분 짜장",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/52/95/60/item/0000006609552_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+      "unified_category_id": "food.meals.prepared.hamburger_steak",
+      "category_id": null,
+      "canonical_name": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+      "brand": "고메",
+      "aliases": [
+        "CJ 고메 치즈 함박스테이크"
+      ],
+      "keywords": [
+        "함박스테이크"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:28:56"
+            ],
+            "source_ingestion_ids": [
+              28
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801007772493"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          28
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "함박스테이크"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-cheese-hamburger-steak",
+          "canonical_product_id": "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+          "member_product_ids": [
+            "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+            "prod-bd79ba61441346549614372bb6414e72"
+          ],
+          "canonical_name": "CJ 고메 치즈 함박스테이크",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8932be1-c461-4872-8c87-2bab00f9be6c/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-801357d92068dfc0f7e048c6786adc8f",
+      "unified_category_id": "food.preserved.sides.stir_fried",
+      "category_id": null,
+      "canonical_name": "비비고 견과류 멸치볶음 60g x 6",
+      "brand": null,
+      "aliases": [
+        "CJ 비비고 견과류 멸치볶음"
+      ],
+      "keywords": [
+        "볶음반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:4"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "654740"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "볶음반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-nut-anchovy-stirfry",
+          "canonical_product_id": "prod-801357d92068dfc0f7e048c6786adc8f",
+          "member_product_ids": [
+            "prod-801357d92068dfc0f7e048c6786adc8f",
+            "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d"
+          ],
+          "canonical_name": "CJ 비비고 견과류 멸치볶음",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h72/h2e/243487843385374.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "오뚜기 옛날 자른 당면 300G",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 옛날 자른 당면"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:20:75",
+              "ingestion:70:2"
+            ],
+            "source_ingestion_ids": [
+              20,
+              70
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "100494546"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          20,
+          70
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-old-cut-glass-noodles",
+          "canonical_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+          "member_product_ids": [
+            "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+            "prod-aefc95d808c0f2f96450cbf9c88330fc",
+            "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+            "prod-f0d35746d2acaa71309342a8181a2b4a"
+          ],
+          "canonical_name": "오뚜기 옛날 자른 당면",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8b57335426990b9d1b3e0a1cced1f575",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "햇당면300g",
+      "brand": null,
+      "aliases": [
+        "CJ 햇당면"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:6",
+              "ingestion:90:9"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000008326267"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.cj-haet-glass-noodles",
+          "canonical_product_id": "prod-55dbd90eea412ded54de1f892e5f847e",
+          "member_product_ids": [
+            "prod-55dbd90eea412ded54de1f892e5f847e",
+            "prod-8b57335426990b9d1b3e0a1cced1f575"
+          ],
+          "canonical_name": "CJ 햇당면",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/67/62/32/item/0000008326267_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8bc617c3a89d73d9e9283bea98a1649a",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "category_id": null,
+      "canonical_name": "백설 생칼국수 550g",
+      "brand": null,
+      "aliases": [
+        "CJ 백설 생칼국수"
+      ],
+      "keywords": [
+        "칼국수"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:11",
+              "ingestion:90:15"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000024238539"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "칼국수"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.cj-baeksul-fresh-kalguksu",
+          "canonical_product_id": "prod-001f71d8f677012ad5ddf1654de1c9bd",
+          "member_product_ids": [
+            "prod-001f71d8f677012ad5ddf1654de1c9bd",
+            "prod-8bc617c3a89d73d9e9283bea98a1649a"
+          ],
+          "canonical_name": "CJ 백설 생칼국수",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/39/85/23/item/1000024238539_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8c1a104eca06e5e84e7dce8af207cea7",
+      "unified_category_id": "food.preserved.sides.braised",
+      "category_id": null,
+      "canonical_name": "소고기 장조림 125g",
+      "brand": null,
+      "aliases": [
+        "CJ 비비고 소고기 장조림"
+      ],
+      "keywords": [
+        "조림반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:19"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000036649522"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조림반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-beef-soy-braise",
+          "canonical_product_id": "prod-8c1a104eca06e5e84e7dce8af207cea7",
+          "member_product_ids": [
+            "prod-5ede7905eb68a07206750ab439295d45",
+            "prod-8c1a104eca06e5e84e7dce8af207cea7"
+          ],
+          "canonical_name": "CJ 비비고 소고기 장조림",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/22/95/64/item/1000036649522_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8c1f4077f1993d89d32f8012af3fdc7a",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 망고구아바 콤부차 5g x 30ct x 2",
+      "brand": null,
+      "aliases": [
+        "티젠 콤부차 망고구아바"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:88"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "686923"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-mango-guava",
+          "canonical_product_id": "prod-5e970b59d2664c6c773ff886ecc7f237",
+          "member_product_ids": [
+            "prod-5e970b59d2664c6c773ff886ecc7f237",
+            "prod-8c1f4077f1993d89d32f8012af3fdc7a"
+          ],
+          "canonical_name": "티젠 콤부차 망고구아바",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h0d/h9f/433255551172638.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8ed4a98572dd4f7b64b118f978dd3655",
+      "unified_category_id": "food.meals.prepared.meatballs",
+      "category_id": null,
+      "canonical_name": "CJ 고메 토마토 미트볼 (147G)",
+      "brand": "고메",
+      "aliases": [
+        "CJ 고메 토마토미트볼"
+      ],
+      "keywords": [
+        "미트볼"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:29:46"
+            ],
+            "source_ingestion_ids": [
+              29
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801007626994"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          29
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "미트볼"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-tomato-meatballs",
+          "canonical_product_id": "prod-8ed4a98572dd4f7b64b118f978dd3655",
+          "member_product_ids": [
+            "prod-8ed4a98572dd4f7b64b118f978dd3655",
+            "prod-e8939c128a1ad6404c681636497fef20"
+          ],
+          "canonical_name": "CJ 고메 토마토미트볼",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c6f1c52-329e-4367-81af-760dbff421f5/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+      "unified_category_id": "food.meals.prepared.hamburger_steak",
+      "category_id": null,
+      "canonical_name": "CJ 제일제당 고메 함박 스테이크 (152G)",
+      "brand": "고메",
+      "aliases": [
+        "고메 함박스테이크"
+      ],
+      "keywords": [
+        "함박스테이크"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:28:17"
+            ],
+            "source_ingestion_ids": [
+              28
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801007626970"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          28
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "함박스테이크"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-hamburger-steak",
+          "canonical_product_id": "prod-27d00e17e57d6a5574c2f847828cd979",
+          "member_product_ids": [
+            "prod-27d00e17e57d6a5574c2f847828cd979",
+            "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+            "prod-ad0852fb41459c2be6f1ab7fb268013d"
+          ],
+          "canonical_name": "고메 함박스테이크",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bc60062d-c2b5-48f9-82e0-a521d6a28d96/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9aadf7067675bc7831fa26f6c542d12e",
+      "unified_category_id": "food.preserved.sides.braised",
+      "category_id": null,
+      "canonical_name": "메추리알장조림 170g",
+      "brand": null,
+      "aliases": [
+        "CJ 비비고 메추리알 장조림"
+      ],
+      "keywords": [
+        "조림반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:39"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000207635926"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조림반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-quail-egg-soy-braise",
+          "canonical_product_id": "prod-9aadf7067675bc7831fa26f6c542d12e",
+          "member_product_ids": [
+            "prod-57f3d5f815c82999fc769af6248bb229",
+            "prod-9aadf7067675bc7831fa26f6c542d12e"
+          ],
+          "canonical_name": "CJ 비비고 메추리알 장조림",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/26/59/63/item/1000207635926_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9f3a4e25d8739679d56d14778efaf343",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "category_id": null,
+      "canonical_name": "CJ 도톰동그랑땡 1.5KG X 2",
+      "brand": null,
+      "aliases": [
+        "CJ 도톰 동그랑땡"
+      ],
+      "keywords": [
+        "동그랑땡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_cheese_shelf_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:28"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "694946"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_cheese_shelf_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "동그랑땡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-thick-donggeurangttaeng",
+          "canonical_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+          "member_product_ids": [
+            "prod-54895c23f898c2461bc2440d8b1eddb0",
+            "prod-5953858578fd334d0546382a0d7c0168",
+            "prod-9f3a4e25d8739679d56d14778efaf343",
+            "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+          ],
+          "canonical_name": "CJ 도톰 동그랑땡",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hc3/h98/470697792176158.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a28d79cc7ed2d35e1613bec00042bdcf",
+      "unified_category_id": "food.meals.prepared.black_bean",
+      "category_id": null,
+      "canonical_name": "3분 쇠고기 짜장 200g",
+      "brand": null,
+      "aliases": [
+        "오뚜기 3분 쇠고기짜장"
+      ],
+      "keywords": [
+        "즉석짜장"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:84:4",
+              "ingestion:85:4"
+            ],
+            "source_ingestion_ids": [
+              84,
+              85
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000006609553"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          84,
+          85
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "즉석짜장"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.ottogi-three-minute-beef-jjajang",
+          "canonical_product_id": "prod-1cf04a49a4f7ba3020780b6d4997823e",
+          "member_product_ids": [
+            "prod-1cf04a49a4f7ba3020780b6d4997823e",
+            "prod-a28d79cc7ed2d35e1613bec00042bdcf"
+          ],
+          "canonical_name": "오뚜기 3분 쇠고기짜장",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/53/95/60/item/0000006609553_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a3b4a31dc1b871b44c0a385dbc05633f",
+      "unified_category_id": "food.meals.prepared.meat_patty",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고 도톰 동그랑땡 425G*2",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 도톰 동그랑땡"
+      ],
+      "keywords": [
+        "동그랑땡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:10:66",
+              "ingestion:60:1"
+            ],
+            "source_ingestion_ids": [
+              10,
+              60
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "120854362"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          10,
+          60
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "동그랑땡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-thick-donggeurangttaeng",
+          "canonical_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+          "member_product_ids": [
+            "prod-54895c23f898c2461bc2440d8b1eddb0",
+            "prod-5953858578fd334d0546382a0d7c0168",
+            "prod-9f3a4e25d8739679d56d14778efaf343",
+            "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+          ],
+          "canonical_name": "CJ 도톰 동그랑땡",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a3fe5ec55b4573a20f0ea5afa5a6c474",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 콤부차유자 30T(150G)",
+      "brand": "티젠",
+      "aliases": [
+        "티젠 콤부차 유자"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:16:57",
+              "ingestion:65:94"
+            ],
+            "source_ingestion_ids": [
+              16,
+              65
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "064586458"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          16,
+          65
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-citron",
+          "canonical_product_id": "prod-360a328e651db7bd340f58af28987fbd",
+          "member_product_ids": [
+            "prod-360a328e651db7bd340f58af28987fbd",
+            "prod-a3fe5ec55b4573a20f0ea5afa5a6c474"
+          ],
+          "canonical_name": "티젠 콤부차 유자",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 피치 콤부차 5g x 30ct x 2",
+      "brand": null,
+      "aliases": [
+        "티젠 콤부차 피치"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:73"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "686916"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-peach",
+          "canonical_product_id": "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+          "member_product_ids": [
+            "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+            "prod-f49ee368fdfaa95d74990fed1bc6b5c2"
+          ],
+          "canonical_name": "티젠 콤부차 피치",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h52/h6e/433255549239326.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-ad0852fb41459c2be6f1ab7fb268013d",
+      "unified_category_id": "food.meals.prepared.hamburger_steak",
+      "category_id": null,
+      "canonical_name": "고메함박스테이크152g",
+      "brand": null,
+      "aliases": [
+        "고메 함박스테이크"
+      ],
+      "keywords": [
+        "함박스테이크"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:1:67"
+            ],
+            "source_ingestion_ids": [
+              1
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000023605851"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          1
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "함박스테이크"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-hamburger-steak",
+          "canonical_product_id": "prod-27d00e17e57d6a5574c2f847828cd979",
+          "member_product_ids": [
+            "prod-27d00e17e57d6a5574c2f847828cd979",
+            "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+            "prod-ad0852fb41459c2be6f1ab7fb268013d"
+          ],
+          "canonical_name": "고메 함박스테이크",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/51/58/60/item/1000023605851_i1_500.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-aefc95d808c0f2f96450cbf9c88330fc",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "오뚜기 옛날 자른 당면 500G",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 옛날 자른 당면"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:21:39",
+              "ingestion:71:17"
+            ],
+            "source_ingestion_ids": [
+              21,
+              71
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "009666117"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          21,
+          71
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-old-cut-glass-noodles",
+          "canonical_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+          "member_product_ids": [
+            "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+            "prod-aefc95d808c0f2f96450cbf9c88330fc",
+            "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+            "prod-f0d35746d2acaa71309342a8181a2b4a"
+          ],
+          "canonical_name": "오뚜기 옛날 자른 당면",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d",
+      "unified_category_id": "food.preserved.sides.stir_fried",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고 견과류 멸치 볶음 60G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 비비고 견과류 멸치볶음"
+      ],
+      "keywords": [
+        "볶음반찬"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:14:55",
+              "ingestion:63:93"
+            ],
+            "source_ingestion_ids": [
+              14,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "137231088"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          14,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "볶음반찬"
+        ],
+        "catalog_group": {
+          "key": "reviewed.preserved_sides.cj-bibigo-nut-anchovy-stirfry",
+          "canonical_product_id": "prod-801357d92068dfc0f7e048c6786adc8f",
+          "member_product_ids": [
+            "prod-801357d92068dfc0f7e048c6786adc8f",
+            "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d"
+          ],
+          "canonical_name": "CJ 비비고 견과류 멸치볶음",
+          "brand": "CJ 비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b8a084b046d6c7be51bcf87d34feab58",
+      "unified_category_id": "food.meals.noodles.sujebi",
+      "category_id": null,
+      "canonical_name": "이가자연면감자수제비186.5g x 8 x 120 (BD)",
+      "brand": null,
+      "aliases": [
+        "이가자연면 감자수제비"
+      ],
+      "keywords": [
+        "수제비"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_noodle_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:51"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "663690"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_noodle_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "수제비"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.iga-potato-sujebi",
+          "canonical_product_id": "prod-b8a084b046d6c7be51bcf87d34feab58",
+          "member_product_ids": [
+            "prod-b8a084b046d6c7be51bcf87d34feab58",
+            "prod-bad67c870c86fee8ab69513000542503"
+          ],
+          "canonical_name": "이가자연면 감자수제비",
+          "brand": "이가자연면",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h7d/h5c/153742716469278.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b8d78ee082f6b47c8b41f0e71504507e",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "category_id": null,
+      "canonical_name": "씨제이 햇반 김치치즈 주먹밥 500G",
+      "brand": "CJ",
+      "aliases": [
+        "햇반 김치치즈 주먹밥"
+      ],
+      "keywords": [
+        "주먹밥"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:10:45",
+              "ingestion:59:36"
+            ],
+            "source_ingestion_ids": [
+              10,
+              59
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "140583801"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          10,
+          59
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "주먹밥"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.hetban-kimchi-cheese-riceball",
+          "canonical_product_id": "prod-b8d78ee082f6b47c8b41f0e71504507e",
+          "member_product_ids": [
+            "prod-b8d78ee082f6b47c8b41f0e71504507e",
+            "prod-ccd9f8321c51a546deaeb09fc5870f59"
+          ],
+          "canonical_name": "햇반 김치치즈 주먹밥",
+          "brand": "햇반",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bad67c870c86fee8ab69513000542503",
+      "unified_category_id": "food.meals.noodles.sujebi",
+      "category_id": null,
+      "canonical_name": "이가자연면 감자수제비186.5g x 8 x 2",
+      "brand": null,
+      "aliases": [
+        "이가자연면 감자수제비"
+      ],
+      "keywords": [
+        "수제비"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_noodle_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:34"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "664309"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_noodle_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "수제비"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.iga-potato-sujebi",
+          "canonical_product_id": "prod-b8a084b046d6c7be51bcf87d34feab58",
+          "member_product_ids": [
+            "prod-b8a084b046d6c7be51bcf87d34feab58",
+            "prod-bad67c870c86fee8ab69513000542503"
+          ],
+          "canonical_name": "이가자연면 감자수제비",
+          "brand": "이가자연면",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h77/h2d/153742722957342.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bd79ba61441346549614372bb6414e72",
+      "unified_category_id": "food.meals.prepared.hamburger_steak",
+      "category_id": null,
+      "canonical_name": "씨제이 고메 치즈 함박스테이크 152G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 고메 치즈 함박스테이크"
+      ],
+      "keywords": [
+        "함박스테이크"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:12:87",
+              "ingestion:62:12"
+            ],
+            "source_ingestion_ids": [
+              12,
+              62
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "130315663"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          12,
+          62
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "함박스테이크"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-cheese-hamburger-steak",
+          "canonical_product_id": "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+          "member_product_ids": [
+            "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+            "prod-bd79ba61441346549614372bb6414e72"
+          ],
+          "canonical_name": "CJ 고메 치즈 함박스테이크",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c063af1ea4ac6c489d460f46494fbea6",
+      "unified_category_id": "household.maintenance.window.screen_material",
+      "category_id": null,
+      "canonical_name": "스카치 방충망 보수테이프 롤타입 5cmX1M",
+      "brand": null,
+      "aliases": [
+        "스카치 방충망 보수테이프 롤타입"
+      ],
+      "keywords": [
+        "방충망보수·틈새차단재"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:16"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000328785141"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "방충망보수·틈새차단재"
+        ],
+        "catalog_group": {
+          "key": "reviewed.home_maintenance.scotch-screen-repair-roll-tape",
+          "canonical_product_id": "prod-6a6640a910236397d0d43367db63be32",
+          "member_product_ids": [
+            "prod-6a6640a910236397d0d43367db63be32",
+            "prod-c063af1ea4ac6c489d460f46494fbea6"
+          ],
+          "canonical_name": "스카치 방충망 보수테이프 롤타입",
+          "brand": "스카치",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/41/51/78/item/1000328785141_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "옛날자른당면300g",
+      "brand": null,
+      "aliases": [
+        "오뚜기 옛날 자른 당면"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:17",
+              "ingestion:90:22"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000011630630"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-old-cut-glass-noodles",
+          "canonical_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+          "member_product_ids": [
+            "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+            "prod-aefc95d808c0f2f96450cbf9c88330fc",
+            "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+            "prod-f0d35746d2acaa71309342a8181a2b4a"
+          ],
+          "canonical_name": "오뚜기 옛날 자른 당면",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/30/06/63/item/1000011630630_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-ccd9f8321c51a546deaeb09fc5870f59",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "category_id": null,
+      "canonical_name": "햇반 김치치즈 주먹밥 100g X 12 X 2",
+      "brand": null,
+      "aliases": [
+        "햇반 김치치즈 주먹밥"
+      ],
+      "keywords": [
+        "주먹밥"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:45"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "674445"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "주먹밥"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.hetban-kimchi-cheese-riceball",
+          "canonical_product_id": "prod-b8d78ee082f6b47c8b41f0e71504507e",
+          "member_product_ids": [
+            "prod-b8d78ee082f6b47c8b41f0e71504507e",
+            "prod-ccd9f8321c51a546deaeb09fc5870f59"
+          ],
+          "canonical_name": "햇반 김치치즈 주먹밥",
+          "brand": "햇반",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h24/h2a/241708578340894.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-cd11f7cbb200f945ebbcd50ea9d3ba50",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "category_id": null,
+      "canonical_name": "오뚜기 동대문식 닭한마리 칼국수 (460G)",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 동대문식 닭한마리 칼국수"
+      ],
+      "keywords": [
+        "칼국수"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:34:51"
+            ],
+            "source_ingestion_ids": [
+              34
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801045695075"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          34
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "칼국수"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-dongdaemun-chicken-kalguksu",
+          "canonical_product_id": "prod-5175e3b5efccc94b6f23f35e179725f8",
+          "member_product_ids": [
+            "prod-5175e3b5efccc94b6f23f35e179725f8",
+            "prod-cd11f7cbb200f945ebbcd50ea9d3ba50"
+          ],
+          "canonical_name": "오뚜기 동대문식 닭한마리 칼국수",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5c2fe041-dba1-4345-86aa-57512cdc645f/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-cf3e22f25d866e99599e9d6d3ef67ab4",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 콤부차 레몬 30T (150G)",
+      "brand": "티젠",
+      "aliases": [
+        "티젠 콤부차 레몬"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:15:83",
+              "ingestion:65:20"
+            ],
+            "source_ingestion_ids": [
+              15,
+              65
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "148493091"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          15,
+          65
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-lemon",
+          "canonical_product_id": "prod-4ef42235b120ee81da366ea4dc9b84bd",
+          "member_product_ids": [
+            "prod-4ef42235b120ee81da366ea4dc9b84bd",
+            "prod-cf3e22f25d866e99599e9d6d3ef67ab4"
+          ],
+          "canonical_name": "티젠 콤부차 레몬",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-d4ec1e057afd63eedec11ebf96ec74e7",
+      "unified_category_id": "household.maintenance.window.screen_material",
+      "category_id": null,
+      "canonical_name": "스카치 방충망 보수테이프 대형 10X10cm",
+      "brand": null,
+      "aliases": [
+        "스카치 방충망 보수테이프 정사각형"
+      ],
+      "keywords": [
+        "방충망보수·틈새차단재"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:13"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000328785198"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "방충망보수·틈새차단재"
+        ],
+        "catalog_group": {
+          "key": "reviewed.home_maintenance.scotch-screen-repair-square-tape",
+          "canonical_product_id": "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+          "member_product_ids": [
+            "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+            "prod-d4ec1e057afd63eedec11ebf96ec74e7"
+          ],
+          "canonical_name": "스카치 방충망 보수테이프 정사각형",
+          "brand": "스카치",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/98/51/78/item/1000328785198_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e8939c128a1ad6404c681636497fef20",
+      "unified_category_id": "food.meals.prepared.meatballs",
+      "category_id": null,
+      "canonical_name": "씨제이 고메 토마토미트볼 147G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 고메 토마토미트볼"
+      ],
+      "keywords": [
+        "미트볼"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:22",
+              "ingestion:62:39"
+            ],
+            "source_ingestion_ids": [
+              13,
+              62
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127554130"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          62
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "미트볼"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_meals.cj-gome-tomato-meatballs",
+          "canonical_product_id": "prod-8ed4a98572dd4f7b64b118f978dd3655",
+          "member_product_ids": [
+            "prod-8ed4a98572dd4f7b64b118f978dd3655",
+            "prod-e8939c128a1ad6404c681636497fef20"
+          ],
+          "canonical_name": "CJ 고메 토마토미트볼",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f0d35746d2acaa71309342a8181a2b4a",
+      "unified_category_id": "food.meals.noodles.glass",
+      "category_id": null,
+      "canonical_name": "오뚜기 옛날자른당면",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 옛날 자른 당면",
+        "오뚜기 옛날자른당면 1KG",
+        "오뚜기옛날자른당면1kg"
+      ],
+      "keywords": [
+        "당면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 옛날자른당면 완전 제품명과 총1kg이 일치; 조리 잡채 제품과 구분",
+            "raw_record_ids": [
+              "ingestion:40:29"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "589226"
+          },
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 옛날자른당면 완전 제품명과 총1kg이 일치; 조리 잡채 제품과 구분",
+            "raw_record_ids": [
+              "ingestion:22:50",
+              "ingestion:71:71"
+            ],
+            "source_ingestion_ids": [
+              22,
+              71
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "069143629"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 옛날자른당면 완전 제품명과 총1kg이 일치; 조리 잡채 제품과 구분",
+        "identity_basis": "reviewed_product_group",
+        "product_group_key": "reviewed-family-v1:ottogi-cut-glass-noodles",
+        "source_ingestion_ids": [
+          22,
+          40,
+          71
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "당면"
+        ],
+        "catalog_group": {
+          "key": "reviewed.prepared_noodles_rice.ottogi-old-cut-glass-noodles",
+          "canonical_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+          "member_product_ids": [
+            "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+            "prod-aefc95d808c0f2f96450cbf9c88330fc",
+            "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+            "prod-f0d35746d2acaa71309342a8181a2b4a"
+          ],
+          "canonical_name": "오뚜기 옛날 자른 당면",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h5f/ha9/28286837162014.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f49ee368fdfaa95d74990fed1bc6b5c2",
+      "unified_category_id": "food.drinks.powders.kombucha",
+      "category_id": null,
+      "canonical_name": "티젠 콤부차 피치 30T(150G)",
+      "brand": "티젠",
+      "aliases": [
+        "티젠 콤부차 피치"
+      ],
+      "keywords": [
+        "콤부차분말"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_literal_tea_preparation_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:16:4",
+              "ingestion:65:15"
+            ],
+            "source_ingestion_ids": [
+              16,
+              65
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "068948059"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_literal_tea_preparation_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          16,
+          65
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "콤부차분말"
+        ],
+        "catalog_group": {
+          "key": "reviewed.drink_powder.teazen-kombucha-peach",
+          "canonical_product_id": "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+          "member_product_ids": [
+            "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+            "prod-f49ee368fdfaa95d74990fed1bc6b5c2"
+          ],
+          "canonical_name": "티젠 콤부차 피치",
+          "brand": "티젠",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

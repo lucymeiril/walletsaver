@@ -38,7 +38,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(442군/1081기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 두 파일은 catalog90→91→92의 **기존 상품군 metadata만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(464군/1130기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 세 파일은 catalog90→91→92→93의 **기존 상품군 metadata만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -294,4 +294,6 @@ Collector execution separates source completeness, validation, acknowledged pend
 
 340의355기등록 문맥에서8공통군16옛ID를 추가해 당시417군1017옛ID가 연결됐다. 홈스타 세탁조클리너450ml 단품/8팩은 실제 내용량 규격을 유지하고, 몰리스 프로발란스 어덜트3kg/8kg은 별도 규격이다. 별도로 휴지통3상품의10/20/24L를 공통 빈용기 용량 역할로 정정했다. 용량은 원문·spec에 보존하고 판매개수·수령량·ml단위가는 미확인으로 둔다. 옛 scalar 선택은 묵시 전환하지 않고 재선택 안내하며 원event/가격/시점은 유지한다. 정식apply/replay/snapshot90 및 실제31GET·쓰기0·외부요청0의 검색/선택/전체이력/옛URL 경계를 확인했고 원9115관측·계정참조를 보존했다. 원본98분류나 새 출처는 재개하지 않았고 전체 제출 완료 주장은 아니다.
 
-355 누적: 새482기등록문맥과 재사용4문맥에서25군64옛ID를 연결해 현재442군1081옛ID를 유지한다. 색상·침대크기·팬직경·와이퍼폭은 별도 source variant이며 치수는 판매수량이 아니다. 판매1은 저장된 BC350 원 포장1x에만 적용되고 다른 물품NULL은 유지된다. 원9115 event/가격/시각/계정·FK를 정식91/92 apply/replay/publish 및 일치source의92 remote upload로 보존했고 배포계정은0이다. 변경실제18GET/쓰기0/외부요청0은 보리차 oldmember tuple·full5/own1·두HP규격이력, Harmony두색NULL, Bosch7폭,104커피의 최근순 두page20개씩·중복0, 대표Costco보다늦은HP group시각을 확인했다. 전체104순위 재구성·실제401브라우저강제 만료·Windows 실행은 주장하지 않는다. 설치12·최근순9·비동기/공통refresh17·등록source snapshot7+2 집중 경계와Web build를 확인했다; 전체catalog 인증/초기98분류/새출처는 반복하지 않았다.
+355 누적: 새482기등록문맥과 재사용4문맥에서25군64옛ID를 연결해 당시442군1081옛ID를 유지한다. 색상·침대크기·팬직경·와이퍼폭은 별도 source variant이며 치수는 판매수량이 아니다. 판매1은 저장된 BC350 원 포장1x에만 적용되고 다른 물품NULL은 유지된다. 원9115 event/가격/시각/계정·FK를 정식91/92 apply/replay/publish 및 일치source의92 remote upload로 보존했고 배포계정은0이다. 변경실제18GET/쓰기0/외부요청0은 보리차 oldmember tuple·full5/own1·두HP규격이력, Harmony두색NULL, Bosch7폭,104커피의 최근순 두page20개씩·중복0, 대표Costco보다늦은HP group시각을 확인했다. 전체104순위 재구성·Windows 실행은 주장하지 않는다. 추가 실제 브라우저에서는 동일 소유 subject/공개demo서명으로 로컬 access 만료를 설정한 후 등록·댓글·수정·삭제의401→유효refresh200→쓰기200 각1회와 초안/coldread 보존을 확인했다. refresh도만료되면 재전송0·로그인안내·재로그인초안보존을 확인하고 생성 글을 정식UI로 삭제했다. 실제 자연만료 대기나 외부OAuth 확인은 아니다. 설치12·최근순9·비동기/공통refresh17·등록source snapshot7+2 집중 경계와Web build를 확인했다; 전체catalog 인증/초기98분류/새출처는 반복하지 않았다.
+
+364의362기등록 문맥에서22군49옛ID를 추가해 catalog93/464군1130옛ID가 연결됐다. 티젠 콤부차 맛별군, CJ/오뚜기 명시 레시피·라인, 스카치 정사각 보수패치와롤타입을 구분했다. Costco 고메810g 냉동bulk는152g군과 동일 레시피/보관형태 bridge가 입증되지 않아 별도로 유지했다. 양·규격·리프·원9115event/시점/가격/계정참조는 바꾸지 않고 metadata만 정식apply/replay/publish로 반영했다. 실제23GET/쓰기0/외부요청0은 일반/쇠고기짜장 분리·옛Emart tuple/own2/전체5, 레몬150g/300g·own2/전체3, 정사각패치NULL과롤 별도규격/옛1m source history를 확인했다. 롤0.5/1m는 저장spec이며 검증된 판매목적·선형수령량·m단위가는NULL과명시보류를 유지한다. 초기98·새출처·전수동일성·최종제출완료를 주장하지 않는다.

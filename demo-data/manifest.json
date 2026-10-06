@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_revision": 92,
-  "version": "2026-10-06-catalog92-groups355",
+  "catalog_revision": 93,
+  "version": "2026-10-06-catalog93-groups364",
   "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update92 and consistent publicsnapshot; reviewed named producer/model/line groups retain all original old IDs, independent source variants/physicalNULL/exactdeclared counts, own/group full timed history. Original9115 event/quote/raw/time and separateexternalhotdeal7 unchanged; accounts/sessions empty. Initial98 paused, historical certificate unchanged.",
+  "data_scope": "Sanitized catalog/admin-update93 and consistent publicsnapshot; reviewed named producer/model/line groups retain all original old IDs, independent source variants/physicalNULL/exactdeclared counts, own/group full timed history. Original9115 event/quote/raw/time and separateexternalhotdeal7 unchanged; accounts/sessions empty. Initial98 paused, historical certificate unchanged.",
   "files": {
     "admin.sqlite": {
-      "sha256": "b14c499baf3633852df608a752c875994d1dfbd9e48a584aaaf3e1426ed5a8f7",
-      "bytes": 62611456,
+      "sha256": "572e4d2591f28ccf592923fb91f7f88f2f99b3f886584ecf75d5b9d61034aa5b",
+      "bytes": 62640128,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 67,
+        "catalog_sync_log": 68,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "207fa2d01682b68a2c94c0a32d23d3437aa50feece52b234bfd3caccbc5f209e",
-      "archive_bytes": 8953148
+      "archive_sha256": "a13141bb6c183216ffb202069c3dc5a234df6accee17dbd254cbdf64bed01a97",
+      "archive_bytes": 8963405
     },
     "public_snapshot.sqlite": {
-      "sha256": "61cea1b077923a69aa7b52ec16bc27301a88ffb222260ed6ac9eaba5bb52595b",
-      "bytes": 58195968,
+      "sha256": "1a10c7feeb19a552b46861193b3202ccd53e39cc12500b1fd3c9ab50f138e3cc",
+      "bytes": 58224640,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "8031c144183d932b987288b7dcc2ba9e2162dc6e9bcf2410404fdb904713ea0b",
-      "archive_bytes": 8313642
+      "archive_sha256": "acaa744950ed36226b6f7a9ee86962101eb77b6c1d928a3c81edafb06d9e7613",
+      "archive_bytes": 8319851
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "f039767ee85c8a8b12509755532288b74d9269ca849c07bb0d6919dd50e6a6eb",
-    "packages/shared/core/reviewed_catalog_groups.json": "60a9ff6adc9b4acc32f4e1b308f4e851745a61c3f3ed173974ea531d18aa874a",
+    "packages/shared/core/reviewed_catalog_groups.json": "c55525c971eecb16b2a79b91b7df446453ad829ca9eacad15bc768944c0fd90b",
     "packages/shared/core/catalog_quantity.py": "4843ce5fbf99aa3c182a96fb424982fd8e7e5deaa99c1001c0a1b5382ac87391",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
@@ -204,13 +204,21 @@
       "base_catalog_revision": 91,
       "reviewed_catalog_revision": 92,
       "scope": "Approved existing product group metadata only; unchanged quantities/listings/quotes/event/time/account references. Preview/apply/replay exact bytes already verified."
+    },
+    {
+      "path": "demo-data/updates/catalog92-to93.json",
+      "sha256": "4b1339684b7366355de00b6b8b36b39b92e5447a2ce8aad33a920a303d09683e",
+      "bytes": 109186,
+      "base_catalog_revision": 92,
+      "reviewed_catalog_revision": 93,
+      "scope": "Reviewed22existing productfamily metadata groups/49oldIDs only. Original quantities/listings/events/rawquotes/time/accounts unchanged; officialpreview/apply/replay/publish93 already verified."
     }
   ],
   "reviewed_catalog_groups": {
-    "groups": 442,
-    "preserved_original_product_ids": 1081,
+    "groups": 464,
+    "preserved_original_product_ids": 1130,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "60a9ff6adc9b4acc32f4e1b308f4e851745a61c3f3ed173974ea531d18aa874a",
+    "source_registry_sha256": "c55525c971eecb16b2a79b91b7df446453ad829ca9eacad15bc768944c0fd90b",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required"
   }
 }

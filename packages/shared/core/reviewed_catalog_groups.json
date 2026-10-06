@@ -22044,6 +22044,1052 @@
         "prod-cbc9012860f88ff9c9442500887dc6c9",
         "prod-f2473bb438d8a2b25427091c7d98c62e"
       ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.cj-baeksul-fresh-kalguksu",
+      "canonical_product_id": "prod-001f71d8f677012ad5ddf1654de1c9bd",
+      "member_product_ids": [
+        "prod-001f71d8f677012ad5ddf1654de1c9bd",
+        "prod-8bc617c3a89d73d9e9283bea98a1649a"
+      ],
+      "canonical_name": "CJ 백설 생칼국수",
+      "brand": "CJ",
+      "leaf": "food.meals.noodles.kalguksu",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-001f71d8f677012ad5ddf1654de1c9bd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120794357",
+            "source_titles": [
+              "씨제이 백설 생칼국수 550G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120794357&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8bc617c3a89d73d9e9283bea98a1649a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000024238539",
+            "source_titles": [
+              "백설 생칼국수 550g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000024238539&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a4d33239347c4c952dae134e3d75cf23f11435264cd4c278d3b7f78ceed53e2c",
+      "derived_alias_member_ids": [
+        "prod-001f71d8f677012ad5ddf1654de1c9bd",
+        "prod-8bc617c3a89d73d9e9283bea98a1649a"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.cj-haet-glass-noodles",
+      "canonical_product_id": "prod-55dbd90eea412ded54de1f892e5f847e",
+      "member_product_ids": [
+        "prod-55dbd90eea412ded54de1f892e5f847e",
+        "prod-8b57335426990b9d1b3e0a1cced1f575"
+      ],
+      "canonical_name": "CJ 햇당면",
+      "brand": "CJ",
+      "leaf": "food.meals.noodles.glass",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-55dbd90eea412ded54de1f892e5f847e": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007113664",
+            "source_titles": [
+              "백설 햇당면 500g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007113664&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-8b57335426990b9d1b3e0a1cced1f575": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008326267",
+            "source_titles": [
+              "햇당면300g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008326267&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ce270e11d2ef108ade3def81a4060ee7f57b7f30ef36ba29e481dd1760c11c50",
+      "derived_alias_member_ids": [
+        "prod-55dbd90eea412ded54de1f892e5f847e",
+        "prod-8b57335426990b9d1b3e0a1cced1f575"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.ottogi-old-cut-glass-noodles",
+      "canonical_product_id": "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+      "member_product_ids": [
+        "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+        "prod-aefc95d808c0f2f96450cbf9c88330fc",
+        "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+        "prod-f0d35746d2acaa71309342a8181a2b4a"
+      ],
+      "canonical_name": "오뚜기 옛날 자른 당면",
+      "brand": "오뚜기",
+      "leaf": "food.meals.noodles.glass",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-86c22daad7fa1ca8bf16498d2bd1c487": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100494546",
+            "source_titles": [
+              "오뚜기 옛날 자른 당면 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100494546&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-aefc95d808c0f2f96450cbf9c88330fc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009666117",
+            "source_titles": [
+              "오뚜기 옛날 자른 당면 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009666117&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c7b1e4f0f2689f1668d1d47de1950dbe": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000011630630",
+            "source_titles": [
+              "옛날자른당면300g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000011630630&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-f0d35746d2acaa71309342a8181a2b4a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069143629",
+            "source_titles": [
+              "오뚜기 옛날자른당면 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069143629&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "costco",
+            "source_record_key": "589226",
+            "source_titles": [
+              "오뚜기옛날자른당면1kg"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Otoki-Cut-Korean-Vermicelli-1kg/p/589226"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "29cdc8c19fe0cb3e6adddd8e390384d5f0796eb8614f45665621523dbfb1f366",
+      "derived_alias_member_ids": [
+        "prod-86c22daad7fa1ca8bf16498d2bd1c487",
+        "prod-aefc95d808c0f2f96450cbf9c88330fc",
+        "prod-c7b1e4f0f2689f1668d1d47de1950dbe",
+        "prod-f0d35746d2acaa71309342a8181a2b4a"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.ottogi-dongdaemun-chicken-kalguksu",
+      "canonical_product_id": "prod-5175e3b5efccc94b6f23f35e179725f8",
+      "member_product_ids": [
+        "prod-5175e3b5efccc94b6f23f35e179725f8",
+        "prod-cd11f7cbb200f945ebbcd50ea9d3ba50"
+      ],
+      "canonical_name": "오뚜기 동대문식 닭한마리 칼국수",
+      "brand": "오뚜기",
+      "leaf": "food.meals.noodles.kalguksu",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5175e3b5efccc94b6f23f35e179725f8": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000852538693",
+            "source_titles": [
+              "신상 오뚜기 동대문식 닭한마리 칼국수 115g*4개"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000852538693&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-cd11f7cbb200f945ebbcd50ea9d3ba50": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045695075",
+            "source_titles": [
+              "오뚜기 동대문식 닭한마리 칼국수 (460G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045695075/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ee37ccd4269d7ae578f52a9e0658fa9bf61d11d3d95a93341c4b51ba2ac17709",
+      "derived_alias_member_ids": [
+        "prod-5175e3b5efccc94b6f23f35e179725f8",
+        "prod-cd11f7cbb200f945ebbcd50ea9d3ba50"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.iga-potato-sujebi",
+      "canonical_product_id": "prod-b8a084b046d6c7be51bcf87d34feab58",
+      "member_product_ids": [
+        "prod-b8a084b046d6c7be51bcf87d34feab58",
+        "prod-bad67c870c86fee8ab69513000542503"
+      ],
+      "canonical_name": "이가자연면 감자수제비",
+      "brand": "이가자연면",
+      "leaf": "food.meals.noodles.sujebi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b8a084b046d6c7be51bcf87d34feab58": [
+          {
+            "source_name": "costco",
+            "source_record_key": "663690",
+            "source_titles": [
+              "이가자연면감자수제비186.5g x 8 x 120 (BD)"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Food/Iga-Natural-Potato-Sujebi-1865g-x-8-x-120-BD/p/663690"
+            ]
+          }
+        ],
+        "prod-bad67c870c86fee8ab69513000542503": [
+          {
+            "source_name": "costco",
+            "source_record_key": "664309",
+            "source_titles": [
+              "이가자연면 감자수제비186.5g x 8 x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Iga-Natural-Potato-Sujebi-1865g-x-8-x-2/p/664309"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c621a56a539736197d280afe27d1795b0cea9f45c88e7ecf074a85386d5065e9",
+      "derived_alias_member_ids": [
+        "prod-b8a084b046d6c7be51bcf87d34feab58",
+        "prod-bad67c870c86fee8ab69513000542503"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_noodles_rice.hetban-kimchi-cheese-riceball",
+      "canonical_product_id": "prod-b8d78ee082f6b47c8b41f0e71504507e",
+      "member_product_ids": [
+        "prod-b8d78ee082f6b47c8b41f0e71504507e",
+        "prod-ccd9f8321c51a546deaeb09fc5870f59"
+      ],
+      "canonical_name": "햇반 김치치즈 주먹밥",
+      "brand": "햇반",
+      "leaf": "food.meals.rice.rice_ball",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b8d78ee082f6b47c8b41f0e71504507e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "140583801",
+            "source_titles": [
+              "씨제이 햇반 김치치즈 주먹밥 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=140583801&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ccd9f8321c51a546deaeb09fc5870f59": [
+          {
+            "source_name": "costco",
+            "source_record_key": "674445",
+            "source_titles": [
+              "햇반 김치치즈 주먹밥 100g X 12 X 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Rice-Ball-Kimchi-Cheese-100g-x-12-x-2/p/674445"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5bc5a52f31108b3724d1366520e5e3ec48419059aeb0c9ce08bb38d12bf5ba0e",
+      "derived_alias_member_ids": [
+        "prod-b8d78ee082f6b47c8b41f0e71504507e",
+        "prod-ccd9f8321c51a546deaeb09fc5870f59"
+      ]
+    },
+    {
+      "key": "reviewed.preserved_sides.cj-bibigo-quail-egg-soy-braise",
+      "canonical_product_id": "prod-9aadf7067675bc7831fa26f6c542d12e",
+      "member_product_ids": [
+        "prod-57f3d5f815c82999fc769af6248bb229",
+        "prod-9aadf7067675bc7831fa26f6c542d12e"
+      ],
+      "canonical_name": "CJ 비비고 메추리알 장조림",
+      "brand": "CJ 비비고",
+      "leaf": "food.preserved.sides.braised",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-57f3d5f815c82999fc769af6248bb229": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "066061080",
+            "source_titles": [
+              "씨제이 비비고 메추리알 장조림 170G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9aadf7067675bc7831fa26f6c542d12e": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000207635926",
+            "source_titles": [
+              "메추리알장조림 170g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000207635926&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "926173b0d9d567b35a7c957ea3dbcab338410a3033dcf839873a7ebabac77366",
+      "derived_alias_member_ids": [
+        "prod-57f3d5f815c82999fc769af6248bb229",
+        "prod-9aadf7067675bc7831fa26f6c542d12e"
+      ]
+    },
+    {
+      "key": "reviewed.preserved_sides.cj-bibigo-beef-soy-braise",
+      "canonical_product_id": "prod-8c1a104eca06e5e84e7dce8af207cea7",
+      "member_product_ids": [
+        "prod-5ede7905eb68a07206750ab439295d45",
+        "prod-8c1a104eca06e5e84e7dce8af207cea7"
+      ],
+      "canonical_name": "CJ 비비고 소고기 장조림",
+      "brand": "CJ 비비고",
+      "leaf": "food.preserved.sides.braised",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5ede7905eb68a07206750ab439295d45": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "137230773",
+            "source_titles": [
+              "씨제이 비비고 소고기 장조림 125G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=137230773&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8c1a104eca06e5e84e7dce8af207cea7": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000036649522",
+            "source_titles": [
+              "소고기 장조림 125g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000036649522&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "db7be804bcccf60f7e872af852d36e6729f7f2865921a76dab3397d53cb73c9f",
+      "derived_alias_member_ids": [
+        "prod-5ede7905eb68a07206750ab439295d45",
+        "prod-8c1a104eca06e5e84e7dce8af207cea7"
+      ]
+    },
+    {
+      "key": "reviewed.preserved_sides.cj-bibigo-nut-anchovy-stirfry",
+      "canonical_product_id": "prod-801357d92068dfc0f7e048c6786adc8f",
+      "member_product_ids": [
+        "prod-801357d92068dfc0f7e048c6786adc8f",
+        "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d"
+      ],
+      "canonical_name": "CJ 비비고 견과류 멸치볶음",
+      "brand": "CJ 비비고",
+      "leaf": "food.preserved.sides.stir_fried",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-801357d92068dfc0f7e048c6786adc8f": [
+          {
+            "source_name": "costco",
+            "source_record_key": "654740",
+            "source_titles": [
+              "비비고 견과류 멸치볶음 60g x 6"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Bibigo-Stir-Fried-Anchovy-60g-x-6/p/654740"
+            ]
+          }
+        ],
+        "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "137231088",
+            "source_titles": [
+              "씨제이 비비고 견과류 멸치 볶음 60G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=137231088&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "dc00e626d7f3ff27a0a8a0125e62e76ea5ee961948fd0afd58a0966fa29e510a",
+      "derived_alias_member_ids": [
+        "prod-801357d92068dfc0f7e048c6786adc8f",
+        "prod-b7b2fa63c2a8a8881ee2d00077bd1d9d"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.ottogi-three-minute-beef-jjajang",
+      "canonical_product_id": "prod-1cf04a49a4f7ba3020780b6d4997823e",
+      "member_product_ids": [
+        "prod-1cf04a49a4f7ba3020780b6d4997823e",
+        "prod-a28d79cc7ed2d35e1613bec00042bdcf"
+      ],
+      "canonical_name": "오뚜기 3분 쇠고기짜장",
+      "brand": "오뚜기",
+      "leaf": "food.meals.prepared.black_bean",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1cf04a49a4f7ba3020780b6d4997823e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000044458",
+            "source_titles": [
+              "오뚜기 3분 쇠고기 짜장 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000044458&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045291314",
+            "source_titles": [
+              "오뚜기 3분 쇠고기 짜장 (200G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045291314/details"
+            ]
+          }
+        ],
+        "prod-a28d79cc7ed2d35e1613bec00042bdcf": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006609553",
+            "source_titles": [
+              "3분 쇠고기 짜장 200g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609553&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "33dbdf390f8e033d84a9c53bce2aeb351b614d53bcb8a4f90863d5468a5d24c0",
+      "derived_alias_member_ids": [
+        "prod-1cf04a49a4f7ba3020780b6d4997823e",
+        "prod-a28d79cc7ed2d35e1613bec00042bdcf"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.ottogi-three-minute-jjajang",
+      "canonical_product_id": "prod-4939d552d63975511e3c2e9148ba6312",
+      "member_product_ids": [
+        "prod-4939d552d63975511e3c2e9148ba6312",
+        "prod-6e747c07d1d12488250702f856604bbf"
+      ],
+      "canonical_name": "오뚜기 3분 짜장",
+      "brand": "오뚜기",
+      "leaf": "food.meals.prepared.black_bean",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4939d552d63975511e3c2e9148ba6312": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000043613",
+            "source_titles": [
+              "오뚜기 3분 짜장 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000043613&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801045291307",
+            "source_titles": [
+              "오뚜기 3분 짜장 (200G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801045291307/details"
+            ]
+          }
+        ],
+        "prod-6e747c07d1d12488250702f856604bbf": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006609552",
+            "source_titles": [
+              "3분 짜장 200g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609552&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "300bccef236628f10438b0337dd777b67698605953690fec49dfe5efaf5e7c31",
+      "derived_alias_member_ids": [
+        "prod-4939d552d63975511e3c2e9148ba6312",
+        "prod-6e747c07d1d12488250702f856604bbf"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.cj-gome-hamburger-steak",
+      "canonical_product_id": "prod-27d00e17e57d6a5574c2f847828cd979",
+      "member_product_ids": [
+        "prod-27d00e17e57d6a5574c2f847828cd979",
+        "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+        "prod-ad0852fb41459c2be6f1ab7fb268013d"
+      ],
+      "canonical_name": "고메 함박스테이크",
+      "brand": "CJ",
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-27d00e17e57d6a5574c2f847828cd979": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127554147",
+            "source_titles": [
+              "씨제이 고메 함박스테이크 152G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127554147&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-96aae721dbb0efc7a1a93c917cc0ace2": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007626970",
+            "source_titles": [
+              "CJ 제일제당 고메 함박 스테이크 (152G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007626970/details"
+            ]
+          }
+        ],
+        "prod-ad0852fb41459c2be6f1ab7fb268013d": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000023605851",
+            "source_titles": [
+              "고메함박스테이크152g"
+            ],
+            "source_urls": [
+              "https://m-emart.ssg.com/item/itemView.ssg?itemId=1000023605851&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef1e470c4f8e3df7d3aed3ac2c0e7d78b3ef868f2bc8c6d8db177402a3c4e9f7",
+      "derived_alias_member_ids": [
+        "prod-27d00e17e57d6a5574c2f847828cd979",
+        "prod-96aae721dbb0efc7a1a93c917cc0ace2",
+        "prod-ad0852fb41459c2be6f1ab7fb268013d"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.cj-thick-donggeurangttaeng",
+      "canonical_product_id": "prod-54895c23f898c2461bc2440d8b1eddb0",
+      "member_product_ids": [
+        "prod-54895c23f898c2461bc2440d8b1eddb0",
+        "prod-5953858578fd334d0546382a0d7c0168",
+        "prod-9f3a4e25d8739679d56d14778efaf343",
+        "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+      ],
+      "canonical_name": "CJ 도톰 동그랑땡",
+      "brand": "CJ",
+      "leaf": "food.meals.prepared.meat_patty",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-54895c23f898c2461bc2440d8b1eddb0": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000005923818",
+            "source_titles": [
+              "CJ 도톰 동그랑땡795g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000005923818&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5953858578fd334d0546382a0d7c0168": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070263077",
+            "source_titles": [
+              "씨제이 비비고도톰동그랑땡 340G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070263077&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-9f3a4e25d8739679d56d14778efaf343": [
+          {
+            "source_name": "costco",
+            "source_record_key": "694946",
+            "source_titles": [
+              "CJ 도톰동그랑땡 1.5KG X 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Traditional-Meatball-15kg-X-2/p/694946"
+            ]
+          }
+        ],
+        "prod-a3b4a31dc1b871b44c0a385dbc05633f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120854362",
+            "source_titles": [
+              "씨제이 비비고 도톰 동그랑땡 425G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120854362&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ed23fa1593243795ea799b1d55136bcc89ac998ffe6533b451bde664233bcae2",
+      "derived_alias_member_ids": [
+        "prod-54895c23f898c2461bc2440d8b1eddb0",
+        "prod-5953858578fd334d0546382a0d7c0168",
+        "prod-9f3a4e25d8739679d56d14778efaf343",
+        "prod-a3b4a31dc1b871b44c0a385dbc05633f"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.cj-gome-cheese-hamburger-steak",
+      "canonical_product_id": "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+      "member_product_ids": [
+        "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+        "prod-bd79ba61441346549614372bb6414e72"
+      ],
+      "canonical_name": "CJ 고메 치즈 함박스테이크",
+      "brand": "CJ",
+      "leaf": "food.meals.prepared.hamburger_steak",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7b3418403e84d169e0ce4ce29fc52ab7": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007772493",
+            "source_titles": [
+              "CJ 제일제당 고메 치즈함박 스테이크 (152G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007772493/details"
+            ]
+          }
+        ],
+        "prod-bd79ba61441346549614372bb6414e72": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "130315663",
+            "source_titles": [
+              "씨제이 고메 치즈 함박스테이크 152G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=130315663&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "205dea2c7ea624766460838c58ba1450a4b34e5edf3e867073c97f067d75694d",
+      "derived_alias_member_ids": [
+        "prod-7b3418403e84d169e0ce4ce29fc52ab7",
+        "prod-bd79ba61441346549614372bb6414e72"
+      ]
+    },
+    {
+      "key": "reviewed.prepared_meals.cj-gome-tomato-meatballs",
+      "canonical_product_id": "prod-8ed4a98572dd4f7b64b118f978dd3655",
+      "member_product_ids": [
+        "prod-8ed4a98572dd4f7b64b118f978dd3655",
+        "prod-e8939c128a1ad6404c681636497fef20"
+      ],
+      "canonical_name": "CJ 고메 토마토미트볼",
+      "brand": "CJ",
+      "leaf": "food.meals.prepared.meatballs",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8ed4a98572dd4f7b64b118f978dd3655": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007626994",
+            "source_titles": [
+              "CJ 고메 토마토 미트볼 (147G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007626994/details"
+            ]
+          }
+        ],
+        "prod-e8939c128a1ad6404c681636497fef20": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127554130",
+            "source_titles": [
+              "씨제이 고메 토마토미트볼 147G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127554130&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3eedf230187fb95e9f62a625251db8684b5b3b454643e0cf5fec1a09c90c400f",
+      "derived_alias_member_ids": [
+        "prod-8ed4a98572dd4f7b64b118f978dd3655",
+        "prod-e8939c128a1ad6404c681636497fef20"
+      ]
+    },
+    {
+      "key": "reviewed.drink_powder.teazen-kombucha-pineapple",
+      "canonical_product_id": "prod-1a592885569cf94096f674f767d0d7ea",
+      "member_product_ids": [
+        "prod-1a592885569cf94096f674f767d0d7ea",
+        "prod-4d3df5094222edd5ce058467eba41171"
+      ],
+      "canonical_name": "티젠 콤부차 파인애플",
+      "brand": "티젠",
+      "leaf": "food.drinks.powders.kombucha",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1a592885569cf94096f674f767d0d7ea": [
+          {
+            "source_name": "costco",
+            "source_record_key": "686915",
+            "source_titles": [
+              "티젠 파인애플 콤부차 5g x 30ct x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Pineapple-Kombucha-5g-x-30ct-x-2/p/686915"
+            ]
+          }
+        ],
+        "prod-4d3df5094222edd5ce058467eba41171": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069206769",
+            "source_titles": [
+              "티젠 콤부차 파인애플 30T(150G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069206769&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "fa4283d05f8576ff1b813798b82864f01f762175fb4d94d491ae39052a2f54e0",
+      "derived_alias_member_ids": [
+        "prod-1a592885569cf94096f674f767d0d7ea",
+        "prod-4d3df5094222edd5ce058467eba41171"
+      ]
+    },
+    {
+      "key": "reviewed.drink_powder.teazen-kombucha-citron",
+      "canonical_product_id": "prod-360a328e651db7bd340f58af28987fbd",
+      "member_product_ids": [
+        "prod-360a328e651db7bd340f58af28987fbd",
+        "prod-a3fe5ec55b4573a20f0ea5afa5a6c474"
+      ],
+      "canonical_name": "티젠 콤부차 유자",
+      "brand": "티젠",
+      "leaf": "food.drinks.powders.kombucha",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-360a328e651db7bd340f58af28987fbd": [
+          {
+            "source_name": "costco",
+            "source_record_key": "686922",
+            "source_titles": [
+              "티젠 유자 콤부차 5g x 30ct x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Citron-Kombucha-5g-x-30ct-x-2/p/686922"
+            ]
+          }
+        ],
+        "prod-a3fe5ec55b4573a20f0ea5afa5a6c474": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "064586458",
+            "source_titles": [
+              "티젠 콤부차유자 30T(150G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=064586458&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5a227adec18b1e886e33e29ae2d2ef060f1efc049696ac2d13014ed8531851a4",
+      "derived_alias_member_ids": [
+        "prod-360a328e651db7bd340f58af28987fbd",
+        "prod-a3fe5ec55b4573a20f0ea5afa5a6c474"
+      ]
+    },
+    {
+      "key": "reviewed.drink_powder.teazen-kombucha-lemon",
+      "canonical_product_id": "prod-4ef42235b120ee81da366ea4dc9b84bd",
+      "member_product_ids": [
+        "prod-4ef42235b120ee81da366ea4dc9b84bd",
+        "prod-cf3e22f25d866e99599e9d6d3ef67ab4"
+      ],
+      "canonical_name": "티젠 콤부차 레몬",
+      "brand": "티젠",
+      "leaf": "food.drinks.powders.kombucha",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4ef42235b120ee81da366ea4dc9b84bd": [
+          {
+            "source_name": "costco",
+            "source_record_key": "687043",
+            "source_titles": [
+              "티젠 레몬 콤부차 5g x 30ct x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Lemon-Kombucha-5g-x-30ct-x-2/p/687043"
+            ]
+          }
+        ],
+        "prod-cf3e22f25d866e99599e9d6d3ef67ab4": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "148493091",
+            "source_titles": [
+              "티젠 콤부차 레몬 30T (150G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=148493091&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "3eb8540610533eaa0af870620ee7cb1687a4a99e297c1008d96775696c831694",
+      "derived_alias_member_ids": [
+        "prod-4ef42235b120ee81da366ea4dc9b84bd",
+        "prod-cf3e22f25d866e99599e9d6d3ef67ab4"
+      ]
+    },
+    {
+      "key": "reviewed.drink_powder.teazen-kombucha-mango-guava",
+      "canonical_product_id": "prod-5e970b59d2664c6c773ff886ecc7f237",
+      "member_product_ids": [
+        "prod-5e970b59d2664c6c773ff886ecc7f237",
+        "prod-8c1f4077f1993d89d32f8012af3fdc7a"
+      ],
+      "canonical_name": "티젠 콤부차 망고구아바",
+      "brand": "티젠",
+      "leaf": "food.drinks.powders.kombucha",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5e970b59d2664c6c773ff886ecc7f237": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071111256",
+            "source_titles": [
+              "티젠 콤부차 망고구아바 30T(150G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071111256&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8c1f4077f1993d89d32f8012af3fdc7a": [
+          {
+            "source_name": "costco",
+            "source_record_key": "686923",
+            "source_titles": [
+              "티젠 망고구아바 콤부차 5g x 30ct x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Mango-Guava-Kombucha-5g-x-30ct-x-2/p/686923"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0fbddc738bdb0b2b8a60e1c597bb0c256411cb1cf8c2e905fbbdc1c587a45da6",
+      "derived_alias_member_ids": [
+        "prod-5e970b59d2664c6c773ff886ecc7f237",
+        "prod-8c1f4077f1993d89d32f8012af3fdc7a"
+      ]
+    },
+    {
+      "key": "reviewed.drink_powder.teazen-kombucha-peach",
+      "canonical_product_id": "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+      "member_product_ids": [
+        "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+        "prod-f49ee368fdfaa95d74990fed1bc6b5c2"
+      ],
+      "canonical_name": "티젠 콤부차 피치",
+      "brand": "티젠",
+      "leaf": "food.drinks.powders.kombucha",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a46fe06d48ce5b78a06ad73afaea98cf": [
+          {
+            "source_name": "costco",
+            "source_record_key": "686916",
+            "source_titles": [
+              "티젠 피치 콤부차 5g x 30ct x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/CoffeeTeaDrink/TeaLiquid-Tea/Teazen-Peach-Kombucha-5g-x-30ct-x-2/p/686916"
+            ]
+          }
+        ],
+        "prod-f49ee368fdfaa95d74990fed1bc6b5c2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "068948059",
+            "source_titles": [
+              "티젠 콤부차 피치 30T(150G)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=068948059&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "88a822220619fd84735a11b55ebabdbc381e3425755f341b9560c302bb3eda62",
+      "derived_alias_member_ids": [
+        "prod-a46fe06d48ce5b78a06ad73afaea98cf",
+        "prod-f49ee368fdfaa95d74990fed1bc6b5c2"
+      ]
+    },
+    {
+      "key": "reviewed.home_maintenance.scotch-screen-repair-square-tape",
+      "canonical_product_id": "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+      "member_product_ids": [
+        "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+        "prod-d4ec1e057afd63eedec11ebf96ec74e7"
+      ],
+      "canonical_name": "스카치 방충망 보수테이프 정사각형",
+      "brand": "스카치",
+      "leaf": "household.maintenance.window.screen_material",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5be40198c02363aa9fa2cc7e16fcde7a": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000328785184",
+            "source_titles": [
+              "스카치 방충망 보수테이프 소형 7X7cm"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000328785184&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-d4ec1e057afd63eedec11ebf96ec74e7": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000328785198",
+            "source_titles": [
+              "스카치 방충망 보수테이프 대형 10X10cm"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000328785198&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1b69faf682c53cc9f67d29135ae340f1e0b4fe19ce6c56be340d0673e6e128d5",
+      "derived_alias_member_ids": [
+        "prod-5be40198c02363aa9fa2cc7e16fcde7a",
+        "prod-d4ec1e057afd63eedec11ebf96ec74e7"
+      ]
+    },
+    {
+      "key": "reviewed.home_maintenance.scotch-screen-repair-roll-tape",
+      "canonical_product_id": "prod-6a6640a910236397d0d43367db63be32",
+      "member_product_ids": [
+        "prod-6a6640a910236397d0d43367db63be32",
+        "prod-c063af1ea4ac6c489d460f46494fbea6"
+      ],
+      "canonical_name": "스카치 방충망 보수테이프 롤타입",
+      "brand": "스카치",
+      "leaf": "household.maintenance.window.screen_material",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6a6640a910236397d0d43367db63be32": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000328785147",
+            "source_titles": [
+              "스카치 방충망 보수테이프 롤타입 5X50cm"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000328785147&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-c063af1ea4ac6c489d460f46494fbea6": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000328785141",
+            "source_titles": [
+              "스카치 방충망 보수테이프 롤타입 5cmX1M"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000328785141&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "2db002da040d5d89b5a0dc5831fcab75a136d2e01b69b2f6fd7b701e99a5f32a",
+      "derived_alias_member_ids": [
+        "prod-6a6640a910236397d0d43367db63be32",
+        "prod-c063af1ea4ac6c489d460f46494fbea6"
+      ]
     }
   ],
   "leaf_reviews": [
