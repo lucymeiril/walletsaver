@@ -4,7 +4,7 @@ from pydantic import AliasChoices, BaseModel, Field, field_validator
 from typing import Optional, Any
 from datetime import datetime, timedelta
 
-from sqlalchemy import func, desc, asc, distinct, case, or_
+from sqlalchemy import func, desc, asc, distinct, case, or_, select, String
 from sqlalchemy.orm import Session
 
 import logging
@@ -21,7 +21,7 @@ from services.price_calc import (
     get_price_history,
     get_price_comparison,
 )
-from storage.models import Product, DiscountHistory, HotdealPrice, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword
+from storage.models import Product, DiscountHistory, HotdealPrice, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword, NormalizedCanonicalProduct, NormalizedProductVariant, NormalizedSourceListing, UnifiedCategory
 from api.security import (
     escape_like, MAX_NAME_LEN, MAX_CATEGORY_ID_LEN, MAX_UNIT_LEN,
     MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS, MAX_SOURCE_LEN,
@@ -341,6 +341,59 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "crawled_at": None,
             "keywords": [],
         }
+
+
+@router.get("/normalized")
+def list_normalized_products(
+    q: str = Query("", max_length=MAX_NAME_LEN),
+    unified_category_id: str | None = Query(None, max_length=120),
+    is_active: bool | None = None,
+    page: int = Query(1, ge=1), per_page: int = Query(20, ge=1, le=200),
+    identity: dict = Depends(require_viewer),
+):
+    """Static admin declarations; normalized edits require reviewed bundles."""
+    from core.reviewed_source_evidence import package_comparison_reason, valid_source_component_variant
+    session = get_session()
+    try:
+        product, variant, listing = NormalizedCanonicalProduct, NormalizedProductVariant, NormalizedSourceListing
+        conditions = []
+        if q:
+            conditions.append(or_(*(field.icontains(q, autoescape=True) for field in (
+                product.canonical_name, product.brand, product.aliases.cast(String), product.keywords.cast(String)))))
+        if unified_category_id is not None:
+            conditions.append(product.unified_category_id == unified_category_id)
+        if is_active is not None:
+            conditions.append(product.is_active == is_active)
+        total = session.scalar(select(func.count()).select_from(product).where(*conditions)) or 0
+        rows = session.execute(select(*product.__table__.columns, UnifiedCategory.name_ko.label("category_name"))
+            .outerjoin(UnifiedCategory, UnifiedCategory.id == product.unified_category_id).where(*conditions)
+            .order_by(product.canonical_name, product.public_product_id)
+            .offset((page - 1) * per_page).limit(per_page)).mappings().all()
+        product_ids = [row["public_product_id"] for row in rows]
+        variants = session.execute(select(*variant.__table__.columns)
+            .where(variant.public_product_id.in_(product_ids)).order_by(variant.public_variant_id)).mappings().all() if rows else []
+        variant_ids = [row["public_variant_id"] for row in variants]
+        listings = session.execute(select(*listing.__table__.columns)
+            .where(listing.public_variant_id.in_(variant_ids)).order_by(listing.public_source_listing_id)).mappings().all() if variants else []
+        listing_map, variant_map = {}, {}
+        for row in listings:
+            listing_map.setdefault(row["public_variant_id"], []).append(dict(row))
+        categories = {row["public_product_id"]: row["unified_category_id"] for row in rows}
+        for row in variants:
+            data = dict(row)
+            validation = {**data, "unified_category_id": categories[data["public_product_id"]]}
+            attrs = data["attributes"]
+            data["quantity_comparison_reason"] = package_comparison_reason(validation)
+            data["quantity_components"] = (attrs["source_component_listing"]["components"]
+                if isinstance(attrs, dict) and valid_source_component_variant(validation) else None)
+            data["source_listings"] = listing_map.get(data["public_variant_id"], [])
+            variant_map.setdefault(data["public_product_id"], []).append(data)
+        items = [{**dict(row), "variants": variant_map.get(row["public_product_id"], [])} for row in rows]
+        return {"source_scope": "admin_normalized_catalog", "read_only": True,
+            "mutation_workflow": "/api/catalog-bundles", "items": items, "total": total,
+            "page": page, "per_page": per_page, "total_pages": (total + per_page - 1) // per_page}
+    finally:
+        session.close()
 
 
 @router.get("/stats")

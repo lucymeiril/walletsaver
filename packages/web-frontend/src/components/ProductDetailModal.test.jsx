@@ -1168,6 +1168,32 @@ describe('222 observed source quote with unknown purchase terms', () => {
 
 describe('249 native source quote declarations', () => {
   afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.clearAllMocks(); });
+  it('keeps the source promotion period literal without asserting receipt validity or UTC endpoints', () => {
+    const offer = { listed_price: 3900, total_price: null, comparable_price: null,
+      received_package_count: null, total_quantity: null, valid_from: null, valid_to: null,
+      current_eligible: false, promotion_conditions: {
+        source_condition_kind: 'source_quote_purchase_conditions_unverified', payable_price_unconfirmed: true,
+        source_promotion_period_text: ' (2026.10.01 - 2026.10.14) ',
+        source_required_product_quantity: 3, source_free_quantity: 1, selected_product_scope_unconfirmed: true,
+      } };
+    const original = JSON.stringify(offer);
+    const text = getOfferConditionText(offer);
+    expect(text).toContain('출처 표시 행사기간 (2026.10.01 - 2026.10.14) · 시간대/경계 미확인');
+    expect(text).toContain('선택 상품 3개 조건 · 같은 상품 수령량 미확인');
+    expect(text).toContain('총지출·실제 결제 금액 미확인');
+    expect(getOfferUnitPrice(offer)).toBeNull();
+    expect(JSON.stringify(offer)).toBe(original);
+  });
+  it('omits missing or nontext source promotion periods instead of inventing dates', () => {
+    for (const source_promotion_period_text of [undefined, null, '', '  ', false, 20261001, [], {}]) {
+      const text = getOfferConditionText({ promotion_conditions: {
+        source_condition_kind: 'source_quote_purchase_conditions_unverified', payable_price_unconfirmed: true,
+        source_promotion_period_text,
+      } });
+      expect(text).not.toContain('출처 표시 행사기간');
+      expect(text).toContain('총지출·실제 결제 금액 미확인');
+    }
+  });
   it('formats legacy share money with a null offer without turning malformed amounts into zero', () => {
     expect(getObservedOfferPriceText(null, 2190)).toBe('2,190원');
     expect(getObservedOfferPriceText(null, '2190.5')).toBe('2,190.5원');

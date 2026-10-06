@@ -1226,6 +1226,127 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
     return {'promotion_conditions': previous}, expected
 
 
+def _captured_native_quote_terms(review: dict, binding: dict, evidence: dict,
+                                 variant_attributes: dict | None) -> tuple[dict, dict]:
+    """Link an omitted capture node to its immutable original quote receipt.
+
+    This is supplemental review evidence, never a replacement observation.
+    Existing native/spec/quote checks still validate the reconstructed view.
+    """
+    capture_text = review.get('native_source_capture_utf8')
+    if not isinstance(capture_text, str) or len(capture_text.encode('utf-8')) > 131072:
+        raise ValueError('bounded original native capture required')
+    digest = hashlib.sha256(capture_text.encode('utf-8')).hexdigest()
+    try:
+        capture = json.loads(capture_text)
+    except ValueError as exc:
+        raise ValueError('original native capture must be JSON') from exc
+    observations = evidence.get('observations')
+    try:
+        receipt_time = datetime.fromisoformat(str(capture.get('received_at', '')).replace('Z', '+00:00'))
+    except (ValueError, AttributeError) as exc:
+        raise ValueError('timezone-aware original capture receipt required') from exc
+    if (not isinstance(capture, dict) or not isinstance(observations, list)
+            or len(observations) != 1 or binding['source_name'] not in {'costco', 'lottemart'}
+            or receipt_time.tzinfo is None or not binding['quote']['crawled_at']
+            or _datetime(capture.get('received_at')) != _datetime(binding['quote']['crawled_at'])):
+        raise ValueError('one same-time native quote capture required')
+    original = observations[0]['raw_payload']
+    attrs = original.get('attributes') or {}
+    marker = attrs.get('promotion_conditions')
+    if (not isinstance(marker, dict) or marker.get('source_capture_input_sha256') != digest
+            or marker.get('source_condition_kind') != 'source_quote_purchase_conditions_unverified'
+            or marker.get('payable_price_unconfirmed') is not True
+            or marker.get('customer_eligibility_unconfirmed') is not True
+            or marker.get('source_quote_currency') != 'KRW'):
+        raise ValueError('original quote capture/hash/unconfirmed payment binding required')
+    from core.reviewed_source_evidence import source_review_evidence
+    source_urls = source_review_evidence(original)['source_urls']
+    if source_urls != [capture.get('source_url')]:
+        # Costco publishes the exact native business node from its ordinary
+        # product API; its node.url is independently checked against the page.
+        endpoint = urlparse(str(capture.get('source_url') or ''))
+        if (binding['source_name'] != 'costco' or len(source_urls) != 1
+                or endpoint.scheme != 'https' or endpoint.netloc != 'www.costco.co.kr'
+                or endpoint.path != '/rest/v2/korea/products/' + binding['source_record_key'] + '/'
+                or parse_qs(endpoint.query, keep_blank_values=True) != {'fields': ['FULL'], 'lang': ['ko'], 'curr': ['KRW']}
+                or endpoint.fragment or capture.get('native_context') != binding['source_record_key']):
+            raise ValueError('original capture source URL differs')
+    records = capture.get('raw_product_nodes')
+    if not isinstance(records, list) or not records or any(not isinstance(r, dict) for r in records):
+        raise ValueError('original commercial product nodes required')
+    raw = deepcopy(original)
+    prepared_attrs = raw.setdefault('attributes', {})
+    canonical_marker = {'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+                        'payable_price_unconfirmed': True}
+    source_facts = marker.get('source_native_business_conditions')
+    if not isinstance(source_facts, dict):
+        raise ValueError('original captured source conditions required')
+    if binding['source_name'] == 'costco':
+        if len(records) != 1 or not isinstance(records[0].get('raw_product_node'), dict):
+            raise ValueError('one original Costco business product required')
+        node = records[0]['raw_product_node']
+        expected_facts = {'membership': node.get('membership'),
+                          'minOrderQuantity': node.get('minOrderQuantity'),
+                          'maxOrderQuantity': node.get('maxOrderQuantity'),
+                          'currency': (node.get('price') or {}).get('currencyIso'),
+                          'maxOrderMode': 'not retained/unassessed'}
+        if _review_digest(source_facts) != _review_digest(expected_facts):
+            raise ValueError('original Costco captured conditions differ')
+        canonical_marker.update(membership_eligibility_unconfirmed=True,
+                                source_minimum_purchase_quantity=node.get('minOrderQuantity'),
+                                source_maximum_order_quantity=node.get('maxOrderQuantity'),
+                                source_quote_currency='KRW', source_public_flag_values_unrecoverable=False)
+        prepared_attrs['submission_business_evidence'] = [{**deepcopy(records[0]),
+                                                          'original_product_field_names': list(node)}]
+    else:
+        nodes = [r.get('raw_product_node') for r in records
+                 if isinstance(r.get('raw_product_node'), dict)
+                 and r['raw_product_node'].get('retailerProductId') == 'OS' + binding['source_record_key']]
+        if len(nodes) != 1:
+            raise ValueError('one exact original Lotte business product required')
+        node = nodes[0]
+        stored_node = prepared_attrs.get('lottemart_detail_source_fields')
+        def same_projection(stored, full):
+            if isinstance(stored, dict):
+                return isinstance(full, dict) and all(k in full and same_projection(v, full[k])
+                                                      for k, v in stored.items())
+            if isinstance(stored, list):
+                return (isinstance(full, list) and len(stored) == len(full)
+                        and all(same_projection(a, b) for a, b in zip(stored, full)))
+            return _review_digest(stored) == _review_digest(full)
+        if (not isinstance(stored_node, dict) or not same_projection(stored_node, node)
+                or prepared_attrs.get('lottemart_detail_source_fields_sha256') != _review_digest(stored_node)
+                or set(source_facts) != {'promotions', 'quantityRestrictionGroup', 'visible_promotion_date_text', 'limits'}
+                or _review_digest(source_facts.get('promotions')) != _review_digest(node.get('promotions'))
+                or _review_digest(source_facts.get('quantityRestrictionGroup')) != _review_digest(node.get('quantityRestrictionGroup'))
+                or marker.get('selection_group_eligibility_unconfirmed') is not True
+                or marker.get('source_promotion_text') != binding['quote']['event_name']
+                or not isinstance(marker.get('source_promotion_period_text'), str)
+                or marker['source_promotion_period_text'] != source_facts.get('visible_promotion_date_text')
+                or not isinstance(source_facts.get('limits'), str)):
+            raise ValueError('original Lotte capture/selection conditions differ')
+        facts = conditional_selection_facts_or_none(binding['quote']['event_name'])
+        if facts is None:
+            raise ValueError('supported original selection statement required')
+        canonical_marker.update(selected_product_scope_unconfirmed=True,
+                                source_required_product_quantity=facts['required_selection_quantity'],
+                                source_free_quantity=facts['conditional_free_quantity'], source_quote_currency='KRW')
+        prepared_attrs['lottemart_detail_source_fields'] = deepcopy(node)
+        prepared_attrs['lottemart_detail_source_fields_sha256'] = _review_digest(node)
+        prepared_attrs['submission_business_evidence'] = deepcopy(records)
+    allowed = {'source_condition_kind', 'payable_price_unconfirmed', 'source_quote_currency',
+               'customer_eligibility_unconfirmed', 'source_capture_input_sha256', 'source_native_business_conditions'}
+    if binding['source_name'] == 'lottemart':
+        allowed.update({'selection_group_eligibility_unconfirmed', 'source_promotion_text', 'source_promotion_period_text'})
+    if set(marker) != allowed:
+        raise ValueError('unreviewed captured quote conditions')
+    prepared_attrs['promotion_conditions'] = canonical_marker
+    prepared = {'observations': [{**deepcopy(observations[0]), 'raw_payload': raw}]}
+    _, terms = _native_quote_terms(binding, prepared, variant_attributes)
+    return {'promotion_conditions': deepcopy(marker)}, {**deepcopy(marker), **terms}
+
+
 def _review_terms(review: dict, binding: dict, evidence: dict,
                   variant_attributes: dict | None = None) -> tuple[dict, dict]:
     family = review.get("family")
@@ -1237,7 +1358,10 @@ def _review_terms(review: dict, binding: dict, evidence: dict,
     if re.search(r"\d\s*\+\s*\d|무료|증정|할인|쿠폰|회원|체크아웃|checkout|buy\s*\d|free", title, re.I):
         raise ValueError("source title contains unsupported promotion/eligibility terms")
     if family == 'native_source_quote_purchase_conditions_unverified':
-        before, terms = _native_quote_terms(binding, evidence, variant_attributes)
+        if 'native_source_capture_utf8' in review:
+            before, terms = _captured_native_quote_terms(review, binding, evidence, variant_attributes)
+        else:
+            before, terms = _native_quote_terms(binding, evidence, variant_attributes)
     elif family == "minimum_order2_without_discount":
         if (binding["source_name"] != "costco" or url.hostname not in {"www.costco.co.kr", "costco.co.kr"}
                 or url.path != url.path.rsplit("/p/", 1)[0] + "/p/" + native

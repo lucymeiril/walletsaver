@@ -10,6 +10,7 @@ import ProductTable from './ProductTable';
 import ProductModal, { BulkCategoryModal } from './ProductModal';
 import AdminResetModal from './AdminResetModal';
 import s from './Products.module.css';
+import NormalizedProducts from './NormalizedProducts';
 
 const toDateInput = (value) => (value ? String(value).slice(0, 10) : '');
 const positiveNumberOrNull = (value) => {
@@ -25,6 +26,17 @@ const nonNegativeNumberOrNull = (value) => {
 const dateTimeOrNull = (value) => (value ? `${value}T00:00:00` : null);
 
 export default function Products() {
+  const [namespace, setNamespace] = useState('normalized');
+  return <>
+    <label>상품 데이터 체계 <select aria-label="상품 데이터 체계" value={namespace} onChange={e => setNamespace(e.target.value)}>
+      <option value="normalized">정규화 카탈로그 · 조회 전용</option>
+      <option value="legacy">기존 상품 · 편집 가능</option>
+    </select></label>
+    {namespace === 'normalized' ? <NormalizedProducts /> : <LegacyProducts />}
+  </>;
+}
+
+function LegacyProducts() {
   const {
     products, addProduct, updateProduct, deleteProduct,
     bulkDeleteProducts, bulkUpdateCategory,

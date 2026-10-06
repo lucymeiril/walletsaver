@@ -251,6 +251,8 @@ export function getConditionalOfferConditionText(offer = {}) {
     const limit = conditions.source_purchase_limit || {};
     return [
       '출처 표시가격 관측',
+      typeof conditions.source_promotion_period_text === 'string' && conditions.source_promotion_period_text.trim()
+        ? `출처 표시 행사기간 ${conditions.source_promotion_period_text.trim()} · 시간대/경계 미확인` : null,
       positiveCount(conditions.source_minimum_purchase_quantity)
         ? `출처 주문 최소 ${conditions.source_minimum_purchase_quantity}개 · 판매 묶음 수량 아님`
         : '최소구매 수량·총지출 미확인',

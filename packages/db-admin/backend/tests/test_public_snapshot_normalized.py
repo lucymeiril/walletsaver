@@ -371,3 +371,137 @@ def test_snapshot_validation_rejects_missing_product_category(tmp_path, monkeypa
 
     with pytest.raises(ValueError, match="leaf category"):
         public_snapshot_v2.validate_public_snapshot(target)
+
+
+@pytest.fixture
+def normalized_management_client(tmp_path, monkeypatch):
+    """Isolated history graph; legacy tables intentionally contain no products."""
+    from copy import deepcopy
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from api.auth import require_viewer
+    from api.routes import products, prices
+    from core.reviewed_content_quantities import REVIEWED_SOURCE_COMPONENT_LISTINGS
+
+    engine = create_engine(f"sqlite:///{tmp_path / 'management.sqlite'}", connect_args={"check_same_thread": False})
+    Base.metadata.create_all(engine)
+    review = deepcopy(next(item for item in REVIEWED_SOURCE_COMPONENT_LISTINGS if not item.get('eligibility_hold_reason')))
+    vector_attrs = {'quantity_basis': 'reviewed_source_component_vector_v1',
+        'scalar_basis': 'one_complete_declared_vector_not_piece_count',
+        'source_components': review['components'], 'source_component_listing': review}
+    null_attrs = {'physical_purpose': 'declared specification only', 'package_components': [{'mass_g': 150}],
+        'explicit_listing_quantity_review': {'title': 'copied unregistered proof'}}
+    terms = {'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+        'source_quote_currency': None, 'currency_unconfirmed': True,
+        'source_minimum_purchase_quantity': 1, 'payable_price_unconfirmed': True,
+        'membership_required': None, 'coupon_required': None}
+    with Session(engine) as session, session.begin():
+        session.add(UnifiedCategory(id='viewer.leaf', slug='viewer-leaf', name_ko='조회 분류', level=0))
+        session.add_all([
+            NormalizedCanonicalProduct(public_product_id='prod-null', canonical_name='100% source declaration',
+                unified_category_id='viewer.leaf', aliases=['literal_alias'], keywords=['keyword'], is_active=False),
+            NormalizedCanonicalProduct(public_product_id='prod-vector', canonical_name=review['title'], is_active=True),
+        ])
+        session.flush()
+        session.add_all([
+            NormalizedProductVariant(public_variant_id='var-null', public_product_id='prod-null', variant_name='150g specification',
+                package_quantity=None, package_unit=None, standard_unit=None, display_unit='150g specification', attributes=null_attrs),
+            NormalizedProductVariant(public_variant_id='var-vector', public_product_id='prod-vector', variant_name='declared vector',
+                package_quantity=1, package_unit='세트', bundle_count=1, standard_unit=None, attributes=vector_attrs),
+        ])
+        session.flush()
+        session.add(NormalizedSourceListing(public_source_listing_id='listing-native', public_variant_id='var-null',
+            source_name='homeplus', source_record_key='070914500', source_title='original title 1P 150g',
+            source_unit_text='1P', source_url='https://example.test/native/070914500', is_active=False))
+        session.flush()
+        session.add_all([
+            NormalizedOfferEvent(public_offer_event_id='event-old', public_source_listing_id='listing-native', price_state='confirmed',
+                promotion_type='unknown', price=2190, original_price=3000, price_per_100g=1460, standard_unit_price=1460,
+                discount_rate=27, offer_state='pending_review', crawled_at=datetime(2026, 10, 1, 23, 59, 59, 999999),
+                valid_to=datetime(2026, 9, 30), raw_record_id='raw-old', raw_evidence={'promotion_conditions': terms},
+                audit_provenance={'source_hash': 'original'}),
+            NormalizedOfferEvent(public_offer_event_id='event-changed', public_source_listing_id='listing-native', price_state='confirmed',
+                promotion_type='unknown', price=2380, offer_state='active', crawled_at=datetime(2026, 10, 1),
+                raw_evidence={'promotion_conditions': {'source_quote_currency': 'KRW', 'required_selection_quantity': 3,
+                    'conditional_free_quantity': 1, 'payable_price_unconfirmed': True},
+                    'observation_receipt_eligible': False, 'observation_receipt_reason': 'source_period_expired'}),
+            NormalizedOfferEvent(public_offer_event_id='event-null', public_source_listing_id='listing-native', price_state='unknown',
+                promotion_type='unknown', price=None, offer_state='rejected', crawled_at=datetime(2026, 10, 2)),
+        ])
+    monkeypatch.setattr(products, 'get_session', lambda: Session(engine))
+    monkeypatch.setattr(prices, 'get_session', lambda: Session(engine))
+    app = FastAPI()
+    app.include_router(products.router, prefix='/api')
+    app.include_router(prices.router, prefix='/api')
+    app.dependency_overrides[require_viewer] = lambda: {'role': 'viewer', 'id': 'synthetic-viewer'}
+    with TestClient(app) as client:
+        yield client, app, null_attrs, review
+    engine.dispose()
+
+
+def test_normalized_management_products_preserve_null_and_valid_vector(normalized_management_client):
+    client, _, null_attrs, review = normalized_management_client
+    result = client.get('/api/products/normalized').json()
+    assert result['source_scope'] == 'admin_normalized_catalog' and result['read_only'] is True
+    assert result['total'] == 2
+    null_row = next(row for row in result['items'] if row['public_product_id'] == 'prod-null')
+    variant = null_row['variants'][0]
+    assert null_row['is_active'] is False and null_row['category_name'] == '조회 분류'
+    assert variant['package_quantity'] is None and variant['package_unit'] is None
+    assert variant['display_unit'] == '150g specification' and variant['attributes'] == null_attrs
+    assert variant['quantity_components'] is None and variant['quantity_comparison_reason'] == 'quantity_evidence_unverified'
+    assert variant['source_listings'][0]['public_source_listing_id'] == 'listing-native'
+    assert variant['source_listings'][0]['source_record_key'] == '070914500'
+    vector = next(row for row in result['items'] if row['public_product_id'] == 'prod-vector')['variants'][0]
+    assert vector['quantity_components'] == review['components'] and vector['standard_unit'] is None
+    assert client.get('/api/products/normalized', params={'q': '%'}).json()['total'] == 1
+    assert client.get('/api/products/normalized', params={'q': 'LITERAL_ALIAS', 'is_active': False}).json()['total'] == 1
+    page = client.get('/api/products/normalized', params={'page': 2, 'per_page': 1}).json()
+    assert page['total'] == 2 and page['total_pages'] == 2 and len(page['items']) == 1
+
+
+def test_normalized_management_history_keeps_quotes_states_and_period(normalized_management_client):
+    client, _, null_attrs, _ = normalized_management_client
+    result = client.get('/api/prices/normalized', params={'public_variant_id': 'var-null',
+        'date_from': '2026-10-01', 'date_to': '2026-10-01'}).json()
+    assert result['history_scope'] == 'all_stored_offer_states' and result['date_filter_basis'] == 'source_observed_at_utc'
+    assert result['total'] == 2 and [row['public_offer_event_id'] for row in result['items']] == ['event-old', 'event-changed']
+    old, changed = result['items']
+    assert old['observed_quote'] == 2190 and changed['observed_quote'] == 2380
+    assert old['public_product_id'] == changed['public_product_id'] == 'prod-null'
+    assert old['public_source_listing_id'] == changed['public_source_listing_id'] == 'listing-native'
+    assert old['offer_state'] == 'pending_review' and changed['offer_state'] == 'active'
+    assert old['crawled_at'] == '2026-10-01T23:59:59.999999+00:00' and old['valid_to'] == '2026-09-30T00:00:00+00:00'
+    assert old['recorded_price_per_100g'] == old['recorded_standard_unit_price'] == 1460
+    assert old['recorded_discount_rate'] == 27 and 'price_per_100g' not in old
+    assert old['raw_record_id'] == 'raw-old' and old['audit_provenance'] == {'source_hash': 'original'}
+    assert old['source_quote_currency'] is None and old['quote_currency_status'] == 'source_unconfirmed'
+    assert old['promotion_conditions']['source_minimum_purchase_quantity'] == 1
+    assert old['promotion_conditions']['membership_required'] is None and old['variant_attributes'] == null_attrs
+    assert old['receipt_evaluation'] == 'not_evaluated_admin_history' and old['observation_receipt_eligible'] is None
+    assert changed['source_quote_currency'] == 'KRW' and changed['quote_currency_status'] == 'source_declared'
+    assert changed['promotion_conditions']['required_selection_quantity'] == 3
+    assert changed['observation_receipt_eligible'] is False and changed['observation_receipt_reason'] == 'source_period_expired'
+    assert 'payable_price' not in old and 'received_quantity' not in old and 'current_price' not in old
+    all_rows = client.get('/api/prices/normalized').json()
+    null_quote = all_rows['items'][0]
+    assert all_rows['total'] == 3 and null_quote['observed_quote'] is None and null_quote['offer_state'] == 'rejected'
+    assert null_quote['quote_currency_status'] == 'not_recorded' and 'source_quote_currency' not in null_quote
+    filtered = client.get('/api/prices/normalized', params={'source_name': 'homeplus', 'offer_state': 'pending_review', 'per_page': 1}).json()
+    assert filtered['total'] == 1 and filtered['items'][0]['public_offer_event_id'] == 'event-old'
+
+
+def test_normalized_management_readonly_auth_and_bounded_filters(normalized_management_client):
+    from api.auth import require_viewer
+    client, app, _, _ = normalized_management_client
+    for path in ('/api/products/normalized', '/api/prices/normalized'):
+        route = next(route for route in app.routes if route.path == path)
+        assert route.methods == {'GET'} and any(dep.call is require_viewer for dep in route.dependant.dependencies)
+        assert client.get(path, params={'page': 0}).status_code == 422
+        assert client.get(path, params={'per_page': 201}).status_code == 422
+    assert client.get('/api/prices/normalized', params={'date_from': '2026-10-02', 'date_to': '2026-10-01'}).status_code == 422
+    assert client.get('/api/prices/normalized', params={'date_from': 'not-a-date'}).status_code == 422
+    empty = client.get('/api/prices/normalized', params={'public_source_listing_id': 'missing'}).json()
+    assert empty['items'] == [] and empty['total'] == empty['total_pages'] == 0
+    # The editable legacy namespace still reports its actual empty tables.
+    assert client.get('/api/prices/').json()['total'] == 0

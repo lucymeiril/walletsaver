@@ -1641,3 +1641,88 @@ def test_offer_timestamp_is_normalized_to_utc_on_import():
     apply_bundle(session, bundle, "timezone", user="tester")
     offer = session.execute(select(NormalizedOfferEvent)).scalar_one()
     assert offer.crawled_at.isoformat() == "2026-09-03T00:00:00"
+
+
+def _captured_quote_fixture(source, change=None):
+    from services.catalog_bundle import _captured_native_quote_terms
+    original, _ = _native_quote_fixture(source)
+    offer = original['offers'][0]
+    observation = offer['raw_evidence']['observations'][0]
+    raw = observation['raw_payload']; attrs = raw['attributes']
+    node = deepcopy(attrs['submission_business_evidence'][0]['raw_product_node'] if source == 'costco'
+                    else attrs['lottemart_detail_source_fields'])
+    capture = {'source_url': raw['source_url'], 'received_at': offer['crawled_at'],
+               'raw_product_nodes': [{'raw_product_node': deepcopy(node)}]}
+    marker = {'source_condition_kind': 'source_quote_purchase_conditions_unverified',
+              'payable_price_unconfirmed': True, 'customer_eligibility_unconfirmed': True,
+              'source_quote_currency': 'KRW'}
+    if source == 'costco':
+        attrs.pop('submission_business_evidence')
+        native = original['source_listings'][0]['source_record_key']
+        capture.update(source_url=f'https://www.costco.co.kr/rest/v2/korea/products/{native}/?fields=FULL&lang=ko&curr=KRW',
+                       native_context=native)
+        marker['source_native_business_conditions'] = {'membership': node.get('membership'),
+              'minOrderQuantity': node.get('minOrderQuantity'), 'maxOrderQuantity': node.get('maxOrderQuantity'),
+              'currency': node['price']['currencyIso'], 'maxOrderMode': 'not retained/unassessed'}
+    else:
+        marker.update(selection_group_eligibility_unconfirmed=True, source_promotion_text=offer['event_name'],
+                      source_promotion_period_text='(2026.10.01 - 2026.10.14)',
+                      source_native_business_conditions={'promotions': node['promotions'],
+                         'quantityRestrictionGroup': node.get('quantityRestrictionGroup'),
+                         'visible_promotion_date_text': '(2026.10.01 - 2026.10.14)', 'limits': 'unconfirmed payment'})
+    if change == 'time':capture['received_at'] = '2026-08-31T00:00:00Z'
+    if change == 'naive_time':capture['received_at'] = offer['crawled_at'].replace('Z', '')
+    if change == 'unexpected_terms':marker['source_native_business_conditions']['checkout_price'] = offer['price']
+    if change == 'url':capture['source_url'] += '?other=1'
+    if change == 'native':
+        if source == 'costco':capture['native_context'] = 'other-native'
+        else:capture['raw_product_nodes'][0]['raw_product_node']['retailerProductId'] = 'OSother-native'
+    if change == 'quote':
+        if source == 'costco':capture['raw_product_nodes'][0]['raw_product_node']['price']['value'] += 100
+        else:capture['raw_product_nodes'][0]['raw_product_node']['price']['amount'] = '4000'
+    if change == 'eligibility':marker['customer_eligibility_unconfirmed'] = False
+    text = json.dumps(capture, ensure_ascii=False)
+    marker['source_capture_input_sha256'] = hashlib.sha256(text.encode()).hexdigest()
+    if change == 'hash':marker['source_capture_input_sha256'] = '0' * 64
+    attrs['promotion_conditions'] = marker
+    observation['raw_payload_sha256'] = _offer_review_digest(raw)
+    offer['raw_evidence']['promotion_conditions'] = {'promotion_conditions': deepcopy(marker)}
+    reviewed = _offer_review_payload(original, 'native_source_quote_purchase_conditions_unverified', source_quote_terms={})
+    review = reviewed['offers'][0]['audit_provenance']['offer_interpretation_review']
+    review['native_source_capture_utf8'] = text
+    if change is None:
+        _, terms = _captured_native_quote_terms(review, review['binding'], offer['raw_evidence'], original['variants'][0]['attributes'])
+        review['interpretation']['promotion_conditions'] = {**terms, 'membership_required': None, 'coupon_required': None}
+    return original, reviewed
+
+
+@pytest.mark.parametrize('source', ['costco', 'lottemart'])
+def test_captured_quote_review_preserves_original_receipt_and_sticky_reimport(source):
+    original, reviewed = _captured_quote_fixture(source)
+    session = _session()
+    for index, bundle in enumerate((original, reviewed, {**deepcopy(original), 'run_id': 'capture-replay'}, reviewed)):
+        parsed, digest = parse_bundle(json.dumps(bundle, ensure_ascii=False).encode(), 'capture.json')
+        validation = validate_bundle(session, parsed, digest)
+        assert validation.ok, validation.errors
+        result = apply_bundle(session, parsed, digest, user='synthetic-moderator')
+        assert result['idempotent'] is (index == 3)
+    stored = session.get(NormalizedOfferEvent, original['offers'][0]['public_offer_event_id'])
+    assert stored.raw_evidence['observations'] == original['offers'][0]['raw_evidence']['observations']
+    assert stored.offer_state == 'active' and stored.promotion_type == 'unknown'
+    assert stored.price == original['offers'][0]['price']
+    assert stored.standard_unit_price is None and stored.price_per_100g is None
+    assert stored.raw_evidence['promotion_conditions']['payable_price_unconfirmed'] is True
+    assert 'minimum_quantity' not in stored.raw_evidence['promotion_conditions']
+    session.close()
+
+
+@pytest.mark.parametrize('source', ['costco', 'lottemart'])
+@pytest.mark.parametrize('change', ['hash', 'time', 'naive_time', 'url', 'native', 'quote', 'eligibility', 'unexpected_terms'])
+def test_captured_quote_review_rejects_wrong_receipt_or_payment_claim(source, change):
+    original, reviewed = _captured_quote_fixture(source, change)
+    session = _session()
+    apply_bundle(session, original, 'original-capture', user='synthetic-moderator')
+    validation = validate_bundle(session, reviewed, 'changed-capture')
+    assert not validation.ok
+    assert session.get(NormalizedOfferEvent, original['offers'][0]['public_offer_event_id']).offer_state == 'pending_review'
+    session.close()

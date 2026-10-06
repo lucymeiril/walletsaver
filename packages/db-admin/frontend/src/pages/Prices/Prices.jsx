@@ -9,6 +9,7 @@ import { api } from '../../api/client';
 import { useAbortController } from '../../hooks/useAbortController';
 import LastUpdated from '../../components/LastUpdated';
 import s from './Prices.module.css';
+import NormalizedPrices from './NormalizedPrices';
 
 const TOOLTIP_STYLE = {
   background: 'var(--surface)',
@@ -18,6 +19,17 @@ const TOOLTIP_STYLE = {
 };
 
 export default function Prices() {
+  const [namespace, setNamespace] = useState('normalized');
+  return <>
+    <label>가격 데이터 체계 <select aria-label="가격 데이터 체계" value={namespace} onChange={e => setNamespace(e.target.value)}>
+      <option value="normalized">정규화 관측 이력 · 조회 전용</option>
+      <option value="legacy">기존 가격·티어 · 편집 가능</option>
+    </select></label>
+    {namespace === 'normalized' ? <NormalizedPrices /> : <LegacyPrices />}
+  </>;
+}
+
+function LegacyPrices() {
   const {
     products, priceOutliers, priceTiers, priceStats,
     priceHistoryPage, tierSaving, loadingPrices,

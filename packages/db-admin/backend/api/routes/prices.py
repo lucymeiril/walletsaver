@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date, time, timezone
 from pathlib import Path
 import json
 import math
@@ -11,7 +11,7 @@ import csv
 import io
 import statistics as pystats
 
-from sqlalchemy import select, func, and_
+from sqlalchemy import select, func, and_, or_
 
 from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin
@@ -20,7 +20,7 @@ from services.price_calc import calculate_baseline_average, get_price_history
 from services.export import get_statistics_summary
 from api.middleware.rate_limit import limiter, EXPORT_LIMIT
 from starlette.requests import Request as StarletteRequest
-from storage.models import BaselinePrice, DiscountHistory, Product, Category
+from storage.models import BaselinePrice, DiscountHistory, Product, Category, NormalizedCanonicalProduct, NormalizedProductVariant, NormalizedSourceListing, NormalizedOfferEvent
 
 from api.security import (
     escape_like, MAX_BULK_PRICE_ITEMS, MAX_SOURCE_LEN, MAX_UNIT_LEN,
@@ -33,6 +33,87 @@ router = APIRouter(prefix="/prices", tags=["prices"])
 
 
 # ── 가격 목록 (기본 페이징) ──
+
+@router.get("/normalized")
+def list_normalized_observations(
+    q: str = Query("", max_length=255), source_name: str | None = Query(None, max_length=120),
+    unified_category_id: str | None = Query(None, max_length=120),
+    public_product_id: str | None = Query(None, max_length=120),
+    public_variant_id: str | None = Query(None, max_length=120),
+    public_source_listing_id: str | None = Query(None, max_length=120),
+    offer_state: str | None = Query(None, max_length=40),
+    date_from: date | None = None, date_to: date | None = None,
+    page: int = Query(1, ge=1), per_page: int = Query(50, ge=1, le=200),
+    identity: dict = Depends(require_viewer),
+):
+    """All selected history; stored quotes/rates do not establish a paid receipt."""
+    from core.reviewed_source_evidence import package_comparison_reason, valid_source_component_variant
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(422, "date_from must not exceed date_to")
+    session = get_session()
+    try:
+        product, variant, listing, event = (NormalizedCanonicalProduct, NormalizedProductVariant,
+            NormalizedSourceListing, NormalizedOfferEvent)
+        stmt = select(product.public_product_id, product.canonical_name, product.unified_category_id,
+            variant.public_variant_id, variant.variant_name, variant.package_quantity, variant.package_unit,
+            variant.bundle_count, variant.standard_unit, variant.display_unit, variant.attributes.label("variant_attributes"),
+            listing.source_name, listing.source_record_key, listing.source_title, listing.source_url, listing.source_unit_text,
+            *event.__table__.columns)
+        stmt = stmt.select_from(event).join(listing, event.public_source_listing_id == listing.public_source_listing_id)
+        stmt = stmt.join(variant, listing.public_variant_id == variant.public_variant_id).join(
+            product, variant.public_product_id == product.public_product_id)
+        conditions = []
+        for value, field in ((source_name, listing.source_name), (unified_category_id, product.unified_category_id),
+            (public_product_id, product.public_product_id), (public_variant_id, variant.public_variant_id),
+            (public_source_listing_id, listing.public_source_listing_id), (offer_state, event.offer_state)):
+            if value is not None:
+                conditions.append(field == value)
+        if q:
+            conditions.append(or_(*(field.icontains(q, autoescape=True) for field in (
+                product.canonical_name, listing.source_title, listing.source_name, event.event_name))))
+        if date_from:
+            conditions.append(event.crawled_at >= datetime.combine(date_from, time.min))
+        if date_to:
+            conditions.append(event.crawled_at <= datetime.max if date_to == date.max else
+                event.crawled_at < datetime.combine(date_to, time.min) + timedelta(days=1))
+        stmt = stmt.where(*conditions)
+        total = session.scalar(select(func.count()).select_from(stmt.subquery())) or 0
+        rows = session.execute(stmt.order_by(event.crawled_at.desc().nullslast(), event.public_offer_event_id)
+            .offset((page - 1) * per_page).limit(per_page)).mappings().all()
+        items = []
+        for row in rows:
+            item = dict(row)
+            for key in ("valid_from", "valid_to", "crawled_at"):
+                stamp = item[key]
+                item[key] = ((stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else
+                              stamp.astimezone(timezone.utc)).isoformat() if stamp else None)
+            for field in ("standard_unit_price", "price_per_100g", "discount_rate"):
+                item["recorded_" + field] = item.pop(field)
+            evidence = item["raw_evidence"] if isinstance(item["raw_evidence"], dict) else {}
+            item["promotion_conditions"] = evidence.get("promotion_conditions")
+            terms = item["promotion_conditions"] if isinstance(item["promotion_conditions"], dict) else {}
+            if "source_quote_currency" in terms:
+                item["source_quote_currency"] = terms["source_quote_currency"]
+            item["quote_currency_status"] = ("source_declared" if terms.get("source_quote_currency") else
+                "source_unconfirmed" if "source_quote_currency" in terms else "not_recorded")
+            item["observed_quote"] = item["price"]
+            item["quote_scope"] = "stored_source_observation"
+            item["receipt_evaluation"] = "not_evaluated_admin_history"
+            item["observation_receipt_eligible"] = evidence.get("observation_receipt_eligible")
+            item["observation_receipt_reason"] = evidence.get("observation_receipt_reason")
+            validation = {**item, "attributes": item["variant_attributes"]}
+            item["quantity_comparison_reason"] = package_comparison_reason(validation)
+            attrs = item["variant_attributes"]
+            item["quantity_components"] = (attrs["source_component_listing"]["components"]
+                if isinstance(attrs, dict) and valid_source_component_variant(validation) else None)
+            items.append(item)
+        return {"source_scope": "admin_normalized_catalog", "read_only": True,
+            "mutation_workflow": "/api/catalog-bundles", "history_scope": "all_stored_offer_states",
+            "date_filter_basis": "source_observed_at_utc", "items": items, "total": total,
+            "page": page, "per_page": per_page, "total_pages": (total + per_page - 1) // per_page}
+    finally:
+        session.close()
+
 
 @router.get("/")
 def list_prices(

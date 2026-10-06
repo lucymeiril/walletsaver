@@ -201,6 +201,14 @@ function postFormData(url, formData, { signal, onProgress } = {}) {
 }
 
 export const api = {
+  getNormalizedProducts: (params = {}, opts) => {
+    const qs = new URLSearchParams(params).toString();
+    return get(`${API_BASE}/products/normalized${qs ? `?${qs}` : ''}`, opts);
+  },
+  getNormalizedPriceHistory: (params = {}, opts) => {
+    const qs = new URLSearchParams(params).toString();
+    return get(`${API_BASE}/prices/normalized${qs ? `?${qs}` : ''}`, opts);
+  },
   getProducts: (params, opts) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
     return get(`${API_BASE}/products/${qs}`, opts);
