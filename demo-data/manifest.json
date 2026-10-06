@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_revision": 76,
-  "version": "2026-10-06-catalog76-groups276-277",
+  "catalog_revision": 77,
+  "version": "2026-10-06-catalog77-groups278-281",
   "source_code_base": "dadbe765210e42c22dca18b6e9bf2d390a689d3b",
   "initial_catalog": {
     "included": 9098,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update76 and consistent publicsnapshot:90reviewedlogicalgroups retain228oldIDs,3lemonand1HotGoraebapleaf corrections, active category-keyword links and actual101g×6 and1000ml×2 corrections; all9115 event/quote/raw/time IDs retained, externalhotdeal7 unchanged; accounts/sessions empty. Historical certificate remains historical.",
+  "data_scope": "Sanitized catalog/admin-update77 and consistent publicsnapshot:151reviewedlogicalgroups retain364oldIDs,14exactsource-bound leaf corrections, active category-keyword links and actual101g×6 and1000ml×2 corrections; all9115 event/quote/raw/time IDs retained, externalhotdeal7 unchanged; accounts/sessions empty. Historical certificate remains historical.",
   "files": {
     "admin.sqlite": {
-      "sha256": "52998bf9a6bf88ab189dfe7fa4bdb5da658f4d19f1d8954bcc6144d889e264c1",
-      "bytes": 61956096,
+      "sha256": "3a3cc7e8d4634b9356904a7151330519ae55e9f246d533f19229225e00df0bd6",
+      "bytes": 62054400,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 51,
+        "catalog_sync_log": 52,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "aede29da069e27b68e52cc7dfc6d457c735bcc77df4547d2b099613e9b07f34a",
-      "archive_bytes": 8829026
+      "archive_sha256": "1dfc6a040eb1efd1d2f7d68e7ed2eca83f880c74f35480a6757114a7c1842345",
+      "archive_bytes": 8850151
     },
     "public_snapshot.sqlite": {
-      "sha256": "079ddb2563bddcf00c4d294342f458c87a391e1f3211cc8689cdb5e6bc808818",
-      "bytes": 57552896,
+      "sha256": "d8ec2fc4be931bae0508f3616e88b9a3dcc0c8c4c07b9ec498dc77648a8725dc",
+      "bytes": 57647104,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "e9d43aee50eacd2f734487a8c9f6455058022740459ece16eea9e367076f6079",
-      "archive_bytes": 8185960
+      "archive_sha256": "69a54744026e3a7cc17f47d6c7b336b22d91073a4df67f14c794c59e8c8d65f2",
+      "archive_bytes": 8206793
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,10 +165,10 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "8eb98edf843a792e6e2f340d768fb362e7060e6cd9b7baf6d2a83b06762bfd5f",
-    "packages/shared/core/reviewed_catalog_groups.json": "e724db0dd5f14813b05096e3d38410fc0f0e3f9c190fb353900238ddbde722d7",
+    "packages/shared/core/reviewed_catalog_groups.json": "5d53b1be7b9d4cedf7a709981f5685f90089b9cde2cbae7d9a6c3bf2aebce037",
     "packages/shared/core/catalog_quantity.py": "cfab46242fe8bd71a80d42391729721597082efdac48b7f03eb0733a38a9ccb3",
     "packages/shared/core/catalog_matching.py": "749534314bebf4039372e3afefcccb426d2c4a108e5828cd29fa1905ed493294",
-    "packages/db-admin/backend/services/catalog_bundle.py": "35e44b59b725117e47aef46301bfc7683e87c01d4e66141b5847d17cd02bb1ad",
+    "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "e018ac35129593eef1c9dbcfe8a18482b03f0b6177f0567dbff71b1409f0477d",
     "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
     "packages/web-api/backend/services/catalog_storage.py": "f074d3e8dbd84c4287c3074732bcc8df724ba4f07d730a0581e06202a977cfb9",

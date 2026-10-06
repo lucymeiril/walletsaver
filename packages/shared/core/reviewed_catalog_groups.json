@@ -4552,6 +4552,2845 @@
         "prod-622a37211e3bbb1caae646807670a71f",
         "prod-9deb616b463d1fe02affd89aa34d68f8"
       ]
+    },
+    {
+      "key": "meat278:dongwon.special.frank",
+      "canonical_product_id": "prod-05c59567f9cee3e16b7119c08eb22085",
+      "member_product_ids": [
+        "prod-05c59567f9cee3e16b7119c08eb22085",
+        "prod-899fcdf7a7321e59a22f067740ef23f5"
+      ],
+      "canonical_name": "동원 스페셜 후랑크",
+      "brand": "동원",
+      "leaf": "food.meat.processed.sausage",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-05c59567f9cee3e16b7119c08eb22085": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "143876986",
+            "source_titles": [
+              "동원 스페셜 후랑크 250G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=143876986&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-899fcdf7a7321e59a22f067740ef23f5": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801047570691",
+            "source_titles": [
+              "동원 스페셜 후랑크 (500G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801047570691/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "470895de66354159d16671a3e841993d664a63a7059d77e55f95ed639f7e3c52",
+      "derived_alias_member_ids": [
+        "prod-05c59567f9cee3e16b7119c08eb22085",
+        "prod-899fcdf7a7321e59a22f067740ef23f5"
+      ]
+    },
+    {
+      "key": "meat278:cj.hamsville.thick.good_bacon",
+      "canonical_product_id": "prod-23375e5b9c68049a8274621bef7043e2",
+      "member_product_ids": [
+        "prod-23375e5b9c68049a8274621bef7043e2",
+        "prod-369c2c6f3f8b51aacf5c9716d8a6862c"
+      ],
+      "canonical_name": "CJ 햄스빌 두툼한 굿 베이컨",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.bacon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-23375e5b9c68049a8274621bef7043e2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "148048029",
+            "source_titles": [
+              "씨제이 백설햄 햄스빌 두툼한 굿 베이컨 340g"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=148048029&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-369c2c6f3f8b51aacf5c9716d8a6862c": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007857206",
+            "source_titles": [
+              "CJ 백설 햄스빌 두툼한 굿 베이컨 (340G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007857206/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "68a0f3e81e9d8529ddc923cb03bc4a04c76310882ae1ef243e7c7f0ad545ee49",
+      "derived_alias_member_ids": [
+        "prod-23375e5b9c68049a8274621bef7043e2",
+        "prod-369c2c6f3f8b51aacf5c9716d8a6862c"
+      ]
+    },
+    {
+      "key": "meat278:cj.healthy.whole_grilled_chicken",
+      "canonical_product_id": "prod-270aa9b514e1c20549096efdad5a91e8",
+      "member_product_ids": [
+        "prod-270aa9b514e1c20549096efdad5a91e8",
+        "prod-b9b5c739cc813945d792355568521edc"
+      ],
+      "canonical_name": "CJ 더건강한 닭가슴살 직화통살구이",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.breast",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-270aa9b514e1c20549096efdad5a91e8": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007880440",
+            "source_titles": [
+              "CJ 더건강한 부드러운 닭가슴살 직화통살구이 (100G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007880440/details"
+            ]
+          }
+        ],
+        "prod-b9b5c739cc813945d792355568521edc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "062572224",
+            "source_titles": [
+              "씨제이 더건강한 닭가슴살 직화통살 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=062572224&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b79e7b3e7e2d0c26ae63de008cf13ea185b70cb836ed611a70a13997ab45f055",
+      "derived_alias_member_ids": [
+        "prod-270aa9b514e1c20549096efdad5a91e8",
+        "prod-b9b5c739cc813945d792355568521edc"
+      ]
+    },
+    {
+      "key": "meat278:cj.healthy.bacon",
+      "canonical_product_id": "prod-7060c6e998450f08efca0764a696a07b",
+      "member_product_ids": [
+        "prod-7060c6e998450f08efca0764a696a07b",
+        "prod-838941e59fb07fe0533116a767efd5b9"
+      ],
+      "canonical_name": "CJ 더건강한 베이컨",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.bacon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7060c6e998450f08efca0764a696a07b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007185989",
+            "source_titles": [
+              "CJ 더건강한 베이컨 (90G*2)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007185989/details"
+            ]
+          }
+        ],
+        "prod-838941e59fb07fe0533116a767efd5b9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "146411812",
+            "source_titles": [
+              "씨제이 더건강한 베이컨 90g*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=146411812&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0d6189c34e0fc88c5ab6b3acfada1654dec2bf0aaf1ec6b5796e89f876c3b189",
+      "derived_alias_member_ids": [
+        "prod-7060c6e998450f08efca0764a696a07b",
+        "prod-838941e59fb07fe0533116a767efd5b9"
+      ]
+    },
+    {
+      "key": "meat278:mokwoochon.jubu9.juicy.frank",
+      "canonical_product_id": "prod-8df26fc8333274b099edd5f0804a30ce",
+      "member_product_ids": [
+        "prod-8df26fc8333274b099edd5f0804a30ce",
+        "prod-afd9d0443e16cf9946fa228d6677aaeb"
+      ],
+      "canonical_name": "목우촌 주부9단 육즙팡팡 프랑크",
+      "brand": "목우촌",
+      "leaf": "food.meat.processed.sausage",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8df26fc8333274b099edd5f0804a30ce": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8803712121917",
+            "source_titles": [
+              "목우촌 주부9단 육즙팡팡 프랑크 소시지 (350G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8803712121917/details"
+            ]
+          }
+        ],
+        "prod-afd9d0443e16cf9946fa228d6677aaeb": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070740002",
+            "source_titles": [
+              "목우촌 주부9단 육즙팡팡 프랑크 350G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070740002&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e2fbb5e3198b14b0af2b486225b392c4455599e926332571944257dd8d4b17de",
+      "derived_alias_member_ids": [
+        "prod-8df26fc8333274b099edd5f0804a30ce",
+        "prod-afd9d0443e16cf9946fa228d6677aaeb"
+      ]
+    },
+    {
+      "key": "meat278:cj.maxbong.charcoal.hotbar",
+      "canonical_product_id": "prod-901fe916b33094f832e681c8db4a641e",
+      "member_product_ids": [
+        "prod-901fe916b33094f832e681c8db4a641e",
+        "prod-94e7dec8a3cd7626d7fe4fd56542affc"
+      ],
+      "canonical_name": "CJ 맥스봉 숯불구이맛 핫바",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.sausage",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-901fe916b33094f832e681c8db4a641e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007766652",
+            "source_titles": [
+              "CJ 맥스봉 숯불구이맛 핫바 (70G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007766652/details"
+            ]
+          }
+        ],
+        "prod-94e7dec8a3cd7626d7fe4fd56542affc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "129473101",
+            "source_titles": [
+              "씨제이 맥스봉 숯불구이맛 핫바 70G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=129473101&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c5be913ea14b851949463427e81a17a144b2b3b4522b17d8803ecdbd5b9e53bc",
+      "derived_alias_member_ids": [
+        "prod-901fe916b33094f832e681c8db4a641e",
+        "prod-94e7dec8a3cd7626d7fe4fd56542affc"
+      ]
+    },
+    {
+      "key": "meat278:cj.baeksul.original.frank",
+      "canonical_product_id": "prod-7ce5dd0f5a778f473a459b639b956d85",
+      "member_product_ids": [
+        "prod-7ce5dd0f5a778f473a459b639b956d85",
+        "prod-f1e1d4f2c8c10b825c8913dcc98a3499"
+      ],
+      "canonical_name": "CJ 백설 오리지널 후랑크",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.sausage",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7ce5dd0f5a778f473a459b639b956d85": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "062678756",
+            "source_titles": [
+              "씨제이 백설 오리지널 후랑크 460G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=062678756&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f1e1d4f2c8c10b825c8913dcc98a3499": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007616179",
+            "source_titles": [
+              "CJ 백설 오리지널 후랑크 (460G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007616179/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef5def00cdcddd3a8217a1fd2549e8149063c8cb3dc0fab91c2b823b34bd2892",
+      "derived_alias_member_ids": [
+        "prod-7ce5dd0f5a778f473a459b639b956d85",
+        "prod-f1e1d4f2c8c10b825c8913dcc98a3499"
+      ]
+    },
+    {
+      "key": "meat278:cj.grilled_plate.smoke",
+      "canonical_product_id": "prod-42fbc2a4e479e819a6d491d945670f6d",
+      "member_product_ids": [
+        "prod-42fbc2a4e479e819a6d491d945670f6d",
+        "prod-c656f3e63d77b1e4fa8f0659f30fb753"
+      ],
+      "canonical_name": "CJ 구이한판 스모크그릴",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.ham",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-42fbc2a4e479e819a6d491d945670f6d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007922379",
+            "source_titles": [
+              "CJ 구이한판 스모크 그릴 (240G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007922379/details"
+            ]
+          }
+        ],
+        "prod-c656f3e63d77b1e4fa8f0659f30fb753": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "066099657",
+            "source_titles": [
+              "씨제이 구이한판 스모크그릴 60G*4"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=066099657&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d549fe71c82bc2333849a14e689aaee90092e760dfef56dbb68aec61f71289b3",
+      "derived_alias_member_ids": [
+        "prod-42fbc2a4e479e819a6d491d945670f6d",
+        "prod-c656f3e63d77b1e4fa8f0659f30fb753"
+      ]
+    },
+    {
+      "key": "meat278:mokwoochon.jubu9.gimbap_ham",
+      "canonical_product_id": "prod-a9acd1afb53927ac1e9971127218be73",
+      "member_product_ids": [
+        "prod-a9acd1afb53927ac1e9971127218be73",
+        "prod-d4b02897318ab86d55d0683fc4936c3e"
+      ],
+      "canonical_name": "목우촌 주부9단 김밥햄",
+      "brand": "목우촌",
+      "leaf": "food.meat.processed.ham",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a9acd1afb53927ac1e9971127218be73": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007889123",
+            "source_titles": [
+              "주부9단 김밥햄 170g*2"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007889123&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-d4b02897318ab86d55d0683fc4936c3e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "007772513",
+            "source_titles": [
+              "농협목우촌 주부9단 김밥 햄 340G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=007772513&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "fde214b16f266b1b7d982880ebc2ba2696f27ebd03428c740420e8f1ffc5583c",
+      "derived_alias_member_ids": [
+        "prod-a9acd1afb53927ac1e9971127218be73",
+        "prod-d4b02897318ab86d55d0683fc4936c3e"
+      ]
+    },
+    {
+      "key": "meat278:harim.chicken.garlic",
+      "canonical_product_id": "prod-2413baa838bbcba8fad5d6643556baa0",
+      "member_product_ids": [
+        "prod-2413baa838bbcba8fad5d6643556baa0",
+        "prod-e6c9c4945f15422b24a79dcecb53bbcd"
+      ],
+      "canonical_name": "하림 닭가슴살 갈릭",
+      "brand": "하림",
+      "leaf": "food.meat.processed.breast",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2413baa838bbcba8fad5d6643556baa0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "147533787",
+            "source_titles": [
+              "하림 닭가슴살 갈릭 510G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=147533787&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e6c9c4945f15422b24a79dcecb53bbcd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "135949187",
+            "source_titles": [
+              "하림 닭가슴살 갈릭 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=135949187&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ea422ddbd161c997f0a4105b82cc98e43a224b12699ae92dcf35784c715521f3",
+      "derived_alias_member_ids": [
+        "prod-2413baa838bbcba8fad5d6643556baa0",
+        "prod-e6c9c4945f15422b24a79dcecb53bbcd"
+      ]
+    },
+    {
+      "key": "meat278:harim.chicken.smoked",
+      "canonical_product_id": "prod-63ce5fe2919a6f9e20b6acffadfd315a",
+      "member_product_ids": [
+        "prod-63ce5fe2919a6f9e20b6acffadfd315a",
+        "prod-f58c0fbbeaf8fad8e85ed884eff48bb9"
+      ],
+      "canonical_name": "하림 닭가슴살 훈제",
+      "brand": "하림",
+      "leaf": "food.meat.processed.breast",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-63ce5fe2919a6f9e20b6acffadfd315a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "130315559",
+            "source_titles": [
+              "하림 닭가슴살 훈제 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=130315559&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f58c0fbbeaf8fad8e85ed884eff48bb9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "147533862",
+            "source_titles": [
+              "하림 닭가슴살훈제 510G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=147533862&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a1b2550036f4b173d96c4769e2ace1c9dc4523a0760ff0df4c6fb3f314256b57",
+      "derived_alias_member_ids": [
+        "prod-63ce5fe2919a6f9e20b6acffadfd315a",
+        "prod-f58c0fbbeaf8fad8e85ed884eff48bb9"
+      ]
+    },
+    {
+      "key": "meat278:cj.healthy.chicken.whole_grill_pepper",
+      "canonical_product_id": "prod-dfce8e124b83ba5651ebb9292781be16",
+      "member_product_ids": [
+        "prod-dfce8e124b83ba5651ebb9292781be16",
+        "prod-f57ccbda250683166bfe6659e3be3cb9"
+      ],
+      "canonical_name": "CJ 더건강한 닭가슴살 통살구이페퍼",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.breast",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-dfce8e124b83ba5651ebb9292781be16": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007966724",
+            "source_titles": [
+              "CJ 더건강한 부드러운 닭가슴살 통살구이페퍼 (100G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007966724/details"
+            ]
+          }
+        ],
+        "prod-f57ccbda250683166bfe6659e3be3cb9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069564534",
+            "source_titles": [
+              "씨제이 더건강한 닭가슴살 직화 통살페퍼 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069564534&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f00cc21894555ffbb3c173f98797ed15356e5ca6cd66f839561676e2f77dde9f",
+      "derived_alias_member_ids": [
+        "prod-dfce8e124b83ba5651ebb9292781be16",
+        "prod-f57ccbda250683166bfe6659e3be3cb9"
+      ]
+    },
+    {
+      "key": "meat278:cj.hamsville.good_bacon",
+      "canonical_product_id": "prod-1c97357b0fc54b61c796ac29a8881788",
+      "member_product_ids": [
+        "prod-1c97357b0fc54b61c796ac29a8881788",
+        "prod-b0418cfd58799696f7183a4e4961931b"
+      ],
+      "canonical_name": "CJ 햄스빌 굿 베이컨",
+      "brand": "CJ",
+      "leaf": "food.meat.processed.bacon",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1c97357b0fc54b61c796ac29a8881788": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "145387513",
+            "source_titles": [
+              "씨제이 백설햄 햄스빌 굿베이컨 110G*3"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=145387513&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-b0418cfd58799696f7183a4e4961931b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007842417",
+            "source_titles": [
+              "CJ 백설 햄스빌 굿 베이컨 (110G*3)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007842417/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e6a99a10285042dfa48a52ff01bc9235750641575f96918a016a6db7c7d92277",
+      "derived_alias_member_ids": [
+        "prod-1c97357b0fc54b61c796ac29a8881788",
+        "prod-b0418cfd58799696f7183a4e4961931b"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-lobstick-gimbap",
+      "canonical_product_id": "prod-14b3a473c27a6cc797f255bd264f2f6c",
+      "member_product_ids": [
+        "prod-14b3a473c27a6cc797f255bd264f2f6c",
+        "prod-68e986aaf27c5c96af6ae472d10b050e"
+      ],
+      "canonical_name": "동원 랍스틱 김밥용",
+      "brand": "동원",
+      "leaf": "food.seafood.processed.surimi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-14b3a473c27a6cc797f255bd264f2f6c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "122466000",
+            "source_titles": [
+              "동원 랍스틱 김밥용 140G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=122466000&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-68e986aaf27c5c96af6ae472d10b050e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801047513001",
+            "source_titles": [
+              "동원 랍스틱 김밥용 (140G*2입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801047513001/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "af0e3aad3d60e55a8f69a98872e58139cfa62c299eeaa048e0c09db345db74d6",
+      "derived_alias_member_ids": [
+        "prod-14b3a473c27a6cc797f255bd264f2f6c",
+        "prod-68e986aaf27c5c96af6ae472d10b050e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:daerim-gimbapae-lobster",
+      "canonical_product_id": "prod-2b6e5f935f9e446b8c7322bda991836e",
+      "member_product_ids": [
+        "prod-2b6e5f935f9e446b8c7322bda991836e",
+        "prod-83753c861494c0e3f46538c585a31c5c"
+      ],
+      "canonical_name": "사조대림 김밥애 랍스터",
+      "brand": "사조대림",
+      "leaf": "food.seafood.processed.surimi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2b6e5f935f9e446b8c7322bda991836e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801066062160",
+            "source_titles": [
+              "사조대림 김밥애 랍스터 (165G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801066062160/details"
+            ]
+          }
+        ],
+        "prod-83753c861494c0e3f46538c585a31c5c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070492358",
+            "source_titles": [
+              "사조대림 김밥애 랍스터 330G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070492358&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c31d21d83e57968e1a6fa8b837767897da7df91a437415f5a3db207c82afd4cd",
+      "derived_alias_member_ids": [
+        "prod-2b6e5f935f9e446b8c7322bda991836e",
+        "prod-83753c861494c0e3f46538c585a31c5c"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:daerim-crab-surimi-keun-janchi",
+      "canonical_product_id": "prod-32a6303d0339babacab169bcfb314a06",
+      "member_product_ids": [
+        "prod-32a6303d0339babacab169bcfb314a06",
+        "prod-cfd9862c2c305f4bc1a75ffabcbd9e74"
+      ],
+      "canonical_name": "사조대림 게맛살 큰잔치",
+      "brand": "사조대림",
+      "leaf": "food.seafood.processed.surimi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-32a6303d0339babacab169bcfb314a06": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "113462316",
+            "source_titles": [
+              "사조대림 게 맛살 큰잔치 190G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=113462316&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cfd9862c2c305f4bc1a75ffabcbd9e74": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "113462391",
+            "source_titles": [
+              "사조대림 게 맛살 큰잔치 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=113462391&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "606f3599e43bd9f88740aa83a19dc9b6b5c3d9b5a4c03bf2f1a0319aa54d8b99",
+      "derived_alias_member_ids": [
+        "prod-32a6303d0339babacab169bcfb314a06",
+        "prod-cfd9862c2c305f4bc1a75ffabcbd9e74"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:hansung-crammy",
+      "canonical_product_id": "prod-718b7f58b981eee284593262689340a6",
+      "member_product_ids": [
+        "prod-718b7f58b981eee284593262689340a6",
+        "prod-aef1b298428c611fdea6f7dc9f3988e3",
+        "prod-cff1a1e9b32adbac25f3344c3ea3a8ea"
+      ],
+      "canonical_name": "한성 크래미",
+      "brand": "한성",
+      "leaf": "food.seafood.processed.surimi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-718b7f58b981eee284593262689340a6": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801074256247",
+            "source_titles": [
+              "한성 크래미 (145G*2)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801074256247/details"
+            ]
+          }
+        ],
+        "prod-aef1b298428c611fdea6f7dc9f3988e3": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110853012",
+            "source_titles": [
+              "한성 크래미 기획 145G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110853012&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cff1a1e9b32adbac25f3344c3ea3a8ea": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "129125785",
+            "source_titles": [
+              "한성 크래미 180G*3"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=129125785&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "300273b00f78ec4609c2bcdb2a38941077c910d1eabdb45e5886f24cd03d48a8",
+      "derived_alias_member_ids": [
+        "prod-718b7f58b981eee284593262689340a6",
+        "prod-aef1b298428c611fdea6f7dc9f3988e3",
+        "prod-cff1a1e9b32adbac25f3344c3ea3a8ea"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:daerim-crabia",
+      "canonical_product_id": "prod-b5fc0b1b1e86fedc9e1bd1a0cc60679a",
+      "member_product_ids": [
+        "prod-b5fc0b1b1e86fedc9e1bd1a0cc60679a",
+        "prod-d7bed771ee7f6dd44b57f1d3e462b37d",
+        "prod-ec7b1c8fa5579a33c87a8a2a3c87fc29"
+      ],
+      "canonical_name": "사조대림 크라비아",
+      "brand": "사조대림",
+      "leaf": "food.seafood.processed.surimi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-b5fc0b1b1e86fedc9e1bd1a0cc60679a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "113462535",
+            "source_titles": [
+              "사조대림 크라비아 기획 160G+80G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=113462535&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-d7bed771ee7f6dd44b57f1d3e462b37d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "138331481",
+            "source_titles": [
+              "사조대림 크라비아 205G*2"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=138331481&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ec7b1c8fa5579a33c87a8a2a3c87fc29": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801066511026",
+            "source_titles": [
+              "사조대림 크라비아 (270G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801066511026/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "57d250677b903d083060dd2fecf7c86867e5f2ac71a8de32980ffdceda20595e",
+      "derived_alias_member_ids": [
+        "prod-b5fc0b1b1e86fedc9e1bd1a0cc60679a",
+        "prod-d7bed771ee7f6dd44b57f1d3e462b37d",
+        "prod-ec7b1c8fa5579a33c87a8a2a3c87fc29"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:jungsaeu-original",
+      "canonical_product_id": "prod-6dc502b2dc13d9e4e15e2cb37d6016fc",
+      "member_product_ids": [
+        "prod-6dc502b2dc13d9e4e15e2cb37d6016fc",
+        "prod-f5da7f0145e40c67a2d68733a8ca1105"
+      ],
+      "canonical_name": "정새우 오리지널",
+      "brand": "정새우",
+      "leaf": "food.seafood.processed.dried_fish",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6dc502b2dc13d9e4e15e2cb37d6016fc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070974704",
+            "source_titles": [
+              "정새우 오리지널 160G(40G*4)(봉)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070974704&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f5da7f0145e40c67a2d68733a8ca1105": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069074676",
+            "source_titles": [
+              "정새우 오리지널 60G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069074676&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b867e01ab0ea40255a6a6f3fe9bd5de8852b240156f3f7d3a21c3222a29351d1",
+      "derived_alias_member_ids": [
+        "prod-6dc502b2dc13d9e4e15e2cb37d6016fc",
+        "prod-f5da7f0145e40c67a2d68733a8ca1105"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dongwon-bareun-light-square",
+      "canonical_product_id": "prod-5f4b1c4df3e1e9fef5ac16e42fdb8fb6",
+      "member_product_ids": [
+        "prod-5f4b1c4df3e1e9fef5ac16e42fdb8fb6",
+        "prod-e4dba56625782086b837fa3f0a872070"
+      ],
+      "canonical_name": "동원 바른어묵 라이트 사각",
+      "brand": "동원",
+      "leaf": "food.seafood.processed.fishcake",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5f4b1c4df3e1e9fef5ac16e42fdb8fb6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071375473",
+            "source_titles": [
+              "동원 바른라이트 사각 180G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071375473&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e4dba56625782086b837fa3f0a872070": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801047521709",
+            "source_titles": [
+              "동원 동원 바른어묵 라이트 사각 (180G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801047521709/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0ab2164212c6f81c49cdc98cb9f470bd78eb93a33d70d581022d4585ee5f1f56",
+      "derived_alias_member_ids": [
+        "prod-5f4b1c4df3e1e9fef5ac16e42fdb8fb6",
+        "prod-e4dba56625782086b837fa3f0a872070"
+      ]
+    },
+    {
+      "key": "orion-digestive-choco",
+      "canonical_product_id": "prod-00641d25064c7794583930c3e0fd8aeb",
+      "member_product_ids": [
+        "prod-00641d25064c7794583930c3e0fd8aeb",
+        "prod-68b076febdc83b6089f3af8139332196"
+      ],
+      "canonical_name": "오리온 다이제 초코",
+      "brand": "오리온",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-00641d25064c7794583930c3e0fd8aeb": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120642083",
+            "source_titles": [
+              "오리온 다이제 초코 312G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120642083&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-68b076febdc83b6089f3af8139332196": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120642054",
+            "source_titles": [
+              "오리온 다이제 초코 225G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120642054&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "db7861862ecc704732dc4068bb2a070d3d940c8f7df14aa66c4f3eeffa4c73a0",
+      "derived_alias_member_ids": [
+        "prod-00641d25064c7794583930c3e0fd8aeb",
+        "prod-68b076febdc83b6089f3af8139332196"
+      ]
+    },
+    {
+      "key": "orion-moist-chocchip",
+      "canonical_product_id": "prod-015fe8c099a5eca99ee07f150bd24bbd",
+      "member_product_ids": [
+        "prod-015fe8c099a5eca99ee07f150bd24bbd",
+        "prod-c0370e2b316b933d0b863c1aad829c71"
+      ],
+      "canonical_name": "오리온 촉촉한초코칩",
+      "brand": "오리온",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-015fe8c099a5eca99ee07f150bd24bbd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128089310",
+            "source_titles": [
+              "오리온 촉촉한초코칩 320G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128089310&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c0370e2b316b933d0b863c1aad829c71": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115422385",
+            "source_titles": [
+              "오리온 촉촉한 초코칩 160G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115422385&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0750abe5e386fd6286243a1c190c686fb9c47a290b7ec081fe8ffde08f0a1e5e",
+      "derived_alias_member_ids": [
+        "prod-015fe8c099a5eca99ee07f150bd24bbd",
+        "prod-c0370e2b316b933d0b863c1aad829c71"
+      ]
+    },
+    {
+      "key": "lotte-pepero-crunky",
+      "canonical_product_id": "prod-169592b16788838360525ae258da342a",
+      "member_product_ids": [
+        "prod-169592b16788838360525ae258da342a",
+        "prod-7d46da360e94b92fa8990cae2bb67ccd"
+      ],
+      "canonical_name": "롯데 빼빼로 크런키",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-169592b16788838360525ae258da342a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "146525608",
+            "source_titles": [
+              "롯데 빼빼로 크런키 140G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=146525608&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7d46da360e94b92fa8990cae2bb67ccd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "144179560",
+            "source_titles": [
+              "롯데 빼빼로 크런키 39G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=144179560&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9a29d3ede94982fc4d988aa86bd13bdd944fc773a8926dccfa44bb931101f6ee",
+      "derived_alias_member_ids": [
+        "prod-169592b16788838360525ae258da342a",
+        "prod-7d46da360e94b92fa8990cae2bb67ccd"
+      ]
+    },
+    {
+      "key": "lotte-kancho",
+      "canonical_product_id": "prod-27b3c1f130e9885a084ef0e400ebfc6f",
+      "member_product_ids": [
+        "prod-27b3c1f130e9885a084ef0e400ebfc6f",
+        "prod-511b0691222c6e22b1792d55bc4bdc1b"
+      ],
+      "canonical_name": "롯데 칸쵸",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-27b3c1f130e9885a084ef0e400ebfc6f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115204409",
+            "source_titles": [
+              "롯데 칸쵸 196G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115204409&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-511b0691222c6e22b1792d55bc4bdc1b": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115208944",
+            "source_titles": [
+              "롯데 칸쵸 54G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115208944&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e3303c59bd40c7412ffd5b4c42b9d23758ead3148bb643815c09953211e2ac09",
+      "derived_alias_member_ids": [
+        "prod-27b3c1f130e9885a084ef0e400ebfc6f",
+        "prod-511b0691222c6e22b1792d55bc4bdc1b"
+      ]
+    },
+    {
+      "key": "haitai-homerun-choco",
+      "canonical_product_id": "prod-406a64401fcbe14f0aba0a327f848e12",
+      "member_product_ids": [
+        "prod-406a64401fcbe14f0aba0a327f848e12",
+        "prod-4cb9e0ddf027218380084b82e1558606",
+        "prod-909faffe82504e1ceb9701251ae5e5e0"
+      ],
+      "canonical_name": "해태 홈런볼 초코",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-406a64401fcbe14f0aba0a327f848e12": [
+          {
+            "source_name": "costco",
+            "source_record_key": "671210",
+            "source_titles": [
+              "해태 홈런볼 초코 768g / 128g x 6"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Snack/CookieCracker/Haitai-Homerun-Ball-768g-128g-x-6/p/671210"
+            ]
+          }
+        ],
+        "prod-4cb9e0ddf027218380084b82e1558606": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104228667",
+            "source_titles": [
+              "해태 홈런볼 초코 41G*4입"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104228667&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-909faffe82504e1ceb9701251ae5e5e0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104306573",
+            "source_titles": [
+              "해태 홈런볼 초코 128G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104306573&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "300b21186ff5ba1c04ff01c92963103f438a3b2320696fc1e000976ab8403ada",
+      "derived_alias_member_ids": [
+        "prod-406a64401fcbe14f0aba0a327f848e12",
+        "prod-4cb9e0ddf027218380084b82e1558606",
+        "prod-909faffe82504e1ceb9701251ae5e5e0"
+      ]
+    },
+    {
+      "key": "lotte-pepero-almond",
+      "canonical_product_id": "prod-5f599a87d188bc2f3e3973230bda45a8",
+      "member_product_ids": [
+        "prod-5f599a87d188bc2f3e3973230bda45a8",
+        "prod-cc32183bca96e402d6b4f190eb95f352"
+      ],
+      "canonical_name": "롯데 빼빼로 아몬드",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5f599a87d188bc2f3e3973230bda45a8": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128515613",
+            "source_titles": [
+              "롯데 빼빼로 아몬드 37G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128515613&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cc32183bca96e402d6b4f190eb95f352": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110956530",
+            "source_titles": [
+              "롯데 빼빼로 아몬드 132G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110956530&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c61a981f434e29bd6580a246e380df8dc745156dc503e0b540e99aac6ba0bf7b",
+      "derived_alias_member_ids": [
+        "prod-5f599a87d188bc2f3e3973230bda45a8",
+        "prod-cc32183bca96e402d6b4f190eb95f352"
+      ]
+    },
+    {
+      "key": "lotte-pepero-whitecookie",
+      "canonical_product_id": "prod-6597666eb779e9b9c4a61efe1c632c05",
+      "member_product_ids": [
+        "prod-6597666eb779e9b9c4a61efe1c632c05",
+        "prod-ee8528952647f45f9bd903414b47414e"
+      ],
+      "canonical_name": "롯데 빼빼로 화이트쿠키",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6597666eb779e9b9c4a61efe1c632c05": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128515890",
+            "source_titles": [
+              "롯데 빼빼로 화이트쿠키 37G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128515890&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ee8528952647f45f9bd903414b47414e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126604822",
+            "source_titles": [
+              "롯데 빼빼로 화이트쿠키 132G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126604822&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e9260c883ab00d9f2fc2b95b4f604feefddfe9f87a36af559883e83f76bca098",
+      "derived_alias_member_ids": [
+        "prod-6597666eb779e9b9c4a61efe1c632c05",
+        "prod-ee8528952647f45f9bd903414b47414e"
+      ]
+    },
+    {
+      "key": "lotte-binch",
+      "canonical_product_id": "prod-c48adc0435e519dd5d0f38a84666efd0",
+      "member_product_ids": [
+        "prod-6729ea1a04058da70a68d8b111c35f54",
+        "prod-c48adc0435e519dd5d0f38a84666efd0"
+      ],
+      "canonical_name": "롯데 빈츠",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6729ea1a04058da70a68d8b111c35f54": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071069726",
+            "source_titles": [
+              "롯데 빈츠 102G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071069726&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c48adc0435e519dd5d0f38a84666efd0": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000009014185",
+            "source_titles": [
+              "롯데 빈츠 204g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000009014185&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "4045685b538006acd646e5e68a5fcf6fd3be2c4e9d122e385e3143d5742dda03",
+      "derived_alias_member_ids": [
+        "prod-6729ea1a04058da70a68d8b111c35f54",
+        "prod-c48adc0435e519dd5d0f38a84666efd0"
+      ]
+    },
+    {
+      "key": "lotte-pepero-choco",
+      "canonical_product_id": "prod-6a8f7d267adc1bf0a64225483050d2ba",
+      "member_product_ids": [
+        "prod-6a8f7d267adc1bf0a64225483050d2ba",
+        "prod-dcbd2a9d24eaf1cb82db34d26a2d310f"
+      ],
+      "canonical_name": "롯데 빼빼로 초코",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6a8f7d267adc1bf0a64225483050d2ba": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128515596",
+            "source_titles": [
+              "롯데 빼빼로 초코 54G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128515596&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-dcbd2a9d24eaf1cb82db34d26a2d310f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115011594",
+            "source_titles": [
+              "롯데 빼빼로 초코 184G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115011594&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5cd507c5cd036937e4372b3652eeb6998df6997532963d1a4349f7ddba0a2db1",
+      "derived_alias_member_ids": [
+        "prod-6a8f7d267adc1bf0a64225483050d2ba",
+        "prod-dcbd2a9d24eaf1cb82db34d26a2d310f"
+      ]
+    },
+    {
+      "key": "haitai-buttering-deepchoco",
+      "canonical_product_id": "prod-e90779bd137b16a906e131422d5c1920",
+      "member_product_ids": [
+        "prod-8b65adbae303d31cc87d8aae571631c9",
+        "prod-e90779bd137b16a906e131422d5c1920"
+      ],
+      "canonical_name": "해태 버터링 딥초코",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8b65adbae303d31cc87d8aae571631c9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071036420",
+            "source_titles": [
+              "해태 버터링 딥초코 103G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071036420&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e90779bd137b16a906e131422d5c1920": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000356714222",
+            "source_titles": [
+              "해태 버터링딥초코155g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000356714222&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1392a8c2cb580366ad9734179ec05e9ef00774e40cbcb3dc4537598763c95ce1",
+      "derived_alias_member_ids": [
+        "prod-8b65adbae303d31cc87d8aae571631c9",
+        "prod-e90779bd137b16a906e131422d5c1920"
+      ]
+    },
+    {
+      "key": "haitai-ace",
+      "canonical_product_id": "prod-e31d5e3b68d5b9a793251e42b399658a",
+      "member_product_ids": [
+        "prod-a369030798424f59097784d200947168",
+        "prod-e31d5e3b68d5b9a793251e42b399658a",
+        "prod-2746e7034aeecbcbe79e4bba63ec8568"
+      ],
+      "canonical_name": "해태 에이스",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.cracker",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a369030798424f59097784d200947168": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100113310",
+            "source_titles": [
+              "해태 에이스 218G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100113310&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e31d5e3b68d5b9a793251e42b399658a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "055410796",
+            "source_titles": [
+              "해태 에이스 364G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=055410796&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-2746e7034aeecbcbe79e4bba63ec8568": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801019319495",
+            "source_titles": [
+              "해태 에이스 (73G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801019319495/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e1bae92134d27738adda6dfb48961439c5b0e4c61915dad0bc2b17989d0f9e15",
+      "derived_alias_member_ids": [
+        "prod-a369030798424f59097784d200947168",
+        "prod-e31d5e3b68d5b9a793251e42b399658a",
+        "prod-2746e7034aeecbcbe79e4bba63ec8568"
+      ]
+    },
+    {
+      "key": "haitai-buttering-gold",
+      "canonical_product_id": "prod-beae0e9aa54b1a14e6452f7e9698daf0",
+      "member_product_ids": [
+        "prod-beae0e9aa54b1a14e6452f7e9698daf0",
+        "prod-fc35f3b89ab97f9ceae60ca02487a6ce"
+      ],
+      "canonical_name": "해태 버터링 골드",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.biscuits",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-beae0e9aa54b1a14e6452f7e9698daf0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070746226",
+            "source_titles": [
+              "해태 버터링 골드 194G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070746226&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fc35f3b89ab97f9ceae60ca02487a6ce": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801019317965",
+            "source_titles": [
+              "해태 버터링골드 (65G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801019317965/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "28596c3311268cc670c9619f0a5097c30fea721bf82df80a878e535711c4fc8d",
+      "derived_alias_member_ids": [
+        "prod-beae0e9aa54b1a14e6452f7e9698daf0",
+        "prod-fc35f3b89ab97f9ceae60ca02487a6ce"
+      ]
+    },
+    {
+      "key": "orion-gosomi",
+      "canonical_product_id": "prod-06f8166fa8ddf1b64bc3b8236983762b",
+      "member_product_ids": [
+        "prod-06f8166fa8ddf1b64bc3b8236983762b",
+        "prod-5940ce286e6747b2095ef2922ed6827a"
+      ],
+      "canonical_name": "오리온 고소미",
+      "brand": "오리온",
+      "leaf": "food.snacks.baked.cracker",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-06f8166fa8ddf1b64bc3b8236983762b": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000036235325",
+            "source_titles": [
+              "고소미 216g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000036235325&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5940ce286e6747b2095ef2922ed6827a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "138307326",
+            "source_titles": [
+              "오리온 고소미 70G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=138307326&storeType=HYPER"
+            ]
+          },
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801117282806",
+            "source_titles": [
+              "오리온 고소미 (70G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801117282806/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6fc93302b5dcfa18e0d76f6a13bee8d2d5770e2265b2a23aac2ef4ec765f91fd",
+      "derived_alias_member_ids": [
+        "prod-06f8166fa8ddf1b64bc3b8236983762b",
+        "prod-5940ce286e6747b2095ef2922ed6827a"
+      ]
+    },
+    {
+      "key": "haitai-ohyes",
+      "canonical_product_id": "prod-1e943ea228ef92f263a4a57aed8b5a0e",
+      "member_product_ids": [
+        "prod-1e943ea228ef92f263a4a57aed8b5a0e",
+        "prod-29f32bd6640c9cb426e34ffb027955fe",
+        "prod-e5fa991b4776c1829eba20ef499cc660"
+      ],
+      "canonical_name": "해태 오예스",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.pie",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1e943ea228ef92f263a4a57aed8b5a0e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128513644",
+            "source_titles": [
+              "해태 오예스 540G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128513644&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-29f32bd6640c9cb426e34ffb027955fe": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801019313196",
+            "source_titles": [
+              "해태 오예스 (60G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801019313196/details"
+            ]
+          }
+        ],
+        "prod-e5fa991b4776c1829eba20ef499cc660": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128513638",
+            "source_titles": [
+              "해태 오예스 360G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128513638&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9aafed88055bd0c98d30e08471da14bce68a557b9f86caf892ba5e8673f40f32",
+      "derived_alias_member_ids": [
+        "prod-1e943ea228ef92f263a4a57aed8b5a0e",
+        "prod-29f32bd6640c9cb426e34ffb027955fe",
+        "prod-e5fa991b4776c1829eba20ef499cc660"
+      ]
+    },
+    {
+      "key": "haitai-ivy",
+      "canonical_product_id": "prod-6ea02c4ec2e731d674dad45a231954b7",
+      "member_product_ids": [
+        "prod-3b84a0740fcdd11d900635041f9a4838",
+        "prod-6ea02c4ec2e731d674dad45a231954b7",
+        "prod-9d74dc3cd7d55f55f263bd79e088496c"
+      ],
+      "canonical_name": "해태 아이비",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.cracker",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3b84a0740fcdd11d900635041f9a4838": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100575910",
+            "source_titles": [
+              "해태 아이비 크래커 155G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100575910&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-6ea02c4ec2e731d674dad45a231954b7": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801019307652",
+            "source_titles": [
+              "해태 아이비 (58G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801019307652/details"
+            ]
+          }
+        ],
+        "prod-9d74dc3cd7d55f55f263bd79e088496c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000612769535",
+            "source_titles": [
+              "해태 아이비 309g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000612769535&siteNo=6001&salestrNo=2037"
+            ]
+          },
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070693276",
+            "source_titles": [
+              "해태 아이비 309G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070693276&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5b871e10467a6ad5465401dc3466da08deff69b74b31be0204c4222acbff28de",
+      "derived_alias_member_ids": [
+        "prod-3b84a0740fcdd11d900635041f9a4838",
+        "prod-6ea02c4ec2e731d674dad45a231954b7",
+        "prod-9d74dc3cd7d55f55f263bd79e088496c"
+      ]
+    },
+    {
+      "key": "crown-bigpie",
+      "canonical_product_id": "prod-3b895c1cfbf9e2e9423735e8c60875d9",
+      "member_product_ids": [
+        "prod-3b895c1cfbf9e2e9423735e8c60875d9",
+        "prod-dddec8e9718b9dadca37136c0a1e830c"
+      ],
+      "canonical_name": "크라운 빅파이",
+      "brand": "크라운",
+      "leaf": "food.snacks.baked.pie",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3b895c1cfbf9e2e9423735e8c60875d9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110476552",
+            "source_titles": [
+              "크라운 빅파이 324G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110476552&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-dddec8e9718b9dadca37136c0a1e830c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110476579",
+            "source_titles": [
+              "크라운 빅파이 216G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110476579&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "65e9cbb0577c1037c69dd24a32bedcfbe3a7f61ff555d9b3b44032f96700be29",
+      "derived_alias_member_ids": [
+        "prod-3b895c1cfbf9e2e9423735e8c60875d9",
+        "prod-dddec8e9718b9dadca37136c0a1e830c"
+      ]
+    },
+    {
+      "key": "oreo-waferstick-choco",
+      "canonical_product_id": "prod-474d047daadccef0672222e7faf6522d",
+      "member_product_ids": [
+        "prod-474d047daadccef0672222e7faf6522d",
+        "prod-eafdd589a5a5a225d345506c4dde552e"
+      ],
+      "canonical_name": "오레오 웨하스스틱 초코",
+      "brand": "오레오",
+      "leaf": "food.snacks.baked.wafer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-474d047daadccef0672222e7faf6522d": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000004618338",
+            "source_titles": [
+              "웨하스스틱 초코(15g*5봉지) 75g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000004618338&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-eafdd589a5a5a225d345506c4dde552e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037090192",
+            "source_titles": [
+              "오레오 웨하스스틱 초코 (150G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037090192/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "70d14c77ce227823cbeb17eb2208da8d53b9ac4f0d84646cfacdfb83c74ebbee",
+      "derived_alias_member_ids": [
+        "prod-474d047daadccef0672222e7faf6522d",
+        "prod-eafdd589a5a5a225d345506c4dde552e"
+      ]
+    },
+    {
+      "key": "lotte-vegetable-cracker",
+      "canonical_product_id": "prod-4fc7aa86c86ab26e401eea07ae0fc8fd",
+      "member_product_ids": [
+        "prod-4fc7aa86c86ab26e401eea07ae0fc8fd",
+        "prod-f7e44b8f71be43dcc8257c74733cb22d"
+      ],
+      "canonical_name": "롯데 야채크래커",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.cracker",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4fc7aa86c86ab26e401eea07ae0fc8fd": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801062521500",
+            "source_titles": [
+              "롯데 야채크래커 (55G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801062521500/details"
+            ]
+          }
+        ],
+        "prod-f7e44b8f71be43dcc8257c74733cb22d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126116956",
+            "source_titles": [
+              "롯데 야채크래커 249G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126116956&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "7b5e980d961c2afb6e7493421463cf4821620423b4793db0abde9255d5b983c4",
+      "derived_alias_member_ids": [
+        "prod-4fc7aa86c86ab26e401eea07ae0fc8fd",
+        "prod-f7e44b8f71be43dcc8257c74733cb22d"
+      ]
+    },
+    {
+      "key": "crown-chocoheim",
+      "canonical_product_id": "prod-7b5cc1c7fce4970ab6efd416ae040ab1",
+      "member_product_ids": [
+        "prod-5c9102db23a8614d68af02ff197f0f8e",
+        "prod-7b5cc1c7fce4970ab6efd416ae040ab1"
+      ],
+      "canonical_name": "크라운 초코하임",
+      "brand": "크라운",
+      "leaf": "food.snacks.baked.wafer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5c9102db23a8614d68af02ff197f0f8e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104770341",
+            "source_titles": [
+              "크라운 초코하임 142G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104770341&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7b5cc1c7fce4970ab6efd416ae040ab1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009992294",
+            "source_titles": [
+              "크라운 초코하임 284G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009992294&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0de867bbdbda01a7a06ba7da21086615f724488bdf5dd8c22843ac2150235c5b",
+      "derived_alias_member_ids": [
+        "prod-5c9102db23a8614d68af02ff197f0f8e",
+        "prod-7b5cc1c7fce4970ab6efd416ae040ab1"
+      ]
+    },
+    {
+      "key": "crown-whiteheim",
+      "canonical_product_id": "prod-c881c82da7a9b06ef4179cda06d8ec6b",
+      "member_product_ids": [
+        "prod-c881c82da7a9b06ef4179cda06d8ec6b",
+        "prod-d12ac1b531d50b773cc496923a79ede1"
+      ],
+      "canonical_name": "크라운 화이트하임",
+      "brand": "크라운",
+      "leaf": "food.snacks.baked.wafer",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-c881c82da7a9b06ef4179cda06d8ec6b": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "009961070",
+            "source_titles": [
+              "크라운 화이트하임 284G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=009961070&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-d12ac1b531d50b773cc496923a79ede1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104770472",
+            "source_titles": [
+              "크라운 화이트하임 142G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104770472&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f2d5cf9139521b1e694df8956e95f7cd6cdda9bee94e395e6a13dd56fa12e22f",
+      "derived_alias_member_ids": [
+        "prod-c881c82da7a9b06ef4179cda06d8ec6b",
+        "prod-d12ac1b531d50b773cc496923a79ede1"
+      ]
+    },
+    {
+      "key": "lotte-custard-unqualified",
+      "canonical_product_id": "prod-6aa54c89e53152a8e4f13ad53950cd05",
+      "member_product_ids": [
+        "prod-6aa54c89e53152a8e4f13ad53950cd05",
+        "prod-f0a13aa4cb12782ab2d402c5dfdb94dc"
+      ],
+      "canonical_name": "롯데 카스타드",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.pie",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6aa54c89e53152a8e4f13ad53950cd05": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124790315",
+            "source_titles": [
+              "롯데 카스타드 230G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124790315&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f0a13aa4cb12782ab2d402c5dfdb94dc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000030708",
+            "source_titles": [
+              "롯데 카스타드 138G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000030708&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0f25c8ca60a97b17a49bd3b46245d4178dba1351af3aabf867b9123729ac9d8a",
+      "derived_alias_member_ids": [
+        "prod-6aa54c89e53152a8e4f13ad53950cd05",
+        "prod-f0a13aa4cb12782ab2d402c5dfdb94dc"
+      ]
+    },
+    {
+      "key": "lotte-zec-unqualified",
+      "canonical_product_id": "prod-4f4da4d07681b8319da96e1a7836f5cc",
+      "member_product_ids": [
+        "prod-4f4da4d07681b8319da96e1a7836f5cc",
+        "prod-e7b8232264fb6196148936f09f25e44b"
+      ],
+      "canonical_name": "롯데 제크",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.cracker",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4f4da4d07681b8319da96e1a7836f5cc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126116904",
+            "source_titles": [
+              "롯데 제크 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126116904&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e7b8232264fb6196148936f09f25e44b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801062009428",
+            "source_titles": [
+              "롯데 제크 (65G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801062009428/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "1b4a5697115cf453ba0ad1a33491d7ee1ef6f4b957fe39137f21f4a9f025f200",
+      "derived_alias_member_ids": [
+        "prod-4f4da4d07681b8319da96e1a7836f5cc",
+        "prod-e7b8232264fb6196148936f09f25e44b"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:haribo-starmix",
+      "canonical_product_id": "prod-1b537c79c895d7ad6703322c45dca307",
+      "member_product_ids": [
+        "prod-1b537c79c895d7ad6703322c45dca307",
+        "prod-d3da4b72fc575884679f4997bde69eaf"
+      ],
+      "canonical_name": "하리보 스타믹스",
+      "brand": "하리보",
+      "leaf": "food.snacks.sweets.jelly",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1b537c79c895d7ad6703322c45dca307": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "148567866",
+            "source_titles": [
+              "하리보 스타믹스 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=148567866&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-d3da4b72fc575884679f4997bde69eaf": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "129246941",
+            "source_titles": [
+              "하리보 스타믹스 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=129246941&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b8e5b6650aa09efcad92db0d8b4865540761bae42e46cfab3e7e9c6a03a99045",
+      "derived_alias_member_ids": [
+        "prod-1b537c79c895d7ad6703322c45dca307",
+        "prod-d3da4b72fc575884679f4997bde69eaf"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:haribo-happy-cola",
+      "canonical_product_id": "prod-54e7bb0d074432d75320f01e65dadaa4",
+      "member_product_ids": [
+        "prod-54e7bb0d074432d75320f01e65dadaa4",
+        "prod-7be9a2c2f991717291a04fd243f14ab6",
+        "prod-7fb8c1bfef2a0daad45b1d0ef935f5c9"
+      ],
+      "canonical_name": "하리보 해피콜라",
+      "brand": "하리보",
+      "leaf": "food.snacks.sweets.jelly",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-54e7bb0d074432d75320f01e65dadaa4": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125597940",
+            "source_titles": [
+              "하리보 해피콜라 250G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125597940&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7be9a2c2f991717291a04fd243f14ab6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "121040091",
+            "source_titles": [
+              "하리보 해피콜라 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=121040091&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-7fb8c1bfef2a0daad45b1d0ef935f5c9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "121016512",
+            "source_titles": [
+              "하리보 해피콜라 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=121016512&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f309df6be518b418c814f8b4323d54b0576b4f0021888302ba129fb07393fc9e",
+      "derived_alias_member_ids": [
+        "prod-54e7bb0d074432d75320f01e65dadaa4",
+        "prod-7be9a2c2f991717291a04fd243f14ab6",
+        "prod-7fb8c1bfef2a0daad45b1d0ef935f5c9"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:lotte-abc-chocolate",
+      "canonical_product_id": "prod-9331240f885d9310f1835ec73c318748",
+      "member_product_ids": [
+        "prod-9331240f885d9310f1835ec73c318748",
+        "prod-96d87137bb57724e4d86ee3931d78105"
+      ],
+      "canonical_name": "롯데 ABC 초콜릿",
+      "brand": "롯데",
+      "leaf": "food.snacks.sweets.chocolate",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-9331240f885d9310f1835ec73c318748": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000030325",
+            "source_titles": [
+              "롯데 ABC 초코렛 187G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000030325&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-96d87137bb57724e4d86ee3931d78105": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128521605",
+            "source_titles": [
+              "롯데 ABC초코렛 565G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128521605&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f947498ca98fbd4f50268d6ebe2f39517e47bc3d66c94cf977f86622c3cb86e7",
+      "derived_alias_member_ids": [
+        "prod-9331240f885d9310f1835ec73c318748",
+        "prod-96d87137bb57724e4d86ee3931d78105"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:mms-funsize-peanut",
+      "canonical_product_id": "prod-7e38288eeb9b07a29eff41788621b0f3",
+      "member_product_ids": [
+        "prod-7e38288eeb9b07a29eff41788621b0f3",
+        "prod-a0ba6938e4743c7c52f9adf54b9b1abc"
+      ],
+      "canonical_name": "엠앤엠즈 펀사이즈 피넛",
+      "brand": "엠앤엠즈",
+      "leaf": "food.snacks.sweets.chocolate",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7e38288eeb9b07a29eff41788621b0f3": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126125899",
+            "source_titles": [
+              "엠앤엠즈 펀사이즈 피넛 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126125899&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a0ba6938e4743c7c52f9adf54b9b1abc": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124075586",
+            "source_titles": [
+              "엠앤엠즈 펀사이즈 피넛 230G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124075586&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "02a1874bf35d5f75bb78fc209af96283fa020dbf7c16640e36989f19d144db00",
+      "derived_alias_member_ids": [
+        "prod-7e38288eeb9b07a29eff41788621b0f3",
+        "prod-a0ba6938e4743c7c52f9adf54b9b1abc"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:mms-funsize-milk",
+      "canonical_product_id": "prod-97d73cde3f4138d0450dc99f15426b1c",
+      "member_product_ids": [
+        "prod-97d73cde3f4138d0450dc99f15426b1c",
+        "prod-ebdb752d5f33e2fe29b45efc31c700b5"
+      ],
+      "canonical_name": "엠앤엠즈 펀사이즈 밀크",
+      "brand": "엠앤엠즈",
+      "leaf": "food.snacks.sweets.chocolate",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-97d73cde3f4138d0450dc99f15426b1c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124075632",
+            "source_titles": [
+              "엠앤엠즈 펀사이즈 밀크 230G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124075632&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ebdb752d5f33e2fe29b45efc31c700b5": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126125876",
+            "source_titles": [
+              "엠앤엠즈 펀사이즈 밀크 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126125876&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6af52f406cd7e55bd534f1f1115a410f50553dcbf09625e8629086fd6c8fcc63",
+      "derived_alias_member_ids": [
+        "prod-97d73cde3f4138d0450dc99f15426b1c",
+        "prod-ebdb752d5f33e2fe29b45efc31c700b5"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:twix-minis",
+      "canonical_product_id": "prod-a713207687506d1efffabd023991015e",
+      "member_product_ids": [
+        "prod-a713207687506d1efffabd023991015e",
+        "prod-cb7a843e54a17f8a3203e09b2af2c44f"
+      ],
+      "canonical_name": "트윅스 미니스",
+      "brand": "트윅스",
+      "leaf": "food.snacks.sweets.chocolate",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-a713207687506d1efffabd023991015e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127375969",
+            "source_titles": [
+              "트윅스 미니스 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127375969&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-cb7a843e54a17f8a3203e09b2af2c44f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123576824",
+            "source_titles": [
+              "트윅스 미니스 260G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123576824&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "b00d9395b49dfb72c615c0c86a455810ef16c2675cf43668f5de12eb468c7517",
+      "derived_alias_member_ids": [
+        "prod-a713207687506d1efffabd023991015e",
+        "prod-cb7a843e54a17f8a3203e09b2af2c44f"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:snapik-white-marshmallow",
+      "canonical_product_id": "prod-fbaf0ede3befea54418e5efc566dec74",
+      "member_product_ids": [
+        "prod-e56dbf92662e79b1e5493959a0b611ca",
+        "prod-fbaf0ede3befea54418e5efc566dec74"
+      ],
+      "canonical_name": "Snapik 화이트 마시멜로우",
+      "brand": "Snapik",
+      "leaf": "food.snacks.sweets.marshmallow",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-e56dbf92662e79b1e5493959a0b611ca": [
+          {
+            "source_name": "costco",
+            "source_record_key": "692493",
+            "source_titles": [
+              "Snapik 화이트 마시멜로우 1kg / 최소구매2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Snack/CandyGum/Snapik-White-Marshmallow-1kg-Min-Qty-2/p/692493"
+            ]
+          }
+        ],
+        "prod-fbaf0ede3befea54418e5efc566dec74": [
+          {
+            "source_name": "costco",
+            "source_record_key": "695738",
+            "source_titles": [
+              "Snapik 화이트 마시멜로우 1kg x 176"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Food/Snapik-White-Marshmallow-1kg-x-176/p/695738"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "2f62808fa6d9e4a9e7a14dad7b020d0288ea35f952ceeaacaac5a0a913f0eb98",
+      "derived_alias_member_ids": [
+        "prod-e56dbf92662e79b1e5493959a0b611ca",
+        "prod-fbaf0ede3befea54418e5efc566dec74"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:lotte-xylitol-original",
+      "canonical_product_id": "prod-3d96891a1385792acf83bc34de238663",
+      "member_product_ids": [
+        "prod-3d96891a1385792acf83bc34de238663",
+        "prod-f1b7775c49003a0d927fbd6de7656420"
+      ],
+      "canonical_name": "롯데 자일리톨 오리지날",
+      "brand": "롯데",
+      "leaf": "food.snacks.sweets.gum",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-3d96891a1385792acf83bc34de238663": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "062788862",
+            "source_titles": [
+              "롯데 자일리톨 오리지날 트윈리필 115G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=062788862&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f1b7775c49003a0d927fbd6de7656420": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "005664683",
+            "source_titles": [
+              "롯데 자일리톨 오리지날 용기 87G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=005664683&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "df67e78269c58932e2cee11abd901c37fa4f8f506d7d84c3855f03467be8fd81",
+      "derived_alias_member_ids": [
+        "prod-3d96891a1385792acf83bc34de238663",
+        "prod-f1b7775c49003a0d927fbd6de7656420"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:dadamjeong-rice-jeonbyeong",
+      "canonical_product_id": "prod-08cec65bf2708d35fd511d36ff58c4a0",
+      "member_product_ids": [
+        "prod-08cec65bf2708d35fd511d36ff58c4a0",
+        "prod-5fae90a257b571bb81cdf9d670342c39",
+        "prod-a58580319329e18336f0af4ce023605f"
+      ],
+      "canonical_name": "다담정 우리쌀로 만든 전병",
+      "brand": "다담정",
+      "leaf": "food.snacks.traditional.hangwa",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-08cec65bf2708d35fd511d36ff58c4a0": [
+          {
+            "source_name": "costco",
+            "source_record_key": "669012",
+            "source_titles": [
+              "다담정 우리쌀로 만든 전병 648g x 5세트"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dadamjung-Korean-Rice-Crackers-648g-x-5-set/p/669012"
+            ]
+          }
+        ],
+        "prod-5fae90a257b571bb81cdf9d670342c39": [
+          {
+            "source_name": "costco",
+            "source_record_key": "669013",
+            "source_titles": [
+              "다담정 우리쌀로 만든 전병 648g x 10세트"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Gift-Set-Special-Offers/Dadamjung-Korean-Rice-Crackers-648g-x-10-set/p/669013"
+            ]
+          }
+        ],
+        "prod-a58580319329e18336f0af4ce023605f": [
+          {
+            "source_name": "costco",
+            "source_record_key": "669011",
+            "source_titles": [
+              "다담정우리쌀로만든전병648g / 24g x 27봉"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Dadamjung-Korean-Rice-Crackers-648g-24g-x-27pk/p/669011"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "46c1a3340ff3cba01e289cc4ad4dc1645f55450ed94fbc3a6e222509c5946ee4",
+      "derived_alias_member_ids": [
+        "prod-08cec65bf2708d35fd511d36ff58c4a0",
+        "prod-5fae90a257b571bb81cdf9d670342c39",
+        "prod-a58580319329e18336f0af4ce023605f"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-five-grain-cocoa-balls",
+      "canonical_product_id": "prod-f871c58182af2ec5f74f9b002c3fdbf0",
+      "member_product_ids": [
+        "prod-f871c58182af2ec5f74f9b002c3fdbf0",
+        "prod-84beeae3b10888ecbde50b341eef16cf",
+        "prod-949a7ce969bd8f6f1e246d00b7cbc3c2"
+      ],
+      "canonical_name": "포스트 오곡 코코볼",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.balls",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-f871c58182af2ec5f74f9b002c3fdbf0": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037096569",
+            "source_titles": [
+              "포스트 오곡코코볼 컵 시리얼 (30G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037096569/details"
+            ]
+          }
+        ],
+        "prod-84beeae3b10888ecbde50b341eef16cf": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "110603929",
+            "source_titles": [
+              "동서 오곡 코코볼 570G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=110603929&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-949a7ce969bd8f6f1e246d00b7cbc3c2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070109647",
+            "source_titles": [
+              "동서 오곡 코코볼 컵 30G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070109647&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "91fc84468d43963cf5280b442f5555c2b9623e54cd80b9ef8feb092bdb8c11b8",
+      "derived_alias_member_ids": [
+        "prod-f871c58182af2ec5f74f9b002c3fdbf0",
+        "prod-84beeae3b10888ecbde50b341eef16cf",
+        "prod-949a7ce969bd8f6f1e246d00b7cbc3c2"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-oreo-os",
+      "canonical_product_id": "prod-7ba950a1c0fdf1e3523227c7917d4b76",
+      "member_product_ids": [
+        "prod-7ba950a1c0fdf1e3523227c7917d4b76",
+        "prod-01bd1c5401eade0ab30e1c544dd73f37",
+        "prod-72c2f13b18f79bada5760ea9b920bbe3",
+        "prod-e9a3e4a324d784b36d8440a112a2aa3b",
+        "prod-f969fc8aa6f927330ab68b75c72bfd89"
+      ],
+      "canonical_name": "포스트 오레오오즈",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.rings",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7ba950a1c0fdf1e3523227c7917d4b76": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037065626",
+            "source_titles": [
+              "포스트 오레오 오즈 (500G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037065626/details"
+            ]
+          }
+        ],
+        "prod-01bd1c5401eade0ab30e1c544dd73f37": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126557854",
+            "source_titles": [
+              "동서 오레오오즈 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126557854&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-72c2f13b18f79bada5760ea9b920bbe3": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000564768306",
+            "source_titles": [
+              "오레오오즈 컵 30g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000564768306&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-e9a3e4a324d784b36d8440a112a2aa3b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037096576",
+            "source_titles": [
+              "포스트 오레오오즈 컵 시리얼 (30G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037096576/details"
+            ]
+          }
+        ],
+        "prod-f969fc8aa6f927330ab68b75c72bfd89": [
+          {
+            "source_name": "costco",
+            "source_record_key": "605318",
+            "source_titles": [
+              "Post 오레오오즈 500g x 3"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Post-OREO-Os-Cereal-500g-x-3/p/605318"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "e0f820313e03eec7b1f5752bc25239251efe8bb5aa1ca055c816886f67467bbe",
+      "derived_alias_member_ids": [
+        "prod-7ba950a1c0fdf1e3523227c7917d4b76",
+        "prod-01bd1c5401eade0ab30e1c544dd73f37",
+        "prod-72c2f13b18f79bada5760ea9b920bbe3",
+        "prod-e9a3e4a324d784b36d8440a112a2aa3b",
+        "prod-f969fc8aa6f927330ab68b75c72bfd89"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-granola-cranberry-almond",
+      "canonical_product_id": "prod-228f108f82f079bcae5df112411bb524",
+      "member_product_ids": [
+        "prod-228f108f82f079bcae5df112411bb524",
+        "prod-937d892d75e0ac94805f74b0cc8b08d1",
+        "prod-d30a938988c19f3f3b9b3d3277020f4b"
+      ],
+      "canonical_name": "포스트 그래놀라 크랜베리 아몬드",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.granola",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-228f108f82f079bcae5df112411bb524": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125252231",
+            "source_titles": [
+              "동서 그래놀라 크랜베리 아몬드 570G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125252231&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-937d892d75e0ac94805f74b0cc8b08d1": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037097801",
+            "source_titles": [
+              "포스트 그래놀라 크랜베리아몬드 컵시리얼 (37G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037097801/details"
+            ]
+          }
+        ],
+        "prod-d30a938988c19f3f3b9b3d3277020f4b": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037060553",
+            "source_titles": [
+              "포스트그래놀라크랜베리아몬드 (570G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037060553/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c59ffb8e9fe8b78a731e8c7a88204a61c1687ac4e03dd512e45b8bbcee73dd5f",
+      "derived_alias_member_ids": [
+        "prod-228f108f82f079bcae5df112411bb524",
+        "prod-937d892d75e0ac94805f74b0cc8b08d1",
+        "prod-d30a938988c19f3f3b9b3d3277020f4b"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-granola-blueberry",
+      "canonical_product_id": "prod-6f4e41cb2ab7c65681eaf9fbf459fff1",
+      "member_product_ids": [
+        "prod-6f4e41cb2ab7c65681eaf9fbf459fff1",
+        "prod-defba405a9fdf02b57bfa46cd15ec315"
+      ],
+      "canonical_name": "포스트 그래놀라 블루베리",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.granola",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-6f4e41cb2ab7c65681eaf9fbf459fff1": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037050158",
+            "source_titles": [
+              "포스트 그래놀라 (블루베리) (500G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037050158/details"
+            ]
+          }
+        ],
+        "prod-defba405a9fdf02b57bfa46cd15ec315": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "120942799",
+            "source_titles": [
+              "동서 그래놀라 블루베리 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=120942799&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0ea6a2feaa869fc307fd0ef9a42b4165f0276da41e36fd19665459619a314df5",
+      "derived_alias_member_ids": [
+        "prod-6f4e41cb2ab7c65681eaf9fbf459fff1",
+        "prod-defba405a9fdf02b57bfa46cd15ec315"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-corn-flight",
+      "canonical_product_id": "prod-7b22efc3fd08b3ffaeeca200e7e53633",
+      "member_product_ids": [
+        "prod-7b22efc3fd08b3ffaeeca200e7e53633",
+        "prod-a6a68d95e4790540b6abe88bf2bf3413",
+        "prod-b4d4f6a19ae4d35ee1b9ced10b02335d"
+      ],
+      "canonical_name": "포스트 콘푸라이트",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.flakes",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7b22efc3fd08b3ffaeeca200e7e53633": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037075649",
+            "source_titles": [
+              "포스트 콘푸라이트 (600G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037075649/details"
+            ]
+          }
+        ],
+        "prod-a6a68d95e4790540b6abe88bf2bf3413": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "138743003",
+            "source_titles": [
+              "동서 콘푸라이트 600G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=138743003&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-b4d4f6a19ae4d35ee1b9ced10b02335d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037096552",
+            "source_titles": [
+              "포스트 콘푸라이트 컵 시리얼 (30G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037096552/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f687517ec044a14b504d24b8d43a2d034cc95cfaa88b1872285b716a8e2a3f8b",
+      "derived_alias_member_ids": [
+        "prod-7b22efc3fd08b3ffaeeca200e7e53633",
+        "prod-a6a68d95e4790540b6abe88bf2bf3413",
+        "prod-b4d4f6a19ae4d35ee1b9ced10b02335d"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-almond-flakes",
+      "canonical_product_id": "prod-7d27b9bfe07fd41c23830bceb3aab893",
+      "member_product_ids": [
+        "prod-7d27b9bfe07fd41c23830bceb3aab893",
+        "prod-a4f78acdab676e56a5af64621f510f0d"
+      ],
+      "canonical_name": "포스트 아몬드후레이크",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.flakes",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7d27b9bfe07fd41c23830bceb3aab893": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "141783183",
+            "source_titles": [
+              "동서 아몬드 후레이크 620G (스탠드업백)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=141783183&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a4f78acdab676e56a5af64621f510f0d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037097795",
+            "source_titles": [
+              "포스트 아몬드후레이크 컵시리얼 (35G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037097795/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "00f998269ee95069b39beef9e2d56c5b736c982729a747fdc4b73db1ec2a4e90",
+      "derived_alias_member_ids": [
+        "prod-7d27b9bfe07fd41c23830bceb3aab893",
+        "prod-a4f78acdab676e56a5af64621f510f0d"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:post-crichio",
+      "canonical_product_id": "prod-1c4746a523b12f692a1363d23c278ec2",
+      "member_product_ids": [
+        "prod-1c4746a523b12f692a1363d23c278ec2",
+        "prod-12525eec7da2c0e31cd533940f0e5533"
+      ],
+      "canonical_name": "포스트 크리치오",
+      "brand": "포스트",
+      "leaf": "food.snacks.cereal.chocolate",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1c4746a523b12f692a1363d23c278ec2": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070602316",
+            "source_titles": [
+              "동서 크리치오 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070602316&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-12525eec7da2c0e31cd533940f0e5533": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801037097818",
+            "source_titles": [
+              "포스트 크리치오 컵시리얼 (30G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801037097818/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "7d1983117e6a0284859c9ababf8beff7d3278dc90868f03080dab513d9c1fa3f",
+      "derived_alias_member_ids": [
+        "prod-1c4746a523b12f692a1363d23c278ec2",
+        "prod-12525eec7da2c0e31cd533940f0e5533"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:kellogg-savory-brown-rice-granola",
+      "canonical_product_id": "prod-afe18403711b4cdf8b27be1539dad4b6",
+      "member_product_ids": [
+        "prod-afe18403711b4cdf8b27be1539dad4b6",
+        "prod-e6ad32fedf4695bfe81a78e101103c99"
+      ],
+      "canonical_name": "켈로그 고소한 현미 그래놀라",
+      "brand": "켈로그",
+      "leaf": "food.snacks.cereal.granola",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-afe18403711b4cdf8b27be1539dad4b6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128167005",
+            "source_titles": [
+              "농심 켈로그 고소한 현미 그래놀라  500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128167005&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e6ad32fedf4695bfe81a78e101103c99": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "068942647",
+            "source_titles": [
+              "켈로그 고소한 현미 그래놀라 1200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=068942647&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "dc1689981b1baf9e5060a6b3594e2485584a02908742c822700f21143532c49d",
+      "derived_alias_member_ids": [
+        "prod-afe18403711b4cdf8b27be1539dad4b6",
+        "prod-e6ad32fedf4695bfe81a78e101103c99"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:kellogg-corn-frost",
+      "canonical_product_id": "prod-8b863d2161ca5fddbf43b9ec6f011dee",
+      "member_product_ids": [
+        "prod-8b863d2161ca5fddbf43b9ec6f011dee",
+        "prod-fdea4431e1f80ab6c14b07ca5ac05542"
+      ],
+      "canonical_name": "켈로그 콘푸로스트",
+      "brand": "켈로그",
+      "leaf": "food.snacks.cereal.flakes",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-8b863d2161ca5fddbf43b9ec6f011dee": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126832632",
+            "source_titles": [
+              "농심 켈로그 콘푸로스트 컵 30G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126832632&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fdea4431e1f80ab6c14b07ca5ac05542": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000031550",
+            "source_titles": [
+              "농심 켈로그 콘푸로스트 600G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000031550&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6fa6c8b430ddf0d19ad0c36f2bf65e8df28fe617e2bce77a8a71add966630bb3",
+      "derived_alias_member_ids": [
+        "prod-8b863d2161ca5fddbf43b9ec6f011dee",
+        "prod-fdea4431e1f80ab6c14b07ca5ac05542"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:orion-peanut-gangjeong",
+      "canonical_product_id": "prod-d2b4636cbbcf9e3ceb636793979521b1",
+      "member_product_ids": [
+        "prod-d2b4636cbbcf9e3ceb636793979521b1",
+        "prod-e88dc4a52dfcc10d2b6bd4f7052fd7eb"
+      ],
+      "canonical_name": "오리온 땅콩강정",
+      "brand": "오리온",
+      "leaf": "food.snacks.traditional.hangwa",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-d2b4636cbbcf9e3ceb636793979521b1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "069708665",
+            "source_titles": [
+              "오리온 땅콩강정 3번들 80G*3"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069708665&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e88dc4a52dfcc10d2b6bd4f7052fd7eb": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070996822",
+            "source_titles": [
+              "오리온 땅콩강정 65G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070996822&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0a8a55f7f1d058aac4bf124b18fa52dfe277b3fbd19733da51092eb52a718487",
+      "derived_alias_member_ids": [
+        "prod-d2b4636cbbcf9e3ceb636793979521b1",
+        "prod-e88dc4a52dfcc10d2b6bd4f7052fd7eb"
+      ]
     }
   ],
   "leaf_reviews": [
@@ -4614,6 +7453,156 @@
       ],
       "reason": "Broader grain fallback corrected by exact reviewed brand/line/spicy56g identity with HP full wheat-snack source path; source-specific IDs and recipe/variant/price/history preserved.",
       "evidence_sha256": "c8588738db441c214946b1914c15bbd7acd4205646fcc64093c1e41452819d51"
+    },
+    {
+      "product_id": "prod-a369030798424f59097784d200947168",
+      "old_leaf": "food.snacks.baked.biscuits",
+      "new_leaf": "food.snacks.baked.cracker",
+      "source_name": "homeplus",
+      "source_record_key": "100113310",
+      "source_titles": [
+        "해태 에이스 218G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=100113310&storeType=HYPER"
+      ],
+      "reason": "Exact named-line/form identity with retailer specific cracker shelf; retain butter-biscuit source text and allsource quantities/quotes.",
+      "evidence_sha256": "fa1641f5c44e3ae8d985767bc0f5136e3e1575463a8c64c73a54dd2deb364b80"
+    },
+    {
+      "product_id": "prod-e31d5e3b68d5b9a793251e42b399658a",
+      "old_leaf": "food.snacks.baked.biscuits",
+      "new_leaf": "food.snacks.baked.cracker",
+      "source_name": "homeplus",
+      "source_record_key": "055410796",
+      "source_titles": [
+        "해태 에이스 364G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=055410796&storeType=HYPER"
+      ],
+      "reason": "Exact named-line/form identity with retailer specific cracker shelf; retain butter-biscuit source text and allsource quantities/quotes.",
+      "evidence_sha256": "e07e8badc5c787694f2d30fe7e848d5050571482acaf34f4314ca5442ab690fb"
+    },
+    {
+      "product_id": "prod-4f4da4d07681b8319da96e1a7836f5cc",
+      "old_leaf": "food.snacks.baked.biscuits",
+      "new_leaf": "food.snacks.baked.cracker",
+      "source_name": "homeplus",
+      "source_record_key": "126116904",
+      "source_titles": [
+        "롯데 제크 300G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=126116904&storeType=HYPER"
+      ],
+      "reason": "Exact named-line/form identity with retailer specific cracker shelf; retain butter-biscuit source text and allsource quantities/quotes.",
+      "evidence_sha256": "dff1686ef2915f06fbd5a638c6e8c1e18896961ad3147605abf82772d1a73b27"
+    },
+    {
+      "product_id": "prod-84beeae3b10888ecbde50b341eef16cf",
+      "old_leaf": "food.snacks.cereal.chocolate",
+      "new_leaf": "food.snacks.cereal.balls",
+      "source_name": "homeplus",
+      "source_record_key": "110603929",
+      "source_titles": [
+        "동서 오곡 코코볼 570G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=110603929&storeType=HYPER"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "b12d91acc76fa44c5e27c384705ad9e004af8f733aab44167e24ec060befc736"
+    },
+    {
+      "product_id": "prod-949a7ce969bd8f6f1e246d00b7cbc3c2",
+      "old_leaf": "food.snacks.cereal.chocolate",
+      "new_leaf": "food.snacks.cereal.balls",
+      "source_name": "homeplus",
+      "source_record_key": "070109647",
+      "source_titles": [
+        "동서 오곡 코코볼 컵 30G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070109647&storeType=HYPER"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "6b7118ae89097b7160875ddded69e547147fc84fd257f5ad2c7a1eb66e05d457"
+    },
+    {
+      "product_id": "prod-01bd1c5401eade0ab30e1c544dd73f37",
+      "old_leaf": "food.snacks.cereal.chocolate",
+      "new_leaf": "food.snacks.cereal.rings",
+      "source_name": "homeplus",
+      "source_record_key": "126557854",
+      "source_titles": [
+        "동서 오레오오즈 500G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=126557854&storeType=HYPER"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "3852d573b70f59d2a52a73d75c250e684af4d48b5ac5507531c5bc5942a6c45f"
+    },
+    {
+      "product_id": "prod-72c2f13b18f79bada5760ea9b920bbe3",
+      "old_leaf": "food.snacks.cereal.chocolate",
+      "new_leaf": "food.snacks.cereal.rings",
+      "source_name": "emart",
+      "source_record_key": "1000564768306",
+      "source_titles": [
+        "오레오오즈 컵 30g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000564768306&siteNo=6001&salestrNo=2037"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "64e85ad36fb82b00a6cf1bf837273de38f0fa111d11e2a3d34d666b99e751b3f"
+    },
+    {
+      "product_id": "prod-e9a3e4a324d784b36d8440a112a2aa3b",
+      "old_leaf": "food.snacks.cereal.flakes",
+      "new_leaf": "food.snacks.cereal.rings",
+      "source_name": "lottemart",
+      "source_record_key": "8801037096576",
+      "source_titles": [
+        "포스트 오레오오즈 컵 시리얼 (30G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801037096576/details"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "c966f80ca2e01d6b6b6f34ba277a21dbd7a5990692ee69e0509c4c18b0d4d0de"
+    },
+    {
+      "product_id": "prod-f969fc8aa6f927330ab68b75c72bfd89",
+      "old_leaf": "food.snacks.cereal.breakfast",
+      "new_leaf": "food.snacks.cereal.rings",
+      "source_name": "costco",
+      "source_record_key": "605318",
+      "source_titles": [
+        "Post 오레오오즈 500g x 3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Cereal/Post-OREO-Os-Cereal-500g-x-3/p/605318"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "6cb3e1fb167b904ec6f21cc7bb21803dc80a547046a5da7e7b3f1a34c4520e01"
+    },
+    {
+      "product_id": "prod-12525eec7da2c0e31cd533940f0e5533",
+      "old_leaf": "food.snacks.cereal.flakes",
+      "new_leaf": "food.snacks.cereal.chocolate",
+      "source_name": "lottemart",
+      "source_record_key": "8801037097818",
+      "source_titles": [
+        "포스트 크리치오 컵시리얼 (30G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801037097818/details"
+      ],
+      "reason": "Exact named-line identity; native package shape proof231 rings/balls retained where applicable; chocolate cereal source and cup-flake shelf are distinct description axes. No recipe, amount, price or temporal evidence transferred.",
+      "evidence_sha256": "b951963e3b8ead1d47377f4603f3863128f9a9decac238b4ac6d99848d007c1b"
     }
   ]
 }

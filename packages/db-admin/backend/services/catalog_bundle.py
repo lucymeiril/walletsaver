@@ -1653,13 +1653,17 @@ def _review_category_context(review: dict, old: dict, row: dict | None,
             raise ValueError("category refinement cannot change original review/source/spec binding")
         if index >= len(stored):
             from services.initial_taxonomy import classify_record
+            from core.catalog_identity import reviewed_product_fields
             classifications = [classify_record({**observation,
                                "source_name": current["source_name"],
                                "source_record_key": current["source_record_key"],
                                "source_title": current["source_title"]})
                                for observation in old["raw_evidence"]["observations"]]
             if any(result.get("review_status") != "classified"
-                   or result.get("unified_category_id") != after["unified_category_id"]
+                   or reviewed_product_fields({
+                       "public_product_id": current["public_product_id"],
+                       "unified_category_id": result.get("unified_category_id"),
+                   }, [current]).get("unified_category_id") != after["unified_category_id"]
                    for result in classifications):
                 raise ValueError("new category form requires supported original source classification")
         cursor = after

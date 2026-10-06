@@ -846,14 +846,15 @@ def test_offer_interpretation_review_rejects_changed_historical_binding(change):
     assert session.get(NormalizedOfferEvent, original["offers"][0]["public_offer_event_id"]).price == 19900
 
 
-def _category_refinement_fixture():
+def _category_refinement_fixture(*, before_leaf="food.snacks.sweets.candy",
+                                 after_leaf="food.snacks.sweets.marshmallow"):
     from services.initial_taxonomy import taxonomy_categories
     original = _offer_review_fixture()
     title = "마시멜로 120g × 24 / 최소구매 2"
     listing = original["source_listings"][0]
     listing.update(source_title=title, source_record_key="555", source_url="https://www.costco.co.kr/Foods/Snack/CookieCracker/Marshmallow/p/555")
-    original["categories"] = taxonomy_categories({"food.snacks.sweets.candy", "food.snacks.sweets.marshmallow"})
-    original["products"][0].update(unified_category_id="food.snacks.sweets.candy", canonical_name=title)
+    original["categories"] = taxonomy_categories({before_leaf, after_leaf})
+    original["products"][0].update(unified_category_id=before_leaf, canonical_name=title)
     original["variants"][0].update(variant_name=title, package_unit="g", standard_unit="g", display_unit="120g × 24")
     for key in ("keywords", "match_rules", "mart_category_mappings"):
         original[key] = []
@@ -863,11 +864,11 @@ def _category_refinement_fixture():
     original["offers"][0]["raw_evidence"]["promotion_conditions"] = {"source_title_purchase_condition": title}
     reviewed = _offer_review_payload(original)
     refined = deepcopy(reviewed)
-    refined["products"][0]["unified_category_id"] = "food.snacks.sweets.marshmallow"
+    refined["products"][0]["unified_category_id"] = after_leaf
     review = reviewed["offers"][0]["audit_provenance"]["offer_interpretation_review"]
     before = {key: value for key, value in review["binding"].items()
               if key not in {"public_offer_event_id", "quote", "observations"}}
-    after = {**before, "unified_category_id": "food.snacks.sweets.marshmallow"}
+    after = {**before, "unified_category_id": after_leaf}
     refined["offers"][0]["audit_provenance"]["offer_category_context_history"] = [{
         "version": 1, "status": "approved", "reason": "supported_category_form_refinement",
         "approved_by": "synthetic-moderator", "approved_at": "2026-10-04T01:00:00Z",
@@ -875,6 +876,40 @@ def _category_refinement_fixture():
         "before_context_sha256": _offer_review_digest(before), "after_context_sha256": _offer_review_digest(after),
         "observations": deepcopy(review["binding"]["observations"])}]
     return original, reviewed, refined
+
+
+@pytest.mark.parametrize("mismatch", [None, "product", "source", "native", "title", "url", "old_leaf"])
+def test_reviewed_category_binding_requires_exact_source_context(monkeypatch, mismatch):
+    from core import catalog_identity
+    original, reviewed, refined = _category_refinement_fixture(
+        before_leaf="food.snacks.sweets.marshmallow", after_leaf="food.snacks.sweets.candy")
+    listing = original["source_listings"][0]
+    review = {"product_id": original["products"][0]["public_product_id"],
+              "old_leaf": "food.snacks.sweets.marshmallow", "new_leaf": "food.snacks.sweets.candy",
+              "source_name": listing["source_name"], "source_record_key": listing["source_record_key"],
+              "source_titles": [listing["source_title"]], "source_urls": [listing["source_url"]]}
+    if mismatch:
+        key = {"product": "product_id", "source": "source_name", "native": "source_record_key",
+               "title": "source_titles", "url": "source_urls", "old_leaf": "old_leaf"}[mismatch]
+        review[key] = ["different"] if isinstance(review[key], list) else "different"
+    session = _session()
+    for name, bundle in (("source", original), ("approved", reviewed)):
+        apply_bundle(session, bundle, name, user="moderator")
+        session.commit()
+    monkeypatch.setattr(catalog_identity, "reviewed_registry", lambda: {"groups": [], "leaf_reviews": [review]})
+    validation = validate_bundle(session, refined, "reviewed-shape")
+    if mismatch:
+        assert not validation.ok
+        assert any("offer_interpretation_review" in error for error in validation.errors)
+        return
+    assert validation.ok, validation.errors
+    apply_bundle(session, refined, "reviewed-shape", user="moderator")
+    session.commit()
+    assert apply_bundle(session, refined, "reviewed-shape", user="moderator")["idempotent"]
+    event = session.get(NormalizedOfferEvent, original["offers"][0]["public_offer_event_id"])
+    assert event.raw_evidence["observations"] == original["offers"][0]["raw_evidence"]["observations"]
+    assert event.audit_provenance["offer_interpretation_review"] == reviewed["offers"][0]["audit_provenance"]["offer_interpretation_review"]
+    assert event.price == original["offers"][0]["price"]
 
 
 def test_approved_category_refinement_preserves_original_review_quote_and_source_replay():
