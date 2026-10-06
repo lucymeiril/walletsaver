@@ -1,0 +1,3163 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation378-reviewed-group-keyword-spec",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-08f9ba11ba1a7fd7290795775e827619",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "크라운산도 딸기 323G",
+      "brand": "크라운산도",
+      "aliases": [
+        "크라운산도 딸기"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:19:33",
+              "ingestion:68:70"
+            ],
+            "source_ingestion_ids": [
+              19,
+              68
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "107228321"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          19,
+          68
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.crown-sando-strawberry",
+          "canonical_product_id": "prod-08f9ba11ba1a7fd7290795775e827619",
+          "member_product_ids": [
+            "prod-08f9ba11ba1a7fd7290795775e827619",
+            "prod-e74a455653d05ebfd1c0d5b61b0e6590"
+          ],
+          "canonical_name": "크라운산도 딸기",
+          "brand": "크라운산도",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+      "unified_category_id": "food.seasonings.stock.seasoned_salt",
+      "category_id": null,
+      "canonical_name": "대상 미원 맛소금 250G",
+      "brand": "대상",
+      "aliases": [
+        "미원 맛소금"
+      ],
+      "keywords": [
+        "맛소금"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:38",
+              "ingestion:73:53"
+            ],
+            "source_ingestion_ids": [
+              23,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "100379249"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛소금"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.miwon-seasoned-salt",
+          "canonical_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+          "member_product_ids": [
+            "prod-0a81f25ac9c80174013f711d1a01cf8e",
+            "prod-60e94c39556a372584080766f4401773",
+            "prod-833085219f5e155be1cc2c75cfaf1209",
+            "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+          ],
+          "canonical_name": "미원 맛소금",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-0dee33f6811ccaece9c4ba6124a5c074",
+      "unified_category_id": "food.supplements.functional.omega3",
+      "category_id": null,
+      "canonical_name": "종근당건강프로메가오메가3 트리플/654mg x 60캡슐x 2",
+      "brand": null,
+      "aliases": [
+        "종근당건강 프로메가 오메가3 트리플"
+      ],
+      "keywords": [
+        "오메가3"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:48"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "621380"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "오메가3"
+        ],
+        "catalog_group": {
+          "key": "reviewed.supplements.promega-omega3-triple-capsule",
+          "canonical_product_id": "prod-0dee33f6811ccaece9c4ba6124a5c074",
+          "member_product_ids": [
+            "prod-0dee33f6811ccaece9c4ba6124a5c074",
+            "prod-5a200a18e264b8ea237c1be9dd3d4b9e"
+          ],
+          "canonical_name": "종근당건강 프로메가 오메가3 트리플",
+          "brand": "종근당건강",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hf0/h89/396507617067038.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-0e69270363f05f41fb02504a457e6622",
+      "unified_category_id": "food.seasonings.stock.beef",
+      "category_id": null,
+      "canonical_name": "CJ 쇠고기다시다 300G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 쇠고기다시다"
+      ],
+      "keywords": [
+        "쇠고기조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:25:55",
+              "ingestion:72:98"
+            ],
+            "source_ingestion_ids": [
+              25,
+              72
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "000054836"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          25,
+          72
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쇠고기조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-beef-dasida",
+          "canonical_product_id": "prod-0e69270363f05f41fb02504a457e6622",
+          "member_product_ids": [
+            "prod-0e69270363f05f41fb02504a457e6622",
+            "prod-53b8d0fda931f4dead841aa60652fb94"
+          ],
+          "canonical_name": "CJ 쇠고기다시다",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-13edc25c87c4fe64355f30bc1afe0524",
+      "unified_category_id": "food.seasonings.stock.cooking_wine",
+      "category_id": null,
+      "canonical_name": "미림 500ml",
+      "brand": null,
+      "aliases": [
+        "롯데칠성 미림"
+      ],
+      "keywords": [
+        "맛술"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:66"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000033004325"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛술"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.lotte-mirim",
+          "canonical_product_id": "prod-13edc25c87c4fe64355f30bc1afe0524",
+          "member_product_ids": [
+            "prod-13edc25c87c4fe64355f30bc1afe0524",
+            "prod-8ee0e236356046baa89372bd2bcd00ed",
+            "prod-b9ddd994a7a7945be795002838096721"
+          ],
+          "canonical_name": "롯데칠성 미림",
+          "brand": "롯데칠성",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/25/43/00/item/1000033004325_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1974fd4d946820a3323b68a11bbb4fe1",
+      "unified_category_id": "food.seasonings.stock.umami",
+      "category_id": null,
+      "canonical_name": "대상 발효 미원 100G",
+      "brand": "대상",
+      "aliases": [
+        "대상 발효미원"
+      ],
+      "keywords": [
+        "감칠맛조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:75",
+              "ingestion:73:65"
+            ],
+            "source_ingestion_ids": [
+              23,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "125170172"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "감칠맛조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.daesang-fermented-miwon",
+          "canonical_product_id": "prod-1974fd4d946820a3323b68a11bbb4fe1",
+          "member_product_ids": [
+            "prod-1974fd4d946820a3323b68a11bbb4fe1",
+            "prod-55b7253c57c4293f6d203959f30c784d"
+          ],
+          "canonical_name": "대상 발효미원",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1bfd9ef4d01672912a130ae67d291038",
+      "unified_category_id": "food.seasonings.stock.beef",
+      "category_id": null,
+      "canonical_name": "CJ 쇠고기다시다 명품골드 96G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 쇠고기다시다 명품골드"
+      ],
+      "keywords": [
+        "쇠고기조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:10",
+              "ingestion:73:10"
+            ],
+            "source_ingestion_ids": [
+              23,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "121952647"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쇠고기조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dasida-premium-gold",
+          "canonical_product_id": "prod-1bfd9ef4d01672912a130ae67d291038",
+          "member_product_ids": [
+            "prod-1bfd9ef4d01672912a130ae67d291038",
+            "prod-949e3a1715d468edce8a0ed13b273538"
+          ],
+          "canonical_name": "CJ 쇠고기다시다 명품골드",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "신상 해태 샌드에이스 크림라떼맛 204g",
+      "brand": null,
+      "aliases": [
+        "해태 샌드에이스 크림라떼"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:92:13"
+            ],
+            "source_ingestion_ids": [
+              92
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000872931367"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          92
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.haitai-sand-ace-cream-latte",
+          "canonical_product_id": "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+          "member_product_ids": [
+            "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+            "prod-660c76661f8772b142e434f4c7103010"
+          ],
+          "canonical_name": "해태 샌드에이스 크림라떼",
+          "brand": "해태",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/67/13/93/item/1000872931367_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-24dc0e0844382d7e20a9b179b70cc72f",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)",
+      "brand": null,
+      "aliases": [
+        "제스프리 뉴질랜드 골드키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_costco_fruit_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:47:32"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "644494"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_costco_fruit_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-newzealand-gold",
+          "canonical_product_id": "prod-24dc0e0844382d7e20a9b179b70cc72f",
+          "member_product_ids": [
+            "prod-24dc0e0844382d7e20a9b179b70cc72f",
+            "prod-3a857741b46a53c1707e82f25597b986",
+            "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c"
+          ],
+          "canonical_name": "제스프리 뉴질랜드 골드키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hba/h30/103747798007838.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-26f877c913dac13dd98465240c721d6a",
+      "unified_category_id": "food.seasonings.sauces.mapo_tofu",
+      "category_id": null,
+      "canonical_name": "씨제이 다담 마파두부 양념 150G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 다담 마파두부 양념"
+      ],
+      "keywords": [
+        "마파두부소스"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:14:85",
+              "ingestion:64:23"
+            ],
+            "source_ingestion_ids": [
+              14,
+              64
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127491215"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          14,
+          64
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "마파두부소스"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dadam-mapo",
+          "canonical_product_id": "prod-26f877c913dac13dd98465240c721d6a",
+          "member_product_ids": [
+            "prod-26f877c913dac13dd98465240c721d6a",
+            "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a"
+          ],
+          "canonical_name": "CJ 다담 마파두부 양념",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-2724e231446934d9073674a1b1cbb659",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "롯데 샌드 오리지날 315G",
+      "brand": "롯데",
+      "aliases": [
+        "롯데샌드 오리지날"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:18:40",
+              "ingestion:68:31"
+            ],
+            "source_ingestion_ids": [
+              18,
+              68
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "126117287"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          18,
+          68
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.lotte-sand-original",
+          "canonical_product_id": "prod-2724e231446934d9073674a1b1cbb659",
+          "member_product_ids": [
+            "prod-2724e231446934d9073674a1b1cbb659",
+            "prod-fa47f64c129a78e2fc1e4336fff4e1ff"
+          ],
+          "canonical_name": "롯데샌드 오리지날",
+          "brand": "롯데",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3a857741b46a53c1707e82f25597b986",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "뉴질랜드산 골드키위 (팩)",
+      "brand": null,
+      "aliases": [
+        "제스프리 뉴질랜드 골드키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:78:5"
+            ],
+            "source_ingestion_ids": [
+              78
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000859414577"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          78
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-newzealand-gold",
+          "canonical_product_id": "prod-24dc0e0844382d7e20a9b179b70cc72f",
+          "member_product_ids": [
+            "prod-24dc0e0844382d7e20a9b179b70cc72f",
+            "prod-3a857741b46a53c1707e82f25597b986",
+            "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c"
+          ],
+          "canonical_name": "제스프리 뉴질랜드 골드키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/77/45/41/item/1000859414577_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-41b1e2062a75edfb63d2e066a74be351",
+      "unified_category_id": "food.supplements.extract.red_ginseng",
+      "category_id": null,
+      "canonical_name": "정관장 홍삼원력 50ml x 30포",
+      "brand": null,
+      "aliases": [
+        "정관장 홍삼원력"
+      ],
+      "keywords": [
+        "홍삼액"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:42:89"
+            ],
+            "source_ingestion_ids": [
+              42
+            ],
+            "source_name": "costco",
+            "source_record_key": "520714"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          42
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "홍삼액"
+        ],
+        "catalog_group": {
+          "key": "reviewed.supplements.kgc-red-ginseng-wonlyeok",
+          "canonical_product_id": "prod-41b1e2062a75edfb63d2e066a74be351",
+          "member_product_ids": [
+            "prod-41b1e2062a75edfb63d2e066a74be351",
+            "prod-505f00b1227b9c19765439547357a795"
+          ],
+          "canonical_name": "정관장 홍삼원력",
+          "brand": "정관장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h66/h9c/51931855749150.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4fd40cd666b05a55d7c65c812e78cd92",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "제스프리 그린키위 (22~25입)",
+      "brand": "롯데마트신선",
+      "aliases": [
+        "제스프리 그린키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:35:55"
+            ],
+            "source_ingestion_ids": [
+              35
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8809048476677"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          35
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-green",
+          "canonical_product_id": "prod-4fd40cd666b05a55d7c65c812e78cd92",
+          "member_product_ids": [
+            "prod-4fd40cd666b05a55d7c65c812e78cd92",
+            "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+            "prod-d9a08856e4cf64c4fb75415486357c86"
+          ],
+          "canonical_name": "제스프리 그린키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bd878e38-45f3-4c2d-8dca-cc48fcf916be/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-505f00b1227b9c19765439547357a795",
+      "unified_category_id": "food.supplements.extract.red_ginseng",
+      "category_id": null,
+      "canonical_name": "정관장 홍삼 원력 50ml x 30 x5",
+      "brand": null,
+      "aliases": [
+        "정관장 홍삼원력"
+      ],
+      "keywords": [
+        "홍삼액"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:42:88"
+            ],
+            "source_ingestion_ids": [
+              42
+            ],
+            "source_name": "costco",
+            "source_record_key": "599847"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          42
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "홍삼액"
+        ],
+        "catalog_group": {
+          "key": "reviewed.supplements.kgc-red-ginseng-wonlyeok",
+          "canonical_product_id": "prod-41b1e2062a75edfb63d2e066a74be351",
+          "member_product_ids": [
+            "prod-41b1e2062a75edfb63d2e066a74be351",
+            "prod-505f00b1227b9c19765439547357a795"
+          ],
+          "canonical_name": "정관장 홍삼원력",
+          "brand": "정관장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h66/h9c/51931855749150.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5093d125687d998b7cf4b259448af522",
+      "unified_category_id": "food.frozen.dessert.tube",
+      "category_id": null,
+      "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)",
+      "brand": "상하목장",
+      "aliases": [
+        "매일유업 상하목장 얼려먹는 아이스크림 초코"
+      ],
+      "keywords": [
+        "튜브형아이스디저트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:34:91"
+            ],
+            "source_ingestion_ids": [
+              34
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801121034927"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          34
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "튜브형아이스디저트"
+        ],
+        "catalog_group": {
+          "key": "reviewed.frozen_dessert.maeil-sangha-freeze-chocolate",
+          "canonical_product_id": "prod-5093d125687d998b7cf4b259448af522",
+          "member_product_ids": [
+            "prod-5093d125687d998b7cf4b259448af522",
+            "prod-e4892efd298265a372ea6a4177dbf282"
+          ],
+          "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 초코",
+          "brand": "매일유업 상하목장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8294d92-cd4f-4c22-a52e-b39737408fea/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-53b8d0fda931f4dead841aa60652fb94",
+      "unified_category_id": "food.seasonings.stock.beef",
+      "category_id": null,
+      "canonical_name": "CJ 쇠고기다시다 500G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 쇠고기다시다"
+      ],
+      "keywords": [
+        "쇠고기조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:71",
+              "ingestion:74:25"
+            ],
+            "source_ingestion_ids": [
+              24,
+              74
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "100917297"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24,
+          74
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쇠고기조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-beef-dasida",
+          "canonical_product_id": "prod-0e69270363f05f41fb02504a457e6622",
+          "member_product_ids": [
+            "prod-0e69270363f05f41fb02504a457e6622",
+            "prod-53b8d0fda931f4dead841aa60652fb94"
+          ],
+          "canonical_name": "CJ 쇠고기다시다",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5400b18dd274163ebf1a5acfb00a990f",
+      "unified_category_id": "food.seasonings.stock.chicken",
+      "category_id": null,
+      "canonical_name": "쉐프의 치킨스톡 340g",
+      "brand": null,
+      "aliases": [
+        "청정원 쉐프의 치킨스톡"
+      ],
+      "keywords": [
+        "치킨스톡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:58"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000018819263"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "치킨스톡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.chungjungone-chef-chicken-stock",
+          "canonical_product_id": "prod-5400b18dd274163ebf1a5acfb00a990f",
+          "member_product_ids": [
+            "prod-5400b18dd274163ebf1a5acfb00a990f",
+            "prod-aea7409a56ddc50d331b1c28af4305e0"
+          ],
+          "canonical_name": "청정원 쉐프의 치킨스톡",
+          "brand": "청정원",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/63/92/81/item/1000018819263_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-55b7253c57c4293f6d203959f30c784d",
+      "unified_category_id": "food.seasonings.stock.umami",
+      "category_id": null,
+      "canonical_name": "발효미원 100g",
+      "brand": null,
+      "aliases": [
+        "대상 발효미원"
+      ],
+      "keywords": [
+        "감칠맛조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:35"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000014901619"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "감칠맛조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.daesang-fermented-miwon",
+          "canonical_product_id": "prod-1974fd4d946820a3323b68a11bbb4fe1",
+          "member_product_ids": [
+            "prod-1974fd4d946820a3323b68a11bbb4fe1",
+            "prod-55b7253c57c4293f6d203959f30c784d"
+          ],
+          "canonical_name": "대상 발효미원",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/19/16/90/item/1000014901619_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5a200a18e264b8ea237c1be9dd3d4b9e",
+      "unified_category_id": "food.supplements.functional.omega3",
+      "category_id": null,
+      "canonical_name": "프로메가 오메가3 트리플 654mg*60캡슐",
+      "brand": null,
+      "aliases": [
+        "종근당건강 프로메가 오메가3 트리플"
+      ],
+      "keywords": [
+        "오메가3"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:94:12"
+            ],
+            "source_ingestion_ids": [
+              94
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000506686471"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          94
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "오메가3"
+        ],
+        "catalog_group": {
+          "key": "reviewed.supplements.promega-omega3-triple-capsule",
+          "canonical_product_id": "prod-0dee33f6811ccaece9c4ba6124a5c074",
+          "member_product_ids": [
+            "prod-0dee33f6811ccaece9c4ba6124a5c074",
+            "prod-5a200a18e264b8ea237c1be9dd3d4b9e"
+          ],
+          "canonical_name": "종근당건강 프로메가 오메가3 트리플",
+          "brand": "종근당건강",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/71/64/68/item/1000506686471_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-60e94c39556a372584080766f4401773",
+      "unified_category_id": "food.seasonings.stock.seasoned_salt",
+      "category_id": null,
+      "canonical_name": "대상 미원 맛소금 500G",
+      "brand": "대상",
+      "aliases": [
+        "미원 맛소금"
+      ],
+      "keywords": [
+        "맛소금"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:10",
+              "ingestion:73:72"
+            ],
+            "source_ingestion_ids": [
+              24,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "005193001"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛소금"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.miwon-seasoned-salt",
+          "canonical_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+          "member_product_ids": [
+            "prod-0a81f25ac9c80174013f711d1a01cf8e",
+            "prod-60e94c39556a372584080766f4401773",
+            "prod-833085219f5e155be1cc2c75cfaf1209",
+            "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+          ],
+          "canonical_name": "미원 맛소금",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-660c76661f8772b142e434f4c7103010",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "해태 샌드에이스 크림라떼 204G",
+      "brand": "해태",
+      "aliases": [
+        "해태 샌드에이스 크림라떼"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:18:4",
+              "ingestion:67:13"
+            ],
+            "source_ingestion_ids": [
+              18,
+              67
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "071433664"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          18,
+          67
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.haitai-sand-ace-cream-latte",
+          "canonical_product_id": "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+          "member_product_ids": [
+            "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+            "prod-660c76661f8772b142e434f4c7103010"
+          ],
+          "canonical_name": "해태 샌드에이스 크림라떼",
+          "brand": "해태",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "제스프리 그린키위 7-12입(팩)",
+      "brand": "제스프리",
+      "aliases": [
+        "제스프리 그린키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:2:30",
+              "ingestion:51:37"
+            ],
+            "source_ingestion_ids": [
+              2,
+              51
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "115034331"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          2,
+          51
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-green",
+          "canonical_product_id": "prod-4fd40cd666b05a55d7c65c812e78cd92",
+          "member_product_ids": [
+            "prod-4fd40cd666b05a55d7c65c812e78cd92",
+            "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+            "prod-d9a08856e4cf64c4fb75415486357c86"
+          ],
+          "canonical_name": "제스프리 그린키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a",
+      "unified_category_id": "food.seasonings.sauces.mapo_tofu",
+      "category_id": null,
+      "canonical_name": "(냉장) CJ 백설 다담 마파두부 양념 (150G)",
+      "brand": "다담",
+      "aliases": [
+        "CJ 다담 마파두부 양념"
+      ],
+      "keywords": [
+        "마파두부소스"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:34:30"
+            ],
+            "source_ingestion_ids": [
+              34
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801007617107"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          34
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "마파두부소스"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dadam-mapo",
+          "canonical_product_id": "prod-26f877c913dac13dd98465240c721d6a",
+          "member_product_ids": [
+            "prod-26f877c913dac13dd98465240c721d6a",
+            "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a"
+          ],
+          "canonical_name": "CJ 다담 마파두부 양념",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8b27bdb3-f8ca-4c8e-bbeb-658ae0cff2cb/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7ae4e713bf153946cc5d526c713d719d",
+      "unified_category_id": "food.frozen.dessert.tube",
+      "category_id": null,
+      "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)",
+      "brand": "상하목장",
+      "aliases": [
+        "매일유업 상하목장 얼려먹는 아이스크림 밀크"
+      ],
+      "keywords": [
+        "튜브형아이스디저트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:35:19"
+            ],
+            "source_ingestion_ids": [
+              35
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801121031667"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          35
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "튜브형아이스디저트"
+        ],
+        "catalog_group": {
+          "key": "reviewed.frozen_dessert.maeil-sangha-freeze-milk",
+          "canonical_product_id": "prod-7ae4e713bf153946cc5d526c713d719d",
+          "member_product_ids": [
+            "prod-7ae4e713bf153946cc5d526c713d719d",
+            "prod-7d45d8a7ad884768729d41bcb4ea3729"
+          ],
+          "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 밀크",
+          "brand": "매일유업 상하목장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4640ef79-e889-4893-bf15-a8f448e4fc13/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7d45d8a7ad884768729d41bcb4ea3729",
+      "unified_category_id": "food.frozen.dessert.tube",
+      "category_id": null,
+      "canonical_name": "얼려먹는 아이스크림 밀크 510ml",
+      "brand": null,
+      "aliases": [
+        "매일유업 상하목장 얼려먹는 아이스크림 밀크"
+      ],
+      "keywords": [
+        "튜브형아이스디저트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:95:20"
+            ],
+            "source_ingestion_ids": [
+              95
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000065464261"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          95
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "튜브형아이스디저트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-7d45d8a7ad884768729d41bcb4ea3729",
+          "old_leaf": "food.frozen.dessert.ice_bar",
+          "new_leaf": "food.frozen.dessert.tube",
+          "source_name": "emart",
+          "source_record_key": "1000065464261",
+          "source_titles": [
+            "얼려먹는 아이스크림 밀크 510ml"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037"
+          ],
+          "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+          "evidence_sha256": "7fa89719dbd3c68a5b9f2098ab7493c200f26069d36198b42a974030a85b2b78"
+        },
+        "catalog_group": {
+          "key": "reviewed.frozen_dessert.maeil-sangha-freeze-milk",
+          "canonical_product_id": "prod-7ae4e713bf153946cc5d526c713d719d",
+          "member_product_ids": [
+            "prod-7ae4e713bf153946cc5d526c713d719d",
+            "prod-7d45d8a7ad884768729d41bcb4ea3729"
+          ],
+          "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 밀크",
+          "brand": "매일유업 상하목장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/61/42/46/item/1000065464261_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "롯데 롯샌파인애플315g",
+      "brand": null,
+      "aliases": [
+        "롯데 롯샌 파인애플"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:92:11"
+            ],
+            "source_ingestion_ids": [
+              92
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000264615605"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          92
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.lotte-lotsand-pineapple",
+          "canonical_product_id": "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+          "member_product_ids": [
+            "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+            "prod-8a3d64168691b5825461f3f8956c71a0"
+          ],
+          "canonical_name": "롯데 롯샌 파인애플",
+          "brand": "롯데",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/05/56/61/item/1000264615605_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-833085219f5e155be1cc2c75cfaf1209",
+      "unified_category_id": "food.seasonings.stock.seasoned_salt",
+      "category_id": null,
+      "canonical_name": "미원 맛소금 250g",
+      "brand": null,
+      "aliases": [
+        "미원 맛소금"
+      ],
+      "keywords": [
+        "맛소금"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:6"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000006609049"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛소금"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.miwon-seasoned-salt",
+          "canonical_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+          "member_product_ids": [
+            "prod-0a81f25ac9c80174013f711d1a01cf8e",
+            "prod-60e94c39556a372584080766f4401773",
+            "prod-833085219f5e155be1cc2c75cfaf1209",
+            "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+          ],
+          "canonical_name": "미원 맛소금",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/49/90/60/item/0000006609049_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8a3d64168691b5825461f3f8956c71a0",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "롯데 롯샌 파인애플 (79G)",
+      "brand": "롯데제과",
+      "aliases": [
+        "롯데 롯샌 파인애플"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:29:33"
+            ],
+            "source_ingestion_ids": [
+              29
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801062521425"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          29
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.lotte-lotsand-pineapple",
+          "canonical_product_id": "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+          "member_product_ids": [
+            "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+            "prod-8a3d64168691b5825461f3f8956c71a0"
+          ],
+          "canonical_name": "롯데 롯샌 파인애플",
+          "brand": "롯데",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f93d9739-08fd-469a-97bd-8f95d289b08b/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8ee0e236356046baa89372bd2bcd00ed",
+      "unified_category_id": "food.seasonings.stock.cooking_wine",
+      "category_id": null,
+      "canonical_name": "미림 900ml",
+      "brand": null,
+      "aliases": [
+        "롯데칠성 미림"
+      ],
+      "keywords": [
+        "맛술"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:7"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000033004133"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛술"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.lotte-mirim",
+          "canonical_product_id": "prod-13edc25c87c4fe64355f30bc1afe0524",
+          "member_product_ids": [
+            "prod-13edc25c87c4fe64355f30bc1afe0524",
+            "prod-8ee0e236356046baa89372bd2bcd00ed",
+            "prod-b9ddd994a7a7945be795002838096721"
+          ],
+          "canonical_name": "롯데칠성 미림",
+          "brand": "롯데칠성",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/33/41/00/item/1000033004133_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-949e3a1715d468edce8a0ed13b273538",
+      "unified_category_id": "food.seasonings.stock.beef",
+      "category_id": null,
+      "canonical_name": "CJ 쇠고기다시다 명품골드 100G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 쇠고기다시다 명품골드"
+      ],
+      "keywords": [
+        "쇠고기조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:20",
+              "ingestion:73:21"
+            ],
+            "source_ingestion_ids": [
+              24,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "124389612"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쇠고기조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dasida-premium-gold",
+          "canonical_product_id": "prod-1bfd9ef4d01672912a130ae67d291038",
+          "member_product_ids": [
+            "prod-1bfd9ef4d01672912a130ae67d291038",
+            "prod-949e3a1715d468edce8a0ed13b273538"
+          ],
+          "canonical_name": "CJ 쇠고기다시다 명품골드",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-ad75a71c7d17efe3dce1688c3be17694",
+      "unified_category_id": "food.seasonings.sauces.liquid_seasoning",
+      "category_id": null,
+      "canonical_name": "샘표 연두 순 500ML",
+      "brand": "샘표",
+      "aliases": [
+        "샘표 연두 순"
+      ],
+      "keywords": [
+        "액상조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:37",
+              "ingestion:74:16"
+            ],
+            "source_ingestion_ids": [
+              23,
+              74
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "128172522"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          74
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "액상조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.sempio-yondu-soon",
+          "canonical_product_id": "prod-ad75a71c7d17efe3dce1688c3be17694",
+          "member_product_ids": [
+            "prod-ad75a71c7d17efe3dce1688c3be17694",
+            "prod-b8b9bf2be92dce5210706b3a50cd7a71"
+          ],
+          "canonical_name": "샘표 연두 순",
+          "brand": "샘표",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-aea7409a56ddc50d331b1c28af4305e0",
+      "unified_category_id": "food.seasonings.stock.chicken",
+      "category_id": null,
+      "canonical_name": "대상 청정원 쉐프의 치킨스톡 340G",
+      "brand": "대상",
+      "aliases": [
+        "청정원 쉐프의 치킨스톡"
+      ],
+      "keywords": [
+        "치킨스톡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:33",
+              "ingestion:72:49"
+            ],
+            "source_ingestion_ids": [
+              23,
+              72
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "126712665"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          72
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "치킨스톡"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.chungjungone-chef-chicken-stock",
+          "canonical_product_id": "prod-5400b18dd274163ebf1a5acfb00a990f",
+          "member_product_ids": [
+            "prod-5400b18dd274163ebf1a5acfb00a990f",
+            "prod-aea7409a56ddc50d331b1c28af4305e0"
+          ],
+          "canonical_name": "청정원 쉐프의 치킨스톡",
+          "brand": "청정원",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b6c3a8e0d5f077ddee58bc8b6238eba1",
+      "unified_category_id": "food.seasonings.stock.seasoned_salt",
+      "category_id": null,
+      "canonical_name": "대상 미원맛소금 95G",
+      "brand": "대상",
+      "aliases": [
+        "미원 맛소금"
+      ],
+      "keywords": [
+        "맛소금"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:78",
+              "ingestion:73:64"
+            ],
+            "source_ingestion_ids": [
+              23,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "138360929"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛소금"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.miwon-seasoned-salt",
+          "canonical_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+          "member_product_ids": [
+            "prod-0a81f25ac9c80174013f711d1a01cf8e",
+            "prod-60e94c39556a372584080766f4401773",
+            "prod-833085219f5e155be1cc2c75cfaf1209",
+            "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+          ],
+          "canonical_name": "미원 맛소금",
+          "brand": "대상",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b8b9bf2be92dce5210706b3a50cd7a71",
+      "unified_category_id": "food.seasonings.sauces.liquid_seasoning",
+      "category_id": null,
+      "canonical_name": "샘표 연두 순 320G",
+      "brand": "샘표",
+      "aliases": [
+        "샘표 연두 순"
+      ],
+      "keywords": [
+        "액상조미료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:65",
+              "ingestion:74:44"
+            ],
+            "source_ingestion_ids": [
+              24,
+              74
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "113129716"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24,
+          74
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "액상조미료"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.sempio-yondu-soon",
+          "canonical_product_id": "prod-ad75a71c7d17efe3dce1688c3be17694",
+          "member_product_ids": [
+            "prod-ad75a71c7d17efe3dce1688c3be17694",
+            "prod-b8b9bf2be92dce5210706b3a50cd7a71"
+          ],
+          "canonical_name": "샘표 연두 순",
+          "brand": "샘표",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b9ddd994a7a7945be795002838096721",
+      "unified_category_id": "food.seasonings.stock.cooking_wine",
+      "category_id": null,
+      "canonical_name": "롯데칠성 미림 900ML",
+      "brand": "롯데칠성",
+      "aliases": [
+        "롯데칠성 미림"
+      ],
+      "keywords": [
+        "맛술"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:2",
+              "ingestion:72:50"
+            ],
+            "source_ingestion_ids": [
+              23,
+              72
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "005926408"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          72
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "맛술"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.lotte-mirim",
+          "canonical_product_id": "prod-13edc25c87c4fe64355f30bc1afe0524",
+          "member_product_ids": [
+            "prod-13edc25c87c4fe64355f30bc1afe0524",
+            "prod-8ee0e236356046baa89372bd2bcd00ed",
+            "prod-b9ddd994a7a7945be795002838096721"
+          ],
+          "canonical_name": "롯데칠성 미림",
+          "brand": "롯데칠성",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c2d6eedb8ee164b985473c73a8461a9a",
+      "unified_category_id": "food.seasonings.sauces.gangdoenjang",
+      "category_id": null,
+      "canonical_name": "씨제이 다담 우렁강된장 비빔 양념 140G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 다담 우렁강된장 비빔양념"
+      ],
+      "keywords": [
+        "강된장양념"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:15:49",
+              "ingestion:64:87"
+            ],
+            "source_ingestion_ids": [
+              15,
+              64
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "105116704"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          15,
+          64
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "강된장양념"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dadam-snail-gangdoenjang-bibim",
+          "canonical_product_id": "prod-c2d6eedb8ee164b985473c73a8461a9a",
+          "member_product_ids": [
+            "prod-c2d6eedb8ee164b985473c73a8461a9a",
+            "prod-e113d40676dc3297e9ab74222d3fd696"
+          ],
+          "canonical_name": "CJ 다담 우렁강된장 비빔양념",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-d9a08856e4cf64c4fb75415486357c86",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "제스프리 그린키위 10kg (65~78입)",
+      "brand": null,
+      "aliases": [
+        "제스프리 그린키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:38:41"
+            ],
+            "source_ingestion_ids": [
+              38
+            ],
+            "source_name": "costco",
+            "source_record_key": "527204"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          38
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-green",
+          "canonical_product_id": "prod-4fd40cd666b05a55d7c65c812e78cd92",
+          "member_product_ids": [
+            "prod-4fd40cd666b05a55d7c65c812e78cd92",
+            "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+            "prod-d9a08856e4cf64c4fb75415486357c86"
+          ],
+          "canonical_name": "제스프리 그린키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h7e/h79/104135424966686.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+      "unified_category_id": "food.seasonings.sauces.gangdoenjang",
+      "category_id": null,
+      "canonical_name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+      "brand": "씨제이제일제당",
+      "aliases": [
+        "CJ 다담 우렁강된장 비빔양념"
+      ],
+      "keywords": [
+        "강된장양념"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:31:35"
+            ],
+            "source_ingestion_ids": [
+              31
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801007059624"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          31
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "강된장양념"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+          "old_leaf": "food.seasonings.sauces.bibim",
+          "new_leaf": "food.seasonings.sauces.gangdoenjang",
+          "source_name": "lottemart",
+          "source_record_key": "8801007059624",
+          "source_titles": [
+            "CJ 백설 다담 우렁강된장 비빔양념 (140G)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8801007059624/details"
+          ],
+          "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+          "evidence_sha256": "cfab4f6edebb403f03af06b1a1bea8df7dce1986e5e597ff34f1383d09a24e35"
+        },
+        "catalog_group": {
+          "key": "reviewed.seasonings.cj-dadam-snail-gangdoenjang-bibim",
+          "canonical_product_id": "prod-c2d6eedb8ee164b985473c73a8461a9a",
+          "member_product_ids": [
+            "prod-c2d6eedb8ee164b985473c73a8461a9a",
+            "prod-e113d40676dc3297e9ab74222d3fd696"
+          ],
+          "canonical_name": "CJ 다담 우렁강된장 비빔양념",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e4892efd298265a372ea6a4177dbf282",
+      "unified_category_id": "food.frozen.dessert.tube",
+      "category_id": null,
+      "canonical_name": "얼려먹는 아이스크림 초코 510ml",
+      "brand": null,
+      "aliases": [
+        "매일유업 상하목장 얼려먹는 아이스크림 초코"
+      ],
+      "keywords": [
+        "튜브형아이스디저트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:95:21"
+            ],
+            "source_ingestion_ids": [
+              95
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000314928679"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          95
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "튜브형아이스디저트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-e4892efd298265a372ea6a4177dbf282",
+          "old_leaf": "food.frozen.dessert.ice_bar",
+          "new_leaf": "food.frozen.dessert.tube",
+          "source_name": "emart",
+          "source_record_key": "1000314928679",
+          "source_titles": [
+            "얼려먹는 아이스크림 초코 510ml"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037"
+          ],
+          "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+          "evidence_sha256": "3f3f263a3ba6b934d3d44155a9a818065638732bc0ffef8296aa48450f09c827"
+        },
+        "catalog_group": {
+          "key": "reviewed.frozen_dessert.maeil-sangha-freeze-chocolate",
+          "canonical_product_id": "prod-5093d125687d998b7cf4b259448af522",
+          "member_product_ids": [
+            "prod-5093d125687d998b7cf4b259448af522",
+            "prod-e4892efd298265a372ea6a4177dbf282"
+          ],
+          "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 초코",
+          "brand": "매일유업 상하목장",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/79/86/92/item/1000314928679_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e74a455653d05ebfd1c0d5b61b0e6590",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "크라운산도 딸기 161G",
+      "brand": "크라운산도",
+      "aliases": [
+        "크라운산도 딸기"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:17:29",
+              "ingestion:67:44"
+            ],
+            "source_ingestion_ids": [
+              17,
+              67
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "125250884"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          17,
+          67
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.crown-sando-strawberry",
+          "canonical_product_id": "prod-08f9ba11ba1a7fd7290795775e827619",
+          "member_product_ids": [
+            "prod-08f9ba11ba1a7fd7290795775e827619",
+            "prod-e74a455653d05ebfd1c0d5b61b0e6590"
+          ],
+          "canonical_name": "크라운산도 딸기",
+          "brand": "크라운산도",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": false,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "category_id": null,
+      "canonical_name": "뉴질랜드산 골드키위 (팩)",
+      "brand": null,
+      "aliases": [
+        "제스프리 뉴질랜드 골드키위"
+      ],
+      "keywords": [
+        "키위"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:1:43"
+            ],
+            "source_ingestion_ids": [
+              1
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000854128105"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          1
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "키위"
+        ],
+        "catalog_group": {
+          "key": "reviewed.fresh_fruit.zespri-newzealand-gold",
+          "canonical_product_id": "prod-24dc0e0844382d7e20a9b179b70cc72f",
+          "member_product_ids": [
+            "prod-24dc0e0844382d7e20a9b179b70cc72f",
+            "prod-3a857741b46a53c1707e82f25597b986",
+            "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c"
+          ],
+          "canonical_name": "제스프리 뉴질랜드 골드키위",
+          "brand": "제스프리",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/05/81/12/item/1000854128105_i1_500.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-fa47f64c129a78e2fc1e4336fff4e1ff",
+      "unified_category_id": "food.snacks.baked.sandwich",
+      "category_id": null,
+      "canonical_name": "롯데샌드 오리지날 79G",
+      "brand": "롯데샌드",
+      "aliases": [
+        "롯데샌드 오리지날"
+      ],
+      "keywords": [
+        "샌드과자"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:18:49",
+              "ingestion:67:19"
+            ],
+            "source_ingestion_ids": [
+              18,
+              67
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "126567030"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          18,
+          67
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "샌드과자"
+        ],
+        "catalog_group": {
+          "key": "reviewed.baked_snacks.lotte-sand-original",
+          "canonical_product_id": "prod-2724e231446934d9073674a1b1cbb659",
+          "member_product_ids": [
+            "prod-2724e231446934d9073674a1b1cbb659",
+            "prod-fa47f64c129a78e2fc1e4336fff4e1ff"
+          ],
+          "canonical_name": "롯데샌드 오리지날",
+          "brand": "롯데",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-fbabaac452f71c82b8e31987a0cf65d9",
+      "unified_category_id": "food.seasonings.spices.roasted_sesame",
+      "category_id": null,
+      "canonical_name": "오뚜기 옛날 볶음 참깨 200G",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 옛날 볶음 참깨"
+      ],
+      "keywords": [
+        "볶음참깨"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:34",
+              "ingestion:73:89"
+            ],
+            "source_ingestion_ids": [
+              24,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "010033580"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "볶음참깨"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.ottogi-old-roasted-sesame",
+          "canonical_product_id": "prod-fbabaac452f71c82b8e31987a0cf65d9",
+          "member_product_ids": [
+            "prod-fbabaac452f71c82b8e31987a0cf65d9",
+            "prod-fe3193079d7edee81eb657a5d05e0d30"
+          ],
+          "canonical_name": "오뚜기 옛날 볶음 참깨",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-fe3193079d7edee81eb657a5d05e0d30",
+      "unified_category_id": "food.seasonings.spices.roasted_sesame",
+      "category_id": null,
+      "canonical_name": "오뚜기 옛날 볶음 참깨 100G",
+      "brand": "오뚜기",
+      "aliases": [
+        "오뚜기 옛날 볶음 참깨"
+      ],
+      "keywords": [
+        "볶음참깨"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:25:40",
+              "ingestion:74:46"
+            ],
+            "source_ingestion_ids": [
+              25,
+              74
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "102698219"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          25,
+          74
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "볶음참깨"
+        ],
+        "catalog_group": {
+          "key": "reviewed.seasonings.ottogi-old-roasted-sesame",
+          "canonical_product_id": "prod-fbabaac452f71c82b8e31987a0cf65d9",
+          "member_product_ids": [
+            "prod-fbabaac452f71c82b8e31987a0cf65d9",
+            "prod-fe3193079d7edee81eb657a5d05e0d30"
+          ],
+          "canonical_name": "오뚜기 옛날 볶음 참깨",
+          "brand": "오뚜기",
+          "review_version": "reviewed_catalog_groups_v1"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-f4d48dfb8f674cf7d6a4b6a50bbe85f9",
+      "public_source_listing_id": "listing-109ff581c192ec512856d185976a2b41",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 2600.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:31:35",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:02.650194Z",
+            "ingestion_id": 31,
+            "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "씨제이제일제당",
+                "canon_hash": "b6261e12ef9a843416352599f3281561673b7594",
+                "canonical_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+                "category_hint": "간편식ㆍ밀키트",
+                "category_path": [
+                  "간편식ㆍ밀키트",
+                  "카레ㆍ짜장ㆍ즉석요리",
+                  "기타즉석요리"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+                "mart_native_code": "8801007059624",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8801007059624",
+                "source_url": "https://lottemartzetta.com/products/OS8801007059624/details"
+              },
+              "brand": "__no_brand__",
+              "category": "간편식ㆍ밀키트",
+              "crawled_at": "2026-08-31T10:47:02.650194",
+              "detail_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+              "discount_percent": null,
+              "display_unit": "140g",
+              "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d37a5312-d4cc-4578-8ae6-a0600cc016ee/300x300.jpg",
+              "match_key": "__no_brand__|cj 백설 다담 우렁강된장 비빔양념 140g||140g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 140.0,
+              "package_unit": "g",
+              "price_per_100g": 1857.14,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 2600,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "140g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "fd4063fc83cef97bb133d588d0301c9cb7e1118906a3570c9d490b79daa0fcd6",
+            "raw_record_id": "ingestion:31:35",
+            "source_category_path": [
+              "간편식ᆞ밀키트",
+              "카레ᆞ짜장ᆞ즉석요리",
+              "기타즉석요리"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "3개씩 골라 담으면, 그 중 1개는 무료",
+          "required_selection_quantity": 3,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_free_item",
+          "conditional_free_quantity": 1,
+          "free_item_valuation_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:31:35"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          31
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-f4d48dfb8f674cf7d6a4b6a50bbe85f9",
+            "public_source_listing_id": "listing-109ff581c192ec512856d185976a2b41",
+            "public_variant_id": "var-9d4cc7746c73e2d257cdb6a29c0def95",
+            "public_product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+            "unified_category_id": "food.seasonings.sauces.bibim",
+            "source_name": "lottemart",
+            "source_record_key": "8801007059624",
+            "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+            "source_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+            "variant_spec": {
+              "variant_name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+              "display_unit": "140g",
+              "package_quantity": 140.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 2600.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:02.650194Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:31:35",
+                "raw_payload_sha256": "fd4063fc83cef97bb133d588d0301c9cb7e1118906a3570c9d490b79daa0fcd6",
+                "observation_sha256": "3a5283cdc46600d9ade3e40d3728acc44bd9f206cc700f9aabd70b1959b670c9"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "3개씩 골라 담으면, 그 중 1개는 무료",
+              "required_selection_quantity": 3,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_free_item",
+              "conditional_free_quantity": 1,
+              "free_item_valuation_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_identity318",
+            "approved_at": "2026-10-06T21:14:03.363366+00:00",
+            "original_review_sha256": "0652752cb16ecaad145c6540ae0162a63920fefa4dfc27b3aef839bdd41a1ca7",
+            "before_context": {
+              "public_source_listing_id": "listing-109ff581c192ec512856d185976a2b41",
+              "public_variant_id": "var-9d4cc7746c73e2d257cdb6a29c0def95",
+              "public_product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+              "unified_category_id": "food.seasonings.sauces.bibim",
+              "source_name": "lottemart",
+              "source_record_key": "8801007059624",
+              "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+              "variant_spec": {
+                "variant_name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+                "display_unit": "140g",
+                "package_quantity": 140.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-109ff581c192ec512856d185976a2b41",
+              "public_variant_id": "var-9d4cc7746c73e2d257cdb6a29c0def95",
+              "public_product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+              "unified_category_id": "food.seasonings.sauces.gangdoenjang",
+              "source_name": "lottemart",
+              "source_record_key": "8801007059624",
+              "source_title": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801007059624/details",
+              "variant_spec": {
+                "variant_name": "CJ 백설 다담 우렁강된장 비빔양념 (140G)",
+                "display_unit": "140g",
+                "package_quantity": 140.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "7bf8dbb088b4ae4233d964f14a463a106d9165ffaee3d7fd4be387cdf6ff845e",
+            "after_context_sha256": "f5d8804acbc1db2a992958c9f37847490091cb4c65d0ea35eed59218ec42a84b",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:31:35",
+                "raw_payload_sha256": "fd4063fc83cef97bb133d588d0301c9cb7e1118906a3570c9d490b79daa0fcd6",
+                "observation_sha256": "3a5283cdc46600d9ade3e40d3728acc44bd9f206cc700f9aabd70b1959b670c9"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:02.650194",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

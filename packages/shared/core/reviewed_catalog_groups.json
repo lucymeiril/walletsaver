@@ -23090,6 +23090,936 @@
         "prod-6a6640a910236397d0d43367db63be32",
         "prod-c063af1ea4ac6c489d460f46494fbea6"
       ]
+    },
+    {
+      "key": "reviewed.fresh_fruit.zespri-newzealand-gold",
+      "canonical_product_id": "prod-24dc0e0844382d7e20a9b179b70cc72f",
+      "member_product_ids": [
+        "prod-24dc0e0844382d7e20a9b179b70cc72f",
+        "prod-3a857741b46a53c1707e82f25597b986",
+        "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c"
+      ],
+      "canonical_name": "제스프리 뉴질랜드 골드키위",
+      "brand": "제스프리",
+      "leaf": "food.produce.fruit.kiwi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-24dc0e0844382d7e20a9b179b70cc72f": [
+          {
+            "source_name": "costco",
+            "source_record_key": "644494",
+            "source_titles": [
+              "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/p/644494"
+            ]
+          }
+        ],
+        "prod-3a857741b46a53c1707e82f25597b986": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000859414577",
+            "source_titles": [
+              "뉴질랜드산 골드키위 (팩)"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000859414577&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000854128105",
+            "source_titles": [
+              "뉴질랜드산 골드키위 (팩)"
+            ],
+            "source_urls": [
+              "https://m-emart.ssg.com/item/itemView.ssg?itemId=1000854128105&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "25635632f87a0e3c1017f406f263d832d26bcf0f2c77d2b72ed21a62f3ca098c",
+      "derived_alias_member_ids": [
+        "prod-24dc0e0844382d7e20a9b179b70cc72f",
+        "prod-3a857741b46a53c1707e82f25597b986",
+        "prod-f8ed36fe5ce4f8a7ab194382fd5f9a1c"
+      ]
+    },
+    {
+      "key": "reviewed.fresh_fruit.zespri-green",
+      "canonical_product_id": "prod-4fd40cd666b05a55d7c65c812e78cd92",
+      "member_product_ids": [
+        "prod-4fd40cd666b05a55d7c65c812e78cd92",
+        "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+        "prod-d9a08856e4cf64c4fb75415486357c86"
+      ],
+      "canonical_name": "제스프리 그린키위",
+      "brand": "제스프리",
+      "leaf": "food.produce.fruit.kiwi",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-4fd40cd666b05a55d7c65c812e78cd92": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8809048476677",
+            "source_titles": [
+              "제스프리 그린키위 (22~25입)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8809048476677/details"
+            ]
+          }
+        ],
+        "prod-703cdc8c1053d89d5fe5cc62f15b6950": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115034331",
+            "source_titles": [
+              "제스프리 그린키위 7-12입(팩)"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115034331&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-d9a08856e4cf64c4fb75415486357c86": [
+          {
+            "source_name": "costco",
+            "source_record_key": "527204",
+            "source_titles": [
+              "제스프리 그린키위 10kg (65~78입)"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Zespri-Green-Kiwis-Large-10kg-6578ct/p/527204"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "03554735340b1d2f7f9ad1c07af8331837f6a56467875983a561fae985f87ca2",
+      "derived_alias_member_ids": [
+        "prod-4fd40cd666b05a55d7c65c812e78cd92",
+        "prod-703cdc8c1053d89d5fe5cc62f15b6950",
+        "prod-d9a08856e4cf64c4fb75415486357c86"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.miwon-seasoned-salt",
+      "canonical_product_id": "prod-0a81f25ac9c80174013f711d1a01cf8e",
+      "member_product_ids": [
+        "prod-0a81f25ac9c80174013f711d1a01cf8e",
+        "prod-60e94c39556a372584080766f4401773",
+        "prod-833085219f5e155be1cc2c75cfaf1209",
+        "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+      ],
+      "canonical_name": "미원 맛소금",
+      "brand": "대상",
+      "leaf": "food.seasonings.stock.seasoned_salt",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0a81f25ac9c80174013f711d1a01cf8e": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100379249",
+            "source_titles": [
+              "대상 미원 맛소금 250G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100379249&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-60e94c39556a372584080766f4401773": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "005193001",
+            "source_titles": [
+              "대상 미원 맛소금 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=005193001&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-833085219f5e155be1cc2c75cfaf1209": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006609049",
+            "source_titles": [
+              "미원 맛소금 250g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609049&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-b6c3a8e0d5f077ddee58bc8b6238eba1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "138360929",
+            "source_titles": [
+              "대상 미원맛소금 95G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=138360929&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "dcd021007c4ad82c9bec3e52466d3142600b226b5b0dc819890d991ef53213b4",
+      "derived_alias_member_ids": [
+        "prod-0a81f25ac9c80174013f711d1a01cf8e",
+        "prod-60e94c39556a372584080766f4401773",
+        "prod-833085219f5e155be1cc2c75cfaf1209",
+        "prod-b6c3a8e0d5f077ddee58bc8b6238eba1"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.cj-beef-dasida",
+      "canonical_product_id": "prod-0e69270363f05f41fb02504a457e6622",
+      "member_product_ids": [
+        "prod-0e69270363f05f41fb02504a457e6622",
+        "prod-53b8d0fda931f4dead841aa60652fb94"
+      ],
+      "canonical_name": "CJ 쇠고기다시다",
+      "brand": "CJ",
+      "leaf": "food.seasonings.stock.beef",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0e69270363f05f41fb02504a457e6622": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000054836",
+            "source_titles": [
+              "CJ 쇠고기다시다 300G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000054836&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-53b8d0fda931f4dead841aa60652fb94": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "100917297",
+            "source_titles": [
+              "CJ 쇠고기다시다 500G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=100917297&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6ede333ef29e2b4e35788754bad5ba6bb0943eddf253270786c4fb2b78a734da",
+      "derived_alias_member_ids": [
+        "prod-0e69270363f05f41fb02504a457e6622",
+        "prod-53b8d0fda931f4dead841aa60652fb94"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.lotte-mirim",
+      "canonical_product_id": "prod-13edc25c87c4fe64355f30bc1afe0524",
+      "member_product_ids": [
+        "prod-13edc25c87c4fe64355f30bc1afe0524",
+        "prod-8ee0e236356046baa89372bd2bcd00ed",
+        "prod-b9ddd994a7a7945be795002838096721"
+      ],
+      "canonical_name": "롯데칠성 미림",
+      "brand": "롯데칠성",
+      "leaf": "food.seasonings.stock.cooking_wine",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-13edc25c87c4fe64355f30bc1afe0524": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000033004325",
+            "source_titles": [
+              "미림 500ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000033004325&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-8ee0e236356046baa89372bd2bcd00ed": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000033004133",
+            "source_titles": [
+              "미림 900ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000033004133&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-b9ddd994a7a7945be795002838096721": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "005926408",
+            "source_titles": [
+              "롯데칠성 미림 900ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=005926408&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "33ecd0c8bb3641916c664970495f3f72933163646a4f60642614ef8c4d13b3f4",
+      "derived_alias_member_ids": [
+        "prod-13edc25c87c4fe64355f30bc1afe0524",
+        "prod-8ee0e236356046baa89372bd2bcd00ed",
+        "prod-b9ddd994a7a7945be795002838096721"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.daesang-fermented-miwon",
+      "canonical_product_id": "prod-1974fd4d946820a3323b68a11bbb4fe1",
+      "member_product_ids": [
+        "prod-1974fd4d946820a3323b68a11bbb4fe1",
+        "prod-55b7253c57c4293f6d203959f30c784d"
+      ],
+      "canonical_name": "대상 발효미원",
+      "brand": "대상",
+      "leaf": "food.seasonings.stock.umami",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1974fd4d946820a3323b68a11bbb4fe1": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125170172",
+            "source_titles": [
+              "대상 발효 미원 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125170172&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-55b7253c57c4293f6d203959f30c784d": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000014901619",
+            "source_titles": [
+              "발효미원 100g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000014901619&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "54b1885cf36b6d0d21b8ecd05314f9199a8fc1eaf45b1478c95a8c149db386d3",
+      "derived_alias_member_ids": [
+        "prod-1974fd4d946820a3323b68a11bbb4fe1",
+        "prod-55b7253c57c4293f6d203959f30c784d"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.cj-dasida-premium-gold",
+      "canonical_product_id": "prod-1bfd9ef4d01672912a130ae67d291038",
+      "member_product_ids": [
+        "prod-1bfd9ef4d01672912a130ae67d291038",
+        "prod-949e3a1715d468edce8a0ed13b273538"
+      ],
+      "canonical_name": "CJ 쇠고기다시다 명품골드",
+      "brand": "CJ",
+      "leaf": "food.seasonings.stock.beef",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1bfd9ef4d01672912a130ae67d291038": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "121952647",
+            "source_titles": [
+              "CJ 쇠고기다시다 명품골드 96G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=121952647&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-949e3a1715d468edce8a0ed13b273538": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124389612",
+            "source_titles": [
+              "CJ 쇠고기다시다 명품골드 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124389612&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c32aebe125c4881c345d81df1977e63901b6de573ec65385373495f226fae084",
+      "derived_alias_member_ids": [
+        "prod-1bfd9ef4d01672912a130ae67d291038",
+        "prod-949e3a1715d468edce8a0ed13b273538"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.cj-dadam-mapo",
+      "canonical_product_id": "prod-26f877c913dac13dd98465240c721d6a",
+      "member_product_ids": [
+        "prod-26f877c913dac13dd98465240c721d6a",
+        "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a"
+      ],
+      "canonical_name": "CJ 다담 마파두부 양념",
+      "brand": "CJ",
+      "leaf": "food.seasonings.sauces.mapo_tofu",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-26f877c913dac13dd98465240c721d6a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "127491215",
+            "source_titles": [
+              "씨제이 다담 마파두부 양념 150G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=127491215&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007617107",
+            "source_titles": [
+              "(냉장) CJ 백설 다담 마파두부 양념 (150G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007617107/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6b19717683bb85ab7174e3390393c25e093ced0460d0b63e1ca79f6d19af539f",
+      "derived_alias_member_ids": [
+        "prod-26f877c913dac13dd98465240c721d6a",
+        "prod-716f1fd2a61f5baa6ca4fc2dbb9cc23a"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.chungjungone-chef-chicken-stock",
+      "canonical_product_id": "prod-5400b18dd274163ebf1a5acfb00a990f",
+      "member_product_ids": [
+        "prod-5400b18dd274163ebf1a5acfb00a990f",
+        "prod-aea7409a56ddc50d331b1c28af4305e0"
+      ],
+      "canonical_name": "청정원 쉐프의 치킨스톡",
+      "brand": "청정원",
+      "leaf": "food.seasonings.stock.chicken",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5400b18dd274163ebf1a5acfb00a990f": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000018819263",
+            "source_titles": [
+              "쉐프의 치킨스톡 340g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000018819263&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-aea7409a56ddc50d331b1c28af4305e0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126712665",
+            "source_titles": [
+              "대상 청정원 쉐프의 치킨스톡 340G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126712665&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "86f26e0d6fcaa0bf90437ed5831d31218cab4664f99876f9961c4c33390ce4e3",
+      "derived_alias_member_ids": [
+        "prod-5400b18dd274163ebf1a5acfb00a990f",
+        "prod-aea7409a56ddc50d331b1c28af4305e0"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.sempio-yondu-soon",
+      "canonical_product_id": "prod-ad75a71c7d17efe3dce1688c3be17694",
+      "member_product_ids": [
+        "prod-ad75a71c7d17efe3dce1688c3be17694",
+        "prod-b8b9bf2be92dce5210706b3a50cd7a71"
+      ],
+      "canonical_name": "샘표 연두 순",
+      "brand": "샘표",
+      "leaf": "food.seasonings.sauces.liquid_seasoning",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-ad75a71c7d17efe3dce1688c3be17694": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "128172522",
+            "source_titles": [
+              "샘표 연두 순 500ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=128172522&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-b8b9bf2be92dce5210706b3a50cd7a71": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "113129716",
+            "source_titles": [
+              "샘표 연두 순 320G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=113129716&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "486bcdcd07f4c70bcdca5e3bb4f9355e5a9c87592b4d4ca17f1db4f70c126753",
+      "derived_alias_member_ids": [
+        "prod-ad75a71c7d17efe3dce1688c3be17694",
+        "prod-b8b9bf2be92dce5210706b3a50cd7a71"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.cj-dadam-snail-gangdoenjang-bibim",
+      "canonical_product_id": "prod-c2d6eedb8ee164b985473c73a8461a9a",
+      "member_product_ids": [
+        "prod-c2d6eedb8ee164b985473c73a8461a9a",
+        "prod-e113d40676dc3297e9ab74222d3fd696"
+      ],
+      "canonical_name": "CJ 다담 우렁강된장 비빔양념",
+      "brand": "CJ",
+      "leaf": "food.seasonings.sauces.gangdoenjang",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-c2d6eedb8ee164b985473c73a8461a9a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "105116704",
+            "source_titles": [
+              "씨제이 다담 우렁강된장 비빔 양념 140G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=105116704&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e113d40676dc3297e9ab74222d3fd696": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007059624",
+            "source_titles": [
+              "CJ 백설 다담 우렁강된장 비빔양념 (140G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007059624/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "0cbc4bdc50d60ea8438461d7cc9ae20dd1bfcffbb85eb174bb08f152d6465e51",
+      "derived_alias_member_ids": [
+        "prod-c2d6eedb8ee164b985473c73a8461a9a",
+        "prod-e113d40676dc3297e9ab74222d3fd696"
+      ]
+    },
+    {
+      "key": "reviewed.seasonings.ottogi-old-roasted-sesame",
+      "canonical_product_id": "prod-fbabaac452f71c82b8e31987a0cf65d9",
+      "member_product_ids": [
+        "prod-fbabaac452f71c82b8e31987a0cf65d9",
+        "prod-fe3193079d7edee81eb657a5d05e0d30"
+      ],
+      "canonical_name": "오뚜기 옛날 볶음 참깨",
+      "brand": "오뚜기",
+      "leaf": "food.seasonings.spices.roasted_sesame",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-fbabaac452f71c82b8e31987a0cf65d9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "010033580",
+            "source_titles": [
+              "오뚜기 옛날 볶음 참깨 200G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=010033580&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fe3193079d7edee81eb657a5d05e0d30": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102698219",
+            "source_titles": [
+              "오뚜기 옛날 볶음 참깨 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102698219&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "f7d392637f9528960a16aaf3b6e07fbc0b6eae89fb73a45c638dc6397471b8fa",
+      "derived_alias_member_ids": [
+        "prod-fbabaac452f71c82b8e31987a0cf65d9",
+        "prod-fe3193079d7edee81eb657a5d05e0d30"
+      ]
+    },
+    {
+      "key": "reviewed.baked_snacks.crown-sando-strawberry",
+      "canonical_product_id": "prod-08f9ba11ba1a7fd7290795775e827619",
+      "member_product_ids": [
+        "prod-08f9ba11ba1a7fd7290795775e827619",
+        "prod-e74a455653d05ebfd1c0d5b61b0e6590"
+      ],
+      "canonical_name": "크라운산도 딸기",
+      "brand": "크라운산도",
+      "leaf": "food.snacks.baked.sandwich",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-08f9ba11ba1a7fd7290795775e827619": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "107228321",
+            "source_titles": [
+              "크라운산도 딸기 323G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=107228321&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e74a455653d05ebfd1c0d5b61b0e6590": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "125250884",
+            "source_titles": [
+              "크라운산도 딸기 161G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=125250884&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "436ff07545c49d16c3e3a9015e3fd72eb299ee699d40fd1ac5a8701fe8e25fef",
+      "derived_alias_member_ids": [
+        "prod-08f9ba11ba1a7fd7290795775e827619",
+        "prod-e74a455653d05ebfd1c0d5b61b0e6590"
+      ]
+    },
+    {
+      "key": "reviewed.baked_snacks.haitai-sand-ace-cream-latte",
+      "canonical_product_id": "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+      "member_product_ids": [
+        "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+        "prod-660c76661f8772b142e434f4c7103010"
+      ],
+      "canonical_name": "해태 샌드에이스 크림라떼",
+      "brand": "해태",
+      "leaf": "food.snacks.baked.sandwich",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000872931367",
+            "source_titles": [
+              "신상 해태 샌드에이스 크림라떼맛 204g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000872931367&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-660c76661f8772b142e434f4c7103010": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071433664",
+            "source_titles": [
+              "해태 샌드에이스 크림라떼 204G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071433664&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5374e4dd9a1a869f320c90e3ddcf040b4f98ea251dad7aede7facc6e8e6dfd8d",
+      "derived_alias_member_ids": [
+        "prod-1d9df1abe4ea0ea748d0feaeef4a3b1c",
+        "prod-660c76661f8772b142e434f4c7103010"
+      ]
+    },
+    {
+      "key": "reviewed.baked_snacks.lotte-sand-original",
+      "canonical_product_id": "prod-2724e231446934d9073674a1b1cbb659",
+      "member_product_ids": [
+        "prod-2724e231446934d9073674a1b1cbb659",
+        "prod-fa47f64c129a78e2fc1e4336fff4e1ff"
+      ],
+      "canonical_name": "롯데샌드 오리지날",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.sandwich",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-2724e231446934d9073674a1b1cbb659": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126117287",
+            "source_titles": [
+              "롯데 샌드 오리지날 315G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126117287&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fa47f64c129a78e2fc1e4336fff4e1ff": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "126567030",
+            "source_titles": [
+              "롯데샌드 오리지날 79G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=126567030&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "376c2db2373b04d358ea5b76574aedbc8226c4a98b402d55e504e4dccc8aac8f",
+      "derived_alias_member_ids": [
+        "prod-2724e231446934d9073674a1b1cbb659",
+        "prod-fa47f64c129a78e2fc1e4336fff4e1ff"
+      ]
+    },
+    {
+      "key": "reviewed.frozen_dessert.maeil-sangha-freeze-chocolate",
+      "canonical_product_id": "prod-5093d125687d998b7cf4b259448af522",
+      "member_product_ids": [
+        "prod-5093d125687d998b7cf4b259448af522",
+        "prod-e4892efd298265a372ea6a4177dbf282"
+      ],
+      "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 초코",
+      "brand": "매일유업 상하목장",
+      "leaf": "food.frozen.dessert.tube",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-5093d125687d998b7cf4b259448af522": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801121034927",
+            "source_titles": [
+              "매일유업 상하목장 얼려먹는 아이스크림 초코 (85ML*6)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801121034927/details"
+            ]
+          }
+        ],
+        "prod-e4892efd298265a372ea6a4177dbf282": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000314928679",
+            "source_titles": [
+              "얼려먹는 아이스크림 초코 510ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "9b559764780c9739375da5d8efae236f6b725723af35f8d00758188ed1818b0b",
+      "derived_alias_member_ids": [
+        "prod-5093d125687d998b7cf4b259448af522",
+        "prod-e4892efd298265a372ea6a4177dbf282"
+      ]
+    },
+    {
+      "key": "reviewed.frozen_dessert.maeil-sangha-freeze-milk",
+      "canonical_product_id": "prod-7ae4e713bf153946cc5d526c713d719d",
+      "member_product_ids": [
+        "prod-7ae4e713bf153946cc5d526c713d719d",
+        "prod-7d45d8a7ad884768729d41bcb4ea3729"
+      ],
+      "canonical_name": "매일유업 상하목장 얼려먹는 아이스크림 밀크",
+      "brand": "매일유업 상하목장",
+      "leaf": "food.frozen.dessert.tube",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7ae4e713bf153946cc5d526c713d719d": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801121031667",
+            "source_titles": [
+              "매일유업 상하목장 얼려먹는 아이스크림 밀크 (85ML*6)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801121031667/details"
+            ]
+          }
+        ],
+        "prod-7d45d8a7ad884768729d41bcb4ea3729": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000065464261",
+            "source_titles": [
+              "얼려먹는 아이스크림 밀크 510ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "fcf8ae3503cf98e359c3d4ec503b8ded0d26f6cf5247504f238e6b4ae70b7bc9",
+      "derived_alias_member_ids": [
+        "prod-7ae4e713bf153946cc5d526c713d719d",
+        "prod-7d45d8a7ad884768729d41bcb4ea3729"
+      ]
+    },
+    {
+      "key": "reviewed.baked_snacks.lotte-lotsand-pineapple",
+      "canonical_product_id": "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+      "member_product_ids": [
+        "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+        "prod-8a3d64168691b5825461f3f8956c71a0"
+      ],
+      "canonical_name": "롯데 롯샌 파인애플",
+      "brand": "롯데",
+      "leaf": "food.snacks.baked.sandwich",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7fcc9abe16128ac4f1a60904c1fd062b": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000264615605",
+            "source_titles": [
+              "롯데 롯샌파인애플315g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000264615605&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-8a3d64168691b5825461f3f8956c71a0": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801062521425",
+            "source_titles": [
+              "롯데 롯샌 파인애플 (79G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801062521425/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "53550d4ed6d3301de23bc0bcace480c6fbd9728de41125846b926d35b318eb54",
+      "derived_alias_member_ids": [
+        "prod-7fcc9abe16128ac4f1a60904c1fd062b",
+        "prod-8a3d64168691b5825461f3f8956c71a0"
+      ]
+    },
+    {
+      "key": "reviewed.supplements.promega-omega3-triple-capsule",
+      "canonical_product_id": "prod-0dee33f6811ccaece9c4ba6124a5c074",
+      "member_product_ids": [
+        "prod-0dee33f6811ccaece9c4ba6124a5c074",
+        "prod-5a200a18e264b8ea237c1be9dd3d4b9e"
+      ],
+      "canonical_name": "종근당건강 프로메가 오메가3 트리플",
+      "brand": "종근당건강",
+      "leaf": "food.supplements.functional.omega3",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0dee33f6811ccaece9c4ba6124a5c074": [
+          {
+            "source_name": "costco",
+            "source_record_key": "621380",
+            "source_titles": [
+              "종근당건강프로메가오메가3 트리플/654mg x 60캡슐x 2"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/HealthSupplement/Omega-3Krill-Oil/Chongkundang-Promega-Omega-3-654mg-x-60-x-2/p/621380"
+            ]
+          }
+        ],
+        "prod-5a200a18e264b8ea237c1be9dd3d4b9e": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000506686471",
+            "source_titles": [
+              "프로메가 오메가3 트리플 654mg*60캡슐"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000506686471&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "4b5fc7f5d77ea14021a6dbbd81e298b411a7535fda2b6614ae1c5a3e9c8279d6",
+      "derived_alias_member_ids": [
+        "prod-0dee33f6811ccaece9c4ba6124a5c074",
+        "prod-5a200a18e264b8ea237c1be9dd3d4b9e"
+      ]
+    },
+    {
+      "key": "reviewed.supplements.kgc-red-ginseng-wonlyeok",
+      "canonical_product_id": "prod-41b1e2062a75edfb63d2e066a74be351",
+      "member_product_ids": [
+        "prod-41b1e2062a75edfb63d2e066a74be351",
+        "prod-505f00b1227b9c19765439547357a795"
+      ],
+      "canonical_name": "정관장 홍삼원력",
+      "brand": "정관장",
+      "leaf": "food.supplements.extract.red_ginseng",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-41b1e2062a75edfb63d2e066a74be351": [
+          {
+            "source_name": "costco",
+            "source_record_key": "520714",
+            "source_titles": [
+              "정관장 홍삼원력 50ml x 30포"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/KGC-Red-Ginseng-Power-Drink-50ml-x-30/p/520714"
+            ]
+          }
+        ],
+        "prod-505f00b1227b9c19765439547357a795": [
+          {
+            "source_name": "costco",
+            "source_record_key": "599847",
+            "source_titles": [
+              "정관장 홍삼 원력 50ml x 30 x5"
+            ],
+            "source_urls": [
+              "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/KGC-Red-Ginseng-Power-Drink-50ml-x-30-x5/p/599847"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5d2c2aea65ac7274cfde92ac96c288cf7629ed1c385db769ee53146e6008a92e",
+      "derived_alias_member_ids": [
+        "prod-41b1e2062a75edfb63d2e066a74be351",
+        "prod-505f00b1227b9c19765439547357a795"
+      ]
     }
   ],
   "leaf_reviews": [
@@ -23467,6 +24397,51 @@
       ],
       "reason": "Explicit source stir-fried or aged kimchi form; preserve narrower maker recipe identity and all existing package quantities/offer uncertainty.",
       "evidence_sha256": "846cbbc76b0340dddd2cc9690c5b72a5146ecf8da81ae239f5fc22a7b80fdb6a"
+    },
+    {
+      "product_id": "prod-e113d40676dc3297e9ab74222d3fd696",
+      "old_leaf": "food.seasonings.sauces.bibim",
+      "new_leaf": "food.seasonings.sauces.gangdoenjang",
+      "source_name": "lottemart",
+      "source_record_key": "8801007059624",
+      "source_titles": [
+        "CJ 백설 다담 우렁강된장 비빔양념 (140G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007059624/details"
+      ],
+      "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+      "evidence_sha256": "cfab4f6edebb403f03af06b1a1bea8df7dce1986e5e597ff34f1383d09a24e35"
+    },
+    {
+      "product_id": "prod-e4892efd298265a372ea6a4177dbf282",
+      "old_leaf": "food.frozen.dessert.ice_bar",
+      "new_leaf": "food.frozen.dessert.tube",
+      "source_name": "emart",
+      "source_record_key": "1000314928679",
+      "source_titles": [
+        "얼려먹는 아이스크림 초코 510ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000314928679&siteNo=6001&salestrNo=2037"
+      ],
+      "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+      "evidence_sha256": "3f3f263a3ba6b934d3d44155a9a818065638732bc0ffef8296aa48450f09c827"
+    },
+    {
+      "product_id": "prod-7d45d8a7ad884768729d41bcb4ea3729",
+      "old_leaf": "food.frozen.dessert.ice_bar",
+      "new_leaf": "food.frozen.dessert.tube",
+      "source_name": "emart",
+      "source_record_key": "1000065464261",
+      "source_titles": [
+        "얼려먹는 아이스크림 밀크 510ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000065464261&siteNo=6001&salestrNo=2037"
+      ],
+      "reason": "Literal snail gangdoenjang recipe or exact same maker/flavour freeze-at-home line with source-specific tube-icecream shelf; retain original specification and offer uncertainty.",
+      "evidence_sha256": "7fa89719dbd3c68a5b9f2098ab7493c200f26069d36198b42a974030a85b2b78"
     }
   ]
 }
