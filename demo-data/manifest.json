@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 97,
-  "version": "2026-10-06-catalog97-battery395",
-  "source_code_base": "c68b192c57e98d25b09893095b38e5699cebec90",
+  "catalog_revision": 98,
+  "version": "2026-10-06-catalog98-category400",
+  "source_code_base": "d8f739a1beb0b34b54edab088b0309a134f35a05",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized catalog/admin-update97 and consistent publicsnapshot; Reviewed battery source-role correction: two10+10pack count-unit unverified physicalNULL, one explicit8+8입 fixed16 cells; literal specification and observed quote/time retained without inferred whole-pack purchase promotion. Seed-aligned NULL IDs repaired separately after96, original and intermediate IDs retained inactive. Existing492 groups1191 IDs and28 leaf reviews unchanged; independent source variants and full timed history retained. Original9115 event/quote/raw/time and separateexternalhotdeal7 unchanged; accounts/sessions empty. Initial98 paused, historical certificate unchanged.",
+  "data_scope": "Sanitized complete catalog/admin-update98/publicsnapshot. Six source-bound existing product category refinements and three explicit crop sibling leaves under unchanged FreshVegetables ancestor; immutable431 original decisions preserved with hash-pinned derived specificity lineage. All original9115 event/quote/raw/time/variants/listings and492groups1191oldIDs retained;34source-leaf reviews. Community authenticated own-vote cold selection restored with no accounts shipped. Separate genuineexternalhotdeal7 unchanged, initial98 paused.",
   "files": {
     "admin.sqlite": {
-      "sha256": "6f0d0062fd6c9545786fb10f6389f0805e5c53c0302a37cf2ac43fe8482689cb",
-      "bytes": 62705664,
+      "sha256": "d903f17ac6d844c4612d155a9b33befd6611e3121d596ce2b6bc8513cd05d9c2",
+      "bytes": 62709760,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -53,8 +53,8 @@
         "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1384,
-        "keywords": 1211,
+        "unified_categories": 1387,
+        "keywords": 1214,
         "product_keywords": 0,
         "matching_entries": 6371,
         "product_match_rules": 0,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 72,
+        "catalog_sync_log": 73,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "2792de84e9032ffa9b82952bc071c7b03dcb618d426a1d7c6d61e53894a8de92",
-      "archive_bytes": 8970131
+      "archive_sha256": "6278128aa3aa300c1429b37ba41f7eed4932275a76c31f643168440c552496e3",
+      "archive_bytes": 8972845
     },
     "public_snapshot.sqlite": {
-      "sha256": "b105163d5e56eacd80a0b33eb0922c96d62f08c4bb8c613763bf3eefa75cd971",
-      "bytes": 58277888,
+      "sha256": "654d5ee4a5e049642c5a5d8245202cc440e75abb380c03b2812f9fa00dd2ee79",
+      "bytes": 58273792,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -104,8 +104,8 @@
         "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1384,
-        "keywords": 1211,
+        "unified_categories": 1387,
+        "keywords": 1214,
         "product_keywords": 0,
         "mart_category_mappings": 506,
         "baseline_prices": 0,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "bcb59b79b510be90825a6ec204c4141a4a2d1fece8c550d69f7ba7c3e2f727ca",
-      "archive_bytes": 8325400
+      "archive_sha256": "bff354f8585812e94f8c4476a111b4a7be3bfe7a3e9a6b74955b004b2180f784",
+      "archive_bytes": 8327664
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "f039767ee85c8a8b12509755532288b74d9269ca849c07bb0d6919dd50e6a6eb",
-    "packages/shared/core/reviewed_catalog_groups.json": "60cf89372b8a6ae784ed7babecb58fb238c87afbc27b68014b46393017fd0527",
+    "packages/shared/core/reviewed_catalog_groups.json": "20b4919eec421e7b988e1012c5e27b2038c816e30826c74d9827b02666373456",
     "packages/shared/core/catalog_quantity.py": "0b8293d5d2f27361ecb3e4761d13f54707eb1d1fce26b0fcb37a69d6aa6abdbb",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
@@ -175,18 +175,19 @@
     "packages/web-frontend/src/utils/productDecision.js": "7a13ab81d7c23d4037b0b9fe8921e0641f9cfc4a8003d004573b8eee89eced46",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "5ec6e7c3249ce9467db7b654de84eb0cea9e31718edf231308029f630d9a29fd",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
-    "packages/db-admin/backend/services/initial_taxonomy.py": "70fb03031ca0344d4b2a94929a33243e90850f58558806ecc078c6992bcac8ff",
+    "packages/db-admin/backend/services/initial_taxonomy.py": "fc2eb3aa589ee0d3a57630c4d533f055677ee6f7299fdaf05d13ea909a0fbaf1",
     "packages/shared/core/reviewed_content_quantities.py": "c4ea3566b9b1c957c5227ad750572d2f7dd41952eb237ec143696a7f4b687c11",
     "packages/shared/core/reviewed_source_evidence.py": "e164c97de38aa9dba8860269e2f72d48b45569b16974d3e9b4b22f1694b95ad9",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
     "packages/web-api/backend/api/routes/admin_remote.py": "2d179b6043b978b2c5ed85b650f108b9c9bf463a1b2232177c7cc14728acd4cb",
     "packages/web-api/backend/api/routes/search.py": "0a18c5f4078c3d414db52a444edf5d31689025d69851ca30eef59760a391b294",
     "packages/web-frontend/src/components/search/SearchAutocomplete.jsx": "db8713b13bd1978b4073c53feb6487f8e18f3e1d58b06106761bbb4558083dfc",
-    "packages/web-frontend/src/pages/Community/CommunityPage.jsx": "2aec6684305f3df46c947b9e012e1c43cb8ef8e5bfa87ef995bdc9bb5a747259",
+    "packages/web-frontend/src/pages/Community/CommunityPage.jsx": "2ad507c6243cff9cd1a003e87e67a3d39f2f1dac3f7f6dce1347f224a1878cc8",
     "packages/web-frontend/src/pages/Search/SearchPage.jsx": "487cb3e0daeb01ae9b94195a67940af6f7785e56bc719773ee0b5ee8a33cd5e6",
     "packages/web-frontend/src/services/searchService.js": "9311466ec0dde9babcb0482124486a30a0262e384d35a9a7b355aef8e7be7450",
     "start-all.ps1": "ce2fa07ade98fa7063b380ade5ccfdf11a4f451f3439269e1875252cf4bffa6f",
-    "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129"
+    "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129",
+    "packages/web-api/backend/api/routes/community.py": "a7aeedbaf3f1c0f917a464dcdc00d3a7b0292e46c684f79911b6a05807f4f10c"
   },
   "catalog_updates": [
     {
@@ -244,13 +245,22 @@
       "base_catalog_revision": 96,
       "reviewed_catalog_revision": 97,
       "scope": "Two physicalNULL IDs aligned with existing seed nonmeasured-listing namespace; original and intermediate IDs retained inactive. No quantity, price, offer, event/time/raw/account changes."
+    },
+    {
+      "path": "demo-data/updates/catalog97-to98.json",
+      "sha256": "ff72f90f6fb4d2a579ba882b22465e260cd49b29eff4334aa7e06dac19072127",
+      "bytes": 19880,
+      "base_catalog_revision": 97,
+      "reviewed_catalog_revision": 98,
+      "scope": "Six source-bound category refinements, three crop sibling leaves/keywords; no quantity,group,event,quote,time,source,account changes. Original431 source decisions untouched; officialpreview/apply/replay/publish98 verified."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "60cf89372b8a6ae784ed7babecb58fb238c87afbc27b68014b46393017fd0527",
-    "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required"
+    "source_registry_sha256": "20b4919eec421e7b988e1012c5e27b2038c816e30826c74d9827b02666373456",
+    "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
+    "leaf_reviews": 34
   }
 }

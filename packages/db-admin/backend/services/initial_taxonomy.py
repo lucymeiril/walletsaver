@@ -671,6 +671,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("radish", "무", ""), ("zucchini", "애호박", "애호박"),
         ("chives", "부추", "", ""),
         ("lettuce", "양상추", ""), ("broccoli", "브로콜리", ""),
+        # Literal crop leaves; source-bound reviews assign them, not broad shelves.
+        ("romaine", "로메인", ""), ("butterhead", "버터헤드레터스", ""),
+        ("eolgali", "얼갈이", ""),
     )),
     # Dry/frozen processing wins over an unreliable Fresh-Foods source path.
     # These leaves and search terms add no automatic source/name mappings.

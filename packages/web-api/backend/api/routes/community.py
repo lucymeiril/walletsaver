@@ -15,7 +15,7 @@ from pydantic import Field
 from sqlalchemy import case, desc, func, text
 from sqlalchemy.orm import joinedload, selectinload
 
-from api.middleware.auth import require_auth
+from api.middleware.auth import get_current_user, require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import CommentCreate, PostCreate, PostUpdate, VoteRequest
 from services.board_storage import (
@@ -94,7 +94,7 @@ def _raise_if_banned(session, user: dict) -> None:
         raise HTTPException(status_code=403, detail="커뮤니티 이용이 제한된 계정입니다")
 
 
-def _post_to_dict(post: PostModel) -> dict:
+def _post_to_dict(post: PostModel, user_id: int | None = None) -> dict:
     hot = sum(1 for vote in post.votes if vote.vote_type == DBVoteType.HOT)
     not_ = sum(1 for vote in post.votes if vote.vote_type == DBVoteType.NOT)
     comments_count = sum(1 for comment in post.comments if not comment.is_deleted)
@@ -114,6 +114,10 @@ def _post_to_dict(post: PostModel) -> dict:
         "comments_count": comments_count,
         "hot_votes": hot,
         "not_votes": not_,
+        # Totals cannot identify a caller's selection. Only the validated
+        # account subject may select its own existing vote, including cold GETs.
+        "user_vote": next((vote.vote_type.value for vote in post.votes
+                           if user_id is not None and vote.user_id == user_id), None),
         "price": post.deal_price,
         "original_price": post.original_price,
         "url": post.deal_url,
@@ -143,6 +147,7 @@ async def list_posts(
     per_page: int = Query(20, ge=1, le=100),
     q: str | None = Query(None, description="제목/내용 검색"),
     partition_pinned: bool = Query(False, description="핫딜 인기글을 일반 목록에서 분리"),
+    user: dict | None = Depends(get_current_user),
 ):
     factory = _session_factory()
     with factory() as session:
@@ -216,8 +221,8 @@ async def list_posts(
 
         posts = query.offset((page - 1) * per_page).limit(per_page).all()
         return CommunityListResponse(
-            data=[_post_to_dict(post) for post in posts],
-            pinned_posts=[_post_to_dict(post) for post in pinned],
+            data=[_post_to_dict(post, int(user["id"]) if user else None) for post in posts],
+            pinned_posts=[_post_to_dict(post, int(user["id"]) if user else None) for post in pinned],
             meta=PaginationMeta(
                 page=page,
                 per_page=per_page,
@@ -258,11 +263,11 @@ async def create_post(body: PostCreate, user: dict = Depends(require_auth)):
         session.add(post)
         session.commit()
         session.refresh(post)
-        return ApiResponse(data=_post_to_dict(post))
+        return ApiResponse(data=_post_to_dict(post, int(user["id"])))
 
 
 @router.get("/{post_id}")
-async def get_post(post_id: int):
+async def get_post(post_id: int, user: dict | None = Depends(get_current_user)):
     factory = _session_factory()
     with factory() as session:
         post = session.get(PostModel, post_id)
@@ -271,7 +276,7 @@ async def get_post(post_id: int):
         post.view_count += 1
         session.commit()
         session.refresh(post)
-        return ApiResponse(data=_post_to_dict(post))
+        return ApiResponse(data=_post_to_dict(post, int(user["id"]) if user else None))
 
 
 @router.put("/{post_id}")
@@ -307,7 +312,7 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
         post.updated_at = datetime.utcnow()
         session.commit()
         session.refresh(post)
-        return ApiResponse(data=_post_to_dict(post))
+        return ApiResponse(data=_post_to_dict(post, int(user["id"])))
 
 
 @router.delete("/{post_id}")

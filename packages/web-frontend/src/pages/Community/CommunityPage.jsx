@@ -671,10 +671,23 @@ const PostDetailModal = React.memo(function PostDetailModal({
   const [commentsError, setCommentsError] = useState(false);
   const commentsControllerRef = useRef(null);
   const mutationRef = useRef(false);
-  const [vote, setVote] = useState(null);
+  const { isLoggedIn, addToast } = useStore();
+  const voteSubject = isLoggedIn && user?.id != null ? String(user.id) : null;
+  const previousVoteSubject = useRef(voteSubject);
+  const [voteState, setVoteState] = useState(() => ({
+    subject: voteSubject,
+    value: post.user_vote === 'hot' || post.user_vote === 'not' ? post.user_vote : null,
+  }));
+  const vote = voteSubject !== null && voteState.subject === voteSubject ? voteState.value : null;
   const [hotVotes, setHotVotes] = useState(post.hotVotes || post.hot_votes || 0);
   const [coldVotes, setColdVotes] = useState(post.coldVotes || post.not_votes || 0);
-  const { isLoggedIn, addToast } = useStore();
+
+  useEffect(() => {
+    if (previousVoteSubject.current !== voteSubject) {
+      previousVoteSubject.current = voteSubject;
+      setVoteState({ subject: voteSubject, value: null });
+    }
+  }, [voteSubject]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -746,13 +759,17 @@ const PostDetailModal = React.memo(function PostDetailModal({
       return;
     }
     const voteType = type === 'hot' ? 'hot' : 'not';
+    const requestedSubject = voteSubject;
     mutationRef.current = true;
     try {
       const response = await api.post(`/api/posts/${post.id}/vote`, { vote_type: voteType });
       const result = await response.json();
       setHotVotes(result.data.hot_votes);
       setColdVotes(result.data.not_votes);
-      setVote(result.data.user_vote);
+      setVoteState({
+        subject: requestedSubject,
+        value: result.data.user_vote === 'hot' || result.data.user_vote === 'not' ? result.data.user_vote : null,
+      });
       onPostUpdate?.(post.id, {
         hotVotes: result.data.hot_votes,
         coldVotes: result.data.not_votes,
@@ -832,6 +849,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
             <div className={s.voteSection}>
               <button
                 className={`${s.voteBtn} ${s.voteHot} ${vote === 'hot' ? s.voteActive : ''}`}
+                aria-pressed={vote === 'hot'}
                 onClick={() => handleVote('hot')}
                 style={vote === 'hot' ? { background: 'rgba(248,113,113,.12)' } : {}}
               >
@@ -839,6 +857,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
               </button>
               <button
                 className={`${s.voteBtn} ${s.voteCold} ${vote === 'not' ? s.voteActive : ''}`}
+                aria-pressed={vote === 'not'}
                 onClick={() => handleVote('cold')}
                 style={vote === 'not' ? { background: 'rgba(56,189,248,.12)' } : {}}
               >

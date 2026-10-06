@@ -1,0 +1,468 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation400-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "food.produce.vegetables.butterhead",
+      "parent_id": "food.produce.vegetables",
+      "slug": "butterhead",
+      "name_ko": "버터헤드레터스",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 3
+    },
+    {
+      "id": "food.produce.vegetables.eolgali",
+      "parent_id": "food.produce.vegetables",
+      "slug": "eolgali",
+      "name_ko": "얼갈이",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 4
+    },
+    {
+      "id": "food.produce.vegetables.romaine",
+      "parent_id": "food.produce.vegetables",
+      "slug": "romaine",
+      "name_ko": "로메인",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 5
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1212,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "버터헤드레터스",
+      "synonyms": [],
+      "unified_category_id": "food.produce.vegetables.butterhead"
+    },
+    {
+      "id": 1213,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "얼갈이",
+      "synonyms": [],
+      "unified_category_id": "food.produce.vegetables.eolgali"
+    },
+    {
+      "id": 1214,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "로메인",
+      "synonyms": [],
+      "unified_category_id": "food.produce.vegetables.romaine"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-4755f2e7fcd84c341a86e166f64d27f3",
+      "unified_category_id": "food.produce.vegetables.romaine",
+      "category_id": null,
+      "canonical_name": "무농약미니로메인10입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "로메인"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+            "raw_record_ids": [
+              "ingestion:47:78"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "694988"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "로메인"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-4755f2e7fcd84c341a86e166f64d27f3",
+          "old_leaf": "food.produce.vegetables.leaf",
+          "new_leaf": "food.produce.vegetables.romaine",
+          "source_name": "costco",
+          "source_record_key": "694988",
+          "source_titles": [
+            "무농약미니로메인10입"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Mini-Romaine-10ea/p/694988"
+          ],
+          "reason": "Literal named raw crop/declared mixed vegetable composition refines browsing leaf under unchanged FreshVegetables ancestor. Historical wrap-use classification is not declared erroneous; no producer/SKU grouping, quantity/cultivar/origin inference. Complete existing4Butterhead+5MiniRomaine vector remains unchanged independently of classification.",
+          "original_explicit_decision": {
+            "number": 197,
+            "file_sha256": "c5dcabdf84f4d69e75fefabd687edecdff97f0b2636da370958be97f170e67f6",
+            "leaf": "food.produce.vegetables.leaf",
+            "status": "immutable_original_retained_derived_crop_exploration_refinement"
+          },
+          "evidence_sha256": "e5ca9cb79d78ffab237dd78f44fc31933911c891de16e3d2c02ac8226a2274c9"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h12/haf/467018813014046.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-579feda38c6c6bc781eacf520fb7c6a6",
+      "unified_category_id": "food.produce.vegetables.butterhead",
+      "category_id": null,
+      "canonical_name": "무농약버터헤드레터스 8입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "버터헤드레터스"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+            "raw_record_ids": [
+              "ingestion:47:80"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "694987"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "버터헤드레터스"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-579feda38c6c6bc781eacf520fb7c6a6",
+          "old_leaf": "food.produce.vegetables.leaf",
+          "new_leaf": "food.produce.vegetables.butterhead",
+          "source_name": "costco",
+          "source_record_key": "694987",
+          "source_titles": [
+            "무농약버터헤드레터스 8입"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Butterhead-Lettuce-8ea/p/694987"
+          ],
+          "reason": "Literal named raw crop/declared mixed vegetable composition refines browsing leaf under unchanged FreshVegetables ancestor. Historical wrap-use classification is not declared erroneous; no producer/SKU grouping, quantity/cultivar/origin inference. Complete existing4Butterhead+5MiniRomaine vector remains unchanged independently of classification.",
+          "original_explicit_decision": {
+            "number": 196,
+            "file_sha256": "c5dcabdf84f4d69e75fefabd687edecdff97f0b2636da370958be97f170e67f6",
+            "leaf": "food.produce.vegetables.leaf",
+            "status": "immutable_original_retained_derived_crop_exploration_refinement"
+          },
+          "evidence_sha256": "a8ab0f755d122f853a0738cf2e6b9c5444f8576d20083c37fd6f111303c776ee"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hd2/h8c/467018810327070.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-95a0f119e46e30545696da74f21e3e74",
+      "unified_category_id": "food.produce.vegetables.eolgali",
+      "category_id": null,
+      "canonical_name": "얼갈이(국산/봉)",
+      "brand": "얼갈이(국산/봉)",
+      "aliases": [],
+      "keywords": [
+        "얼갈이"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:3:21",
+              "ingestion:52:61"
+            ],
+            "source_ingestion_ids": [
+              3,
+              52
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "103628861"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          3,
+          52
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "얼갈이"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-95a0f119e46e30545696da74f21e3e74",
+          "old_leaf": "food.produce.vegetables.napa_cabbage",
+          "new_leaf": "food.produce.vegetables.eolgali",
+          "source_name": "homeplus",
+          "source_record_key": "103628861",
+          "source_titles": [
+            "얼갈이(국산/봉)"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=103628861&storeType=HYPER"
+          ],
+          "reason": "Literal named raw crop/declared mixed vegetable composition refines browsing leaf under unchanged FreshVegetables ancestor. Historical wrap-use classification is not declared erroneous; no producer/SKU grouping, quantity/cultivar/origin inference. Complete existing4Butterhead+5MiniRomaine vector remains unchanged independently of classification.",
+          "evidence_sha256": "d585e257f12d33896c446efab16af2269bb45cfe24129068440ee7beb8a36ef9"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-995a92c6b59a43fd8f03cfb236e55b8c",
+      "unified_category_id": "food.produce.vegetables.romaine",
+      "category_id": null,
+      "canonical_name": "포기 로메인 (200g)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "로메인"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+            "raw_record_ids": [
+              "ingestion:79:48"
+            ],
+            "source_ingestion_ids": [
+              79
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000632832906"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 전체 저장 관측의 구체적인 쌈채소 원물 이름과 신선식품 원본 문맥을 개별 대조. 가공음료·반려동물·혼합선물·행사모음전과 구분. 산지·품종·브랜드가 다른 listing을 상품군으로 병합하지 않으며 규격 검증은 원본대로 유지.",
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          79
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "로메인"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-995a92c6b59a43fd8f03cfb236e55b8c",
+          "old_leaf": "food.produce.vegetables.leaf",
+          "new_leaf": "food.produce.vegetables.romaine",
+          "source_name": "emart",
+          "source_record_key": "1000632832906",
+          "source_titles": [
+            "포기 로메인 (200g)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000632832906&siteNo=7009&salestrNo=2551"
+          ],
+          "reason": "Literal named raw crop/declared mixed vegetable composition refines browsing leaf under unchanged FreshVegetables ancestor. Historical wrap-use classification is not declared erroneous; no producer/SKU grouping, quantity/cultivar/origin inference. Complete existing4Butterhead+5MiniRomaine vector remains unchanged independently of classification.",
+          "original_explicit_decision": {
+            "number": 194,
+            "file_sha256": "c5dcabdf84f4d69e75fefabd687edecdff97f0b2636da370958be97f170e67f6",
+            "leaf": "food.produce.vegetables.leaf",
+            "status": "immutable_original_retained_derived_crop_exploration_refinement"
+          },
+          "evidence_sha256": "92fb7fced6f477f4dc16f7973021ef514cb52618149e966b9ef9014c72453a70"
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/06/29/83/item/1000632832906_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b45a11d6083a4e8e8d7ec4f921898adf",
+      "unified_category_id": "food.snacks.assortments.snacks",
+      "category_id": null,
+      "canonical_name": "덴로쿠 오이리 스낵믹스 14봉 294G",
+      "brand": "덴로쿠",
+      "aliases": [],
+      "keywords": [
+        "스낵모음"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:19:76",
+              "ingestion:69:24"
+            ],
+            "source_ingestion_ids": [
+              19,
+              69
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "122285997"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          19,
+          69
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "스낵모음"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b45a11d6083a4e8e8d7ec4f921898adf",
+          "old_leaf": "food.snacks.assortments.savory",
+          "new_leaf": "food.snacks.assortments.snacks",
+          "source_name": "homeplus",
+          "source_record_key": "122285997",
+          "source_titles": [
+            "덴로쿠 오이리 스낵믹스 14봉 294G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=122285997&storeType=HYPER"
+          ],
+          "reason": "Literal mixed snack and native fried-snack shelf establish mixed snacks. Salty flavour is not declared by source; no implied nuts/seafood recipe, identity, quantity or producer inference. Preserve294g variant and original14봉 literal/9900 quote/time.",
+          "evidence_sha256": "b7151570dc0b88970c8392af6d3e1938465e0b7d07e50a2c6ca7b20237de879d"
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f7097954f1977587247836fc65932678",
+      "unified_category_id": "food.produce.vegetables.mixed",
+      "category_id": null,
+      "canonical_name": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "모둠채소"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:47:79"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "694986"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "모둠채소"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f7097954f1977587247836fc65932678",
+          "old_leaf": "food.produce.vegetables.lettuce",
+          "new_leaf": "food.produce.vegetables.mixed",
+          "source_name": "costco",
+          "source_record_key": "694986",
+          "source_titles": [
+            "무농약버터헤드레터스 4입+무농약 미니로메인 5입"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/ChemFree-ButterheadLettuce-4ea-MiniRomaine-5ea/p/694986"
+          ],
+          "reason": "Literal named raw crop/declared mixed vegetable composition refines browsing leaf under unchanged FreshVegetables ancestor. Historical wrap-use classification is not declared erroneous; no producer/SKU grouping, quantity/cultivar/origin inference. Complete existing4Butterhead+5MiniRomaine vector remains unchanged independently of classification.",
+          "evidence_sha256": "f8324a42f5f7dbb0564d18c83aa9e19d7ae8d6d90be80732cd24ca1fb85a2190"
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h5d/h7e/467018807738398.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

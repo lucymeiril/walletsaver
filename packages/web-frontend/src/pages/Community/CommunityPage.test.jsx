@@ -210,6 +210,56 @@ describe('Community bounded query and canonical mutation refresh', () => {
   });
 });
 
+describe('Community server own-vote restoration', () => {
+  it.each(['hot', 'not', null])('restores only the authenticated server vote %s on a cold detail and clears it after undo', async ownVote => {
+    fetch.mockImplementation(async (input, options) => {
+      const path = urlOf(input).pathname;
+      if (path === '/api/posts') return page([], 1, [post(2, '인기글', { hot_votes: 9, not_votes: 3, user_vote: ownVote })]);
+      if (path.endsWith('/comments')) return response({ data: [] });
+      if (options?.method === 'POST') return response({ data: { hot_votes: 8, not_votes: 2, user_vote: null } });
+      return response({ data: post(2, '인기글', { hot_votes: 9, not_votes: 3, user_vote: ownVote }) });
+    });
+    show();
+    fireEvent.click(await screen.findByText('인기글', { exact: false }));
+    const modal = await screen.findByRole('dialog');
+    const hot = within(modal).getByRole('button', { name: '🔥 핫딜이다' });
+    const not = within(modal).getByRole('button', { name: '❄️ 아니다' });
+    expect(hot).toHaveAttribute('aria-pressed', String(ownVote === 'hot'));
+    expect(not).toHaveAttribute('aria-pressed', String(ownVote === 'not'));
+    if (ownVote) {
+      fireEvent.click(ownVote === 'hot' ? hot : not);
+      await waitFor(() => expect(hot).toHaveAttribute('aria-pressed', 'false'));
+      expect(not).toHaveAttribute('aria-pressed', 'false');
+      const writes = fetch.mock.calls.filter(([, options]) => options?.method === 'POST');
+      expect(writes).toHaveLength(1);
+      expect(JSON.parse(writes[0][1].body)).toEqual({ vote_type: ownVote });
+    } else expect(fetch.mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
+  });
+
+  it('does not reuse a previous account vote after switching accounts or returning from logout', async () => {
+    fetch.mockImplementation(async input => {
+      const path = urlOf(input).pathname;
+      if (path === '/api/posts') return page([post(2, '계정별 투표')], 1);
+      if (path.endsWith('/comments')) return response({ data: [] });
+      return response({ data: post(2, '계정별 투표', { hot_votes: 9, user_vote: 'hot' }) });
+    });
+    const view = show();
+    fireEvent.click(await screen.findByText('계정별 투표'));
+    const hot = within(await screen.findByRole('dialog')).getByRole('button', { name: '🔥 핫딜이다' });
+    expect(hot).toHaveAttribute('aria-pressed', 'true');
+    session.user = { id: 8 };
+    view.rerender(<MemoryRouter><CommunityPage /></MemoryRouter>);
+    expect(hot).toHaveAttribute('aria-pressed', 'false');
+    session.isLoggedIn = false;
+    view.rerender(<MemoryRouter><CommunityPage /></MemoryRouter>);
+    session.isLoggedIn = true;
+    session.user = { id: 7 };
+    view.rerender(<MemoryRouter><CommunityPage /></MemoryRouter>);
+    expect(hot).toHaveAttribute('aria-pressed', 'false');
+    expect(fetch.mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
+  });
+});
+
 describe('355 Community expired session common refresh', () => {
   const deferred = () => {
     let resolve;

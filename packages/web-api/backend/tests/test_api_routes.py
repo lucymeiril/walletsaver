@@ -570,6 +570,41 @@ def test_community_partition_count_and_rows_share_snapshot_during_concurrent_wri
     assert subsequent["meta"]["total"] == 2
 
 
+@pytest.mark.parametrize('viewer,expected', [
+    ('hot_owner', 'hot'), ('not_owner', 'not'), ('no_vote', None),
+    ('anonymous', None), ('invalid_access', None),
+])
+def test_community_cold_reads_restore_only_authenticated_subject_vote(client, account_db, viewer, expected):
+    _, hot_headers = _identity(account_db, 'hot-owner@example.invalid', '찬성')
+    _, not_headers = _identity(account_db, 'not-owner@example.invalid', '반대')
+    _, no_vote_headers = _identity(account_db, 'no-vote@example.invalid', '미투표')
+    created = client.post('/api/posts', headers=hot_headers, json={
+        'title': '현재 사용자 선택만 복원', 'content': '총 투표는 사용자 선택이 아니다',
+        'post_type': 'hotdeal', 'category': 'test',
+    })
+    assert created.status_code == 200
+    post_id = created.json()['data']['id']
+    assert created.json()['data']['user_vote'] is None
+    assert client.post(f'/api/posts/{post_id}/vote', headers=hot_headers,
+                       json={'vote_type': 'hot'}).status_code == 200
+    assert client.post(f'/api/posts/{post_id}/vote', headers=not_headers,
+                       json={'vote_type': 'not'}).status_code == 200
+    headers = {'hot_owner': hot_headers, 'not_owner': not_headers, 'no_vote': no_vote_headers,
+               'anonymous': {}, 'invalid_access': {'Authorization': 'Bearer invalid-test-token'}}[viewer]
+    detail = client.get(f'/api/posts/{post_id}', headers=headers)
+    listing = client.get('/api/posts', headers=headers, params={'post_type': 'hotdeal'})
+    partitioned = client.get('/api/posts', headers=headers,
+                             params={'post_type': 'hotdeal', 'partition_pinned': True})
+    assert detail.status_code == listing.status_code == partitioned.status_code == 200
+    assert partitioned.json()['data'] == [] and partitioned.json()['meta']['total'] == 0
+    for post in (detail.json()['data'], listing.json()['data'][0], partitioned.json()['pinned_posts'][0]):
+        assert post['id'] == post_id and post['user_vote'] == expected
+        assert post['hot_votes'] == post['not_votes'] == 1
+    # A user-supplied subject parameter cannot impersonate another account.
+    anonymous = client.get(f'/api/posts/{post_id}', params={'user_id': 1, 'user_vote': 'hot'})
+    assert anonymous.json()['data']['user_vote'] is None
+
+
 def test_authenticated_community_crud_comment_and_vote_flow(client, account_db):
     user, headers = _identity(account_db, "community@example.com", "커뮤니티유저")
 
@@ -617,6 +652,7 @@ def test_authenticated_community_crud_comment_and_vote_flow(client, account_db):
     assert voted.status_code == 200
     assert voted.json()["data"]["user_vote"] == "hot"
     assert voted.json()["data"]["hot_votes"] == 1
+    assert client.get(f"/api/posts/{post_id}", headers=headers).json()["data"]["user_vote"] == "hot"
 
     toggled = client.post(
         f"/api/posts/{post_id}/vote",
@@ -626,6 +662,7 @@ def test_authenticated_community_crud_comment_and_vote_flow(client, account_db):
     assert toggled.status_code == 200
     assert toggled.json()["data"]["user_vote"] is None
     assert toggled.json()["data"]["hot_votes"] == 0
+    assert client.get(f"/api/posts/{post_id}", headers=headers).json()["data"]["user_vote"] is None
 
     deleted = client.delete(f"/api/posts/{post_id}", headers=headers)
     assert deleted.status_code == 200
