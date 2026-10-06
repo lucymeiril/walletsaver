@@ -38,7 +38,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(484군/1175기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 네 파일은 catalog90→91→92→93→94의 **기존 상품군 metadata와 근거 있는 기존 리프 정정만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 다섯 파일은 catalog90→91→92→93→94→95의 **기존 상품군 metadata와 근거 있는 기존 리프 정정만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -299,3 +299,5 @@ Collector execution separates source completeness, validation, acknowledged pend
 364의362기등록 문맥에서22군49옛ID를 추가해 catalog93/464군1130옛ID가 연결됐다. 티젠 콤부차 맛별군, CJ/오뚜기 명시 레시피·라인, 스카치 정사각 보수패치와롤타입을 구분했다. Costco 고메810g 냉동bulk는152g군과 동일 레시피/보관형태 bridge가 입증되지 않아 별도로 유지했다. 양·규격·리프·원9115event/시점/가격/계정참조는 바꾸지 않고 metadata만 정식apply/replay/publish로 반영했다. 실제23GET/쓰기0/외부요청0은 일반/쇠고기짜장 분리·옛Emart tuple/own2/전체5, 레몬150g/300g·own2/전체3, 정사각패치NULL과롤 별도규격/옛1m source history를 확인했다. 롤0.5/1m는 저장spec이며 검증된 판매목적·선형수령량·m단위가는NULL과명시보류를 유지한다. 초기98·새출처·전수동일성·최종제출완료를 주장하지 않는다.
 
 378의536기등록 원문 문맥에서20군45옛ID와 기존 리프3건을 근거로 정정해 catalog94/484군1175옛ID가 연결됐다. 제스프리 골드·그린, 조미료 고유라인·레시피, 샌드과자 맛별·상하목장 밀크/초코, 명시 건강식품 라인을 구분한다. 강된장 원문과 롯데의 튜브아이스크림 세부 경로를 기존 자료에서 회수했으며 새 형태·수량을 추측하지 않았다. 정식apply/replay/publish94는 원9115event/관측가격/시각/규격/계정참조를 보존한다. 실제24GET/쓰기0/외부요청0에서 새 카테고리·마트군·옛ID별 전체이력과 골드1팩 내부수량 미확인·510ml와85ml×6 별도규격·선택3개/무료1개 결제보류·맛소금250g 두 마트의 표시조건 관측 단가를 확인했다. 표시조건 비교를 실제 결제 영수증이나 전상품 현재 최저가로 확대하지 않는다. 초기98·새출처·전수동일성·최종제출완료는 계속 주장하지 않는다.
+
+Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID의 연결만 추가했다. 배터리 AA/AAA·기존 판매개수, 그릴 치수와 물품 NULL, 바나나 산지·라인, 밤 포장, 생크림 및 표고 선물 구성은 각 원 규격에 남는다. 기존 9115 관측·가격·시점·계정 참조를 보존했고 신규 관측은 없다.
