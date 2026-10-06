@@ -254,6 +254,15 @@ def validate_public_snapshot(path: Path | str) -> dict:
                 f"active products without a leaf category: {internal_assignments}"
             )
 
+        from core.catalog_identity import validate_snapshot_groups
+        products = [dict(zip(
+            ("public_product_id", "unified_category_id", "attributes"), row
+        )) for row in connection.execute(
+            "SELECT public_product_id, unified_category_id, attributes "
+            "FROM normalized_canonical_products"
+        )]
+        compatible_groups = validate_snapshot_groups(products)
+
         counts = {
             name: int(connection.execute(f'SELECT COUNT(*) FROM "{name}"').fetchone()[0])
             for name in sorted(required - {"snapshot_meta"})
@@ -262,6 +271,7 @@ def validate_public_snapshot(path: Path | str) -> dict:
             "revision": int(meta[0]),
             "built_at": str(meta[1]),
             "row_counts": counts,
+            "reviewed_groups_compatible": compatible_groups,
         }
     finally:
         connection.close()

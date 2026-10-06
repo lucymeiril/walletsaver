@@ -4,6 +4,7 @@ import { Pencil, X, Send, Eye, MessageSquare, Clock, Search, Trash2, Edit3 } fro
 import { fmt, verifyPrice } from '../../utils/helpers';
 import { sanitizeHTML, sanitizeURL } from '../../utils/sanitize';
 import useStore from '../../stores/appStore';
+import { api } from '../../services/api';
 import useDebounce from '../../hooks/useDebounce';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
@@ -107,6 +108,7 @@ export default function CommunityPage() {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const postsControllerRef = useRef(null);
   const detailControllerRef = useRef(null);
   const locationOpenedPostRef = useRef(null);
@@ -231,7 +233,7 @@ export default function CommunityPage() {
   const paginatedPosts = posts;
 
   const handleWrite = async () => {
-    if (submitting) return;
+    if (submittingRef.current) return;
     if (!isLoggedIn) {
       addToast('로그인 후 게시글을 작성할 수 있습니다.', 'warning');
       return;
@@ -255,11 +257,11 @@ export default function CommunityPage() {
       return;
     }
 
+    submittingRef.current = true;
     try {
       setSubmitting(true);
       const isEdit = Boolean(editPostId);
       const url = isEdit ? `/api/posts/${editPostId}` : '/api/posts';
-      const method = isEdit ? 'PUT' : 'POST';
       const payload = {
         title: wTitle,
         content: wBody,
@@ -270,17 +272,7 @@ export default function CommunityPage() {
         url: board === 'hotdeal' ? (wLink || undefined) : undefined,
       };
 
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        addToast(`${isEdit ? '수정' : '등록'} 실패: ${errorData.detail || response.statusText}`, 'error');
-        return;
-      }
+      await (isEdit ? api.put(url, payload) : api.post(url, payload));
 
       addToast(isEdit ? '게시글이 수정되었습니다!' : '게시글이 등록되었습니다!', 'success');
       setShowWrite(false);
@@ -290,8 +282,9 @@ export default function CommunityPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
-      addToast('처리 중 오류가 발생했습니다.', 'error');
+      addToast(error.message || '처리 중 오류가 발생했습니다.', 'error');
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   };
@@ -677,6 +670,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsError, setCommentsError] = useState(false);
   const commentsControllerRef = useRef(null);
+  const mutationRef = useRef(false);
   const [vote, setVote] = useState(null);
   const [hotVotes, setHotVotes] = useState(post.hotVotes || post.hot_votes || 0);
   const [coldVotes, setColdVotes] = useState(post.coldVotes || post.not_votes || 0);
@@ -721,6 +715,7 @@ const PostDetailModal = React.memo(function PostDetailModal({
   }, [refreshComments]);
 
   const addComment = async () => {
+    if (mutationRef.current) return;
     const content = newComment.trim();
     if (!content) return;
     if (!isLoggedIn) {
@@ -728,47 +723,32 @@ const PostDetailModal = React.memo(function PostDetailModal({
       return;
     }
 
+    mutationRef.current = true;
     try {
-      const response = await fetch(`/api/posts/${post.id}/comments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        addToast(errorData.detail || '댓글 작성에 실패했습니다.', 'error');
-        return;
-      }
+      const response = await api.post(`/api/posts/${post.id}/comments`, { content });
       const result = await response.json();
       setComments((current) => [...current, result.data]);
-      setNewComment('');
+      setNewComment(current => current.trim() === content ? '' : current);
       addToast('댓글이 등록되었습니다', 'success');
       refreshComments();
       onRefresh?.();
-    } catch {
-      addToast('댓글 작성 중 오류가 발생했습니다.', 'error');
+    } catch (error) {
+      addToast(error.message || '댓글 작성 중 오류가 발생했습니다.', 'error');
+    } finally {
+      mutationRef.current = false;
     }
   };
 
   const handleVote = async (type) => {
+    if (mutationRef.current) return;
     if (!isLoggedIn) {
       addToast('투표하려면 로그인이 필요합니다.', 'error');
       return;
     }
     const voteType = type === 'hot' ? 'hot' : 'not';
+    mutationRef.current = true;
     try {
-      const response = await fetch(`/api/posts/${post.id}/vote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vote_type: voteType }),
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        addToast(errorData.detail || '투표 처리에 실패했습니다.', 'error');
-        return;
-      }
+      const response = await api.post(`/api/posts/${post.id}/vote`, { vote_type: voteType });
       const result = await response.json();
       setHotVotes(result.data.hot_votes);
       setColdVotes(result.data.not_votes);
@@ -778,28 +758,26 @@ const PostDetailModal = React.memo(function PostDetailModal({
         coldVotes: result.data.not_votes,
       });
       onRefresh?.();
-    } catch {
-      addToast('투표 중 오류가 발생했습니다.', 'error');
+    } catch (error) {
+      addToast(error.message || '투표 중 오류가 발생했습니다.', 'error');
+    } finally {
+      mutationRef.current = false;
     }
   };
 
   const handleDelete = async () => {
+    if (mutationRef.current) return;
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
+    mutationRef.current = true;
     try {
-      const response = await fetch(`/api/posts/${post.id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        addToast(errorData.detail || '삭제에 실패했습니다.', 'error');
-        return;
-      }
+      await api.delete(`/api/posts/${post.id}`);
       addToast('게시글이 삭제되었습니다.', 'success');
       onClose();
       onRefresh();
-    } catch {
-      addToast('삭제 중 오류가 발생했습니다.', 'error');
+    } catch (error) {
+      addToast(error.message || '삭제 중 오류가 발생했습니다.', 'error');
+    } finally {
+      mutationRef.current = false;
     }
   };
 

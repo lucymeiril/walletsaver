@@ -133,6 +133,11 @@ if ($Admin) { $pythonPaths += @($CrawlerBackend, $DbBackend) }
 $env:PYTHONPATH = ($pythonPaths -join ";")
 
 if ($Web) {
+    if (-not $env:FRONTEND_URL) { $env:FRONTEND_URL = "http://127.0.0.1:5173" }
+    if (-not $env:OAUTH_REDIRECT_BASE) { $env:OAUTH_REDIRECT_BASE = $env:FRONTEND_URL }
+    if ($env:FRONTEND_URL.TrimEnd('/') -ne $env:OAUTH_REDIRECT_BASE.TrimEnd('/')) {
+        throw "FRONTEND_URL and OAUTH_REDIRECT_BASE must use the same browser origin/base for local startup"
+    }
     if (-not $env:WALLETSAVIOR_CORS_ORIGINS) {
         $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
     }
@@ -433,16 +438,16 @@ Write-Host "============================================" -ForegroundColor Green
 Write-Host "  ✅ 시스템이 시작되었습니다" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 if ($Web) {
-    Write-Host "  🌐 Web: http://localhost:5173  (API 8000)" -ForegroundColor White
+    Write-Host "  🌐 Web: $env:FRONTEND_URL  (API 8000)" -ForegroundColor White
 }
 if ($Admin) {
-    Write-Host "  🕷️ Crawler Admin: http://localhost:5174  (API 8001)" -ForegroundColor White
-    Write-Host "  🗄️ DB Admin:      http://localhost:5175  (API 8002)" -ForegroundColor White
+    Write-Host "  🕷️ Crawler Admin: http://127.0.0.1:5174  (API 8001)" -ForegroundColor White
+    Write-Host "  🗄️ DB Admin:      http://127.0.0.1:5175  (API 8002)" -ForegroundColor White
 }
 Write-Host "  Ctrl+C로 종료합니다." -ForegroundColor DarkGray
 Write-Host ""
 
-if ($Web) { Start-Process "http://localhost:5173" }
+if ($Web) { Start-Process $env:FRONTEND_URL }
 
 try {
     while ($true) {

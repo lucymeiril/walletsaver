@@ -237,6 +237,7 @@ class PublicCatalogStore:
         category: str | None = None,
         page: int = 1,
         per_page: int = 20,
+        sort: str = "name",
     ) -> tuple[list[dict], int]:
         """Search the four-level normalized catalog SSOT."""
         page = max(1, int(page))
@@ -297,6 +298,11 @@ class PublicCatalogStore:
                 name = review["canonical_name"] if len(members) > 1 else representative["canonical_name"]
                 representatives[canonical] = (name, members)
             ordered = sorted(representatives, key=lambda key: (representatives[key][0].casefold(), key))
+            if sort == "recent":
+                observed = self._normalized_observed_times(connection, ordered, cache)
+                # Stable name/ID ordering breaks equal or absent observation
+                # times. Only timestamp metadata is read for all candidates.
+                ordered.sort(key=lambda key: self._observed_order(observed.get(key)), reverse=True)
             selected = ordered[(page - 1) * per_page:page * per_page]
             payloads = []
             for key in selected:
@@ -304,6 +310,48 @@ class PublicCatalogStore:
                 payloads.append(self._normalized_product(connection, full, include_all=False,
                                                         group_member_ids=representatives[key][1]))
             return payloads, len(ordered)
+
+    @staticmethod
+    def _observed_order(value):
+        try:
+            stamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            stamp = stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else stamp
+            return stamp.astimezone(timezone.utc).isoformat()
+        except (ValueError, TypeError, OverflowError):
+            return ""
+
+    def _normalized_observed_times(self, connection, product_ids, cache=None):
+        cache = {} if cache is None else cache
+        memberships = {}
+        for key in product_ids:
+            product = self._product_lookup(connection, str(key), cache)
+            if product is not None:
+                members, _ = self._catalog_group(connection, product, cache)
+                memberships[key] = members
+        member_ids = sorted({member for members in memberships.values() for member in members})
+        latest = {}
+        for offset in range(0, len(member_ids), 500):
+            batch = member_ids[offset:offset + 500]
+            marks = ",".join("?" for _ in batch)
+            rows = connection.execute(
+                "SELECT public_product_id, crawled_at FROM ("
+                "SELECT v.public_product_id, e.crawled_at, ROW_NUMBER() OVER ("
+                "PARTITION BY v.public_product_id ORDER BY julianday(e.crawled_at) DESC, e.crawled_at DESC) AS rank "
+                "FROM normalized_product_variants v "
+                "JOIN normalized_canonical_products p ON p.public_product_id=v.public_product_id "
+                "JOIN normalized_source_listings l ON l.public_variant_id=v.public_variant_id "
+                "JOIN normalized_offer_events e ON e.public_source_listing_id=l.public_source_listing_id "
+                f"WHERE v.public_product_id IN ({marks}) AND p.is_active=1 "
+                "AND v.is_active=1 AND l.is_active=1) WHERE rank=1", batch,
+            ).fetchall()
+            latest.update({row["public_product_id"]: str(row["crawled_at"] or "") for row in rows})
+        return {key: max((latest.get(member, "") for member in members),
+                         key=self._observed_order, default="") for key, members in memberships.items()}
+
+    def product_observed_times(self, product_ids):
+        """Latest actual observation metadata across each validated active group."""
+        with self.connection() as connection:
+            return self._normalized_observed_times(connection, product_ids)
 
     @staticmethod
     def _reviewed_brand_line_pattern(query: str) -> str | None:

@@ -47,6 +47,9 @@ def _product_observed_times(storage, product_ids: list[str | int]) -> dict[str |
     marks = ",".join("?" for _ in product_ids)
     with catalog.connection() as connection:
         if catalog._table(connection, "normalized_canonical_products"):
+            grouped_times = getattr(catalog, "product_observed_times", None)
+            if callable(grouped_times):
+                return grouped_times(product_ids)
             rows = connection.execute(
                 "SELECT v.public_product_id, MAX(e.crawled_at) AS observed_at "
                 "FROM normalized_product_variants v "
@@ -83,11 +86,24 @@ def _product_observed_times(storage, product_ids: list[str | int]) -> dict[str |
     return {int(row["id"]): str(row["observed_at"] or "") for row in rows}
 
 
-def _product_results(storage, query: str, limit: int | None) -> tuple[list[dict], int]:
+def _product_results(storage, query: str, limit: int | None, *, sort: str = "relevant") -> tuple[list[dict], int]:
     if storage is None or (limit is not None and limit <= 0):
         return [], 0
 
     search_page = getattr(storage, "search_products_page", None)
+    catalog = getattr(storage, "catalog", None)
+    if (sort == "recent" and catalog is not None
+            and callable(getattr(catalog, "search_normalized_products_page", None))
+            and catalog.has_normalized_catalog()):
+        # Storage orders every lightweight candidate/group before projecting
+        # only the requested recent prefix. Never sort an alphabetical prefix.
+        def search_page(query, *, page, per_page):
+            return catalog.search_normalized_products_page(
+                query, page=page, per_page=per_page, sort="recent")
+    elif sort == "recent":
+        # Older adapters do not expose recent ordering. Their full candidate
+        # set is necessary for a correct recent prefix.
+        limit = None
     if not callable(search_page):
         fallback_limit = max(1, int(limit or 1000))
         rows = storage.search_products(query, page=1, per_page=fallback_limit)
@@ -125,6 +141,10 @@ def _product_results(storage, query: str, limit: int | None) -> tuple[list[dict]
         if unit:
             description = f"{unit} / {description}"
         product_id = product["id"] if product.get("public_product_id") else int(product["id"])
+        observed_at = observed.get(product_id, "")
+        normalize_observed = getattr(catalog, "_observed_order", None)
+        if callable(normalize_observed):
+            observed_at = normalize_observed(observed_at)
         results.append({
             "type": "product",
             "id": product_id,
@@ -133,7 +153,7 @@ def _product_results(storage, query: str, limit: int | None) -> tuple[list[dict]
             "price": current,
             "image": product.get("img"),
             "_relevance": _relevance(product.get("name", ""), query),
-            "_recent": observed.get(product_id, ""),
+            "_recent": observed_at,
             # There is no product popularity metric yet. Keep the value honest
             # instead of inventing one from price or alphabetical order.
             "_popularity": 0,
@@ -243,13 +263,13 @@ async def search(
 
     # Relevance/popularity cannot be correct if each source is truncated in a
     # different order first. For those sorts collect all matching candidates;
-    # recent can safely take only enough recent candidates from each source.
+    # recent can take a prefix only when each source orders before paging.
     fetch_limit: int | None = page * per_page if sort == "recent" else None
     results: list[dict] = []
     total = 0
 
     if type in {None, "product"}:
-        product_rows, product_total = _product_results(storage, q, fetch_limit)
+        product_rows, product_total = _product_results(storage, q, fetch_limit, sort=sort)
         results.extend(product_rows)
         total += product_total
 

@@ -31,7 +31,7 @@ def validated_group_members(product: Mapping, lookup: Callable[[str], Mapping | 
         return fallback
     registered = next((row for row in reviewed_registry()["groups"] if row["key"] == review.get("key")), None)
     if not registered or any(review.get(key) != registered.get(key) for key in (
-            "canonical_product_id", "member_product_ids", "canonical_name", "brand", "review_version")):
+            "canonical_product_id", "canonical_name", "brand", "review_version")):
         return fallback
     members = review.get("member_product_ids")
     if (not isinstance(members, list) or not 2 <= len(members) <= 64
@@ -40,6 +40,10 @@ def validated_group_members(product: Mapping, lookup: Callable[[str], Mapping | 
             or review.get("canonical_product_id") not in members
             or not isinstance(review.get("key"), str) or not review["key"].strip()
             or not isinstance(review.get("canonical_name"), str) or not review["canonical_name"].strip()):
+        return fallback
+    # A newer source release may add proved members while an existing installation
+    # still has the previous reciprocal subset. Never invent the missing members.
+    if not set(members).issubset(registered.get("member_product_ids", [])):
         return fallback
     category = product.get("unified_category_id")
     if not isinstance(category, str) or not category or category != registered.get("leaf"):
@@ -51,6 +55,30 @@ def validated_group_members(product: Mapping, lookup: Callable[[str], Mapping | 
                 or attributes_of(row).get("catalog_group") != review):
             return fallback
     return tuple(members)
+
+
+def validate_snapshot_groups(products: list[Mapping]) -> int:
+    """Require an explicitly compatible source release before a DB-only install.
+
+    Unknown or nonreciprocal metadata must not silently turn a reviewed family
+    into unrelated source products. The caller validates before replacing its DB.
+    """
+    lookup = {str(row.get("public_product_id") or ""): row for row in products}
+    keys = set()
+    for row in products:
+        review = attributes_of(row).get("catalog_group")
+        if review is None:
+            continue
+        if len(validated_group_members(row, lookup.get)) < 2:
+            raise ValueError(
+                "catalog_group_source_incompatible: "
+                f"{row.get('public_product_id')} / "
+                f"{review.get('key') if isinstance(review, Mapping) else 'invalid'}; "
+                "install the matching reviewed source release, then retry the "
+                "authenticated snapshot update; existing data is unchanged"
+            )
+        keys.add(review["key"])
+    return len(keys)
 
 
 def reviewed_registry() -> dict:

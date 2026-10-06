@@ -886,9 +886,75 @@ def test_group_detail_preserves_requested_id_selected_variants_and_full_history(
     assert all(len(v['listings'][0]['offers']) == 2 for v in detail['variants'])
 
 
+@pytest.mark.parametrize('result_type', ['product', None])
+def test_recent_search_orders_all_candidates_and_other_mart_group_time_before_paging(
+        scoped_group_catalog, monkeypatch, result_type):
+    from types import SimpleNamespace
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from api.routes import search
+    with sqlite3.connect(scoped_group_catalog) as db:
+        for number in range(1, 26):
+            key = f'recent-{number:02}'
+            db.execute('INSERT INTO normalized_canonical_products VALUES(?,?,?,?,?,?,?,?,?)',
+                       (key, 'food.milk', f'우유 상품{number:02}', '', '[]', '[]', '{}', None, 1))
+            db.execute('INSERT INTO normalized_product_variants VALUES(?,?,?,?,?,?,?,?,?)',
+                       ('var-' + key, key, '200ml', 200, 'ml', 1, '200ml', '{}', 1))
+            db.execute('INSERT INTO normalized_source_listings VALUES(?,?,?,?,?,?,?,?,?)',
+                       ('listing-' + key, 'var-' + key, 'homeplus', key, key, None, None, '200ml', 1))
+            for suffix, date in [('old', '2026-08-01T00:00:00Z'), ('latest', f'2026-09-{number:02}T00:00:00Z')]:
+                db.execute('INSERT INTO normalized_offer_events VALUES(?,?,?,?,?,?,?,?)',
+                           (key + '-' + suffix, 'listing-' + key, 2000, 'normal', 'final_price', 'active', date, '{}'))
+        db.execute("UPDATE normalized_source_listings SET source_name='emart' WHERE public_source_listing_id='listing-milk-b'")
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-09-01T00:00:00Z' WHERE public_source_listing_id IN ('listing-milk-a','listing-milk-b')")
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-09-30T09:00:00+09:00' WHERE public_offer_event_id='milk-b-event-2'")
+        # A lexically later local time is an earlier actual UTC observation.
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-09-30T09:30:00+10:00' WHERE public_offer_event_id='recent-25-latest'")
+        # Neither an inactive product, listing nor variant can inflate group recency.
+        db.execute('INSERT INTO normalized_product_variants VALUES(?,?,?,?,?,?,?,?,?)',
+                   ('var-inactive', 'milk-a', '200ml', 200, 'ml', 1, '200ml', '{}', 0))
+        db.execute('INSERT INTO normalized_source_listings VALUES(?,?,?,?,?,?,?,?,?)',
+                   ('listing-inactive', 'var-inactive', 'emart', 'inactive', 'inactive', None, None, '', 1))
+        db.execute('INSERT INTO normalized_offer_events VALUES(?,?,?,?,?,?,?,?)',
+                   ('inactive-newer', 'listing-inactive', 1, 'normal', 'final_price', 'active', '2026-10-01T00:00:00Z', '{}'))
+    catalog = PublicCatalogStore(scoped_group_catalog)
+    calls = []
+    original = catalog._normalized_offer
+    def project(event, *args, **kwargs):
+        calls.append(event['public_offer_event_id'])
+        return original(event, *args, **kwargs)
+    monkeypatch.setattr(PublicCatalogStore, '_normalized_offer', staticmethod(project))
+    storage = SimpleNamespace(catalog=catalog, search_products_page=catalog.search_normalized_products_page)
+    monkeypatch.setattr(search, '_post_results', lambda *_: ([], 0))
+    monkeypatch.setattr(search, '_hotdeal_results', lambda *_: ([], 0))
+    app = FastAPI()
+    app.state.storage = storage
+    app.include_router(search.router, prefix='/search')
+    params = {'q': '우유', 'sort': 'recent', 'per_page': 20}
+    if result_type:
+        params['type'] = result_type
+    with TestClient(app) as client:
+        first = client.get('/search', params=params).json()
+        assert first['meta']['total'] == 26 and first['meta']['total_pages'] == 2
+        expected = ['milk-a'] + [f'recent-{n:02}' for n in range(25, 0, -1)]
+        assert [row['id'] for row in first['data']] == expected[:20]
+        assert len(calls) == 21  # Twenty selected groups, two listings in milk group.
+        assert not any(key.endswith('-old') for key in calls)
+        second = client.get('/search', params={**params, 'page': 2}).json()
+        assert [row['id'] for row in second['data']] == expected[20:]
+        assert not set(row['id'] for row in first['data']) & set(row['id'] for row in second['data'])
+    assert search._product_observed_times(storage, ['milk-a', 'milk-b']) == {
+        'milk-a': '2026-09-30T09:00:00+09:00', 'milk-b': '2026-09-30T09:00:00+09:00'}
+    calls.clear()
+    page, total = catalog.search_normalized_products_page('우유', sort='recent', page=2, per_page=20)
+    assert total == 26 and [row['id'] for row in page] == expected[20:]
+    assert len(calls) == 6 and all(key.endswith('-latest') for key in calls)
+
+
 @pytest.mark.parametrize('mutation', ['nonreciprocal', 'unregistered', 'wrong_leaf', 'malformed', 'inactive_canonical'])
 def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_catalog, mutation):
     with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-10-03T00:00:00Z' WHERE public_offer_event_id='milk-b-event-2'")
         if mutation == 'nonreciprocal':
             db.execute("UPDATE normalized_canonical_products SET attributes='{}' WHERE public_product_id='milk-b'")
         elif mutation == 'unregistered':
@@ -908,6 +974,9 @@ def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_cat
     expected = 2 if mutation == 'inactive_canonical' else 3
     assert total == len(rows) == expected
     assert all(row['group_member_product_ids'] == [row['id']] for row in rows)
+    observed = store.product_observed_times(['milk-a', 'milk-b'])
+    assert observed['milk-b'] == '2026-10-03T00:00:00Z'
+    assert observed['milk-a'] == ('' if mutation == 'inactive_canonical' else '2026-10-02T00:00:00Z')
     assert store.get_category_tree()[0]['count'] == expected
     children, child_total, _ = store.get_category_children('food')
     assert child_total == sum(child['count'] for child in children) == expected

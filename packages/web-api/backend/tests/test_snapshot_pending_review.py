@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import multiprocessing
 import sqlite3
 import sys
@@ -75,6 +76,51 @@ def test_snapshot_accepts_inactive_products_and_non_pending_states(tmp_path, off
     assert validation["revision"] == "test-revision"
     assert "normalized_offer_events" in validation["tables"]
     assert snapshot.read_bytes() == original_bytes
+
+
+@pytest.mark.parametrize("mismatch", [None, "unknown_key", "unapproved_member", "nonreciprocal"])
+def test_snapshot_group_source_compatibility_preserves_existing_install(tmp_path, monkeypatch, mismatch):
+    import core.catalog_identity as identity
+    # Current code has reviewed a third member, while this historical DB still
+    # contains its original two-member family. This is compatible, not a merge.
+    review = {"key": "approved-milk", "canonical_product_id": "milk-a",
+              "member_product_ids": ["milk-a", "milk-b"], "canonical_name": "우유",
+              "brand": "검토브랜드", "review_version": identity.GROUP_VERSION}
+    registered = {**review, "member_product_ids": ["milk-a", "milk-b", "milk-c"], "leaf": "leaf"}
+    monkeypatch.setattr(identity, "reviewed_registry", lambda: {"groups": [registered]})
+    candidate = _catalog_snapshot(tmp_path / "candidate.sqlite", ["active"])
+    other = dict(review)
+    if mismatch == "unknown_key":
+        review["key"] = other["key"] = "new-unshipped-definition"
+    elif mismatch == "unapproved_member":
+        review["member_product_ids"] = other["member_product_ids"] = ["milk-a", "unreviewed"]
+    elif mismatch == "nonreciprocal":
+        other["canonical_name"] = "다른 우유"
+    with sqlite3.connect(candidate) as db:
+        db.execute("ALTER TABLE normalized_canonical_products ADD COLUMN public_product_id TEXT")
+        db.execute("ALTER TABLE normalized_canonical_products ADD COLUMN attributes TEXT")
+        db.execute("UPDATE normalized_canonical_products SET public_product_id=?, attributes=?",
+                   ("milk-a", json.dumps({"catalog_group": review})))
+        db.execute("INSERT INTO normalized_canonical_products VALUES (2,1,'leaf',?,?)",
+                   ("milk-b", json.dumps({"catalog_group": other})))
+    installed = tmp_path / "installed.sqlite"
+    installed.write_bytes(b"original account/catalog data must survive")
+    original = installed.read_bytes()
+    required = admin_remote._SNAPSHOT_CONFIG["catalog"][2]
+    if mismatch:
+        with pytest.raises(HTTPException) as error:
+            admin_remote._complete_uploaded_snapshot(candidate, installed, required)
+        assert error.value.status_code == 422
+        assert "catalog_group_source_incompatible" in error.value.detail
+        assert "matching reviewed source release" in error.value.detail
+        assert installed.read_bytes() == original
+    else:
+        validation = admin_remote._validate_sqlite(candidate, required)
+        assert validation["reviewed_groups_compatible"] == 1
+        products = [{"public_product_id": pid, "unified_category_id": "leaf",
+                     "attributes": {"catalog_group": review}} for pid in ["milk-a", "milk-b"]]
+        assert identity.validated_group_members(products[0], {p["public_product_id"]: p for p in products}.get) == ("milk-a", "milk-b")
+        assert installed.read_bytes() == original
 
 
 def _revision(path):

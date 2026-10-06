@@ -380,12 +380,25 @@ def _validate_sqlite(path: Path, required_tables: Iterable[str]) -> dict:
                         f"active products without a leaf category: {bad_products}"
                     )
             meta = {}
+            if "normalized_canonical_products" in tables:
+                columns = {row[1] for row in connection.execute(
+                    "PRAGMA table_info(normalized_canonical_products)"
+                )}
+                if {"public_product_id", "unified_category_id", "attributes"} <= columns:
+                    from core.catalog_identity import validate_snapshot_groups
+                    product_rows = [dict(zip(
+                        ("public_product_id", "unified_category_id", "attributes"), row
+                    )) for row in connection.execute(
+                        "SELECT public_product_id, unified_category_id, attributes "
+                        "FROM normalized_canonical_products"
+                    )]
+                    meta["reviewed_groups_compatible"] = validate_snapshot_groups(product_rows)
             if "snapshot_meta" in tables:
                 row = connection.execute(
                     "SELECT revision, built_at FROM snapshot_meta WHERE id=1"
                 ).fetchone()
                 if row:
-                    meta = {"revision": row[0], "built_at": row[1]}
+                    meta.update(revision=row[0], built_at=row[1])
             return {"tables": sorted(tables), **meta}
         finally:
             connection.close()

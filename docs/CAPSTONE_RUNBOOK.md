@@ -12,6 +12,18 @@ Python 3.11 이상과 Node.js/npm이 필요하다. 저장소 루트에서 실행
 
 이 경로는 `demo.env`의 공개 데모 설정을 읽고 `demo-data`의 압축 DB와 manifest를 검증한 뒤 `.demo-runtime`에 최초 설치한다. 기존 writable 데이터와 사용자가 만든 계정은 재시작 시 유지한다. 다른 catalog를 설치하려고 기존 데이터 디렉터리를 지우지 말고 관리자의 검수·snapshot 갱신 절차를 사용한다.
 
+### 기존 설치 재시작과 명시적 catalog 갱신
+
+위 시작 명령은 **최초 설치 또는 기존 설치 보존**만 수행한다. 새 checkout의 유효한 배포 manifest·source pin이 최초 설치 receipt와 달라도 기존 DB·계정·관리 변경·receipt를 덮어쓰지 않고 차이를 안내한다. 현재 배포 파일의 hash·schema 검증은 계속 엄격하게 수행한다. 이 안내는 기존 설치를 최신 catalog로 교체했다는 뜻이 아니다.
+
+데이터 갱신은 5절의 인증된 catalog bundle **preview → apply → replay**를 먼저 완료한 뒤 다음 명령으로 명시적으로 publish한다. `$adminBase`와 `$adminHeaders`는 5절의 로그인 명령으로 준비한다. 시작 명령·installer를 갱신 명령으로 사용하거나 `.demo-runtime`·Compose volume을 삭제하지 않는다.
+
+```powershell
+Invoke-RestMethod -Method Post -Headers $adminHeaders -Uri "$adminBase/api/catalog-bundles/snapshot/publish"
+```
+
+브라우저는 launcher의 `FRONTEND_URL`로 열리며 TeamDemo 기본값과 `OAUTH_REDIRECT_BASE`는 모두 `http://127.0.0.1:5173`이다. 직접 설정한 두 base가 다르면 시작을 거절한다. `localhost` 창으로 바꾸어 같은 쿠키·OAuth 세션이라고 가정하지 않는다.
+
 | 역할 | UI | API |
 | --- | --- | --- |
 | 공개 웹 | `http://127.0.0.1:5173` | `http://127.0.0.1:8000` |
@@ -25,6 +37,33 @@ DB 관리자 데모 계정은 `demo-admin@walletsaver.example` / `demo-local-adm
 Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에서는 아래 별도 경로로 세 backend·세 UI를 시작하고 관리자 수동 인증 및 읽기 화면을 확인했다. 저장 원문 bundle replay·snapshot 61/62 소비, 기존 matching Import confirm/replay와 아래 실제 사용자·관리 화면은 확인됐다. 최신 4마트 live 갱신과 외부 인증/지도 등은 여전히 미확인으로 구분한다. 아래 Compose는 관리 UI/API를 실행하지 않는다.
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
+
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(442군/1081기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 두 파일은 catalog90→91→92의 **기존 상품군 metadata만** 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+
+```sh
+# 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
+WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json; do
+  curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
+  # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
+  curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
+done
+curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -H 'Content-Type: application/json' \
+  -d '{}' http://127.0.0.1:8002/api/catalog-bundles/snapshot/publish
+```
+
+Web 서버가 다른 경로/호스트이면 발행한 상품-only `public_snapshot.sqlite`를 기존 관리자 remote snapshot upload로 전달한다. 같은 source+등록 정의의 실제92 업로드 성공과 원 event/시점/계정 참조 보존을 확인했다. 외부 서비스 배포나 실제 Google 로그인 성공을 뜻하지 않는다.
+
+```sh
+# 아래 Linux 실행에서 설정한 실제 WS_DEMO_DIR와 demo.env의 공개 내부 데모 토큰 사용.
+curl -fsS -X PUT \
+  -H "X-WalletSavior-Admin-Token: $WALLETSAVIOR_REMOTE_ADMIN_TOKEN" \
+  -H 'Content-Type: application/octet-stream' --data-binary "@$WS_DEMO_DIR/public_snapshot.sqlite" \
+  http://127.0.0.1:28000/api/admin/remote/snapshots/catalog
+```
 
 이 환경의 실제 포트는 Web API `28000` / UI `27173`, 크롤러 API `8001` / UI `5174`, DB 관리자 API `8002` / UI `5175`였다. 아래는 같은 공개 소스·설치 helper·저장소 내부의 독립 `.demo-runtime`을 사용하는 명령이다. 검증 환경에서 재사용한 다른 checkout의 venv·비공개 디렉터리가 필요하지 않다. Python 3.11 이상과 Vite 8을 지원하는 Node.js(20.19 이상 또는 22.12 이상)가 필요하다.
 
@@ -108,7 +147,7 @@ export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrom
 
 공용 크롤러 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 의존성 다운로드와 실제 브라우저 접속은 별개이므로 pip 설치 성공만으로 브라우저 proxy/TLS 접속까지 확인됐다고 보지 않는다. 다운로드 도구·OS·브라우저의 정상 CA 신뢰와 세션 proxy 설정을 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
 
-Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 현재 배포 압축 데이터와 별도 시험 탑재본은 revision90(전체9115/공개8803/pending312)이다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)는 과거 검증 기록이며 현재 revision90 상태가 아니다. 이미 확인한 publish를 반복하지 않는다.
+Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 현재 배포 압축 데이터와 별도 시험 탑재본은 revision92(전체9115/공개8803/pending312)이다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)는 과거 검증 기록이며 현재 revision92 상태가 아니다. 이미 확인한 publish를 반복하지 않는다.
 
 ## 3. Docker Compose: 공개 Web/API만 실행
 
@@ -253,4 +292,6 @@ Collector execution separates source completeness, validation, acknowledged pend
 
 330의37공통군89기존ID는 냉면·떡볶이·봉지/컵라면·볶음밥의 명시된 제조사·좁은 레시피·형태로 연결했다. 기존14등록군36ID는 재사용하고 새로운 병합 수에 포함하지 않았다. 김치사발면86g의1/6/24팩과 큰사발112g, 진짬뽕 봉지130g와 큰컵115g·굴진짬뽕, 볶음밥과컵반을 구분한다. 네 대표 실제 search→선택tuple→own/fullgroup 이력 및 옛 출처 URL3개 복원은28GET·쓰기0·외부요청0으로 확인했고 인분을 판매조각으로 바꾸지 않았다. 원9115관측·가격·시점·규격·사용자참조를 유지했다. 이 추가 검토는 모든6308상품의 전수동일성 확인이나 최종 제출 통과를 뜻하지 않는다.
 
-340의355기등록 문맥에서8공통군16옛ID를 추가해 현재417군1017옛ID가 연결된다. 홈스타 세탁조클리너450ml 단품/8팩은 실제 내용량 규격을 유지하고, 몰리스 프로발란스 어덜트3kg/8kg은 별도 규격이다. 별도로 휴지통3상품의10/20/24L를 공통 빈용기 용량 역할로 정정했다. 용량은 원문·spec에 보존하고 판매개수·수령량·ml단위가는 미확인으로 둔다. 옛 scalar 선택은 묵시 전환하지 않고 재선택 안내하며 원event/가격/시점은 유지한다. 정식apply/replay/snapshot90 및 실제31GET·쓰기0·외부요청0의 검색/선택/전체이력/옛URL 경계를 확인했고 원9115관측·계정참조를 보존했다. 원본98분류나 새 출처는 재개하지 않았고 전체 제출 완료 주장은 아니다.
+340의355기등록 문맥에서8공통군16옛ID를 추가해 당시417군1017옛ID가 연결됐다. 홈스타 세탁조클리너450ml 단품/8팩은 실제 내용량 규격을 유지하고, 몰리스 프로발란스 어덜트3kg/8kg은 별도 규격이다. 별도로 휴지통3상품의10/20/24L를 공통 빈용기 용량 역할로 정정했다. 용량은 원문·spec에 보존하고 판매개수·수령량·ml단위가는 미확인으로 둔다. 옛 scalar 선택은 묵시 전환하지 않고 재선택 안내하며 원event/가격/시점은 유지한다. 정식apply/replay/snapshot90 및 실제31GET·쓰기0·외부요청0의 검색/선택/전체이력/옛URL 경계를 확인했고 원9115관측·계정참조를 보존했다. 원본98분류나 새 출처는 재개하지 않았고 전체 제출 완료 주장은 아니다.
+
+355 누적: 새482기등록문맥과 재사용4문맥에서25군64옛ID를 연결해 현재442군1081옛ID를 유지한다. 색상·침대크기·팬직경·와이퍼폭은 별도 source variant이며 치수는 판매수량이 아니다. 판매1은 저장된 BC350 원 포장1x에만 적용되고 다른 물품NULL은 유지된다. 원9115 event/가격/시각/계정·FK를 정식91/92 apply/replay/publish 및 일치source의92 remote upload로 보존했고 배포계정은0이다. 변경실제18GET/쓰기0/외부요청0은 보리차 oldmember tuple·full5/own1·두HP규격이력, Harmony두색NULL, Bosch7폭,104커피의 최근순 두page20개씩·중복0, 대표Costco보다늦은HP group시각을 확인했다. 전체104순위 재구성·실제401브라우저강제 만료·Windows 실행은 주장하지 않는다. 설치12·최근순9·비동기/공통refresh17·등록source snapshot7+2 집중 경계와Web build를 확인했다; 전체catalog 인증/초기98분류/새출처는 반복하지 않았다.

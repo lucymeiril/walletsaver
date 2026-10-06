@@ -1,8 +1,11 @@
-import { fireEvent, render, screen, waitFor, cleanup } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, cleanup } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import PricePage from '../pages/Price/PricePage';
 import ProfilePage from '../pages/Profile/ProfilePage';
+import SearchPage from '../pages/Search/SearchPage';
+import SearchAutocomplete from './search/SearchAutocomplete';
+import { searchService } from '../services/searchService';
 import ProductDetailModal from './ProductDetailModal';
 import { api } from '../services/api';
 import useStore from '../stores/appStore';
@@ -1362,6 +1365,102 @@ describe('249 native source quote declarations', () => {
         source_quote_currency_unconfirmed: true } }, 2190)).toBe('2,190 (통화 미명시)');
       expect(getObservedOfferPriceText(offer, null)).toBe('미확인');
     }
+  });
+});
+
+describe('355 query-owned asynchronous search consumers', () => {
+  const deferred = () => {
+    let resolve, reject;
+    const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
+    return { promise, resolve, reject };
+  };
+  const result = word => ({ data: { keywords: [{ id: 1, word }], products: [],
+    total_keyword_count: 1, total_product_count: 0 } });
+  beforeEach(() => {
+    useStore.setState({ selectedProduct: null, recentSearches: [], isLoggedIn: false });
+    vi.spyOn(searchService, 'trending').mockResolvedValue({ data: [] });
+  });
+  afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+
+  it.each(['success', 'error'])('keeps current search results loading after superseded %s and finally', async outcome => {
+    const old = deferred(), latest = deferred();
+    const search = vi.spyOn(searchService, 'search').mockImplementation(query => query === '이전' ? old.promise : latest.promise);
+    vi.spyOn(searchService, 'autocomplete').mockResolvedValue(result('unused'));
+    render(<MemoryRouter initialEntries={['/search?q=이전']}><SearchPage /></MemoryRouter>);
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    const previousSignal = search.mock.calls[0][2].signal;
+    const input = screen.getByPlaceholderText('상품, 핫딜, 커뮤니티 검색...');
+    fireEvent.change(input, { target: { value: '현재' } });
+    fireEvent.submit(input.closest('form'));
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+    await act(async () => outcome === 'success'
+      ? old.resolve({ data: [{ id: 'old', type: 'product', title: '늦은 결과' }] })
+      : old.reject(new Error('늦은 오류')));
+    expect(previousSignal.aborted).toBe(true);
+    expect(screen.queryByText('늦은 결과')).not.toBeInTheDocument();
+    expect(screen.queryByText('늦은 오류')).not.toBeInTheDocument();
+    expect(screen.queryByText('검색 결과가 없습니다')).not.toBeInTheDocument();
+    await act(async () => latest.resolve({ data: [{ id: 'latest', type: 'product', title: '최신 검색 결과' }] }));
+    expect(await screen.findByText('최신 검색 결과')).toBeInTheDocument();
+  });
+
+  it.each(['success', 'error'])('retains shared autocomplete current suggestions after superseded %s', async outcome => {
+    const old = deferred(), latest = deferred();
+    const autocomplete = vi.spyOn(searchService, 'autocomplete').mockImplementation(query => query === '이전' ? old.promise : latest.promise);
+    render(<MemoryRouter><SearchAutocomplete placeholder="공통 자동완성" /></MemoryRouter>);
+    const input = screen.getByPlaceholderText('공통 자동완성');
+    fireEvent.change(input, { target: { value: '이전' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(1));
+    const signal = autocomplete.mock.calls[0][2].signal;
+    fireEvent.change(input, { target: { value: '현재' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(2));
+    await act(async () => latest.resolve(result('최신 자동완성')));
+    expect(await screen.findByText('최신 자동완성')).toBeInTheDocument();
+    await act(async () => outcome === 'success' ? old.resolve(result('늦은 자동완성')) : old.reject(new Error('늦은 실패')));
+    expect(signal.aborted).toBe(true);
+    expect(screen.getByText('최신 자동완성')).toBeInTheDocument();
+    expect(screen.queryByText('늦은 자동완성')).not.toBeInTheDocument();
+  });
+
+  it('cancels shared autocomplete on submission, external query replacement and unmount', async () => {
+    const old = deferred(), next = deferred();
+    const autocomplete = vi.spyOn(searchService, 'autocomplete').mockImplementationOnce(() => old.promise).mockImplementationOnce(() => next.promise);
+    const onSearch = vi.fn();
+    const view = render(<MemoryRouter><SearchAutocomplete variant="page" placeholder="공통 취소" onSearch={onSearch} /></MemoryRouter>);
+    const input = screen.getByPlaceholderText('공통 취소');
+    fireEvent.change(input, { target: { value: '이전' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(1));
+    fireEvent.submit(input.closest('form'));
+    expect(onSearch).toHaveBeenCalledWith('이전');
+    expect(autocomplete.mock.calls[0][2].signal.aborted).toBe(true);
+    await act(async () => old.resolve(result('제출 뒤 이전 제안')));
+    expect(screen.queryByText('제출 뒤 이전 제안')).not.toBeInTheDocument();
+    fireEvent.change(input, { target: { value: '다음' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(2));
+    view.rerender(<MemoryRouter><SearchAutocomplete variant="page" placeholder="공통 취소" onSearch={onSearch} initialValue="URL 검색어" /></MemoryRouter>);
+    expect(input).toHaveValue('URL 검색어');
+    expect(autocomplete.mock.calls[1][2].signal.aborted).toBe(true);
+    view.unmount();
+    await act(async () => next.resolve(result('닫힌 제안')));
+  });
+
+  it.each(['success', 'error'])('retains PricePage autocomplete current suggestions after superseded %s', async outcome => {
+    const old = deferred(), latest = deferred();
+    const autocomplete = vi.spyOn(searchService, 'autocomplete').mockImplementation(query => query === '이전' ? old.promise : latest.promise);
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ data: [] }) })));
+    render(<MemoryRouter initialEntries={['/price']}><Routes><Route path="/price" element={<PricePage />} /></Routes></MemoryRouter>);
+    const input = await screen.findByPlaceholderText('상품명을 검색하세요 (양파, 삼겹살, 계란...)');
+    fireEvent.change(input, { target: { value: '이전' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(1));
+    const signal = autocomplete.mock.calls[0][2].signal;
+    fireEvent.change(input, { target: { value: '현재' } });
+    await waitFor(() => expect(autocomplete).toHaveBeenCalledTimes(2));
+    await act(async () => latest.resolve(result('최신 자동완성')));
+    expect(await screen.findByText('최신 자동완성')).toBeInTheDocument();
+    await act(async () => outcome === 'success' ? old.resolve(result('늦은 자동완성')) : old.reject(new Error('늦은 실패')));
+    expect(signal.aborted).toBe(true);
+    expect(screen.getByText('최신 자동완성')).toBeInTheDocument();
+    expect(screen.queryByText('늦은 자동완성')).not.toBeInTheDocument();
   });
 });
 

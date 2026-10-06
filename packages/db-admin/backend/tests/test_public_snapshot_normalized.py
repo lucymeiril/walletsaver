@@ -329,6 +329,38 @@ def test_public_snapshot_contains_normalized_catalog_tables(tmp_path, monkeypatc
         assert connection.execute("SELECT unified_category_id FROM normalized_canonical_products").fetchone()[0] == "food"
 
 
+@pytest.mark.parametrize("registered", [True, False])
+def test_snapshot_publish_requires_compatible_reviewed_source_before_replacement(tmp_path, monkeypatch, registered):
+    import core.catalog_identity as identity
+    source = create_engine(f"sqlite:///{(tmp_path / 'source.sqlite').as_posix()}")
+    Base.metadata.create_all(source)
+    with Session(source) as session, session.begin():
+        session.add(UnifiedCategory(id="food", slug="food", name_ko="식품", level=0))
+        for pid in ["milk-a", "milk-b"]:
+            session.add(NormalizedCanonicalProduct(public_product_id=pid, unified_category_id="food",
+                canonical_name="우유", aliases=[], keywords=[], attributes={}))
+    monkeypatch.setattr(public_snapshot_v2, "get_engine", lambda: source)
+    target = tmp_path / "public.sqlite"
+    public_snapshot_v2.build_public_snapshot(target)
+    original = target.read_bytes()
+    review = {"key": "approved-milk", "canonical_product_id": "milk-a",
+              "member_product_ids": ["milk-a", "milk-b"], "canonical_name": "우유",
+              "brand": "검토브랜드", "review_version": identity.GROUP_VERSION}
+    definition = {**review, "leaf": "food", "member_product_ids": ["milk-a", "milk-b", "milk-c"]}
+    monkeypatch.setattr(identity, "reviewed_registry", lambda: {"groups": [definition] if registered else []})
+    with Session(source) as session, session.begin():
+        for pid in ["milk-a", "milk-b"]:
+            session.get(NormalizedCanonicalProduct, pid).attributes = {"catalog_group": review}
+    if registered:
+        public_snapshot_v2.build_public_snapshot(target)
+        assert public_snapshot_v2.validate_public_snapshot(target)["reviewed_groups_compatible"] == 1
+    else:
+        with pytest.raises(ValueError, match="catalog_group_source_incompatible"):
+            public_snapshot_v2.build_public_snapshot(target)
+        assert target.read_bytes() == original
+    source.dispose()
+
+
 def test_public_snapshot_keeps_one_validated_rollback_version(tmp_path, monkeypatch):
     source = create_engine(f"sqlite:///{(tmp_path / 'source.sqlite').as_posix()}")
     Base.metadata.create_all(source)

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Zap, Users } from 'lucide-react';
 import { searchService } from '../../services/searchService';
@@ -42,12 +42,20 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
+  const requestRef = useRef(null);
 
   const addRecentSearch = useStore((st) => st.addRecentSearch);
   const { openProductModal } = useModalStore();
 
   const fetchResults = useCallback(async () => {
-    if (!query) return;
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const isCurrent = () => requestRef.current === controller && !controller.signal.aborted;
+    if (!query) {
+      setResults([]); setMeta(null); setError(null); setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -55,20 +63,23 @@ export default function SearchPage() {
       if (activeType !== 'all') params.type = activeType;
       const page = searchParams.get('page');
       if (page) params.page = page;
-      const res = await searchService.search(query, params);
+      const res = await searchService.search(query, params, { signal: controller.signal });
+      if (!isCurrent()) return;
       setResults(res.data || []);
       setMeta(res.meta || null);
     } catch (err) {
+      if (!isCurrent() || err.name === 'AbortError') return;
       setError(err);
       setResults([]);
     } finally {
-      setLoading(false);
+      if (isCurrent()) setLoading(false);
     }
   }, [query, activeType, sort, searchParams]);
 
   useEffect(() => {
     fetchResults();
     if (query) addRecentSearch(query);
+    return () => requestRef.current?.abort();
   }, [fetchResults]);
 
   const handleTabChange = (tabId) => {

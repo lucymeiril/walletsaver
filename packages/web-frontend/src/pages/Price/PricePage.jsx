@@ -145,26 +145,30 @@ export default function PricePage() {
 
   // 검색 자동완성 — 키워드+상품 2섹션
   useEffect(() => {
-    if (debouncedQuery.length < 1) {
-      setAcKeywords([]);
-      setAcProducts([]);
-      setTotalKeywords(0);
-      setTotalProducts(0);
-      return;
-    }
-    searchService.autocomplete(debouncedQuery)
+    const controller = new AbortController();
+    setAcKeywords([]);
+    setAcProducts([]);
+    setTotalKeywords(0);
+    setTotalProducts(0);
+    if (debouncedQuery.length < 1 || searchQuery !== debouncedQuery) return () => controller.abort();
+    searchService.autocomplete(debouncedQuery, 10, { signal: controller.signal })
       .then(res => {
+        if (controller.signal.aborted) return;
         const d = res.data || {};
         setAcKeywords(d.keywords || []);
         setAcProducts(d.products || []);
         setTotalKeywords(d.total_keyword_count || 0);
         setTotalProducts(d.total_product_count || 0);
       })
-      .catch(() => {
+      .catch(err => {
+        if (controller.signal.aborted || err.name === 'AbortError') return;
         setAcKeywords([]);
         setAcProducts([]);
+        setTotalKeywords(0);
+        setTotalProducts(0);
       });
-  }, [debouncedQuery]);
+    return () => controller.abort();
+  }, [debouncedQuery, searchQuery]);
 
   const hasAcResults = acKeywords.length > 0 || acProducts.length > 0;
 

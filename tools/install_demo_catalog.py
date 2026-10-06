@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install the shipped, sanitized catalog once; never reset an existing demo."""
+"""Install once or preserve an existing demo; catalog updates use admin review."""
 from __future__ import annotations
 
 import argparse
@@ -145,12 +145,28 @@ def install(source: Path, target: Path) -> str:
         receipt = json.loads(marker.read_text(encoding="utf-8"))
         if not isinstance(receipt, dict):
             raise ValueError("Invalid installed catalog receipt")
-        expected = {name: manifest["files"][name]["sha256"] for name in manifest["files"]}
-        if receipt.get("schema_version") != 1 or receipt.get("source_manifest_sha256") != manifest_sha or receipt.get("source_files") != expected:
-            raise ValueError("Installed catalog provenance differs; update via the admin workflow, never overwrite")
-        for name in manifest["files"]:
+        installed_files = receipt.get("source_files")
+        revision = receipt.get("catalog_revision")
+        if (receipt.get("schema_version") != 1 or isinstance(receipt.get("schema_version"), bool)
+                or not isinstance(revision, int) or isinstance(revision, bool) or revision < 1
+                or not isinstance(receipt.get("source_manifest_sha256"), str)
+                or not re.fullmatch(r"[0-9a-f]{64}", receipt["source_manifest_sha256"])
+                or not isinstance(installed_files, dict)
+                or not set(REQUIRED_FILES).issubset(installed_files)
+                or not set(installed_files).issubset(FILES)
+                or any(not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{64}", sha)
+                       for sha in installed_files.values())):
+            raise ValueError("Invalid installed catalog provenance")
+        for name in installed_files:
             regular_file(target / name)
         # User/admin changes, WALs and new private stores are deliberately untouched.
+        # The receipt describes the FIRST installation, not the current package
+        # or subsequent reviewed admin updates. A valid new shipped source must
+        # never turn normal startup into an implicit catalog replacement.
+        expected = {name: manifest["files"][name]["sha256"] for name in manifest["files"]}
+        if receipt["source_manifest_sha256"] != manifest_sha or installed_files != expected:
+            return ("Existing demo preserved (no files copied); shipped source differs from the initial installation. "
+                    "To update catalog data, use the authenticated admin review/apply/publish workflow")
         return "Existing demo preserved (no files copied)"
     if any(target.iterdir()):
         raise ValueError("Refusing a nonempty target without a completed demo installation")

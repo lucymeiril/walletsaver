@@ -56,6 +56,7 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
 
   const debounceRef = useRef(null);
   const abortRef = useRef(null);
+  const requestRef = useRef(0);
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -64,10 +65,18 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
   const addRecentSearch = useStore((st) => st.addRecentSearch);
   const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
 
+  const cancelAutocomplete = useCallback(() => {
+    requestRef.current += 1;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
+  }, []);
+
   // sync initialValue when it changes externally (e.g. URL param)
   useEffect(() => {
+    cancelAutocomplete();
     setSearchQuery(initialValue);
-  }, [initialValue]);
+    setKeywords([]); setProducts([]); setTotalKeywords(0); setTotalProducts(0);
+  }, [initialValue, cancelAutocomplete]);
 
   // load trending keywords once
   useEffect(() => {
@@ -90,16 +99,14 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
 
   // cleanup debounce timer and abort controller on unmount
   useEffect(() => {
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      if (abortRef.current) abortRef.current.abort();
-    };
-  }, []);
+    return cancelAutocomplete;
+  }, [cancelAutocomplete]);
 
   /* ── Autocomplete fetch (200ms debounce, with abort controller) ── */
   const fetchAutocomplete = useCallback((value) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (abortRef.current) abortRef.current.abort();
+    cancelAutocomplete();
+    const request = requestRef.current;
+    setKeywords([]); setProducts([]); setTotalKeywords(0); setTotalProducts(0);
 
     if (!value || value.length < 1) {
       setKeywords([]);
@@ -109,32 +116,36 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
       return;
     }
     debounceRef.current = setTimeout(async () => {
+      if (request !== requestRef.current) return;
       const controller = new AbortController();
       abortRef.current = controller;
+      const isCurrent = () => request === requestRef.current && !controller.signal.aborted;
       try {
         const res = await searchService.autocomplete(value, 10, { signal: controller.signal });
-        if (controller.signal.aborted) return;
+        if (!isCurrent()) return;
         const d = res.data || {};
         setKeywords(d.keywords || []);
         setProducts(d.products || []);
         setTotalKeywords(d.total_keyword_count || 0);
         setTotalProducts(d.total_product_count || 0);
       } catch (err) {
-        if (err?.name === 'AbortError') return;
+        if (!isCurrent() || err?.name === 'AbortError') return;
         setKeywords([]);
         setProducts([]);
       }
     }, 200);
-  }, []);
+  }, [cancelAutocomplete]);
 
   /* ── helpers to reset state after an action ── */
   const resetState = useCallback(() => {
+    cancelAutocomplete();
     setShowDropdown(false);
     setKeywords([]);
     setProducts([]);
+    setTotalKeywords(0); setTotalProducts(0);
     setSearchQuery('');
     if (onAfterAction) onAfterAction();
-  }, [onAfterAction]);
+  }, [onAfterAction, cancelAutocomplete]);
 
   /* ── search submit ── */
   const handleSearch = useCallback(() => {

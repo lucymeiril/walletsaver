@@ -3,8 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import CommunityPage from './CommunityPage';
 
-const session = vi.hoisted(() => ({ isLoggedIn: true, user: { id: 7 }, addToast: vi.fn() }));
-vi.mock('../../stores/appStore', () => ({ default: () => session }));
+const session = vi.hoisted(() => ({ isLoggedIn: true, user: { id: 7 }, addToast: vi.fn(),
+  logout: vi.fn(), openLoginModal: vi.fn() }));
+vi.mock('../../stores/appStore', () => ({ default: Object.assign(() => session, { getState: () => session }) }));
 vi.mock('../../components/community/RichTextEditor', () => ({ default: ({ content, onChange }) =>
   <textarea aria-label="본문" value={content} onChange={event => onChange(event.target.value)} /> }));
 vi.mock('../../components/community/ProductPicker', () => ({ default: () => null }));
@@ -26,7 +27,8 @@ beforeEach(() => {
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
-afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); session.addToast.mockClear(); });
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  session.addToast.mockClear(); session.logout.mockClear(); session.openLoginModal.mockClear(); });
 
 describe('Community bounded query and canonical mutation refresh', () => {
   it('loads only the requested page with server pins and forwards category, literal search, sorting and free tags', async () => {
@@ -205,5 +207,99 @@ describe('Community bounded query and canonical mutation refresh', () => {
     fireEvent.click(screen.getByRole('button', { name: '등록', exact: true }));
     await screen.findByText('새 글');
     expect(queryOf(listCalls().at(-1))).toMatchObject({ page: '1', category: '마트' });
+  });
+});
+
+describe('355 Community expired session common refresh', () => {
+  const deferred = () => {
+    let resolve;
+    const promise = new Promise(yes => { resolve = yes; });
+    return { promise, resolve };
+  };
+  const prepare = async kind => {
+    if (kind === 'create') {
+      fireEvent.click(screen.getByText('💬 자유 게시판'));
+      await screen.findByText('작성자 글');
+      fireEvent.click(screen.getByText('글쓰기'));
+    } else {
+      fireEvent.click(screen.getByText('작성자 글'));
+      const dialog = await screen.findByRole('dialog');
+      if (kind === 'edit') fireEvent.click(within(dialog).getByText('수정'));
+    }
+    if (kind === 'create' || kind === 'edit') {
+      fireEvent.change(screen.getByPlaceholderText('제목을 입력하세요'), { target: { value: '보존할 제목' } });
+      fireEvent.change(screen.getByLabelText('본문'), { target: { value: '보존할 본문' } });
+      const submit = screen.getByRole('button', { name: kind === 'edit' ? '수정' : '등록', exact: true });
+      return () => fireEvent.click(submit);
+    }
+    const dialog = screen.getByRole('dialog');
+    if (kind === 'comment') {
+      const input = within(dialog).getByPlaceholderText('댓글을 입력하세요...');
+      fireEvent.change(input, { target: { value: '보존할 댓글' } });
+      return () => fireEvent.keyDown(input, { key: 'Enter' });
+    }
+    return () => fireEvent.click(within(dialog).getByText(kind === 'vote' ? '🔥 핫딜이다' : '삭제'));
+  };
+  const installTransport = refresh => {
+    let attempts = 0, applied = 0;
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    fetch.mockImplementation(async (input, options) => {
+      const path = urlOf(input).pathname;
+      if (path === '/api/auth/refresh') return refresh.promise;
+      if (options?.method && options.method !== 'GET') {
+        if (++attempts === 1) return response({ detail: '만료된 세션' }, 401);
+        applied++;
+        return response({ data: { ...post(2, '보존할 제목'), hot_votes: 1, user_vote: 'hot' } });
+      }
+      if (path === '/api/posts') return page([post(2, applied ? '보존할 제목' : '작성자 글')]);
+      if (path.endsWith('/comments')) return response({ data: [] });
+      return response({ data: post(2, '작성자 글') });
+    });
+    return { attempts: () => attempts, applied: () => applied };
+  };
+
+  it.each(['create', 'edit', 'comment', 'vote', 'delete'])('refreshes an expired %s session once and applies exactly one mutation despite repeated input', async kind => {
+    const refresh = deferred();
+    const transport = installTransport(refresh);
+    show();
+    await screen.findByText('작성자 글');
+    const trigger = await prepare(kind);
+    const before = listCalls().length;
+    trigger();
+    await waitFor(() => expect(fetch.mock.calls.filter(([url]) => urlOf(url).pathname === '/api/auth/refresh')).toHaveLength(1));
+    trigger();
+    expect(transport.attempts()).toBe(1);
+    await act(async () => refresh.resolve(response({ data: {} })));
+    await waitFor(() => expect(transport.applied()).toBe(1));
+    await waitFor(() => expect(listCalls().length).toBeGreaterThan(before));
+    const mutations = fetch.mock.calls.filter(([url, options]) => options?.method && options.method !== 'GET' && urlOf(url).pathname !== '/api/auth/refresh');
+    expect(mutations).toHaveLength(2); // Initial rejected request + one authorized replay, not two writes.
+    expect(mutations[1][0]).toBe(mutations[0][0]);
+    expect(mutations[1][1]).toMatchObject({ method: mutations[0][1].method, credentials: 'include' });
+    expect(mutations[1][1].body).toBe(mutations[0][1].body);
+    expect(session.logout).not.toHaveBeenCalled();
+    expect(session.openLoginModal).not.toHaveBeenCalled();
+  });
+
+  it.each(['create', 'comment'])('retains %s draft when refresh also fails without replaying the mutation', async kind => {
+    const refresh = deferred();
+    const transport = installTransport(refresh);
+    show();
+    await screen.findByText('작성자 글');
+    const trigger = await prepare(kind);
+    const before = listCalls().length;
+    trigger();
+    await waitFor(() => expect(fetch.mock.calls.filter(([url]) => urlOf(url).pathname === '/api/auth/refresh')).toHaveLength(1));
+    await act(async () => refresh.resolve(response({ detail: '갱신 불가' }, 401)));
+    await waitFor(() => expect(session.addToast).toHaveBeenCalledWith('로그인이 필요합니다.', 'error'));
+    expect(transport.attempts()).toBe(1);
+    expect(transport.applied()).toBe(0);
+    expect(listCalls()).toHaveLength(before);
+    if (kind === 'create') {
+      expect(screen.getByPlaceholderText('제목을 입력하세요')).toHaveValue('보존할 제목');
+      expect(screen.getByLabelText('본문')).toHaveValue('보존할 본문');
+    } else expect(screen.getByPlaceholderText('댓글을 입력하세요...')).toHaveValue('보존할 댓글');
+    expect(session.logout).toHaveBeenCalledTimes(1);
+    expect(session.openLoginModal).toHaveBeenCalledTimes(1);
   });
 });

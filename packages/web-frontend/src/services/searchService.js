@@ -5,9 +5,10 @@ export const searchService = {
    * 통합 검색 — 상품/핫딜/커뮤니티/동네 통합 결과.
    * @param {string} query 검색어
    * @param {{ type?: string, sort?: string, page?: number, per_page?: number }} params
+   * @param {{ signal?: AbortSignal }} [options]
    */
-  async search(query, params = {}) {
-    const res = await api.get('/api/search', { q: query, ...params });
+  async search(query, params = {}, options = {}) {
+    const res = await api.get('/api/search', { q: query, ...params }, options);
     return res.json();
   },
 
