@@ -1,0 +1,2448 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation406-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "food.meals.noodles.soy_milk_noodle",
+      "parent_id": "food.meals.noodles",
+      "slug": "soy_milk_noodle",
+      "name_ko": "두유면",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 9
+    },
+    {
+      "id": "food.meals.prepared.fish_steak",
+      "parent_id": "food.meals.prepared",
+      "slug": "fish_steak",
+      "name_ko": "생선스테이크조리식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 10
+    },
+    {
+      "id": "food.meals.prepared.jeon",
+      "parent_id": "food.meals.prepared",
+      "slug": "jeon",
+      "name_ko": "전·부침조리식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 11
+    },
+    {
+      "id": "food.meals.prepared.jeonbyeong",
+      "parent_id": "food.meals.prepared",
+      "slug": "jeonbyeong",
+      "name_ko": "전병조리식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 12
+    },
+    {
+      "id": "food.meals.rice.yakbap",
+      "parent_id": "food.meals.rice",
+      "slug": "yakbap",
+      "name_ko": "약밥",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 13
+    },
+    {
+      "id": "food.preserved.sides.marinated_egg",
+      "parent_id": "food.preserved.sides",
+      "slug": "marinated_egg",
+      "name_ko": "계란장",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 14
+    },
+    {
+      "id": "food.preserved.sides.pickle",
+      "parent_id": "food.preserved.sides",
+      "slug": "pickle",
+      "name_ko": "피클",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 15
+    },
+    {
+      "id": "food.produce.processed_vegetables.prepared_olive",
+      "parent_id": "food.produce.processed_vegetables",
+      "slug": "prepared_olive",
+      "name_ko": "씨제거·슬라이스올리브",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 16
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1216,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "두유면",
+      "synonyms": [],
+      "unified_category_id": "food.meals.noodles.soy_milk_noodle"
+    },
+    {
+      "id": 1217,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "생선스테이크조리식",
+      "synonyms": [],
+      "unified_category_id": "food.meals.prepared.fish_steak"
+    },
+    {
+      "id": 1218,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "전·부침조리식",
+      "synonyms": [],
+      "unified_category_id": "food.meals.prepared.jeon"
+    },
+    {
+      "id": 1219,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "전병조리식",
+      "synonyms": [],
+      "unified_category_id": "food.meals.prepared.jeonbyeong"
+    },
+    {
+      "id": 1220,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "약밥",
+      "synonyms": [],
+      "unified_category_id": "food.meals.rice.yakbap"
+    },
+    {
+      "id": 1221,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "계란장",
+      "synonyms": [],
+      "unified_category_id": "food.preserved.sides.marinated_egg"
+    },
+    {
+      "id": 1222,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "피클",
+      "synonyms": [],
+      "unified_category_id": "food.preserved.sides.pickle"
+    },
+    {
+      "id": 1223,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "씨제거·슬라이스올리브",
+      "synonyms": [],
+      "unified_category_id": "food.produce.processed_vegetables.prepared_olive"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+      "unified_category_id": "food.meals.prepared.jeon",
+      "category_id": null,
+      "canonical_name": "풀무원 철판 바삭감자채전 (300G)",
+      "brand": "풀무원",
+      "aliases": [
+        "풀무원 철판 바삭감자채전"
+      ],
+      "keywords": [
+        "전·부침조리식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:33:86"
+            ],
+            "source_ingestion_ids": [
+              33
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801114172698"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          33
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전·부침조리식"
+        ],
+        "catalog_group": {
+          "key": "pulmuone-iron-crispy-potato-shred-pancake",
+          "canonical_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+          "member_product_ids": [
+            "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+            "prod-9d0c3a13b29524cab78d990443a3e017"
+          ],
+          "canonical_name": "풀무원 철판 바삭감자채전",
+          "brand": "풀무원",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+          "old_leaf": "food.meals.prepared.pancake",
+          "new_leaf": "food.meals.prepared.jeon",
+          "source_name": "lottemart",
+          "source_record_key": "8801114172698",
+          "source_titles": [
+            "풀무원 철판 바삭감자채전 (300G)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8801114172698/details"
+          ],
+          "evidence_sha256": "9a058a0ecc08a1a86ffcd172be9744c3ba3aa2e33b464fddca944e99318905be",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20c1a0dc-57e7-489c-b033-62103d54acf5/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-16de43c248e826fad83957ed8cacc066",
+      "unified_category_id": "food.meals.noodles.soy_milk_noodle",
+      "category_id": null,
+      "canonical_name": "풀무원Silky두유면잔치국수374.4g x 5",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "두유면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_noodle_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:56"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "673498"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_noodle_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "두유면"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-16de43c248e826fad83957ed8cacc066",
+          "old_leaf": "food.meals.noodles.tofu_noodle",
+          "new_leaf": "food.meals.noodles.soy_milk_noodle",
+          "source_name": "costco",
+          "source_record_key": "673498",
+          "source_titles": [
+            "풀무원Silky두유면잔치국수374.4g x 5"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Pulmuone-Silky-Soy-Bean-Banquet-Noodles-3744g-x-5/p/673498"
+          ],
+          "evidence_sha256": "a62ad3d00ad0ce1ca844c6abb6ca8e656fae607c729c5f693169249d96b4fdab",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h9a/ha4/316631507992606.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1b254b94c490aff8e155d2c86d04d43d",
+      "unified_category_id": "food.preserved.sides.marinated_egg",
+      "category_id": null,
+      "canonical_name": "[반찬] 반숙 계란장 400G",
+      "brand": "반찬",
+      "aliases": [],
+      "keywords": [
+        "계란장"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:14:65",
+              "ingestion:64:3"
+            ],
+            "source_ingestion_ids": [
+              14,
+              64
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "135122791"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          14,
+          64
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "계란장"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-1b254b94c490aff8e155d2c86d04d43d",
+          "old_leaf": "food.preserved.sides.braised",
+          "new_leaf": "food.preserved.sides.marinated_egg",
+          "source_name": "homeplus",
+          "source_record_key": "135122791",
+          "source_titles": [
+            "[반찬] 반숙 계란장 400G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=135122791&storeType=HYPER"
+          ],
+          "evidence_sha256": "af9d6f8638954db952e9f2164159a07bd15bf9280b67fd763f8cf610818e8902",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-28aede7ed3df8be5b33dd7726661560d",
+      "unified_category_id": "food.meals.noodles.soy_milk_noodle",
+      "category_id": null,
+      "canonical_name": "풀무원Silky 두유면비빔국수423g x 5",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "두유면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_noodle_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:55"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "673499"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_noodle_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "두유면"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-28aede7ed3df8be5b33dd7726661560d",
+          "old_leaf": "food.meals.noodles.tofu_noodle",
+          "new_leaf": "food.meals.noodles.soy_milk_noodle",
+          "source_name": "costco",
+          "source_record_key": "673499",
+          "source_titles": [
+            "풀무원Silky 두유면비빔국수423g x 5"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Pulmuone-Silky-Soy-Bean-Spicy-Noodles-423g-x-5/p/673499"
+          ],
+          "evidence_sha256": "c72f68f19953bc6b2714721cc672c951e0e8e81b568670393b2e8e47d0a574ae",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h34/hec/316631508320286.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-2bb51226a954e999ba5b74bd06f72752",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "category_id": null,
+      "canonical_name": "하림 용가리 치킨 1.5kg x 2",
+      "brand": null,
+      "aliases": [
+        "하림 용가리 치킨"
+      ],
+      "keywords": [
+        "조리치킨"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_cheese_shelf_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:56"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "677496"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_cheese_shelf_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조리치킨"
+        ],
+        "catalog_group": {
+          "key": "harim-yonggari-chicken",
+          "canonical_product_id": "prod-2bb51226a954e999ba5b74bd06f72752",
+          "member_product_ids": [
+            "prod-2bb51226a954e999ba5b74bd06f72752",
+            "prod-f0945c81177d1bd57444c362adccbbfc"
+          ],
+          "canonical_name": "하림 용가리 치킨",
+          "brand": "하림",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-2bb51226a954e999ba5b74bd06f72752",
+          "old_leaf": "food.meals.prepared.nugget",
+          "new_leaf": "food.meals.prepared.chicken",
+          "source_name": "costco",
+          "source_record_key": "677496",
+          "source_titles": [
+            "하림 용가리 치킨 1.5kg x 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/HARIM-YONGGARI-CHICKEN-15kg-x-2/p/677496"
+          ],
+          "evidence_sha256": "0706903e433869d508d25c23e4957c9339c3fdbaf90a4905e5d5056fd8eca9fe",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hfc/h61/273304677941278.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4471b25a3f3dbf0a5638090a5f334b17",
+      "unified_category_id": "food.preserved.ingredients.gimbap_set",
+      "category_id": null,
+      "canonical_name": "우엉절임과 김밥단무지 220g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "김밥재료세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:84:29",
+              "ingestion:85:29"
+            ],
+            "source_ingestion_ids": [
+              84,
+              85
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000055037516"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          84,
+          85
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "김밥재료세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-4471b25a3f3dbf0a5638090a5f334b17",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.ingredients.gimbap_set",
+          "source_name": "emart",
+          "source_record_key": "1000055037516",
+          "source_titles": [
+            "우엉절임과 김밥단무지 220g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000055037516&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "eee5166379f922947a8502fb05eb5667d5fe4532688a564f70344dec3e909339",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/16/75/03/item/1000055037516_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4c95c363cf52b2480b1f5bfa643d77fa",
+      "unified_category_id": "food.produce.processed_vegetables.prepared_olive",
+      "category_id": null,
+      "canonical_name": "마다마 피티드 올리브 480g x 3",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "씨제거·슬라이스올리브"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_cheese_shelf_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:44:90"
+            ],
+            "source_ingestion_ids": [
+              44
+            ],
+            "source_name": "costco",
+            "source_record_key": "654967"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_cheese_shelf_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          44
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "씨제거·슬라이스올리브"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-4c95c363cf52b2480b1f5bfa643d77fa",
+          "old_leaf": "food.produce.processed_vegetables.olive",
+          "new_leaf": "food.produce.processed_vegetables.prepared_olive",
+          "source_name": "costco",
+          "source_record_key": "654967",
+          "source_titles": [
+            "마다마 피티드 올리브 480g x 3"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Madama-Green-Pitted-Olive-480g-x-3/p/654967"
+          ],
+          "evidence_sha256": "c9ba610b74b8ffd3d6ed0cf3ce232b72c944845d05fd22fd4358facb43b445d0",
+          "reason": "Literalpitted/sliced establishesmechanicalprocessing, notbrine; originalquantity retained."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h69/had/102276563304478.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-52f6826b702113dadca59ba96a4e10bb",
+      "unified_category_id": "food.preserved.sides.ssammu",
+      "category_id": null,
+      "canonical_name": "simplus 새콤한맛쌈무 350G",
+      "brand": "simplus",
+      "aliases": [],
+      "keywords": [
+        "쌈무"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:51",
+              "ingestion:62:53"
+            ],
+            "source_ingestion_ids": [
+              13,
+              62
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "071050293"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          62
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쌈무"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-52f6826b702113dadca59ba96a4e10bb",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.sides.ssammu",
+          "source_name": "homeplus",
+          "source_record_key": "071050293",
+          "source_titles": [
+            "simplus 새콤한맛쌈무 350G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=071050293&storeType=HYPER"
+          ],
+          "evidence_sha256": "0ba5417acf88ba272fa657f7d41243f373a1b872602625669889d9478e8627ef",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-57a3596bf18697d5045c8c2e0ed1a9af",
+      "unified_category_id": "food.preserved.sides.ssammu",
+      "category_id": null,
+      "canonical_name": "씨제이 새콤한 쌈무 350G",
+      "brand": "CJ",
+      "aliases": [],
+      "keywords": [
+        "쌈무"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:14:5",
+              "ingestion:63:17"
+            ],
+            "source_ingestion_ids": [
+              14,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "107028097"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          14,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쌈무"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-57a3596bf18697d5045c8c2e0ed1a9af",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.sides.ssammu",
+          "source_name": "homeplus",
+          "source_record_key": "107028097",
+          "source_titles": [
+            "씨제이 새콤한 쌈무 350G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=107028097&storeType=HYPER"
+          ],
+          "evidence_sha256": "7e95c6b340397d694203790d5d83823b4a5667869cbe407f48bde843d8447836",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5b0669466602cb9b47b0ec2eade8c991",
+      "unified_category_id": "food.meals.prepared.neobiani",
+      "category_id": null,
+      "canonical_name": "씨제이 백설 너비아니 560G",
+      "brand": "CJ",
+      "aliases": [],
+      "keywords": [
+        "너비아니"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:11:8",
+              "ingestion:61:30"
+            ],
+            "source_ingestion_ids": [
+              11,
+              61
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "100904841"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          11,
+          61
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "너비아니"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-5b0669466602cb9b47b0ec2eade8c991",
+          "old_leaf": "food.meals.prepared.tteokgalbi",
+          "new_leaf": "food.meals.prepared.neobiani",
+          "source_name": "homeplus",
+          "source_record_key": "100904841",
+          "source_titles": [
+            "씨제이 백설 너비아니 560G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=100904841&storeType=HYPER"
+          ],
+          "evidence_sha256": "3408545de17432640fea0e25a0a04af732c08ad9aa628a1a5a1fc47f27199897",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6007f1612b755747b5925eb3f707411c",
+      "unified_category_id": "food.produce.processed_vegetables.prepared_olive",
+      "category_id": null,
+      "canonical_name": "슬라이스 블랙 올리브 235g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "씨제거·슬라이스올리브"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:35",
+              "ingestion:90:39"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000684672650"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "씨제거·슬라이스올리브"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-6007f1612b755747b5925eb3f707411c",
+          "old_leaf": "food.produce.processed_vegetables.olive",
+          "new_leaf": "food.produce.processed_vegetables.prepared_olive",
+          "source_name": "emart",
+          "source_record_key": "1000684672650",
+          "source_titles": [
+            "슬라이스 블랙 올리브 235g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000684672650&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "477ff7584165f8403eabbaef03000d369866b01ff0a7c16353513abc6701f6f1",
+          "reason": "Literalpitted/sliced establishesmechanicalprocessing, notbrine; originalquantity retained."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/50/26/67/item/1000684672650_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6b11e7be0355e27fc42d766d2236c525",
+      "unified_category_id": "food.produce.processed_vegetables.prepared_olive",
+      "category_id": null,
+      "canonical_name": "피티드 블랙올리브 330g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "씨제거·슬라이스올리브"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_food_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:25",
+              "ingestion:90:30"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000726156588"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_food_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "씨제거·슬라이스올리브"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-6b11e7be0355e27fc42d766d2236c525",
+          "old_leaf": "food.produce.processed_vegetables.olive",
+          "new_leaf": "food.produce.processed_vegetables.prepared_olive",
+          "source_name": "emart",
+          "source_record_key": "1000726156588",
+          "source_titles": [
+            "피티드 블랙올리브 330g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000726156588&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "e52cb4f6f671e6f4447eebe4908d4a393a239cb535707997f06635618e92833d",
+          "reason": "Literalpitted/sliced establishesmechanicalprocessing, notbrine; originalquantity retained."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/88/65/15/item/1000726156588_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-74ac03ddee144090335c305e7474562e",
+      "unified_category_id": "food.preserved.sides.pickle",
+      "category_id": null,
+      "canonical_name": "크링클컷 슬라이스 피클 500g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "피클"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:89:33",
+              "ingestion:90:38"
+            ],
+            "source_ingestion_ids": [
+              89,
+              90
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000689799083"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          89,
+          90
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "피클"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-74ac03ddee144090335c305e7474562e",
+          "old_leaf": "food.preserved.sides.cucumber_pickle",
+          "new_leaf": "food.preserved.sides.pickle",
+          "source_name": "emart",
+          "source_record_key": "1000689799083",
+          "source_titles": [
+            "크링클컷 슬라이스 피클 500g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000689799083&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "51e5358d3e76e54f5a0b9a8dc07b009f71dffeed1051d87501d09df6f70610ea",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/83/90/79/item/1000689799083_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7e2fbe5efd901315bd2ae25065a74ba9",
+      "unified_category_id": "food.preserved.sides.ssammu",
+      "category_id": null,
+      "canonical_name": "simplus 와사비맛 쌈무 350G",
+      "brand": "simplus",
+      "aliases": [],
+      "keywords": [
+        "쌈무"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:39",
+              "ingestion:63:15"
+            ],
+            "source_ingestion_ids": [
+              13,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "071050310"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쌈무"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-7e2fbe5efd901315bd2ae25065a74ba9",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.sides.ssammu",
+          "source_name": "homeplus",
+          "source_record_key": "071050310",
+          "source_titles": [
+            "simplus 와사비맛 쌈무 350G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=071050310&storeType=HYPER"
+          ],
+          "evidence_sha256": "ca1114d37f330b70058c1cccb72f11979de8e227e3db7978a518bfafee9db5b6",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8bf94a327097b308a9153dfc9601a662",
+      "unified_category_id": "food.meals.prepared.jeon",
+      "category_id": null,
+      "canonical_name": "풀무원 철판 도톰녹두전 (300G)",
+      "brand": "청정원",
+      "aliases": [],
+      "keywords": [
+        "전·부침조리식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:34:19"
+            ],
+            "source_ingestion_ids": [
+              34
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801114179352"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          34
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전·부침조리식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-8bf94a327097b308a9153dfc9601a662",
+          "old_leaf": "food.meals.prepared.pancake",
+          "new_leaf": "food.meals.prepared.jeon",
+          "source_name": "lottemart",
+          "source_record_key": "8801114179352",
+          "source_titles": [
+            "풀무원 철판 도톰녹두전 (300G)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8801114179352/details"
+          ],
+          "evidence_sha256": "2843ed56959a741addf68b43aadf075706eec27e8d5b6502fb0aca0bcfdb7c78",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2d9ce067-8d8e-4c00-87e0-6bbbdb9ff95e/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-91d65791b62ccaca512f1f49ed0a57ad",
+      "unified_category_id": "food.meals.prepared.fish_steak",
+      "category_id": null,
+      "canonical_name": "씨제이 비비고 연어 스테이크 60G",
+      "brand": "CJ",
+      "aliases": [],
+      "keywords": [
+        "생선스테이크조리식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:15:61",
+              "ingestion:64:99"
+            ],
+            "source_ingestion_ids": [
+              15,
+              64
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "071367212"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          15,
+          64
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "생선스테이크조리식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-91d65791b62ccaca512f1f49ed0a57ad",
+          "old_leaf": "food.meals.prepared.grilled_fish",
+          "new_leaf": "food.meals.prepared.fish_steak",
+          "source_name": "homeplus",
+          "source_record_key": "071367212",
+          "source_titles": [
+            "씨제이 비비고 연어 스테이크 60G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=071367212&storeType=HYPER"
+          ],
+          "evidence_sha256": "4943b14df1c4ce19bf2302694594fd143bf995aa804a6c9d24fcceeb328e3c74",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-95418af77837880ce2762432ab6900b6",
+      "unified_category_id": "food.preserved.ingredients.gimbap_set",
+      "category_id": null,
+      "canonical_name": "씨제이 하선정치자단무지와우엉 220G",
+      "brand": "CJ",
+      "aliases": [],
+      "keywords": [
+        "김밥재료세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:15:27",
+              "ingestion:64:65"
+            ],
+            "source_ingestion_ids": [
+              15,
+              64
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "120740047"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          15,
+          64
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "김밥재료세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-95418af77837880ce2762432ab6900b6",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.ingredients.gimbap_set",
+          "source_name": "homeplus",
+          "source_record_key": "120740047",
+          "source_titles": [
+            "씨제이 하선정치자단무지와우엉 220G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=120740047&storeType=HYPER"
+          ],
+          "evidence_sha256": "e21ae6d0ad55ea9f85991c6b792e01f1f5d0b8b707a379d4716425b3f75673e6",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9d0c3a13b29524cab78d990443a3e017",
+      "unified_category_id": "food.meals.prepared.jeon",
+      "category_id": null,
+      "canonical_name": "풀무원철판 바삭 감자채전150G X 8 X 2",
+      "brand": null,
+      "aliases": [
+        "풀무원 철판 바삭감자채전"
+      ],
+      "keywords": [
+        "전·부침조리식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_cheese_shelf_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:58"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "680247"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_cheese_shelf_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전·부침조리식"
+        ],
+        "catalog_group": {
+          "key": "pulmuone-iron-crispy-potato-shred-pancake",
+          "canonical_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+          "member_product_ids": [
+            "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+            "prod-9d0c3a13b29524cab78d990443a3e017"
+          ],
+          "canonical_name": "풀무원 철판 바삭감자채전",
+          "brand": "풀무원",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-9d0c3a13b29524cab78d990443a3e017",
+          "old_leaf": "food.meals.prepared.pancake",
+          "new_leaf": "food.meals.prepared.jeon",
+          "source_name": "costco",
+          "source_record_key": "680247",
+          "source_titles": [
+            "풀무원철판 바삭 감자채전150G X 8 X 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-Crispy-Grilled-Sliced-Potato-Jeon-1200gx2/p/680247"
+          ],
+          "evidence_sha256": "17078014f2e9eaf8107847d6aee95f2b6faf062190f4c1cb7dfcb982579aaf56",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hd1/hd5/328854332178462.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9e4dc23da74a2d012c42a554d3d4bfed",
+      "unified_category_id": "food.preserved.sides.cucumber_pickle",
+      "category_id": null,
+      "canonical_name": "슬라이스드 오이피클 500G",
+      "brand": "슬라이스드",
+      "aliases": [],
+      "keywords": [
+        "오이피클"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:21:11",
+              "ingestion:70:88"
+            ],
+            "source_ingestion_ids": [
+              21,
+              70
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "129076180"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          21,
+          70
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "오이피클"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9e4dc23da74a2d012c42a554d3d4bfed",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.sides.cucumber_pickle",
+          "source_name": "homeplus",
+          "source_record_key": "129076180",
+          "source_titles": [
+            "슬라이스드 오이피클 500G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=129076180&storeType=HYPER"
+          ],
+          "evidence_sha256": "c143410adef77ec4b2167046886be896ec4a0405016956bfa3ca361582841e3c",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b0abb0bacf14ebbda355fca52fef6e45",
+      "unified_category_id": "food.meals.prepared.neobiani",
+      "category_id": null,
+      "canonical_name": "[키친델리] 너비아니(팩)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "너비아니"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:41"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000631616768"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "너비아니"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b0abb0bacf14ebbda355fca52fef6e45",
+          "old_leaf": "food.meals.prepared.tteokgalbi",
+          "new_leaf": "food.meals.prepared.neobiani",
+          "source_name": "emart",
+          "source_record_key": "1000631616768",
+          "source_titles": [
+            "[키친델리] 너비아니(팩)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000631616768&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "0e1f0fd14b6d87841a5a6e1fada8f6c156c5d0d1df05a987e882a9efa62a47a2",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/68/67/61/item/1000631616768_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b0d003bba77df8b63946c121beca5534",
+      "unified_category_id": "food.preserved.sides.ssammu",
+      "category_id": null,
+      "canonical_name": "씨제이 하선정 쌈무 와사비맛 350G",
+      "brand": "CJ",
+      "aliases": [],
+      "keywords": [
+        "쌈무"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:14:32",
+              "ingestion:63:19"
+            ],
+            "source_ingestion_ids": [
+              14,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "120772435"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          14,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "쌈무"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b0d003bba77df8b63946c121beca5534",
+          "old_leaf": "food.preserved.sides.pickled",
+          "new_leaf": "food.preserved.sides.ssammu",
+          "source_name": "homeplus",
+          "source_record_key": "120772435",
+          "source_titles": [
+            "씨제이 하선정 쌈무 와사비맛 350G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=120772435&storeType=HYPER"
+          ],
+          "evidence_sha256": "f883394bad20f3910a76648e468d1e72e980a07521c80a98bbf4d883523c5c6e",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b14c86ecfef2291288b930599f3680f0",
+      "unified_category_id": "food.meals.noodles.milmyeon",
+      "category_id": null,
+      "canonical_name": "오뚜기 진밀면 135g x 20",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "밀면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:9"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "694090"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "밀면"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b14c86ecfef2291288b930599f3680f0",
+          "old_leaf": "food.meals.noodles.wheat_noodle",
+          "new_leaf": "food.meals.noodles.milmyeon",
+          "source_name": "costco",
+          "source_record_key": "694090",
+          "source_titles": [
+            "오뚜기 진밀면 135g x 20"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ottogi-Jin-Wheat-Noodles-135g-x-20/p/694090"
+          ],
+          "evidence_sha256": "5c476cfa4846e66a44712d05ad9cd26e6324ab53a8a3589878f1ce987aa2c6b7",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hc3/h1a/468732740960286.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b7ff7ee29ece702a08659e56289f0554",
+      "unified_category_id": "food.meals.prepared.jeonbyeong",
+      "category_id": null,
+      "canonical_name": "메밀김치전병720g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "전병조리식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:84:52",
+              "ingestion:85:52"
+            ],
+            "source_ingestion_ids": [
+              84,
+              85
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000023184799"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          84,
+          85
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전병조리식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b7ff7ee29ece702a08659e56289f0554",
+          "old_leaf": "food.meals.prepared.pancake",
+          "new_leaf": "food.meals.prepared.jeonbyeong",
+          "source_name": "emart",
+          "source_record_key": "1000023184799",
+          "source_titles": [
+            "메밀김치전병720g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000023184799&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "65527a1c6ae898f3753c5f97a7df0d473b6eb876ba6a010fa28c68b80ddf16b0",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/99/47/18/item/1000023184799_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bc91cb7bb18d3b866920b40d3e4f5564",
+      "unified_category_id": "food.meals.rice.yakbap",
+      "category_id": null,
+      "canonical_name": "CJ 햇반 솥반 꿀약밥 210g x 8",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "약밥"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:38:13"
+            ],
+            "source_ingestion_ids": [
+              38
+            ],
+            "source_name": "costco",
+            "source_record_key": "649349"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          38
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "약밥"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-bc91cb7bb18d3b866920b40d3e4f5564",
+          "old_leaf": "food.meals.rice.sticky",
+          "new_leaf": "food.meals.rice.yakbap",
+          "source_name": "costco",
+          "source_record_key": "649349",
+          "source_titles": [
+            "CJ 햇반 솥반 꿀약밥 210g x 8"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/CJ-Hetbahn-Sotbahn-sweetened-rice-with-nuts-210gx8/p/649349"
+          ],
+          "evidence_sha256": "65c2ed12cf3457df58615185c661de90ee21b2bd8d97d3e43dec277d913b9a76",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h6e/hd7/84266367320094.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c6377f4538b01651f2fd2d6a518e8cda",
+      "unified_category_id": "food.preserved.kimchi.stir_fried",
+      "category_id": null,
+      "canonical_name": "김치볶음 80g*5",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "볶음김치"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:33"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000026502101"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "볶음김치"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-c6377f4538b01651f2fd2d6a518e8cda",
+          "old_leaf": "food.preserved.sides.stir_fried",
+          "new_leaf": "food.preserved.kimchi.stir_fried",
+          "source_name": "emart",
+          "source_record_key": "1000026502101",
+          "source_titles": [
+            "김치볶음 80g*5"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000026502101&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "330c168ae8d0ca2fd9a69332eaa4dcc3ef92f881425b9e478b7f59e1b418e26f",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/01/21/50/item/1000026502101_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e9a00b1e5e64b2dffd036e0451f9f363",
+      "unified_category_id": "food.preserved.sides.seasoned_perilla",
+      "category_id": null,
+      "canonical_name": "한끼양념깻잎 120g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "양념깻잎"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:26"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000763360579"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "양념깻잎"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-e9a00b1e5e64b2dffd036e0451f9f363",
+          "old_leaf": "food.preserved.sides.seasoned",
+          "new_leaf": "food.preserved.sides.seasoned_perilla",
+          "source_name": "emart",
+          "source_record_key": "1000763360579",
+          "source_titles": [
+            "한끼양념깻잎 120g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000763360579&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "4aca71c35b5634f68bd6c9ed02d27cab2d10db2a9cf3bcb47b41e952a3c2f848",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/79/05/36/item/1000763360579_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f0945c81177d1bd57444c362adccbbfc",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "category_id": null,
+      "canonical_name": "하림 용가리 치킨 450G",
+      "brand": "하림",
+      "aliases": [
+        "하림 용가리 치킨"
+      ],
+      "keywords": [
+        "조리치킨"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:10:30",
+              "ingestion:59:88"
+            ],
+            "source_ingestion_ids": [
+              10,
+              59
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "123854553"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          10,
+          59
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조리치킨"
+        ],
+        "catalog_group": {
+          "key": "harim-yonggari-chicken",
+          "canonical_product_id": "prod-2bb51226a954e999ba5b74bd06f72752",
+          "member_product_ids": [
+            "prod-2bb51226a954e999ba5b74bd06f72752",
+            "prod-f0945c81177d1bd57444c362adccbbfc"
+          ],
+          "canonical_name": "하림 용가리 치킨",
+          "brand": "하림",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-f0945c81177d1bd57444c362adccbbfc",
+          "old_leaf": "food.meals.prepared.nugget",
+          "new_leaf": "food.meals.prepared.chicken",
+          "source_name": "homeplus",
+          "source_record_key": "123854553",
+          "source_titles": [
+            "하림 용가리 치킨 450G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=123854553&storeType=HYPER"
+          ],
+          "evidence_sha256": "e514783d399005e0b1e7426217a46f9573aaa0518d517e7910bdf9dc5b6e56e2",
+          "reason": "Literalform andcompatibleactualsourcepath; unsupported storage/ingredients/method notinferred."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-cd11af1aaa43709af079b2dafc3dca70",
+      "public_source_listing_id": "listing-10c727fa5c803d53b7a5c1ffde40d08c",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 6480.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 2,000원 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:33:86",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:08.148384Z",
+            "ingestion_id": 33,
+            "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "풀무원",
+                "canon_hash": "2069b66b0f04640ca8d45df95d4ff4c0212cdaf4",
+                "canonical_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+                "category_hint": "간편식ㆍ밀키트",
+                "category_path": [
+                  "간편식ㆍ밀키트",
+                  "요리ㆍ안주",
+                  "떡갈비ㆍ완자ㆍ전",
+                  "냉동전"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20c1a0dc-57e7-489c-b033-62103d54acf5/300x300.jpg",
+                "mart_native_code": "8801114172698",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8801114172698",
+                "source_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+                "storage_label": "상온",
+                "storage_type": "ambient"
+              },
+              "brand": "__no_brand__",
+              "category": "간편식ㆍ밀키트",
+              "crawled_at": "2026-08-31T10:47:08.148384",
+              "detail_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+              "discount_percent": null,
+              "display_unit": "300g",
+              "event_name": "2개씩 골라 담으면, 2,000원 할인",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20c1a0dc-57e7-489c-b033-62103d54acf5/300x300.jpg",
+              "match_key": "__no_brand__|풀무원 철판 바삭감자채전 300g||300g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "풀무원 철판 바삭감자채전 (300G)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "price_per_100g": 2160.0,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 6480,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "300g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "a0945ac61a9aa1ae7a19fc0835e40d8f5ed3f79b7c696314bdbfd462d3d378d8",
+            "raw_record_id": "ingestion:33:86",
+            "source_category_path": [
+              "간편식ᆞ밀키트",
+              "요리ᆞ안주",
+              "떡갈비ᆞ완자ᆞ전",
+              "냉동전"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 2,000원 할인",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_won_discount",
+          "conditional_discount_won": 2000,
+          "discount_application_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:33:86"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          33
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-cd11af1aaa43709af079b2dafc3dca70",
+            "public_source_listing_id": "listing-10c727fa5c803d53b7a5c1ffde40d08c",
+            "public_variant_id": "var-cefd08d27b3d3c8c180c70b4b20f65e9",
+            "public_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+            "unified_category_id": "food.meals.prepared.pancake",
+            "source_name": "lottemart",
+            "source_record_key": "8801114172698",
+            "source_title": "풀무원 철판 바삭감자채전 (300G)",
+            "source_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+            "variant_spec": {
+              "variant_name": "풀무원 철판 바삭감자채전 (300G)",
+              "display_unit": "300g",
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 6480.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 2,000원 할인",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:08.148384Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:33:86",
+                "raw_payload_sha256": "a0945ac61a9aa1ae7a19fc0835e40d8f5ed3f79b7c696314bdbfd462d3d378d8",
+                "observation_sha256": "972f80ee62c3542d9af7573e0183c6b8efaebb79f141e29ddb8f244f131d9855"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 2,000원 할인",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_won_discount",
+              "conditional_discount_won": 2000,
+              "discount_application_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-06T23:03:44.544738+00:00",
+            "original_review_sha256": "8e96c19037dc61e49a0f9aabcf8398b254ca4f5d00787eb803819bfe1401ddef",
+            "before_context": {
+              "public_source_listing_id": "listing-10c727fa5c803d53b7a5c1ffde40d08c",
+              "public_variant_id": "var-cefd08d27b3d3c8c180c70b4b20f65e9",
+              "public_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+              "unified_category_id": "food.meals.prepared.pancake",
+              "source_name": "lottemart",
+              "source_record_key": "8801114172698",
+              "source_title": "풀무원 철판 바삭감자채전 (300G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+              "variant_spec": {
+                "variant_name": "풀무원 철판 바삭감자채전 (300G)",
+                "display_unit": "300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-10c727fa5c803d53b7a5c1ffde40d08c",
+              "public_variant_id": "var-cefd08d27b3d3c8c180c70b4b20f65e9",
+              "public_product_id": "prod-079b32b0ba9fe36d5fc98c6ff8af71ab",
+              "unified_category_id": "food.meals.prepared.jeon",
+              "source_name": "lottemart",
+              "source_record_key": "8801114172698",
+              "source_title": "풀무원 철판 바삭감자채전 (300G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801114172698/details",
+              "variant_spec": {
+                "variant_name": "풀무원 철판 바삭감자채전 (300G)",
+                "display_unit": "300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "b524d0da6b70b44cb7c2ebd42915fd7391b801776f9428cbdfad99acf78b960a",
+            "after_context_sha256": "b644e16fd112c8faf623a2a74f38149761a2c5ddc90b806f09f2c88fa68c1758",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:33:86",
+                "raw_payload_sha256": "a0945ac61a9aa1ae7a19fc0835e40d8f5ed3f79b7c696314bdbfd462d3d378d8",
+                "observation_sha256": "972f80ee62c3542d9af7573e0183c6b8efaebb79f141e29ddb8f244f131d9855"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:08.148384",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    },
+    {
+      "public_offer_event_id": "offer-a8a4befb750301453d19faaebd01a79c",
+      "public_source_listing_id": "listing-8f47cb1ea5495794bde0032286fada96",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 6980.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 2,000원 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:34:19",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:08.151591Z",
+            "ingestion_id": 34,
+            "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "청정원",
+                "canon_hash": "f5e7ee093e10d0f9f8f1fd4c1059bffaf564c904",
+                "canonical_url": "https://lottemartzetta.com/products/OS8801114179352/details",
+                "category_hint": "간편식ㆍ밀키트",
+                "category_path": [
+                  "간편식ㆍ밀키트",
+                  "요리ㆍ안주",
+                  "안주요리"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2d9ce067-8d8e-4c00-87e0-6bbbdb9ff95e/300x300.jpg",
+                "mart_native_code": "8801114179352",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8801114179352",
+                "source_url": "https://lottemartzetta.com/products/OS8801114179352/details"
+              },
+              "brand": "__no_brand__",
+              "category": "간편식ㆍ밀키트",
+              "crawled_at": "2026-08-31T10:47:08.151591",
+              "detail_url": "https://lottemartzetta.com/products/OS8801114179352/details",
+              "discount_percent": null,
+              "display_unit": "300g",
+              "event_name": "2개씩 골라 담으면, 2,000원 할인",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2d9ce067-8d8e-4c00-87e0-6bbbdb9ff95e/300x300.jpg",
+              "match_key": "__no_brand__|풀무원 철판 도톰녹두전 300g||300g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "풀무원 철판 도톰녹두전 (300G)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "price_per_100g": 2326.67,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 6980,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "300g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "c82cf8baae6ea680240b6a61a13c84eb8567516d77f1d746469c65067764f09b",
+            "raw_record_id": "ingestion:34:19",
+            "source_category_path": [
+              "간편식ᆞ밀키트",
+              "요리ᆞ안주",
+              "안주요리"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 2,000원 할인",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_won_discount",
+          "conditional_discount_won": 2000,
+          "discount_application_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:34:19"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          34
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-a8a4befb750301453d19faaebd01a79c",
+            "public_source_listing_id": "listing-8f47cb1ea5495794bde0032286fada96",
+            "public_variant_id": "var-d686c9c5720aea454b2f842e3e5f5790",
+            "public_product_id": "prod-8bf94a327097b308a9153dfc9601a662",
+            "unified_category_id": "food.meals.prepared.pancake",
+            "source_name": "lottemart",
+            "source_record_key": "8801114179352",
+            "source_title": "풀무원 철판 도톰녹두전 (300G)",
+            "source_url": "https://lottemartzetta.com/products/OS8801114179352/details",
+            "variant_spec": {
+              "variant_name": "풀무원 철판 도톰녹두전 (300G)",
+              "display_unit": "300g",
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 6980.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 2,000원 할인",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:08.151591Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:34:19",
+                "raw_payload_sha256": "c82cf8baae6ea680240b6a61a13c84eb8567516d77f1d746469c65067764f09b",
+                "observation_sha256": "839d8340022fe4da5a8ea59ba847fc92ab33f83c07d407077a597a74b9970dc5"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 2,000원 할인",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_won_discount",
+              "conditional_discount_won": 2000,
+              "discount_application_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-06T23:03:44.559671+00:00",
+            "original_review_sha256": "686c5a875974b8bfc85162e2851f549c8ed6dc7a6cf5c4ca7e3782220264d2df",
+            "before_context": {
+              "public_source_listing_id": "listing-8f47cb1ea5495794bde0032286fada96",
+              "public_variant_id": "var-d686c9c5720aea454b2f842e3e5f5790",
+              "public_product_id": "prod-8bf94a327097b308a9153dfc9601a662",
+              "unified_category_id": "food.meals.prepared.pancake",
+              "source_name": "lottemart",
+              "source_record_key": "8801114179352",
+              "source_title": "풀무원 철판 도톰녹두전 (300G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801114179352/details",
+              "variant_spec": {
+                "variant_name": "풀무원 철판 도톰녹두전 (300G)",
+                "display_unit": "300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-8f47cb1ea5495794bde0032286fada96",
+              "public_variant_id": "var-d686c9c5720aea454b2f842e3e5f5790",
+              "public_product_id": "prod-8bf94a327097b308a9153dfc9601a662",
+              "unified_category_id": "food.meals.prepared.jeon",
+              "source_name": "lottemart",
+              "source_record_key": "8801114179352",
+              "source_title": "풀무원 철판 도톰녹두전 (300G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801114179352/details",
+              "variant_spec": {
+                "variant_name": "풀무원 철판 도톰녹두전 (300G)",
+                "display_unit": "300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "da1ec75f3c2d3734255972c63ff339215055d39f0a6d283b08bd42ab8e1137b8",
+            "after_context_sha256": "bfbc7d877d794495fee4591d22aea88c9c36b3da795a35a8acda5b7194c6b06b",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:34:19",
+                "raw_payload_sha256": "c82cf8baae6ea680240b6a61a13c84eb8567516d77f1d746469c65067764f09b",
+                "observation_sha256": "839d8340022fe4da5a8ea59ba847fc92ab33f83c07d407077a597a74b9970dc5"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:08.151591",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

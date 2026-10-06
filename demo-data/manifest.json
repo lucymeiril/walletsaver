@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 99,
-  "version": "2026-10-06-catalog99-category403",
-  "source_code_base": "f76376d4318108f121fbea14f2062fc44d39b577",
+  "catalog_revision": 100,
+  "version": "2026-10-06-catalog100-category406",
+  "source_code_base": "b81cff8e55473fec6f12438a1f6a99a1a00b4545",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete catalog/admin-update99/publicsnapshot. Seven source-bound existing category refinements (four electric/charcoal grills, two dried sweet-potato snacks, one neutral stainless mealtray) and one shared mealtray sibling leaf/keyword; no producer/group/spec/quantity/cell chemistry inference. All9115 event/rawquote/time/variant/listing IDs preserved;492groups1191oldIDs41leafreviews. Search dated comparison amount and modal selected source listedquote/time kept distinct without current-purchase claim. Separate genuinehotdeal7 unchanged; accounts empty, initial98 paused.",
+  "data_scope": "Sanitized complete catalog/admin-update100/publicsnapshot.27source-bound category/form refinements and8supportedcommon sibling forms;2existinggroup leaf meanings aligned, no newidentity/groups/quantity/events. Original431#401-404 retained frozenpancake decisions; otherliteral olive/jeon/jeonbyeong/fishsteak/soy-milk-noodle/yakbap/egg/pickle forms without inferred brine/storage/ingredient. All9115event/rawquote/time/variant/listing IDs/accounts preserved;492groups1191oldIDs68leafreviews. Separate genuinehotdeal7 unchanged; accounts empty, initial98 paused.",
   "files": {
     "admin.sqlite": {
-      "sha256": "9d01c64ab60d65bd8e72b902e8a842a652851e9f19450514e66bd7bd33a221ea",
-      "bytes": 62713856,
+      "sha256": "10ba67d91d24a36b55cca43db6eb53e062653e2c1b57fdf9d68513e3e80ce7dd",
+      "bytes": 62771200,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -53,8 +53,8 @@
         "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1388,
-        "keywords": 1215,
+        "unified_categories": 1396,
+        "keywords": 1223,
         "product_keywords": 0,
         "matching_entries": 6371,
         "product_match_rules": 0,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 74,
+        "catalog_sync_log": 75,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "cd710c575a69cf03b0b0261f5aa1472d5ac13273ddb8d03b5f4b57fba9d45e51",
-      "archive_bytes": 8976839
+      "archive_sha256": "87c589d3195673f917c89a76813a9c88bbb14edfc01c0045f53baa69bd997c76",
+      "archive_bytes": 8989736
     },
     "public_snapshot.sqlite": {
-      "sha256": "e965f07567796b635823fe6899a155b4bc432241c762a1ebb1c118234e43c89a",
-      "bytes": 58273792,
+      "sha256": "5534704aca40a4171bd484794438ff355da0af881df8849369f2646d8d86c9c1",
+      "bytes": 58331136,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -104,8 +104,8 @@
         "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1388,
-        "keywords": 1215,
+        "unified_categories": 1396,
+        "keywords": 1223,
         "product_keywords": 0,
         "mart_category_mappings": 506,
         "baseline_prices": 0,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "f6dec1af4dcd3e2ca9515ec6cfd2dfaa708903bfde007220f5decc0925cacd7e",
-      "archive_bytes": 8329359
+      "archive_sha256": "e6051084d5b9d6cbf24e85c47a905c29372d68d804e6f1b5e23ad682843af66d",
+      "archive_bytes": 8339233
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "f039767ee85c8a8b12509755532288b74d9269ca849c07bb0d6919dd50e6a6eb",
-    "packages/shared/core/reviewed_catalog_groups.json": "5bddd1758835d9c5012c354e1f6d856cfa48368f98121e9f70a2509bbae09129",
+    "packages/shared/core/reviewed_catalog_groups.json": "959190b31ae3dacd349292e43cb7ad893f030d70ae8601309a96e0ccaccd2744",
     "packages/shared/core/catalog_quantity.py": "0b8293d5d2f27361ecb3e4761d13f54707eb1d1fce26b0fcb37a69d6aa6abdbb",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
@@ -175,7 +175,7 @@
     "packages/web-frontend/src/utils/productDecision.js": "5b4069be9cefd9e75cf15b817046335a019dc631fa53440c801908c7a211702d",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "46d297c48f9a70c0013dd236e3b7f0239bfe18a8d7dd3de08a7a689db0424730",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
-    "packages/db-admin/backend/services/initial_taxonomy.py": "6f4d482bdb95f670a06398c2a8dd3c2f3683a52f1bb27faea078a2ea6640ea9b",
+    "packages/db-admin/backend/services/initial_taxonomy.py": "23953f15dc355ca86d8c4839c8eccb8eb5b4820bd2dd232f5b96def8e13d39ae",
     "packages/shared/core/reviewed_content_quantities.py": "c4ea3566b9b1c957c5227ad750572d2f7dd41952eb237ec143696a7f4b687c11",
     "packages/shared/core/reviewed_source_evidence.py": "e164c97de38aa9dba8860269e2f72d48b45569b16974d3e9b4b22f1694b95ad9",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
@@ -187,7 +187,8 @@
     "packages/web-frontend/src/services/searchService.js": "9311466ec0dde9babcb0482124486a30a0262e384d35a9a7b355aef8e7be7450",
     "start-all.ps1": "ce2fa07ade98fa7063b380ade5ccfdf11a4f451f3439269e1875252cf4bffa6f",
     "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129",
-    "packages/web-api/backend/api/routes/community.py": "a7aeedbaf3f1c0f917a464dcdc00d3a7b0292e46c684f79911b6a05807f4f10c"
+    "packages/web-api/backend/api/routes/community.py": "a7aeedbaf3f1c0f917a464dcdc00d3a7b0292e46c684f79911b6a05807f4f10c",
+    "packages/web-frontend/src/utils/productActions.js": "6e8965221af956976daed1bdd1ef87122f2128de6c71ca05b4ca3214891f31e3"
   },
   "catalog_updates": [
     {
@@ -261,14 +262,22 @@
       "base_catalog_revision": 98,
       "reviewed_catalog_revision": 99,
       "scope": "Seven source-bound category refinements and one neutral mealtray leaf/keyword; originalquantity/NULL/variants/groups/events/quotes/time/accounts unchanged, officialpreview/apply/replay/publish99 verified."
+    },
+    {
+      "path": "demo-data/updates/catalog99-to100.json",
+      "sha256": "ac6f7d5202f2b2780b95b369ac9f6631b3e63029d8db2bd2add46a0e5ef101fa",
+      "bytes": 90246,
+      "base_catalog_revision": 99,
+      "reviewed_catalog_revision": 100,
+      "scope": "27source-bound category/form refinements and8common leaves/keywords;2existinggroup leaf meanings aligned without newmembers/identity. Originalquantity/NULL/variants/events/quotes/time/accounts unchanged, officialpreview/apply/replay/publish100 verified."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "5bddd1758835d9c5012c354e1f6d856cfa48368f98121e9f70a2509bbae09129",
+    "source_registry_sha256": "959190b31ae3dacd349292e43cb7ad893f030d70ae8601309a96e0ccaccd2744",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
-    "leaf_reviews": 41
+    "leaf_reviews": 68
   }
 }

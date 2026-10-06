@@ -593,6 +593,52 @@ const selectionFixture = () => ({ id:'prod-spec', public_product_id:'prod-spec',
     }]}],
   })) });
 
+describe('406 selected measured scalar specification fallback', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); });
+
+  it('renders the selected proven measured amount and bundle without changing its quote or tuple', () => {
+    const raw = selectionFixture();
+    const variant = raw.variants[1];
+    Object.assign(variant, { display_unit: '', name: '원문 올리브 규격', package_quantity: 480,
+      package_unit: 'g', bundle_count: 3 });
+    const before = JSON.stringify(raw);
+    const selected = selectProductOffer(raw, { variantId: variant.id });
+    expect(selected.unit).toBe('480g×3');
+    expect(selected.selected_offer).toEqual(variant.listings[0].offers[0]);
+    expect(buildCartPayload(selected)).toMatchObject({ unit: '480g×3', variant_id: variant.id,
+      listing_id: 'listing-b', offer_id: 'offer-b', price: 9000 });
+    render(<ProductDetailModal product={selected} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getAllByText('480g×3').length).toBeGreaterThan(0);
+    expect(screen.queryByText('규격 미확인')).not.toBeInTheDocument();
+    expect(JSON.stringify(raw)).toBe(before);
+  });
+
+  it('preserves literal uncertain descriptions and leaves unknown physical or vector quantities unknown', () => {
+    const raw = selectionFixture();
+    const variant = raw.variants[1];
+    for (const literal of ['3.6kg내외', '26~31입', '호두·아몬드 혼합 구성']) {
+      variant.display_unit = literal;
+      expect(selectProductOffer(raw, { variantId: variant.id }).unit).toBe(literal);
+      expect(buildCartPayload(selectProductOffer(raw, { variantId: variant.id })).unit).toBe(literal);
+    }
+    variant.display_unit = '';
+    for (const specification of [
+      { package_quantity: null, package_unit: null, bundle_count: 1 },
+      { package_quantity: 1, package_unit: '세트', bundle_count: 1 },
+      { package_quantity: 30, package_unit: 'm', bundle_count: 1 },
+      { package_quantity: 480, package_unit: '', bundle_count: 3 },
+      { package_quantity: false, package_unit: 'g', bundle_count: 3 },
+      { package_quantity: 480, package_unit: 'g', bundle_count: null },
+      { package_quantity: 480, package_unit: 'g', bundle_count: 3,
+        quantity_components: [{ unit: 'g', quantity: 480, count: null }] },
+    ]) {
+      Object.assign(variant, { quantity_components: null }, specification);
+      expect(selectProductOffer(raw, { variantId: variant.id }).unit).toBe('');
+      expect(buildCartPayload(selectProductOffer(raw, { variantId: variant.id })).unit).toBeFalsy();
+    }
+  });
+});
+
 describe('273 selected source summary without comparable payment', () => {
   afterEach(() => { cleanup(); vi.clearAllMocks(); });
 

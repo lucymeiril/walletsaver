@@ -217,6 +217,16 @@ export function buildProductShareUrl(product, selection = {}, origin = window.lo
   return url.href;
 }
 
+function selectedVariantDisplayUnit(variant) {
+  // Keep literal approximate/range/composition descriptions ahead of scalar facts.
+  if (typeof variant.display_unit === 'string' && variant.display_unit.trim()) return variant.display_unit;
+  const { package_quantity: amount, package_unit: unit, bundle_count: bundles } = variant;
+  if (variant.quantity_components?.length || !['g', 'ml'].includes(unit)
+    || typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0
+    || !Number.isInteger(bundles) || bundles <= 0) return '';
+  return `${amount}${unit}${bundles > 1 ? `×${bundles}` : ''}`;
+}
+
 export function selectProductOffer(product, selection = {}) {
   const chosen = getProductSelection(product, selection);
   if (!chosen) return product.variant_id || product.selected_variant_id
@@ -235,7 +245,7 @@ export function selectProductOffer(product, selection = {}) {
     price: comparable, cur: comparable, original_price: offer.original_price ?? null, orig: null, origPrice: null,
     discount_rate: offer.discount_rate ?? null, discount_pct: offer.discount_rate != null ? offer.discount_rate * 100 : null,
     disc: null, discount: null, has_discount_metadata: offer.original_price != null && offer.discount_rate != null,
-    unit: variant.display_unit || '',
+    unit: selectedVariantDisplayUnit(variant),
     store_name: listing.source, source: listing.source, source_url: listing.url, source_title: listing.title };
 }
 
@@ -257,7 +267,7 @@ function payloadQuote(product, selection = {}) {
     const comparable = offer.current_eligible !== false && (!offer.offer_state || offer.offer_state === 'active')
       ? (Number(offer.comparable_price) > 0 ? offer.comparable_price : null) : null;
     return { normalized: normalizeProduct({ ...product, price, cur: price, store_name: listing.source,
-      source_url: listing.url, source_title: listing.title, unit: variant.display_unit || '' }),
+      source_url: listing.url, source_title: listing.title, unit: selectedVariantDisplayUnit(variant) }),
       knownPrice, currentPrice: comparable, selection: chosen };
   }
   if (selection.variantId || selection.listingId || selection.offerId || product.selected_variant_id || product.variant_id) {
