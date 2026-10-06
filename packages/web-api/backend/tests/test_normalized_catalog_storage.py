@@ -798,6 +798,10 @@ def test_invalid_group_metadata_cannot_merge_product_identities(scoped_group_cat
     ('펩시%콜라', None, {'named-alias'}),
     ('펩시_콜라', None, {'named-alias'}),
     ('모형 콜라', None, {'named-alias'}),
+    ('펩 시 콜라', None, {'pepsi', 'named-alias'}),
+    ('아이 시스', None, {'isis'}),
+    ('코 카 콜라', None, {'coke'}),
+    ('초콜릿 우유', None, {'milk-a'}),
 ])
 def test_named_identity_keyword_synonyms_do_not_expand_to_competing_brands(scoped_group_catalog, monkeypatch, query, category, expected):
     import core.catalog_identity as identity
@@ -873,3 +877,37 @@ def test_legacy_category_counts_retain_active_source_rows(tmp_path):
         ''')
     tree = PublicCatalogStore(path).get_category_tree()
     assert tree[0]['count'] == tree[0]['children'][0]['count'] == 2
+
+
+@pytest.mark.parametrize('query,category,expected', [
+    ('하프마요', None, {'mayo-hp', 'mayo-lightjoy'}),
+    ('하프 마요', None, {'mayo-hp', 'mayo-lightjoy'}),
+    ('하프\u00a0\t마요', None, {'mayo-hp', 'mayo-lightjoy'}),
+    ('light&joy 1/2 하프마요', None, {'mayo-lightjoy'}),
+    ('오뚜기1/2하프마요', None, {'mayo-hp'}),
+    ('하프케찹', None, {'ketchup-lightjoy'}),
+    ('하프마요', 'food.milk', set()),
+    ('원문별칭%', None, {'milk-a'}),
+    ('브 랜 드', 'food.milk', {'milk-a'}),
+])
+def test_whitespace_literal_candidates_preserve_distinct_lines_and_source_identity(scoped_group_catalog, query, category, expected):
+    # Source spellings from the saved282–286 browser proof; candidate text
+    # normalization must not make the LIGHT&JOY line a source/group alias.
+    originals = {
+        'mayo-hp':'오뚜기 1/2하프마요네스 315G',
+        'mayo-lightjoy':'오뚜기 LIGHT&JOY 1/2 하프 마요네스 (525G)',
+        'ketchup-lightjoy':'오뚜기 LIGHT&JOY 1/2 하프 케찹',
+        'avocado-half':'simplus 냉동 아보카도 하프컷 500G',
+    }
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("INSERT INTO unified_categories VALUES('food.sauce','food','소스',0)")
+        for key, name in originals.items():
+            db.execute('INSERT INTO normalized_canonical_products VALUES(?,?,?,?,?,?,?,?,?)',
+                       (key, 'food.sauce', name, None, '[]', '[]', '{}', None, 1))
+    rows, total = PublicCatalogStore(scoped_group_catalog).search_normalized_products_page(query, category=category)
+    assert total == len(expected) and {row['id'] for row in rows} == expected
+    for row in rows:
+        if row['id'] in originals:
+            assert row['name'] == originals[row['id']]
+            assert row['canonical_public_product_id'] == row['id']
+            assert row['group_member_product_ids'] == [row['id']]

@@ -8384,6 +8384,701 @@
         "prod-23374c78e14196c77e965f9ee0ff7b95",
         "prod-363f093c316a11883166ff4903a24ab4"
       ]
+    },
+    {
+      "key": "reviewed-family-v1:baeksul-pressed-olive-oil",
+      "canonical_product_id": "prod-0d4dd0f9c9cd088cc527fd2f9c48281f",
+      "member_product_ids": [
+        "prod-0d4dd0f9c9cd088cc527fd2f9c48281f",
+        "prod-0df8b860e33a722f5367016d736c641f",
+        "prod-1467497ba138473139eba5cd102f974f"
+      ],
+      "canonical_name": "백설 압착 올리브유",
+      "brand": "백설",
+      "leaf": "food.seasonings.oils.olive",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0d4dd0f9c9cd088cc527fd2f9c48281f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "005558328",
+            "source_titles": [
+              "CJ 백설 압착 올리브유 500ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=005558328&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-0df8b860e33a722f5367016d736c641f": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007093475",
+            "source_titles": [
+              "백설 압착올리브유 (900ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007093475/details"
+            ]
+          }
+        ],
+        "prod-1467497ba138473139eba5cd102f974f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104207436",
+            "source_titles": [
+              "CJ 백설 압착 올리브유 900ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104207436&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "5b4fb54bb0e24bb0d0bcaf57123568fe94fa05dd7e1e42d0109075359a974252",
+      "derived_alias_member_ids": [
+        "prod-0d4dd0f9c9cd088cc527fd2f9c48281f",
+        "prod-0df8b860e33a722f5367016d736c641f",
+        "prod-1467497ba138473139eba5cd102f974f"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:baeksul-grapeseed-oil",
+      "canonical_product_id": "prod-420558595f59e343662a1b960f9191a0",
+      "member_product_ids": [
+        "prod-420558595f59e343662a1b960f9191a0",
+        "prod-45a6d743490beb51ffb95c8882a4a0d9",
+        "prod-92fa3ba33c17e722dff486bd12ae51c8",
+        "prod-a1cdcbe5abdc7b7ed8b636bb37c1bb9a"
+      ],
+      "canonical_name": "백설 포도씨유",
+      "brand": "백설",
+      "leaf": "food.seasonings.oils.grape",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-420558595f59e343662a1b960f9191a0": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007093482",
+            "source_titles": [
+              "백설 포도씨유 (900ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007093482/details"
+            ]
+          },
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007303044",
+            "source_titles": [
+              "백설 포도씨유 900ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007303044&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-45a6d743490beb51ffb95c8882a4a0d9": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "104207444",
+            "source_titles": [
+              "CJ 백설 포도씨유 900ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=104207444&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-92fa3ba33c17e722dff486bd12ae51c8": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007093444",
+            "source_titles": [
+              "백설 포도씨오일 (500ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007093444/details"
+            ]
+          }
+        ],
+        "prod-a1cdcbe5abdc7b7ed8b636bb37c1bb9a": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102330764",
+            "source_titles": [
+              "CJ 백설포도씨유 500ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102330764&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "84bdb2b1aaa236c10e6d496673a53c9b8dbb77b7b2cdb908e27a01b3262e0320",
+      "derived_alias_member_ids": [
+        "prod-420558595f59e343662a1b960f9191a0",
+        "prod-45a6d743490beb51ffb95c8882a4a0d9",
+        "prod-92fa3ba33c17e722dff486bd12ae51c8",
+        "prod-a1cdcbe5abdc7b7ed8b636bb37c1bb9a"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:baeksul-gosoham-gadeuk-sesame-oil",
+      "canonical_product_id": "prod-36bf89c38dd33548ea336ca68943bd18",
+      "member_product_ids": [
+        "prod-36bf89c38dd33548ea336ca68943bd18",
+        "prod-648087fd349c766f0c0353ce558a9144",
+        "prod-8e412fac411c6f58ba3444fac9eef5ab",
+        "prod-9214c1a7b18b767d14cb78c379c8541c"
+      ],
+      "canonical_name": "백설 고소함가득 참기름",
+      "brand": "백설",
+      "leaf": "food.seasonings.oils.sesame",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-36bf89c38dd33548ea336ca68943bd18": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "070305518",
+            "source_titles": [
+              "CJ 백설 고소함 가득 참기름 330ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=070305518&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-648087fd349c766f0c0353ce558a9144": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000054801",
+            "source_titles": [
+              "CJ 백설 고소함가득 참기름 500ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000054801&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-8e412fac411c6f58ba3444fac9eef5ab": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007440750",
+            "source_titles": [
+              "백설 고소함가득 참기름 (500ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007440750/details"
+            ]
+          }
+        ],
+        "prod-9214c1a7b18b767d14cb78c379c8541c": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000053791",
+            "source_titles": [
+              "CJ 백설 고소함가득 참기름 320ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000053791&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "630288d35f02fd9fe4c11f9176309cf68e00f81e8deffd00322fbbae9cd8058c",
+      "derived_alias_member_ids": [
+        "prod-36bf89c38dd33548ea336ca68943bd18",
+        "prod-648087fd349c766f0c0353ce558a9144",
+        "prod-8e412fac411c6f58ba3444fac9eef5ab",
+        "prod-9214c1a7b18b767d14cb78c379c8541c"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:baeksul-canola-oil",
+      "canonical_product_id": "prod-71ef7d1338aae0d3ecbb9dc1380fe653",
+      "member_product_ids": [
+        "prod-71ef7d1338aae0d3ecbb9dc1380fe653",
+        "prod-74833ed88954ed0ab5039ea2dad4c4ce",
+        "prod-a126b9806fd31b3c3478caeec00cec69",
+        "prod-e587df2ffd607217306a84977a8305fa",
+        "prod-f733256e7c4175e37b4b86a925f68c1e"
+      ],
+      "canonical_name": "백설 카놀라유",
+      "brand": "백설",
+      "leaf": "food.seasonings.oils.canola",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-71ef7d1338aae0d3ecbb9dc1380fe653": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007303046",
+            "source_titles": [
+              "백설 카놀라유 500ml"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007303046&siteNo=7009&salestrNo=2551"
+            ]
+          }
+        ],
+        "prod-74833ed88954ed0ab5039ea2dad4c4ce": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007093468",
+            "source_titles": [
+              "백설 카놀라유 (900ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007093468/details"
+            ]
+          }
+        ],
+        "prod-a126b9806fd31b3c3478caeec00cec69": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "105407561",
+            "source_titles": [
+              "CJ 백설 카놀라유 900ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=105407561&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e587df2ffd607217306a84977a8305fa": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "105408037",
+            "source_titles": [
+              "CJ 백설카놀라유 500ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=105408037&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f733256e7c4175e37b4b86a925f68c1e": [
+          {
+            "source_name": "lottemart",
+            "source_record_key": "8801007093451",
+            "source_titles": [
+              "백설 카놀라오일 (500ML)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801007093451/details"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "d3399fac239712cd26b9c9540b5e68dbebd890cccc7353462da90ce89874165b",
+      "derived_alias_member_ids": [
+        "prod-71ef7d1338aae0d3ecbb9dc1380fe653",
+        "prod-74833ed88954ed0ab5039ea2dad4c4ce",
+        "prod-a126b9806fd31b3c3478caeec00cec69",
+        "prod-e587df2ffd607217306a84977a8305fa",
+        "prod-f733256e7c4175e37b4b86a925f68c1e"
+      ]
+    },
+    {
+      "key": "reviewed-family-v1:cj-whole-perilla-oil-100",
+      "canonical_product_id": "prod-9d1d433f6e8a88151f9695a064c1aa8d",
+      "member_product_ids": [
+        "prod-9d1d433f6e8a88151f9695a064c1aa8d",
+        "prod-fe67442c94d97fa5ff8692bdb913ee4f"
+      ],
+      "canonical_name": "CJ 100% 통들깨 들기름",
+      "brand": "CJ",
+      "leaf": "food.seasonings.oils.perilla",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-9d1d433f6e8a88151f9695a064c1aa8d": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124599473",
+            "source_titles": [
+              "CJ 100% 통들깨 들기름 320ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124599473&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-fe67442c94d97fa5ff8692bdb913ee4f": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "124599450",
+            "source_titles": [
+              "CJ 100%통들깨들기름 160ML"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=124599450&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "6efa831752a2ce5b9523e3607d02f753f0f4b6fe5f9281cf15720dafa73554cb",
+      "derived_alias_member_ids": [
+        "prod-9d1d433f6e8a88151f9695a064c1aa8d",
+        "prod-fe67442c94d97fa5ff8692bdb913ee4f"
+      ]
+    },
+    {
+      "key": "baeksul-xylose-brown",
+      "canonical_product_id": "prod-233eff37fe872f9259d1bf887ab148a6",
+      "member_product_ids": [
+        "prod-233eff37fe872f9259d1bf887ab148a6",
+        "prod-5236c6c77a004945768ac7aded764c22"
+      ],
+      "canonical_name": "백설 자일로스 갈색설탕",
+      "brand": "백설",
+      "leaf": "food.seasonings.baking.brown_sugar",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-233eff37fe872f9259d1bf887ab148a6": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "115207571",
+            "source_titles": [
+              "CJ 백설 자일로스 갈색설탕 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=115207571&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-5236c6c77a004945768ac7aded764c22": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000008225926",
+            "source_titles": [
+              "백설 자일로스설탕(갈색) 1kg"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000008225926&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "36a6d42b4fefbafb26267b049e5c760cb3304cea5d38e4b498933ff82f852995",
+      "derived_alias_member_ids": [
+        "prod-233eff37fe872f9259d1bf887ab148a6",
+        "prod-5236c6c77a004945768ac7aded764c22"
+      ]
+    },
+    {
+      "key": "dongseo-acacia-honey",
+      "canonical_product_id": "prod-38069190f867a00b20087651b4a2dfb7",
+      "member_product_ids": [
+        "prod-38069190f867a00b20087651b4a2dfb7",
+        "prod-5b61f36c79cc45e4ecb04400d4699814"
+      ],
+      "canonical_name": "동서 아카시아 벌꿀",
+      "brand": "동서",
+      "leaf": "food.seasonings.syrups.honey",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-38069190f867a00b20087651b4a2dfb7": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000007858712",
+            "source_titles": [
+              "[동서식품] 아카시아 벌꿀 600g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000007858712&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ],
+        "prod-5b61f36c79cc45e4ecb04400d4699814": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "105367183",
+            "source_titles": [
+              "동서 아카시아 꿀 튜브 900G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=105367183&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "18632871b65ed47c893e64eec0441af8fb4b10421b24419b08d12640994caf42",
+      "derived_alias_member_ids": [
+        "prod-38069190f867a00b20087651b4a2dfb7",
+        "prod-5b61f36c79cc45e4ecb04400d4699814"
+      ]
+    },
+    {
+      "key": "baeksul-allulose",
+      "canonical_product_id": "prod-0f167f321ebc6767ec9010d8ccfef608",
+      "member_product_ids": [
+        "prod-0f167f321ebc6767ec9010d8ccfef608",
+        "prod-f83c27571c42dc8afb8940e0083a42f5"
+      ],
+      "canonical_name": "백설 알룰로스",
+      "brand": "백설",
+      "leaf": "food.seasonings.syrups.allulose",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-0f167f321ebc6767ec9010d8ccfef608": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "071105080",
+            "source_titles": [
+              "CJ 백설 알룰로스 700G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=071105080&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-f83c27571c42dc8afb8940e0083a42f5": [
+          {
+            "source_name": "emart",
+            "source_record_key": "1000698195047",
+            "source_titles": [
+              "백설 알룰로스 700g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000698195047&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "c10462074713de4f7b2046fb3918cdf8a04c8fb641120ccfe6079cef5c8e36d7",
+      "derived_alias_member_ids": [
+        "prod-0f167f321ebc6767ec9010d8ccfef608",
+        "prod-f83c27571c42dc8afb8940e0083a42f5"
+      ]
+    },
+    {
+      "key": "cj-sticky-flour",
+      "canonical_product_id": "prod-65ddf103c5f4ab979954e944026b1327",
+      "member_product_ids": [
+        "prod-65ddf103c5f4ab979954e944026b1327",
+        "prod-c2e266f6e4268be7bbe990f73aeb5eb0"
+      ],
+      "canonical_name": "CJ 찰 밀가루",
+      "brand": "CJ",
+      "leaf": "food.seasonings.baking.flour",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-65ddf103c5f4ab979954e944026b1327": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102923797",
+            "source_titles": [
+              "CJ 찰 밀가루 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102923797&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-c2e266f6e4268be7bbe990f73aeb5eb0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102924001",
+            "source_titles": [
+              "CJ 찰 밀가루 2.5KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102924001&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a6aebe23d443c66940798a4d2f75e6c5cee8680c8d58df6ef556db2ae6c3e4a3",
+      "derived_alias_member_ids": [
+        "prod-65ddf103c5f4ab979954e944026b1327",
+        "prod-c2e266f6e4268be7bbe990f73aeb5eb0"
+      ]
+    },
+    {
+      "key": "cj-new-weak-flour",
+      "canonical_product_id": "prod-66c88e9188fd51b1727253668590ccbf",
+      "member_product_ids": [
+        "prod-66c88e9188fd51b1727253668590ccbf",
+        "prod-e0f0125fdc5c625f84ee08f6be6a01f0"
+      ],
+      "canonical_name": "CJ 신 박력분",
+      "brand": "CJ",
+      "leaf": "food.seasonings.baking.flour",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-66c88e9188fd51b1727253668590ccbf": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102898587",
+            "source_titles": [
+              "CJ 신 박력분 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102898587&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-e0f0125fdc5c625f84ee08f6be6a01f0": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "102898579",
+            "source_titles": [
+              "CJ 신 박력분 2.5KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=102898579&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "ef8f6c456110050c7cdda7efe5578ab9e2d20a3a7348f934d03d1befadee1765",
+      "derived_alias_member_ids": [
+        "prod-66c88e9188fd51b1727253668590ccbf",
+        "prod-e0f0125fdc5c625f84ee08f6be6a01f0"
+      ]
+    },
+    {
+      "key": "baeksul-oligosaccharide",
+      "canonical_product_id": "prod-7ee6352422604fbfda0b1cd8c1587283",
+      "member_product_ids": [
+        "prod-7ee6352422604fbfda0b1cd8c1587283",
+        "prod-eafae0449f8215fd576692cd5a531829",
+        "prod-ff1f4d92ee4ebd6f0eeed721489c2cfe"
+      ],
+      "canonical_name": "백설 올리고당",
+      "brand": "백설",
+      "leaf": "food.seasonings.syrups.oligosaccharide",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-7ee6352422604fbfda0b1cd8c1587283": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "108051344",
+            "source_titles": [
+              "CJ 백설 올리고당 1.2KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=108051344&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-eafae0449f8215fd576692cd5a531829": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "112131620",
+            "source_titles": [
+              "CJ 백설 올리고당 700G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=112131620&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-ff1f4d92ee4ebd6f0eeed721489c2cfe": [
+          {
+            "source_name": "emart",
+            "source_record_key": "0000006823729",
+            "source_titles": [
+              "백설 올리고당 700g"
+            ],
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=0000006823729&siteNo=6001&salestrNo=2037"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "76a8a54ee4ccc79e5be5d68b8d3f2c81382df49e5da218eb2c2712853cfd87ae",
+      "derived_alias_member_ids": [
+        "prod-7ee6352422604fbfda0b1cd8c1587283",
+        "prod-eafae0449f8215fd576692cd5a531829",
+        "prod-ff1f4d92ee4ebd6f0eeed721489c2cfe"
+      ]
+    },
+    {
+      "key": "cj-brown-sugar-unqualified",
+      "canonical_product_id": "prod-216e33ba1804cc9b961b6488c420e5cd",
+      "member_product_ids": [
+        "prod-216e33ba1804cc9b961b6488c420e5cd",
+        "prod-a6c94a6e52744c6ba5ebb38ad9d754d3"
+      ],
+      "canonical_name": "CJ 갈색설탕",
+      "brand": "CJ",
+      "leaf": "food.seasonings.baking.brown_sugar",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-216e33ba1804cc9b961b6488c420e5cd": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123264963",
+            "source_titles": [
+              "CJ 갈색설탕 3KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123264963&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-a6c94a6e52744c6ba5ebb38ad9d754d3": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "114943980",
+            "source_titles": [
+              "CJ 갈색설탕 5KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=114943980&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "08e6476b5270332118e0b494c4eecda508a017d5846ad1b1faf9bee6273ccabb",
+      "derived_alias_member_ids": [
+        "prod-216e33ba1804cc9b961b6488c420e5cd",
+        "prod-a6c94a6e52744c6ba5ebb38ad9d754d3"
+      ]
+    },
+    {
+      "key": "cj-white-sugar-unqualified",
+      "canonical_product_id": "prod-41616693ff0be54a89370b7b5bf45822",
+      "member_product_ids": [
+        "prod-41616693ff0be54a89370b7b5bf45822",
+        "prod-90512697c0f12fa7ec6832a67b12b081"
+      ],
+      "canonical_name": "CJ 하얀설탕",
+      "brand": "CJ",
+      "leaf": "food.seasonings.baking.sugar",
+      "review_version": "reviewed_catalog_groups_v1",
+      "bindings": {
+        "prod-41616693ff0be54a89370b7b5bf45822": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "123264986",
+            "source_titles": [
+              "CJ 하얀설탕 3KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=123264986&storeType=HYPER"
+            ]
+          }
+        ],
+        "prod-90512697c0f12fa7ec6832a67b12b081": [
+          {
+            "source_name": "homeplus",
+            "source_record_key": "000054682",
+            "source_titles": [
+              "CJ 하얀설탕 1KG"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=000054682&storeType=HYPER"
+            ]
+          }
+        ]
+      },
+      "evidence_sha256": "a298edc8df21fd7028493d453ae418b9ad5cda5af830d55cdcaeeb6412028562",
+      "derived_alias_member_ids": [
+        "prod-41616693ff0be54a89370b7b5bf45822",
+        "prod-90512697c0f12fa7ec6832a67b12b081"
+      ]
     }
   ],
   "leaf_reviews": [

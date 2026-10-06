@@ -66,6 +66,11 @@ def _json(value, fallback):
         return fallback
 
 
+def _candidate_search_text(value) -> str:
+    """Whitespace/case-insensitive candidate text, never an identity key."""
+    return "".join(value.split()).casefold() if isinstance(value, str) else ""
+
+
 def _homogeneous_contents(variant: dict) -> tuple[list[dict], tuple[float, str] | None]:
     """Validate a measured multiset separately from its whole-vector wrapper."""
     attributes = _json(variant.get("attributes"), {})
@@ -167,6 +172,7 @@ class PublicCatalogStore:
             f"file:{self.path.as_posix()}?mode=ro", uri=True, timeout=10
         )
         connection.row_factory = sqlite3.Row
+        connection.create_function("candidate_search_text", 1, _candidate_search_text, deterministic=True)
         connection.execute("PRAGMA query_only=ON")
         try:
             yield connection
@@ -241,12 +247,12 @@ class PublicCatalogStore:
             categories = self._unified_rows(connection)
             query = str(query or "").strip()
             if query:
-                escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
-                names = ("LOWER(p.canonical_name) LIKE LOWER(?) ESCAPE '\\' OR "
-                         "LOWER(COALESCE(p.brand,'')) LIKE LOWER(?) ESCAPE '\\' OR "
+                escaped = _candidate_search_text(query).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+                names = ("candidate_search_text(p.canonical_name) LIKE ? ESCAPE '\\' OR "
+                         "candidate_search_text(p.brand) LIKE ? ESCAPE '\\' OR "
                          "EXISTS (SELECT 1 FROM json_each(CASE WHEN json_valid(p.aliases) "
                          "THEN CASE WHEN json_type(p.aliases)='array' THEN p.aliases ELSE '[]' END "
-                         "ELSE '[]' END) a WHERE a.type='text' AND LOWER(a.value) LIKE LOWER(?) ESCAPE '\\')")
+                         "ELSE '[]' END) a WHERE a.type='text' AND candidate_search_text(a.value) LIKE ? ESCAPE '\\')")
                 scope = self._keyword_search_scope(connection, query, categories)
                 if scope:
                     # An exact registered concept searches its category scope.
@@ -312,7 +318,8 @@ class PublicCatalogStore:
             brand = unicodedata.normalize("NFKC", brand).strip().casefold()
             if len("".join(brand.split())) < 2:
                 continue
-            if (re.search(r"(?<!\w)" + re.escape(brand) + r"(?!\w)", text)
+            if (compact == "".join(brand.split())
+                    or re.search(r"(?<!\w)" + re.escape(brand) + r"(?!\w)", text)
                     or re.fullmatch(r"[가-힣]{2,}", brand) and compact.startswith(brand)):
                 return True
         return False
@@ -333,7 +340,7 @@ class PublicCatalogStore:
                 synonyms = _json(synonyms, [])
             terms = [row["word"]] + (synonyms if isinstance(synonyms, list) else [])
             if row["unified_category_id"] in known and any(
-                    isinstance(term, str) and term.strip().casefold() == query.casefold() for term in terms):
+                    isinstance(term, str) and _candidate_search_text(term) == _candidate_search_text(query) for term in terms):
                 scope.update(self._descendants(categories, row["unified_category_id"]))
         return scope
 
