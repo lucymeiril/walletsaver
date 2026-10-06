@@ -180,7 +180,7 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 | Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. `NAVER_CLIENT_ID`/`NAVER_CLIENT_SECRET`은 이 공개 검색의 필수 키가 아니라 별도 OAuth 설정 |
 | Opinet 공식 API | `OPINET_API_KEY`와 실제 공급자 권한·접근 필요. 배포된 7개 주유소·14개 가격은 각각 원래 날짜의 관측값이며 실시간 API 결과가 아님 |
 | 연료 지도 좌표 | 공식 API의 `GIS_X_COOR`/`GIS_Y_COOR` KOTI-KATEC 변환과 수동 페이지 callback 위치필드는 구분한다. 수동 위치필드의 CRS는 미입증이므로 원문 XY만 보존하고 좌표는 NULL로 둔다. 배포 7개 좌표도 NULL이며 GPS 거리순 비교를 보장하지 않음. Naver 명칭·주소 연결만으로 x/y의 CRS를 확정하지 않음 |
-| 핫딜 | 현재 Algumon collector는 fixture placeholder이고 실제 공개 요청은 403으로 중지된 기록이 있음. 실제 post의 정상 수집·parser 연결이 필요하며, 이를 자격증명 부족이라고 단정하지 않음. demo 핫딜 라이브 갱신 미검증 |
+| 핫딜 | Algumon의 정상 단일 HTTP transport는 구현됐지만 검증된 live 목록 parser는 없다. 원문/fixture helper를 live posts로 사용하지 않으며 알 수 없는 본문·접근실패는 명시적으로 보류한다. 실제 403 중지 기록은 유지했고 이번 구현에서 공급자 요청은 하지 않았다. 실제 post/feed 연결은 미완료이며 자격증명 부족만으로 단정하지 않음 |
 | 이마트 라이브 | Playwright의 `chrome` 채널·화면 모드와 명시적 세션 proxy/CA 연결이 필요. 현재 호스트의 공식 Chrome 154.0.8037.97·Xvfb 화면 모드·로컬 DOM과 별도 공개 의존성의 proxy/TLS 확인은 완료됐다. 이마트 요청은 없었으며 기존 429 중지와 허용된 다음 공급자 구간·6–7분 제한을 지킨다. 로그인·challenge 우회 없음 |
 
 TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와 crawler API의 Google/Naver/Opinet 이름별 설정 및 Google file locator는 공란으로 확인했다. 이는 다른 경로에 개인 키 파일이 없다는 뜻이 아니며 공급자 로그인 성공을 뜻하지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
@@ -189,7 +189,29 @@ TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와
 .\start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local
 ```
 
-Compose에서는 `--env-file .env.demo.local`을 사용한다. TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callback`, Compose 기본 callback은 `http://localhost:8080/api/auth/oauth/google/callback`이다. 위 Linux 전체 실행의 callback은 `http://127.0.0.1:27173/api/auth/oauth/google/callback`이다. `localhost`와 `127.0.0.1`은 다른 cookie origin이므로 브라우저·origin·callback을 일치시킨다. 기본 TeamDemo loader가 외부 공란을 읽으므로 미리 설정한 shell 키가 자동으로 유지된다고 가정하지 않는다.
+Compose에서는 named Google/Naver/Kakao 설정에 `--env-file .env.demo.local`을 사용한다. Google JSON 파일 방식은 host 경로 문자열을 API에 그대로 넘기지 않는다. `.env.demo.local`의 `GOOGLE_CLIENT_SECRET_FILE`을 이미 존재하는 비공개 JSON의 host 절대경로로 설정한 뒤, ignored `.compose.oauth.local.yml`에 다음 read-only 연결을 넣는다. 컨테이너 안에서는 고정된 `/run/secrets/google-oauth.json`을 읽는다. `create_host_path: false`는 파일 경로가 없을 때 빈 디렉터리를 만들지 않게 한다. 외부 JSON·실제 값은 Git/배포 데이터에 포함하지 않는다.
+
+```yaml
+services:
+  api:
+    environment:
+      GOOGLE_CLIENT_SECRET_FILE: /run/secrets/google-oauth.json
+    volumes:
+      - type: bind
+        source: ${GOOGLE_CLIENT_SECRET_FILE:?Set an existing private Google JSON absolute path}
+        target: /run/secrets/google-oauth.json
+        read_only: true
+        bind:
+          create_host_path: false
+```
+
+```sh
+docker compose --env-file .env.demo.local -f docker-compose.yml -f docker-compose.demo.yml -f .compose.oauth.local.yml up -d
+```
+
+파일은 읽을 수 있는 JSON이며 `web` 또는 `installed` 안에 `client_id`·`client_secret`을 가져야 한다. 일반 TeamDemo/Linux 직접 실행은 같은 변수의 host 파일을 직접 읽으며 Compose override가 필요 없다. 위 설정 전달·read-only 연결은 configuration으로 확인했고 실제 외부 OAuth 로그인은 미검증이다.
+
+TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callback`, Compose 기본 callback은 `http://localhost:8080/api/auth/oauth/google/callback`이다. 위 Linux 전체 실행의 callback은 `http://127.0.0.1:27173/api/auth/oauth/google/callback`이다. `localhost`와 `127.0.0.1`은 다른 cookie origin이므로 브라우저·origin·callback을 일치시킨다. 기본 TeamDemo loader가 외부 공란을 읽으므로 미리 설정한 shell 키가 자동으로 유지된다고 가정하지 않는다.
 
 ## 7. 검증 상태
 

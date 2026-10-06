@@ -1,26 +1,28 @@
-"""알구몬 핫딜 크롤러 스켈레톤.
+"""Bounded Algumon transport; current live markup remains unverified.
 
-라이브 HTML 구조는 Round R G5 메인 Playwright 정찰 뒤 확정한다.
-현재 구현은 fixture 전용 placeholder 마크업과 과거 오프라인 테스트 샘플만 파싱하며,
-네트워크 호출 없이 핫딜 전용 파이프라인 계약을 검증한다.
+Fixture and historical parser helpers are offline contracts, never a fallback
+for a supplier response. A successful HTTP response alone is not parsed-post evidence.
 """
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import logging
 import re
+import time
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
+import requests
 
 from core.contracts.crawler import CrawlerContract
-from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, HotdealPost
+from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, ErrorType, HotdealPost, StrategyFailure
 from crawlers.hotdeals.common import apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
@@ -71,12 +73,14 @@ class HotdealRecord:
 
 
 class AlgumonCrawler(CrawlerContract):
-    """알구몬 핫딜 수집기 — 현재는 fixture fallback 전용."""
+    """One ordinary public response, held until a live parser is source-proven."""
 
     BASE_URL = "https://www.algumon.com"
     SOURCE_ID = "algumon"
     DEAL_URL = "https://www.algumon.com/n/deal"
     FIXTURE_PATH = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "algumon" / "sample_list.html"
+    MAX_RESPONSE_BYTES = 1024 * 1024
+    MAX_RESPONSE_SECONDS = 20
 
     @property
     def info(self) -> CrawlerInfo:
@@ -84,9 +88,9 @@ class AlgumonCrawler(CrawlerContract):
             name="알구몬",
             version="3.0.0-g5b",
             group=CrawlerGroup.HOTDEAL,
-            description="알구몬 핫딜 목록 fixture 기반 수집 스켈레톤",
+            description="알구몬 단일 공개 HTTP 응답 확인; 실제 목록 파서 검증 미완료",
             target_url=self.DEAL_URL,
-            strategies=["fixture"],
+            strategies=["requests"],
         )
 
     def crawl_list(self, html: str | None = None) -> list[HotdealRecord]:
@@ -98,33 +102,90 @@ class AlgumonCrawler(CrawlerContract):
         return self.parse_list_html(raw_html)
 
     async def crawl(self) -> CrawlResult:
-        """네트워크 호출 없이 fixture fallback 결과를 CrawlResult로 반환한다."""
-        started_at = datetime.now()
+        """Capture once off the event loop, without presenting offline rows as live."""
+        started_at = datetime.now(timezone.utc)
+        capture = {"request_url": self.DEAL_URL, "http_receipt_status": "not_recorded"}
         try:
-            records = self.crawl_list()
-            posts = [record.to_hotdeal_post() for record in records]
-            posts = dedupe_hotdeal_posts(posts)
-            finished_at = datetime.now()
-            return CrawlResult(
-                status=CrawlStatus.SUCCESS,
-                crawler_name=self.info.name,
-                strategy_used="fixture",
-                items_count=len(posts),
-                items=[item.model_dump(mode="json") for item in posts],
-                started_at=started_at,
-                finished_at=finished_at,
-                duration_seconds=(finished_at - started_at).total_seconds(),
-                quality_details={"fixture_fallback": True, "source_site": self.SOURCE_ID},
-            )
+            capture, body = await asyncio.to_thread(self._fetch_source_once)
+            status = capture['status_code']
+            if status in {401, 403, 429}:
+                reason = 'http_access_denied'
+            elif status != 200:
+                reason = 'nonproduct_response'
+            elif not capture['body_capture_complete']:
+                reason = ('response_body_unavailable' if capture.get('failure_type') else 'response_capture_limit')
+            elif capture['content_type'] not in {'text/html', 'application/xhtml+xml'}:
+                reason = 'unsupported_content_type'
+            else:
+                # This inspection establishes denial/fixture markers only.
+                # None of the existing selectors is a verified current live parser.
+                soup = BeautifulSoup(body.decode('utf-8', errors='replace'), 'html.parser')
+                fixture = bool(soup.select_one('[data-fixture], [data-fixture-source], [data-hotdeal-record]'))
+                for element in soup.select('script, style, noscript'):
+                    element.decompose()
+                visible = soup.get_text(' ', strip=True).lower()
+                challenge = any(marker in visible for marker in (
+                    'verify you are human', 'complete the captcha', 'access denied', 'request blocked',
+                    '접근이 차단', '비정상적인 접근',
+                ))
+                reason = ('visible_access_challenge' if challenge else
+                    'offline_fixture_body' if fixture else 'unsupported_live_body')
         except Exception as exc:
-            logger.error("[알구몬] fixture 크롤링 실패: %s", exc, exc_info=True)
-            return CrawlResult(
-                status=CrawlStatus.FAILED,
-                crawler_name=self.info.name,
-                error_msg=str(exc),
-                started_at=started_at,
-                finished_at=datetime.now(),
-            )
+            # Exception text can contain proxy credentials or response data.
+            capture['failure_type'] = type(exc).__name__
+            reason = 'transport_unavailable'
+        finished_at = datetime.now(timezone.utc)
+        quality = {"source_site": self.SOURCE_ID, "fixture_fallback": False,
+            "source_stopped": True, "source_stop_status": capture.get('status_code'),
+            "source_stop_reason": reason, "live_parser_verified": False,
+            "fetch": capture, "counts": {"parsed": 0, "valid": 0},
+            "collection": {"mode": "bounded_http_no_fixture_fallback", "max_requests": 1,
+                "max_response_bytes": self.MAX_RESPONSE_BYTES, "auth_bypass_attempted": False}}
+        error_type = (ErrorType.HTTP_ERROR if reason in {'http_access_denied', 'nonproduct_response'}
+            else ErrorType.NETWORK_ERROR if reason == 'transport_unavailable' else ErrorType.UNKNOWN)
+        return CrawlResult(status=CrawlStatus.FAILED, crawler_name=self.info.name, strategy_used='requests',
+            items_count=0, items=[], started_at=started_at, finished_at=finished_at,
+            duration_seconds=(finished_at - started_at).total_seconds(), error_msg=reason,
+            errors=[StrategyFailure(strategy_name='requests', error_type=error_type,
+                error_msg=reason, status_code=capture.get('status_code'))], quality_details=quality,
+            raw_data=json.dumps({"diagnostic_kind": "algumon_transport_only", "reason": reason,
+                "fetch": capture}, ensure_ascii=False, sort_keys=True))
+
+    def _fetch_source_once(self) -> tuple[dict, bytes]:
+        """Normal environment proxy/CA trust, one GET, bounded body; no cookies/login."""
+        session = requests.Session()
+        # Retain trust_env for proxy/CA, while avoiding implicit provider netrc auth.
+        session.auth = lambda prepared: prepared
+        response = None
+        deadline = time.monotonic() + self.MAX_RESPONSE_SECONDS
+        try:
+            response = session.get(self.DEAL_URL, timeout=(5, 10), allow_redirects=False, stream=True)
+            received_at = datetime.now(timezone.utc)
+            content_type = str(response.headers.get('Content-Type', '')).split(';', 1)[0].strip().lower()
+            content_type = content_type if re.fullmatch(r'[a-z0-9.+-]+/[a-z0-9.+-]+', content_type) else None
+            capture = {'request_url': self.DEAL_URL, 'response_url': getattr(response, 'url', None),
+                'status_code': response.status_code, 'content_type': content_type,
+                'source_response_received_at': received_at.isoformat(),
+                'http_receipt_status': 'received_response', 'body_capture_complete': True,
+                'body_sha256': None, 'bytes_received': 0, 'raw_body_retained': False}
+            body = bytearray()
+            try:
+                for chunk in response.iter_content(chunk_size=65536):
+                    capture['bytes_received'] += len(chunk)
+                    if len(body) + len(chunk) > self.MAX_RESPONSE_BYTES or time.monotonic() > deadline:
+                        capture['body_capture_complete'] = False
+                        break
+                    body.extend(chunk)
+            except requests.RequestException as exc:
+                capture['body_capture_complete'] = False
+                capture['failure_type'] = type(exc).__name__
+            if capture['body_capture_complete']:
+                capture['body_sha256'] = hashlib.sha256(body).hexdigest()
+            return capture, bytes(body)
+        finally:
+            if response is not None:
+                response.close()
+            session.close()
 
     async def parse(self, raw_data: str) -> list[HotdealPost]:
         records = self.parse_list_html(raw_data)

@@ -82,3 +82,6 @@ copilot-session-*.md
 
 # Writable team demo catalog and private user stores
 .demo-runtime/
+
+# Local external OAuth file mount configuration (not demo credentials)
+.compose.oauth.local.yml
