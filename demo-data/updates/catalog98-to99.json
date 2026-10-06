@@ -1,0 +1,484 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation403-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "household.kitchen.tableware.meal_tray",
+      "parent_id": "household.kitchen.tableware",
+      "slug": "meal_tray",
+      "name_ko": "식판",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 3
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1215,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "식판",
+      "synonyms": [],
+      "unified_category_id": "household.kitchen.tableware.meal_tray"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-51c3fd2c253b680e8e7114e72cfe61d0",
+      "unified_category_id": "food.snacks.dried.sweet_potato",
+      "category_id": null,
+      "canonical_name": "바삭하고 고구마 300G",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "건고구마"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:72"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "657553"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "건고구마"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-51c3fd2c253b680e8e7114e72cfe61d0",
+          "old_leaf": "food.produce.processed_vegetables.dried",
+          "new_leaf": "food.snacks.dried.sweet_potato",
+          "source_name": "costco",
+          "source_record_key": "657553",
+          "source_titles": [
+            "바삭하고 고구마 300G"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/BASACHAGO-SWEET-POTATO/p/657553"
+          ],
+          "evidence_sha256": "c802862cd118cfbc33227153757d758a6b84c8a079cf20c040049312128d05fa",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hca/h06/398941901062174.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-53cb00eefdad72108dccc4e9cdfb6252",
+      "unified_category_id": "household.cooking.grills.electric",
+      "category_id": null,
+      "canonical_name": "해마루 와이드 그릴 HM-R5400",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "전기그릴"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:95"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "658328"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전기그릴"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-53cb00eefdad72108dccc4e9cdfb6252",
+          "old_leaf": "household.cooking.grills.cooking",
+          "new_leaf": "household.cooking.grills.electric",
+          "source_name": "costco",
+          "source_record_key": "658328",
+          "source_titles": [
+            "해마루 와이드 그릴 HM-R5400"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Haemaru-Wide-Grill-HM-R5400/p/658328"
+          ],
+          "evidence_sha256": "5cd0beade34d3d4834b36f69dc5e74703b4f161dbc293368286165e1ba2bbf19",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h05/h71/120309970010142.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a3da339f68d508282cbc1f8c2ceddf29",
+      "unified_category_id": "household.cooking.grills.electric",
+      "category_id": null,
+      "canonical_name": "안방그릴 울트라 AB1107CO",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "전기그릴"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:69"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "684062"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전기그릴"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-a3da339f68d508282cbc1f8c2ceddf29",
+          "old_leaf": "household.cooking.grills.cooking",
+          "new_leaf": "household.cooking.grills.electric",
+          "source_name": "costco",
+          "source_record_key": "684062",
+          "source_titles": [
+            "안방그릴 울트라 AB1107CO"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Anbang-Smokeless-Grill-Ultra-AB1107CO/p/684062"
+          ],
+          "evidence_sha256": "f021b5cbfb1911735e114a9aa87ebea00c885f8aedd902999aa47baa3f1f3c30",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h6a/h54/398428336979998.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b6bee897e5fd81d86d17f457805dfa06",
+      "unified_category_id": "household.cooking.grills.charcoal",
+      "category_id": null,
+      "canonical_name": "다닥 휴대용 그릴 L",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "차콜그릴"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:75"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "666979"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "차콜그릴"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b6bee897e5fd81d86d17f457805dfa06",
+          "old_leaf": "household.cooking.grills.cooking",
+          "new_leaf": "household.cooking.grills.charcoal",
+          "source_name": "costco",
+          "source_record_key": "666979",
+          "source_titles": [
+            "다닥 휴대용 그릴 L"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/GrillsAccessories/Charcoal-Grill/Dadak-Portable-Grill-L/p/666979"
+          ],
+          "evidence_sha256": "fe51d5e9848db96e4da8aecb4a2a05114e33fc6d36cd5171ed4d07a19f71ca6b",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h34/h77/172012371935262.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f96e4a7fae0dc16561b9a36c4b55fc7f",
+      "unified_category_id": "household.kitchen.tableware.meal_tray",
+      "category_id": null,
+      "canonical_name": "스텐 식판",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "식판"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:103:44"
+            ],
+            "source_ingestion_ids": [
+              103
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000010330636"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          103
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "식판"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f96e4a7fae0dc16561b9a36c4b55fc7f",
+          "old_leaf": "baby.feeding.tableware.compartment_tray",
+          "new_leaf": "household.kitchen.tableware.meal_tray",
+          "source_name": "emart",
+          "source_record_key": "1000010330636",
+          "source_titles": [
+            "스텐 식판"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000010330636&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "3991999a22e6f4458ebf0d8ed52d75e9d30cb760139661b9343af4cc10e84371",
+          "reason": "Explicit stainless mealtray; baby purpose/compartments not proved. Existingbabycompartmenttray retained separately; commonneutralmealtray under household/kitchen/tableware supports literalform without assumedage/function."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/36/06/33/item/1000010330636_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-fd39ea070a1025ae534d9c4a4dd98f94",
+      "unified_category_id": "household.cooking.grills.electric",
+      "category_id": null,
+      "canonical_name": "해마루 엑스트라 라지 와이드 그릴 RSF-G9900",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "전기그릴"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:46:13"
+            ],
+            "source_ingestion_ids": [
+              46
+            ],
+            "source_name": "costco",
+            "source_record_key": "649303"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          46
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "전기그릴"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-fd39ea070a1025ae534d9c4a4dd98f94",
+          "old_leaf": "household.cooking.grills.cooking",
+          "new_leaf": "household.cooking.grills.electric",
+          "source_name": "costco",
+          "source_record_key": "649303",
+          "source_titles": [
+            "해마루 엑스트라 라지 와이드 그릴 RSF-G9900"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Haemaru-Extra-Large-Wide-Grill-RSF-G9900/p/649303"
+          ],
+          "evidence_sha256": "27abfab91df13d7ff6ee82e732f9d07ff7476152bbae1df60fbb0e4c7f419b7f",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/hb2/83239392018462.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-ff6fe3a98a1e0e18b1b630e0f6aa2a53",
+      "unified_category_id": "food.snacks.dried.sweet_potato",
+      "category_id": null,
+      "canonical_name": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "건고구마"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:47:85"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "694098"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "건고구마"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-ff6fe3a98a1e0e18b1b630e0f6aa2a53",
+          "old_leaf": "food.produce.processed_vegetables.dried",
+          "new_leaf": "food.snacks.dried.sweet_potato",
+          "source_name": "costco",
+          "source_record_key": "694098",
+          "source_titles": [
+            "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098"
+          ],
+          "evidence_sha256": "46b31d57fd53ab3d280e1a14c73d632c7d69f989326d7536a35092939b714ef9",
+          "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h3b/h1f/486719208783902.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

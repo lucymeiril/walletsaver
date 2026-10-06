@@ -10,6 +10,7 @@ import EmptyState from '../../components/common/EmptyState';
 import ErrorFallback from '../../components/common/ErrorFallback';
 import Card from '../../components/common/Card';
 import SearchAutocomplete from '../../components/search/SearchAutocomplete';
+import { getCatalogObservationDescription } from '../../utils/productDecision';
 import s from './SearchPage.module.css';
 
 const TABS = [
@@ -193,7 +194,7 @@ export default function SearchPage() {
                             <h3 className={s.resultTitle}>{item.title}</h3>
                           </div>
                           {item.description && (
-                            <p className={s.resultDesc}>{item.description}</p>
+                            <p className={s.resultDesc}>{item.type === 'product' ? getCatalogObservationDescription(item) : item.description}</p>
                           )}
                           {item.price != null && (
                             <span className={s.resultPrice}>

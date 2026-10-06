@@ -24894,6 +24894,111 @@
       ],
       "reason": "Literal mixed snack and native fried-snack shelf establish mixed snacks. Salty flavour is not declared by source; no implied nuts/seafood recipe, identity, quantity or producer inference. Preserve294g variant and original14봉 literal/9900 quote/time.",
       "evidence_sha256": "b7151570dc0b88970c8392af6d3e1938465e0b7d07e50a2c6ca7b20237de879d"
+    },
+    {
+      "product_id": "prod-b6bee897e5fd81d86d17f457805dfa06",
+      "old_leaf": "household.cooking.grills.cooking",
+      "new_leaf": "household.cooking.grills.charcoal",
+      "source_name": "costco",
+      "source_record_key": "666979",
+      "source_titles": [
+        "다닥 휴대용 그릴 L"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/GrillsAccessories/Charcoal-Grill/Dadak-Portable-Grill-L/p/666979"
+      ],
+      "evidence_sha256": "fe51d5e9848db96e4da8aecb4a2a05114e33fc6d36cd5171ed4d07a19f71ca6b",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+    },
+    {
+      "product_id": "prod-53cb00eefdad72108dccc4e9cdfb6252",
+      "old_leaf": "household.cooking.grills.cooking",
+      "new_leaf": "household.cooking.grills.electric",
+      "source_name": "costco",
+      "source_record_key": "658328",
+      "source_titles": [
+        "해마루 와이드 그릴 HM-R5400"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Haemaru-Wide-Grill-HM-R5400/p/658328"
+      ],
+      "evidence_sha256": "5cd0beade34d3d4834b36f69dc5e74703b4f161dbc293368286165e1ba2bbf19",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+    },
+    {
+      "product_id": "prod-a3da339f68d508282cbc1f8c2ceddf29",
+      "old_leaf": "household.cooking.grills.cooking",
+      "new_leaf": "household.cooking.grills.electric",
+      "source_name": "costco",
+      "source_record_key": "684062",
+      "source_titles": [
+        "안방그릴 울트라 AB1107CO"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Anbang-Smokeless-Grill-Ultra-AB1107CO/p/684062"
+      ],
+      "evidence_sha256": "f021b5cbfb1911735e114a9aa87ebea00c885f8aedd902999aa47baa3f1f3c30",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+    },
+    {
+      "product_id": "prod-fd39ea070a1025ae534d9c4a4dd98f94",
+      "old_leaf": "household.cooking.grills.cooking",
+      "new_leaf": "household.cooking.grills.electric",
+      "source_name": "costco",
+      "source_record_key": "649303",
+      "source_titles": [
+        "해마루 엑스트라 라지 와이드 그릴 RSF-G9900"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/Electric-SkilletsGrills/Haemaru-Extra-Large-Wide-Grill-RSF-G9900/p/649303"
+      ],
+      "evidence_sha256": "27abfab91df13d7ff6ee82e732f9d07ff7476152bbae1df60fbb0e4c7f419b7f",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+    },
+    {
+      "product_id": "prod-f96e4a7fae0dc16561b9a36c4b55fc7f",
+      "old_leaf": "baby.feeding.tableware.compartment_tray",
+      "new_leaf": "household.kitchen.tableware.meal_tray",
+      "source_name": "emart",
+      "source_record_key": "1000010330636",
+      "source_titles": [
+        "스텐 식판"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000010330636&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "3991999a22e6f4458ebf0d8ed52d75e9d30cb760139661b9343af4cc10e84371",
+      "reason": "Explicit stainless mealtray; baby purpose/compartments not proved. Existingbabycompartmenttray retained separately; commonneutralmealtray under household/kitchen/tableware supports literalform without assumedage/function."
+    },
+    {
+      "product_id": "prod-51c3fd2c253b680e8e7114e72cfe61d0",
+      "old_leaf": "food.produce.processed_vegetables.dried",
+      "new_leaf": "food.snacks.dried.sweet_potato",
+      "source_name": "costco",
+      "source_record_key": "657553",
+      "source_titles": [
+        "바삭하고 고구마 300G"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/BASACHAGO-SWEET-POTATO/p/657553"
+      ],
+      "evidence_sha256": "c802862cd118cfbc33227153757d758a6b84c8a079cf20c040049312128d05fa",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
+    },
+    {
+      "product_id": "prod-ff6fe3a98a1e0e18b1b630e0f6aa2a53",
+      "old_leaf": "food.produce.processed_vegetables.dried",
+      "new_leaf": "food.snacks.dried.sweet_potato",
+      "source_name": "costco",
+      "source_record_key": "694098",
+      "source_titles": [
+        "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Chewy-Eatus-Sweet-Potato-Bites-80g-x-10/p/694098"
+      ],
+      "evidence_sha256": "46b31d57fd53ab3d280e1a14c73d632c7d69f989326d7536a35092939b714ef9",
+      "reason": "Literal source form and exactnative URL category resolve grillfuel/processing role; notname-memory producer grouping or quantity inference."
     }
   ]
 }

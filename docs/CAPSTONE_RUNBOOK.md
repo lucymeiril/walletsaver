@@ -38,7 +38,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 여덟 파일은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정,97→98의 원문에 묶인6분류·3공통리프/키워드 구체화를 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 아홉 파일은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정,97→98의 원문에 묶인6분류·3공통리프/키워드 및98→99의7분류·중립 식판 리프/키워드 구체화를 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -305,3 +305,5 @@ Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID
 현재97은 에너자이저 두10+10기획팩의 미입증 판매개수를 물품NULL로, 벡셀8+8입의 명시 포장구성을16입으로 정정했다. literal 규격·12900/8900원 관측·원event/시각/전체이력은 유지하며 bareN+N을 N팩구매+N팩증정으로 만들지 않는다. 판매묶음 행사역할/지급금액 미확인은 별도 보류다. 원래1개/8입 선택은 재선택 안내하고 기존 참조를 묵시적으로 새 규격에 옮기지 않는다. 두NULLID namespace 정정은 별도96→97 이력에 보존했다. 정상22/32입·내용량·혼합벡터는 기존 근거를 유지하며 신규관측·초기98분류·전체인증은 반복하지 않았다.
 
 현재98은 신선채소 아래 같은4단계의 로메인·버터헤드·얼갈이 sibling 탐색을 연결하고 혼합채소/스낵1건을 원문 형태에 맞췄다. 원431 쌈채소 결정3건의 번호/hash와 넓은 용도 의미는 파생 정정이력으로 보존하며 원파일은 바꾸지 않았다. 원규격/혼합벡터·9115관측·시각/계정참조는 그대로다. Community 선택 투표는 검증된 계정 subject의 서버값만 cold 재조회에 복원하고 해제 후NULL을 유지한다. backend6/frontend4집중 경계와 실제 새 브라우저22HTTP/외부0·삭제후404를 확인했고,355의 만료refresh 단일쓰기 증거는 반복하지 않았다. 동봉98/source24pins·계정0이며 제출후보 검증은 계속된다.
+
+현재99 동봉 데이터는492군/1191옛ID/41분류 정정이력과9115관측을 유지한다. 전기·숯 그릴4건, 고구마 건조스낵2건, 스텐 식판1건의 원문에 묶인 세부 탐색을 정정했다. 기기·식판의 물품NULL과 두 스낵의300g·80g×10 원규격, 가격·시점·계정참조는 바꾸지 않았다. 실제14GET의 변경 탐색·상세와3GET의 관측 설명을 확인했다. 검색은 관측 조건 비교금액이며 선택 상세는 해당 출처 표시가격·관측 시점으로 설명하고 현재 구매가로 단정하지 않는다. source24pins/배포계정0과9개 정식 갱신파일을 함께 제공하며 제출후보 검증은 계속된다.

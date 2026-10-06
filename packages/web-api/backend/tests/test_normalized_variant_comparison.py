@@ -98,12 +98,13 @@ def catalog(tmp_path, monkeypatch):
     path = tmp_path / 'variant-comparison.sqlite'
     with sqlite3.connect(path) as db:
         db.executescript('''
-            CREATE TABLE unified_categories (id TEXT, name_ko TEXT, parent_id TEXT);
+            CREATE TABLE unified_categories (id TEXT, name_ko TEXT, parent_id TEXT, sort_order INTEGER DEFAULT 0);
             INSERT INTO unified_categories (id,name_ko) VALUES ('tuna', '참치통조림');
             CREATE TABLE normalized_canonical_products (
                 public_product_id TEXT, unified_category_id TEXT, canonical_name TEXT,
                 brand TEXT, attributes TEXT, primary_image_url TEXT, is_active INTEGER);
             INSERT INTO normalized_canonical_products VALUES ('prod-tuna', 'tuna', '검증 참치', '', '{}', '', 1);
+            ALTER TABLE normalized_canonical_products ADD COLUMN aliases TEXT DEFAULT '[]';
             CREATE TABLE normalized_product_variants (
                 public_variant_id TEXT, public_product_id TEXT, variant_name TEXT,
                 package_quantity REAL, package_unit TEXT, bundle_count INTEGER,
@@ -233,6 +234,8 @@ def test_unified_search_preserves_normalized_id_and_observation_time(catalog):
     assert data['meta']['total'] == 1
     assert data['data'][0]['id'] == 'prod-tuna'
     assert data['data'][0]['price'] == 4000
+    assert '관측 조건 비교금액' in data['data'][0]['description']
+    assert '현재가' not in data['data'][0]['description']
     assert _product_observed_times(storage, ['prod-tuna']) == {'prod-tuna': '2026-09-03'}
 
 

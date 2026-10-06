@@ -17,7 +17,7 @@ import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection } from '../utils/productActions';
-import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
+import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, getCatalogObservationDescription, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
 
 const STORE_ICONS = {
@@ -450,7 +450,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             </div>}
             {description && (
               <div className={s.description}>
-                {description}
+                {getCatalogObservationDescription(product, { offer: chosen?.offer ?? null })}
               </div>
             )}
           </div>

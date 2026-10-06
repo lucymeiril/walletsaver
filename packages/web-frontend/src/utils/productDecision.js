@@ -223,6 +223,22 @@ export function getObservedOfferPriceText(offer = {}, amount = offer?.listed_pri
   return currencyUnknown ? `${value} (통화 미명시)` : `${value}원`;
 }
 
+export function getCatalogObservationDescription(product = {}, options = {}) {
+  const description = typeof product.description === 'string' ? product.description : '';
+  const catalog = Boolean(product.public_product_id || Object.hasOwn(product, 'best_offer')
+    || (typeof product.id === 'string' && product.id.startsWith('prod-')));
+  // Only the catalog search producer's generated summary is replaced. Native
+  // source descriptions and other result namespaces retain their own wording.
+  if (!catalog || !/(^|\/\s*)(?:비교 가능한 )?(?:현재가|관측 조건 비교금액)(?:\s|$)/.test(description)) return description;
+  if (Object.hasOwn(options, 'offer')) {
+    const offer = options.offer;
+    const stamp = offer?.crawled_at || offer?.observed_at;
+    const observedAt = typeof stamp === 'string' && Number.isFinite(Date.parse(stamp)) ? stamp : '미확인';
+    return `출처 표시 가격 ${getObservedOfferPriceText(offer)} · 관측 시점 ${observedAt}`;
+  }
+  return `${description.replace('현재가', '관측 조건 비교금액')} · 관측 시점 미확인`;
+}
+
 export function getConditionalOfferConditionText(offer = {}) {
   const conditions = offer.promotion_conditions || {};
   if (conditions.source_condition_kind === 'source_quote_purchase_conditions_unverified'

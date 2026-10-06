@@ -137,7 +137,12 @@ def _product_results(storage, query: str, limit: int | None, *, sort: str = "rel
     for product in rows:
         unit = str(product.get("unit") or "").strip()
         current = (product.get("best_offer") or {}).get("comparable_price") if product.get("public_product_id") else product.get("cur") or product.get("price") or 0
-        description = f"현재가 {current}원" if current is not None else "비교 가능한 현재가 미확인"
+        if product.get("public_product_id"):
+            # This is the comparison interpretation of a dated observation,
+            # not a new live checkout quote or the source's literal price.
+            description = f"관측 조건 비교금액 {current}원" if current is not None else "관측 조건 비교금액 미확인"
+        else:
+            description = f"현재가 {current}원" if current is not None else "비교 가능한 현재가 미확인"
         if unit:
             description = f"{unit} / {description}"
         product_id = product["id"] if product.get("public_product_id") else int(product["id"])

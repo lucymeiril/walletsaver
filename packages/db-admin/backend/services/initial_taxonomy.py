@@ -182,6 +182,7 @@ LEAVES: tuple[Leaf, ...] = (
     Leaf("household.kitchen.cookware.air_fryer_pot", ('생활용품', '주방용품', '조리용기', '에어프라이어조리용기'), (), (), ()),
     Leaf("household.kitchen.cookware.kettle", ('생활용품', '주방용품', '조리용기', '주전자'), (), (), ()),
     Leaf("household.kitchen.tableware.spoon_chopstick_set", ('생활용품', '주방용품', '식기', '수저세트'), (), (), ()),
+    Leaf("household.kitchen.tableware.meal_tray", ('생활용품', '주방용품', '식기', '식판'), (), (), ()),
     Leaf("household.protection.gloves.nitrile", ('생활용품', '보호용품', '보호장갑', '일반니트릴보호장갑'), (), (), ()),
     Leaf("pet.food.prepared.canned", ('반려동물', '먹거리', '조리사료', '캔사료'), (), (), ()),
     Leaf("pet.food.sets.milk_powder_bottle", ('반려동물', '먹거리', '급여세트', '분유·보틀세트'), (), (), ()),

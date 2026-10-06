@@ -12,7 +12,7 @@ import useStore from '../stores/appStore';
 import useCartStore from '../stores/cartStore';
 import ShoppingListPanel from './common/ShoppingListPanel';
 import useModalStore from '../stores/modalStore';
-import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText } from '../utils/productDecision';
+import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText, getCatalogObservationDescription } from '../utils/productDecision';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct } from '../utils/productActions';
 
 vi.mock('recharts', () => ({ ResponsiveContainer: ({children}) => children, AreaChart: ({data}) => <div data-testid="selected-history">{JSON.stringify(data)}</div>, BarChart: () => null, Area: () => null, Bar: () => null, XAxis: () => null, YAxis: () => null, Tooltip: () => null, Cell: () => null }));
@@ -1365,6 +1365,65 @@ describe('249 native source quote declarations', () => {
         source_quote_currency_unconfirmed: true } }, 2190)).toBe('2,190 (통화 미명시)');
       expect(getObservedOfferPriceText(offer, null)).toBe('미확인');
     }
+  });
+});
+
+describe('400 catalog observed-price description boundary', () => {
+  beforeEach(() => {
+    useStore.setState({ selectedProduct: null, recentSearches: [], isLoggedIn: false, favorites: [], toasts: [] });
+    api.getJson.mockResolvedValue({ data: null });
+    vi.spyOn(searchService, 'trending').mockResolvedValue({ data: [] });
+  });
+  afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+
+  it('labels generated search amounts as observation-condition comparison, retaining positive and unknown values without inventing a clock', async () => {
+    vi.spyOn(searchService, 'search').mockResolvedValue({ data: [
+      { type: 'product', id: 'prod-known', title: '선택 스낵', price: 9900, description: '294g / 현재가 9900.0원' },
+      { type: 'product', id: 'prod-held', title: '조건 미확인 스낵', price: null, description: '294g / 비교 가능한 관측 조건 비교금액 미확인' },
+    ] });
+    render(<MemoryRouter initialEntries={['/search?q=스낵']}><SearchPage /></MemoryRouter>);
+    expect(await screen.findByText('294g / 관측 조건 비교금액 9900.0원 · 관측 시점 미확인')).toBeInTheDocument();
+    expect(screen.getByText('9,900원')).toBeInTheDocument();
+    expect(screen.getByText('294g / 비교 가능한 관측 조건 비교금액 미확인 · 관측 시점 미확인')).toBeInTheDocument();
+    expect(screen.queryByText(/현재가|^0원$/)).not.toBeInTheDocument();
+    expect(getCatalogObservationDescription({ id: 7, description: '현재가 1000원' })).toBe('현재가 1000원');
+    expect(getCatalogObservationDescription({ id: 'prod-known', description: '출처가 선언한 상품 설명' })).toBe('출처가 선언한 상품 설명');
+  });
+
+  it('replaces stale search summary with the exact selected source quote and clock while preserving valid historical condition arithmetic', () => {
+    const raw = selectionFixture();
+    raw.description = '90g / 현재가 9000원';
+    const offer = raw.variants[0].listings[0].offers[0];
+    Object.assign(offer, { listed_price: 8980, total_price: 17960, comparable_price: 17960,
+      total_quantity: 1800, per_100g: 997.7778, crawled_at: '2026-08-31T01:45:00Z',
+      valid_to: '2026-09-01T15:00:00Z', current_eligible: false, availability_reason: 'expired',
+      observation_receipt_eligible: true });
+    raw.variants[0].package_quantity = 600;
+    raw.variants[0].display_unit = '600g';
+    const product = selectProductOffer(raw, { variantId: 'var-a', listingId: 'listing-a', offerId: 'offer-a' });
+    const before = JSON.stringify(product);
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText('출처 표시 가격 8,980원 · 관측 시점 2026-08-31T01:45:00Z')).toBeInTheDocument();
+    expect(screen.getAllByText(/출처 조건 계산 금액 17,960원/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/판매 기간 종료/).length).toBeGreaterThan(0);
+    expect(screen.queryByText('90g / 현재가 9000원')).not.toBeInTheDocument();
+    expect(JSON.stringify(product)).toBe(before);
+  });
+
+  it('keeps explicit unknown currency and missing selected-source clock unknown without reviving stale calculated payment', () => {
+    const raw = selectionFixture();
+    raw.description = '90g / 관측 조건 비교금액 17960원';
+    const offer = raw.variants[0].listings[0].offers[0];
+    Object.assign(offer, { listed_price: 2190, total_price: null, comparable_price: null,
+      total_quantity: null, per_100g: null, current_eligible: false,
+      observation_receipt_eligible: false, observation_receipt_reason: 'promotion_observation_outside_period',
+      promotion_conditions: { source_condition_kind: 'source_quote_purchase_conditions_unverified',
+        source_quote_currency: null, payable_price_unconfirmed: true } });
+    const product = selectProductOffer(raw, { variantId: 'var-a', listingId: 'listing-a', offerId: 'offer-a' });
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText('출처 표시 가격 2,190 (통화 미명시) · 관측 시점 미확인')).toBeInTheDocument();
+    expect(screen.queryByText(/현재가|관측 조건 비교금액 17960원|2,190원/)).not.toBeInTheDocument();
+    expect(getCatalogObservationDescription(product, { offer: null })).toBe('출처 표시 가격 미확인 · 관측 시점 미확인');
   });
 });
 
