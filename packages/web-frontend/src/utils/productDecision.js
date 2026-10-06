@@ -372,10 +372,16 @@ export function getOfferReceiptText(offer = {}, { receiptValid = true, component
       ? `${prefix}동종 구성 총 내용량 ${homogeneousMeasure(offer).quantity}${homogeneousMeasure(offer).unit}` : null,
     ...getQuantityComponentTexts(components),
   ].filter(Boolean).join(' · ');
+  const purchaseRuleUnits = offer.received_package_count_scope === 'source_purchase_rule_package_repetitions';
+  const packageCountLabel = purchaseRuleUnits ? '구매 조건 수령 단위' : '수령 패키지';
+  const countKnown = receiptValid && (purchaseRuleUnits
+    ? Number.isInteger(offer.received_package_count) && offer.received_package_count > 0
+    : offer.received_package_count != null);
   return [
     receiptValid && offer.total_quantity > 0 && offer.quantity_unit ? `${prefix}수령 ${offer.total_quantity}${offer.quantity_unit}` : '판매 수량 미확인',
-    receiptValid && offer.received_package_count != null ? `${prefix}수령 패키지 ${offer.received_package_count}` : '수령 패키지 미확인',
-  ].join(' · ');
+    countKnown ? `${prefix}${packageCountLabel} ${offer.received_package_count}` : `${packageCountLabel} 미확인`,
+    purchaseRuleUnits ? '물리 패키지 수량 미확인' : null,
+  ].filter(Boolean).join(' · ');
 }
 
 export function getOfferConditionText(offer = {}, { receiptValid = true } = {}) {

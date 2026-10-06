@@ -1365,6 +1365,36 @@ describe('249 native source quote declarations', () => {
   });
 });
 
+describe('321 unknown physical quantity and source purchase-rule receipt purpose', () => {
+  it('keeps unknown implicit package counts null and labels only explicit source purchase-rule repetitions', () => {
+    const quote = { id: 'device-quote', variant_id: 'device-model', listing_id: 'device-source',
+      listed_price: 417614, total_price: 417614, comparable_price: 417614, current_eligible: true,
+      total_quantity: null, quantity_unit: null, received_package_count: null,
+      received_package_count_scope: null, per_item: null, per_100ml: null };
+    const product = (offer) => ({ id: 'prod-device', best_offer: offer,
+      variants: [{ id: 'device-model', package_quantity: null, package_unit: null,
+        listings: [{ id: 'device-source', source: 'original', title: 'DQ205PSVA / 20L', offers: [offer] }] }] });
+    const normalized = getComparableOffers(product(quote))[0];
+    expect(normalized.receivedPackageCount).toBeNull();
+    expect(normalized.comparisonValue).toBeNull();
+    expect(getOfferReceiptText(quote)).toBe('판매 수량 미확인 · 수령 패키지 미확인');
+    for (const [count, conditions, minimum] of [[3, { buy_quantity: 2, free_quantity: 1 }, 2], [2, {}, 2]]) {
+      const conditional = { ...quote, promotion_conditions: conditions, minimum_quantity: minimum,
+        received_package_count: count, received_package_count_scope: 'source_purchase_rule_package_repetitions' };
+      const text = getOfferConditionText(conditional);
+      expect(text).toContain(`구매 조건 수령 단위 ${count}`);
+      expect(text).toContain('물리 패키지 수량 미확인');
+      expect(text).not.toMatch(/수령 패키지 [23]|수령 [23]개|20L 수령/);
+      expect(getOfferUnitPrice(conditional)).toBeNull();
+      expect(getComparableOffers(product(conditional))[0]).toMatchObject({ receivedPackageCount: count,
+        receivedPackageCountScope: 'source_purchase_rule_package_repetitions', comparisonValue: null });
+      expect(getOfferReceiptText(conditional, { receiptValid: false })).toContain('구매 조건 수령 단위 미확인');
+    }
+    expect(getOfferReceiptText({ ...quote, total_quantity: 200, quantity_unit: 'g', received_package_count: 1 }))
+      .toBe('수령 200g · 수령 패키지 1');
+  });
+});
+
 describe('246 declared vector receipt purpose', () => {
   afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.clearAllMocks(); });
   it('renders declared component totals without turning the complete-vector repetition into physical packages', async () => {

@@ -138,6 +138,44 @@ def test_count_quantity_uses_received_piece_count_for_per_item_price():
     assert offer["per_item"] == 512
 
 
+@pytest.mark.parametrize('quote,promotion,terms,spend,received,scope', [
+    (417586, 'was_now_price', {}, 417586, None, None),
+    (430000, 'was_now_price', {}, 430000, None, None),
+    (417586, 'buy_x_get_y', {'buy_quantity': 2, 'free_quantity': 1}, 835172, 3,
+     'source_purchase_rule_package_repetitions'),
+    (417586, 'final_price', {'minimum_quantity': 2}, 835172, 2,
+     'source_purchase_rule_package_repetitions'),
+])
+def test_physical_device_unknown_sold_count_does_not_inherit_default_received_one(
+        quote, promotion, terms, spend, received, scope):
+    from copy import deepcopy
+    # Snapshot88 DQ205PSVA has a capacity specification, not a declared sold
+    # piece count. The explicit-rule cases are separate source-term controls,
+    # not a claim that this actual device observation advertised those rules.
+    variant = {'variant_name': 'LG 휘센 제습기 DQ205PSVA 20L 실버',
+               'package_quantity': None, 'package_unit': None, 'bundle_count': 1,
+               'display_unit': 'LG 휘센 제습기 DQ205PSVA 20L 실버', 'standard_unit': None,
+               'attributes': {'quantity_basis': 'physical_device_specification_v1',
+                              'sold_piece_count': None}}
+    event = {'public_offer_event_id': 'offer-aa82222c59610203b3358d96819345a9',
+             'price': quote, 'original_price': 444240, 'price_state': 'normal',
+             'offer_state': 'active', 'promotion_type': promotion,
+             'crawled_at': '2026-09-02 18:38:18.792380',
+             'raw_evidence': json.dumps({'promotion_conditions': terms})}
+    original = deepcopy((event, variant))
+    offer = PublicCatalogStore._normalized_offer(event, variant)
+    assert offer['listed_price'] == quote
+    assert offer['total_price'] == offer['comparable_price'] == spend
+    assert offer['received_package_count'] == received
+    assert offer['received_package_count_scope'] == scope
+    assert offer['id'] == event['public_offer_event_id'] and offer['crawled_at'] == event['crawled_at']
+    assert offer['promotion_conditions'] == terms
+    for field in ('total_quantity', 'quantity_unit', 'per_item', 'per_100g', 'per_100ml',
+                  'quantity_basis', 'scalar_basis', 'pricing_measure_quantity'):
+        assert offer[field] is None, field
+    assert (event, variant) == original
+
+
 @pytest.mark.parametrize('category,title,quantity,unit,count,count_unit', [
     ('household.security.storage.safe','금고 40L',40000,'ml',None,None),
     ('household.outdoor.bags.cooler_tote','쿨러백 16L',16000,'ml',None,None),
@@ -155,10 +193,10 @@ def test_physical_role_detail_search_and_mart_preserve_quote_without_mass_rates(
     path = tmp_path / 'physical-role.sqlite'
     with sqlite3.connect(path) as db:
         db.executescript('''
-        CREATE TABLE unified_categories (id TEXT PRIMARY KEY, name_ko TEXT);
+        CREATE TABLE unified_categories (id TEXT PRIMARY KEY, name_ko TEXT, parent_id TEXT, sort_order INTEGER DEFAULT 0);
         CREATE TABLE normalized_canonical_products (
           public_product_id TEXT PRIMARY KEY, unified_category_id TEXT, canonical_name TEXT,
-          brand TEXT, attributes TEXT, primary_image_url TEXT, is_active INTEGER);
+          brand TEXT, attributes TEXT, primary_image_url TEXT, is_active INTEGER, aliases TEXT DEFAULT '[]');
         CREATE TABLE normalized_product_variants (
           public_variant_id TEXT PRIMARY KEY, public_product_id TEXT, variant_name TEXT,
           package_quantity REAL, package_unit TEXT, bundle_count INTEGER, display_unit TEXT,
@@ -171,8 +209,10 @@ def test_physical_role_detail_search_and_mart_preserve_quote_without_mass_rates(
           public_offer_event_id TEXT PRIMARY KEY, public_source_listing_id TEXT, price REAL,
           price_state TEXT, promotion_type TEXT, raw_evidence TEXT, crawled_at TEXT, offer_state TEXT);
         ''')
-        db.execute('INSERT INTO unified_categories VALUES (?,?)',(category,'검수된 물리 규격'))
-        db.execute('INSERT INTO normalized_canonical_products VALUES (?,?,?,?,?,?,?)',('prod-physical',category,title,'','{}',None,1))
+        db.execute('INSERT INTO unified_categories(id,name_ko) VALUES (?,?)',(category,'검수된 물리 규격'))
+        db.execute('INSERT INTO normalized_canonical_products '
+                   '(public_product_id,unified_category_id,canonical_name,brand,attributes,primary_image_url,is_active) '
+                   'VALUES (?,?,?,?,?,?,?)',('prod-physical',category,title,'','{}',None,1))
         db.execute('INSERT INTO normalized_product_variants VALUES (?,?,?,?,?,?,?,?,?,?)',('var-physical','prod-physical',title,
             package['package_quantity'],package['package_unit'],package['bundle_count'],package['display_unit'],
             package['standard_unit'],json.dumps(package['attributes']),1))
@@ -192,6 +232,7 @@ def test_physical_role_detail_search_and_mart_preserve_quote_without_mass_rates(
         assert offer['total_price'] == offer['listed_price']
         assert offer['per_100g'] is offer['per_100ml'] is offer['per_100m'] is None
         assert offer['total_quantity'] == count
+        assert offer['received_package_count'] == (1 if count else None)
         assert offer['per_item'] == (round(offer['listed_price']/count) if count else None)
     rows,total = store.search_normalized_products_page(title)
     assert total == 1 and rows[0]['best_offer']['id'] == 'offer-new'
@@ -514,6 +555,7 @@ def test_unknown_content_or_count_basis_keeps_money_without_exact_unit_price(qua
     assert offer['per_100g'] is None
     assert offer['per_100ml'] is None
     assert offer['bundle_count'] == bundle
+    assert offer['received_package_count'] is None
 
 
 @pytest.mark.parametrize('context', [

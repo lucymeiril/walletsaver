@@ -635,6 +635,21 @@ class PublicCatalogStore:
         unit = str(variant.get("package_unit") or "").strip().lower()
         linear_contents = unit == "m" and valid_linear_contents_variant({
             **variant, "attributes": _json(variant.get("attributes"), {})})
+        # A confirmed monetary quote alone does not prove one received device
+        # or package. Explicit purchase rules count offered repetitions, while
+        # a declared package/vector establishes their contents separately.
+        package_receipt_basis = bool(
+            quantity and math.isfinite(quantity) and bundle
+            and (unit in _COUNT_QUANTITY_UNITS or unit in {"g", "ml"}
+                 or declared_vector or homogeneous_vector or linear_contents)
+        )
+        explicit_received_terms = (
+            event.get("promotion_type") == "buy_x_get_y"
+            or (type(conditions.get("minimum_quantity")) is int
+                and conditions["minimum_quantity"] > 0)
+        )
+        received_count = (received_packages if transaction and not purpose_reason
+                          and (package_receipt_basis or explicit_received_terms) else None)
         per_100 = (round(comparable / total_quantity * 100)
                    if comparable is not None and total_quantity
                    and not composition_reason
@@ -691,12 +706,14 @@ class PublicCatalogStore:
                 ) if key in conditions
             },
             "minimum_quantity": conditions.get("minimum_quantity", evidence.get("minimum_quantity")),
-            "received_package_count": received_packages if transaction and not purpose_reason else None,
+            "received_package_count": received_count,
             # This integer repeats the whole declared contents vector. It does
             # not establish the number of physical containers or pieces.
             "received_package_count_scope": (None if invalid_quantity_evidence else
                                              "declared_linear_package_repetitions" if linear_contents else
-                                             "complete_declared_vector" if declared_vector or homogeneous_vector else None),
+                                             "complete_declared_vector" if declared_vector or homogeneous_vector else
+                                             "source_purchase_rule_package_repetitions" if received_count is not None
+                                             and explicit_received_terms and not package_receipt_basis else None),
             "quantity_basis": ("reviewed_declared_linear_contents" if linear_contents else
                                "reviewed_homogeneous_contents" if homogeneous_vector else
                                attributes.get("quantity_basis") if declared_vector else None),
