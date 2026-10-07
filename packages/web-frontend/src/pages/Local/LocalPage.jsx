@@ -606,7 +606,7 @@ export default function LocalPage() {
     if (isGas) {
       return [['gasoline', '휘발유'], ['diesel', '경유'], ['premium_gasoline', '고급 휘발유'], ['lpg', 'LPG'], ['distance', '거리']];
     }
-    return [['price', '가격'], ['distance', '거리'], ['rating', '평점']];
+    return [['price', '원문 메뉴 평균'], ['distance', '거리'], ['rating', '평점']];
   }, [isGas]);
 
   /* ── Breadcrumb ── */
@@ -617,7 +617,7 @@ export default function LocalPage() {
     if (phase === 'search') {
       crumbs.push({ label: `"${searchLabel}"`, action: null });
     } else if (selectedCategoryName && (phase === 'subcategory' || phase === 'items')) {
-      crumbs.push({ label: selectedCategoryName, action: () => handleBreadcrumbNav('category') });
+      crumbs.push({ label: selectedCategoryName === '주유소' ? selectedCategoryName : `${selectedCategoryName} 검색 결과`, action: () => handleBreadcrumbNav('category') });
       if (selectedSubcategory && phase === 'items') {
         crumbs.push({ label: selectedSubcategory, action: null });
       }
@@ -689,7 +689,7 @@ export default function LocalPage() {
                 {visibleCategories.slice(0, 6).map(category => (
                   <button key={category.name} onClick={() => handleCategoryClick(category)}>
                     <span>{CATEGORY_ICONS[category.name] || '📌'}</span>
-                    {category.name}
+                    {category.name === '주유소' ? category.name : `${category.name} 검색 결과`}
                     <small>{category.count || category.items?.length || 0}건</small>
                   </button>
                 ))}
@@ -872,7 +872,7 @@ export default function LocalPage() {
                   onClick={() => handleCategoryClick(cat)}
                 >
                   <span className={s.categoryIcon}>{CATEGORY_ICONS[cat.name] || '📌'}</span>
-                  <span className={s.categoryName}>{cat.name}</span>
+                  <span className={s.categoryName}>{cat.name === '주유소' ? cat.name : `${cat.name} 검색 결과`}</span>
                   <span className={s.categoryCount}>({cat.count || cat.items?.length || 0})</span>
                 </button>
               ))}
@@ -951,6 +951,9 @@ export default function LocalPage() {
               <div className={s.resultCount}>
                 {phase === 'search' && placeSearchMessage ? placeSearchMessage : `${sortedItems.length}건의 결과`}
               </div>
+              {!isGas && sortedItems.length > 0 && <p className={s.emptySub}>
+                장소별 원문 메뉴 가격의 단순 평균·범위입니다. 메뉴 종류와 구성이 달라 동일 메뉴의 최저가 비교가 아닙니다.
+              </p>}
 
               {/* 검색 중 스켈레톤 (항목 없을 때) */}
               {loading && sortedItems.length === 0 && (
@@ -971,14 +974,14 @@ export default function LocalPage() {
                   const distance = distanceKm(item.distance, item.distance_m);
                   return (
                     <div key={item.id || item.place_id || item.name || `item-${i}`} className={s.item} onClick={() => handleItemClick(item)}>
-                      <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
+                      {petrol && <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
                         {i + 1}
-                      </span>
+                      </span>}
                       <div className={s.itemBody}>
                         <div className={s.itemName}>
                           {item.name}
                           {petrol?.brand && <span className={s.itemBrand}>{petrol.brand}</span>}
-                          {item.category && !petrol && <span className={s.itemBrand}>{item.category}</span>}
+                          {item.category && !petrol && <span className={s.itemBrand}>원문 업종 {item.category}</span>}
                         </div>
                         <div className={s.itemAddr}>
                           {petrol?.is_self && <span className={s.selfTag}>셀프</span>}
@@ -1023,10 +1026,11 @@ export default function LocalPage() {
                           </div>
                         ) : priceInfo ? (
                           <>
-                            <span className={s.itemPrice}>평균 {fmt(priceInfo.avg)}원</span>
+                            <span className={s.itemPrice}>원문 메뉴 평균 {fmt(priceInfo.avg)}원</span>
+                            <div className={s.priceRange}>가격 {priceInfo.count}개 · 단순 평균</div>
                             {priceInfo.count > 1 && (
                               <div className={s.priceRange}>
-                                {fmt(priceInfo.min)}~{fmt(priceInfo.max)}원
+                                원문 범위 {fmt(priceInfo.min)}~{fmt(priceInfo.max)}원
                               </div>
                             )}
                           </>

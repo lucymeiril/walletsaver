@@ -2349,6 +2349,31 @@ describe('467 compact offer comparison presentation', () => {
 
 
 describe('typed interpretation correction presentation', () => {
+  it('labels unresolved quantity scope as source wording instead of verified total package contents', () => {
+    const product = selectionFixture();
+    const variant = product.variants[0];
+    const listing = variant.listings[0];
+    const offer = listing.offers[0];
+    variant.display_unit = '1.7ml';
+    listing.title = '[NEW] 포이시안 마크2 야돔 1.7ml(6입)';
+    Object.assign(offer, { listed_price: 11900, total_quantity: null, total_price: null,
+      comparable_price: null, per_100ml: null, quantity_comparison_reason: 'measured_inner_scope_unresolved' });
+    const before = JSON.stringify(product);
+    const {container, rerender} = render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    const literal = `원문 수량 표기 ${listing.title} · 총내용량 범위 미확인`;
+    expect(screen.getAllByText(literal).length).toBeGreaterThan(0);
+    expect(container).not.toHaveTextContent('10.2ml');
+    expect(container).not.toHaveTextContent('700,000');
+    expect(screen.getByRole('table', {name:'판매처별 규격 가격 비교'})).toHaveTextContent(literal);
+    expect(JSON.stringify(product)).toBe(before);
+    const independent = structuredClone(product);
+    independent.variants[0].listings[0].offers[0].quantity_comparison_reason = 'independent_count_scope_unresolved';
+    rerender(<ProductDetailModal product={independent} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getAllByText(literal).length).toBeGreaterThan(0);
+    rerender(<ProductDetailModal product={selectionFixture()} mode="preview" onClose={vi.fn()} />);
+    expect(screen.queryByText(/원문 수량 표기/)).not.toBeInTheDocument();
+  });
+
   it('keeps original observation points and excludes same-time correction projections, including an exact revised-variant lineage', () => {
     const original = {id:'native-original',variant_id:'old-spec',listing_id:'source-a',date:'2026-08-31T01:46:57Z',price:4990,comparable_price:null,current_eligible:false};
     const correction = {...original,id:'reviewed-projection',variant_id:'new-spec',price:4990,comparable_price:4990,

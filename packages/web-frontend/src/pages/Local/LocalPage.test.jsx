@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LocalPage from './LocalPage';
 import GasDetailContent from './components/GasDetailContent';
 import NaverPlaceDetailContent from './components/NaverPlaceDetailContent';
-import { distanceKm, sortItems, itemsWithinRadius } from './utils';
+import { distanceKm, sortItems, itemsWithinRadius, getRepresentativePrice, parseMenuItems } from './utils';
 
 const store = vi.hoisted(() => ({ addToast: vi.fn(), setSavedLocation: vi.fn(), savedLocation: null }));
 vi.mock('../../stores/appStore', () => ({
@@ -63,6 +63,46 @@ describe('LocalPage browser-search consent', () => {
     cleanup();
     vi.restoreAllMocks();
     delete window.navigator.geolocation;
+  });
+
+  it('labels different source-menu averages as summaries rather than same-menu cheapest ranks', async () => {
+    const menus = '밀크 아이스크림 (컵) 4,500 | 아이스크림 카페라떼 7,500 | 카페라떼 5,900 | 에스프레소 4,400 | 룽고 5,300 | 골든 바나나 브륄레 크림 드 라떼 6,900 | 커피 크림 드 라떼 6,500';
+    expect(getRepresentativePrice(menus)).toEqual({ avg: 5857, min: 4400, max: 7500, count: 7 });
+    expect(parseMenuItems(menus).items).toEqual([
+      {name:'밀크 아이스크림 (컵)',price:4500}, {name:'아이스크림 카페라떼',price:7500},
+      {name:'카페라떼',price:5900}, {name:'에스프레소',price:4400}, {name:'룽고',price:5300},
+      {name:'골든 바나나 브륄레 크림 드 라떼',price:6900}, {name:'커피 크림 드 라떼',price:6500},
+    ]);
+    expect(parseMenuItems('에스프레소 4,400원\n계절 메뉴 가격 문의')).toEqual({
+      items:[{name:'에스프레소',price:4400}], rawText:'계절 메뉴 가격 문의',
+    });
+    const place = { name: '원문 메뉴 가게', category: '음식점', x: 127.0276, y: 37.4979,
+      menu_info: menus, url: 'https://map.naver.com/p/entry/place/2048090882' };
+    const previous = global.fetch.getMockImplementation();
+    global.fetch.mockImplementation((url, ...args) => String(url).includes('/api/local/area-explore-stream')
+      ? streamResponse([{ name: '카페', source: 'naver', items: [place, {
+        name: '메뉴 가격 미확인 가게', category: '카페', x: 127.0276, y: 37.4979,
+      }] }, { done: true }]) : previous(url, ...args));
+    const user = userEvent.setup(); render(<LocalPage />);
+    await user.click(screen.getByRole('checkbox', { name: /네이버 공개 페이지 브라우저 검색 사용/ }));
+    const input = screen.getByPlaceholderText(/위치를 입력하세요/);
+    await user.type(input, '강남역'); fireEvent.submit(input.closest('form'));
+    await user.click(await screen.findByRole('button', { name: /카페 검색 결과.*2건/ }));
+    await user.click(screen.getByRole('button', { name: /전체 보기/ }));
+    expect(screen.getByRole('button', { name: '원문 메뉴 평균순' })).toBeInTheDocument();
+    expect(screen.getByText('원문 메뉴 평균 5,857원')).toBeInTheDocument();
+    expect(screen.getByText('가격 7개 · 단순 평균')).toBeInTheDocument();
+    expect(screen.getByText('원문 범위 4,400~7,500원')).toBeInTheDocument();
+    expect(screen.getByText('원문 업종 음식점')).toBeInTheDocument();
+    expect(screen.getByText(/동일 메뉴의 최저가 비교가 아닙니다/)).toBeInTheDocument();
+    expect(document.querySelector('.rank')).toBeNull();
+    const missing = screen.getByText('메뉴 가격 미확인 가게').closest('.item');
+    expect(missing.textContent).not.toMatch(/평균|0원/);
+    await user.click(screen.getByText('원문 메뉴 가게'));
+    expect(screen.getByText('원문 메뉴 가격 7개 · 단순 평균')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /네이버 지도에서 보기/ })).toHaveAttribute('href', place.url);
+    expect(screen.getByText('밀크 아이스크림 (컵)')).toBeInTheDocument();
+    expect(screen.getByText('4,500원')).toBeInTheDocument();
   });
 
   it('searches only after opt-in and never embeds the blocked Naver iframe', async () => {

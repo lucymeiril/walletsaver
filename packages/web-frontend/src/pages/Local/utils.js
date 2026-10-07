@@ -41,7 +41,9 @@ export function parseMenuItems(menuInfo) {
     return { items, rawText: '' };
   }
   if (typeof menuInfo === 'string' && menuInfo.trim()) {
-    const lines = menuInfo.split(/\n/).filter(l => l.trim());
+    // Native menu summaries use explicit pipe or newline separators. Parse
+    // each declared entry so the final price cannot label a whole menu list.
+    const lines = menuInfo.split(/\r?\n|\|/).filter(l => l.trim());
     const items = [];
     const unparsed = [];
     for (const line of lines) {

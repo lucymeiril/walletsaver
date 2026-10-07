@@ -41,6 +41,14 @@ function getVariantReceiptSummary(offer, variant = {}, components = []) {
     ? receipt.split(' · ').slice(0,3).join(' · ') : receipt.split(' · ')[0];
 }
 
+function getVariantSpecificationText(offer, variant = {}, listing = {}) {
+  if (['measured_inner_scope_unresolved', 'independent_count_scope_unresolved'].includes(offer?.quantity_comparison_reason)) {
+    const literal = listing.title || listing.unit_text || variant.name || variant.display_unit || '미확인';
+    return `원문 수량 표기 ${literal} · 총내용량 범위 미확인`;
+  }
+  return variant.display_unit || '';
+}
+
 export function OfferFacts({ offer = {}, components = offer.quantity_components || [], variant = {}, detailsOnly = false }) {
   const unitPrice = getOfferUnitPrice(offer, components);
   return <div className={s.offerFacts}>
@@ -159,6 +167,8 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const displayImage = selectedImage || image;
   const representativeImage = Boolean(chosen && !selectedImage && image);
   const observedAt = chosen?.offer?.crawled_at || chosen?.offer?.observed_at;
+  const specificationText = chosen ? getVariantSpecificationText(chosen.offer, chosen.variant, chosen.listing) : unit;
+  const unresolvedQuantityScope = ['measured_inner_scope_unresolved', 'independent_count_scope_unresolved'].includes(chosen?.offer?.quantity_comparison_reason);
   const storeIcon = STORE_ICONS[storeKey] || '🏪';
 
   // Track view on mount
@@ -468,7 +478,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             {period && <div className={s.period}>📅 {period}</div>}
 
             {/* Unit info */}
-            {unit && <div className={s.metaRow}><span className={s.metaLabel}>규격</span> {unit}</div>}
+            {specificationText && <div className={s.metaRow}>{!unresolvedQuantityScope && <span className={s.metaLabel}>규격</span>} {specificationText}</div>}
             {sourceTitle && sourceTitle !== name && (
               <div className={s.metaRow}><span className={s.metaLabel}>판매명</span> {sourceTitle}</div>
             )}
@@ -537,7 +547,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
               <div>
                 <span>단위가</span>
                 <strong>{displayUnitPrice || '정보 없음'}</strong>
-                <small>{unit || '규격 미확인'}</small>
+                <small>{specificationText || '규격 미확인'}</small>
               </div>
               <div>
                 <span>유효 기간</span>
@@ -605,7 +615,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
 
           <div className={s.section}>
             <h3 className={s.sectionTitle}>🏬 판매처별 규격·가격</h3>
-            {isNormalizedCatalog && <p className={s.comparisonSelection}>선택: {storeName} · {unit || '규격 미확인'} · {getObservedOfferPriceText(chosen?.offer || {})} · 관측 {(chosen?.offer?.crawled_at || chosen?.offer?.observed_at || '').slice(0,10) || '미확인'}</p>}
+            {isNormalizedCatalog && <p className={s.comparisonSelection}>선택: {storeName} · {specificationText || '규격 미확인'} · {getObservedOfferPriceText(chosen?.offer || {})} · 관측 {(chosen?.offer?.crawled_at || chosen?.offer?.observed_at || '').slice(0,10) || '미확인'}</p>}
             {displayedSourceOffers.length > 0 ? (
               <div className={s.comparisonScroll}><table className={s.comparisonTable} aria-label="판매처별 규격 가격 비교">
                 <thead><tr><th>판매처·규격</th><th>출처 표시가</th><th>같은 단위가</th><th>관측일</th><th>핵심 조건</th></tr></thead>
@@ -614,7 +624,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                   const listing = variant?.listings?.find(row => row.id === offer.listingId);
                   const native = listing?.offers?.find(row => row.id === offer.offerId);
                   return <tr key={offer.offerId || `${offer.sourceName}-${i}`} className={offer.current ? s.currentOffer : ''}>
-                    <td><strong>{offer.current ? '✅ ' : ''}{offer.sourceName}</strong><small>{variant?.display_unit || offer.title || '규격 미확인'}</small>{native && <small>{getVariantReceiptSummary(native,variant,variant.quantity_components || [])}</small>}{listing && <button type="button" aria-label={`비교 판매처 선택: ${listing.source} · ${listing.title}`} onClick={() => setOfferSelection({variantId:variant.id,listingId:listing.id,offerId:native?.id})}>이 출처 선택</button>}{listing?.url && <a href={listing.url} target="_blank" rel="noopener noreferrer">출처 원문</a>}</td>
+                    <td><strong>{offer.current ? '✅ ' : ''}{offer.sourceName}</strong><small>{getVariantSpecificationText(native,variant,listing) || offer.title || '규격 미확인'}</small>{native && <small>{getVariantReceiptSummary(native,variant,variant.quantity_components || [])}</small>}{listing && <button type="button" aria-label={`비교 판매처 선택: ${listing.source} · ${listing.title}`} onClick={() => setOfferSelection({variantId:variant.id,listingId:listing.id,offerId:native?.id})}>이 출처 선택</button>}{listing?.url && <a href={listing.url} target="_blank" rel="noopener noreferrer">출처 원문</a>}</td>
                     <td>{native ? getObservedOfferPriceText(native) : `${fmt(offer.price)}원`}</td>
                     <td>{offer.unitPrice != null && offer.unit ? `${offer.comparisonValue == null ? '단위 다름 · ' : ''}${fmtUnitPrice(offer.unitPrice)}원/${offer.unit}` : '동일 단위 미확인'}{selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <small className={s.osCheaper}>{offer.comparisonBasis} 기준 더 저렴</small>}{bestValue != null && offer.comparisonValue === bestValue && <small className={s.osBest}>{offer.comparisonBasis} 기준 관측 최저</small>}</td>
                     <td>{(native?.crawled_at || native?.observed_at || '').slice(0,10) || '미확인'}</td>
@@ -646,7 +656,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
         {showAlertForm && (
           <div className={s.alertForm}>
             {normalizedAlert && <>
-              <strong>{chosen ? `${chosen.variant.display_unit || chosen.variant.name || '규격 미확인'} · ${chosen.listing.source || '판매처 미확인'}` : '규격·판매처·거래 선택 필요'}</strong>
+              <strong>{chosen ? `${specificationText || chosen.variant.name || '규격 미확인'} · ${chosen.listing.source || '판매처 미확인'}` : '규격·판매처·거래 선택 필요'}</strong>
               <small>{chosen ? getOfferConditionText(chosen.offer) : '선택한 거래를 기준으로 저장합니다.'}</small>
               <small>{alertQuotePrice != null ? `선택 거래 표시 금액 ${fmt(alertQuotePrice)}원` : '선택 거래 금액 미확인'} · 수령 구성이나 이용 조건이 확인되지 않으면 목표 도달 판정을 보류합니다.</small>
             </>}

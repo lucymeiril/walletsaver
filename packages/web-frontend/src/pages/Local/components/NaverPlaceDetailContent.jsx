@@ -20,7 +20,7 @@ export default function NaverPlaceDetailContent({ place, onFocusMap }) {
     <div className={s.modalDetail}>
       <div className={s.detailHeader}>
         <h3 className={s.detailName}>{place.name}</h3>
-        {place.category && <span className={s.detailCat}>{place.category}</span>}
+        {place.category && <span className={s.detailCat}>원문 업종 {place.category}</span>}
       </div>
 
       {place.image_url && (
@@ -42,13 +42,14 @@ export default function NaverPlaceDetailContent({ place, onFocusMap }) {
 
       {priceInfo && (
         <div className={s.priceSummary}>
-          <span className={s.priceSummaryLabel}>메뉴 가격</span>
+          <span className={s.priceSummaryLabel}>원문 메뉴 가격 {priceInfo.count}개 · 단순 평균</span>
           <span className={s.priceSummaryValue}>
-            평균 {fmt(priceInfo.avg)}원
-            {priceInfo.count > 1 && ` (${fmt(priceInfo.min)}~${fmt(priceInfo.max)}원)`}
+            원문 메뉴 평균 {fmt(priceInfo.avg)}원
+            {priceInfo.count > 1 && ` (원문 범위 ${fmt(priceInfo.min)}~${fmt(priceInfo.max)}원)`}
           </span>
         </div>
       )}
+      {priceInfo && <p className={s.emptySub}>메뉴 종류와 구성이 달라 동일 메뉴의 최저가 비교가 아닙니다.</p>}
 
       {menuItems.length > 0 && (
         <div className={s.detailSection}>
