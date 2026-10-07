@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 103,
-  "version": "2026-10-07-catalog103-category413",
-  "source_code_base": "15b57fd5a77f1ac10ad72e66cd43c85afa06fc1d",
+  "catalog_revision": 104,
+  "version": "2026-10-07-catalog104-category416",
+  "source_code_base": "75bf13aeec13c895492ce1ce912b207a8e8c412a",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete admin/catalog102/publicsnapshot:9 source-bound form refinements/2four-level commonforms, unchanged quantities/specification IDs, all9115 event/rawquote/time/accountreferences preserved;492groups1191oldIDs116leafreviews. Latestsource also accepts two precisely pinned older approved group definitions for source-only startup; unknown metadata still rejects. Externalhotdeal7/accounts0/initial98paused.",
+  "data_scope": "Sanitized complete admin/catalog104/publicsnapshot:59 source-bound category form refinements/17four-level commonforms, unchanged quantities/specification IDs, all9115 event/rawquote/time/accountreferences preserved;492groups1191oldIDs175leafreviews. Latestsource also accepts three precisely pinned older approved group definitions for source-only startup; unknown metadata still rejects. Externalhotdeal7/accounts0/initial98paused.",
   "files": {
     "admin.sqlite": {
-      "sha256": "d91243357cf600679acb1f14aecf9f9b6109c68ec0581c3a16b68eae51cfd529",
-      "bytes": 62922752,
+      "sha256": "36589ced58351aa683a2b1b77be3bcef05a4c5e89d43a916561e4d50e66ad421",
+      "bytes": 63004672,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -53,8 +53,8 @@
         "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1416,
-        "keywords": 1239,
+        "unified_categories": 1434,
+        "keywords": 1256,
         "product_keywords": 0,
         "matching_entries": 6391,
         "product_match_rules": 0,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 78,
+        "catalog_sync_log": 79,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "7a227dca620dd7395f2b86faf97c995219b4bdd074d01d8eb1efcc91271bc2c6",
-      "archive_bytes": 9017154
+      "archive_sha256": "99d22cf7042bd97b1a60c6ff597ad0d30aff0b6a0f63f2e74aa1247a7964be0c",
+      "archive_bytes": 9046010
     },
     "public_snapshot.sqlite": {
-      "sha256": "a86e07a804c2f4c7ad972c9be13254cc02a739c88c60943c08ff2770a2e60d41",
-      "bytes": 58490880,
+      "sha256": "b4d221eae46bae583918a65076030a9235828689953eac2bf6282172defd24de",
+      "bytes": 58576896,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -104,8 +104,8 @@
         "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1416,
-        "keywords": 1239,
+        "unified_categories": 1434,
+        "keywords": 1256,
         "product_keywords": 0,
         "mart_category_mappings": 506,
         "baseline_prices": 0,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "0427212d3b8af70ad4f726d649c990b1e0af61a180fa562808c2475ee206afb0",
-      "archive_bytes": 8376897
+      "archive_sha256": "cc2a48cc30dfc3af0cbb65fc80224233099734db03a391a0c90e6d500c1d2ae3",
+      "archive_bytes": 8405863
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "c49731465f57c5732e8dfbd48b989ea75f5ab6fa45426bdf0a6299e479ca9b08",
-    "packages/shared/core/reviewed_catalog_groups.json": "02190e4cc1ae229671ca0316df2929405b29b77da5845cdbfdef5696e51152a5",
+    "packages/shared/core/reviewed_catalog_groups.json": "5846c83ee2c0857c6e4b9ecf15d0b13b865bf0889d2a1811250b6b3481e460b9",
     "packages/shared/core/catalog_quantity.py": "b5e6b4952c09d5013e4ee68f8284751beb71fdf1306c8fa37b3092c2ba50e04c",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "a157eb2319b4755d1496532dd5164b876836447a915c05e2426790a42a2c962a",
@@ -175,7 +175,7 @@
     "packages/web-frontend/src/utils/productDecision.js": "5b4069be9cefd9e75cf15b817046335a019dc631fa53440c801908c7a211702d",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "704a8ceaff8157aedd59f346bc4330ca0a25ce6cc3ecd672d06ad8dd208e3e0d",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
-    "packages/db-admin/backend/services/initial_taxonomy.py": "1cbb336e945c3817e87bae18a098ab289552b236b5e1a364d4b65c6c6750a97c",
+    "packages/db-admin/backend/services/initial_taxonomy.py": "0612085dcddd88b9480453386a083dc01e7e0ccd14345537746a60ac4636b224",
     "packages/shared/core/reviewed_content_quantities.py": "4ca38bce6ac118bc87dc7350719110c89f17a83e781923ad178caa5bf3b0d286",
     "packages/shared/core/reviewed_source_evidence.py": "6d9b7b3d40883dbc256555951bc17d8530e28f3221b0e66473ae44350c2b4d66",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
@@ -295,14 +295,22 @@
       "base_catalog_revision": 102,
       "reviewed_catalog_revision": 103,
       "scope": "9 exact source-bound category-only refinements2forms; originalvariant/proof/listing/event/quote/time/accounts unchanged, append-only category auditlineage, actualformalpreview/apply/replay/publish103."
+    },
+    {
+      "path": "demo-data/updates/catalog103-to104.json",
+      "sha256": "2f5170823a523fa52b4567c70e1fbe1ac0696d8695b074d95943f21cdb43ae50",
+      "bytes": 221167,
+      "base_catalog_revision": 103,
+      "reviewed_catalog_revision": 104,
+      "scope": "59 exact source-bound category-only refinements17forms; originalvariant/proof/listing/event/quote/time/accounts unchanged, append-only category auditlineage, actualformalpreview/apply/replay/publish103."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "02190e4cc1ae229671ca0316df2929405b29b77da5845cdbfdef5696e51152a5",
+    "source_registry_sha256": "5846c83ee2c0857c6e4b9ecf15d0b13b865bf0889d2a1811250b6b3481e460b9",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
-    "leaf_reviews": 116
+    "leaf_reviews": 175
   }
 }

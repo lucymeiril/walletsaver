@@ -2186,6 +2186,55 @@ def test_reviewed_ready_meal_leaves_do_not_widen_automatic_rules(path, title):
     assert classify_record(_raw("lottemart", path, title))["unified_category_id"] is None
 
 
+@pytest.mark.parametrize('mart,path,title', [
+    ('lottemart', '간편식ㆍ밀키트 > 밀키트 > 일식ㆍ아시안식 > 아시안식',
+     '샘표 티아시아 게살 푸팟퐁 커리 (170G)'),
+    ('lottemart', '간편식ㆍ밀키트 > 밀키트 > 일식ㆍ아시안식 > 아시안식', '게살 커리 170g'),
+    ('emart', '밀키트/간편식', '비프카레 170g'),
+    ('homeplus', '라면/즉석식품/통조림 > 즉석식품/누룽지/죽', '야채 카레 170g'),
+])
+def test_literal_curry_dish_and_meal_context_do_not_infer_instant_or_kit(mart, path, title):
+    raw = _raw(mart, path, title)
+    raw['sale_price'] = 3000
+    result = classify_record(raw)
+    assert result['unified_category_id'] == 'food.meals.prepared.curry_dish'
+    assert result['classification_reason'] == 'supported_by_literal_curry_dish_and_meal_context'
+    assert result['candidate_category_ids'] == ['food.meals.prepared.curry_dish']
+    assert result['source_title'] == title
+    assert result['source_path_parts'] == source_evidence(raw)['source_path_parts']
+    assert not result.get('classification_attributes')
+    raw['sale_price'] = 5000
+    assert classify_record(raw)['unified_category_id'] == result['unified_category_id']
+
+
+@pytest.mark.parametrize('title,path', [
+    ('커리 소스 170g', '간편식ㆍ밀키트 > 밀키트 > 일식ㆍ아시안식 > 아시안식'),
+    ('카레 가루 100g', '밀키트/간편식'),
+    ('카레 분말 100g', '밀키트/간편식'),
+    ('카레 파우더 100g', '밀키트/간편식'),
+    ('고형카레 100g', '밀키트/간편식'),
+    ('커리 페이스트 100g', '밀키트/간편식'),
+    ('카레 roux 100g', '밀키트/간편식'),
+    ('카레 루 100g', '밀키트/간편식'),
+    ('카레 조리재료 100g', '밀키트/간편식'),
+    ('카레용 돼지고기 300g', '밀키트/간편식'),
+    ('카레맛 스낵 100g', '밀키트/간편식'),
+    ('커리 밀키트 300g', '밀키트/간편식'),
+    ('카레 170g', '양념/소스 > 카레가루/카레소스'),
+    ('카레 170g', '정육 > 소고기'),
+    ('카레 170g', '베스트'),
+    ('카레 170g', '반려동물 > 간편식'),
+    ('커리큘럼 170g', '밀키트/간편식'),
+])
+def test_literal_curry_dish_rejects_ingredients_kits_and_wrong_context(title, path):
+    assert classify_record(_raw('lottemart', path, title))['unified_category_id'] != 'food.meals.prepared.curry_dish'
+
+
+def test_literal_curry_dish_keeps_explicit_instant_curry_contract():
+    result = classify_record(_raw('emart', '밀키트/간편식', '즉석카레 200g'))
+    assert result['unified_category_id'] == 'food.meals.prepared.curry'
+
+
 @pytest.mark.parametrize("leaf,expected", [
     ("food.produce.vegetables.radish", ["식품", "농산물", "신선채소", "무"]),
     ("food.produce.vegetables.zucchini", ["식품", "농산물", "신선채소", "애호박"]),

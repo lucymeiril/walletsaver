@@ -185,6 +185,23 @@ LEAVES: tuple[Leaf, ...] = (
     Leaf("food.supplements.functional.vitamin", ("식품", "건강식품", "건강보조식품", "비타민보충식품"), (), (), ()),
     Leaf("food.drinks.tea.milk_ready", ("식품", "음료", "차·코코아", "밀크티음료"), (), (), ()),
     Leaf("food.drinks.gift_sets.tea_drinkware", ("식품", "음료", "음료선물세트", "차·음료용기세트"), (), (), ()),
+    Leaf("food.meals.sets.soup_sauce", ("식품", "간편식·면", "복합식품세트", "국·소스세트"), (), (), ()),
+    Leaf("food.meals.noodles.pasta_dish", ("식품", "간편식·면", "면요리", "소스포함파스타"), (), (), ()),
+    Leaf("food.meals.prepared.lasagna", ("식품", "간편식·면", "조리식품", "라자냐요리"), (), (), ()),
+    Leaf("food.meals.prepared.curry_dish", ("식품", "간편식·면", "조리식품", "카레요리"), (), (), ()),
+    Leaf("food.meals.noodles.soba", ("식품", "간편식·면", "면요리", "소바"), (), (), ()),
+    Leaf("food.meals.noodles.black_bean_sari", ("식품", "간편식·면", "면요리", "짜장면사리"), (), (), ()),
+    Leaf("household.hygiene.paper.cotton_tissue", ("생활용품", "위생용품", "제지", "코튼티슈"), (), (), ()),
+    Leaf("appliances.laundry.washer.drum", ("가전", "세탁가전", "세탁기", "드럼세탁기"), (), (), ()),
+    Leaf("appliances.laundry.sets.combo_storage", ("가전", "세탁가전", "세탁가전세트", "세탁건조콤보·수납함세트"), (), (), ()),
+    Leaf("appliances.floorcare.robot.standard", ("가전", "생활가전", "로봇청소기", "로봇형청소기"), (), (), ()),
+    Leaf("appliances.floorcare.cleaner.wireless", ("가전", "생활가전", "청소기", "무선청소기"), (), (), ()),
+    Leaf("appliances.floorcare.cleaner.standard", ("가전", "생활가전", "청소기", "일반청소기"), (), (), ()),
+    Leaf("food.meals.dumplings.pan_fried", ("식품", "간편식·면", "만두", "군만두"), (), (), ()),
+    Leaf("food.bakery.bread.ciabatta", ("식품", "베이커리·스프레드", "빵", "치아바타"), (), (), ()),
+    Leaf("food.bakery.bread.cheese_roll", ("식품", "베이커리·스프레드", "빵", "치즈롤빵"), (), (), ()),
+    Leaf("food.bakery.dessert.manju", ("식품", "베이커리·스프레드", "디저트", "만주"), (), (), ()),
+    Leaf("food.dairy.yogurt.standard", ("식품", "유제품", "발효유", "요구르트·요거트"), (), (), ()),
     Leaf("food.meals.rice.soup_rice", ('식품', '간편식·면', '밥·죽', '국밥'), (), (), ()),
     Leaf("food.meals.sets.pork_pork_cutlet", ('식품', '간편식·면', '복합식품세트', '돼지고기·돈가스세트'), (), (), ()),
     Leaf("food.meals.sets.sushi_smoked_roll", ('식품', '간편식·면', '복합식품세트', '초밥·훈제말이세트'), (), (), ()),
@@ -2948,6 +2965,24 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     native_snack_form_ids, broad_native_snack_ids = reviewed_native_snack_form_refinement(evidence)
     all_ids -= broad_native_snack_ids - url_ids
     all_ids |= native_snack_form_ids
+    curry_form_ids = set()
+    curry_title = evidence['source_title']
+    curry_context = ' > '.join(evidence['source_path_parts'])
+    if (re.search(r'(?:카레|커리)(?![가-힣A-Za-z])', curry_title)
+            and re.search(r'간편식|즉석식품', curry_context)
+            and not re.search(r'양념|조미|소스|가루|분말|정육|축산|반려', curry_context)
+            and not re.search(
+                r'소스|분말|가루|파우더|고형|양념|페이스트|paste|roux|'
+                r'(?:카레|커리)\s*(?:용|맛|향)|(?:^|\s)루(?:\s|$)|'
+                r'농축|조리재료|밀키트|수프|스프|즉석|3\s*분|레토르트', curry_title, re.I)):
+        # A meal shelf plus a literal curry dish proves its neutral form only.
+        # It proves neither instant preparation nor a complete meal-kit vector.
+        broad_curry_ids = {'food.meals.prepared.curry'}
+        if _suspicion_reason('food.meals.prepared.meal_kit', evidence) == 'source_leaf_needs_name_corroboration':
+            broad_curry_ids.add('food.meals.prepared.meal_kit')
+        all_ids -= broad_curry_ids - url_ids
+        curry_form_ids = {'food.meals.prepared.curry_dish'}
+        all_ids |= curry_form_ids
     stock_form_ids, broad_stock_ids = stock_tablet_form_refinement(evidence)
     all_ids -= broad_stock_ids - url_ids
     all_ids |= stock_form_ids
@@ -3011,6 +3046,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.90, "fresh_squash_title_and_vegetable_context"
         if tea_form_ids and category_id in tea_form_ids:
             confidence, kind = 0.90, "literal_tea_preparation_form_and_context"
+        if curry_form_ids and category_id in curry_form_ids:
+            confidence, kind = 0.90, "literal_curry_dish_and_meal_context"
         if baked_form_ids and category_id in baked_form_ids:
             confidence, kind = 0.90, "literal_baked_product_form_and_context"
         if cereal_shape_ids and category_id in cereal_shape_ids:

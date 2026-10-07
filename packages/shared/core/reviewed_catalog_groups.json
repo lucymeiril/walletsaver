@@ -13503,7 +13503,7 @@
       ],
       "canonical_name": "CJ 햇반 솥반 꿀약밥",
       "brand": "CJ 햇반",
-      "leaf": "food.meals.rice.instant",
+      "leaf": "food.meals.rice.yakbap",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-3e9a4fa4fbe442b4aa1626e48d37e121": [
@@ -13535,6 +13535,22 @@
       "derived_alias_member_ids": [
         "prod-3e9a4fa4fbe442b4aa1626e48d37e121",
         "prod-c96eabffceb8dae1aa53006f13b0f291"
+      ],
+      "historical_definitions": [
+        {
+          "key": "reviewed-family-v1:cj-haetban-sotban-honey-yakbap",
+          "canonical_product_id": "prod-3e9a4fa4fbe442b4aa1626e48d37e121",
+          "canonical_name": "CJ 햇반 솥반 꿀약밥",
+          "brand": "CJ 햇반",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-3e9a4fa4fbe442b4aa1626e48d37e121",
+            "prod-c96eabffceb8dae1aa53006f13b0f291"
+          ],
+          "leaf": "food.meals.rice.instant",
+          "registry_sha256": "02190e4cc1ae229671ca0316df2929405b29b77da5845cdbfdef5696e51152a5",
+          "approved_source_commit": "75bf13aeec13c895492ce1ce912b207a8e8c412a"
+        }
       ]
     },
     {
@@ -26156,6 +26172,891 @@
       ],
       "evidence_sha256": "878087e4b320f3fe00e374c9d135c3cdc8303116864a19b35f85e760a8336a02",
       "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+    },
+    {
+      "product_id": "prod-3f3a2d9e2593549fda6253f4df923419",
+      "old_leaf": "food.meals.prepared.chicken",
+      "new_leaf": "food.meals.prepared.chicken_skewer",
+      "source_name": "homeplus",
+      "source_record_key": "068769294",
+      "source_titles": [
+        "simplus 숯불닭꼬치 520G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068769294&storeType=HYPER"
+      ],
+      "evidence_sha256": "9e85cbf0a279f71d7766cf3e8305de3cf432dbb3469bef14cd1cd232faf72c7b",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-9e83caf8806c318f3d0d9ba2622e86f2",
+      "old_leaf": "food.meals.prepared.chicken",
+      "new_leaf": "food.meals.prepared.chicken_skewer",
+      "source_name": "homeplus",
+      "source_record_key": "071039820",
+      "source_titles": [
+        "동원 그릴리직화닭꼬치(데리야끼) 75G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071039820&storeType=HYPER"
+      ],
+      "evidence_sha256": "71f759edc618ad3f3ddb65f70de60edf3210e0c660161292935b32acf56c6276",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-b90c7f18aa5017aea5beff5ef61d77be",
+      "old_leaf": "food.meals.prepared.chicken",
+      "new_leaf": "food.meals.prepared.chicken_skewer",
+      "source_name": "homeplus",
+      "source_record_key": "068769305",
+      "source_titles": [
+        "simplus 숯불 닭꼬치 데리야키소스 520G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068769305&storeType=HYPER"
+      ],
+      "evidence_sha256": "42923cbac9ff51f14dda8483ca8841af967d00449aae788210f7a152d1efb035",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-66367cc2c486298b2f076934ad04dd40",
+      "old_leaf": "food.meals.prepared.chicken",
+      "new_leaf": "food.meals.prepared.nugget",
+      "source_name": "homeplus",
+      "source_record_key": "071333004",
+      "source_titles": [
+        "쿠즈락 통살 치킨텐더 500G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071333004&storeType=HYPER"
+      ],
+      "evidence_sha256": "b58c989417eaf845a359fd17ebaf59d1f9c63792dc2199b976c4c8c647e4345a",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-f224ba2c0afb639e3bc47a7f75e97512",
+      "old_leaf": "food.meals.prepared.chicken",
+      "new_leaf": "food.meals.prepared.nugget",
+      "source_name": "homeplus",
+      "source_record_key": "071295279",
+      "source_titles": [
+        "맥시칸 크리스피 텐더 350G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071295279&storeType=HYPER"
+      ],
+      "evidence_sha256": "036b3a844c6d3f19bcc9e8949cff2e91e606c220c96a70b2695e35da1f257005",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-0db047b947f36bb3dbef4622cd8614c7",
+      "old_leaf": "food.meals.prepared.soup_stew",
+      "new_leaf": "food.meals.prepared.meat_braise",
+      "source_name": "costco",
+      "source_record_key": "689825",
+      "source_titles": [
+        "Mama's Choice 돼지고기 김치찜 700g x 3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Mamas-Choice-Braised-Kimchi-with-Pork-700g-x-3/p/689825"
+      ],
+      "evidence_sha256": "6274339eeb8ddc6d37729c015c8b60f4c128059f3f1a1d837587f2929b17b50f",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-b397f3f6d8d310b8848cb0103aa0ee54",
+      "old_leaf": "food.meals.prepared.soup_stew",
+      "new_leaf": "food.meals.sets.soup_sauce",
+      "source_name": "costco",
+      "source_record_key": "683322",
+      "source_titles": [
+        "궁 한우도가니탕500GX3+10GX3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Korean-Beef-Knuckle-Soup-500GX310GX3/p/683322"
+      ],
+      "evidence_sha256": "0a516078d6bc379e4feef6c1937a6837d045326d2ea2381830b5f614b503746a",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-141ce55a46530e2840135e72e12194a4",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.noodles.pasta_dish",
+      "source_name": "costco",
+      "source_record_key": "694918",
+      "source_titles": [
+        "백제 라구파스타 330g x 4"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Instant-Food/Baekje-Ragu-Pasta-330g-x-4/p/694918"
+      ],
+      "evidence_sha256": "bce43d35d5145dd10bf6c9c0bb0f99a1733b7f6bb479e53b80d117aef8829fb8",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-2b5f4daaa4a8b83d12ab3ed9a4f39191",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.noodles.pasta_dish",
+      "source_name": "homeplus",
+      "source_record_key": "069394736",
+      "source_titles": [
+        "투움바 파스타 230G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069394736&storeType=HYPER"
+      ],
+      "evidence_sha256": "0ced384ad22d83d373fe5aad6087b5f30a930242666216939d3d9b6bf8ba9209",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-5c55ebd79f4acf095dbeb218c70719fd",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.noodles.pasta_dish",
+      "source_name": "homeplus",
+      "source_record_key": "121207874",
+      "source_titles": [
+        "씨제이 까르보나라 스파게티 600G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=121207874&storeType=HYPER"
+      ],
+      "evidence_sha256": "6595421a6ec914764aff8ae3e337ad8b2ef434b57d990ef32d3d420791dd219f",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-8f781541735b3becf34be8d9ee883110",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.noodles.pasta_dish",
+      "source_name": "homeplus",
+      "source_record_key": "128087842",
+      "source_titles": [
+        "베이컨 까르보나라 파스타 230G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=128087842&storeType=HYPER"
+      ],
+      "evidence_sha256": "42bb0059df74a6f9736162a90d8006c3edcea5114a7df9d433e48618b2e45a4f",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-af285b4960e37504516319cb6b8f1880",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.noodles.pasta_dish",
+      "source_name": "homeplus",
+      "source_record_key": "069394781",
+      "source_titles": [
+        "MDS코리아 라구(미트) 파스타 230G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069394781&storeType=HYPER"
+      ],
+      "evidence_sha256": "c14da5572dc0b48e46009f560a38558413a21045d94a309e8a1bf792be969661",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-88b31da61cea2f5744d337f6cf6494e7",
+      "old_leaf": "food.meals.noodles.pasta",
+      "new_leaf": "food.meals.prepared.lasagna",
+      "source_name": "emart",
+      "source_record_key": "1000030889333",
+      "source_titles": [
+        "모짜렐라 비프라자냐 350g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030889333&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "69cf0b3e8a7e204a2a5c0672f65744dcc031abca2d9cbf4b435fc221d909e9a1",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-4102a4c5e69acbe0f9f809885b85a25c",
+      "old_leaf": "food.meals.prepared.curry",
+      "new_leaf": "food.meals.prepared.curry_dish",
+      "source_name": "lottemart",
+      "source_record_key": "8801005000789",
+      "source_titles": [
+        "샘표 티아시아 게살 푸팟퐁 커리 (170G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801005000789/details"
+      ],
+      "evidence_sha256": "3df4bf4050bdbc75b8ee29a4b29321343536ee2dcf674d1e7e0caff8e5a353a7",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-07c967ce74a722d119659e5bf8792081",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.buckwheat_noodle",
+      "source_name": "homeplus",
+      "source_record_key": "100490764",
+      "source_titles": [
+        "씨제이 가쓰오 메밀소바 2인분 568.4G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=100490764&storeType=HYPER"
+      ],
+      "evidence_sha256": "9608029a8a38746fd7f5d35067b1a1da129824de3f2b72d6f44ef0b9cc80c010",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-a96d479d64a271ae9b522067a6d5a06f",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.soba",
+      "source_name": "lottemart",
+      "source_record_key": "8802039201517",
+      "source_titles": [
+        "요리하다X정호영 자루소바 (2인) (381G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8802039201517/details"
+      ],
+      "evidence_sha256": "2656b56d647116a0f86280668778eb56045f5440ba537a62fed83c81461f6052",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-ade8572ff7a2faf1b213df4d272d79a4",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.buckwheat_noodle",
+      "source_name": "homeplus",
+      "source_record_key": "070516516",
+      "source_titles": [
+        "칠갑농산 얼음찬 모밀소바 2인분 764G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070516516&storeType=HYPER"
+      ],
+      "evidence_sha256": "b97e6d4519100c245ab552343856afec3344641f1127bd1bca51303231168105",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-b7f11b118ab74669b908b59e63d93736",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.buckwheat_noodle",
+      "source_name": "homeplus",
+      "source_record_key": "124806189",
+      "source_titles": [
+        "풀무원 메밀 생면 4인분 1153.6G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=124806189&storeType=HYPER"
+      ],
+      "evidence_sha256": "45776a5942555d30bfd8b6b21366b2644c6e63aeb2ea0cbaa6db7306eed918ea",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-c1342fac6f8e25329a9987d1a3e365e6",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.buckwheat_noodle",
+      "source_name": "costco",
+      "source_record_key": "675589",
+      "source_titles": [
+        "우불식당 냉모밀 211.6g x 10"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Woobool-Cold-Buckwheat-Noodles-2116g-x-10/p/675589"
+      ],
+      "evidence_sha256": "1c96591a41ebf04ff67113fc1f70ca4ba7f3bed74b1f5e45224e0e1a4f585931",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-1e9d4bfafe6103f6d5453634876ce79b",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.makguksu",
+      "source_name": "lottemart",
+      "source_record_key": "8801085884279",
+      "source_titles": [
+        "요리하다 고소한 들기름 막국수 2인 (334G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801085884279/details"
+      ],
+      "evidence_sha256": "3d145e6c6ae3f20fe462106ab9aae9dc31bf04a883cac25bddae1a8a57378f41",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-5b3b08db19bbc0fd7fe620889676a350",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.makguksu",
+      "source_name": "lottemart",
+      "source_record_key": "8801392045073",
+      "source_titles": [
+        "CJ 동치미 비빔막국수 (2인) (484.4G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801392045073/details"
+      ],
+      "evidence_sha256": "c28fb408e7a1d8c96bf57a70550115e9f8343e4025321a7d0dc4e944e5085264",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-94b284f9b8f2a731ee2a3934bb904fdc",
+      "old_leaf": "food.meals.noodles.naengmyeon",
+      "new_leaf": "food.meals.noodles.makguksu",
+      "source_name": "lottemart",
+      "source_record_key": "8801392044090",
+      "source_titles": [
+        "CJ 고소한 들기름 막국수 (2인) (356G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801392044090/details"
+      ],
+      "evidence_sha256": "fef06e248998fd5bae4d2ebb8c3f31c5f17938aec91c8949158bf79718e7e452",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-1ffac6cc08bd8b98480df8c20575ef9d",
+      "old_leaf": "food.meals.prepared.tteokbokki",
+      "new_leaf": "food.meals.noodles.rabokki",
+      "source_name": "homeplus",
+      "source_record_key": "127621955",
+      "source_titles": [
+        "오뚜기 맛있는 라볶이 2인분 434G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=127621955&storeType=HYPER"
+      ],
+      "evidence_sha256": "c474dae89535d816df1d0da489d1c41606aa7378d05230d42c176949b36a054a",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-d2dbc8b385cb4706d8833d442c06b9c1",
+      "old_leaf": "food.meals.noodles.black_bean",
+      "new_leaf": "food.meals.noodles.black_bean_sari",
+      "source_name": "emart",
+      "source_record_key": "1000641362724",
+      "source_titles": [
+        "짜장면사리 400g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000641362724&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "44c03e35ad9f8e971958d2b05ab0214e682f6ea879b592ac296240c5fc9f61a4",
+      "reason": "Literal chicken skewers/tenders/braised meat, source-bound complete soup+sauce vector, recipe pasta/lasagna/curry dishes, explicit buckwheat/makguksu/rabokki andstandalone sari. Neutralcurry/soba do notinferinstantpreparation or buckwheatingredient. Compatibleactualtitles/sourcepaths; quantities/proof/quote/time/oldIDs unchanged."
+    },
+    {
+      "product_id": "prod-2222c3f97f954840cb442efd2f96b861",
+      "old_leaf": "food.meals.prepared.seasoned_meat",
+      "new_leaf": "food.meals.prepared.bbq_ribs",
+      "source_name": "homeplus",
+      "source_record_key": "070284000",
+      "source_titles": [
+        "오리지널 바비큐 폭립 500G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070284000&storeType=HYPER"
+      ],
+      "evidence_sha256": "efb14fce3fae3b758a3cb31bae6e2f1d45c6d9b7b63f0959488ec8c24c075dd3",
+      "reason": "Literalbarbecueporkribdish andcuttontissue forms in compatiblechilledpreparedfood/bathfacialtissue paths; no dry/wet presentation inference. Explicit80sheets×6 andexistingquantities/proofs/IDs/offers unchanged."
+    },
+    {
+      "product_id": "prod-a066b424e797c2652be618724190f904",
+      "old_leaf": "household.hygiene.paper.dry_wipes",
+      "new_leaf": "household.hygiene.paper.cotton_tissue",
+      "source_name": "costco",
+      "source_record_key": "675084",
+      "source_titles": [
+        "메르슈 프리미엄 코튼티슈 80매 x 6"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Merssue-Premium-Cotton-Tissue-80ct-x-6/p/675084"
+      ],
+      "evidence_sha256": "39c4bac608f9fb02b44bf7ef0b1ddcdd7934acd99c5afcf9fee0bafaa309c5e2",
+      "reason": "Literalbarbecueporkribdish andcuttontissue forms in compatiblechilledpreparedfood/bathfacialtissue paths; no dry/wet presentation inference. Explicit80sheets×6 andexistingquantities/proofs/IDs/offers unchanged."
+    },
+    {
+      "product_id": "prod-34c4cde41bc219ba6cbf5353559a9062",
+      "old_leaf": "appliances.laundry.washer.standard",
+      "new_leaf": "appliances.laundry.washer.drum",
+      "source_name": "emart",
+      "source_record_key": "1000674415044",
+      "source_titles": [
+        "[O] 삼성 그랑데 AI 드럼 세탁기 25kg WF25DG8650BV"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000674415044&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "85512d48f835b2d19d79ef41295c7a01280ca84b80980f255568952e669c708c",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-8d198636672fdaae47271eea0e48ee0f",
+      "old_leaf": "appliances.laundry.washer.standard",
+      "new_leaf": "appliances.laundry.washer.drum",
+      "source_name": "emart",
+      "source_record_key": "1000779759394",
+      "source_titles": [
+        "[+]삼성 그랑데 WF21T6000KW 드럼세탁기 21kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000779759394&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "66b460d22009a6d5be47893cc07daf44b0f85b913e67e33d75563a3480b68fdc",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-cd294d4d033643e29c38a44c528f7b22",
+      "old_leaf": "appliances.laundry.washer.standard",
+      "new_leaf": "appliances.laundry.washer.drum",
+      "source_name": "emart",
+      "source_record_key": "1000807243924",
+      "source_titles": [
+        "S][LG전자 직영] LG 트롬 드럼세탁기 F17ITPR (17kg)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000807243924&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "44a38c3d451ebfdf586db7bdbab423c1ed758be2d06106e3ac4479dec0d62420",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-ef012756b3f5ce4fb4af4ba361425953",
+      "old_leaf": "appliances.laundry.washer.standard",
+      "new_leaf": "appliances.laundry.washer.drum",
+      "source_name": "emart",
+      "source_record_key": "1000824294897",
+      "source_titles": [
+        "S][LG전자 직영] LG 트롬 드럼세탁기 F21VDSKR (21kg)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000824294897&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "98b874855413aa4815cddd1d6d8c53e3e6ce0e835fdfbb12776117d57b3d848c",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-cb7947e63f985db7edce34635c4f0587",
+      "old_leaf": "appliances.laundry.combo.integrated",
+      "new_leaf": "appliances.laundry.sets.combo_storage",
+      "source_name": "emart",
+      "source_record_key": "1000825921493",
+      "source_titles": [
+        "삼성 비스포크 AI 콤보 25/20kg (177.8mm LCD)+수납함 그레이지 WD90H25AHYN1"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000825921493&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "7280b45aa9a38c05fdf8a7b2cb7becf6a8f0e807dedfa16a45043adab19ff0d3",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-1f0866ab22837ee0ac6dbcec9b6e2c6f",
+      "old_leaf": "appliances.floorcare.robot.vacuum",
+      "new_leaf": "appliances.floorcare.robot.standard",
+      "source_name": "emart",
+      "source_record_key": "1000789161670",
+      "source_titles": [
+        "[LG전자 직영] LG 코드제로 R5 올인원타워 로봇청소기 R585WKA1"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000789161670&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "eb5026f618df1f86fb0c966849f6f96a4560d9f767649e154cd5c830f543c92a",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-54483b1ac10e382e6ebc9f48d8deff2a",
+      "old_leaf": "appliances.floorcare.robot.vacuum",
+      "new_leaf": "appliances.floorcare.robot.standard",
+      "source_name": "emart",
+      "source_record_key": "1000814612021",
+      "source_titles": [
+        "로봇청소기 VR90F01AAG 무료배송"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000814612021&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "8c98a2269bd50f5cd17d504794185987360a1cc1e47ecd09c3dee79eba0d69f8",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-4973cac2d7c68c063e1d95f7878a36f9",
+      "old_leaf": "appliances.floorcare.vacuum.standard",
+      "new_leaf": "appliances.floorcare.cleaner.wireless",
+      "source_name": "emart",
+      "source_record_key": "1000606792897",
+      "source_titles": [
+        "전자 오브제컬렉션 무선청소기 AX920BWE 무료배송상품"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000606792897&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "220615b1aa8596e6ca8fdf753d79e9c849611f80b4c3eb6b09b175ef37d04276",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-7e72d8821be4692b8cae2ec34e39dda2",
+      "old_leaf": "appliances.floorcare.vacuum.standard",
+      "new_leaf": "appliances.floorcare.cleaner.standard",
+      "source_name": "emart",
+      "source_record_key": "1000727813715",
+      "source_titles": [
+        "전자 코드제로 A5 AS520WA 청소기"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000727813715&siteNo=6001&salestrNo=6005"
+      ],
+      "evidence_sha256": "a3a6f9cba34d69d7e31a505cffa452716a75c04665716966ea690e7cd068c793",
+      "reason": "Literaldrumwasher form, completecomboplusstorageunit androbot/wireless/generalcleaner forms; no vacuummechanism/modelmemory inference. Devicecapacity/loadspec andoriginalphysical/nonmeasuredproof/countNULL/variant/sourcequote/time unchanged."
+    },
+    {
+      "product_id": "prod-2ef269e7b87d830d5ba50f5491841b2a",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.gyoza",
+      "source_name": "homeplus",
+      "source_record_key": "138355619",
+      "source_titles": [
+        "씨제이 비비고 수제 김치 만두 400G*2"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=138355619&storeType=HYPER"
+      ],
+      "evidence_sha256": "30b73315e2b511653c791948803ee05dbc28c94ede27b20411e48a8510b173d0",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-cf2e9760df4abe30a42b73fab03f4349",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.gyoza",
+      "source_name": "homeplus",
+      "source_record_key": "070623297",
+      "source_titles": [
+        "해태 고향만두 김치 320G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070623297&storeType=HYPER"
+      ],
+      "evidence_sha256": "681737cc1500ddfd51231446b70f56d60f0e887fd4fe6bb3f216b944113223b7",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-da964c5f8cce6902ab610f7afb005113",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.gyoza",
+      "source_name": "homeplus",
+      "source_record_key": "071376028",
+      "source_titles": [
+        "풀무원 생만두 갓김치 400G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071376028&storeType=HYPER"
+      ],
+      "evidence_sha256": "5a44dae60efb2eb585040c64b4eadad2a898907e0eec2bf36486aa650c5eda34",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-faf6c1f11138b77b46a7690227bfdf43",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.gyoza",
+      "source_name": "homeplus",
+      "source_record_key": "070980817",
+      "source_titles": [
+        "동원 개성김치감자만두 350G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070980817&storeType=HYPER"
+      ],
+      "evidence_sha256": "0da1cbe1398e3d92c06b563b2b89655f72a2b2da0892f52798c7e65dd5e13a9a",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-4ba4bbda10168374248139e79a94e779",
+      "old_leaf": "food.meals.dumplings.assorted",
+      "new_leaf": "food.meals.dumplings.pan_fried",
+      "source_name": "homeplus",
+      "source_record_key": "122624764",
+      "source_titles": [
+        "씨제이 비비고 군만두 450G*2"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=122624764&storeType=HYPER"
+      ],
+      "evidence_sha256": "93e1faf9cdcdeaca6fa6d70c963cc0a7f97676185498068fd7a3ee3386428c4e",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-3e9a4fa4fbe442b4aa1626e48d37e121",
+      "old_leaf": "food.meals.rice.instant",
+      "new_leaf": "food.meals.rice.yakbap",
+      "source_name": "lottemart",
+      "source_record_key": "8801007904092",
+      "source_titles": [
+        "씨제이 햇반 솥반 꿀약밥 (210G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007904092/details"
+      ],
+      "evidence_sha256": "84f73cbac058e54b924f9e77fb44c4984e3ef093bc989311958508da3b49c797",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-c96eabffceb8dae1aa53006f13b0f291",
+      "old_leaf": "food.meals.rice.instant",
+      "new_leaf": "food.meals.rice.yakbap",
+      "source_name": "homeplus",
+      "source_record_key": "062715598",
+      "source_titles": [
+        "CJ 햇반솥반 꿀약밥 210G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=062715598&storeType=HYPER"
+      ],
+      "evidence_sha256": "53784009b4090b4608d3f16434263b6f48fce88d5eca313c2576d13fee6cd87a",
+      "reason": "Explicitnativekimchigyoza/gunmandu shelf andliteralDimsum/yakbap forms; approvedreciprocalfamily includesonlysameknownidentity members, no cooking/ingredient/count transfer. Quantities/proof/ID/price/time unchanged."
+    },
+    {
+      "product_id": "prod-10a563662719b68621dd3e985c2b7764",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.bread.rice_cake_bread",
+      "source_name": "costco",
+      "source_record_key": "694733",
+      "source_titles": [
+        "상하이 Style 쫀득 황치즈 버터떡빵 40g x 10"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Shanghai-Style-Cheese-Butter-Bread-40g-x-10/p/694733"
+      ],
+      "evidence_sha256": "0439b91399ba3665fd3cf3df91f4372927ec99e174e045a415bf7920fd414f3f",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-1afeb3b5dba00d72737cff20300b6323",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.bread.hotteok",
+      "source_name": "emart",
+      "source_record_key": "1000011008880",
+      "source_titles": [
+        "계피 호떡 480g (4개입)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "9498c119535cb167e74df38b7bd3bb4df22c7621e09a3e3b1a16cf71715f06e5",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-f89aefd5f4f8f13437ac913c206a0309",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.bread.hotteok",
+      "source_name": "costco",
+      "source_record_key": "646233",
+      "source_titles": [
+        "삼립 옛날 꿀호떡 1120g x 4"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Processed-Food/Bread/Samlip-Honey-Hotteok-1120g-x-4/p/646233"
+      ],
+      "evidence_sha256": "5659f4d0144347ba840593e82187dc62e86b8982e4acedad6f9dafbe7718d03a",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-770326355fc304dc992c77db96e75d81",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.bread.ciabatta",
+      "source_name": "emart",
+      "source_record_key": "1000846511399",
+      "source_titles": [
+        "CJ 밸런스밀 치아바타 비프 콰트로치즈 140g*3"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000846511399&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "682bdd071d37f6da5474550f91e20cdf50d8ae073b90aad1e62d1e8c8c5fea81",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-a45d88b04ef5c048377094511c218939",
+      "old_leaf": "food.bakery.bread.hard",
+      "new_leaf": "food.bakery.bread.ciabatta",
+      "source_name": "emart",
+      "source_record_key": "2097002475071",
+      "source_titles": [
+        "올리브 치아바타 2Pack 기획 (쁘띠 672g+이탈리안 800g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=2097002475071&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "8e0df97b845a749399c464ad61c8dcef454a0219c6098e2ca85f55072245c229",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-99133bb71987c954195eb2de7b91a190",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.bread.cheese_roll",
+      "source_name": "emart",
+      "source_record_key": "1000846235682",
+      "source_titles": [
+        "치즈롤빵8입"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000846235682&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "da478057fbbe518c06efcf415fa568f3a477247097dbcfb4b5caa1921febcafa",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-b68436e9c8eaa6e4be8751bbd91ab525",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.dessert.manju",
+      "source_name": "emart",
+      "source_record_key": "1000730074498",
+      "source_titles": [
+        "문경사과파이만주6입"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000730074498&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "dc81761a8f1e9503066351e951761d75f21f4b3f35e859376689b085183a02f6",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-f9af64b4d8777e8a38f711f3f5a74724",
+      "old_leaf": "food.bakery.bread.filled",
+      "new_leaf": "food.bakery.dessert.manju",
+      "source_name": "emart",
+      "source_record_key": "1000850538603",
+      "source_titles": [
+        "삼립 한입만쥬 알찬밤만쥬 400g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000850538603&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "70d23dbb0a1db3b48bbb7f610563515266e7e59a974f5260bd12eda430fe6ccd",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-3af3e5a6dc1ec21a53c728218aa05820",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000043620749",
+      "source_titles": [
+        "핑크퐁 유기농 아기요거트 딸기바나나 85gX4"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000043620749&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "737e44c2f699f8848f260350fbae7d5b8e597aaf9ca3dc53ea5d8eca6547913a",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-4aaa5934cbe6829720cabde38154546a",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000011626451",
+      "source_titles": [
+        "유기농 베이비 요구르트 사과&당근 340g (85g*4)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000011626451&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "be67004ca9505a9da96d2ee3da5f58b598a09b97558fa631f86f12671b92c163",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-660debca18cf0669f3b9627d6822f64d",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000031728895",
+      "source_titles": [
+        "더 진한 순수 플레인 요거트 1.8L"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000031728895&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "825e8bd420251b97e82f3699636e4059ac7f575d6d831514317b09eff88cc28e",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-bd53874058a9a48d78a74e19e8613707",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "costco",
+      "source_record_key": "695899",
+      "source_titles": [
+        "풀무원다논YoPro 블루베리요거트 150g x 24"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Pulmuone-Danone-YoPro-Blueberry-Yogurt-150g-x-24/p/695899"
+      ],
+      "evidence_sha256": "a0c4d5579bcec7afabfa6a39358996499e444ffda6a505c4e8228014877783f9",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-c2dcb121efab4f09e40ecdd9687f1c2b",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000030262308",
+      "source_titles": [
+        "유기농 마이리틀 요거트 딸기&블루베리 255g (85g*3)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030262308&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "77ee735322c7e18b91d301096ac9c6ffa1effdbed32bb5982518946b13fa4f2e",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-cbb6156a5be90719ab171bc1ed216047",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000280367092",
+      "source_titles": [
+        "에이 클래스 저지방요거트 900g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000280367092&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "5b3b7204de3ed3ce36e653bedbb3c3089731dbdc207f6cc8e4aa8bd31f0a8311",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-d5c5e5b579614191b8f412e4c3daf7a9",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000045173370",
+      "source_titles": [
+        "유기농 마이리틀 요거트 플레인 255g (85g*3)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000045173370&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "2cb59a815ffe79430b62685296967b9ad050388063cac2ad661e30cfbbe85913",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-e2ead54da0b3ee4d32608347f8a3ab0e",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "costco",
+      "source_record_key": "695901",
+      "source_titles": [
+        "풀무원다논 YoPro 무가당 플레인 요거트 150g x 24"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Pulmuone-Danone-YoPro-Nonsweet-Yogurt-150g-x-24/p/695901"
+      ],
+      "evidence_sha256": "edcd5622134666566945e03e379588e6903c67393e4eff247ef033415635a5bf",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+    },
+    {
+      "product_id": "prod-eb8ba9a4bf798d83262e9c47f7f20f8c",
+      "old_leaf": "food.dairy.yogurt.spoon",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "0000009035829",
+      "source_titles": [
+        "다논 하루요거트플레인 80g*4"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000009035829&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "8fc419fdde458dbedf5a1e2893d3a0ffb6f8bb9fd1c3a0a0ffd89dfcee4e8850",
+      "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
     }
   ]
 }
