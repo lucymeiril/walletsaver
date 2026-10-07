@@ -1,0 +1,1014 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation460-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "food.drinks.vinegar",
+      "parent_id": "food.drinks",
+      "slug": "vinegar",
+      "name_ko": "식초음료",
+      "level": 2,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 4
+    },
+    {
+      "id": "food.drinks.vinegar.drinking",
+      "parent_id": "food.drinks.vinegar",
+      "slug": "drinking",
+      "name_ko": "마시는식초",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 7
+    },
+    {
+      "id": "food.produce.processed_fruit.fruit_bowl",
+      "parent_id": "food.produce.processed_fruit",
+      "slug": "fruit_bowl",
+      "name_ko": "냉동과일볼",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 8
+    },
+    {
+      "id": "food.snacks.chestnut.standard",
+      "parent_id": "food.snacks.chestnut",
+      "slug": "standard",
+      "name_ko": "포장밤간식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 9
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1303,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "마시는식초",
+      "synonyms": [],
+      "unified_category_id": "food.drinks.vinegar.drinking"
+    },
+    {
+      "id": 1304,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "냉동과일볼",
+      "synonyms": [],
+      "unified_category_id": "food.produce.processed_fruit.fruit_bowl"
+    },
+    {
+      "id": 1305,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "포장밤간식",
+      "synonyms": [],
+      "unified_category_id": "food.snacks.chestnut.standard"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+      "unified_category_id": "food.produce.processed_fruit.fruit_bowl",
+      "category_id": null,
+      "canonical_name": "아사이볼 (104G/팩)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "냉동과일볼"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:30:11"
+            ],
+            "source_ingestion_ids": [
+              30
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8809654956518"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          30
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "냉동과일볼"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+          "old_leaf": "food.snacks.desserts.smoothie_bowl",
+          "new_leaf": "food.produce.processed_fruit.fruit_bowl",
+          "source_name": "lottemart",
+          "source_record_key": "8809654956518",
+          "source_titles": [
+            "아사이볼 (104G/팩)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8809654956518/details"
+          ],
+          "evidence_sha256": "1c9f66be743694fd1492972024eb1aa12c99dec461342b4898ae131dd4227a03",
+          "reason": "Original wrapper source_category_path explicitly 과일/간편ᆞ냉동과일/냉동과일 supports frozen state. Rawpayload.category_hint alone was an incomplete projection. Literal아사이볼/망고볼 establishes fruit볼 presentation, not smoothie/puree recipe. Use existing가공과일 ancestor plus neutral냉동과일볼; keep observed104g/package/source/time/IDs, no ingredient/allocation/quantity inference."
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1997be361c122d10b364a3ac565132a7",
+      "unified_category_id": "food.produce.processed_fruit.fruit_bowl",
+      "category_id": null,
+      "canonical_name": "망고볼 (104G/팩)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "냉동과일볼"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:32:51"
+            ],
+            "source_ingestion_ids": [
+              32
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8809654956525"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          32
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "냉동과일볼"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-1997be361c122d10b364a3ac565132a7",
+          "old_leaf": "food.snacks.desserts.smoothie_bowl",
+          "new_leaf": "food.produce.processed_fruit.fruit_bowl",
+          "source_name": "lottemart",
+          "source_record_key": "8809654956525",
+          "source_titles": [
+            "망고볼 (104G/팩)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8809654956525/details"
+          ],
+          "evidence_sha256": "7b010cd3830316b75bf3f41c54e286d5f1ce9e34b7ac905eb3d55b8664632e3f",
+          "reason": "Original wrapper source_category_path explicitly 과일/간편ᆞ냉동과일/냉동과일 supports frozen state. Rawpayload.category_hint alone was an incomplete projection. Literal아사이볼/망고볼 establishes fruit볼 presentation, not smoothie/puree recipe. Use existing가공과일 ancestor plus neutral냉동과일볼; keep observed104g/package/source/time/IDs, no ingredient/allocation/quantity inference."
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3560e1040132c9b858cc34eee07d666c",
+      "unified_category_id": "food.drinks.vinegar.drinking",
+      "category_id": null,
+      "canonical_name": "대상 청정원 마시는 홍초 복분자 1.5L",
+      "brand": "대상",
+      "aliases": [],
+      "keywords": [
+        "마시는식초"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:24:46"
+            ],
+            "source_ingestion_ids": [
+              24
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "128640222"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          24
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "마시는식초"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-3560e1040132c9b858cc34eee07d666c",
+          "old_leaf": "food.drinks.mix.vinegar",
+          "new_leaf": "food.drinks.vinegar.drinking",
+          "source_name": "homeplus",
+          "source_record_key": "128640222",
+          "source_titles": [
+            "대상 청정원 마시는 홍초 복분자 1.5L"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=128640222&storeType=HYPER"
+          ],
+          "evidence_sha256": "92f8d58857db4e0362b1daef36a3c9caa95f22cf83b811c2d78327deef07cdcd",
+          "reason": "Homeplus literal 마시는홍초 and exact native 홍초/마시는식초 shelf plus existing source-bound 청정원홍초 line establish drinking vinegar, not powder/solid/mixing instructions. Retain original1.5L/900ml×3 contents/flavors/low-sugar text; no dilution ratio or ready-payment inference. Existing powder/solid vinegar-tea products stay distinct; no crossflavor identity merge."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4fe63cc7fbb76845cb13ed46cc6dcbd6",
+      "unified_category_id": "food.drinks.vinegar.drinking",
+      "category_id": null,
+      "canonical_name": "청정원홍초 레몬&라임900ml x 3 (저당)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "마시는식초"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:42:63"
+            ],
+            "source_ingestion_ids": [
+              42
+            ],
+            "source_name": "costco",
+            "source_record_key": "692736"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          42
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "마시는식초"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-4fe63cc7fbb76845cb13ed46cc6dcbd6",
+          "old_leaf": "food.drinks.mix.vinegar",
+          "new_leaf": "food.drinks.vinegar.drinking",
+          "source_name": "costco",
+          "source_record_key": "692736",
+          "source_titles": [
+            "청정원홍초 레몬&라임900ml x 3 (저당)"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Chungjungone-Hongcho-Lemon-Lime-900ml-x-3/p/692736"
+          ],
+          "evidence_sha256": "20e52c48f76baecd32ce5099ca0ac0b0f83da1d65941a6b4458e87b1a971bab8",
+          "reason": "Homeplus literal 마시는홍초 and exact native 홍초/마시는식초 shelf plus existing source-bound 청정원홍초 line establish drinking vinegar, not powder/solid/mixing instructions. Retain original1.5L/900ml×3 contents/flavors/low-sugar text; no dilution ratio or ready-payment inference. Existing powder/solid vinegar-tea products stay distinct; no crossflavor identity merge."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h8f/h29/469483204935710.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+      "unified_category_id": "food.snacks.chestnut.standard",
+      "category_id": null,
+      "canonical_name": "CJ 유기농맛밤 42g x 17pk",
+      "brand": null,
+      "aliases": [
+        "CJ 유기농 맛밤"
+      ],
+      "keywords": [
+        "포장밤간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:51"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "603724"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "포장밤간식"
+        ],
+        "catalog_group": {
+          "key": "reviewed.packaged_food.cj-organic-matbam",
+          "canonical_product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+          "member_product_ids": [
+            "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+            "prod-67127d827e69fa2287551b9a17f1ad5f"
+          ],
+          "canonical_name": "CJ 유기농 맛밤",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+          "old_leaf": "food.snacks.chestnut.roasted",
+          "new_leaf": "food.snacks.chestnut.standard",
+          "source_name": "costco",
+          "source_record_key": "603724",
+          "source_titles": [
+            "CJ 유기농맛밤 42g x 17pk"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Snack/Nuts/CJ-Organic-Chestnuts-42g-x-17pk/p/603724"
+          ],
+          "evidence_sha256": "ffeaf2e52f7d70e370d76aecdb0a3ea011a87749465e7ae1161420618e076260",
+          "reason": "Original actualCJ OrganicChestnuts sourceURL/Snack and literal42g packaged맛밤 establish chestnut snack, not roasting process. Both approvedCJ 유기농맛밤 members retain exactcommonline and separate42g×17 vs×34 specs; neutral포장밤간식 ancestor/form removes unsupported 구운 processing qualifier, no new recipe/flavor/group."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h17/hd7/380230667337758.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-67127d827e69fa2287551b9a17f1ad5f",
+      "unified_category_id": "food.snacks.chestnut.standard",
+      "category_id": null,
+      "canonical_name": "CJ 유기농 맛밤 42g X 17pk x2",
+      "brand": null,
+      "aliases": [
+        "CJ 유기농 맛밤"
+      ],
+      "keywords": [
+        "포장밤간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:68"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "680199"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "포장밤간식"
+        ],
+        "catalog_group": {
+          "key": "reviewed.packaged_food.cj-organic-matbam",
+          "canonical_product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+          "member_product_ids": [
+            "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+            "prod-67127d827e69fa2287551b9a17f1ad5f"
+          ],
+          "canonical_name": "CJ 유기농 맛밤",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-67127d827e69fa2287551b9a17f1ad5f",
+          "old_leaf": "food.snacks.chestnut.roasted",
+          "new_leaf": "food.snacks.chestnut.standard",
+          "source_name": "costco",
+          "source_record_key": "680199",
+          "source_titles": [
+            "CJ 유기농 맛밤 42g X 17pk x2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Snack/CookieCracker/CJ-Organic-Chestnuts-42g-X-17pk-x-2/p/680199"
+          ],
+          "evidence_sha256": "fc1950490a14b79a168d67d4c7edd2b50f59000dce7910df2dcb88b9d631f100",
+          "reason": "Original actualCJ OrganicChestnuts sourceURL/Snack and literal42g packaged맛밤 establish chestnut snack, not roasting process. Both approvedCJ 유기농맛밤 members retain exactcommonline and separate42g×17 vs×34 specs; neutral포장밤간식 ancestor/form removes unsupported 구운 processing qualifier, no new recipe/flavor/group."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/he3/h80/294979208904734.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-a3fbcd8c25e6161605ea19c30a0763a2",
+      "unified_category_id": "food.supplements.functional.red_ginseng",
+      "category_id": null,
+      "canonical_name": "6년근홍삼정업 2개입세트 (240g*2병) (쇼핑백동봉)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "홍삼"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_native_processed_food_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:94:28"
+            ],
+            "source_ingestion_ids": [
+              94
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000633878709"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_native_processed_food_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          94
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "홍삼"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-a3fbcd8c25e6161605ea19c30a0763a2",
+          "old_leaf": "food.supplements.sets.red_ginseng_bag",
+          "new_leaf": "food.supplements.functional.red_ginseng",
+          "source_name": "emart",
+          "source_record_key": "1000633878709",
+          "source_titles": [
+            "6년근홍삼정업 2개입세트 (240g*2병) (쇼핑백동봉)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000633878709&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "a44dedddb036b1b7ea16b4b532c07094d0b6b9d3d65f88e7627effeaa92e7a5e",
+          "reason": "One explicit 홍삼정업 food in2bottles plus 쇼핑백동봉. Incidental carrier bag is gift presentation, not a second food kind. Existing 건강보조식품/홍삼 ancestor has no regulated-healthclaim assertion; no inference of liquid/paste/extract processing. Restore proven홍삼 kind navigation, while preserving original source-bound component vector240g×2 and bag localNULL, physicalcompanion identity, same complete-set variant and NULL aggregateunitprice. No giftbag count/recipe/singleton/producer equivalence inference."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/09/87/87/item/1000633878709_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-76ec8181df33d23d3d703e26e967179e",
+      "public_source_listing_id": "listing-f310518e3226a4a5f2187ab1565eb4f6",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 5990.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:30:11",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:46:57.101659Z",
+            "ingestion_id": 30,
+            "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "브랜드없음",
+                "canon_hash": "c6a57d2a2c282f50be9f3f30570be06211dc3448",
+                "canonical_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+                "category_hint": "과일",
+                "category_path": [
+                  "과일",
+                  "간편ㆍ냉동과일",
+                  "냉동과일"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+                "mart_native_code": "8809654956518",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8809654956518",
+                "source_url": "https://lottemartzetta.com/products/OS8809654956518/details"
+              },
+              "brand": "__no_brand__",
+              "category": "과일",
+              "crawled_at": "2026-08-31T10:46:57.101659",
+              "detail_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+              "discount_percent": null,
+              "display_unit": "104g",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+              "match_key": "__no_brand__|아사이볼 104g 팩||104g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "아사이볼 (104G/팩)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 104.0,
+              "package_unit": "g",
+              "price_per_100g": 5759.62,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 5990,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "104g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "d3d13970208eb5cf24b3a806238ea80b7b03aff8c66b0687546ab4c44708fcc4",
+            "raw_record_id": "ingestion:30:11",
+            "source_category_path": [
+              "과일",
+              "간편ᆞ냉동과일",
+              "냉동과일"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 50% 할인",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_percentage_discount",
+          "conditional_discount_percent": 50.0,
+          "discount_application_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:30:11"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          30
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-76ec8181df33d23d3d703e26e967179e",
+            "public_source_listing_id": "listing-f310518e3226a4a5f2187ab1565eb4f6",
+            "public_variant_id": "var-cb44c11a362409c925eefd2daae649d4",
+            "public_product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+            "unified_category_id": "food.snacks.desserts.smoothie_bowl",
+            "source_name": "lottemart",
+            "source_record_key": "8809654956518",
+            "source_title": "아사이볼 (104G/팩)",
+            "source_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+            "variant_spec": {
+              "variant_name": "아사이볼 (104G/팩)",
+              "display_unit": "104g",
+              "package_quantity": 104.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 5990.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:46:57.101659Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:30:11",
+                "raw_payload_sha256": "d3d13970208eb5cf24b3a806238ea80b7b03aff8c66b0687546ab4c44708fcc4",
+                "observation_sha256": "ecef16868d1bcbd80e643a0820e6156014e2b9c56304ba029ecb0b927f1f1c89"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 50% 할인",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_percentage_discount",
+              "conditional_discount_percent": 50.0,
+              "discount_application_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-07T03:26:38.331524+00:00",
+            "original_review_sha256": "4a88a2485b8edfa0b94f917e3a1df69bf3bfe3386a0a1b2c73de7df61ba1ea5a",
+            "before_context": {
+              "public_source_listing_id": "listing-f310518e3226a4a5f2187ab1565eb4f6",
+              "public_variant_id": "var-cb44c11a362409c925eefd2daae649d4",
+              "public_product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+              "unified_category_id": "food.snacks.desserts.smoothie_bowl",
+              "source_name": "lottemart",
+              "source_record_key": "8809654956518",
+              "source_title": "아사이볼 (104G/팩)",
+              "source_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+              "variant_spec": {
+                "variant_name": "아사이볼 (104G/팩)",
+                "display_unit": "104g",
+                "package_quantity": 104.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-f310518e3226a4a5f2187ab1565eb4f6",
+              "public_variant_id": "var-cb44c11a362409c925eefd2daae649d4",
+              "public_product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+              "unified_category_id": "food.produce.processed_fruit.fruit_bowl",
+              "source_name": "lottemart",
+              "source_record_key": "8809654956518",
+              "source_title": "아사이볼 (104G/팩)",
+              "source_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+              "variant_spec": {
+                "variant_name": "아사이볼 (104G/팩)",
+                "display_unit": "104g",
+                "package_quantity": 104.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "de18f2584c117a1101b637eb45937b271096ddee3c0f27b909b3ffd90a2f3d8d",
+            "after_context_sha256": "55e3aa8c97162328208f337f63c3e2f77824bef0b0042f7ed31572e393c5679e",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:30:11",
+                "raw_payload_sha256": "d3d13970208eb5cf24b3a806238ea80b7b03aff8c66b0687546ab4c44708fcc4",
+                "observation_sha256": "ecef16868d1bcbd80e643a0820e6156014e2b9c56304ba029ecb0b927f1f1c89"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:46:57.101659",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    },
+    {
+      "public_offer_event_id": "offer-fcd2f45ea8b4ba9421b107bc1db632c2",
+      "public_source_listing_id": "listing-51aa328a94f6c027ae4c3275d0629c5b",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 5990.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:32:51",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:02.663268Z",
+            "ingestion_id": 32,
+            "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "브랜드없음",
+                "canon_hash": "f66ce3ee3307fa819ded5b668a1ebdb0bbb5a559",
+                "canonical_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+                "category_hint": "과일",
+                "category_path": [
+                  "과일",
+                  "간편ㆍ냉동과일",
+                  "냉동과일"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+                "mart_native_code": "8809654956525",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8809654956525",
+                "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+                "storage_label": "상온",
+                "storage_type": "ambient"
+              },
+              "brand": "__no_brand__",
+              "category": "과일",
+              "crawled_at": "2026-08-31T10:47:02.663268",
+              "detail_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+              "discount_percent": null,
+              "display_unit": "104g",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+              "match_key": "__no_brand__|망고볼 104g 팩||104g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "망고볼 (104G/팩)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 104.0,
+              "package_unit": "g",
+              "price_per_100g": 5759.62,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 5990,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "104g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "3676bb71cee193c85f7644f57646851117d3ccb4a5087a3c310bc8bc7cae779f",
+            "raw_record_id": "ingestion:32:51",
+            "source_category_path": [
+              "과일",
+              "간편ᆞ냉동과일",
+              "냉동과일"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 50% 할인",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_percentage_discount",
+          "conditional_discount_percent": 50.0,
+          "discount_application_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:32:51"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          32
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-fcd2f45ea8b4ba9421b107bc1db632c2",
+            "public_source_listing_id": "listing-51aa328a94f6c027ae4c3275d0629c5b",
+            "public_variant_id": "var-3e31abbb954692a849a15d68987afdb7",
+            "public_product_id": "prod-1997be361c122d10b364a3ac565132a7",
+            "unified_category_id": "food.snacks.desserts.smoothie_bowl",
+            "source_name": "lottemart",
+            "source_record_key": "8809654956525",
+            "source_title": "망고볼 (104G/팩)",
+            "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+            "variant_spec": {
+              "variant_name": "망고볼 (104G/팩)",
+              "display_unit": "104g",
+              "package_quantity": 104.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 5990.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:02.663268Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:32:51",
+                "raw_payload_sha256": "3676bb71cee193c85f7644f57646851117d3ccb4a5087a3c310bc8bc7cae779f",
+                "observation_sha256": "22337dfbb3f7696a3175e7078c275bb07fcac0382ebcbe9c4dfc3b14e3136362"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 50% 할인",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_percentage_discount",
+              "conditional_discount_percent": 50.0,
+              "discount_application_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-07T03:26:38.334877+00:00",
+            "original_review_sha256": "d6830514206e314be80ee1ddd91980254b99099442090d6df9814997b0dbc0e3",
+            "before_context": {
+              "public_source_listing_id": "listing-51aa328a94f6c027ae4c3275d0629c5b",
+              "public_variant_id": "var-3e31abbb954692a849a15d68987afdb7",
+              "public_product_id": "prod-1997be361c122d10b364a3ac565132a7",
+              "unified_category_id": "food.snacks.desserts.smoothie_bowl",
+              "source_name": "lottemart",
+              "source_record_key": "8809654956525",
+              "source_title": "망고볼 (104G/팩)",
+              "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+              "variant_spec": {
+                "variant_name": "망고볼 (104G/팩)",
+                "display_unit": "104g",
+                "package_quantity": 104.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-51aa328a94f6c027ae4c3275d0629c5b",
+              "public_variant_id": "var-3e31abbb954692a849a15d68987afdb7",
+              "public_product_id": "prod-1997be361c122d10b364a3ac565132a7",
+              "unified_category_id": "food.produce.processed_fruit.fruit_bowl",
+              "source_name": "lottemart",
+              "source_record_key": "8809654956525",
+              "source_title": "망고볼 (104G/팩)",
+              "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+              "variant_spec": {
+                "variant_name": "망고볼 (104G/팩)",
+                "display_unit": "104g",
+                "package_quantity": 104.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "dadbb45cf4947a5a896cb48132202f8ef0664e695572c40b8d6131bfab38bb86",
+            "after_context_sha256": "2f34241585a341181e79cf343f361cb5c93876295fe5f55bba7de61f28e67775",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:32:51",
+                "raw_payload_sha256": "3676bb71cee193c85f7644f57646851117d3ccb4a5087a3c310bc8bc7cae779f",
+                "observation_sha256": "22337dfbb3f7696a3175e7078c275bb07fcac0382ebcbe9c4dfc3b14e3136362"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:02.663268",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

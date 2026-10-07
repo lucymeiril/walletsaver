@@ -248,6 +248,8 @@ LEAVES: tuple[Leaf, ...] = (
     Leaf("beauty.personal.hair.milk", ("뷰티·개인관리", "개인위생", "헤어케어", "헤어밀크"), (), (), ()),
     Leaf("beauty.skincare.serums.soothing_gel", ("뷰티·개인관리", "피부관리", "스킨케어", "피부용수딩젤"), (), (), ()),
     Leaf("household.cleaning.kitchen.bottle_detergent", ("생활용품", "청소·세탁", "주방청소", "젖병세정제"), (), (), ()),
+    Leaf("food.drinks.vinegar.drinking", ("식품", "음료", "식초음료", "마시는식초"), (), (), ()),
+    Leaf("food.snacks.chestnut.standard", ("식품", "과자·간식", "밤간식", "포장밤간식"), (), (), ()),
     Leaf("food.meals.rice.soup_rice", ('식품', '간편식·면', '밥·죽', '국밥'), (), (), ()),
     Leaf("food.meals.sets.pork_pork_cutlet", ('식품', '간편식·면', '복합식품세트', '돼지고기·돈가스세트'), (), (), ()),
     Leaf("food.meals.sets.sushi_smoked_roll", ('식품', '간편식·면', '복합식품세트', '초밥·훈제말이세트'), (), (), ()),

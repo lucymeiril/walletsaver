@@ -24469,7 +24469,7 @@
       ],
       "canonical_name": "CJ 유기농 맛밤",
       "brand": "CJ",
-      "leaf": "food.snacks.chestnut.roasted",
+      "leaf": "food.snacks.chestnut.standard",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-5ddd5bd93312c0afd67659d4ba6b4372": [
@@ -24501,6 +24501,22 @@
       "derived_alias_member_ids": [
         "prod-5ddd5bd93312c0afd67659d4ba6b4372",
         "prod-67127d827e69fa2287551b9a17f1ad5f"
+      ],
+      "historical_definitions": [
+        {
+          "key": "reviewed.packaged_food.cj-organic-matbam",
+          "canonical_product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+          "canonical_name": "CJ 유기농 맛밤",
+          "brand": "CJ",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+            "prod-67127d827e69fa2287551b9a17f1ad5f"
+          ],
+          "leaf": "food.snacks.chestnut.roasted",
+          "registry_sha256": "9f3edd59f8462a0f053a77285157bf9227178824c8e21496c21b78145a91ddc5",
+          "approved_source_commit": "2dcf7457f08796cfc61981701977f2864d8a4a7c"
+        }
       ]
     },
     {
@@ -29708,6 +29724,111 @@
       ],
       "evidence_sha256": "0c6b30c9ef3a9d9a816c1c4dfc21a34e0ec148c0b4c2d2ea573545412a95fb70",
       "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
+    },
+    {
+      "product_id": "prod-3560e1040132c9b858cc34eee07d666c",
+      "old_leaf": "food.drinks.mix.vinegar",
+      "new_leaf": "food.drinks.vinegar.drinking",
+      "source_name": "homeplus",
+      "source_record_key": "128640222",
+      "source_titles": [
+        "대상 청정원 마시는 홍초 복분자 1.5L"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=128640222&storeType=HYPER"
+      ],
+      "evidence_sha256": "92f8d58857db4e0362b1daef36a3c9caa95f22cf83b811c2d78327deef07cdcd",
+      "reason": "Homeplus literal 마시는홍초 and exact native 홍초/마시는식초 shelf plus existing source-bound 청정원홍초 line establish drinking vinegar, not powder/solid/mixing instructions. Retain original1.5L/900ml×3 contents/flavors/low-sugar text; no dilution ratio or ready-payment inference. Existing powder/solid vinegar-tea products stay distinct; no crossflavor identity merge."
+    },
+    {
+      "product_id": "prod-4fe63cc7fbb76845cb13ed46cc6dcbd6",
+      "old_leaf": "food.drinks.mix.vinegar",
+      "new_leaf": "food.drinks.vinegar.drinking",
+      "source_name": "costco",
+      "source_record_key": "692736",
+      "source_titles": [
+        "청정원홍초 레몬&라임900ml x 3 (저당)"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/Chungjungone-Hongcho-Lemon-Lime-900ml-x-3/p/692736"
+      ],
+      "evidence_sha256": "20e52c48f76baecd32ce5099ca0ac0b0f83da1d65941a6b4458e87b1a971bab8",
+      "reason": "Homeplus literal 마시는홍초 and exact native 홍초/마시는식초 shelf plus existing source-bound 청정원홍초 line establish drinking vinegar, not powder/solid/mixing instructions. Retain original1.5L/900ml×3 contents/flavors/low-sugar text; no dilution ratio or ready-payment inference. Existing powder/solid vinegar-tea products stay distinct; no crossflavor identity merge."
+    },
+    {
+      "product_id": "prod-03c3e77c1f3eeaa087e6f33183eb96c9",
+      "old_leaf": "food.snacks.desserts.smoothie_bowl",
+      "new_leaf": "food.produce.processed_fruit.fruit_bowl",
+      "source_name": "lottemart",
+      "source_record_key": "8809654956518",
+      "source_titles": [
+        "아사이볼 (104G/팩)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809654956518/details"
+      ],
+      "evidence_sha256": "1c9f66be743694fd1492972024eb1aa12c99dec461342b4898ae131dd4227a03",
+      "reason": "Original wrapper source_category_path explicitly 과일/간편ᆞ냉동과일/냉동과일 supports frozen state. Rawpayload.category_hint alone was an incomplete projection. Literal아사이볼/망고볼 establishes fruit볼 presentation, not smoothie/puree recipe. Use existing가공과일 ancestor plus neutral냉동과일볼; keep observed104g/package/source/time/IDs, no ingredient/allocation/quantity inference."
+    },
+    {
+      "product_id": "prod-1997be361c122d10b364a3ac565132a7",
+      "old_leaf": "food.snacks.desserts.smoothie_bowl",
+      "new_leaf": "food.produce.processed_fruit.fruit_bowl",
+      "source_name": "lottemart",
+      "source_record_key": "8809654956525",
+      "source_titles": [
+        "망고볼 (104G/팩)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809654956525/details"
+      ],
+      "evidence_sha256": "7b010cd3830316b75bf3f41c54e286d5f1ce9e34b7ac905eb3d55b8664632e3f",
+      "reason": "Original wrapper source_category_path explicitly 과일/간편ᆞ냉동과일/냉동과일 supports frozen state. Rawpayload.category_hint alone was an incomplete projection. Literal아사이볼/망고볼 establishes fruit볼 presentation, not smoothie/puree recipe. Use existing가공과일 ancestor plus neutral냉동과일볼; keep observed104g/package/source/time/IDs, no ingredient/allocation/quantity inference."
+    },
+    {
+      "product_id": "prod-5ddd5bd93312c0afd67659d4ba6b4372",
+      "old_leaf": "food.snacks.chestnut.roasted",
+      "new_leaf": "food.snacks.chestnut.standard",
+      "source_name": "costco",
+      "source_record_key": "603724",
+      "source_titles": [
+        "CJ 유기농맛밤 42g x 17pk"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/CJ-Organic-Chestnuts-42g-x-17pk/p/603724"
+      ],
+      "evidence_sha256": "ffeaf2e52f7d70e370d76aecdb0a3ea011a87749465e7ae1161420618e076260",
+      "reason": "Original actualCJ OrganicChestnuts sourceURL/Snack and literal42g packaged맛밤 establish chestnut snack, not roasting process. Both approvedCJ 유기농맛밤 members retain exactcommonline and separate42g×17 vs×34 specs; neutral포장밤간식 ancestor/form removes unsupported 구운 processing qualifier, no new recipe/flavor/group."
+    },
+    {
+      "product_id": "prod-67127d827e69fa2287551b9a17f1ad5f",
+      "old_leaf": "food.snacks.chestnut.roasted",
+      "new_leaf": "food.snacks.chestnut.standard",
+      "source_name": "costco",
+      "source_record_key": "680199",
+      "source_titles": [
+        "CJ 유기농 맛밤 42g X 17pk x2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/CookieCracker/CJ-Organic-Chestnuts-42g-X-17pk-x-2/p/680199"
+      ],
+      "evidence_sha256": "fc1950490a14b79a168d67d4c7edd2b50f59000dce7910df2dcb88b9d631f100",
+      "reason": "Original actualCJ OrganicChestnuts sourceURL/Snack and literal42g packaged맛밤 establish chestnut snack, not roasting process. Both approvedCJ 유기농맛밤 members retain exactcommonline and separate42g×17 vs×34 specs; neutral포장밤간식 ancestor/form removes unsupported 구운 processing qualifier, no new recipe/flavor/group."
+    },
+    {
+      "product_id": "prod-a3fbcd8c25e6161605ea19c30a0763a2",
+      "old_leaf": "food.supplements.sets.red_ginseng_bag",
+      "new_leaf": "food.supplements.functional.red_ginseng",
+      "source_name": "emart",
+      "source_record_key": "1000633878709",
+      "source_titles": [
+        "6년근홍삼정업 2개입세트 (240g*2병) (쇼핑백동봉)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633878709&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "a44dedddb036b1b7ea16b4b532c07094d0b6b9d3d65f88e7627effeaa92e7a5e",
+      "reason": "One explicit 홍삼정업 food in2bottles plus 쇼핑백동봉. Incidental carrier bag is gift presentation, not a second food kind. Existing 건강보조식품/홍삼 ancestor has no regulated-healthclaim assertion; no inference of liquid/paste/extract processing. Restore proven홍삼 kind navigation, while preserving original source-bound component vector240g×2 and bag localNULL, physicalcompanion identity, same complete-set variant and NULL aggregateunitprice. No giftbag count/recipe/singleton/producer equivalence inference."
     }
   ]
 }

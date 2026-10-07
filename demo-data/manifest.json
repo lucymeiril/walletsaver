@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 110,
-  "version": "2026-10-07-catalog110-kind453455",
-  "source_code_base": "51e61000f86398c97a2265f3e06b5b37593e18ca",
+  "catalog_revision": 111,
+  "version": "2026-10-07-catalog111-form460",
+  "source_code_base": "2dcf7457f08796cfc61981701977f2864d8a4a7c",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete admin/catalog110/publicsnapshot: preserved109 singlefreshshiitake gift-kind navigation and110 original431 cooking-broth meaning for existingHP/Lotte family with both own sourcebindings. Original431bytes and9115event/quote/time/6402variants/6458listings/accountreferences unchanged; physicalcompanion vector/localNULL and NULL aggregateunitprice retained.492groups1191oldIDs/340sequentialleafreviews14hash-pinnedhistoricaldefinitions; externalhotdeal7/accounts0/initial98paused.",
+  "data_scope": "Sanitized consistent admin/catalog111/publicsnapshot;7source-bound neutral samekind form refinements:2liquid drinkingvinegar,2nativefrozen fruit bowls without smoothie inference,2packagedchestnuts without roast inference,1redginseng+incidentalshoppingbag.492groups1191oldIDs/347leafreviews15hash-pinned historicaldefinitions;1489categories1305keywords. All9115events/quote/time/6402variants/6458listings/knownvectors/NULLaggregateunitprice/accountreferences preserved. Externalhotdeal7/accounts0; initial98paused, candidateverificationongoing.",
   "files": {
     "admin.sqlite": {
-      "sha256": "3650aaef3594bf6a94074eba7d54739c6173094d8299af1bbe5a795d0314db5d",
-      "bytes": 63291392,
+      "sha256": "6085cd286a10d8d5f253041e461b6defefc3a6bdbfe652ac6d161a22a3b0674d",
+      "bytes": 63307776,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -53,8 +53,8 @@
         "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1485,
-        "keywords": 1302,
+        "unified_categories": 1489,
+        "keywords": 1305,
         "product_keywords": 0,
         "matching_entries": 6391,
         "product_match_rules": 0,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 85,
+        "catalog_sync_log": 86,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "8fc580dfb8060d42272c4115b70c26b15285fd7dcd9d5aa1ca6f7ab2d44d468e",
-      "archive_bytes": 9122210
+      "archive_sha256": "0a6d5005b32fe66d12fa988b7de06d2801ffe3d7b1efa3c06e1cbd2ab1a2a43f",
+      "archive_bytes": 9128162
     },
     "public_snapshot.sqlite": {
-      "sha256": "7b7fe13153cfc4376f67596f69d8ece456e6e4c088bdc83f614df99e1836f4ca",
-      "bytes": 58863616,
+      "sha256": "2980983707ad6d8c4170ea4895818928a1703533d70498eefb0dffe777634002",
+      "bytes": 58896384,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -104,8 +104,8 @@
         "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1485,
-        "keywords": 1302,
+        "unified_categories": 1489,
+        "keywords": 1305,
         "product_keywords": 0,
         "mart_category_mappings": 506,
         "baseline_prices": 0,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "995b0fa8b922fc9276d5438e5833778dc041aae440a460b3d43f6f17dc8e37d5",
-      "archive_bytes": 8482441
+      "archive_sha256": "d1c5ae9d621011088130c26956330660225c7aaa58eb9687f032d20ae796f2fc",
+      "archive_bytes": 8489404
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -165,7 +165,7 @@
   },
   "reviewed_group_source_files": {
     "packages/shared/core/catalog_identity.py": "2dcc8b12f64d4da24e83072b59a2428d11d36c806a1ebaa17923c4f670694584",
-    "packages/shared/core/reviewed_catalog_groups.json": "9f3edd59f8462a0f053a77285157bf9227178824c8e21496c21b78145a91ddc5",
+    "packages/shared/core/reviewed_catalog_groups.json": "016e9a4efcb71394bfc3b87a37157a0d388767ea56b6ca51e9b85f56234fe86b",
     "packages/shared/core/catalog_quantity.py": "b5e6b4952c09d5013e4ee68f8284751beb71fdf1306c8fa37b3092c2ba50e04c",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "a157eb2319b4755d1496532dd5164b876836447a915c05e2426790a42a2c962a",
@@ -175,7 +175,7 @@
     "packages/web-frontend/src/utils/productDecision.js": "5b4069be9cefd9e75cf15b817046335a019dc631fa53440c801908c7a211702d",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "704a8ceaff8157aedd59f346bc4330ca0a25ce6cc3ecd672d06ad8dd208e3e0d",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
-    "packages/db-admin/backend/services/initial_taxonomy.py": "9d05b4e0dd63132a21aec7848bb5aef27da13aa314201f7aedd90ab260a1efc4",
+    "packages/db-admin/backend/services/initial_taxonomy.py": "f1403bd066efdd0b674fa4be5a3df6f5ac31e8188121d43793146763c8fb0e8a",
     "packages/shared/core/reviewed_content_quantities.py": "af891bbcf104d216b8244e2490636e0c8f6ab674125f49ba7ece1082acdd9450",
     "packages/shared/core/reviewed_source_evidence.py": "6d9b7b3d40883dbc256555951bc17d8530e28f3221b0e66473ae44350c2b4d66",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
@@ -351,14 +351,22 @@
       "base_catalog_revision": 109,
       "reviewed_catalog_revision": 110,
       "scope": "Existing source-bound samekind category refinement; original9115quotes/time/event/spec/oldIDs/accountreferences preserved; no newquantity/group/observation. Officialpreview/apply/replay/publish COMPLETE, retain registered category-context audit lineage."
+    },
+    {
+      "path": "demo-data/updates/catalog110-to111.json",
+      "sha256": "74ca6259541d869f62c8c57406035b49b91ac914afc15277e9a2139a2097e173",
+      "bytes": 42125,
+      "base_catalog_revision": 110,
+      "reviewed_catalog_revision": 111,
+      "scope": "7source-bound neutral commonform refinements, existingCJ2member history; all originalevent/quote/time/quantity/oldIDs/accountreferences preserved. Officialpreview/apply/replay/publish COMPLETE, initial98paused."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "9f3edd59f8462a0f053a77285157bf9227178824c8e21496c21b78145a91ddc5",
+    "source_registry_sha256": "016e9a4efcb71394bfc3b87a37157a0d388767ea56b6ca51e9b85f56234fe86b",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
-    "leaf_reviews": 340
+    "leaf_reviews": 347
   }
 }

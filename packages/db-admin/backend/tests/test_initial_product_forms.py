@@ -105,6 +105,16 @@ def test_explicit_form_requires_both_title_and_context(title,path,leaf):
     assert product_form_candidates({**evidence,'source_path_parts':['무관한 매대']})==set()
     validate_taxonomy(taxonomy_categories({leaf}),{leaf})
 
+
+@pytest.mark.parametrize('title', ['아사이볼 (104G/팩)', '망고볼 (104G/팩)'])
+def test_fruit_bowl_uses_native_frozen_state_without_smoothie_or_mixed_recipe(title):
+    row = {'source_name': 'lottemart', 'source_title': title, 'source_category_path': ['과일', '간편ㆍ냉동과일', '냉동과일']}
+    assert classify_record(row)['unified_category_id'] == 'food.produce.processed_fruit.fruit_bowl'
+    assert classify_record({**row, 'source_category_path': ['정육']})['unified_category_id'] is None
+    assert classify_record({**row, 'source_category_path': ['과일']})['unified_category_id'] != 'food.produce.processed_fruit.fruit_bowl'
+    for changed in (title + ' 혼합세트', title.replace('볼', '볼 요거트'), title + '+요거트'):
+        assert classify_record({**row, 'source_title': changed})['unified_category_id'] != 'food.produce.processed_fruit.fruit_bowl'
+
 @pytest.mark.parametrize('title,path',[
  ('건조 황태채 육수팩','수산물/건해산'),
  ('건조 황태채 무침','수산물/건해산'),

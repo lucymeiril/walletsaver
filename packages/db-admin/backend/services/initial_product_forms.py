@@ -74,6 +74,7 @@ def reviewed_native_processed_form_refinement(evidence):
 # id, four-level names, required title expression, corroborating source context,
 # excluded title expression. No path-only or fuzzy matching.
 FORM_RULES = (
+ ('food.produce.processed_fruit.fruit_bowl',('식품','농산물','가공과일','냉동과일볼'),r'^(?:아사이|망고)\s*볼(?:\s*\(\s*\d+(?:\.\d+)?\s*[Gg]\s*/\s*팩\s*\))?$',r'^과일\s*>\s*간편[ㆍ·ᆞ]냉동과일\s*>\s*냉동과일$',r'혼합|세트|요거트|요구르트|아이스크림|만들기|재료|[+]' ),
  ('electronics.video.screens.portable',('디지털','영상가전','스크린','포터블스크린'),r'포터블\s*스크린',r'^(?:오반장$|디지털(?: >|$)|영상가전(?: >|$)|영상기기(?: >|$))',r'케이스|커버|파우치|거치대|받침대|스탠드|교체|부품|액세서리|보호\s*필름|세정|청소|혼합|세트|\+|텔레비전|프로젝터|(?:^|\s)TV(?:\s|$)'),
  ('food.drinks.water_sets.water_bag',('식품','음료','생수세트','생수·가방세트'),r'(?:생수|미네랄워터|에비앙).*(?:\+\s*(?:쇼퍼백|쇼핑백)|(?:쇼퍼백|쇼핑백)\s*(?:동봉|포함|증정))',r'생수|음료',r'맛|향|농축|분말|반려|(?:쇼퍼백|쇼핑백)\s*(?:미포함|별도|없음|미동봉)'),
  ('food.supplements.sets.red_ginseng_bag',('식품','건강식품','홍삼제품세트','홍삼제품·가방세트'),r'홍삼(?:정|농축).*(?:\+\s*(?:쇼퍼백|쇼핑백)|(?:쇼퍼백|쇼핑백)\s*(?:동봉|포함|증정))',r'^건강식품(?: >|$)',r'맛|향|화장품|장난감|반려|(?:쇼퍼백|쇼핑백)\s*(?:미포함|별도|없음|미동봉)'),
@@ -314,6 +315,7 @@ def processed_food_form_refinement(evidence):
     """Declared presentation refines related broad forms, never ingredients."""
     broader = {
         'food.supplements.sets.red_ginseng_bag': {'food.supplements.functional.red_ginseng'},
+        'food.produce.processed_fruit.fruit_bowl': {'food.produce.processed_fruit.frozen', 'food.snacks.desserts.smoothie_bowl'},
         'food.seafood.processed.fish_sausage': {'food.meat.processed.sausage'},
         'food.snacks.savory.snack_sausage': {'food.meat.processed.sausage'},
         'food.seafood.processed.fish_snack': {'food.seafood.processed.dried_fish'},
