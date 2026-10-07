@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronLeft, ChevronRight, X, Info, Inbox } from 'lucide-react';
@@ -7,7 +8,24 @@ import LastUpdated from '../../components/LastUpdated';
 import EmptyState from '../../components/EmptyState';
 import styles from './InboxPage.module.css';
 
+export function matchesReviewContext(row, context) {
+  if (!context || row.public_product_id !== context.public_product_id) return false;
+  if (context.public_variant_id && row.public_variant_id !== context.public_variant_id) return false;
+  if (row.public_source_listing_id != null) return row.public_source_listing_id === context.public_source_listing_id;
+  const url = row.detail_url || row.source_url;
+  return Boolean(context.source_url && url === context.source_url
+    && String(row.source || row.source_name || '').toLowerCase() === context.source.toLowerCase());
+}
+
 export default function InboxPage() {
+  const location = useLocation();
+  const reviewContext = useMemo(() => {
+    const q = new URLSearchParams(location.search);
+    return q.get('public_product_id') ? Object.fromEntries(['public_product_id','public_variant_id','public_source_listing_id','native_key','source','source_url'].map(key => [key,q.get(key) || ''])) : null;
+  }, [location.search]);
+
+  const [relatedLookup, setRelatedLookup] = useState({checked:0, items:[], loading:false, error:''});
+  useEffect(() => {setRelatedLookup({checked:0,items:[],loading:false,error:''});}, [location.search]);
   const ingestions = useDbAdminStore((s) => s.ingestions);
   const fetchIngestions = useDbAdminStore((s) => s.fetchIngestions);
   const fetchIngestionStats = useDbAdminStore((s) => s.fetchIngestionStats);
@@ -42,22 +60,22 @@ export default function InboxPage() {
   const loadPage = useCallback((page) => {
     setCurrentPage(page);
     const signal = getSignal();
-    fetchIngestions({ status: 'crawler_approved', page, per_page: PER_PAGE }, { signal });
-  }, [fetchIngestions, getSignal]);
+    fetchIngestions({ ...(reviewContext ? {} : {status:'crawler_approved'}), page, per_page: PER_PAGE }, { signal });
+  }, [fetchIngestions, getSignal, reviewContext]);
 
   useEffect(() => {
     const signal = getSignal();
-    fetchIngestions({ status: 'crawler_approved', page: 1, per_page: PER_PAGE }, { signal });
+    fetchIngestions({ ...(reviewContext ? {} : {status:'crawler_approved'}), page: 1, per_page: PER_PAGE }, { signal });
     fetchIngestionStats({ signal });
 
     const interval = setInterval(() => {
       const sig = getSignal();
-      fetchIngestions({ status: 'crawler_approved', page: currentPage, per_page: PER_PAGE }, { signal: sig });
+      fetchIngestions({ ...(reviewContext ? {} : {status:'crawler_approved'}), page: currentPage, per_page: PER_PAGE }, { signal: sig });
       fetchIngestionStats({ signal: sig });
     }, AUTO_REFRESH_MS);
 
     return () => clearInterval(interval);
-  }, [fetchIngestions, fetchIngestionStats, getSignal, currentPage]);
+  }, [fetchIngestions, fetchIngestionStats, getSignal, currentPage, reviewContext]);
 
   const openDetail = async (item) => {
     setCheckedItems(new Set());
@@ -69,6 +87,25 @@ export default function InboxPage() {
       setDetailItem(detail);
     } catch {
       setDetailItem(item);
+    }
+  };
+
+  const findRelatedReceipt = async () => {
+    const candidates = ingestions.filter(row => String(row.crawler_name || row.crawlerName || '').toLowerCase() === reviewContext.source.toLowerCase()).slice(0,8);
+    setRelatedLookup({checked:0,items:[],loading:true,error:''});
+    let checked = 0;
+    try {
+      for (const candidate of candidates) {
+        const detail = await api.getIngestion(candidate.id);
+        checked += 1;
+        if ((detail.items || detail.data || []).some(row => matchesReviewContext(row, reviewContext))) {
+          setRelatedLookup({checked,items:[detail],loading:false,error:''});
+          return;
+        }
+      }
+      setRelatedLookup({checked,items:[],loading:false,error:''});
+    } catch (error) {
+      setRelatedLookup({checked,items:[],loading:false,error:error.message || '접수 연결 확인 실패'});
     }
   };
 
@@ -201,7 +238,7 @@ export default function InboxPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div>
-          <h2 className={styles.title}>📥 수신함 — 크롤러에서 1차 승인된 데이터</h2>
+          <h2 className={styles.title}>{reviewContext ? '📥 선택 출처 검토 수신함' : '📥 수신함 — 크롤러에서 1차 승인된 데이터'}</h2>
           <LastUpdated
             timestamp={lastFetchedAt.ingestions}
             onRefresh={() => loadPage(currentPage)}
@@ -214,12 +251,28 @@ export default function InboxPage() {
         </button>
       </div>
 
+      {reviewContext && <section aria-label="선택 상품 출처 검토">
+        <h3>선택 상품·규격·출처</h3>
+        <p>상품 {reviewContext.public_product_id} · 규격 {reviewContext.public_variant_id || '미선택'} · 출처 {reviewContext.public_source_listing_id || '미선택'}</p>
+        <p>원 출처 {reviewContext.source || '미확인'} · native {reviewContext.native_key || '미확인'}</p>
+        <p>표시명·브랜드·분류·별칭·키워드·이미지·상태는 상품 표시 편집에서 변경합니다. 원가격·수량은 원문 검토와 검토된 묶음 적용을 거칩니다. 이 연결만으로 원가격·규격을 수정하지 않습니다.</p>
+        <a href={`/prices?${new URLSearchParams(Object.fromEntries(Object.entries(reviewContext).filter(([key,value]) => value && ['public_product_id','public_variant_id','public_source_listing_id'].includes(key))))}`}>선택 출처 원가격·관측 이력</a>
+        <p>{reviewContext.source_url ? '현재 페이지 접수 중 같은 원문 URL을 찾습니다. 상품·규격 ID로 접수를 검색하는 API는 없습니다.' : '접수 원문 URL이 없어 자동 연결을 확인하지 못했습니다. 접수 상세의 native·원문을 확인하세요.'}</p>
+        {reviewContext.source_url && <p>{ingestions.filter(row => row.source_url === reviewContext.source_url).length}건의 같은 원문 URL 접수 · 전체 페이지 검색 완료나 동일 수량 승인을 뜻하지 않습니다.</p>}
+        {ingestions.filter(row => reviewContext.source_url && row.source_url === reviewContext.source_url).map(row => <button key={row.id} type="button" onClick={() => openDetail(row)}>원문 접수 {row.id} 열기 · {row.status}</button>)}
+        <button type="button" disabled={relatedLookup.loading} onClick={findRelatedReceipt}>{relatedLookup.loading ? '관련 접수 확인 중…' : '현재 페이지의 관련 접수 찾기'}</button>
+        {relatedLookup.checked > 0 && <p>같은 출처 접수 {relatedLookup.checked}건 상세 확인 · 현재 페이지 최대 8건 · 첫 일치에서 중단합니다.</p>}
+        {relatedLookup.error && <p role="alert">{relatedLookup.error}</p>}
+        {relatedLookup.items.map(row => <button key={row.id} type="button" onClick={() => openDetail(row)}>연결 접수 {row.id} 열기 · 공개 상품·규격 및 원문 연결 확인</button>)}
+        {relatedLookup.items.length > 0 && <p>접수에 listing ID가 없으면 공개 상품·규격 ID와 같은 원문 URL·출처로 확인합니다. 수량·행사 해석의 승인이나 공개 적용을 뜻하지 않습니다.</p>}
+        <p>수량·가격의 숫자 수정 입력은 이 표시 편집 경로에 제공되지 않습니다. 검토된 출처 묶음은 기존 공식 검토·적용 절차를 사용합니다.</p>
+      </section>}
       {error && <div className={styles.errorBanner}>{error}</div>}
 
       {/* Stats bar */}
       <div className={styles.statsBar}>
         <div className={styles.stat}>
-          <span className={styles.statValue}>{ingestionStats.pending || ingestionPagination.total || ingestions.length}</span>
+          <span className={styles.statValue}>{ingestionStats?.pending ?? '미확인'}</span>
           <span className={styles.statLabel}>건 대기</span>
         </div>
         <div className={styles.stat}>

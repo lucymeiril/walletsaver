@@ -100,6 +100,9 @@ class CrawlPipeline:
         crawler_name: str,
         progress_callback: ProgressCallback | None = None,
         crawl_method: str = "crawl",
+        *,
+        crawl_kwargs: dict[str, Any] | None = None,
+        max_attempts: int | None = None,
     ) -> PipelineResult:
         start = time.monotonic()
         errors: list[str] = []
@@ -141,6 +144,11 @@ class CrawlPipeline:
             else self.default_retry_count
         )
 
+        if max_attempts is not None:
+            if type(max_attempts) is not int or max_attempts < 1:
+                raise ValueError("max_attempts must be a positive integer")
+            retry_count = min(retry_count, max_attempts)
+
         crawl_result: CrawlResult | None = None
         for attempt in range(1, retry_count + 1):
             await self._emit_progress(
@@ -153,7 +161,7 @@ class CrawlPipeline:
                 method = getattr(crawler, crawl_method, None)
                 if not callable(method):
                     raise AttributeError(f"{crawler_name} does not support {crawl_method}")
-                crawl_result = await method()
+                crawl_result = await method(**(crawl_kwargs or {}))
                 await self._emit_progress(
                     progress_callback,
                     stage="crawl_finished",

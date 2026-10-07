@@ -129,7 +129,10 @@ async function resolveSchedule(identifier) {
 
 export const api = {
   getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
-  runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
+  runCrawler: (id, options) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, {
+    method: 'POST', timeoutMs: 120000,
+    ...(options?.source_url ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source_url: options.source_url }) } : {}),
+  }).then(r => r.json()),
   retryWafBlocked: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/retry-waf-blocked`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
   getEmartCategories: () => fetchWithTimeout(`${API_BASE}/crawlers/emart/categories`, { timeoutMs: 120000 }).then(r => r.json()),
   runEmartCategory: (category) => fetchWithTimeout(`${API_BASE}/crawlers/emart/run-category`, {

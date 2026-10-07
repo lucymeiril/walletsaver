@@ -172,7 +172,16 @@ export default function LocalPage() {
     const publishCategory = (data) => {
       if (!active()) return;
       const items = itemsWithinRadius(data.items, latVal, lngVal, radiusOverride);
-      const category = { ...data, items, count: items.length };
+      const sourceItems = Array.isArray(data.items) ? data.items : [];
+      const unlocatedItems = sourceItems.filter(item => {
+        const y = item.y ?? item.lat, x = item.x ?? item.lng;
+        return y == null || x == null || y === '' || x === ''
+          || !Number.isFinite(Number(y)) || !Number.isFinite(Number(x))
+          || Math.abs(Number(y)) > 90 || Math.abs(Number(x)) > 180;
+      }).map(item => ({ ...item, source_distance: item.source_distance ?? item.distance,
+        distance: null, distance_m: null }));
+      const category = { ...data, items, count: items.length,
+        received_count: sourceItems.length, unlocated_items: unlocatedItems };
       setExploreData(prev => ({ ...prev, categories: [
         ...(prev?.categories || []).filter(existing => existing.name !== data.name), category,
       ] }));
@@ -867,6 +876,10 @@ export default function LocalPage() {
                   <span className={s.categoryCount}>({cat.count || cat.items?.length || 0})</span>
                 </button>
               ))}
+              {(exploreData?.categories || []).filter(cat => cat.unlocated_items?.length > 0).map(cat => <button key={`unlocated-${cat.name}`} className={s.categoryCard} onClick={() => handleCategoryClick({...cat, items:cat.unlocated_items})}>
+                <span>{cat.name} · 원문 결과 {cat.unlocated_items.length}건</span>
+                <small>좌표·거리·반경 미확인</small>
+              </button>)}
               {/* 아직 로딩 중인 카테고리 스피너 */}
               {streamingCats.size > 0 && [...streamingCats].map(catName => (
                 <div key={catName} className={`${s.categoryCard} ${s.categoryLoading}`}>
@@ -880,7 +893,9 @@ export default function LocalPage() {
               {visibleCategories.length === 0 && streamingCats.size === 0 && (
                 <div className={s.emptyMsg}>
                   {manualRegion ? (fuelStatus?.error || fuelStatus?.message || '선택한 지역의 가격 정보가 없습니다')
-                    : placeSearchMessage || '브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.'}
+                    : (exploreData?.categories || []).some(cat => cat.received_count > 0)
+                      ? `출처 결과 ${(exploreData?.categories || []).reduce((n, cat) => n + (cat.received_count || 0), 0)}건을 받았으나 선택한 위치·반경에서 확인되는 장소가 없습니다. 검색 지역과 출처 좌표를 확인해 주세요.`
+                      : placeSearchMessage || '브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.'}
                 </div>
               )}
             </div>

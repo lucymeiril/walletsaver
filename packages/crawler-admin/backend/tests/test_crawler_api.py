@@ -199,3 +199,104 @@ async def test_pipeline_result_audit_retains_failure_outcome_without_runtime_wri
     assert audit.call_args.kwargs["detail"]["status"] == status
     history.assert_called_once_with("synthetic", status, result.duration)
     release.assert_awaited_once_with("synthetic")
+
+
+@pytest.mark.parametrize('source_url', [None, 'https://lottemartzetta.com/products/OS8801114119426/details'])
+def test_bounded_lotte_run_uses_existing_pipeline_without_live_transport(monkeypatch, source_url):
+    from starlette.requests import Request
+    captured = []
+    worker = AsyncMock()
+    monkeypatch.setattr(crawler_routes, '_require_crawler', lambda name: MagicMock())
+    monkeypatch.setattr(crawler_routes, '_get_pipeline', lambda: 'existing_pipeline')
+    monkeypatch.setattr(crawler_routes, 'acquire_crawler_slot', AsyncMock(return_value=True))
+    monkeypatch.setattr(crawler_routes, 'audit_log', MagicMock())
+    monkeypatch.setattr(crawler_routes, '_crawl_results', {})
+    monkeypatch.setattr(crawler_routes, '_run_and_store', worker)
+    monkeypatch.setattr(crawler_routes.asyncio, 'create_task', lambda coroutine: captured.append(coroutine))
+    async def run():
+        body = crawler_routes.CrawlerRunRequest(source_url=source_url) if source_url else None
+        response = await crawler_routes.run_crawler.__wrapped__('lottemart', Request({'type': 'http'}), body)
+        await captured.pop()
+        return response
+    response = asyncio.run(run())
+    expected = {} if source_url is None else {'crawl_method': 'crawl_incremental', 'crawl_kwargs': {'source_url': source_url}, 'max_attempts': 1}
+    worker.assert_awaited_once_with('lottemart', 'existing_pipeline', **expected)
+    assert response.get('source_url') == source_url
+    assert crawler_routes._crawl_results['lottemart'].get('source_url') == source_url
+
+
+@pytest.mark.parametrize('url', [
+    'https://example.test/products/OS8801114119426/details',
+    'http://lottemartzetta.com/products/OS8801114119426/details',
+    'https://user@lottemartzetta.com/products/OS8801114119426/details',
+    'https://lottemartzetta.com/products/OS8801114119426/details?token=x',
+    'https://lottemartzetta.com/products/OS8801114119426/details#x',
+    'https://lottemartzetta.com/products/OS123/details',
+])
+def test_bounded_lotte_run_rejects_noncanonical_source_before_transport(url):
+    from pydantic import ValidationError
+    with pytest.raises(ValidationError):
+        crawler_routes.CrawlerRunRequest(source_url=url)
+
+
+def test_bounded_source_rejects_other_crawler_before_slot(monkeypatch):
+    from starlette.requests import Request
+    from fastapi import HTTPException
+    acquire = AsyncMock()
+    monkeypatch.setattr(crawler_routes, 'acquire_crawler_slot', acquire)
+    with pytest.raises(HTTPException) as error:
+        asyncio.run(crawler_routes.run_crawler.__wrapped__('homeplus', Request({'type': 'http'}),
+            crawler_routes.CrawlerRunRequest(source_url='https://lottemartzetta.com/products/OS8801114119426/details')))
+    assert error.value.status_code == 400
+    acquire.assert_not_awaited()
+
+
+def test_bounded_run_retains_selected_url_in_existing_job_history(monkeypatch):
+    source_url = 'https://lottemartzetta.com/products/OS8801114119426/details'
+    result = PipelineResult(crawler_name='lottemart', status='failed', items_found=0, items_valid=0, items_saved=0)
+    pipeline = MagicMock(run_crawler=AsyncMock(return_value=result))
+    history = MagicMock()
+    monkeypatch.setattr(crawler_routes, '_crawl_results', {})
+    monkeypatch.setattr(crawler_routes, 'get_semaphore', lambda: asyncio.Semaphore(1))
+    monkeypatch.setattr(crawler_routes, 'release_crawler_slot', AsyncMock())
+    monkeypatch.setattr(crawler_routes, '_append_run_history', history)
+    monkeypatch.setattr(crawler_routes, 'audit_log', MagicMock())
+    asyncio.run(crawler_routes._run_and_store('lottemart', pipeline,
+        crawl_method='crawl_incremental', crawl_kwargs={'source_url': source_url}, max_attempts=1))
+    assert crawler_routes._crawl_results['lottemart']['source_url'] == source_url
+    history.assert_called_once_with('lottemart', 'failed', result.duration, source_url=source_url)
+    assert pipeline.run_crawler.await_args.kwargs['max_attempts'] == 1
+
+
+@pytest.mark.parametrize('configured,expected', [
+    ({}, 'http://localhost:8002/api/ingestions'),
+    ({'DB_ADMIN_URL': 'http://127.0.0.1:28102/'}, 'http://127.0.0.1:28102/api/ingestions'),
+    ({'INGESTION_API_URL': 'http://127.0.0.1:28102/api/ingestions', 'DB_ADMIN_URL': 'http://localhost:8002'}, 'http://127.0.0.1:28102/api/ingestions'),
+    ({'DB_ADMIN_INGESTION_URL': ' http://127.0.0.1:29102/custom/intake/ ', 'INGESTION_API_URL': 'http://127.0.0.1:28102/api/ingestions', 'DB_ADMIN_URL': 'http://localhost:8002'}, 'http://127.0.0.1:29102/custom/intake/'),
+    ({'DB_ADMIN_INGESTION_URL': '  ', 'INGESTION_API_URL': 'http://127.0.0.1:28102/api/ingestions'}, 'http://127.0.0.1:28102/api/ingestions'),
+    ({'DB_ADMIN_INGESTION_URL': '', 'INGESTION_API_URL': ' ', 'DB_ADMIN_URL': ' http://127.0.0.1:28102/ '}, 'http://127.0.0.1:28102/api/ingestions'),
+    ({'DB_ADMIN_INGESTION_URL': ' ', 'INGESTION_API_URL': '', 'DB_ADMIN_URL': ' '}, 'http://localhost:8002/api/ingestions'),
+])
+def test_review_proxy_locator_uses_explicit_or_same_intake_target(monkeypatch, configured, expected):
+    from api.routes import ingestion as proxy
+    for name in ['DB_ADMIN_INGESTION_URL', 'INGESTION_API_URL', 'DB_ADMIN_URL']:
+        monkeypatch.delenv(name, raising=False)
+    for name, value in configured.items():
+        monkeypatch.setenv(name, value)
+    assert proxy._resolve_db_admin_ingestion_url() == expected
+
+
+def test_review_proxy_locator_drives_existing_list_and_detail_without_new_intake(monkeypatch):
+    from api.routes import ingestion as proxy
+    monkeypatch.delenv('DB_ADMIN_INGESTION_URL', raising=False)
+    monkeypatch.setenv('INGESTION_API_URL', 'http://127.0.0.1:28102/api/ingestions')
+    monkeypatch.setattr(proxy, 'DB_ADMIN_URL', proxy._resolve_db_admin_ingestion_url())
+    forward = AsyncMock(return_value={'id': 17, 'status': 'pending'})
+    monkeypatch.setattr(proxy, '_proxy', forward)
+    response = asyncio.run(proxy.list_ingestions(status='pending', crawler_name='lottemart', limit=50, offset=0))
+    assert response == {'id': 17, 'status': 'pending'}
+    forward.assert_awaited_once_with('get', 'http://127.0.0.1:28102/api/ingestions',
+        params={'limit': 50, 'offset': 0, 'status': 'pending', 'crawler_name': 'lottemart'})
+    forward.reset_mock()
+    asyncio.run(proxy.get_ingestion(17))
+    forward.assert_awaited_once_with('get', 'http://127.0.0.1:28102/api/ingestions/17')

@@ -100,10 +100,10 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  runCrawler: async (id) => {
+  runCrawler: async (id, options) => {
     set({ crawlersLoading: true, crawlersError: null });
     try {
-      return await api.runCrawler(id);
+      return options ? await api.runCrawler(id, options) : await api.runCrawler(id);
     } catch (err) {
       set({ crawlersError: toUserMessage(err, '크롤러 실행에 실패했습니다.') });
       return null;

@@ -1,10 +1,10 @@
 """상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
 from fastapi import APIRouter, HTTPException, Query, Request, Depends
-from pydantic import AliasChoices, BaseModel, Field, field_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Optional, Any
 from datetime import datetime, timedelta
 
-from sqlalchemy import func, desc, asc, distinct, case, or_, select, String
+from sqlalchemy import func, desc, asc, distinct, case, or_, and_, select, String
 from sqlalchemy.orm import Session
 
 import logging
@@ -116,6 +116,59 @@ class ProductUpdate(BaseModel):
 
 class BulkDeleteRequest(BaseModel):
     ids: list[int] = Field(..., min_length=1, max_length=MAX_BULK_IDS)
+
+
+class NormalizedProductUpdate(BaseModel):
+    """Display metadata only; source identity/specification/quotes are not editable here."""
+    model_config = ConfigDict(extra="forbid")
+    display_name: Optional[StrictStr] = Field(None, min_length=1, max_length=MAX_NAME_LEN)
+    display_brand: Optional[StrictStr] = Field(None, max_length=120)
+    unified_category_id: Optional[StrictStr] = Field(None, min_length=1, max_length=120)
+    aliases: Optional[list[StrictStr]] = Field(None, max_length=100)
+    keyword_ids: Optional[list[StrictInt]] = Field(None, max_length=200)
+    primary_image_url: Optional[StrictStr] = Field(None, max_length=MAX_URL_LEN)
+    is_active: Optional[StrictBool] = None
+
+    @field_validator("display_name", "unified_category_id", "is_active", "aliases", "keyword_ids")
+    @classmethod
+    def required_if_supplied(cls, value):
+        if value is None:
+            raise ValueError("This field cannot be explicitly null")
+        if isinstance(value, str):
+            value = value.strip()
+            if not value:
+                raise ValueError("This field cannot be blank")
+        return value
+
+    @field_validator("aliases")
+    @classmethod
+    def valid_aliases(cls, value):
+        cleaned = [word.strip() for word in value]
+        if any(not word or len(word) > MAX_NAME_LEN for word in cleaned) or len(set(cleaned)) != len(cleaned):
+            raise ValueError("aliases must be distinct nonblank bounded strings")
+        return cleaned
+
+    @field_validator("keyword_ids")
+    @classmethod
+    def valid_keywords(cls, value):
+        if any(key <= 0 for key in value) or len(set(value)) != len(value):
+            raise ValueError("keyword_ids must be distinct positive IDs")
+        return value
+
+    @field_validator("display_brand")
+    @classmethod
+    def clean_brand(cls, value):
+        return value.strip() or None if value is not None else None
+
+    @field_validator("primary_image_url")
+    @classmethod
+    def valid_image_url(cls, value):
+        from urllib.parse import urlsplit
+        if value is not None:
+            parsed = urlsplit(value)
+            if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
+                raise ValueError("primary_image_url must be an HTTP/S URL without credentials")
+        return value
 
 
 class BulkCategoryRequest(BaseModel):
@@ -351,15 +404,20 @@ def list_normalized_products(
     page: int = Query(1, ge=1), per_page: int = Query(20, ge=1, le=200),
     identity: dict = Depends(require_viewer),
 ):
-    """Static admin declarations; normalized edits require reviewed bundles."""
+    """Static source declarations; display metadata uses the scoped edit endpoint."""
     from core.reviewed_source_evidence import package_comparison_reason, valid_source_component_variant
     session = get_session()
     try:
         product, variant, listing = NormalizedCanonicalProduct, NormalizedProductVariant, NormalizedSourceListing
         conditions = []
         if q:
-            conditions.append(or_(*(field.icontains(q, autoescape=True) for field in (
-                product.canonical_name, product.brand, product.aliases.cast(String), product.keywords.cast(String)))))
+            display = product.attributes["admin_display_override"]
+            conditions.append(or_(
+                *(field.icontains(q, autoescape=True) for field in (
+                    product.canonical_name, product.brand, product.aliases.cast(String), product.keywords.cast(String))),
+                and_(display["version"].as_integer() == 1, or_(
+                    display["display_name"].as_string().icontains(q, autoescape=True),
+                    display["display_brand"].as_string().icontains(q, autoescape=True)))))
         if unified_category_id is not None:
             conditions.append(product.unified_category_id == unified_category_id)
         if is_active is not None:
@@ -388,12 +446,33 @@ def list_normalized_products(
                 if isinstance(attrs, dict) and valid_source_component_variant(validation) else None)
             data["source_listings"] = listing_map.get(data["public_variant_id"], [])
             variant_map.setdefault(data["public_product_id"], []).append(data)
-        items = [{**dict(row), "variants": variant_map.get(row["public_product_id"], [])} for row in rows]
+        from services.normalized_product_edit import display_metadata
+        items = [{**dict(row), **display_metadata(session, session.get(product, row["public_product_id"])),
+                  "variants": variant_map.get(row["public_product_id"], [])} for row in rows]
         return {"source_scope": "admin_normalized_catalog", "read_only": True,
             "mutation_workflow": "/api/catalog-bundles", "items": items, "total": total,
             "page": page, "per_page": per_page, "total_pages": (total + per_page - 1) // per_page}
     finally:
         session.close()
+
+
+@router.get("/normalized/{public_product_id}")
+def get_normalized_product(public_product_id: str, identity: dict = Depends(require_viewer)):
+    from services.normalized_product_edit import normalized_product_detail
+    session = get_session()
+    try:
+        return normalized_product_detail(session, public_product_id)
+    finally:
+        session.close()
+
+
+@router.put("/normalized/{public_product_id}")
+def edit_normalized_product(public_product_id: str, body: NormalizedProductUpdate,
+                            request: Request, identity: dict = Depends(require_moderator)):
+    from services.normalized_product_edit import update_normalized_product
+    with managed_session() as session:
+        return update_normalized_product(session, public_product_id, body.model_dump(exclude_unset=True),
+                                         identity=identity, request=request)
 
 
 @router.get("/stats")

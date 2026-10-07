@@ -263,17 +263,21 @@ class PublicCatalogStore:
                 escaped = _candidate_search_text(query).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
                 names = ("candidate_search_text(p.canonical_name) LIKE ? ESCAPE '\\' OR "
                          "candidate_search_text(p.brand) LIKE ? ESCAPE '\\' OR "
+                         "candidate_search_text(CASE WHEN json_valid(p.attributes) THEN "
+                         "json_extract(p.attributes,'$.admin_display_override.display_name') ELSE '' END) LIKE ? ESCAPE '\\' OR "
+                         "candidate_search_text(CASE WHEN json_valid(p.attributes) THEN "
+                         "json_extract(p.attributes,'$.admin_display_override.display_brand') ELSE '' END) LIKE ? ESCAPE '\\' OR "
                          "EXISTS (SELECT 1 FROM json_each(CASE WHEN json_valid(p.aliases) "
                          "THEN CASE WHEN json_type(p.aliases)='array' THEN p.aliases ELSE '[]' END "
                          "ELSE '[]' END) a WHERE a.type='text' AND candidate_search_text(a.value) LIKE ? ESCAPE '\\')")
-                literal_params = [f"%{escaped}%"] * 3
+                literal_params = [f"%{escaped}%"] * 5
                 brand_line = self._reviewed_brand_line_pattern(query)
                 if brand_line is not None:
                     # A declared brand plus literal line can have a year or
                     # other source text between them. Keep every query term,
                     # in order, within one field; never merge product identities.
                     names = "(" + names + ") OR (" + names + ")"
-                    literal_params.extend([brand_line] * 3)
+                    literal_params.extend([brand_line] * 5)
                 scope = self._keyword_search_scope(connection, query, categories)
                 if scope:
                     # An exact registered concept searches its category scope.
@@ -307,7 +311,7 @@ class PublicCatalogStore:
                 members, canonical = self._catalog_group(connection, dict(row), cache)
                 representative = self._product_lookup(connection, canonical, cache)
                 review = attributes_of(representative).get("catalog_group")
-                name = review["canonical_name"] if len(members) > 1 else representative["canonical_name"]
+                name, _ = self._normalized_display_metadata(connection, representative, members, cache)
                 representatives[canonical] = (name, members)
             ordered = sorted(representatives, key=lambda key: (representatives[key][0].casefold(), key))
             if sort == "recent":
@@ -463,6 +467,24 @@ class PublicCatalogStore:
             ).fetchone()
             return self._normalized_product(connection, row, include_all=True) if row else None
 
+    def _normalized_display_metadata(self, connection, product, members, cache=None):
+        """Consume an audited display edit without changing source/group identity."""
+        cache = cache if cache is not None else {}
+        attributes = attributes_of(product)
+        group = attributes.get("catalog_group") if len(members) > 1 else None
+        override = attributes.get("admin_display_override")
+        valid = (isinstance(override, Mapping) and override.get("version") == 1
+                 and override.get("member_product_ids") == list(members)
+                 and override.get("group_key") == (group.get("key") if group else None)
+                 and isinstance(override.get("display_name"), str) and override["display_name"].strip()
+                 and (override.get("display_brand") is None or isinstance(override["display_brand"], str))
+                 and all(attributes_of(self._product_lookup(connection, key, cache)).get("admin_display_override") == override
+                         for key in members))
+        if valid:
+            return override["display_name"], override.get("display_brand") or ""
+        return ((group["canonical_name"], group.get("brand") or "") if group else
+                (product["canonical_name"], product.get("brand") or ""))
+
     def _normalized_product(self, connection, product_row, *, include_all: bool, group_member_ids=None) -> dict:
         product = dict(product_row)
         members, canonical = self._catalog_group(connection, product, {})
@@ -470,6 +492,7 @@ class PublicCatalogStore:
         attributes = _json(product.get("attributes"), {})
         attributes = attributes if isinstance(attributes, dict) else {}
         group_review = attributes.get("catalog_group") if len(members) > 1 else None
+        display_name, display_brand = self._normalized_display_metadata(connection, product, members)
         category = connection.execute(
             "SELECT name_ko FROM unified_categories WHERE id=?",
             (product.get("unified_category_id"),),
@@ -557,8 +580,8 @@ class PublicCatalogStore:
             "public_product_id": product["public_product_id"],
             "canonical_public_product_id": canonical,
             "group_member_product_ids": list(members),
-            "name": group_review["canonical_name"] if group_review else product["canonical_name"],
-            "brand": (group_review.get("brand") or "") if group_review else (product.get("brand") or ""),
+            "name": display_name,
+            "brand": display_brand,
             "category_id": product.get("unified_category_id") or "",
             "cat": str(category["name_ko"] if category else ""),
             "img": product.get("primary_image_url") or "",

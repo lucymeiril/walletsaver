@@ -406,6 +406,24 @@ describe('LocalPage browser-search consent', () => {
     }
   });
 
+  it('467 distinguishes source rows outside the chosen region from a genuine empty provider receipt', async () => {
+    const previous = global.fetch.getMockImplementation();
+    global.fetch.mockImplementation((url, ...args) => String(url).includes('/api/local/area-explore-stream')
+      ? streamResponse([{name:'음식',location_name:'강남역',source:'naver',items:[{name:'시청 원문',x:'126.9788852',y:'37.5648060',distance:'201.61'}, {name:'좌표 없는 원문',address:'강남역 원문 위치',distance:'100m'}]}, {done:true}])
+      : previous(url, ...args));
+    const user = userEvent.setup(); render(<LocalPage />);
+    await user.click(screen.getByRole('checkbox', {name:/네이버 공개 페이지 브라우저 검색 사용/}));
+    const location = screen.getByPlaceholderText(/위치를 입력하세요/);
+    await user.type(location, '강남역'); fireEvent.submit(location.closest('form'));
+    await screen.findByText(/출처 결과 2건을 받았으나 선택한 위치·반경/);
+    expect(screen.queryByText('브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.')).not.toBeInTheDocument();
+    expect(screen.getByText('좌표·거리·반경 미확인')).toBeInTheDocument();
+    await user.click(screen.getByText('음식 · 원문 결과 1건'));
+    expect(await screen.findByText('좌표 없는 원문')).toBeInTheDocument();
+    expect(screen.queryByText('시청 원문')).not.toBeInTheDocument();
+    expect(global.fetch.mock.calls.filter(([url]) => String(url).includes('/api/local/area-explore-stream'))).toHaveLength(1);
+  });
+
   it('filters supplied WGS84 place positions without inventing coordinates for unlocated results', () => {
     const items = [{ id: 'near', y: '37.5', x: '127' }, { id: 'far', y: 37.52, x: 127 },
       { id: 'unknown', distance: '100m' }, { id: 'unconverted', y: 200000, x: 500000 }];

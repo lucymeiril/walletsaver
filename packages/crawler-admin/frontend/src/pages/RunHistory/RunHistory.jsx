@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, useCallback } from 'react';
 import { api } from '../../api/client';
+import { Link } from 'react-router-dom';
 import styles from './RunHistory.module.css';
 
 const STATUS_LABELS = {
@@ -25,6 +26,8 @@ function StatusBadge({ run }) {
 
 export default function RunHistory() {
   const [runs, setRuns] = useState([]);
+  const [registeredRuns, setRegisteredRuns] = useState([]);
+  const [registeredError, setRegisteredError] = useState(null);
   const [plugins, setPlugins] = useState([]);
   const [pluginFilter, setPluginFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -39,9 +42,25 @@ export default function RunHistory() {
       const params = {};
       if (pluginFilter) params.plugin = pluginFilter;
       if (statusFilter) params.status = statusFilter;
-      const data = await api.getRuns(params);
-      setRuns(data.items || []);
-      setError(null);
+      const [scheduled, registered] = await Promise.allSettled([api.getRuns(params), api.getCrawlers()]);
+      if (scheduled.status === 'fulfilled') {
+        setRuns(scheduled.value.items || []);
+        setError(null);
+      } else {
+        setError(scheduled.reason?.message || '예약 실행 이력을 불러올 수 없습니다.');
+      }
+      if (registered.status === 'fulfilled') {
+        const crawlers = Array.isArray(registered.value.crawlers) ? registered.value.crawlers : [];
+        setRegisteredRuns(crawlers.flatMap(crawler => (Array.isArray(crawler.recentRuns) ? crawler.recentRuns : [])
+          .filter(run => run && typeof run === 'object' && !Array.isArray(run))
+          .map((run, index) => ({ ...run, crawler_name: crawler.name, crawler_label: crawler.display_name || crawler.name, record_index: index })))
+          .filter(run => (!pluginFilter || run.crawler_name === pluginFilter) && (!statusFilter || run.status === statusFilter))
+          .sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || ''))));
+        setRegisteredError(null);
+      } else {
+        setRegisteredRuns([]);
+        setRegisteredError(registered.reason?.message || '등록 크롤러 실행 이력을 불러올 수 없습니다.');
+      }
     } catch (e) {
       setError(e.message || '실행 이력을 불러올 수 없습니다.');
     } finally {
@@ -114,6 +133,7 @@ export default function RunHistory() {
 
       {error && <div className={styles.error}>{error}</div>}
 
+      <h2>예약·오케스트레이터 실행 이력</h2>
       <div className={styles.tableCard}>
         <table className={styles.table}>
           <thead>
@@ -189,6 +209,35 @@ export default function RunHistory() {
           </tbody>
         </table>
       </div>
+
+      <section aria-labelledby="registered-crawler-history-title">
+        <h2 id="registered-crawler-history-title">등록 크롤러 실행 이력</h2>
+        <p>크롤러 카드에서 실행한 기존 기록입니다. 크롤러별 최근 기록만 보이며 예약 실행 이력과 별개입니다. 기록 시각은 출처 관측 시각이나 시작 시각이 아닙니다. 없는 ID·수치는 미확인으로 표시하며 성공 기록만으로 검토 승인·공개 갱신을 확인하지 않습니다.</p>
+        {registeredError && <div className={styles.error}>{registeredError}</div>}
+        <div className={styles.tableCard}>
+          <table className={styles.table}>
+            <thead><tr><th>등록 크롤러</th><th>기록 상태</th><th>기록 시각</th><th>원본 실행ID</th><th>출처 URL</th><th>발견·유효·저장 기록</th><th>매칭·접수 기록</th><th>검토</th></tr></thead>
+            <tbody>
+              {!registeredError && registeredRuns.length === 0 && <tr><td colSpan={8}>등록 크롤러 실행 기록이 없습니다.</td></tr>}
+              {registeredRuns.map(run => {
+                const matching = run.quality_details?.matching;
+                const delivery = run.quality_details?.delivery;
+                const sourceUrl = typeof run.source_url === 'string' ? run.source_url : null;
+                return <tr key={`${run.crawler_name}:${run.timestamp || ''}:${run.record_index}`}>
+                  <td>{run.crawler_label}</td>
+                  <td>{run.status === 'success' ? '성공 기록 · 승인 미확인' : STATUS_LABELS[run.status] || '상태 미확인'}</td>
+                  <td>{typeof run.timestamp === 'string' ? run.timestamp : '미기록'}</td>
+                  <td>{typeof run.run_id === 'string' && run.run_id ? run.run_id : '미기록'}</td>
+                  <td>{sourceUrl && /^https?:\/\//.test(sourceUrl) ? <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{sourceUrl}</a> : sourceUrl || '미기록'}</td>
+                  <td>발견 {countText(run.items_found)} · 유효 {countText(run.items_valid)} · 저장 {countText(run.items_saved)}</td>
+                  <td>HIT {countText(matching?.hits)} · MISS {countText(matching?.misses)}<br />접수 대상 {delivery?.target === 'pending_review' ? '검토 대기' : '미확인'} · 시도 {countText(delivery?.attempted)} · 확인 {countText(delivery?.acknowledged)}</td>
+                  <td><Link to="/data-review">데이터 검토</Link></td>
+                </tr>;
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

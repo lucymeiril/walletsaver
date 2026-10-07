@@ -21,6 +21,7 @@ from core.reviewed_source_evidence import (source_review_evidence, source_review
     count_interval_listing_package, valid_count_interval_variant, listing_title_history,
     valid_listing_title_history, source_component_listing_package, valid_source_component_variant)
 from core.catalog_quantity import (normalize_catalog_package, uses_reviewed_quantity_rules,
+    supports_independent_inner_count, uses_separate_measured_count_rules,
     component_signature, reviewed_price_basis_identity, uses_reviewed_component_rules, uses_reviewed_residual_quantity_rules,
     uses_approximate_measurement_rules, physical_device_package, valid_physical_device_variant)
 
@@ -441,6 +442,16 @@ def _normalized_source_reason(row: dict[str, Any], key: str, entry: dict[str, An
         return "normalized_variant_unavailable"
     if package != (*target, int(target_count)):
         return "normalized_variant_conflict"
+    if ("source_listings" in variant and supports_independent_inner_count(category_id)
+        and uses_separate_measured_count_rules(title)
+        and not (isinstance(variant_attrs, Mapping) and 'source_evidence_reviews' in variant_attrs)
+        and history is None and matches[0].get('source_url')
+        and not source_review_matches(source_review_evidence(row), {
+            'source_urls': [matches[0]['source_url']], 'source_fields': {},
+        })):
+        # Independent inner-content/count repairs require the same persisted
+        # native URL context. Rich multi-context reviews were validated above.
+        return "normalized_source_listing_unavailable"
     # Rich reviewed contracts above retain their own source/quantity diagnostics.
     # Ordinary scalar identity must also reject supplied URL/native/store contradictions.
     if "source_listings" in variant and mart == "homeplus" and not _homeplus_declared_url_consistent(row, matches[0], source_key):

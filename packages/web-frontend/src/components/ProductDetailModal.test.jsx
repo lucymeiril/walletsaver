@@ -1,18 +1,19 @@
 import { act, fireEvent, render, screen, waitFor, cleanup } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import PricePage from '../pages/Price/PricePage';
+import PricePage, { ObservedExpertStats } from '../pages/Price/PricePage';
 import ProfilePage from '../pages/Profile/ProfilePage';
 import SearchPage from '../pages/Search/SearchPage';
 import SearchAutocomplete from './search/SearchAutocomplete';
 import { searchService } from '../services/searchService';
-import ProductDetailModal from './ProductDetailModal';
+import ProductDetailModal, { OfferFacts } from './ProductDetailModal';
+import { getOfferConditionSummary } from '../utils/helpers';
 import { api } from '../services/api';
 import useStore from '../stores/appStore';
 import useCartStore from '../stores/cartStore';
 import ShoppingListPanel from './common/ShoppingListPanel';
 import useModalStore from '../stores/modalStore';
-import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText, getCatalogObservationDescription } from '../utils/productDecision';
+import { buildProductDecision, getComparableOffers, getVariantBestOffer, getPriceHistorySummary, getOfferUnitPrice, getSavedReceiptHoldText, getOfferConditionText, getOfferReceiptText, getCartQuotePresentation, getObservedOfferPriceText, getCatalogObservationDescription, getOfferAmountLabel } from '../utils/productDecision';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, selectProductOffer, normalizeProduct, getSourceReferencePriceText } from '../utils/productActions';
 
 vi.mock('recharts', () => ({ ResponsiveContainer: ({children}) => children, AreaChart: ({data}) => <div data-testid="selected-history">{JSON.stringify(data)}</div>, BarChart: () => null, Area: () => null, Bar: () => null, XAxis: () => null, YAxis: () => null, Tooltip: () => null, Cell: () => null }));
@@ -2191,5 +2192,154 @@ describe('256 observation-time promotion receipt validity', () => {
     expect(screen.getByTestId('selected-history')).toHaveTextContent('8980');
     expect(screen.queryByText(/관측 당시 행사 적용 미확인/)).not.toBeInTheDocument();
     expect(screen.queryByText(/실제 거래 금액 17,960|관측 거래 금액 17,960/)).not.toBeInTheDocument();
+  });
+});
+
+
+describe('467 source observation independent of conditional benefit', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); vi.unstubAllGlobals(); });
+  const quote = { id: 'quote-pick-two', variant_id: 'var-tofu', listing_id: 'listing-tofu',
+    listed_price: 4990, total_price: null, comparable_price: null, total_quantity: null,
+    quantity_unit: null, per_100g: null, received_package_count: null, current_eligible: false,
+    crawled_at: '2026-08-31T10:46:57.084750', promotion_condition: '2개씩 골라 담으면, 50% 할인',
+    promotion_conditions: { basket_selection_required: true, required_selection_quantity: 2, conditional_discount_percent: 50,
+      payable_price_unconfirmed: true } };
+  const product = { id: 'prod-tofu', public_product_id: 'prod-tofu', name: '풀무원 국산 찌개두부',
+    best_offer: quote, selected_variant_id: 'var-tofu', selected_offer: quote,
+    variants: [{ id: 'var-tofu', display_unit: '340g', package_quantity: 340, package_unit: 'g', bundle_count: 1,
+      listings: [{ id: 'listing-tofu', source: 'lottemart', title: '풀무원 국산 찌개두부 (340G)', offers: [quote] }] }] };
+  it('467 orders observed history oldest first with both literal prices and only one comparable observation', async () => {
+    const newer = {...quote,id:'new-base',date:'2026-10-07 18:12:37.682379',crawled_at:'2026-10-07 18:12:37.682379',listed_price:4990,price:4990,
+      comparable_price:4990,total_price:4990,total_quantity:340,quantity_unit:'g',current_eligible:true,
+      received_package_count:1,minimum_quantity:1,
+      promotion_conditions:{source_condition_kind:'source_public_base_quote',source_base_quote_only:true,payable_price_unconfirmed:false}};
+    const older = {...quote,date:'2026-08-31 01:46:57.083473',price:4990,current_eligible:false};
+    const newestFirst = [newer,older];
+    const baseProduct = {...product,best_offer:newer,selected_offer:newer,
+      variants:[{...product.variants[0],listings:[{...product.variants[0].listings[0],offers:[newer,older]}]}]};
+    const before = JSON.stringify(newestFirst);
+    vi.stubGlobal('fetch',vi.fn(async path => ({ok:true,json:async()=>({data:
+      String(path)==='/api/products/prod-tofu' ? baseProduct : String(path).includes('price-history') ? newestFirst : []})})));
+    render(<MemoryRouter initialEntries={['/price/prod-tofu']}><Routes><Route path="/price/:id" element={<PricePage />} /></Routes></MemoryRouter>);
+    const chart = await screen.findByTestId('selected-history');
+    await waitFor(() => expect(JSON.parse(chart.textContent)).toHaveLength(2));
+    const points = JSON.parse(chart.textContent);
+    expect(points.map(row=>row.date)).toEqual([older.date,newer.date]);
+    expect(points.map(row=>row.price)).toEqual([4990,4990]);
+    expect(points[0]).toMatchObject({comparable_price:null,current_eligible:false});
+    expect(screen.getByText('표시 가격 이력 2건 · 점은 저장된 관측 기록입니다. 선은 관측점 연결이며, 사이 날짜의 가격 확인을 뜻하지 않습니다.')).toBeInTheDocument();
+    expect(screen.getByText(/관측 통계:.*\(1건\)/)).toBeInTheDocument();
+    expect(JSON.stringify(newestFirst)).toBe(before);
+  });
+  it('prominently retains the source quote and date without applying a pick-two discount or multiplying contents', async () => {
+    api.getJson.mockResolvedValue({ data: null });
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText('출처 표시 가격 4,990원')).toBeInTheDocument();
+    expect(screen.getByText('관측 시각 · 2026-08-31T10:46:57.084750')).toBeInTheDocument();
+    expect(screen.getByText('행사 적용 금액·수령량 비교 미확인')).toBeInTheDocument();
+    expect(screen.getAllByText(/선택 상품 2개 조건 · 같은 상품 수령량 미확인/).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/2,495원|수령 680g|100g당/)).not.toBeInTheDocument();
+    cleanup();
+    const request = vi.fn(async path => ({ ok: true, json: async () => ({ data:
+      String(path) === '/api/products/prod-tofu' ? product : String(path).includes('price-history')
+        ? [{ ...quote, date: quote.crawled_at, price: 4990 }] : [] }) }));
+    vi.stubGlobal('fetch', request);
+    render(<MemoryRouter initialEntries={['/price/prod-tofu']}><Routes><Route path="/price/:id" element={<PricePage />} /></Routes></MemoryRouter>);
+    await screen.findByText('출처 표시 가격 4,990원');
+    expect(screen.getByText('행사 적용 금액·수령량 비교 미확인')).toBeInTheDocument();
+    expect(screen.queryByText('📊 상세 통계')).not.toBeInTheDocument();
+    expect(screen.queryByText('아직 가격 데이터가 충분하지 않습니다')).not.toBeInTheDocument();
+    expect(screen.queryByText('외부 핫딜 관측')).not.toBeInTheDocument();
+    expect(request.mock.calls.some(([path]) => String(path).includes('/api/hotdeals'))).toBe(false);
+    expect(JSON.stringify(product)).not.toContain('680');
+  });
+  it('omits absent expert statistics while retaining explicitly supplied zero observations', () => {
+    const view = render(<ObservedExpertStats stats={{}} />);
+    expect(view.container).toBeEmptyDOMElement();
+    view.rerender(<ObservedExpertStats stats={{ records: 0, avgDiscount: 0 }} />);
+    expect(screen.getByText('0건')).toBeInTheDocument();
+    expect(screen.getByText('0%')).toBeInTheDocument();
+    expect(screen.queryByText('할인 빈도')).not.toBeInTheDocument();
+    expect(screen.queryByText('미확인')).not.toBeInTheDocument();
+  });
+});
+
+
+describe('467 compact offer comparison presentation', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); });
+  it('loads full selected catalog history when a shared normalized DTO retains its source', async () => {
+    const product = selectionFixture();
+    product.source = 'homeplus';
+    const selected = selectProductOffer(product, {variantId:'var-b',listingId:'listing-b',offerId:'offer-b'});
+    const quote = selected.selected_offer || selected.best_offer;
+    api.getJson.mockImplementation(async path => {
+      if (path === `/api/products/${product.id}`) return {data:product};
+      if (path.includes('price-history')) return {data:{history:[{...quote,price:quote.listed_price || quote.total_price,date:'2026-08-31T01:46:18Z',variant_id:selected.selected_variant_id}]}};
+      return {data:[]};
+    });
+    const {unmount} = render(<ProductDetailModal product={selected} onClose={vi.fn()} />);
+    await waitFor(() => expect(api.getJson).toHaveBeenCalledWith(`/api/products/${product.id}/price-history?days=365`));
+    await waitFor(() => expect(screen.queryByText(/조회 기간의 선택 규격 관측 이력 미확인/)).not.toBeInTheDocument());
+    expect(screen.getByText('📈 365일 선택 출처 이력')).toBeInTheDocument();
+    unmount(); api.getJson.mockClear();
+    render(<ProductDetailModal product={selected} mode="preview" onClose={vi.fn()} />);
+    expect(api.getJson).not.toHaveBeenCalled();
+  });
+  it('retains source base arithmetic and separate unapplied selection and coupon declarations', () => {
+    const quote = { listed_price: 4990, total_price: 4990, comparable_price: 4990,
+      total_quantity: 340, total_quantity_unit: 'g', quantity_basis: 'package_scalar',
+      promotion_conditions: { source_condition_kind: 'source_public_base_quote', source_base_quote_only: true,
+        payable_price_unconfirmed: false, source_required_product_quantity: 2, conditional_discount_percent: 50,
+        selected_product_scope_unconfirmed: true, source_promotion_declarations: [
+          { description: '2개씩 골라 담으면, 50% 할인', requiredProductQuantity: 2 },
+          { description: '제타패스X풀무원 4만원 이상 1만원 할인' }],
+        source_coupon_declarations: { couponInfo: null, couponList: [{ displayCouponNm: '제타패스X풀무원 4만원 이상 1만원 할인', purchaseMin: 40000, discount: 10000 }] } } };
+    const before = JSON.stringify(quote);
+    expect(getOfferConditionSummary(quote)).toContain('기본 표시가 · 추가 혜택 별도 · 선택 2개 조건 · 50% 혜택 · 적용 미확인');
+    const { container } = render(<OfferFacts offer={quote} />);
+    expect(container).toHaveTextContent('원문 기본 판매가 4,990원');
+    expect(container).not.toHaveTextContent('관측 거래 금액 4,990원');
+    for (const buy_quantity of [1,2]) expect(getOfferAmountLabel({minimum_quantity:buy_quantity,promotion_conditions:{buy_quantity,free_quantity:1}})).toBe('출처 조건 계산 금액');
+    expect(container).toHaveTextContent('출처 추가 혜택: 2개씩 골라 담으면, 50% 할인 · 실제 적용 미확인');
+    expect(container).toHaveTextContent('구매금액 기준 표기 40,000');
+    expect(container).toHaveTextContent('할인값 표기 10,000');
+    expect(container.querySelector('details')).not.toHaveAttribute('open');
+    expect(container).not.toHaveTextContent('2,495원');
+    expect(container).not.toHaveTextContent('680g');
+    expect(JSON.stringify(quote)).toBe(before);
+  });
+  it('keeps native conditional facts folded without inventing discount or received quantity', () => {
+    const quote = { listed_price: 4990, comparable_price: null, total_quantity: null,
+      promotion_condition: '2개씩 골라 담으면, 50% 할인',
+      promotion_conditions: { basket_selection_required: true, required_selection_quantity: 2,
+        conditional_discount_percent: 50, payable_price_unconfirmed: true } };
+    const before = JSON.stringify(quote);
+    expect(getOfferConditionSummary(quote)).toContain('선택 2개 조건 · 50% 혜택 · 동일 상품 적용 미확인');
+    const { container } = render(<OfferFacts offer={quote} />);
+    expect(container.querySelector('details')).not.toHaveAttribute('open');
+    fireEvent.click(screen.getByText('원문 조건·수량 근거'));
+    expect(screen.getAllByText(/선택 상품 2개 조건 · 같은 상품 수령량 미확인/).length).toBeGreaterThan(0);
+    expect(container).not.toHaveTextContent('2,495원');
+    expect(container).not.toHaveTextContent('680g');
+    expect(JSON.stringify(quote)).toBe(before);
+  });
+  it('presents compatible source rates in named rows with date and unchanged selection', () => {
+    const product = selectionFixture();
+    const native = product.variants[0].listings[0].offers[0];
+    native.crawled_at = '2026-09-02T13:39:13.605327';
+    product.variants.push({id:'held-var',display_unit:'340g',listings:[{id:'held-list',source:'held-source',title:'conditional native source',offers:[{id:'held-quote',listed_price:4990,comparable_price:null,total_price:null,promotion_conditions:{basket_selection_required:true,required_selection_quantity:2,conditional_discount_percent:50,payable_price_unconfirmed:true}}]}]});
+    const before = JSON.stringify(product);
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    const table = screen.getByRole('table', {name:'판매처별 규격 가격 비교'});
+    expect(table).toHaveTextContent('판매처·규격');
+    expect(table).toHaveTextContent('출처 표시가');
+    expect(table).toHaveTextContent('관측일');
+    expect(table).toHaveTextContent('2026-09-02');
+    expect(table).toHaveTextContent('held-source');
+    expect(table).toHaveTextContent('4,990원');
+    expect(table).not.toHaveTextContent('2,495원');
+    expect(table.querySelectorAll('tbody tr').length).toBeGreaterThan(1);
+    expect(screen.getByText(/다른 규격·출처 선택/).closest('details')).not.toHaveAttribute('open');
+    expect(JSON.stringify(product)).toBe(before);
   });
 });

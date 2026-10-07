@@ -6,8 +6,8 @@ export default function Footer() {
       <div className={s.inner}>
         <div className={s.left}>
           <strong>지갑 지키미</strong>
-          <p>정부 공식 물가 + 마트 전단 기반 가격 비교 서비스</p>
-          <p className={s.copy}>© 2026 졸업작품 — 데이터 출처: KAMIS, OPINET, KOSIS</p>
+          <p>수집된 마트·공개 출처 가격 — 관측 시점 기준</p>
+          <p className={s.copy}>© 2026 졸업작품 · 각 상품의 원문 출처와 구매 조건을 확인하세요</p>
         </div>
         <div className={s.links}>
           <a href="#">이용약관</a>

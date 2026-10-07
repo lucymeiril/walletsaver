@@ -137,6 +137,7 @@ export default function Crawlers() {
   const [emartCategoryLoading, setEmartCategoryLoading] = useState(false);
   const [lotteCategories, setLotteCategories] = useState([]);
   const [lotteCategoryLoading, setLotteCategoryLoading] = useState(false);
+  const [lotteSourceUrl, setLotteSourceUrl] = useState('');
   const pollRefs = useRef({});
 
   useEffect(() => {
@@ -220,7 +221,7 @@ export default function Crawlers() {
     pollRefs.current[id] = setTimeout(poll, POLL_INTERVAL_MS);
   }, [clearRunState, fetchCrawlers, setRunState]);
 
-  const handleRun = useCallback(async (id) => {
+  const handleRun = useCallback(async (id, options) => {
     if (runStates[id]?.phase === 'running' || runStates[id]?.phase === 'starting') return;
     setRunState(id, {
       phase: 'starting',
@@ -228,7 +229,7 @@ export default function Crawlers() {
       startedAt: Date.now(),
       message: '크롤러 실행 요청 중...',
     });
-    const result = await runCrawler(id);
+    const result = options ? await runCrawler(id, options) : await runCrawler(id);
     if (!result) {
       setRunState(id, { phase: 'done', success: false, message: '❌ 실행 요청에 실패했습니다.' });
       clearRunState(id, 4000);
@@ -628,6 +629,21 @@ export default function Crawlers() {
                 </button>
               ))}
             </div>
+          </div>
+        )}
+
+        {crawler.id === 'lottemart' && (
+          <div style={{ marginTop: 8 }}>
+            <label htmlFor="lotte-source-url">롯데마트 상품 URL · 한 상품 수집</label>
+            <input id="lotte-source-url" type="url" value={lotteSourceUrl}
+              onChange={(event) => setLotteSourceUrl(event.target.value)} disabled={isRunning}
+              placeholder="https://lottemartzetta.com/products/OS.../details"
+              style={{ width: '100%', marginTop: 4 }} />
+            <button className={styles.actionBtn} disabled={isRunning || !/^https:\/\/lottemartzetta\.com\/products\/OS[0-9]{13}\/details\/?$/.test(lotteSourceUrl.trim())}
+              onClick={() => handleRun(crawler.id, { source_url: lotteSourceUrl.trim() })}>
+              상품 URL 한 번 수집
+            </button>
+            <small>한 상품만 요청합니다. 접근 제한이나 미확인 응답은 재요청하지 않습니다. 저장은 검토 대기 접수이며 승인·공개 반영과 다릅니다.</small>
           </div>
         )}
 

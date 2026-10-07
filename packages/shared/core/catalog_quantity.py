@@ -42,6 +42,15 @@ def uses_separate_measured_count_rules(title: str) -> bool:
     return bool(_SEPARATE_MEASURED_COUNT_RE.search(unicodedata.normalize('NFKC', title)))
 
 
+def supports_independent_inner_count(category_id: str | None) -> bool:
+    return category_id in {
+        'food.meals.noodles.cup_ramen', 'food.dairy.yogurt.spoon',
+        'food.drinks.water_soda.water', 'stationery.office.tools.glue_stick',
+        'household.cleaning.bath.toilet',
+        'food.supplements.functional.hangover_marketed_food',
+    } or isinstance(category_id, str) and category_id.startswith('food.dairy.milk.')
+
+
 def uses_reviewed_quantity_rules(title: str) -> bool:
     """Only the bounded repairs, not a replacement for legacy matching rules."""
     title = unicodedata.normalize("NFKC", title).strip()
@@ -96,7 +105,7 @@ _SEPARATE_MEASURED_COUNT_RE = re.compile(
 def _separate_measured_count(payload, attrs, title, category_id):
     """Validate an inner measure followed by an independent sold count.
 
-    A source-bound cup or liquid milk's matching inner-content fields/display,
+    A source-bound cup, liquid milk or spoon yogurt's matching inner-content fields/display,
     or explicit per-pack wording, supplies scope. Bare mass plus piece count
     may instead describe a whole bag.
     Return a convenience-parser candidate only after all source layers agree.
@@ -104,18 +113,35 @@ def _separate_measured_count(payload, attrs, title, category_id):
     milk_form = (isinstance(category_id, str) and category_id.startswith('food.dairy.milk.')
                  and category_id != 'food.dairy.milk.condensed' and '우유' in title
                  and not re.search(r'분유|분말|파우더|가루|우유맛|우유용|우유컵|우유병|세제|세정|용기|계량|텀블러', title))
-    if (milk_form and re.search(r'\d+\s*(?:개입|입|개|팩|봉|병|캔|포)', title)
+    yogurt_form = (category_id == 'food.dairy.yogurt.spoon'
+                   and bool(re.search(r'요거트|요구르트|요플레', title))
+                   and not re.search(r'분말|파우더|가루|요거트맛|요구르트맛|용기|계량|텀블러', title))
+    packaged_forms = {
+        'food.drinks.water_soda.water': (r'\d+\s*병', r'생수|음료|식품|water', 'ml'),
+        'stationery.office.tools.glue_stick': (r'딱풀|고체풀|풀스틱', r'문구|사무|stationery', 'g'),
+        'household.cleaning.bath.toilet': (r'변기.*(?:세정제|세제)', r'변기|세탁|청소|세제|cleaning', 'g'),
+        'food.supplements.functional.hangover_marketed_food': (r'스틱(?:형)?', r'건강식품|숙취|식품', 'g'),
+    }
+    form = packaged_forms.get(category_id)
+    packaged_form = bool(form and re.search(form[0], title, re.I))
+    scope_title = title
+    if category_id == 'food.drinks.water_soda.water':
+        # A source's explicit random label presentation is not a random
+        # flavor/amount selection. Keep the literal title in identity/evidence.
+        scope_title = re.sub(r'\(\s*(?:유라벨|무라벨)\s*/\s*(?:유라벨|무라벨)\s+랜덤발송\s*\)', '', title)
+    if ((milk_form or yogurt_form or packaged_form) and re.search(r'\d+\s*(?:개입|입|개|팩|봉|병|캔|포)', title)
         and re.search(r'약\s*\d|\d(?:\.\d+)?\s*(?:ml|l|개입|입|개|팩|봉|병|캔|포)\s*(?:내외|미만|이상|이하|정도)', title, re.I)):
         return None, ['measured_inner_scope_unresolved']
     matches = list(_SEPARATE_MEASURED_COUNT_RE.finditer(title))
     if not matches:
         if (_COUNT_RANGE_RE.search(title) and
             (category_id == 'food.meals.noodles.cup_ramen' and re.search(r'컵|사발', title)
-             or milk_form and re.search(r'\d\s*(?:ml|l)(?![A-Za-z])', title, re.I))):
+             or milk_form and re.search(r'\d\s*(?:ml|l)(?![A-Za-z])', title, re.I)
+             or yogurt_form and re.search(r'\d\s*(?:kg|g)(?![A-Za-z])', title, re.I))):
             return None, ['count_range_unresolved']
         return None, []
     if (len(matches) != 1 or _COUNT_RANGE_RE.search(title)
-        or re.search(r'[+~～〜]|[x×*]\s*\d|혼합|세트|모음|콤보|선물|선택|랜덤|추가|증정|덤', title, re.I)):
+        or re.search(r'[+~～〜]|[x×*]\s*\d|혼합|세트|모음|콤보|선물|선택|랜덤|추가|증정|덤', scope_title, re.I)):
         return None, ['independent_count_scope_unresolved']
     match = matches[0]
     amount, unit, count = Decimal(match[1]), match[2].casefold(), Decimal(match[3])
@@ -132,7 +158,9 @@ def _separate_measured_count(payload, attrs, title, category_id):
                     or re.search(r'(?:kg|g|ml|l)\s*씩', match[0], re.I))
     cup = category_id == 'food.meals.noodles.cup_ramen' and bool(re.search(r'컵|사발', title))
     milk = milk_form and canonical_unit == 'ml'
-    if not per_pack and (not (cup or milk) or re.search(r'총\s*(?:내용량|중량|용량)?|전체|합계', title)):
+    yogurt = yogurt_form and canonical_unit == 'g'
+    packaged = packaged_form and canonical_unit == form[2]
+    if not per_pack and (not (cup or milk or yogurt or packaged) or re.search(r'총\s*(?:내용량|중량|용량)?|전체|합계', title)):
         return None, ['measured_inner_scope_unresolved']
     layers, visited = [], set()
     def visit(layer):
@@ -145,9 +173,24 @@ def _separate_measured_count(payload, attrs, title, category_id):
             if layer.get(key) is not None:
                 visit(layer[key])
     inner_field = inner_display = False
+    packaged_paths = []
     try:
         visit(payload); visit(attrs)
         for layer in layers:
+            if packaged and not per_pack:
+                for key in ('category','category_hint','mart_native_category_path','source_category_path','category_path'):
+                    path = _text(layer.get(key))
+                    if path:
+                        packaged_paths.append(path)
+                        if (not re.search(form[1], path, re.I)
+                            and re.search(r'생수|음료|유제품|요거트|문구|사무|세탁|청소|세제|건강식품|숙취|반려|화장품|가전', path)):
+                            raise ValueError('incompatible packaged-content source category')
+            if yogurt and not per_pack:
+                for key in ('category','category_hint','mart_native_category_path','source_category_path','category_path'):
+                    path = _text(layer.get(key))
+                    if path and (re.search(r'세제|세정|청소|주방용품|가전|반려|문구|장난감|생활용품|주류|생수|분말|아이스크림|빙과', path)
+                                 or not re.search(r'우유|유제품|유가공|요거트|요구르트|식품|냉장|신선|milk|dairy|yogurt', path, re.I)):
+                        raise ValueError('incompatible yogurt source category')
             if milk and not per_pack:
                 for key in ('category','category_hint','mart_native_category_path','source_category_path','category_path'):
                     path = _text(layer.get(key))
@@ -203,9 +246,17 @@ def _separate_measured_count(payload, attrs, title, category_id):
                 basis = _text(layer.get(key))
                 if not basis:
                     continue
+                if (category_id == 'stationery.office.tools.glue_stick'
+                    and key in {'unit_price_display', 'unit_price_text'}
+                    and re.fullmatch(r'\d+(?:\.\d+)?\s*(?:ea|개입|개|입)\s*당\s*[0-9,]+(?:\.\d+)?\s*원', basis, re.I)):
+                    # A displayed per-stick quote is price evidence; it does
+                    # not contradict independently proven grams per stick.
+                    continue
                 quoted = re.fullmatch(r'(?:\d+(?:\.\d+)?\s*)?(kg|g|ml|l)\s*(?:당\s*[0-9,]+(?:\.\d+)?\s*원)?', basis, re.I)
                 if not quoted or UNIT_ALIASES[quoted[1].casefold()][1] != canonical_unit:
                     raise ValueError('unresolved price basis')
+        if packaged_paths and not any(re.search(form[1], path, re.I) for path in packaged_paths):
+            raise ValueError('unbound packaged-content source category')
         if not per_pack and not (inner_field and inner_display):
             return None, ['measured_inner_scope_unresolved']
     except (ValueError, InvalidOperation):

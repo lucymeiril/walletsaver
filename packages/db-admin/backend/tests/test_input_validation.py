@@ -4,6 +4,19 @@ from pydantic import ValidationError
 
 
 class TestProductValidation:
+    def test_normalized_metadata_fields_cannot_mutate_source_or_invent_activation(self):
+        from api.routes.products import NormalizedProductUpdate
+        for payload in ({"price":4990}, {"canonical_name":"identity rename"}, {"package_quantity":680},
+                        {"is_active":None}, {"is_active":1}, {"display_name":None}, {"display_name":" "},
+                        {"keyword_ids":[True]}, {"keyword_ids":[1,1]}, {"aliases":[" "]},
+                        {"primary_image_url":"javascript:alert(1)"}):
+            with pytest.raises(ValidationError):
+                NormalizedProductUpdate(**payload)
+        assert NormalizedProductUpdate().model_dump(exclude_unset=True) == {}
+        assert NormalizedProductUpdate(display_brand=None, primary_image_url=None, keyword_ids=[],
+            aliases=[], is_active=False).model_dump(exclude_unset=True) == {
+                "display_brand":None, "primary_image_url":None, "keyword_ids":[], "aliases":[], "is_active":False}
+
     def test_name_too_long(self):
         from api.routes.products import ProductCreate
         with pytest.raises(ValidationError):

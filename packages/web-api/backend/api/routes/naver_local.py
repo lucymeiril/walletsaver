@@ -13,7 +13,7 @@ import math
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import parse_qs, quote, urlsplit
 
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
@@ -69,7 +69,25 @@ def _optional_bool(value) -> bool | None:
 
 
 def _valid_coordinates(lat: float, lng: float) -> bool:
-    return -90 <= lat <= 90 and -180 <= lng <= 180
+    return (
+        not isinstance(lat, bool) and not isinstance(lng, bool)
+        and math.isfinite(lat) and math.isfinite(lng)
+        and -90 <= lat <= 90 and -180 <= lng <= 180
+    )
+
+
+def _location_query(location: str | None, category: str) -> str:
+    return " ".join(part for part in ((location or "").strip(), category.strip()) if part)
+
+
+def _requested_search_context(query: str, lat, lng) -> dict:
+    # Browser geolocation is a request hint, not evidence of the provider's
+    # search center or of the origin/unit of its distance field.
+    return {
+        "query": query,
+        "requested_coordinates": {"lat": lat, "lng": lng},
+        "provider_origin_verified": False,
+    }
 
 
 def _opinet_nearby_items(lat: float, lng: float, max_items: int) -> list[dict]:
@@ -183,9 +201,24 @@ def _search_via_playwright_sync(query: str, lat: float | None, lng: float | None
     def handle_response(response):
         if "allSearch" in response.url and response.status == 200:
             try:
+                parsed_url = urlsplit(response.url)
+                source_queries = parse_qs(parsed_url.query, keep_blank_values=True).get("query", [])
+                # Only validate a query actually supplied by the native URL.
+                # No guessed response-body schema or invented center parameter.
+                if source_queries and any(value != query for value in source_queries):
+                    return
                 body = response.json()
                 if isinstance(body, dict) and "result" in body:
                     api_data["response"] = body
+                    api_data["source_context"] = {
+                        **_requested_search_context(query, lat, lng),
+                        "source_endpoint": {
+                            "origin": f"{parsed_url.scheme}://{parsed_url.hostname}",
+                            "path": parsed_url.path,
+                        },
+                        "source_query": source_queries[0] if source_queries else None,
+                        "source_query_status": "matched" if source_queries else "not_recorded",
+                    }
             except Exception:
                 pass
 
@@ -223,6 +256,8 @@ def _search_via_playwright_sync(query: str, lat: float | None, lng: float | None
         raise RuntimeError("네이버 장소 검색의 결과 목록을 확인할 수 없습니다")
 
     for place in place_list[:max_items]:
+        if not isinstance(place, dict):
+            continue
         category = place.get("category", "")
         if isinstance(category, list):
             category = category[0] if category else ""
@@ -240,14 +275,29 @@ def _search_via_playwright_sync(query: str, lat: float | None, lng: float | None
                 rating = parsed
                 break
 
+        # Existing Naver/geocode contract uses x as longitude and y as
+        # latitude. Bounds validation does not establish a provider CRS or
+        # search origin; never substitute default coordinates for text rows.
+        try:
+            raw_x, raw_y = place.get("x"), place.get("y")
+            coordinate_valid = (
+                not isinstance(raw_x, bool) and not isinstance(raw_y, bool)
+                and _valid_coordinates(float(raw_y), float(raw_x))
+            )
+        except (TypeError, ValueError, OverflowError):
+            coordinate_valid = False
         item = {
             "name": place.get("name", ""),
             "category": category,
             "address": place.get("roadAddress") or place.get("address", ""),
             "tel": place.get("tel", ""),
-            "x": place.get("x", ""),
-            "y": place.get("y", ""),
-            "distance": place.get("distance", ""),
+            "x": raw_x if coordinate_valid else None,
+            "y": raw_y if coordinate_valid else None,
+            "distance": None,
+            "source_distance": place.get("distance"),
+            "source_distance_unit": None,
+            "source_distance_origin": None,
+            "source_search_context": api_data["source_context"],
             "url": (
                 f"https://map.naver.com/p/entry/place/{place.get('id', '')}"
                 if place.get("id")
@@ -359,6 +409,7 @@ async def area_explore_stream(
     async def event_stream():
         per_category = max(1, min(8, max_items // max(1, len(names))))
         for name in names:
+            search_query = _location_query(location_name, name)
             try:
                 if name == "주유소":
                     items = await asyncio.to_thread(
@@ -367,7 +418,7 @@ async def area_explore_stream(
                     source = "opinet" if items else "unavailable"
                 else:
                     items = await _search(
-                        name,
+                        search_query,
                         lat,
                         lng,
                         per_category,
@@ -384,6 +435,8 @@ async def area_explore_stream(
                 "items": items,
                 "source": source,
             }
+            if name != "주유소":
+                payload["search_context"] = _requested_search_context(search_query, lat, lng)
             yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
             await asyncio.sleep(0.05)
         yield "data: {\"done\": true}\n\n"
@@ -403,9 +456,10 @@ async def subcategory_search(
         description="사용자가 명시적으로 동의한 경우에만 네이버 공개 페이지 브라우저 검색 실행",
     ),
 ):
+    search_query = _location_query(location, subcategory)
     try:
         items = await _search(
-            subcategory,
+            search_query,
             lat,
             lng,
             min(max_items, 30),
@@ -422,4 +476,5 @@ async def subcategory_search(
         "location": location,
         "subcategory": subcategory,
         "source": source,
+        "search_context": _requested_search_context(search_query, lat, lng),
     })

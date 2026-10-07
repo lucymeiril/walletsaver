@@ -201,6 +201,8 @@ function postFormData(url, formData, { signal, onProgress } = {}) {
 }
 
 export const api = {
+  getNormalizedProduct: (id, opts) => get(`${API_BASE}/products/normalized/${encodeURIComponent(id)}`, opts),
+  updateNormalizedProduct: (id, data, opts) => putJson(`${API_BASE}/products/normalized/${encodeURIComponent(id)}`, data, opts),
   getNormalizedProducts: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/products/normalized${qs ? `?${qs}` : ''}`, opts);

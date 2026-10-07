@@ -121,3 +121,21 @@ describe('Crawlers 페이지 - 현재 WAF 보류 재시도 계약', () => {
     expect(await screen.findByText(/WAF 재시도 실패: network down/)).toBeTruthy();
   });
 });
+
+describe('Crawlers bounded Lotte source URL option', () => {
+  it('passes one exact URL through the existing store and run client, without a broad run', async () => {
+    seed(0);
+    api.runCrawler.mockResolvedValue({ status: 'running' });
+    render(<Crawlers />);
+    const input = await screen.findByLabelText('롯데마트 상품 URL · 한 상품 수집');
+    const run = screen.getByRole('button', { name: '상품 URL 한 번 수집' });
+    expect(run).toBeDisabled();
+    fireEvent.change(input, { target: { value: 'https://example.test/products/OS8801114119426/details' } });
+    expect(run).toBeDisabled();
+    const source_url = 'https://lottemartzetta.com/products/OS8801114119426/details';
+    fireEvent.change(input, { target: { value: source_url } });
+    fireEvent.click(run);
+    await waitFor(() => expect(api.runCrawler).toHaveBeenCalledWith('lottemart', { source_url }));
+    expect(api.runCrawler).toHaveBeenCalledTimes(1);
+  });
+});

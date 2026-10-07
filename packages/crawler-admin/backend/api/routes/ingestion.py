@@ -20,9 +20,18 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
-DB_ADMIN_URL = os.getenv(
-    "DB_ADMIN_INGESTION_URL", "http://localhost:8002/api/ingestions"
-)
+def _resolve_db_admin_ingestion_url() -> str:
+    # The review proxy must follow the same configured intake as the producer.
+    # Keep a dedicated override for existing deployments; blank values are absent.
+    for name in ("DB_ADMIN_INGESTION_URL", "INGESTION_API_URL"):
+        value = os.getenv(name, "").strip()
+        if value:
+            return value
+    base_url = os.getenv("DB_ADMIN_URL", "").strip().rstrip("/")
+    return (base_url + "/api/ingestions") if base_url else "http://localhost:8002/api/ingestions"
+
+
+DB_ADMIN_URL = _resolve_db_admin_ingestion_url()
 
 # Circuit breaker: fast-fail after 3 consecutive failures, 30s cooldown
 _cb = CircuitBreaker(service_name="db-admin", failure_threshold=3, recovery_timeout=30.0)

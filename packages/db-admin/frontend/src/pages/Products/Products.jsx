@@ -29,7 +29,7 @@ export default function Products() {
   const [namespace, setNamespace] = useState('normalized');
   return <>
     <label>상품 데이터 체계 <select aria-label="상품 데이터 체계" value={namespace} onChange={e => setNamespace(e.target.value)}>
-      <option value="normalized">정규화 카탈로그 · 조회 전용</option>
+      <option value="normalized">정규화 카탈로그 · 표시 정보 편집</option>
       <option value="legacy">기존 상품 · 편집 가능</option>
     </select></label>
     {namespace === 'normalized' ? <NormalizedProducts /> : <LegacyProducts />}

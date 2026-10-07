@@ -152,6 +152,18 @@ def _package_signature(package: Mapping[str, Any] | None) -> tuple[Any, ...] | N
 
 
 def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str, title: str) -> tuple[dict[str, Any], list[str]]:
+    if mart == "lottemart" and attrs.get("lottemart_detail_source_fields") is not None:
+        from services.native_quote_price_roles import native_lotte_price_roles
+        try:
+            roles = native_lotte_price_roles(payload, attrs, title)
+        except ValueError:
+            roles = None  # Retain ordinary quoted evidence, without elevating an unvalidated base role.
+        if roles is not None:
+            return {"price":roles["source_base_quote"]["amount"], "original_price":None,
+                    "discount_rate":None, "price_state":"sale_price_only", "promotion_type":"final_price",
+                    "event_name":payload.get("event_name"), "promotion_conditions":roles["promotion_conditions"],
+                    "valid_from":_timestamp(payload.get("valid_from")),
+                    "valid_to":_timestamp(payload.get("valid_until") or payload.get("valid_to"))}, []
     layers = (payload, attrs)
     price = _positive(_first(layers, ("sale_price", "current_price")))
     original = _positive(_first(layers, ("original_price",)))

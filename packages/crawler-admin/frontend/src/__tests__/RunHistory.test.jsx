@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('../api/client', () => ({
   api: {
+    getCrawlers: vi.fn().mockResolvedValue({ crawlers: [] }),
     getRuns: vi.fn().mockResolvedValue({
       items: [
         {
@@ -98,6 +99,54 @@ describe('RunHistory page', () => {
     expect(within(unknown).getByText('완료 확인 미충족')).toBeInTheDocument();
     expect(within(unknown).getAllByText('미확인')).toHaveLength(3);
     expect(screen.getByText(/저장 수는 검토 승인·공개 업데이트 수를 뜻하지 않습니다/)).toBeInTheDocument();
+    expect(api.retryRun).not.toHaveBeenCalled();
+  });
+});
+
+describe('registered crawler history read-only section', () => {
+  beforeEach(() => { vi.clearAllMocks(); });
+  it('finds actual recorded Lotte URL/time when orchestrator has no row without inventing receipt/counts', async () => {
+    const source_url = 'https://lottemartzetta.com/products/OS8801114119426/details';
+    api.getRuns.mockResolvedValueOnce({ items: [], total: 0 });
+    api.getCrawlers.mockResolvedValueOnce({ crawlers: [{ name: 'lottemart', display_name: '롯데마트', recentRuns: [
+      { status: 'success', duration: 2.2323403540067375, timestamp: '2026-10-07T18:12:38.211242+00:00', source_url },
+    ] }] });
+    render(<MemoryRouter><RunHistory /></MemoryRouter>);
+    const section = screen.getByRole('region', { name: '등록 크롤러 실행 이력' });
+    const row = (await within(section).findByText('롯데마트')).closest('tr');
+    expect(row).toHaveTextContent('2026-10-07T18:12:38.211242+00:00');
+    expect(row).toHaveTextContent('성공 기록 · 승인 미확인');
+    expect(row).toHaveTextContent('발견 미확인 · 유효 미확인 · 저장 미확인');
+    expect(row).toHaveTextContent('HIT 미확인 · MISS 미확인');
+    expect(within(row).getByRole('link', { name: source_url })).toHaveAttribute('href', source_url);
+    expect(within(row).getByRole('link', { name: '데이터 검토' })).toHaveAttribute('href', '/data-review');
+    expect(within(row).getByText('미기록')).toBeInTheDocument();
+    expect(api.retryRun).not.toHaveBeenCalled();
+    expect(api.getRunLogs).not.toHaveBeenCalled();
+  });
+
+  it('shows only actually recorded diagnostic counts and pending delivery separately', async () => {
+    api.getCrawlers.mockResolvedValueOnce({ crawlers: [{ name: 'lottemart', recentRuns: [{
+      run_id: 'stored-original-run', status: 'partial_failure', timestamp: '2026-10-07T18:12:38Z',
+      items_found: 2, items_valid: 1, items_saved: 1,
+      quality_details: { matching: { hits: 1, misses: 0 }, delivery: { target: 'pending_review', attempted: 1, acknowledged: 1 } },
+    }] }] });
+    render(<MemoryRouter><RunHistory /></MemoryRouter>);
+    const row = (await screen.findByText('stored-original-run')).closest('tr');
+    expect(row).toHaveTextContent('발견 2 · 유효 1 · 저장 1');
+    expect(row).toHaveTextContent('HIT 1 · MISS 0');
+    expect(row).toHaveTextContent('접수 대상 검토 대기 · 시도 1 · 확인 1');
+    expect(row).toHaveTextContent('부분 완료');
+    expect(api.retryRun).not.toHaveBeenCalled();
+  });
+
+  it('keeps registered history visible when the separate orchestrator read fails', async () => {
+    api.getRuns.mockRejectedValueOnce(new Error('예약 이력 응답 미확인'));
+    api.getCrawlers.mockResolvedValueOnce({ crawlers: [{ name: 'lottemart', recentRuns: [{ status: 'failed', timestamp: 'stored-time' }] }] });
+    render(<MemoryRouter><RunHistory /></MemoryRouter>);
+    expect(await screen.findByText('예약 이력 응답 미확인')).toBeInTheDocument();
+    const section = screen.getByRole('region', { name: '등록 크롤러 실행 이력' });
+    expect(await within(section).findByText('stored-time')).toBeInTheDocument();
     expect(api.retryRun).not.toHaveBeenCalled();
   });
 });

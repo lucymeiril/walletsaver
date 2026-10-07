@@ -22,6 +22,118 @@ from storage.models import (
 )
 
 
+def test_normalized_metadata_edit_preserves_source_graph_and_updates_scoped_matching(monkeypatch):
+    from api.routes.products import NormalizedProductUpdate
+    from services.normalized_product_edit import normalized_product_detail, update_normalized_product
+    from storage.models import AuditLog
+
+    session = _session()
+    bundle = _bundle()
+    apply_bundle(session, bundle, "metadata-fixture", user="fixture")
+    session.commit()
+    before = {model.__tablename__: [{column.name: getattr(row, column.name) for column in model.__table__.columns}
+              for row in session.scalars(select(model))]
+              for model in (NormalizedProductVariant, NormalizedSourceListing, NormalizedOfferEvent)}
+    detail = normalized_product_detail(session, "prod-chocoemong")
+    keyword_id = detail["keyword_ids"][0]
+    rule = session.scalar(select(MatchingEntry))
+    identity = (rule.match_key, rule.public_product_id, rule.public_variant_id)
+    body = NormalizedProductUpdate(display_name="관리 화면 표시명", display_brand="표시 브랜드",
+                                   aliases=["검색 별칭"], keyword_ids=[keyword_id], primary_image_url=None)
+    result = update_normalized_product(session, "prod-chocoemong", body.model_dump(exclude_unset=True), identity={"sub":"fixture"})
+    session.commit()
+    session.expire_all()
+    restored = normalized_product_detail(session, "prod-chocoemong")
+    assert restored["display_name"] == result["display_name"] == "관리 화면 표시명"
+    assert restored["canonical_name"] == "초코에몽"
+    assert restored["brand"] is None and restored["display_brand"] == "표시 브랜드"
+    assert restored["aliases"] == ["검색 별칭"] and restored["keyword_ids"] == [keyword_id]
+    assert restored["keyword_associations"][0]["word"] == "초코우유"
+    assert result["snapshot_required"] is True
+    for model in (NormalizedProductVariant, NormalizedSourceListing, NormalizedOfferEvent):
+        assert [{column.name: getattr(row, column.name) for column in model.__table__.columns}
+                for row in session.scalars(select(model))] == before[model.__tablename__]
+    rule = session.scalar(select(MatchingEntry))
+    assert (rule.match_key, rule.public_product_id, rule.public_variant_id) == identity
+    assert rule.keyword_ids == [keyword_id]
+    assert session.scalar(select(AuditLog)).entity_id == "prod-chocoemong"
+
+    # Reloaded management search must find the saved display label, not only GET detail.
+    import api.routes.products as routes
+    monkeypatch.setattr(routes, "get_session", lambda: session)
+    found = routes.list_normalized_products(q="관리 화면 표시명", unified_category_id=None,
+        is_active=None, page=1, per_page=20, identity={"role":"moderator"})
+    assert found["total"] == 1 and found["items"][0]["display_name"] == "관리 화면 표시명"
+    assert found["items"][0]["canonical_name"] == "초코에몽" and found["read_only"] is True
+
+    cleared = update_normalized_product(session, "prod-chocoemong", {"keyword_ids": []}, identity={"sub":"fixture"})
+    assert cleared["keyword_ids"] == [] and session.scalar(select(MatchingEntry)).keyword_ids == []
+    assert cleared["display_name"] == "관리 화면 표시명"  # omitted override preserved
+    session.close()
+
+
+def test_normalized_metadata_group_display_is_reciprocal_but_activation_is_selected(monkeypatch):
+    from fastapi import HTTPException
+    import core.catalog_identity as identity
+    from services.normalized_product_edit import normalized_product_detail, update_normalized_product
+
+    group = {"key":"fixture-group", "canonical_product_id":"member-a", "member_product_ids":["member-a","member-b"],
+             "canonical_name":"원래 그룹", "brand":"원래 브랜드", "review_version":identity.GROUP_VERSION, "leaf":"food.leaf"}
+    monkeypatch.setattr(identity, "reviewed_registry", lambda: {"groups":[group]})
+    review = {key:group[key] for key in ("key","canonical_product_id","member_product_ids","canonical_name","brand","review_version")}
+    session = _session()
+    session.add_all([UnifiedCategory(id="food", slug="food", name_ko="식품", level=0),
+                     UnifiedCategory(id="food.leaf", slug="leaf", parent_id="food", name_ko="현재 분류", level=1),
+                     UnifiedCategory(id="food.other", slug="other", parent_id="food", name_ko="다른 분류", level=1)])
+    session.flush()
+    session.add_all([NormalizedCanonicalProduct(public_product_id=key, canonical_name=f"원 출처 {key}",
+        brand="원본 브랜드", unified_category_id="food.leaf", attributes={"catalog_group":review}, is_active=True)
+        for key in group["member_product_ids"]])
+    session.flush()
+    update_normalized_product(session, "member-b", {"display_name":"함께 보이는 표시명", "display_brand":None,
+                              "is_active":False}, identity={"sub":"fixture"})
+    session.commit()
+    a = normalized_product_detail(session, "member-a")
+    b = normalized_product_detail(session, "member-b")
+    assert a["display_name"] == b["display_name"] == "함께 보이는 표시명"
+    assert a["display_brand"] is None and a["brand"] == "원본 브랜드"
+    assert a["is_active"] is True and b["is_active"] is False
+    assert a["attributes"]["catalog_group"] == b["attributes"]["catalog_group"] == review
+    with pytest.raises(HTTPException) as error:
+        update_normalized_product(session, "member-b", {"unified_category_id":"food.other"}, identity={"sub":"fixture"})
+    assert error.value.status_code == 409
+    # Inconsistent peer metadata is not permission to propagate a display edit.
+    peer = session.get(NormalizedCanonicalProduct, "member-a")
+    peer.attributes = {}
+    session.flush()
+    result = update_normalized_product(session, "member-b", {"display_name":"선택 항목만"}, identity={"sub":"fixture"})
+    assert result["display_member_ids"] == ["member-b"]
+    assert peer.attributes == {}
+    session.close()
+
+
+def test_normalized_metadata_rejects_unknown_parent_and_unscoped_keywords():
+    from fastapi import HTTPException
+    from services.normalized_product_edit import update_normalized_product
+
+    session = _session()
+    apply_bundle(session, _bundle(), "metadata-invalid-fixture", user="fixture")
+    session.commit()
+    session.add(UnifiedCategory(id="other", slug="other", name_ko="다른 범위", level=0))
+    session.add(Keyword(word="다른 범위 키워드", unified_category_id="other", is_active=True))
+    session.flush()
+    unrelated = session.scalar(select(Keyword.id).where(Keyword.word == "다른 범위 키워드"))
+    for changes in ({"unified_category_id":"missing"}, {"unified_category_id":"food"},
+                    {"keyword_ids":[unrelated]}, {"keyword_ids":[999999]}):
+        with pytest.raises(HTTPException) as error:
+            update_normalized_product(session, "prod-chocoemong", changes, identity={"sub":"fixture"})
+        assert error.value.status_code == 422
+    product = session.get(NormalizedCanonicalProduct, "prod-chocoemong")
+    assert product.unified_category_id == "food.dairy.milk.chocolate"
+    assert "admin_display_override" not in product.attributes
+    session.close()
+
+
 def _session():
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
@@ -106,6 +218,153 @@ def _bundle():
 def _offer_review_digest(value):
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
                                     separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+
+
+def _lotte_standalone_base_row(price=4990):
+    title, native = '풀무원 국산 부침두부 (340G)', '8801114119426'
+    url = f'https://lottemartzetta.com/products/OS{native}/details'
+    node = {'retailerProductId':'OS'+native, 'name':title, 'type':'REGULAR',
+        'packSizeDescription':'340g', 'price':{'amount':str(price),'currency':'KRW'},
+        'promotions':[
+            {'promoId':'selection', 'retailerPromotionId':'E2609182502', 'type':'OFFER',
+             'description':'2개씩 골라 담으면, 50% 할인', 'requiredProductQuantity':2},
+            {'promoId':'program', 'retailerPromotionId':'E2610025554', 'type':'OFFER',
+             'description':'제타패스X풀무원 4만원 이상 1만원 할인'}]}
+    view = deepcopy(node)
+    view['promotions'][0]['limitReached'] = False
+    stamp = '2026-10-07T18:12:37.682379Z'
+    attrs = {'source_record_key':native,'source_url':url,
+        'lottemart_detail_source_fields':node, 'lottemart_detail_source_fields_sha256':_offer_review_digest(node),
+        'submission_business_evidence':[{'raw_product_node':view,
+            'raw_product_node_sha256':_offer_review_digest(view), 'native_context':native,
+            'http_receipt_status':'supplied_response_metadata','source_response_url':url,
+            'source_response_body_sha256':'a'*64,'source_response_received_at':stamp}]}
+    return {'name':title,'source_title':title,'source':'lottemart','brand':'풀무원',
+        'source_url':url, 'sale_price':price,'original_price':None,'package_quantity':340,
+        'package_unit':'g','bundle_count':1,'display_unit':'340g','crawled_at':stamp,
+        'event_name':' · '.join(p['description'] for p in node['promotions']), 'attributes':attrs}
+
+
+def test_lotte_standalone_base_roles_keep_multiple_unapplied_benefits_and_detail(monkeypatch):
+    from services.initial_catalog_seed import _price
+    from services.native_quote_price_roles import native_lotte_price_roles
+    from core.catalog_matching import _match_key_for_row
+    from core.promotion_semantics import comparable_transaction_or_none
+    from api.routes import ingestion_core
+    from storage.models import PendingIngestion, IngestionStatus
+    row = _lotte_standalone_base_row()
+    original = deepcopy(row)
+    facts, issues = _price(row,row['attributes'],'lottemart',row['name'])
+    assert issues == [] and facts['price'] == 4990 and facts['promotion_type'] == 'final_price'
+    terms = facts['promotion_conditions']
+    assert terms['source_base_quote_only'] is True and terms['source_condition_kind'] == 'source_public_base_quote'
+    assert terms['source_required_product_quantity'] == 2 and terms['conditional_discount_percent'] == 50
+    assert terms['selected_product_scope_unconfirmed'] is True and terms['membership_eligibility_unconfirmed'] is True
+    assert terms['source_coupon_declarations']['couponList'][0]['purchaseMin'] == 40000
+    assert terms['source_coupon_declarations']['couponList'][0]['discount'] == 10000
+    assert not {'minimum_quantity','buy_quantity','free_quantity','received_package_count'} & terms.keys()
+    base = comparable_transaction_or_none(current_price=facts['price'],promotion_type=facts['promotion_type'],promotion_conditions=terms)
+    assert base == (4990,1) and base[0]/340*100 == pytest.approx(1467.6470588235295)
+    assert len(terms['source_promotion_declarations']) == 2 and row == original
+    changed = _lotte_standalone_base_row(5990)
+    key, reason = _match_key_for_row(row)
+    assert key and reason is None and _match_key_for_row(changed) == (key, None)
+    assert native_lotte_price_roles(changed,changed['attributes'],changed['name'])['source_base_quote']['amount'] == 5990
+    pending = PendingIngestion(id=17,crawler_name='lottemart',items_count=1,crawl_status='success',
+        schema_type='DiscountItem',items_json=json.dumps([row],ensure_ascii=False),status=IngestionStatus.PENDING)
+    monkeypatch.setattr(ingestion_core,'_compare_with_previous',lambda *args:None)
+    detail = ingestion_core._build_detail_item(None,pending)
+    assert detail['items'] == [original] and detail['price_roles'][0]['benefits_applied'] is False
+    assert detail['price_roles'][0]['promotion_conditions'] == terms
+    assert detail['price_roles'][0]['source_base_quote']['amount'] == 4990
+
+
+@pytest.mark.parametrize('change',['hash','native','currency','package','naive_clock','receipt_clock','body_hash','business_view','required_quantity'])
+def test_lotte_standalone_base_roles_reject_tampered_binding_without_erasing_quote(change):
+    from services.native_quote_price_roles import native_lotte_price_roles
+    from services.initial_catalog_seed import _price
+    row = _lotte_standalone_base_row()
+    attrs = row['attributes']; node = attrs['lottemart_detail_source_fields']; record = attrs['submission_business_evidence'][0]
+    if change == 'hash': attrs['lottemart_detail_source_fields_sha256'] = '0'*64
+    elif change == 'native': attrs['source_record_key'] = 'other'
+    elif change == 'currency': node['price']['currency'] = 'USD'
+    elif change == 'package': row['package_quantity'] = 680
+    elif change == 'naive_clock': row['crawled_at'] = '2026-10-07T18:12:37'
+    elif change == 'receipt_clock': record['source_response_received_at'] = '2026-10-07T18:12:38Z'
+    elif change == 'body_hash': record['source_response_body_sha256'] = ''
+    elif change == 'business_view': record['raw_product_node']['price']['amount'] = '2495'
+    elif change == 'required_quantity': node['promotions'][0]['requiredProductQuantity'] = 3
+    if change != 'hash': attrs['lottemart_detail_source_fields_sha256'] = _offer_review_digest(node)
+    with pytest.raises(ValueError): native_lotte_price_roles(row,attrs,row['name'])
+    facts, issues = _price(row,attrs,'lottemart',row['name'])
+    assert facts['price'] == 4990 and facts['promotion_type'] == 'unknown' and issues
+    assert not facts['promotion_conditions'].get('source_base_quote_only')
+
+
+def test_lotte_standalone_base_review_preserves_original_event_and_replays():
+    from services.native_quote_price_roles import native_lotte_price_roles
+    row = _lotte_standalone_base_row()
+    original = _offer_review_fixture('conditional_selection_observation')
+    original['categories'] = [{'id':'food.beans.tofu','parent_id':None,'name_ko':'두부'}]
+    original['products'][0].update(unified_category_id='food.beans.tofu',canonical_name='풀무원 국산 부침두부')
+    original['variants'][0].update(variant_name=row['name'],display_unit='340g',package_quantity=340,
+        package_unit='g',bundle_count=1,standard_unit='g',attributes={})
+    original['source_listings'][0].update(source_name='lottemart',source_record_key='8801114119426',
+        source_title=row['name'],source_url=row['source_url'])
+    offer = original['offers'][0]
+    offer.update(price=4990,event_name=row['event_name'],crawled_at=row['crawled_at'],
+        raw_evidence={'promotion_conditions':{},'observations':[{'raw_record_id':'ingestion:17:0',
+            'raw_payload':row,'raw_payload_sha256':_offer_review_digest(row)}]})
+    for key in ('keywords','match_rules','mart_category_mappings','week_buckets','offer_week_links'): original[key] = []
+    reviewed = _offer_review_payload(original,'native_lotte_public_base_quote')
+    reviewed['offers'][0]['audit_provenance']['offer_interpretation_review']['interpretation']['promotion_conditions'] = native_lotte_price_roles(row,row['attributes'],row['name'])['promotion_conditions']
+    session = _session()
+    for index,bundle in enumerate((original,reviewed,{**deepcopy(original),'run_id':'source-replay'},reviewed)):
+        parsed,digest = parse_bundle(json.dumps(bundle,ensure_ascii=False).encode(),'lotte-base.json')
+        valid = validate_bundle(session,parsed,digest)
+        assert valid.ok, valid.errors
+        result = apply_bundle(session,parsed,digest,user='synthetic-moderator')
+        assert result['idempotent'] is (index == 3)
+    stored = session.get(NormalizedOfferEvent,offer['public_offer_event_id'])
+    assert stored.price == 4990 and stored.promotion_type == 'final_price' and stored.offer_state == 'active'
+    assert stored.price_per_100g == pytest.approx(1467.6471)
+    assert stored.raw_evidence['observations'] == offer['raw_evidence']['observations']
+    assert stored.raw_evidence['promotion_conditions']['source_benefit_application_unconfirmed'] is True
+    assert session.get(NormalizedProductVariant,original['variants'][0]['public_variant_id']).package_quantity == 340
+    session.close()
+
+
+def test_lotte_standalone_base_matched_observation_append_replay_keeps_identity():
+    from core.catalog_matching import _match_key_for_row
+    from services.normalized_mart3 import publish_matched_offer_observations
+    row = _lotte_standalone_base_row()
+    bundle = _bundle()
+    bundle['categories'] = [{'id':'food.beans.tofu','parent_id':None,'name_ko':'두부'}]
+    product,variant,listing = (bundle[k][0] for k in ('products','variants','source_listings'))
+    product.update(unified_category_id='food.beans.tofu',canonical_name='풀무원 국산 부침두부',brand='풀무원')
+    variant.update(package_quantity=340,package_unit='g',bundle_count=1,standard_unit='g',attributes={})
+    listing.update(source_name='lottemart',source_record_key='8801114119426',source_title=row['name'],source_url=row['source_url'])
+    row.update(public_product_id=product['public_product_id'],public_variant_id=variant['public_variant_id'])
+    key,reason = _match_key_for_row(row)
+    assert key and reason is None
+    bundle['match_rules'][0]['match_key'] = key
+    for k in ('offers','keywords','mart_category_mappings','week_buckets','offer_week_links'): bundle[k] = []
+    session = _session()
+    apply_bundle(session,bundle,'existing-reviewed-source',user='fixture')
+    first = publish_matched_offer_observations(session,[row])[0]
+    replay = publish_matched_offer_observations(session,[row])[0]
+    assert first['inserted'] is True and replay == {**first,'inserted':False}
+    stored = session.get(NormalizedOfferEvent,first['public_offer_event_id'])
+    assert stored.price == 4990 and stored.price_per_100g == pytest.approx(1467.6471)
+    assert stored.offer_state == 'active' and stored.raw_evidence['observations'][0]['raw_payload'] == row
+    assert stored.raw_evidence['promotion_conditions']['source_benefit_application_unconfirmed'] is True
+    changed = _lotte_standalone_base_row(5990)
+    changed.update(public_product_id=product['public_product_id'],public_variant_id=variant['public_variant_id'])
+    second = publish_matched_offer_observations(session,[changed])[0]
+    assert second['public_product_id'] == first['public_product_id'] and second['public_variant_id'] == first['public_variant_id']
+    assert second['public_source_listing_id'] == first['public_source_listing_id'] and second['public_offer_event_id'] != first['public_offer_event_id']
+    assert session.get(NormalizedOfferEvent,first['public_offer_event_id']).price == 4990
+    session.close()
 
 
 def _physical_role_bundle(category, title, quantity, unit, source_url='https://example.test/physical'):

@@ -743,3 +743,24 @@
     flex: none;
   }
 }
+
+.offerFacts { font-size: var(--fs-xs); line-height: 1.5; }
+.offerSummary { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; }
+.offerFacts details { margin: 6px 0; color: var(--text3); }
+.offerFacts summary { cursor: pointer; color: var(--text2); }
+.comparisonScroll { overflow-x: auto; }
+.comparisonSelection { margin: 0 0 10px; color: var(--text2); font-size: var(--fs-sm); }
+.comparisonTable { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.comparisonTable th { text-align: left; color: var(--text3); font-weight: 500; }
+.comparisonTable th, .comparisonTable td { padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.comparisonTable td small { display: block; }
+.comparisonTable td:nth-child(2), .comparisonTable td:nth-child(3) { white-space: nowrap; }
+
+.catalogModal { max-width: 960px; }
+.comparisonTable { min-width: 760px; table-layout: fixed; }
+.comparisonTable th:first-child { width: 25%; }
+.comparisonTable th:nth-child(2) { width: 12%; }
+.comparisonTable th:nth-child(3) { width: 23%; }
+.comparisonTable th:nth-child(4) { width: 12%; }
+.comparisonTable th:last-child { width: 28%; }
+.comparisonTable td a { display: block; }

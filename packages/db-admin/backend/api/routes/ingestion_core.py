@@ -961,6 +961,17 @@ def _build_detail_item(session, row) -> dict:
     quality_breakdown = _build_quality_breakdown(items, schema_type, row)
     problem_indices = _find_problem_items(items, schema_type)
     prev_comparison = _compare_with_previous(session, row)
+    from services.native_quote_price_roles import native_lotte_price_roles
+    price_roles = []
+    for index, item in enumerate(items):
+        attrs = item.get("attributes") or {}
+        if not isinstance(attrs, dict) or attrs.get("lottemart_detail_source_fields") is None:
+            continue
+        try:
+            roles = native_lotte_price_roles(item, attrs, item.get("source_title") or item.get("name"))
+            price_roles.append({"item_index":index, "status":"source_base_observed", **roles})
+        except ValueError as exc:
+            price_roles.append({"item_index":index, "status":"source_price_role_unconfirmed", "reason":str(exc)})
 
     return {
         "id": row.id,
@@ -973,6 +984,7 @@ def _build_detail_item(session, row) -> dict:
         "crawled_at": row.crawled_at.isoformat() if row.crawled_at else None,
         "duration_seconds": row.duration_seconds,
         "items": items,
+        "price_roles": price_roles,
         "quality_details": row.quality_details,
         "quality_breakdown": quality_breakdown,
         "problem_indices": problem_indices,

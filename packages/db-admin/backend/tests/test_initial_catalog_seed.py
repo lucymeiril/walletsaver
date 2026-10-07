@@ -1685,6 +1685,68 @@ def test_separate_cup_measure_and_sold_count_preserve_source_inner_contents(defa
     assert raw == before
 
 
+@pytest.mark.parametrize('default_count', [None, 1, 4])
+def test_spoon_yogurt_inner_content_and_literal_cup_count(default_count):
+    from core.catalog_quantity import normalize_catalog_package, package_pricing_measure
+    title = '요플레 클래식 플레인 (85g4개)'
+    raw = {'package_quantity':85, 'package_unit':'g', 'display_unit':'85g', 'unit':'85g',
+           'attributes':{'category_hint':'우유/유제품', 'unit_price_display':'10g 당 117원'}}
+    if default_count is not None:
+        raw['bundle_count'] = default_count
+    before = deepcopy(raw)
+    first, issues = normalize_catalog_package(raw, raw['attributes'], title,
+                                             category_id='food.dairy.yogurt.spoon')
+    changed, changed_issues = normalize_catalog_package({**raw, 'sale_price':4980}, raw['attributes'], title,
+                                                       category_id='food.dairy.yogurt.spoon')
+    assert issues == changed_issues == [] and first == changed
+    assert (first['package_quantity'], first['package_unit'], first['bundle_count']) == (85,'g',4)
+    assert package_pricing_measure(first) == (340, 'g')
+    assert raw == before
+
+
+@pytest.mark.parametrize('title,category,change', [
+    ('요플레 클래식 플레인 (85g4개)',None,{}),
+    ('요플레 클래식 플레인 (85g4개)','food.dairy.yogurt.spoon',{'package_quantity':340,'display_unit':'340g'}),
+    ('요플레 클래식 플레인 총85g4개','food.dairy.yogurt.spoon',{}),
+    ('요플레 클래식 플레인 (85g4개)','food.dairy.yogurt.spoon',{'bundle_count':2}),
+    ('요플레 클래식 플레인 (85g4개)','food.dairy.yogurt.spoon',{'category':'세제/청소'}),
+    ('요플레 클래식 플레인 (85g4개) 혼합세트','food.dairy.yogurt.spoon',{}),
+])
+def test_spoon_yogurt_separate_count_rejects_unbound_or_conflicting_scope(title,category,change):
+    from core.catalog_quantity import normalize_catalog_package
+    package, issues = normalize_catalog_package(
+        {'package_quantity':85, 'package_unit':'g', 'display_unit':'85g', **change}, {}, title,
+        category_id=category)
+    assert package is None and issues
+
+
+@pytest.mark.parametrize('title,category,quantity,unit,path,count,display_quote', [
+    ('딱풀 8g 3개입','stationery.office.tools.glue_stick',8,'g','문구/취미/도서',3,'1ea 당 493원'),
+    ('생수 500ml 40병 (유라벨/무라벨 랜덤발송)','food.drinks.water_soda.water',500,'ml','생수/음료/주류',40,''),
+    ('변기 세정제 40G 4입','household.cleaning.bath.toilet',40,'g','변기청정세제',4,'100g 당 3431원'),
+    ('숙취해소 스틱형 레드 18G 3입','food.supplements.functional.hangover_marketed_food',18,'g','건강식품 > 숙취해소 > 개별 브랜드',3,'100g 당 18481원'),
+])
+def test_packaged_contents_inner_count_preserves_native_roles(title,category,quantity,unit,path,count,display_quote):
+    from core.catalog_quantity import normalize_catalog_package, package_pricing_measure
+    raw = {'package_quantity':quantity, 'package_unit':unit, 'display_unit':f'{quantity}{unit}',
+           'bundle_count':1, 'attributes':{'mart_native_category_path':path,'unit_price_display':display_quote}}
+    package, issues = normalize_catalog_package(raw,raw['attributes'],title,category_id=category)
+    assert issues == [] and package['bundle_count'] == count
+    assert package_pricing_measure(package) == (quantity * count, unit)
+    conflicting, issues = normalize_catalog_package({**raw,'package_quantity':quantity * count},raw['attributes'],title,category_id=category)
+    assert conflicting is None and issues
+    wrong_path, issues = normalize_catalog_package(raw,{'mart_native_category_path':'가전/주방용품'},title,category_id=category)
+    assert wrong_path is None and issues
+
+
+def test_water_random_amount_or_flavor_selection_is_not_random_label_presentation():
+    from core.catalog_quantity import normalize_catalog_package
+    package, issues = normalize_catalog_package(
+        {'package_quantity':500,'package_unit':'ml','display_unit':'500ml'}, {},
+        '생수 500ml 40병 (500ml/1L 랜덤발송)', category_id='food.drinks.water_soda.water')
+    assert package is None and issues
+
+
 @pytest.mark.parametrize('title,quantity,unit,display,expected', [
     ('시험음료 병당100ml 6병',100,'ml','100ml',(100,'ml',6)),
     ('시험식품 개당101g 6입',606,'g','606g',(101,'g',6)),

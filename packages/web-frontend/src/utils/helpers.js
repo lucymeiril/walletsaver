@@ -36,3 +36,26 @@ export function verifyPrice(userPrice, avgPrice) {
   if (ratio <= 1.20) return { status: 'verified', label: `✅ 검증됨 (${pct >= 0 ? '+' : ''}${pct}%)`, emoji: '✅', canPost: true, pct };
   return { status: 'sus_high', label: `🚨 바이럴 의심 (+${pct}%)`, emoji: '🚨', canPost: true, pct };
 }
+
+/** Short presentation only; native conditions and comparison numbers are unchanged. */
+export function getOfferConditionSummary(offer = {}) {
+  const c = offer.promotion_conditions || {};
+  const parts = [];
+  if (c.basket_selection_required === true) {
+    if (c.required_selection_quantity > 0) parts.push(`선택 ${c.required_selection_quantity}개 조건`);
+    if (c.conditional_discount_percent > 0) parts.push(`${c.conditional_discount_percent}% 혜택`);
+    parts.push('동일 상품 적용 미확인');
+  } else if (c.source_condition_kind === 'source_public_base_quote' && c.source_base_quote_only === true) {
+    parts.push('기본 표시가 · 추가 혜택 별도');
+    if (c.source_required_product_quantity > 0) parts.push(`선택 ${c.source_required_product_quantity}개 조건`);
+    if (c.conditional_discount_percent > 0) parts.push(`${c.conditional_discount_percent}% 혜택 · 적용 미확인`);
+    if (c.selected_product_scope_unconfirmed === true) parts.push('동일 상품 적용 미확인');
+  } else if (offer.promotion_condition) {
+    parts.push(offer.promotion_condition);
+  }
+  if (offer.membership_required === true) parts.push('회원 필요');
+  if (offer.coupon_required === true) parts.push('쿠폰 필요');
+  if (offer.membership_required == null || offer.coupon_required == null) parts.push('회원·쿠폰 조건 확인');
+  if (offer.availability_reason === 'expired') parts.push('판매 기간 종료');
+  return parts.join(' · ') || '별도 행사 조건 미표시';
+}

@@ -474,7 +474,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
         # A later external import must not restore a discarded inner-container count.
         # Validate the independent sold count using the same shared parser;
         # do not silently change an imported variant ID or its saved receipts.
-        from core.catalog_quantity import uses_separate_measured_count_rules
+        from core.catalog_quantity import uses_separate_measured_count_rules, supports_independent_inner_count
         effective_variant = variant
         if not effective_variant:
             stored_variant = session.get(NormalizedProductVariant, row.get('public_variant_id'))
@@ -485,8 +485,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
         effective_product = products.get(effective_variant.get('public_product_id'), {})
         category = effective_product.get('unified_category_id', existing_product_categories.get(
             effective_variant.get('public_product_id')))
-        if ((category == 'food.meals.noodles.cup_ramen'
-                or isinstance(category, str) and category.startswith('food.dairy.milk.'))
+        if (supports_independent_inner_count(category)
                 and uses_separate_measured_count_rules(_text(row.get('source_title')))):
             parsed, issues = normalize_catalog_package(
                 effective_variant, effective_variant.get('attributes') or {}, row['source_title'], category_id=category)
@@ -1057,8 +1056,8 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
     from core.reviewed_source_evidence import source_review_evidence, source_review_matches
 
     source, native = binding['source_name'], binding['source_record_key']
-    if public_base and source != 'homeplus':
-        raise ValueError('Homeplus public base quote source required')
+    if public_base and source not in {'homeplus', 'lottemart'}:
+        raise ValueError('supported native public base quote source required')
     if source not in {'homeplus', 'costco', 'lottemart'} or not isinstance(variant_attributes, dict):
         raise ValueError('supported native source and persisted variant attributes required')
 
@@ -1088,6 +1087,25 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
                'unified_category_id': binding['unified_category_id'],
                'source_listings': [{key: binding[key] for key in
                                    ('source_name', 'source_record_key', 'source_title', 'source_url')}]}
+
+    if public_base and source == 'lottemart':
+        from services.native_quote_price_roles import native_lotte_price_roles
+        previous = expected = None
+        for observation in evidence['observations']:
+            raw = observation['raw_payload']
+            roles = native_lotte_price_roles(raw, raw.get('attributes') or {}, binding['source_title'],
+                expected_native=native, expected_url=binding['source_url'], expected_package=binding['variant_spec'])
+            if roles is None or roles['source_base_quote']['amount'] != binding['quote']['price']:
+                raise ValueError('native Lotte base quote differs from original observation')
+            before = (raw.get('attributes') or {}).get('promotion_conditions') or {}
+            after = roles['promotion_conditions']
+            if previous is not None and (_review_digest(previous) != _review_digest(before)
+                    or _review_digest(expected) != _review_digest(after)):
+                raise ValueError('native base/benefit declarations differ between observations')
+            previous, expected = before, after
+        if expected is None:
+            raise ValueError('original native base observations required')
+        return previous, expected
 
     def count(value, *, optional=False):
         if value is None and optional:
@@ -1508,12 +1526,13 @@ def _review_terms(review: dict, binding: dict, evidence: dict,
                             and binding['source_name'] == 'homeplus')
     if re.search(r"\d\s*\+\s*\d|무료|증정|할인|쿠폰|회원|체크아웃|checkout|buy\s*\d|free", title, re.I):
         raise ValueError("source title contains unsupported promotion/eligibility terms")
-    if family in {'native_source_quote_purchase_conditions_unverified', 'native_homeplus_public_base_quote'}:
+    if family in {'native_source_quote_purchase_conditions_unverified', 'native_homeplus_public_base_quote',
+                  'native_lotte_public_base_quote'}:
         if 'native_source_capture_utf8' in review:
             before, terms = _captured_native_quote_terms(review, binding, evidence, variant_attributes)
         else:
             before, terms = _native_quote_terms(binding, evidence, variant_attributes,
-                                                public_base=family == 'native_homeplus_public_base_quote')
+                                                public_base=family in {'native_homeplus_public_base_quote', 'native_lotte_public_base_quote'})
     elif family == "minimum_order2_without_discount":
         if (binding["source_name"] != "costco" or url.hostname not in {"www.costco.co.kr", "costco.co.kr"}
                 or url.path != url.path.rsplit("/p/", 1)[0] + "/p/" + native

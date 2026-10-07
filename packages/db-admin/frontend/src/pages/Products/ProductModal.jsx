@@ -298,6 +298,30 @@ function FormBody({ form, setForm, formKeywords, setFormKeywords, categories, ke
   );
 }
 
+function NormalizedMetadataForm({ form, setForm, product, categories, keywords, onSave, onClose, saving, error }) {
+  const setField = (field, value) => setForm(previous => ({ ...previous, [field]: value }));
+  return <div className={s.form}>
+    <p>출처 상품명: {product.canonical_name} · 수량·출처·가격 이력은 보존됩니다.</p>
+    {product.group_display_name && <p>검토군 표시명: {product.group_display_name} · 표시명·브랜드는 연결된 검토군에 함께 적용됩니다. 검토군 분류 변경은 공식 번들을 사용합니다.</p>}
+    {error && <p role="alert">{error}</p>}
+    <label>표시 상품명<input value={form.display_name || ''} onChange={e => setField('display_name', e.target.value)} disabled={saving} /></label>
+    <label>표시 브랜드<input value={form.display_brand || ''} onChange={e => setField('display_brand', e.target.value)} disabled={saving} /></label>
+    <label>통합 분류<SearchableSelect categories={categories} value={form.unified_category_id}
+      onChange={id => { if (!saving) setField('unified_category_id', id); }} /></label>
+    <label>별칭 (한 줄에 하나)<textarea rows={3} value={form.aliases || ''} onChange={e => setField('aliases', e.target.value)} disabled={saving} /></label>
+    <label>기존 분류 키워드<select multiple value={(form.keyword_ids || []).map(String)} disabled={saving}
+      onChange={e => setField('keyword_ids', [...e.target.selectedOptions].map(option => Number(option.value)))}>
+      {keywords.map(keyword => <option key={keyword.id} value={keyword.id}>{keyword.word || keyword.keyword || `키워드 ${keyword.id}`}{keyword.is_active === false ? ' (기존 비활성 연결)' : ''}</option>)}
+    </select></label>
+    <small>기존 활성 분류 키워드만 연결합니다. 선택을 모두 해제하면 연결이 해제됩니다.</small>
+    <label>대표 이미지 URL<input type="url" value={form.primary_image_url || ''} onChange={e => setField('primary_image_url', e.target.value)} disabled={saving} /></label>
+    <label className={s.checkboxLabel}><input type="checkbox" checked={form.is_active === true} disabled={saving}
+      onChange={e => setField('is_active', e.target.checked)} />활성 상품</label>
+    <div className={s.formActions}><button className={s.cancelBtn} onClick={onClose} disabled={saving}>취소</button>
+      <button className={s.saveBtn} onClick={onSave} disabled={saving}>{saving ? '저장 중...' : '저장'}</button></div>
+  </div>;
+}
+
 /* ─── 메인 모달 래퍼 ─── */
 export default function ProductModal({
   modal, onClose,
@@ -305,11 +329,12 @@ export default function ProductModal({
   formKeywords, setFormKeywords,
   categories, keywords,
   onSave, onEdit, onDelete,
-  onCreateCategory, addKeyword,
+  onCreateCategory, addKeyword, saving = false, error = '',
 }) {
   if (!modal) return null;
 
   const title = modal.mode === 'add' ? '상품 추가'
+    : modal.mode === 'normalized' ? '상품 표시 정보 수정'
     : modal.mode === 'edit' ? '상품 수정'
     : modal.product.name;
 
@@ -320,7 +345,10 @@ export default function ProductModal({
           <h3>{title}</h3>
           <button onClick={onClose}><X size={18} /></button>
         </div>
-        {modal.mode === 'detail' ? (
+        {modal.mode === 'normalized' ? (
+          <NormalizedMetadataForm form={form} setForm={setForm} product={modal.product} categories={categories}
+            keywords={keywords} onSave={onSave} onClose={onClose} saving={saving} error={error} />
+        ) : modal.mode === 'detail' ? (
           <DetailBody
             product={modal.product}
             keywords={keywords}

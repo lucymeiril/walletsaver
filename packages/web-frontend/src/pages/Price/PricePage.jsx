@@ -4,6 +4,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { Heart, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
+import { OfferFacts } from '../../components/ProductDetailModal';
 import { searchService } from '../../services/searchService';
 import { getVariantBestOffer, getPriceHistorySummary, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../../utils/productDecision';
 import useStore from '../../stores/appStore';
@@ -48,6 +49,24 @@ export function RelatedHotdealFacts({ deal }) {
   </>;
 }
 
+export function ObservedExpertStats({ stats = {} }) {
+  const entries = [
+    ['평균 할인율', stats.avgDiscount != null ? `${stats.avgDiscount}%` : null],
+    ['할인 빈도', stats.discFreq != null ? `월 ${stats.discFreq}회` : null],
+    ['데이터 기간', stats.dataDays != null ? `${stats.dataDays}일` : null],
+    ['수집 레코드', stats.records != null ? `${fmt(stats.records)}건` : null],
+    ['이상치 제거', stats.outliers != null ? `${stats.outliers}건` : null],
+    ['신뢰 구간', stats.confidence?.length === 2 ? `${fmt(stats.confidence[0])}~${fmt(stats.confidence[1])}원` : null],
+  ].filter(([, value]) => value != null);
+  if (!entries.length) return null;
+  return <div className={s.expertPanel}>
+    <h5>📊 상세 통계</h5>
+    <div className={s.statsGrid}>{entries.map(([label, value]) => <div key={label} className={s.stat}>
+      <span className={s.statLabel}>{label}</span><span className={s.statVal}>{value}</span>
+    </div>)}</div>
+  </div>;
+}
+
 export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -74,7 +93,6 @@ export default function PricePage() {
   const addCartItem = useCartStore(st => st.addItem);
   const [priceHistory, setPriceHistory] = useState(null);
   const [chartError, setChartError] = useState(null);
-  const [relatedHotdeals, setRelatedHotdeals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chartLoading, setChartLoading] = useState(false);
   const [acKeywords, setAcKeywords] = useState([]);
@@ -151,7 +169,7 @@ export default function PricePage() {
   }, [location.state, products, navigate, setSelectedProduct, addRecentSearch]);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [range, setRange] = useState(30);
+  const [range, setRange] = useState(365);
   const [variantIdx, setVariantIdx] = useState(0);
   useEffect(() => { setVariantIdx(0); setSelectedListingId(null); setChartData([]); setPriceHistory(null); }, [id]);
 
@@ -220,7 +238,8 @@ export default function PricePage() {
         const payload = res.data || {};
         const points = Array.isArray(payload) ? payload : (payload.history || payload.points || []);
         setPriceHistory(Array.isArray(payload) ? { history: points, points, point_count: points.length } : payload);
-        setChartData(points);
+        setChartData([...points].sort((a, b) =>
+          Date.parse(a.date || a.observed_at || a.crawled_at || '') - Date.parse(b.date || b.observed_at || b.crawled_at || '')));
       })
       .catch(err => {
         if (err.name === 'AbortError') return;
@@ -231,19 +250,6 @@ export default function PricePage() {
       .finally(() => setChartLoading(false));
     return () => controller.abort();
   }, [product?.id, range]);
-
-  // Fetch related hotdeals — 상품 카테고리에 맞는 핫딜 동적 연결
-  useEffect(() => {
-    if (!product) return;
-    const controller = new AbortController();
-    const CAT_MAP = { '농산물': 'food', '축산물': 'food', '수산물': 'food', '가공식품': 'food', '생활용품': 'living', '전자제품': 'electronics', '패션': 'fashion' };
-    const hotdealCat = CAT_MAP[product.cat] || '';
-    const catParam = hotdealCat ? `category=${hotdealCat}&` : '';
-    fetch(`/api/hotdeals?${catParam}per_page=3`, { signal: controller.signal }).then(r => r.json())
-      .then(res => setRelatedHotdeals(res.data || []))
-      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
-    return () => controller.abort();
-  }, [product?.id, product?.cat]);
 
   const handleSelectProduct = useCallback((p) => {
     setSelectedProduct(p);
@@ -358,11 +364,11 @@ export default function PricePage() {
       setWishlistSaving(false);
     }
   };
-  const activeOffer = normalizedCatalog ? selectedProductQuote?.best_offer : null;
+  const activeOffer = normalizedCatalog ? selectedProductQuote?.selected_offer || selectedProductQuote?.best_offer : null;
   const chartData = normalizedCatalog ? allChartData.filter(point => point.variant_id === activeVariant?.id) : allChartData;
   const currentOffer = priceHistory?.current_offer || priceHistory?.latest_offer || null;
   const currentOfferPrice = positivePrice(currentOffer?.price, product?.current_price, product?.price, product?.sale_price);
-  const displayCur = normalizedCatalog ? (isObservationReceiptEligible(activeOffer) ? activeOffer?.comparable_price ?? null : null)
+  const displayCur = normalizedCatalog ? (isObservationReceiptEligible(activeOffer) ? selectedProductQuote?.best_offer?.comparable_price ?? null : null)
     : product ? positivePrice(activeVariant?.cur, product.cur, currentOfferPrice) : 0;
   // Product-wide history can combine different package variants. Keep it in
   // the history chart rather than label it as this variant's price range.
@@ -460,7 +466,7 @@ export default function PricePage() {
       <div>
         <div className={s.hdr}>
           <h2>물가 비교</h2>
-          <p>정부 공식 + 마트 전단 기반 — 진짜 적정 가격을 확인하세요</p>
+          <p>판매처 원문과 저장 관측을 비교하세요 — 규격·구매 조건·관측일을 함께 확인합니다</p>
         </div>
         {listLoading && (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>
@@ -589,7 +595,7 @@ export default function PricePage() {
           </button>
         )}
         <h2>물가 비교</h2>
-        <p>정부 공식 + 마트 전단 기반 — 진짜 적정 가격을 확인하세요</p>
+        <p>판매처 원문과 저장 관측을 비교하세요 — 규격·구매 조건·관측일을 함께 확인합니다</p>
       </div>
       <div className={s.searchSection}>
         <div className={s.searchWrap}>
@@ -677,9 +683,10 @@ export default function PricePage() {
               <span className={s.cat}>{product.cat}</span>
               {!normalizedCatalog && <LegacyObservationFacts unit={displayUnit} observedAt={currentOffer?.observed_at || currentOffer?.crawled_at || currentOffer?.date} />}
               {normalizedCatalog && <>
-                <div>{displayCur > 0 ? `관측 거래 금액 ${fmt(displayCur)}원` : '비교 가격 미확인'}</div>
+                <div>출처 표시 가격 {getObservedOfferPriceText(activeOffer)}</div>
+                <div><small>{displayCur > 0 ? `${getOfferAmountLabel(activeOffer)} ${fmt(displayCur)}원` : '행사 적용 금액·수령량 비교 미확인'}</small></div>
                 <small>관측 시각 · {activeOffer?.crawled_at || activeOffer?.observed_at || '미확인'}</small>
-                <div><small>{activeOffer?.current_eligible === false ? '현재 비교 대상 아님 · ' : ''}현재 결제 금액·구매 가능 여부 미확인 · 회원·쿠폰 이용 조건을 확인하세요.</small></div>
+                <div><small>{activeOffer?.current_eligible === false ? '현 판매 여부 미확인 · ' : ''}관측 가격 · 추가 혜택은 원문 조건 확인</small></div>
               </>}
             </div>
             <button
@@ -754,7 +761,7 @@ export default function PricePage() {
               )}
               </>}
             </>
-          ) : (
+          ) : normalizedCatalog && activeOffer?.listed_price != null ? null : (
             <div className={s.noData}>
               <div className={s.noDataIcon}>📊</div>
               <p className={s.noDataText}>아직 가격 데이터가 충분하지 않습니다</p>
@@ -777,22 +784,8 @@ export default function PricePage() {
                 return <div key={listing.id}>
                   <button type="button" aria-pressed={listing.id === activeListing?.id} onClick={() => setSelectedListingId(listing.id)}>{listing.source} · {listing.title}</button>
                   {offer?.listed_price != null && <span> · 표시 가격 {getObservedOfferPriceText(offer)}</span>}
-                  {offer?.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
-                  {offer?.current_eligible === false && offer?.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
-                  {isObservationReceiptEligible(offer) && offer?.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}
-                  <span> · {getOfferReceiptText(offer, { components: activeVariant.quantity_components || [] })}</span>
-                  {offer?.minimum_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}최소 구매 {offer.minimum_quantity}</span>}
-                  {offer?.promotion_condition && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}{offer.promotion_condition}</span>}
-                  {getConditionalOfferConditionText(offer) && <span> · {getConditionalOfferConditionText(offer)}</span>}
-                  {offer?.promotion_conditions?.buy_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}구매 {offer.promotion_conditions.buy_quantity}</span>}
-                  {offer?.promotion_conditions?.free_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}추가 증정 {offer.promotion_conditions.free_quantity}</span>}
-                  {offer?.membership_required === true && <span> · 회원 필요</span>}
-                  {offer?.membership_required === false && <span> · 회원 제한 없음</span>}
-                  {offer?.membership_required == null && <span> · 회원 조건 미확인</span>}
-                  {offer?.coupon_required === true && <span> · 쿠폰 필요</span>}
-                  {offer?.coupon_required === false && <span> · 쿠폰 필요 없음</span>}
-                  {offer?.coupon_required == null && <span> · 쿠폰 조건 미확인</span>}
-                  {(!isObservationReceiptEligible(offer) || offer?.comparable_price == null) && <span> · 비교 조건 미확인</span>}
+                  <small> · 관측일 {(offer?.crawled_at || offer?.observed_at || '').slice(0,10) || '미확인'}</small>
+                  <OfferFacts offer={offer} components={activeVariant.quantity_components || []} />
                 </div>;
               })}
             </div>
@@ -809,13 +802,15 @@ export default function PricePage() {
                         ))}
                       </div>
                     </div>
-                    {normalizedCatalog && <p>선택 규격·같은 수령 및 행사 조건의 관측 통계: 최저 {displayLow > 0 ? `${fmt(displayLow)}원` : '미확인'} · 평균 {displayAvg > 0 ? `${fmt(displayAvg)}원` : '미확인'} · 최고 {displayHigh > 0 ? `${fmt(displayHigh)}원` : '미확인'} ({selectedHistory.comparableCount}건)</p>}
+                    {normalizedCatalog && selectedHistory.comparableCount > 0 && <p>선택 규격·같은 수령 및 행사 조건의 관측 통계: 최저 {displayLow > 0 ? `${fmt(displayLow)}원` : '미확인'} · 평균 {displayAvg > 0 ? `${fmt(displayAvg)}원` : '미확인'} · 최고 {displayHigh > 0 ? `${fmt(displayHigh)}원` : '미확인'} ({selectedHistory.comparableCount}건)</p>}
                     {chartLoading ? (
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 220 }}>
                         <Spinner />
                         <p style={{ marginTop: 8, color: 'var(--text3)', fontSize: '.85rem' }}>차트 데이터 로딩 중...</p>
                       </div>
-                    ) : chartData.length === 0 ? (
+                    ) : chartData.length === 0 ? normalizedCatalog && activeOffer?.listed_price != null ? (
+                      <p role="status">선택 기간에 관측 이력이 없습니다. 90일 또는 1년을 선택해 이전 관측을 확인하세요.</p>
+                    ) : (
                       <div className={s.historyEmpty}>
                         <EmptyState
                           title="가격 이력이 없습니다"
@@ -834,6 +829,7 @@ export default function PricePage() {
                         {historyPointCount < 2 && (
                           <div className={s.sparseNotice}>{historyMessage || '가격 이력이 적어 추세 판단은 제한적입니다.'}</div>
                         )}
+                        {normalizedCatalog && <p>표시 가격 이력 {chartData.length}건 · 점은 저장된 관측 기록입니다. 선은 관측점 연결이며, 사이 날짜의 가격 확인을 뜻하지 않습니다.</p>}
                         {normalizedCatalog && chartData.some(point => !isObservationReceiptEligible(point) || !(point.comparable_price > 0) || (point.offer_state && point.offer_state !== 'active')) && <p>표시 가격 이력에는 비교 조건이 미확인인 관측도 포함됩니다.</p>}
                         <ResponsiveContainer width="100%" height={220}>
                           <AreaChart data={chartData}>
@@ -843,14 +839,14 @@ export default function PricePage() {
                                 <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
                               </linearGradient>
                             </defs>
-                            <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <XAxis dataKey="date" tickFormatter={value => String(value).slice(0,10)} interval="preserveStartEnd" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
                             <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
                             <Tooltip
                               content={normalizedCatalog ? ({active,payload}) => active && payload?.[0]?.payload ? <div style={{background:'var(--surface)',padding:12}}><strong>{payload[0].payload.date} · 관측 표시 가격 {getObservedOfferPriceText(payload[0].payload, payload[0].payload.price)}</strong><p>{getOfferConditionText(payload[0].payload)}</p>{isObservationReceiptEligible(payload[0].payload) && payload[0].payload.total_price > 0 && <p>{getOfferAmountLabel(payload[0].payload)} {fmt(payload[0].payload.total_price)}원</p>}{(!isObservationReceiptEligible(payload[0].payload) || payload[0].payload.comparable_price == null) && <p>비교 조건 미확인</p>}</div> : null : undefined}
                               contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
                               formatter={v => [`${fmt(v)}원`, '가격']}
                             />
-                            <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
+                            <Area type="linear" dataKey="price" dot={{r:3}} stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
                           </AreaChart>
                         </ResponsiveContainer>
                         {normalizedCatalog && <details><summary>관측별 구매 조건</summary>{chartData.map((point,index) => <p key={point.id || `${point.date}-${index}`}>{point.date} · 관측 표시 가격 {getObservedOfferPriceText(point, point.price)} · {getOfferConditionText(point)}{isObservationReceiptEligible(point) && point.total_price > 0 ? ` · ${getOfferAmountLabel(point)} ${fmt(point.total_price)}원` : ''}{!isObservationReceiptEligible(point) || point.comparable_price == null ? ' · 비교 조건 미확인' : ''}</p>)}</details>}
@@ -858,22 +854,12 @@ export default function PricePage() {
                     )}
                   </div>
 
-          <div className={s.expertPanel}>
-            <h5>📊 상세 통계</h5>
-            <div className={s.statsGrid}>
-              <div className={s.stat}><span className={s.statLabel}>평균 할인율</span><span className={s.statVal}>{activeStats?.avgDiscount != null ? `${activeStats.avgDiscount}%` : '미확인'}</span></div>
-              <div className={s.stat}><span className={s.statLabel}>할인 빈도</span><span className={s.statVal}>{activeStats?.discFreq != null ? `월 ${activeStats.discFreq}회` : '미확인'}</span></div>
-              <div className={s.stat}><span className={s.statLabel}>데이터 기간</span><span className={s.statVal}>{activeStats?.dataDays != null ? `${activeStats.dataDays}일` : '미확인'}</span></div>
-              <div className={s.stat}><span className={s.statLabel}>수집 레코드</span><span className={s.statVal}>{activeStats?.records != null ? `${fmt(activeStats.records)}건` : '미확인'}</span></div>
-              <div className={s.stat}><span className={s.statLabel}>이상치 제거</span><span className={s.statVal}>{activeStats?.outliers != null ? `${activeStats.outliers}건` : '미확인'}</span></div>
-              <div className={s.stat}><span className={s.statLabel}>신뢰 구간</span><span className={s.statVal}>{activeStats?.confidence?.length === 2 ? `${fmt(activeStats.confidence[0])}~${fmt(activeStats.confidence[1])}원` : '미확인'}</span></div>
-            </div>
-          </div>
+          <ObservedExpertStats stats={activeStats} />
         </div>
 
         {/* 우측 사이드바 */}
-        <aside className={s.right}>
-          {!normalizedCatalog && <>
+        {!normalizedCatalog && <aside className={s.right}>
+          <>
           {/* 마트별 바 차트 */}
           <div className={s.barChartBox}>
             <h4>마트별 저장 관측 가격</h4>
@@ -915,23 +901,8 @@ export default function PricePage() {
             })}
           </div>
 
-          </>}
-          <h4>외부 핫딜 관측</h4>
-          <small>선택 상품과의 동일성·현재 구매 가능 여부 미확인</small>
-          <div className={s.relatedDeals}>
-            {relatedHotdeals.length === 0 ? (
-              <EmptyState
-                title="외부 핫딜 관측이 없습니다"
-                description="표시할 외부 출처 관측이 없습니다."
-              />
-            ) : relatedHotdeals.slice(0, 3).map(d => (
-              <div key={d.id} className={s.rdItem}>
-                <div className={s.rdTitle}>{d.title}</div>
-                <RelatedHotdealFacts deal={d} />
-              </div>
-            ))}
-          </div>
-        </aside>
+          </>
+        </aside>}
       </div>
     </div>
   );

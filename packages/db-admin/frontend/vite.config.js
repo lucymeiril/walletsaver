@@ -7,11 +7,11 @@ export default defineConfig({
     port: 5175,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8002',
+        target: process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8002',
         changeOrigin: true,
       },
       '/health': {
-        target: 'http://127.0.0.1:8002',
+        target: process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8002',
         changeOrigin: true,
       },
     },

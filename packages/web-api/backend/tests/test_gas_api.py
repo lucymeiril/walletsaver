@@ -308,7 +308,7 @@ def test_public_browser_search_preserves_query_without_disguising_automation(mon
 
     response = SimpleNamespace(url="https://map.naver.com/observed/allSearch", status=200,
         json=lambda: {"result": {"place": {"list": [{"id": "native", "name": "실제 응답 형태",
-                  "x": "127.1", "y": "37.4", "reviewCount": "9",
+                  "x": "127.1", "y": "37.4", "reviewCount": "9", "distance": "201.61",
                   "petrolInfo": {"isSelf": False, "is24Opened": True}}]}}})
     page.goto.side_effect = lambda *args, **kwargs: page.on.call_args.args[1](response)
 
@@ -319,6 +319,16 @@ def test_public_browser_search_preserves_query_without_disguising_automation(mon
     assert items[0]["petrol_info"]["is_self"] is False
     assert items[0]["petrol_info"]["is_24h"] is True
     assert items[0]["petrol_info"]["has_car_wash"] is None
+    assert (items[0]["x"], items[0]["y"]) == ("127.1", "37.4")
+    assert items[0]["distance"] is None
+    assert items[0]["source_distance"] == "201.61"
+    assert items[0]["source_distance_unit"] is items[0]["source_distance_origin"] is None
+    assert items[0]["source_search_context"] == {
+        "query": query, "requested_coordinates": {"lat": reference[0], "lng": reference[1]},
+        "provider_origin_verified": False,
+        "source_endpoint": {"origin": "https://map.naver.com", "path": "/observed/allSearch"},
+        "source_query": None, "source_query_status": "not_recorded",
+    }
     launch = chromium.launch.call_args.kwargs
     assert launch.get("headless") is True
     assert not any("AutomationControlled" in arg for arg in launch.get("args", []))
@@ -364,3 +374,80 @@ def test_local_browser_unavailable_is_not_a_confirmed_empty_result(monkeypatch, 
         payload = response.json()["data"]
     assert payload["items"] == []
     assert payload["source"] == ("naver" if available else "unavailable")
+
+
+@pytest.mark.parametrize("path,location,expected", [
+    ("area-explore-stream", " 강남역 ", "강남역 카페"),
+    ("subcategory-search", " 강남역 ", "강남역 카페"),
+    ("area-explore-stream", " ", "카페"),
+    ("subcategory-search", " ", "카페"),
+    ("naver-search", "다른 지역", "직접 입력한 카페 & 식당"),
+])
+def test_local_search_binds_location_text_without_rewriting_direct_query(monkeypatch, path, location, expected):
+    from api.routes import naver_local
+    from api.app import create_app
+
+    calls = []
+    def search(query, lat, lng, max_items):
+        calls.append((query, lat, lng))
+        return [{"name": "좌표 없는 장소", "x": None, "y": None, "distance": None}]
+    monkeypatch.setattr(naver_local, "_search_via_playwright_sync", search)
+    response = TestClient(create_app(storage=object())).get('/api/local/' + path, params={
+        "location_name": location, "location": location, "categories": "카페", "subcategory": "카페",
+        "query": "직접 입력한 카페 & 식당", "lat": 37.497952, "lng": 127.027619, "browser_search": "true",
+    })
+    assert response.status_code == 200
+    if path == "area-explore-stream":
+        payload = next(json.loads(line[6:]) for line in response.text.splitlines()
+                       if line.startswith("data: ") and "done" not in line)
+    else:
+        payload = response.json()["data"]
+    assert calls == [(expected, 37.497952, 127.027619)]
+    assert payload["items"][0]["x"] is payload["items"][0]["y"] is None
+    if path != "naver-search":
+        assert payload["search_context"] == {"query": expected,
+            "requested_coordinates": {"lat": 37.497952, "lng": 127.027619},
+            "provider_origin_verified": False}
+    else:
+        assert payload["query"] == expected
+
+
+@pytest.mark.parametrize("source_query,x,y,accepted,valid_xy", [
+    ("강남역 카페", "127.027619", "37.497952", True, True),
+    ("강남역 카페", None, None, True, False),
+    ("강남역 카페", "200", "37.5", True, False),
+    ("강남역 카페", "127.0", "nan", True, False),
+    ("강남역 카페", True, "37.5", True, False),
+    ("시청 카페", "126.9788852", "37.5648060", False, False),
+    ("", "126.9788852", "37.5648060", False, False),
+])
+def test_local_native_query_context_and_unknown_proximity(monkeypatch, source_query, x, y, accepted, valid_xy):
+    from types import SimpleNamespace
+    from unittest.mock import MagicMock
+    from urllib.parse import urlencode
+    from api.routes import naver_local
+
+    page, context, browser, chromium, manager = [MagicMock() for _ in range(5)]
+    context.new_page.return_value = page
+    browser.new_context.return_value = context
+    chromium.launch.return_value = browser
+    manager.__enter__.return_value = SimpleNamespace(chromium=chromium)
+    monkeypatch.setitem(sys.modules, "playwright.sync_api", SimpleNamespace(sync_playwright=lambda: manager))
+    response = SimpleNamespace(status=200,
+        url="https://map.naver.com/observed/allSearch?" + urlencode({"query": source_query, "session": "omit-this"}),
+        json=lambda: {"result": {"place": {"list": [{"id": "native", "name": "문자 장소",
+            "x": x, "y": y, "distance": "201.61"}]}}})
+    page.goto.side_effect = lambda *args, **kwargs: page.on.call_args.args[1](response)
+    if not accepted:
+        with pytest.raises(RuntimeError):
+            naver_local._search_via_playwright_sync("강남역 카페", 37.497952, 127.027619, 1)
+    else:
+        item = naver_local._search_via_playwright_sync("강남역 카페", 37.497952, 127.027619, 1)[0]
+        assert item["name"] == "문자 장소"
+        assert (item["x"], item["y"]) == ((x, y) if valid_xy else (None, None))
+        assert item["distance"] is None and item["source_distance"] == "201.61"
+        assert item["source_distance_unit"] is item["source_distance_origin"] is None
+        assert item["source_search_context"]["source_query_status"] == "matched"
+        assert item["source_search_context"]["provider_origin_verified"] is False
+        assert "omit-this" not in json.dumps(item)
+    browser.close.assert_called_once()

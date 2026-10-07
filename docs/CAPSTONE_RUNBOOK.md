@@ -15,7 +15,17 @@ for update in m.get("catalog_updates", []):
 PYINFO
 ```
 
-동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다. 현재 동봉113의 네 DB는 신규 설치에서 함께 복원한다. manifest의 증분 bundle 목록은111까지이며,112는 소스 계산 정밀도 변경,113은 별도 정식 원문 관측 갱신이다. 기존 설치를 시작하는 것만으로113이 되지는 않는다. 이후 관측은5절의 원문 intake·검수·발행 경로로 처리하고, 오래된 전체관리 DB나 사용자 저장소를 새 배포파일로 덮어쓰지 않는다.
+동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다. 신규 설치는 manifest에 명시된 네 DB를 함께 복원한다. 기존113 설치는 아래 공식 preview/apply/publish 명령에서 `demo-data/updates/catalog113-to117.json`을 선택한다. 이 검토된 delta는5상품의 입증된 포장 내용량 정정과 새 Lotte 기본 판매가 관측1건을 포함하며, 기존 가격·시각·옛 ID·계정 참조를 보존한다. 기존 DB는 git pull이나 재기동만으로 갱신되지 않는다. 다른 revision에는 해당 base와 맞는 manifest의 갱신파일만 사용한다. 이후 새 관측은5절의 원문 intake·검수·발행 경로를 따르며 데이터 폴더 삭제나 전체 DB 덮어쓰기는 하지 않는다.
+
+## 기본 사용·편집·갱신 동선
+
+동봉 버전은 `demo-data/manifest.json`, 실제 설치 버전은 관리자 snapshot 상태와 Web `/api/health`의 catalog 정보를 기준으로 확인한다. 아래의 예전 revision별 설명은 과거 검증 예시이며 현재 버전을 대신하지 않는다.
+
+1. 기본 TeamDemo 실행 후 Web에서 검색·통합분류 → 상품군 → 판매처/규격 선택 → 출처 관측가·조건·관측일 → 가격이력을 확인한다.
+2. 관리자 **상품**의 정규화 목록에서 상품을 선택해 기존 편집기로 표시 이름/브랜드, 분류, 별칭/키워드, 이미지, 활성상태를 저장하고 다시 조회한다. 검토 후 **공개 snapshot 발행**으로 Web 검색·표시에 반영한다. 원문 제목·native ID·판매규격·시점별 원가격은 표시정보 편집으로 바꾸지 않는다.
+3. 가격·규격은 **규격·출처 보기/가격이력**, **출처·규격 검토**의 해당 상품 문맥을 따라 정식 검토한다. 승인된 수량/분류 교정은 검토된 catalog bundle을 preview → apply → snapshot 발행한다. 메타데이터 저장을 가격·규격 교정 완료로 간주하지 않는다.
+4. 크롤러 **수집 작업**의 지원된 기존 마트 경로 → 유효/저장 건수·matching/검토대기 확인 → **데이터 검토**의 크롤러 승인 → DB 승인 → snapshot 발행 → Web의 새 관측/이력 확인 순서다. 동일 receipt 재적용의 중복방지와 다음 시점 실수집은 구분한다. 접근거절은 해당 출처를 중단하며 성공 toast만으로 주간 수집·발행을 보장하지 않는다.
+
 
 ## 1. 기본: Windows TeamDemo 전체 실행
 
@@ -53,7 +63,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 아래110→111은 이 환경에서 공식preview/apply/replay/publish까지 확인한 **과거 갱신 예시**다. 이미111이상인 설치에는 다시 적용할 필요가 없다. 다른 설치에서는 manifest의 `catalog_updates`와 관리자가 표시하는 실제 revision을 먼저 대조해 해당 파일을 선택한다. 이전 여러단계의 적용 기록은 뒤쪽 역사 설명이며 이 예시가 임의 오래된DB의 전체갱신을 보장하지 않는다. 정상 재기동은 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 아래113→117은 이번 독립 공개 설치에서 사용한 정식 교정·관측 갱신과 같은 검토 묶음이다. 이미117인 설치는 다시 적용할 필요가 없다. 다른 설치에서는 manifest의 `catalog_updates`와 관리자가 표시하는 실제 revision을 먼저 대조해 해당 파일을 선택한다. 이전 여러단계의 적용 기록은 뒤쪽 역사 설명이며 이 예시가 임의 오래된DB의 전체갱신을 보장하지 않는다. 정상 재기동은 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -61,8 +71,8 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-# 검증된 예시: 실제 설치가110인 경우에만 이 파일 선택
-for WS_BUNDLE in demo-data/updates/catalog110-to111.json; do
+# 실제 설치가113인 경우에만 선택; 다른 버전은 manifest의 base 확인
+for WS_BUNDLE in demo-data/updates/catalog113-to117.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -83,13 +93,23 @@ curl -fsS -X PUT \
 
 이 환경의 실제 포트는 Web API `28000` / UI `27173`, 크롤러 API `8001` / UI `5174`, DB 관리자 API `8002` / UI `5175`였다. 아래는 같은 공개 소스·설치 helper·저장소 내부의 독립 `.demo-runtime`을 사용하는 명령이다. 검증 환경에서 재사용한 다른 checkout의 venv·비공개 디렉터리가 필요하지 않다. Python 3.11 이상과 Vite 8을 지원하는 Node.js(20.19 이상 또는 22.12 이상)가 필요하다.
 
-저장소 루트에서 최초 의존성과 데이터를 준비한다. 기존 `.demo-runtime` 데이터는 지우지 않는다.
+저장소 루트에서 최초 의존성과 데이터를 준비한다. 기존 `.demo-runtime` 데이터는 지우지 않는다. 아래 Linux 명령은 포트 변수로 격리할 수 있다. 기본값은 기존 `28000/27173`, `8001/5174`, `8002/5175`이며 Windows launcher 기본 포트는 변경하지 않는다. 기존 서비스와 나란히 새 clone을 검증하려면 **의존성 준비 전에** 다음 값을 같은 shell에 지정한다. 다른 checkout의 venv·node_modules·데이터를 복사하지 않는다.
+
+```sh
+export WS_WEB_API_PORT=28100 WS_WEB_UI_PORT=28173
+export WS_CRAWLER_API_PORT=28101 WS_CRAWLER_UI_PORT=28174
+export WS_DB_API_PORT=28102 WS_DB_UI_PORT=28175
+```
+
 
 ```sh
 export WS_ROOT="$PWD"
 export WS_DEMO_DIR="$WS_ROOT/.demo-runtime"
 python3 -m venv .venv
 export WS_PY="$WS_ROOT/.venv/bin/python"
+export WS_WEB_API_PORT="${WS_WEB_API_PORT:-28000}" WS_WEB_UI_PORT="${WS_WEB_UI_PORT:-27173}"
+export WS_CRAWLER_API_PORT="${WS_CRAWLER_API_PORT:-8001}" WS_CRAWLER_UI_PORT="${WS_CRAWLER_UI_PORT:-5174}"
+export WS_DB_API_PORT="${WS_DB_API_PORT:-8002}" WS_DB_UI_PORT="${WS_DB_UI_PORT:-5175}"
 "$WS_PY" -m pip install -r packages/web-api/backend/requirements.txt -r packages/db-admin/backend/requirements.txt -r packages/crawler-admin/requirements.txt
 "$WS_PY" -m playwright install chromium
 for ws_frontend in packages/web-frontend packages/crawler-admin/frontend packages/db-admin/frontend; do
@@ -109,7 +129,7 @@ Web의 Naver 공개 장소 검색은 `playwright.chromium.launch(headless=True)`
 이후 같은 shell에서 명시적인 저장 경로·내부 서비스 주소를 설정한다. `BACKUP_DIR`와 `WALLETSAVIOR_ORCHESTRATOR_DB`도 데모 경로에 묶어 다른 설치의 관리 저장소를 사용하지 않는다.
 
 ```sh
-export PYTHONPATH="$WS_ROOT/packages/shared${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$WS_ROOT/packages/shared"
 export DATABASE_URL="sqlite:///$WS_DEMO_DIR/admin.sqlite"
 export DB_ADMIN_DATABASE_URL="$DATABASE_URL"
 export WALLETSAVIOR_PUBLIC_DB="$WS_DEMO_DIR/public_snapshot.sqlite"
@@ -121,29 +141,29 @@ export WALLETSAVIOR_WEEKLY_STATE_DB="$WS_DEMO_DIR/weekly_state.sqlite"
 export OPINET_DB_PATH="$WS_DEMO_DIR/opinet.sqlite"
 export WALLETSAVIOR_ORCHESTRATOR_DB="$WS_DEMO_DIR/orchestrator.sqlite"
 export BACKUP_DIR="$WS_DEMO_DIR/backups"
-export DB_ADMIN_URL="http://127.0.0.1:8002"
+export DB_ADMIN_URL="http://127.0.0.1:$WS_DB_API_PORT"
 export DB_ADMIN_API_URL="$DB_ADMIN_URL/api/prices/bulk"
 export INGESTION_API_URL="$DB_ADMIN_URL/api/ingestions"
-export WALLETSAVIOR_REMOTE_ADMIN_URL="http://127.0.0.1:28000"
+export WALLETSAVIOR_REMOTE_ADMIN_URL="http://127.0.0.1:$WS_WEB_API_PORT"
 export WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD=false
 export WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER=false
-export WALLETSAVIOR_CORS_ORIGINS="http://127.0.0.1:27173"
-export FRONTEND_URL="http://127.0.0.1:27173"
+export WALLETSAVIOR_CORS_ORIGINS="http://127.0.0.1:$WS_WEB_UI_PORT"
+export FRONTEND_URL="http://127.0.0.1:$WS_WEB_UI_PORT"
 export OAUTH_REDIRECT_BASE="$FRONTEND_URL"
-export CORS_ALLOWED_ORIGINS="http://127.0.0.1:5175"
-export CORS_ORIGINS="http://127.0.0.1:5174"
+export CORS_ALLOWED_ORIGINS="http://127.0.0.1:$WS_DB_UI_PORT"
+export CORS_ORIGINS="http://127.0.0.1:$WS_CRAWLER_UI_PORT"
 (cd packages/db-admin/backend && "$WS_PY" -m alembic upgrade head)
 ```
 
-명시된 포트가 비어 있는지 확인한 후 여섯 프로세스를 시작한다. 각 UI는 기존 proxy 설정으로 대응하는 API에 연결되며 Web만 `VITE_API_PROXY_TARGET`을 지정한다.
+명시된 포트가 비어 있는지 확인한 후 여섯 프로세스를 시작한다. 세 UI 모두 해당 프로세스의 `VITE_API_PROXY_TARGET`으로 대응 API에 연결한다. 관리 UI는 값을 생략하면 기존 `8001/8002`를 사용한다. UI 포트만 바꾸지 말고 내부 API 주소와 CORS origin도 위 변수로 함께 맞춘다.
 
 ```sh
-(cd packages/web-api/backend && exec "$WS_PY" -m uvicorn main:app --host 127.0.0.1 --port 28000 --no-access-log) > "$WS_DEMO_DIR/web-api.log" 2>&1 &
-(cd packages/crawler-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
-(cd packages/db-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8002 --no-access-log) > "$WS_DEMO_DIR/db-api.log" 2>&1 &
-(cd packages/web-frontend && VITE_API_PROXY_TARGET=http://127.0.0.1:28000 exec npm run dev -- --host 127.0.0.1 --port 27173 --strictPort) > "$WS_DEMO_DIR/web-ui.log" 2>&1 &
-(cd packages/crawler-admin/frontend && exec npm run dev -- --host 127.0.0.1 --port 5174 --strictPort) > "$WS_DEMO_DIR/crawler-ui.log" 2>&1 &
-(cd packages/db-admin/frontend && exec npm run dev -- --host 127.0.0.1 --port 5175 --strictPort) > "$WS_DEMO_DIR/db-ui.log" 2>&1 &
+(cd packages/web-api/backend && exec "$WS_PY" -m uvicorn main:app --host 127.0.0.1 --port "$WS_WEB_API_PORT" --no-access-log) > "$WS_DEMO_DIR/web-api.log" 2>&1 &
+(cd packages/crawler-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port "$WS_CRAWLER_API_PORT" --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
+(cd packages/db-admin/backend && exec "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port "$WS_DB_API_PORT" --no-access-log) > "$WS_DEMO_DIR/db-api.log" 2>&1 &
+(cd packages/web-frontend && VITE_API_PROXY_TARGET="http://127.0.0.1:$WS_WEB_API_PORT" exec npm run dev -- --host 127.0.0.1 --port "$WS_WEB_UI_PORT" --strictPort) > "$WS_DEMO_DIR/web-ui.log" 2>&1 &
+(cd packages/crawler-admin/frontend && VITE_API_PROXY_TARGET="http://127.0.0.1:$WS_CRAWLER_API_PORT" exec npm run dev -- --host 127.0.0.1 --port "$WS_CRAWLER_UI_PORT" --strictPort) > "$WS_DEMO_DIR/crawler-ui.log" 2>&1 &
+(cd packages/db-admin/frontend && VITE_API_PROXY_TARGET="http://127.0.0.1:$WS_DB_API_PORT" exec npm run dev -- --host 127.0.0.1 --port "$WS_DB_UI_PORT" --strictPort) > "$WS_DEMO_DIR/db-ui.log" 2>&1 &
 ```
 
 이마트 일반 화면 모드 수집은 `chrome` 채널의 안정판 Google Chrome을 사용한다. 위 Chromium 설치만으로 이 채널이 설치되지는 않는다. Chrome이 없는 지원 Linux 호스트에서는 다음 설치 명령을 사용하거나 공식 안정판 Chrome을 설치한다. `DISPLAY`도 없는 Debian/Ubuntu에서는 Xvfb가 필요하다(시스템 설치 권한 필요). 이미 준비된 호스트에서는 이 설치를 반복하지 않는다.
@@ -159,12 +179,12 @@ sudo apt-get install -y xvfb
 ```sh
 export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrome"
 # DISPLAY가 없을 때 위 crawler-api 시작 명령 대신 사용
-(cd packages/crawler-admin/backend && exec xvfb-run -a "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
+(cd packages/crawler-admin/backend && exec xvfb-run -a "$WS_PY" -m uvicorn api.app:create_app --factory --host 127.0.0.1 --port "$WS_CRAWLER_API_PORT" --no-access-log) > "$WS_DEMO_DIR/crawler-api.log" 2>&1 &
 ```
 
 공용 크롤러 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 의존성 다운로드와 실제 브라우저 접속은 별개이므로 pip 설치 성공만으로 브라우저 proxy/TLS 접속까지 확인됐다고 보지 않는다. 다운로드 도구·OS·브라우저의 정상 CA 신뢰와 세션 proxy 설정을 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
 
-Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 이 단락의 dashboard·snapshot61/62/64/92 수치는 당시 시험 기록이다. 현재 동봉 버전은 manifest, 실제 설치 버전은 관리자 snapshot 상태에서 읽는다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)도 과거 검증 기록이다. 이미 확인한 publish를 반복하지 않는다.
+Web readiness는 `http://127.0.0.1:$WS_WEB_API_PORT/api/health`, 관리 API health는 `http://127.0.0.1:$WS_CRAWLER_API_PORT/health`, `http://127.0.0.1:$WS_DB_API_PORT/health`에서 실제 변수값을 사용해 확인한다. UI는 `$WS_WEB_UI_PORT`, `$WS_CRAWLER_UI_PORT`, `$WS_DB_UI_PORT`를 연다. 위 격리 예시의 UI는 `28173/28174/28175`다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 이 단락의 dashboard·snapshot61/62/64/92 수치는 당시 시험 기록이다. 현재 동봉 버전은 manifest, 실제 설치 버전은 관리자 snapshot 상태에서 읽는다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)도 과거 검증 기록이다. 이미 확인한 publish를 반복하지 않는다.
 
 ## 3. Docker Compose: 공개 Web/API만 실행
 
@@ -284,7 +304,7 @@ docker compose --env-file .env.demo.local -f docker-compose.yml -f docker-compos
 
 최신 source/data113의 실제 UI 확인은 공식 local Playwright MCP `0.0.83`의 protocol tool actions로 수행했다. native Desktop MCP 실행 증거와는 구분한다. 소유 합성 계정의 회원가입·프로필·찜·장바구니·알림과 cold 재로그인을 확인했다. 같은 실행에서 Community 글·댓글·투표·삭제, 핫딜 조건, 마트 검색, 수동 주유소7개 상세와 위치 거절, 사용자가 명시한 Naver 조회·가게 상세, 새 익명 세션의 공유 선택규격·출처 복원까지 확인했다. 커피는100g 호환7개만 순위를 비교하고,2+1은 기간 내 총지출·수령량과 기간 밖 계산 미확인을 구분했다. Naver의 늦은 stream 완료가 사용자가 선택한 화면을 덮던 결함은 기존 결과를 보존하며 수정했다. Google 실제 계정 callback은 등록·사용자 로그인/동의 대기이고 Windows·새 cloud·native OS 공유 선택기·외부 미리보기는 미확인이다. 이 대표 결과를 모든 상품의 정상성이나 전체 제출 통과로 확대하지 않는다. 표의 날짜는 관측 시점이고 대표 이미지는 선택한 판매처·규격의 동일 사진을 보증하지 않는다. 100g 요거트 표는 호환 단위의 오름차순·내림차순을 확인했으며 소수 단가 정밀도를 유지한다; 과거 순위 숫자를 현재 순위로 고정하지 않는다.
 
-기존 비공개 JSON을 연결한 cloud Google 시도는 공급자의 `400 redirect_uri_mismatch` 응답에 도달했다. 현재 six-process callback `http://127.0.0.1:27173/api/auth/oauth/google/callback`을 기존 client의 승인 redirect URI에 정확히 등록한 뒤 사용자 동의를 완료해야 한다. 실제 로그인 완료는 아직 확인하지 않았다. 사용자 로컬의 localhost5173→localhost8000 성공은 별도 보존하며 신규 키 발급·비공개 경로/값 공개는 필요하지 않다.
+기존 비공개 JSON과 등록된 cloud callback은 Google 이메일 입력 화면까지 연결됐다. 현재 six-process callback `http://127.0.0.1:27173/api/auth/oauth/google/callback`의 등록 오류는 해소됐지만 사용자 로그인·동의·실제 callback/세션은 미완료이고, 사용자가 추가 cloud 시험을 중단했다. 사용자 로컬의 localhost5173→localhost8000 성공은 별도 보존하며 신규 키 발급·비공개 경로/값 공개는 필요하지 않다.
 
 이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 버전은 manifest를 기준으로 하고, 이전111 보존에서는 전체9115/공개8803/pending312·계정0/4DB/source26pins가 일치했다. 이후 같은 installer·schema의 data-only 변경에서 최초 설치/재기동의 이전 성공을 재사용하며 새 호스트 전체 성공으로 확대하지 않는다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
 

@@ -45,7 +45,10 @@ function hasPurchaseCountRule(offer = {}) {
 }
 
 export function getOfferAmountLabel(offer = {}, ordinaryLabel = '관측 거래 금액') {
-  return hasPurchaseCountRule(offer) ? '출처 조건 계산 금액' : ordinaryLabel;
+  if (hasPurchaseCountRule(offer)) return '출처 조건 계산 금액';
+  const conditions = offer.promotion_conditions || offer.promotionConditions || {};
+  return conditions.source_condition_kind === 'source_public_base_quote' && conditions.source_base_quote_only === true
+    ? '원문 기본 판매가' : ordinaryLabel;
 }
 
 function quantityComparisonHeld(offer) {

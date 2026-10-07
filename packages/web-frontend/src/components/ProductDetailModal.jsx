@@ -15,7 +15,7 @@ import useStore from '../stores/appStore';
 import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
-import { fmt, fmtUnitPrice } from '../utils/helpers';
+import { fmt, fmtUnitPrice, getOfferConditionSummary } from '../utils/helpers';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection, getSourceReferencePriceText } from '../utils/productActions';
 import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, getCatalogObservationDescription, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
@@ -29,6 +29,46 @@ const CATEGORY_ICONS = {
   유제품: '🥛', 음료: '🥤', 간식: '🍪', 생활: '🧴', 가전: '📱',
   패션: '👗', default: '📦',
 };
+
+export function OfferFacts({ offer = {}, components = offer.quantity_components || [], detailsOnly = false }) {
+  const receipt = getOfferReceiptText(offer, { components });
+  const unitPrice = getOfferUnitPrice(offer, components);
+  return <div className={s.offerFacts}>
+    {!detailsOnly && <div className={s.offerSummary}>
+      <span>{['reviewed_source_component_vector_v1', 'reviewed_homogeneous_contents'].includes(offer.quantity_basis) ? receipt.split(' · ').slice(0,3).join(' · ') : receipt.split(' · ')[0]}</span>
+      {unitPrice && <strong>{fmtUnitPrice(unitPrice.price)}원/{unitPrice.unit}</strong>}
+      <span>{getOfferConditionSummary(offer)}</span>
+    </div>}
+    <details><summary>원문 조건·수량 근거</summary>
+      <small>
+    {getSourceReferencePriceText(offer) && <span> · 출처 단가 기준: {getSourceReferencePriceText(offer)} · 판매 내용량·비교 단위 아님</span>}
+    {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
+    {offer.current_eligible === false && offer.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
+    {isObservationReceiptEligible(offer) && offer.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}
+    <span> · {getOfferReceiptText(offer, { components })}</span>
+    {offer.minimum_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}최소 구매 {offer.minimum_quantity}</span>}
+    {offer.promotion_condition && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}{offer.promotion_condition}</span>}
+    {getConditionalOfferConditionText(offer) && <span> · {getConditionalOfferConditionText(offer)}</span>}
+    {Array.isArray(offer.promotion_conditions?.source_promotion_declarations) && offer.promotion_conditions.source_promotion_declarations.map((row, i) => (
+      typeof row?.description === 'string' && row.description.trim()
+        ? <div key={`source-promotion-${i}`}>출처 추가 혜택: {row.description} · 실제 적용 미확인{row.requiredProductQuantity > 0 ? ' · 동일 상품 적용·수령량 미확인' : ''}</div>
+        : null
+    ))}
+    {offer.promotion_conditions?.buy_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}구매 {offer.promotion_conditions.buy_quantity}</span>}
+    {offer.promotion_conditions?.free_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}추가 증정 {offer.promotion_conditions.free_quantity}</span>}
+    {offer.membership_required === true && <span> · 회원 필요</span>}
+    {offer.membership_required === false && <span> · 회원 제한 없음</span>}
+    {offer.membership_required == null && <span> · 회원 조건 미확인</span>}
+    {offer.coupon_required === true && <span> · 쿠폰 필요</span>}
+    {offer.coupon_required === false && <span> · 쿠폰 필요 없음</span>}
+    {offer.coupon_required == null && <span> · 쿠폰 조건 미확인</span>}
+  </small>
+      <div>관측 시각 · {offer.crawled_at || offer.observed_at || '미확인'}</div>
+      <div>수량 근거 · {offer.quantity_basis || '미확인'} · {offer.scalar_basis || '미확인'}</div>
+      <div>비교 상태 · {offer.quantity_comparison_reason || offer.observation_receipt_reason || (offer.comparable_price == null ? '비교 금액 미확인' : '출처 조건 기준')}</div>
+    </details>
+  </div>;
+}
 
 export default function ProductDetailModal({ product: suppliedProduct, onClose, mode: modeProp }) {
   const addToast = useStore((st) => st.addToast);
@@ -95,7 +135,8 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? null;
 
   // Determine mode: if explicitly set use that, otherwise auto-detect
-  const mode = modeProp || (productId && !suppliedProduct?.martKey && !suppliedProduct?.source && suppliedProduct?.type !== 'hotdeal' ? 'product' : 'preview');
+  const catalogIdentity = Boolean(suppliedProduct?.public_product_id || Object.hasOwn(suppliedProduct || {}, 'best_offer'));
+  const mode = modeProp || (productId && (catalogIdentity || (!suppliedProduct?.martKey && !suppliedProduct?.source && suppliedProduct?.type !== 'hotdeal')) ? 'product' : 'preview');
 
   const verifiedDiscount = hasDiscountMetadata && !priceObservationOnly;
   const savingsAmount = verifiedDiscount && origPrice > price && price > 0 ? origPrice - price : 0;
@@ -132,7 +173,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
         if (resolved && String(resolved.id) === String(productId)) setDetail(resolved);
         const [compRes, histRes, trustRes] = await Promise.allSettled([
           api.getJson(`/api/products/${encodeURIComponent(productId)}/price-compare`).catch(() => null),
-          api.getJson(`/api/products/${encodeURIComponent(productId)}/price-history`).catch(() => null),
+          api.getJson(`/api/products/${encodeURIComponent(productId)}/price-history?days=365`).catch(() => null),
           api.getJson(`/api/products/${encodeURIComponent(productId)}/trust`).catch(() => null),
         ]);
         if (!active) return;
@@ -310,26 +351,23 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const comparableRows = comparableOffers.filter(offer => offer.comparisonValue != null);
   const bestValue = comparableRows.length > 1 ? Math.min(...comparableRows.map(offer => offer.comparisonValue)) : null;
   const selectedValue = comparableRows.find(offer => offer.current)?.comparisonValue;
+  // Include held native source quotes in the display; only the existing compatible
+  // comparison rows can supply rank values and badges.
+  const displayedSourceOffers = isNormalizedCatalog ? (product.variants || [])
+    .filter(variant => variant.is_active !== false)
+    .flatMap(variant => (variant.listings || []).flatMap(listing => {
+      const native = listing.offers?.[0];
+      if (!native) return [];
+      const comparable = comparableOffers.find(row => row.offerId === native.id);
+      const unitPrice = getOfferUnitPrice(native, variant.quantity_components || []);
+      return [{ ...comparable, variantId:variant.id, listingId:listing.id, offerId:native.id,
+        sourceName:listing.source, title:listing.title, price:native.listed_price,
+        current:native.id === chosen?.offer?.id, unitPrice:unitPrice?.price ?? null,
+        unit:unitPrice?.unit ?? null }];
+    })) : comparableOffers;
+
   const currentIsBest = bestValue != null && selectedValue != null && selectedValue <= bestValue;
   const hasCheaperOffer = bestValue != null && selectedValue != null && bestValue < selectedValue;
-  const offerFacts = (offer = {}, components = offer.quantity_components || []) => <small>
-    {getSourceReferencePriceText(offer) && <span> · 출처 단가 기준: {getSourceReferencePriceText(offer)} · 판매 내용량·비교 단위 아님</span>}
-    {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
-    {offer.current_eligible === false && offer.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
-    {isObservationReceiptEligible(offer) && offer.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}
-    <span> · {getOfferReceiptText(offer, { components })}</span>
-    {offer.minimum_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}최소 구매 {offer.minimum_quantity}</span>}
-    {offer.promotion_condition && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}{offer.promotion_condition}</span>}
-    {getConditionalOfferConditionText(offer) && <span> · {getConditionalOfferConditionText(offer)}</span>}
-    {offer.promotion_conditions?.buy_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}구매 {offer.promotion_conditions.buy_quantity}</span>}
-    {offer.promotion_conditions?.free_quantity != null && <span> · {!isObservationReceiptEligible(offer) && '출처 행사 규칙: '}추가 증정 {offer.promotion_conditions.free_quantity}</span>}
-    {offer.membership_required === true && <span> · 회원 필요</span>}
-    {offer.membership_required === false && <span> · 회원 제한 없음</span>}
-    {offer.membership_required == null && <span> · 회원 조건 미확인</span>}
-    {offer.coupon_required === true && <span> · 쿠폰 필요</span>}
-    {offer.coupon_required === false && <span> · 쿠폰 필요 없음</span>}
-    {offer.coupon_required == null && <span> · 쿠폰 조건 미확인</span>}
-  </small>;
   const trendLabel = {
     down: '최근 하락',
     up: '최근 상승',
@@ -345,7 +383,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   if (!suppliedProduct) return null;
   return createPortal(
     <div className={s.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className={s.modal} role="dialog" aria-modal="true" aria-label={name}>
+      <div className={`${s.modal} ${isNormalizedCatalog ? s.catalogModal : ''}`} role="dialog" aria-modal="true" aria-label={name}>
         {/* Header */}
         <div className={s.header}>
           <h2 className={s.title}>{name}</h2>
@@ -388,7 +426,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
 
             <div className={s.priceBlock}>
               <div className={s.priceMain}>
-                <span className={s.salePrice}>{isNormalizedCatalog && (price <= 0 || !isObservationReceiptEligible(chosen?.offer)) ? '비교 가격 미확인' : `${fmt(price)}원`}</span>
+                <span className={s.salePrice}>{isNormalizedCatalog ? `출처 표시 가격 ${getObservedOfferPriceText(chosen?.offer)}` : `${fmt(price)}원`}</span>
                 {verifiedDiscount && origPrice > 0 && origPrice !== price && (
                   <span className={s.origPrice}>{fmt(origPrice)}원</span>
                 )}
@@ -407,7 +445,10 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
               {displayUnitPrice && <div className={s.unitPrice}>{displayUnitPrice}</div>}
               {isNormalizedCatalog && chosen && <div>
                 <small>관측 시각 · {observedAt || '미확인'}</small>
-                <div><small>{chosen.offer?.current_eligible === false ? '현재 비교 대상 아님 · ' : ''}출처 표시 조건의 관측 가격 · 현재 결제 금액·구매 가능 여부 미확인</small></div>
+                <div><small>{isObservationReceiptEligible(chosen.offer) && chosen.offer?.total_price != null
+                  ? `${getOfferAmountLabel(chosen.offer)} ${fmt(chosen.offer.total_price)}원`
+                  : '행사 적용 금액·수령량 비교 미확인'}</small></div>
+                <div><small>{chosen.offer?.current_eligible === false ? '현 판매 여부 미확인 · ' : ''}관측 가격 · 추가 혜택은 원문 조건 확인</small></div>
               </div>}
             </div>
 
@@ -433,7 +474,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
               <div className={s.metaRow}>
                 <span className={s.metaLabel}>판매 규격·출처 선택</span>
                 <small>같은 내용량도 출처별 원문 규격을 따로 보존합니다.</small>
-                <div>
+                <details><summary>다른 규격·출처 선택 ({product.variants.length})</summary>
                   {product.variants.map((variant) => (
                     <div key={variant.id}>
                       <button type="button" aria-label={`규격 선택: ${variant.name || variant.display_unit || '규격 미확인'}`} aria-pressed={chosen?.variant.id === variant.id} onClick={() => {
@@ -448,12 +489,12 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                           <button type="button" aria-label={`판매처 선택: ${listing.source} · ${listing.title}`} aria-pressed={chosen?.listing.id === listing.id} onClick={() => setOfferSelection({ variantId: variant.id, listingId: listing.id, offerId: offer?.id })}>{listing.source} · {listing.title}</button>
                           {offer?.listed_price != null && <span> · 표시 가격 {getObservedOfferPriceText(offer)}</span>}
                           {offer && offer.comparable_price == null && <small> · 비교 조건 미확인</small>}
-                          {offer && offerFacts(offer, variant.quantity_components || [])}
+                          {offer && <OfferFacts offer={offer} components={variant.quantity_components || []} />}
                         </div>;
                       })}
                     </div>
                   ))}
-                </div>
+                </details>
               </div>
             )}
             {chosen?.variant.quantity_components?.length > 0 && <div aria-label="선택 규격 구성">
@@ -468,8 +509,8 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             )}
           </div>
 
-          <div className={s.section}>
-            <h3 className={s.sectionTitle}>🔥 구매 판단</h3>
+          <details className={s.section}>
+            <summary className={s.sectionTitle}>가격 판단·기간 조건 참고</summary>
             <div className={`${s.judgmentBox} ${s[`judgment-${judgment.tone}`] || ''}`}>
               <div className={s.judgmentHead}>
                 <strong>{judgment.label}</strong>
@@ -506,10 +547,10 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             ) : (
               <p className={s.noData}>신뢰도/커뮤니티 신호는 아직 수집되지 않았습니다.</p>
             )}
-          </div>
+          </details>
 
           <div className={s.section}>
-            <h3 className={s.sectionTitle}>📈 가격 이력 요약</h3>
+            <h3 className={s.sectionTitle}>📈 365일 선택 출처 이력</h3>
             {historySummary.hasData ? (
               <>
                 {isNormalizedCatalog && <p>선택 규격·같은 수령 및 행사 조건의 관측 통계 · {historySummary.comparableCount}건</p>}
@@ -537,7 +578,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                           <span className={s.barLabel}>{formatDate(p.date)}</span>
                           {isNormalizedCatalog && (!isObservationReceiptEligible(p) || !(p.comparablePrice > 0) || (p.offerState && p.offerState !== 'active')) && <small>비교 조건 미확인</small>}
                           <span className={s.barPrice}>{isNormalizedCatalog ? getObservedOfferPriceText(p, p.price) : fmt(p.price)}</span>
-                          {isNormalizedCatalog && <small>{getOfferConditionText(p)}{isObservationReceiptEligible(p) && p.total_price > 0 ? ` · ${getOfferAmountLabel(p)} ${fmt(p.total_price)}원` : ''}</small>}
+                          {isNormalizedCatalog && <details><summary>관측 조건</summary><small>{getOfferConditionText(p)}{isObservationReceiptEligible(p) && p.total_price > 0 ? ` · ${getOfferAmountLabel(p)} ${fmt(p.total_price)}원` : ''}</small></details>}
                         </div>
                       );
                     })}
@@ -553,23 +594,23 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
 
           <div className={s.section}>
             <h3 className={s.sectionTitle}>🏬 판매처별 규격·가격</h3>
-            {otherOffers.length > 0 ? (
-              <div className={s.otherStores}>
-                {comparableOffers.map((offer, i) => (
-                  <div key={`${offer.sourceName}-${offer.price}-${i}`} className={`${s.otherStoreItem} ${offer.current ? s.currentOffer : ''}`}>
-                    <span className={s.osIcon}>{offer.current ? '✅' : '🏪'}</span>
-                    <span className={s.osName}>
-                      {offer.sourceName}
-                      {offer.title && <small>{offer.title}</small>}
-                    </span>
-                    <span className={s.osPrice}>{fmt(offer.price)}원</span>
-                    {offer.unitPrice != null && offer.unit && <small>{fmtUnitPrice(offer.unitPrice)}원/{offer.unit}</small>}
-                    {offerFacts({ total_price: offer.totalPrice, total_quantity: offer.totalQuantity, quantity_unit: offer.quantityUnit, quantity_basis: offer.quantityBasis, scalar_basis: offer.scalarBasis, received_package_count_scope: offer.receivedPackageCountScope, quantity_components: offer.quantityComponents, pricing_measure_quantity: offer.pricingMeasureQuantity, pricing_measure_unit: offer.pricingMeasureUnit, pricing_measure_basis: offer.pricingMeasureBasis, minimum_quantity: offer.minimumQuantity, received_package_count: offer.receivedPackageCount, promotion_condition: offer.promotionCondition, promotion_conditions: offer.promotionConditions, membership_required: offer.membershipRequired, coupon_required: offer.couponRequired })}
-                    {selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <span className={s.osCheaper}>{offer.comparisonBasis} 기준 표시 조건에서 더 저렴</span>}
-                    {bestValue != null && offer.comparisonValue === bestValue && <span className={s.osBest}>{offer.comparisonBasis} 기준 표시 조건의 관측 최저</span>}
-                  </div>
-                ))}
-              </div>
+            {isNormalizedCatalog && <p className={s.comparisonSelection}>선택: {storeName} · {unit || '규격 미확인'} · {getObservedOfferPriceText(chosen?.offer || {})} · 관측 {(chosen?.offer?.crawled_at || chosen?.offer?.observed_at || '').slice(0,10) || '미확인'}</p>}
+            {displayedSourceOffers.length > 0 ? (
+              <div className={s.comparisonScroll}><table className={s.comparisonTable} aria-label="판매처별 규격 가격 비교">
+                <thead><tr><th>판매처·규격</th><th>출처 표시가</th><th>같은 단위가</th><th>관측일</th><th>핵심 조건</th></tr></thead>
+                <tbody>{displayedSourceOffers.map((offer, i) => {
+                  const variant = product.variants?.find(row => row.id === offer.variantId);
+                  const listing = variant?.listings?.find(row => row.id === offer.listingId);
+                  const native = listing?.offers?.find(row => row.id === offer.offerId);
+                  return <tr key={offer.offerId || `${offer.sourceName}-${i}`} className={offer.current ? s.currentOffer : ''}>
+                    <td><strong>{offer.current ? '✅ ' : ''}{offer.sourceName}</strong><small>{variant?.display_unit || offer.title || '규격 미확인'}</small>{native && <small>{getOfferReceiptText(native, {components:variant.quantity_components || []}).split(' · ')[0]}</small>}{listing && <button type="button" aria-label={`비교 판매처 선택: ${listing.source} · ${listing.title}`} onClick={() => setOfferSelection({variantId:variant.id,listingId:listing.id,offerId:native?.id})}>이 출처 선택</button>}{listing?.url && <a href={listing.url} target="_blank" rel="noopener noreferrer">출처 원문</a>}</td>
+                    <td>{native ? getObservedOfferPriceText(native) : `${fmt(offer.price)}원`}</td>
+                    <td>{offer.unitPrice != null && offer.unit ? `${offer.comparisonValue == null ? '단위 다름 · ' : ''}${fmtUnitPrice(offer.unitPrice)}원/${offer.unit}` : '동일 단위 미확인'}{selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <small className={s.osCheaper}>{offer.comparisonBasis} 기준 더 저렴</small>}{bestValue != null && offer.comparisonValue === bestValue && <small className={s.osBest}>{offer.comparisonBasis} 기준 관측 최저</small>}</td>
+                    <td>{(native?.crawled_at || native?.observed_at || '').slice(0,10) || '미확인'}</td>
+                    <td>{getOfferConditionSummary(native || {promotion_condition:offer.promotionCondition,promotion_conditions:offer.promotionConditions,membership_required:offer.membershipRequired,coupon_required:offer.couponRequired})}{native && <OfferFacts offer={native} components={variant.quantity_components || []} detailsOnly />}</td>
+                  </tr>;
+                })}</tbody>
+              </table></div>
             ) : (
               <p className={s.noData}>아직 다른 마트/쇼핑몰/핫딜 사이트 비교 데이터가 없습니다.</p>
             )}

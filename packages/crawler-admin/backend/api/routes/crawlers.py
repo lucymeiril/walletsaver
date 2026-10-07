@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
@@ -59,7 +60,7 @@ def _load_run_history() -> dict[str, list[dict]]:
     return _read_json(_RUN_HISTORY_FILE, {})
 
 
-def _append_run_history(crawler_id: str, status: str, duration: float | None = None) -> None:
+def _append_run_history(crawler_id: str, status: str, duration: float | None = None, *, source_url: str | None = None) -> None:
     history = _load_run_history()
     runs = history.get(crawler_id, [])
     runs.append(
@@ -69,6 +70,8 @@ def _append_run_history(crawler_id: str, status: str, duration: float | None = N
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
     )
+    if source_url is not None:
+        runs[-1]["source_url"] = source_url
     history[crawler_id] = runs[-MAX_RECENT_RUNS:]
     _write_json(_RUN_HISTORY_FILE, history)
 
@@ -349,9 +352,25 @@ async def bulk_run_crawlers(request: Request, body: BulkRunRequest):
     return {"results": results}
 
 
+class CrawlerRunRequest(BaseModel):
+    source_url: str | None = Field(default=None, max_length=2048)
+
+    @field_validator("source_url")
+    @classmethod
+    def exact_public_lotte_product_url(cls, value):
+        if value is not None and not re.fullmatch(
+            r"https://lottemartzetta\.com/products/OS[0-9]{13}/details/?", value
+        ):
+            raise ValueError("source_url must be an exact public Lotte product URL without query or credentials")
+        return value
+
+
 @router.post("/{crawler_id}/run")
 @limiter.limit("5/minute")
-async def run_crawler(crawler_id: str, request: Request):
+async def run_crawler(crawler_id: str, request: Request, body: CrawlerRunRequest | None = None):
+    source_url = body.source_url if body else None
+    if source_url is not None and crawler_id != "lottemart":
+        raise HTTPException(status_code=400, detail="Bounded source URL runs are supported only for lottemart")
     _require_crawler(crawler_id)
     if not await acquire_crawler_slot(crawler_id):
         return {
@@ -369,12 +388,17 @@ async def run_crawler(crawler_id: str, request: Request):
         "items_saved": 0,
         "errors": [],
     }
+    run_options = {}
+    if source_url is not None:
+        _crawl_results[crawler_id]["source_url"] = source_url
+        run_options = {"crawl_method": "crawl_incremental", "crawl_kwargs": {"source_url": source_url}, "max_attempts": 1}
     audit_log(AuditEventType.CRAWLER_RUN, request=request, resource=crawler_id)
-    asyncio.create_task(_run_and_store(crawler_id, _get_pipeline()))
+    asyncio.create_task(_run_and_store(crawler_id, _get_pipeline(), **run_options))
     return {
         "crawler_id": crawler_id,
         "status": "running",
         "message": f"Crawler '{crawler_id}' started",
+        **({"source_url": source_url} if source_url is not None else {}),
     }
 
 
@@ -444,7 +468,11 @@ async def _run_and_store(
     crawler_id: str,
     pipeline: CrawlPipeline,
     crawl_method: str = "crawl",
+    *,
+    crawl_kwargs: dict[str, Any] | None = None,
+    max_attempts: int | None = None,
 ):
+    source_url = (crawl_kwargs or {}).get("source_url")
     async def publish_progress(payload: dict[str, Any]) -> None:
         current = _crawl_results.setdefault(crawler_id, {"crawler_id": crawler_id})
         quality = payload.get("quality_details") if isinstance(payload.get("quality_details"), dict) else {}
@@ -480,6 +508,8 @@ async def _run_and_store(
                 crawler_id,
                 progress_callback=publish_progress,
                 crawl_method=crawl_method,
+                **({"crawl_kwargs": crawl_kwargs} if crawl_kwargs is not None else {}),
+                **({"max_attempts": max_attempts} if max_attempts is not None else {}),
             )
 
         final_payload = {
@@ -495,8 +525,10 @@ async def _run_and_store(
             "quality_details": result.quality_details,
             "finished_at": datetime.now(timezone.utc).isoformat(),
         }
+        if source_url is not None:
+            final_payload["source_url"] = source_url
         _crawl_results[crawler_id] = final_payload
-        _append_run_history(crawler_id, result.status, result.duration)
+        _append_run_history(crawler_id, result.status, result.duration, **({"source_url": source_url} if source_url is not None else {}))
         audit_log(
             AuditEventType.CRAWL_COMPLETED if result.status == "success" else AuditEventType.CRAWL_FAILED,
             resource=crawler_id,
@@ -518,7 +550,9 @@ async def _run_and_store(
             "finished_at": datetime.now(timezone.utc).isoformat(),
             "errors": ["internal error"],
         }
-        _append_run_history(crawler_id, "failed")
+        if source_url is not None:
+            _crawl_results[crawler_id]["source_url"] = source_url
+        _append_run_history(crawler_id, "failed", **({"source_url": source_url} if source_url is not None else {}))
         audit_log(
             AuditEventType.CRAWL_FAILED,
             resource=crawler_id,

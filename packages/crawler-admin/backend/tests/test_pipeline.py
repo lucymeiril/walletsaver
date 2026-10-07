@@ -568,3 +568,38 @@ async def test_failed_explicit_source_access_stop_is_not_a_whole_collector_retry
     assert result.status == 'failed' and result.items_saved == 0
     assert result.quality_details['source_quality_details'] == quality
     assert any('not retrying' in error for error in result.errors)
+
+
+@pytest.mark.parametrize('source_status', [CrawlStatus.SUCCESS, CrawlStatus.FAILED])
+def test_bounded_source_pipeline_preserves_receipt_and_never_recrawls_unparsed_200(source_status):
+    import asyncio
+    source_url = 'https://lottemartzetta.com/products/OS8801114119426/details'
+    rows = [{'name': '원문 상품 140ml', 'sale_price': 3900, 'source': 'lottemart',
+        'detail_url': source_url, 'crawled_at': '2026-10-07T09:00:00+00:00',
+        'attributes': {'lottemart_detail_source_fields': {'retailerProductId': '8801114119426', 'price': {'amount': '3900', 'currency': 'KRW'}},
+            'submission_business_evidence': [{'http_receipt_status': 'supplied_response_metadata'}]}}]
+    registry = _registry(rows)
+    registry._registry['test_crawler']['config']['schedule']['retry_count'] = 3
+    crawler = registry.get_crawler.return_value
+    crawler.crawl_incremental = AsyncMock(return_value=CrawlResult(status=source_status,
+        crawler_name='test_crawler', items_count=len(rows) if source_status == CrawlStatus.SUCCESS else 0,
+        items=rows if source_status == CrawlStatus.SUCCESS else [],
+        error_msg=None if source_status == CrawlStatus.SUCCESS else 'HTTP200 body has no usable target'))
+    pipeline = CrawlPipeline(registry=registry, event_bus=MagicMock(publish=AsyncMock()))
+    with patch('pipeline.pipeline.enrich_items_with_matching_entries', side_effect=_matching_passthrough), \
+         patch.object(pipeline, '_store_to_ingestion', new_callable=AsyncMock, return_value=1) as intake, \
+         patch.object(pipeline, '_store', new_callable=AsyncMock) as direct:
+        result = asyncio.run(pipeline.run_crawler('test_crawler', crawl_method='crawl_incremental',
+            crawl_kwargs={'source_url': source_url}, max_attempts=1))
+    crawler.crawl_incremental.assert_awaited_once_with(source_url=source_url)
+    crawler.crawl.assert_not_awaited()
+    direct.assert_not_awaited()
+    if source_status == CrawlStatus.SUCCESS:
+        intake.assert_awaited_once()
+        submitted = intake.await_args.kwargs['items'][0]
+        assert submitted['attributes'] == rows[0]['attributes']
+        assert submitted['crawled_at'] == rows[0]['crawled_at']
+        assert result.items_saved == 1
+    else:
+        intake.assert_not_awaited()
+        assert result.status == 'failed' and result.items_saved == 0
