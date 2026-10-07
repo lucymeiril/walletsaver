@@ -143,6 +143,7 @@ def create_app() -> FastAPI:
             active_schedules = store.list_schedules(enabled_only=True)
             recent_runs = store.list_runs(page=1, page_size=1).get("items", [])
             result["scheduler_running"] = orchestrator_routes.schedule_loop_running()
+            result["scheduler_state"] = orchestrator_routes.schedule_loop_state()
             result["scheduled_jobs"] = len(active_schedules)
             result["last_crawl"] = recent_runs[0] if recent_runs else None
             if (
@@ -152,6 +153,9 @@ def create_app() -> FastAPI:
             ):
                 result["status"] = "degraded"
                 result["reason"] = "scheduler_not_running"
+            elif active_schedules and result["scheduler_state"]["last_error"]:
+                result["status"] = "degraded"
+                result["reason"] = "scheduler_tick_failed"
         except Exception as exc:
             logger.exception("[health] orchestrator run store unavailable")
             result["status"] = "degraded"

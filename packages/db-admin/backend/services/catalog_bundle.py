@@ -143,7 +143,51 @@ def _read_entity_file(archive: zipfile.ZipFile, member: str) -> list[dict[str, A
     return rows
 
 
-def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) -> BundleValidation:
+def _validate_source_correction_rows(session, bundle, errors, *, allow_candidate=False):
+    """Incoming corrections must prove the persisted source, not their own audit label."""
+    from core.reviewed_source_evidence import source_correction_json, valid_source_correction_event
+    def stored_row(row):
+        return {column.name: getattr(row, column.name) for column in row.__table__.columns}
+    variants = {row.get('public_variant_id'): row for row in bundle.get('variants', []) if isinstance(row, Mapping)}
+    listings = {row.get('public_source_listing_id'): row for row in bundle.get('source_listings', []) if isinstance(row, Mapping)}
+    for index, event in enumerate(bundle.get('offers', [])):
+        if not isinstance(event, Mapping):
+            continue  # the ordinary DTO validator reports malformed rows
+        audit = source_correction_json(event.get('audit_provenance'))
+        if 'source_correction_lineage' not in audit:
+            continue
+        proof = audit['source_correction_lineage']
+        valid = False
+        if (isinstance(proof, Mapping) and all(isinstance(proof.get(key), str) and proof[key]
+                for key in ('original_event_id','original_variant_id','public_product_id'))
+                and isinstance(event.get('public_source_listing_id'), str)
+                and isinstance(event.get('public_offer_event_id'), str)):
+            original = session.get(NormalizedOfferEvent, proof.get('original_event_id'))
+            old_variant = session.get(NormalizedProductVariant, proof.get('original_variant_id'))
+            current_listing = session.get(NormalizedSourceListing, event.get('public_source_listing_id'))
+            product = session.get(NormalizedCanonicalProduct, proof.get('public_product_id'))
+            if original is not None and old_variant is not None and current_listing is not None and product is not None:
+                listing = {**stored_row(current_listing), **listings.get(current_listing.public_source_listing_id, {})}
+                target = session.get(NormalizedProductVariant, listing.get('public_variant_id'))
+                variant = {**(stored_row(target) if target is not None else {}), **variants.get(listing.get('public_variant_id'), {})}
+                variant['unified_category_id'] = product.unified_category_id
+                # First apply binds the pre-apply tuple. Replay may use the already
+                # approved projection, never a different old native listing.
+                preapply = current_listing.public_variant_id == old_variant.public_variant_id
+                saved = session.get(NormalizedOfferEvent, event.get('public_offer_event_id'))
+                replay = (saved is not None and current_listing.public_variant_id == variant.get('public_variant_id')
+                    and valid_source_correction_event(stored_row(saved), stored_row(original), listing, variant,
+                        product_id=product.public_product_id, original_variant=stored_row(old_variant)))
+                valid = (preapply or replay) and valid_source_correction_event(
+                    {**event, 'projection_version': event.get('projection_version', SCHEMA_VERSION)},
+                    stored_row(original), listing, variant, product_id=product.public_product_id,
+                    allow_candidate=allow_candidate, original_variant=stored_row(old_variant))
+        if not valid:
+            errors.append(f'offers[{index}] source_correction_lineage does not prove the persisted source/context')
+
+
+def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str,
+                    *, source_correction_preview=False) -> BundleValidation:
     errors: list[str] = []
     warnings: list[str] = []
     bundle = {**{key: [] for key in ENTITY_KEYS}, **bundle}
@@ -664,6 +708,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
     except (KeyError, TypeError, ValueError) as exc:
         errors.append(f"offer_interpretation_review: {exc}")
     _validate_observation_accounting(bundle, errors)
+    _validate_source_correction_rows(session, bundle, errors, allow_candidate=source_correction_preview)
     if unresolved:
         warnings.append(f"미분류 {unresolved}건은 공개 카탈로그에 적용되지 않습니다")
     return BundleValidation(

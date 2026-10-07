@@ -365,7 +365,6 @@ export default function PricePage() {
     }
   };
   const activeOffer = normalizedCatalog ? selectedProductQuote?.selected_offer || selectedProductQuote?.best_offer : null;
-  const chartData = normalizedCatalog ? allChartData.filter(point => point.variant_id === activeVariant?.id) : allChartData;
   const currentOffer = priceHistory?.current_offer || priceHistory?.latest_offer || null;
   const currentOfferPrice = positivePrice(currentOffer?.price, product?.current_price, product?.price, product?.sale_price);
   const displayCur = normalizedCatalog ? (isObservationReceiptEligible(activeOffer) ? selectedProductQuote?.best_offer?.comparable_price ?? null : null)
@@ -373,6 +372,7 @@ export default function PricePage() {
   // Product-wide history can combine different package variants. Keep it in
   // the history chart rather than label it as this variant's price range.
   const selectedHistory = getPriceHistorySummary(selectedProductQuote || {}, allChartData, {variantId:activeVariant?.id});
+  const chartData = normalizedCatalog ? selectedHistory.history : allChartData;
   const displayAvg = normalizedCatalog ? selectedHistory.avg : product ? positivePrice(activeVariant?.avg, product.avg, priceHistory?.average_price, displayCur) : 0;
   const displayLow = normalizedCatalog ? selectedHistory.min : product ? positivePrice(activeVariant?.low, product.low, priceHistory?.min_price, displayCur) : 0;
   const displayHigh = normalizedCatalog ? selectedHistory.max : product ? positivePrice(activeVariant?.high, product.high, priceHistory?.max_price, displayCur) : 0;
@@ -785,7 +785,7 @@ export default function PricePage() {
                   <button type="button" aria-pressed={listing.id === activeListing?.id} onClick={() => setSelectedListingId(listing.id)}>{listing.source} · {listing.title}</button>
                   {offer?.listed_price != null && <span> · 표시 가격 {getObservedOfferPriceText(offer)}</span>}
                   <small> · 관측일 {(offer?.crawled_at || offer?.observed_at || '').slice(0,10) || '미확인'}</small>
-                  <OfferFacts offer={offer} components={activeVariant.quantity_components || []} />
+                  <OfferFacts offer={offer} variant={activeVariant} components={activeVariant.quantity_components || []} />
                 </div>;
               })}
             </div>
@@ -829,6 +829,7 @@ export default function PricePage() {
                         {historyPointCount < 2 && (
                           <div className={s.sparseNotice}>{historyMessage || '가격 이력이 적어 추세 판단은 제한적입니다.'}</div>
                         )}
+                        {normalizedCatalog && selectedHistory.corrections.length > 0 && <p>보존 원문 해석 교정 {selectedHistory.corrections.length}건 · 새 수집 관측이 아닙니다. 원가격·관측 시각은 원문 이력에 보존합니다.</p>}
                         {normalizedCatalog && <p>표시 가격 이력 {chartData.length}건 · 점은 저장된 관측 기록입니다. 선은 관측점 연결이며, 사이 날짜의 가격 확인을 뜻하지 않습니다.</p>}
                         {normalizedCatalog && chartData.some(point => !isObservationReceiptEligible(point) || !(point.comparable_price > 0) || (point.offer_state && point.offer_state !== 'active')) && <p>표시 가격 이력에는 비교 조건이 미확인인 관측도 포함됩니다.</p>}
                         <ResponsiveContainer width="100%" height={220}>

@@ -12,6 +12,365 @@ import re
 import json
 import math
 
+from datetime import datetime, timezone
+from decimal import InvalidOperation
+import hashlib
+from urllib.parse import urlsplit
+from core.match_key import normalize_pack_identity
+from core.product_units import parse_package_quantity
+from core.promotion_semantics import conditional_selection_facts_or_none
+
+
+SOURCE_CORRECTION_EVENT_FIELDS = (
+    'public_offer_event_id','public_source_listing_id','price_state','promotion_type',
+    'price','original_price','discount_rate','event_name','standard_unit_price','price_per_100g',
+    'valid_from','valid_to','raw_record_id','raw_evidence','audit_provenance','crawled_at',
+    'offer_state','projection_version')
+SOURCE_CORRECTION_HOLD_ISSUES = frozenset({'measured_inner_scope_unresolved','independent_count_scope_unresolved'})
+
+
+def source_correction_json(value):
+    if isinstance(value,str):
+        try:
+            parsed = json.loads(value)
+            return parsed if isinstance(parsed,Mapping) else {}
+        except (ValueError,TypeError):
+            return {}
+    return value if isinstance(value,Mapping) else {}
+
+
+def source_correction_time(value):
+    if value is None:
+        return None
+    stamp = value if isinstance(value,datetime) else datetime.fromisoformat(str(value).replace('Z','+00:00'))
+    # Normalized SQL timestamps are UTC; this does not reinterpret a raw source clock.
+    stamp = stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else stamp.astimezone(timezone.utc)
+    return stamp.isoformat()
+
+
+def source_correction_event_values(row):
+    """Same original event digest for SQL JSON/date/float cells and ORM rows."""
+    canonical = {key:row.get(key) for key in SOURCE_CORRECTION_EVENT_FIELDS}
+    for key in ('raw_evidence','audit_provenance'):
+        canonical[key] = source_correction_json(canonical[key])
+    for key in ('crawled_at','valid_from','valid_to'):
+        canonical[key] = source_correction_time(canonical[key])
+    for key in ('price','original_price','discount_rate','standard_unit_price','price_per_100g'):
+        if canonical[key] is not None:
+            if isinstance(canonical[key],bool):
+                raise ValueError('Invalid normalized event amount')
+            canonical[key] = float(canonical[key])
+    return canonical
+
+
+def source_correction_event_hash(row):
+    return _native_lotte_view_digest(source_correction_event_values(row))
+
+
+def source_correction_variant_hash(row):
+    values = {key:row.get(key) for key in ('public_product_id','public_variant_id',
+        'package_quantity','package_unit','bundle_count','display_unit','standard_unit','attributes')}
+    values['attributes'] = source_correction_json(values['attributes'])
+    if values['package_quantity'] is not None:
+        values['package_quantity'] = float(values['package_quantity'])
+    return _native_lotte_view_digest(values)
+
+
+def source_correction_proposal_hash(event, variant, source_listing):
+    """Stable source/projection signature; approval status does not sign itself."""
+    projected = source_correction_event_values(event)
+    proof = deepcopy(projected['audit_provenance'].get('source_correction_lineage') or {})
+    for key in ('status','proposal_sha256'):
+        proof.pop(key,None)
+    projected['audit_provenance'] = {'source_correction_lineage':proof}
+    specification = {key:variant.get(key) for key in
+        ('public_product_id','public_variant_id','package_quantity','package_unit','bundle_count','standard_unit','display_unit')}
+    if specification['package_quantity'] is not None:
+        specification['package_quantity'] = float(specification['package_quantity'])
+    attrs = deepcopy(source_correction_json(variant.get('attributes')))
+    attrs.pop('source_correction_lineage',None)
+    specification['attributes'] = attrs
+    listing = {key:source_listing.get(key) for key in
+        ('public_source_listing_id','public_variant_id','source_name','source_record_key','source_title','source_url')}
+    return _native_lotte_view_digest({'projection':projected,'variant':specification,'listing':listing})
+
+
+def valid_source_correction_event(event, original_event, source_listing, variant,
+                                  *, product_id, allow_candidate=False, original_variant=None):
+    """Validate a derived projection against its persisted original and source.
+
+    No database or app imports. Candidate status is usable only by formal
+    preview; public consumers require an approved, source-proved projection.
+    """
+    try:
+        if any(not isinstance(row,Mapping) for row in (event,original_event,source_listing,variant)):
+            return False
+        audit = source_correction_json(event.get('audit_provenance'))
+        proof = audit.get('source_correction_lineage')
+        evidence = source_correction_json(original_event.get('raw_evidence'))
+        projected_evidence = source_correction_json(event.get('raw_evidence'))
+        observations = evidence.get('observations')
+        status = {'reviewed_candidate','approved'} if allow_candidate else {'approved'}
+        if (not isinstance(proof,Mapping) or type(proof.get('version')) is not int or proof['version'] != 1
+                or not isinstance(proof.get('status'),str) or proof.get('status') not in status
+                or proof.get('projection_kind') != 'source_interpretation_correction'
+                or proof.get('observation_kind') != 'source_interpretation_correction'
+                or any(not isinstance(proof.get(key),str) or not proof[key].strip() for key in ('reason','reviewed_by'))
+                or (not allow_candidate and not re.fullmatch(r'[0-9a-f]{64}',str(proof.get('proposal_sha256') or '')))
+                or proof.get('original_observation_immutable') is not True
+                or proof.get('public_product_id') != product_id or variant.get('public_product_id') != product_id
+                or proof.get('original_event_id') != original_event.get('public_offer_event_id')
+                or event.get('public_offer_event_id') == original_event.get('public_offer_event_id')
+                or proof.get('corrected_event_id') != event.get('public_offer_event_id')
+                or proof.get('original_event_sha256') != source_correction_event_hash(original_event)
+                or proof.get('original_quote') != original_event.get('price')
+                or proof.get('corrected_quote') != event.get('price')
+                or proof.get('corrected_variant_id') != variant.get('public_variant_id')
+                or not isinstance(proof.get('original_variant_id'),str) or not proof['original_variant_id']
+                or (original_variant is not None and (
+                    original_variant.get('public_variant_id') != proof['original_variant_id']
+                    or original_variant.get('public_product_id') != product_id
+                    or source_correction_variant_hash(original_variant) != proof.get('original_variant_sha256')))
+                or source_listing.get('public_variant_id') != variant.get('public_variant_id')
+                or any(proof.get(key) != source_listing.get(key) for key in
+                    ('public_source_listing_id','source_name','source_record_key','source_url'))
+                or event.get('public_source_listing_id') != source_listing.get('public_source_listing_id')
+                or original_event.get('public_source_listing_id') != source_listing.get('public_source_listing_id')
+                or event.get('raw_record_id') != original_event.get('raw_record_id')
+                or not isinstance(observations,list) or not observations
+                or proof.get('original_observations_sha256') != _native_lotte_view_digest(observations)
+                or _native_lotte_view_digest(projected_evidence.get('observations')) != _native_lotte_view_digest(observations)
+                or source_correction_time(event.get('crawled_at')) != source_correction_time(original_event.get('crawled_at'))
+                or source_correction_time(proof.get('observed_at')) != source_correction_time(original_event.get('crawled_at'))
+                or any(source_correction_time(event.get(key)) != source_correction_time(original_event.get(key))
+                    for key in ('valid_from','valid_to'))):
+            return False
+        if not allow_candidate and proof.get('proposal_sha256') != source_correction_proposal_hash(event,variant,source_listing):
+            return False
+        from core.catalog_quantity import normalize_catalog_package,package_pricing_measure
+        from core.promotion_semantics import confirmed_price_or_none,comparable_transaction_or_none
+        action = proof.get('quantity_scope_action')
+        if action not in (None,'hold_unresolved'):
+            return False
+        hold = action == 'hold_unresolved'
+        hold_issues = set()
+        if hold and (not isinstance(original_variant,Mapping)
+                or variant.get('public_variant_id') != proof['original_variant_id']
+                or source_correction_variant_hash(variant) != source_correction_variant_hash(original_variant)):
+            return False
+        package = None
+        for observation in observations:
+            if not isinstance(observation,Mapping):
+                return False
+            raw = observation.get('raw_payload'); attrs = raw.get('attributes') or {} if isinstance(raw,Mapping) else {}
+            if (not isinstance(raw,Mapping) or not isinstance(attrs,Mapping)
+                    or observation.get('raw_payload_sha256') != _native_lotte_view_digest(raw)
+                    or (raw.get('source_record_key') or attrs.get('source_record_key')) != source_listing.get('source_record_key')
+                    or any(layer.get('source_record_key') not in (None,source_listing.get('source_record_key')) for layer in (raw,attrs))
+                    or not source_review_matches(source_review_evidence(raw),
+                        {'source_urls':[source_listing.get('source_url')],'source_fields':{}})):
+                return False
+            candidate,issues = normalize_catalog_package(raw,attrs,source_listing.get('source_title') or '',
+                category_id=variant.get('unified_category_id') or proof.get('unified_category_id'))
+            if hold:
+                if (not issues or not set(issues) <= SOURCE_CORRECTION_HOLD_ISSUES
+                        or confirmed_price_or_none(raw.get('sale_price') or raw.get('current_price') or raw.get('price')) != event.get('price')):
+                    return False
+                hold_issues.update(issues)
+                continue
+            if candidate is None or issues or package is not None and _native_lotte_view_digest(candidate) != _native_lotte_view_digest(package):
+                return False
+            package = candidate
+            if any(candidate.get(key) != variant.get(key) for key in ('package_quantity','package_unit','bundle_count')):
+                return False
+            if proof.get('corrected_specification') != {key:candidate.get(key) for key in
+                    ('package_quantity','package_unit','bundle_count','display_unit')}:
+                return False
+            conditions = projected_evidence.get('promotion_conditions') or {}
+            roles = native_lotte_price_roles(raw,attrs,source_listing.get('source_title'),
+                expected_native=source_listing.get('source_record_key'),expected_url=source_listing.get('source_url'),expected_package=candidate)
+            if roles is not None and source_listing.get('source_name') == 'lottemart':
+                if (event.get('price') != roles['source_base_quote']['amount']
+                        or event.get('promotion_type') != 'final_price' or event.get('price_state') != 'sale_price_only'
+                        or event.get('original_price') is not None or event.get('discount_rate') is not None
+                        or event.get('event_name') != raw.get('event_name')
+                        or _native_lotte_view_digest(conditions) != _native_lotte_view_digest(roles['promotion_conditions'])):
+                    return False
+            elif (confirmed_price_or_none(raw.get('sale_price') or raw.get('current_price') or raw.get('price')) != event.get('price')
+                    or any(event.get(key) != original_event.get(key) for key in
+                        ('promotion_type','price_state','original_price','discount_rate','event_name'))
+                    or _native_lotte_view_digest(conditions) != _native_lotte_view_digest(evidence.get('promotion_conditions') or {})):
+                return False
+        if hold:
+            return (proof.get('quantity_scope_reasons') == sorted(hold_issues)
+                and proof.get('corrected_specification') == {key:variant.get(key) for key in
+                    ('package_quantity','package_unit','bundle_count','display_unit')}
+                and event.get('offer_state') == 'pending_review'
+                and event.get('standard_unit_price') is None and event.get('price_per_100g') is None
+                and all(event.get(key) == original_event.get(key) for key in
+                    ('price','price_state','promotion_type','original_price','discount_rate','event_name'))
+                and _native_lotte_view_digest(projected_evidence.get('promotion_conditions') or {})
+                    == _native_lotte_view_digest(evidence.get('promotion_conditions') or {}))
+        transaction = comparable_transaction_or_none(current_price=event.get('price'),
+            promotion_type=event.get('promotion_type'),promotion_conditions=projected_evidence.get('promotion_conditions'))
+        measure = package_pricing_measure(package)
+        rate = round(transaction[0]*100/(measure[0]*transaction[1]),4) if transaction and measure else None
+        return (event.get('standard_unit_price') == rate
+                and event.get('price_per_100g') == (rate if measure and measure[1]=='g' else None))
+    except (ValueError,TypeError,KeyError,OverflowError):
+        return False
+
+def verified_public_quantity_hold_ids(pending_events, lookup):
+    """Pure public-history exception; callers supply rows and exact-key lookup."""
+    def parent(variant):
+        attrs = source_correction_json(variant.get('attributes'))
+        review = source_correction_json(attrs.get('explicit_listing_quantity_review'))
+        selection = source_correction_json(review.get('source_parent_selection'))
+        return (selection.get('identity_scope') == 'source_selectable_parent_observation'
+            or review.get('measurement_role') in ('declared_outer_set_count','declared_nonexact_mass_specification',
+                'declared_incomplete_entitlement_specification','declared_incomplete_retail_package_specification'))
+    verified = set()
+    for event in pending_events:
+        if not isinstance(event,Mapping) or event.get('offer_state') != 'pending_review':
+            continue
+        proof = source_correction_json(source_correction_json(event.get('audit_provenance')).get('source_correction_lineage'))
+        if proof.get('status') != 'approved' or proof.get('quantity_scope_action') != 'hold_unresolved':
+            continue
+        original = lookup('normalized_offer_events','public_offer_event_id',proof.get('original_event_id'))
+        listing = lookup('normalized_source_listings','public_source_listing_id',event.get('public_source_listing_id'))
+        old_variant = lookup('normalized_product_variants','public_variant_id',proof.get('original_variant_id'))
+        variant = lookup('normalized_product_variants','public_variant_id',listing.get('public_variant_id')) if listing else None
+        product = lookup('normalized_canonical_products','public_product_id',variant.get('public_product_id')) if variant else None
+        if (original is None or original.get('offer_state') == 'pending_review' or listing is None
+                or variant is None or old_variant is None or product is None or parent(variant) or parent(old_variant)):
+            continue
+        if valid_source_correction_event(event,original,listing,
+                {**variant,'unified_category_id':product.get('unified_category_id')},
+                product_id=product['public_product_id'],original_variant=old_variant):
+            verified.add(event['public_offer_event_id'])
+    return verified
+
+
+def _native_lotte_view_digest(value):
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+        separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+
+
+def _native_lotte_base_amount(value):
+    if isinstance(value, bool):
+        raise ValueError("native base amount invalid")
+    try:
+        amount = Decimal(str(value))
+    except (InvalidOperation, ValueError):
+        raise ValueError("native base amount invalid")
+    if not amount.is_finite() or amount <= 0:
+        raise ValueError("native base amount invalid")
+    return int(amount) if amount == amount.to_integral_value() else float(amount)
+
+
+def native_lotte_price_roles(raw, attrs, title, *, expected_native=None, expected_url=None, expected_package=None):
+    """Return source-base facts, or None for other producer shapes; never match on money."""
+    node = attrs.get("lottemart_detail_source_fields")
+    if node is None:
+        return None
+    if not isinstance(node, dict) or attrs.get("lottemart_detail_source_fields_sha256") != _native_lotte_view_digest(node):
+        raise ValueError("native Lotte product hash mismatch")
+    native = str(attrs.get("source_record_key") or "")
+    if (not native or native != (expected_native or native) or node.get("retailerProductId") != "OS" + native
+            or node.get("name") != title or raw.get("source_title", raw.get("name")) != title
+            or node.get("type") != "REGULAR"):
+        raise ValueError("native Lotte product identity/type mismatch")
+    url = attrs.get("source_url")
+    parsed = urlsplit(url) if isinstance(url, str) else None
+    if (parsed is None or parsed.scheme != "https" or parsed.netloc != "lottemartzetta.com"
+            or parsed.path != f"/products/OS{native}/details" or parsed.query or parsed.fragment
+            or url != (expected_url or url)):
+        raise ValueError("native Lotte product URL mismatch")
+    try:
+        stamp = datetime.fromisoformat(str(raw.get("crawled_at", "")).replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError("native base observation timestamp missing")
+    if stamp.tzinfo is None or stamp.utcoffset() is None:
+        raise ValueError("native base observation timestamp must be aware")
+    package = parse_package_quantity(node.get("packSizeDescription", ""))
+    supplied = expected_package or {"package_quantity":raw.get("package_quantity"),
+                                   "package_unit":raw.get("package_unit"), "bundle_count":raw.get("bundle_count") or 1}
+    if (not package or node['packSizeDescription'].strip() != package['raw_match']
+            or normalize_pack_identity(package["package_quantity"], package["package_unit"])
+            != normalize_pack_identity(supplied.get("package_quantity"), supplied.get("package_unit"))
+            or package.get("bundle_count", 1) != supplied.get("bundle_count", 1)):
+        raise ValueError("native base package declaration mismatch")
+    price = node.get("price")
+    if not isinstance(price, dict) or price.get("currency") != "KRW":
+        raise ValueError("native base KRW amount required")
+    amount = _native_lotte_base_amount(price.get("amount"))
+    for value in (raw.get("sale_price"), raw.get("current_price"), raw.get("price")):
+        if value is not None and _native_lotte_base_amount(value) != amount:
+            raise ValueError("native base quote aliases conflict")
+    promotions = node.get("promotions")
+    if not isinstance(promotions, list) or any(not isinstance(p, dict) or not isinstance(p.get("description"), str)
+            or not p["description"].strip() or p.get("type") != "OFFER" for p in promotions):
+        raise ValueError("native promotion declarations malformed")
+    if raw.get("event_name") != (" · ".join(p["description"] for p in promotions) or None):
+        raise ValueError("native promotion declarations differ from event text")
+    records = attrs.get("submission_business_evidence")
+    if not isinstance(records, list) or not records:
+        raise ValueError("original native business node required")
+    for record in records:
+        view = record.get("raw_product_node") if isinstance(record, dict) else None
+        if (not isinstance(view, dict) or record.get('raw_product_node_sha256') != _native_lotte_view_digest(view)
+                or record.get('http_receipt_status') != 'supplied_response_metadata'
+                or record.get('source_response_url') != url
+                or record.get('native_context') != native
+                or not re.fullmatch(r'[0-9a-f]{64}', str(record.get('source_response_body_sha256') or ''))
+                or any(view.get(k) != node.get(k) for k in
+                ("retailerProductId", "name", "type", "packSizeDescription", "price"))):
+            raise ValueError("original native business/base view conflict")
+        try:
+            received = datetime.fromisoformat(str(record.get('source_response_received_at', '')).replace('Z', '+00:00'))
+        except ValueError:
+            raise ValueError('native response receipt timestamp missing')
+        if received.tzinfo is None or received.utcoffset() is None or received != stamp:
+            raise ValueError('native quote clock differs from response receipt')
+        vp = view.get("promotions")
+        if not isinstance(vp, list) or len(vp) != len(promotions) or any(
+                not isinstance(v, dict) or any(v.get(k) != p.get(k) for k in
+                    ("promoId", "retailerPromotionId", "description", "type", "requiredProductQuantity"))
+                for v, p in zip(vp, promotions)):
+            raise ValueError("original native benefit view conflict")
+    terms = {"source_condition_kind":"source_public_base_quote", "source_base_quote_only":True,
+             "payable_price_unconfirmed":False, "source_quote_currency":"KRW",
+             "source_base_price_role":"standalone_native_product_price",
+             "source_promotion_declarations":deepcopy(promotions),
+             "condition_text":raw.get("event_name"), "coupon_application_unconfirmed":bool(promotions),
+             "source_benefit_application_unconfirmed":bool(promotions)}
+    selections, coupons = [], []
+    for promotion in promotions:
+        facts = conditional_selection_facts_or_none(promotion["description"])
+        required = promotion.get("requiredProductQuantity")
+        if facts is not None:
+            if type(required) is not int or required != facts["required_selection_quantity"]:
+                raise ValueError("native selection count/literal conflict")
+            selections.append(facts)
+        elif required is not None:
+            raise ValueError("unresolved native required quantity")
+        match = re.fullmatch(r"(제타패스\s*X\s*.+?)\s+(\d+)만원 이상\s+(\d+)만원 할인", promotion["description"])
+        if match:
+            coupons.append({"displayCouponNm":promotion["description"], "purchaseMin":int(match[2])*10000,
+                            "discount":int(match[3])*10000, "discountType":"source_won_declaration",
+                            "source_program_name":match[1]})
+    if selections:
+        terms.update(source_selection_declarations=selections, selected_product_scope_unconfirmed=True)
+        if len(selections) == 1:
+            terms["source_required_product_quantity"] = selections[0]["required_selection_quantity"]
+            if "conditional_discount_percent" in selections[0]:
+                terms["conditional_discount_percent"] = selections[0]["conditional_discount_percent"]
+    if coupons:
+        terms.update(membership_eligibility_unconfirmed=True,
+                     source_coupon_declarations={"couponInfo":None, "couponList":coupons})
+    return {"source_base_quote": {"amount":amount, "currency":"KRW", **package,
+                                 "observed_at":raw["crawled_at"], "source_view_sha256":_native_lotte_view_digest(node)},
+            "source_promotions":deepcopy(promotions), "benefits_applied":False, "promotion_conditions":terms}
 PATH_FIELDS = ('mart_native_category_path', 'source_category_path', 'category_path', 'category', 'category_hint')
 
 

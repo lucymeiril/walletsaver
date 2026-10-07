@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-from sqlalchemy import MetaData, create_engine, insert, select, text, or_
+from sqlalchemy import MetaData, create_engine, insert, select, text, or_, and_
 from sqlalchemy.engine import Connection
 
 from services.base import get_engine
@@ -94,11 +94,35 @@ def _public_metadata() -> tuple[MetaData, dict[str, object]]:
     return metadata, target_tables
 
 
+def _verified_public_hold_ids(connection) -> set[str]:
+    """Only source-proved approved holds may annotate public history.
+
+    The same checks run before copying and when validating the resulting
+    SQLite snapshot. A pending original or a selectable parent never qualifies.
+    """
+    from core.reviewed_source_evidence import verified_public_quantity_hold_ids
+    def rows(sql, params=None):
+        params = params or {}
+        if isinstance(connection, Connection):
+            return [dict(row) for row in connection.execute(text(sql),params).mappings()]
+        cursor = connection.execute(sql,params)
+        names = [column[0] for column in cursor.description]
+        return [dict(zip(names,row)) for row in cursor.fetchall()]
+    def one(table, key, value):
+        if not isinstance(value,str) or not value:
+            return None
+        found = rows(f'SELECT * FROM {table} WHERE {key}=:value',{'value':value})
+        return found[0] if found else None
+    return verified_public_quantity_hold_ids(
+        rows("SELECT * FROM normalized_offer_events WHERE offer_state='pending_review'"),one)
+
+
 def _copy_table(
     source: Connection,
     target: Connection,
     source_table,
     target_table,
+    *, public_hold_ids=None,
 ) -> int:
     statement = select(source_table)
     if source_table.name in {NormalizedOfferEvent.__tablename__, NormalizedOfferWeekLink.__tablename__}:
@@ -110,11 +134,14 @@ def _copy_table(
                 ['measurement_role'].as_string().in_(('declared_outer_set_count', 'declared_nonexact_mass_specification', 'declared_incomplete_entitlement_specification', 'declared_incomplete_retail_package_specification'))))
         parent_listings = select(NormalizedSourceListing.public_source_listing_id).where(
             NormalizedSourceListing.public_variant_id.in_(parent_variants))
+        verified_holds = _verified_public_hold_ids(source) if public_hold_ids is None else public_hold_ids
         pending_offer_ids = select(NormalizedOfferEvent.public_offer_event_id).where(or_(
-            NormalizedOfferEvent.offer_state == 'pending_review',
+            and_(NormalizedOfferEvent.offer_state == 'pending_review',
+                 NormalizedOfferEvent.public_offer_event_id.not_in(verified_holds)),
             NormalizedOfferEvent.public_source_listing_id.in_(parent_listings)))
     if source_table.name == NormalizedOfferEvent.__tablename__:
-        # Pending review is an internal staging state, not public history.
+        # Generic pending review stays private. A source-proved approved hold
+        # is a derived history annotation, never an eligible purchase offer.
         # Preserve every other state (and inactive products) unchanged.
         # A selectable parent remains private even if a later offer review
         # resolves a price condition; it does not select the purchased child.
@@ -143,6 +170,7 @@ def _write_snapshot_file(next_path: Path, source: Connection, revision: int) -> 
     target_engine = create_engine(f"sqlite:///{next_path.as_posix()}")
     metadata, target_tables = _public_metadata()
     row_counts: dict[str, int] = {}
+    public_hold_ids = _verified_public_hold_ids(source)
     try:
         metadata.create_all(target_engine)
         with target_engine.begin() as target:
@@ -154,6 +182,7 @@ def _write_snapshot_file(next_path: Path, source: Connection, revision: int) -> 
                     target,
                     source_table,
                     target_table,
+                    public_hold_ids=public_hold_ids,
                 )
             target.execute(
                 text(
@@ -205,10 +234,12 @@ def validate_public_snapshot(path: Path | str) -> dict:
         if missing:
             raise ValueError("required tables missing: " + ", ".join(missing))
 
-        pending_offers = int(connection.execute(
-            "SELECT COUNT(*) FROM normalized_offer_events "
+        verified_holds = _verified_public_hold_ids(connection)
+        pending_ids = {row[0] for row in connection.execute(
+            "SELECT public_offer_event_id FROM normalized_offer_events "
             "WHERE offer_state='pending_review'"
-        ).fetchone()[0])
+        )}
+        pending_offers = len(pending_ids - verified_holds)
         if pending_offers:
             raise ValueError(
                 f"pending_review offers are not publishable: {pending_offers}"

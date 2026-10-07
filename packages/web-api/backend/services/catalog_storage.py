@@ -55,6 +55,38 @@ class CatalogUnavailable(RuntimeError):
     pass
 
 
+def _source_contents_scope_issue(event, variant, listing, category_id):
+    """Consume the existing bounded quantity validator, without inferring scope."""
+    from core.catalog_quantity import uses_separate_measured_count_rules
+    from core.reviewed_source_evidence import (source_review_evidence, source_review_matches,
+                                              _native_lotte_view_digest)
+    listing = listing or {}
+    title = listing.get("source_title") or variant.get("variant_name") or ""
+    if not uses_separate_measured_count_rules(title):
+        return None
+    evidence = _json(event.get("raw_evidence"), {})
+    observations = evidence.get("observations") if isinstance(evidence, Mapping) else None
+    for observation in observations if isinstance(observations, list) else []:
+        raw = observation.get("raw_payload") if isinstance(observation, Mapping) else None
+        try:
+            attrs = raw.get("attributes") or {} if isinstance(raw, Mapping) else {}
+            if (not isinstance(raw, Mapping)
+                    or not isinstance(attrs, Mapping)
+                    or (raw.get("source_record_key") or attrs.get("source_record_key")) != listing.get("source_record_key")
+                    or observation.get("raw_payload_sha256") != _native_lotte_view_digest(raw)
+                    or not source_review_matches(source_review_evidence(raw),
+                        {"source_urls": [listing.get("source_url")], "source_fields": {}})):
+                continue
+            _, issues = normalize_catalog_package(raw, attrs, title,
+                                                 category_id=category_id)
+        except (ValueError, TypeError, OverflowError):
+            continue
+        for issue in ("measured_inner_scope_unresolved", "independent_count_scope_unresolved"):
+            if issue in issues:
+                return issue
+    return None
+
+
 def _json(value, fallback):
     if isinstance(value, (dict, list)):
         return value
@@ -485,6 +517,56 @@ class PublicCatalogStore:
         return ((group["canonical_name"], group.get("brand") or "") if group else
                 (product["canonical_name"], product.get("brand") or ""))
 
+    def _listing_events(self, connection, listing, variant, *, include_all):
+        """Choose a proven correction at the same actual observation time.
+
+        Listing pages read only the latest timestamp; detail retains every
+        original observation. A correction is a projection, not a new capture.
+        """
+        listing_id = listing["public_source_listing_id"]
+        latest = "" if include_all else (
+            " AND julianday(crawled_at) IS (SELECT julianday(crawled_at) FROM normalized_offer_events "
+            "WHERE public_source_listing_id=? ORDER BY julianday(crawled_at) DESC, crawled_at DESC, public_offer_event_id DESC LIMIT 1)"
+        )
+        rows = [dict(row) for row in connection.execute(
+            "SELECT * FROM normalized_offer_events WHERE public_source_listing_id=?" + latest
+            + " ORDER BY julianday(crawled_at) DESC, crawled_at DESC, public_offer_event_id DESC",
+            (listing_id,) if include_all else (listing_id, listing_id),
+        ).fetchall()]
+        originals = {row["public_offer_event_id"]: row for row in rows}
+        approved = set()
+        for row in rows:
+            audit = _json(row.get("audit_provenance"), {})
+            lineage = audit.get("source_correction_lineage") if isinstance(audit, Mapping) else None
+            if not isinstance(lineage, Mapping):
+                continue
+            row["_source_correction_lineage"] = dict(lineage)
+            original_id = lineage.get("original_event_id")
+            original = originals.get(original_id)
+            if original is None and isinstance(original_id, str):
+                stored = connection.execute(
+                    "SELECT * FROM normalized_offer_events WHERE public_offer_event_id=?", (original_id,),
+                ).fetchone()
+                original = dict(stored) if stored else None
+            from core.reviewed_source_evidence import valid_source_correction_event
+            original_variant = None
+            original_variant_id = lineage.get("original_variant_id")
+            if isinstance(original_variant_id, str):
+                stored = connection.execute(
+                    "SELECT * FROM normalized_product_variants WHERE public_variant_id=?", (original_variant_id,),
+                ).fetchone()
+                original_variant = dict(stored) if stored else None
+            if original and original_variant and valid_source_correction_event(
+                    row, original, listing, variant, product_id=variant["public_product_id"],
+                    original_variant=original_variant):
+                approved.add(row["public_offer_event_id"])
+            else:
+                row["_source_correction_invalid"] = True
+        rows.sort(key=lambda row: (self._observed_order(row.get("crawled_at")),
+                                  row["public_offer_event_id"] in approved,
+                                  row["public_offer_event_id"]), reverse=True)
+        return rows
+
     def _normalized_product(self, connection, product_row, *, include_all: bool, group_member_ids=None) -> dict:
         product = dict(product_row)
         members, canonical = self._catalog_group(connection, product, {})
@@ -516,6 +598,7 @@ class PublicCatalogStore:
             else:
                 quantity_components, _ = _homogeneous_contents(variant)
             listings_payload = []
+            contents_scope_unverified = False
             listings = connection.execute(
                 "SELECT * FROM normalized_source_listings WHERE public_variant_id=? AND is_active=1",
                 (variant["public_variant_id"],),
@@ -523,11 +606,10 @@ class PublicCatalogStore:
             for listing_row in listings:
                 listing = dict(listing_row)
                 events_payload = []
-                events = connection.execute(
-                    "SELECT * FROM normalized_offer_events WHERE public_source_listing_id=? "
-                    "ORDER BY crawled_at DESC, public_offer_event_id DESC" + ("" if include_all else " LIMIT 1"),
-                    (listing["public_source_listing_id"],),
-                ).fetchall()
+                events = self._listing_events(connection, listing,
+                    {**variant, "unified_category_id": product.get("unified_category_id")}, include_all=include_all)
+                newest_time = self._observed_order(events[0].get("crawled_at")) if events else None
+                current_selected = False
                 for event_row in events:
                     event = self._normalized_offer(
                         dict(event_row), variant,
@@ -535,10 +617,24 @@ class PublicCatalogStore:
                     )
                     event["variant_id"] = variant["public_variant_id"]
                     event["listing_id"] = listing["public_source_listing_id"]
-                    event["is_latest"] = not events_payload
+                    event["is_latest"] = (not current_selected and not event_row.get("_source_correction_invalid")
+                                          and self._observed_order(event_row.get("crawled_at")) == newest_time)
+                    current_selected = current_selected or event["is_latest"]
+                    if event_row.get("_source_correction_lineage"):
+                        event["observation_kind"] = "source_interpretation_correction"
+                        event["source_correction_lineage"] = event_row["_source_correction_lineage"]
+                    if event_row.get("_source_correction_invalid"):
+                        event["availability_reason"] = "source_correction_unverified"
+                        event["observation_receipt_eligible"] = False
+                        event["observation_receipt_reason"] = "source_correction_unverified"
+                        for key in ("total_price", "comparable_price", "per_item", "per_100g", "per_100ml", "per_100m"):
+                            event[key] = None
                     event["current_eligible"] = (event["is_latest"] and event["comparable_price"] is not None
                                                  and event["validity_eligible"])
                     events_payload.append(event)
+                    contents_scope_unverified = contents_scope_unverified or (event["is_latest"]
+                        and event.get("quantity_comparison_reason") in {
+                            "measured_inner_scope_unresolved", "independent_count_scope_unresolved"})
                     # Historical lows belong in history, not today's card.
                     # The newest event may itself be non-comparable; do not
                     # fall back to a prior price in that case.
@@ -552,14 +648,21 @@ class PublicCatalogStore:
                     "url": listing.get("source_url"),
                     "image_url": listing.get("image_url"),
                     "unit_text": listing.get("source_unit_text"),
-                    "offers": events_payload if include_all else events_payload[:1],
+                    "offers": events_payload if include_all else [item for item in events_payload if item["is_latest"]][:1],
                 })
+            try:
+                intrinsic_measure = (None if contents_scope_unverified else
+                                     package_pricing_measure({**variant, "attributes": variant_attributes}))
+            except (ValueError, TypeError, OverflowError):
+                intrinsic_measure = None
             variants_payload.append({
                 "id": variant["public_variant_id"],
                 "name": variant["variant_name"],
                 "package_quantity": variant.get("package_quantity"),
                 "package_unit": variant.get("package_unit"),
                 "bundle_count": variant.get("bundle_count"),
+                "declared_contents_quantity": intrinsic_measure[0] if intrinsic_measure else None,
+                "declared_contents_unit": intrinsic_measure[1] if intrinsic_measure else None,
                 "display_unit": variant.get("display_unit"),
                 "quantity_components": quantity_components,
                 "listings": listings_payload,
@@ -700,9 +803,13 @@ class PublicCatalogStore:
                               if declared_vector else homogeneous_components)
         composition_reason = package_comparison_reason({
             **variant, 'attributes': attributes})
+        scope_issue = _source_contents_scope_issue(event, variant, source_listing, category_id)
+        if scope_issue:
+            composition_reason = scope_issue
         if "package_components" in attributes and not homogeneous_vector:
             composition_reason = "quantity_evidence_unverified"
-        invalid_quantity_evidence = composition_reason == "quantity_evidence_unverified"
+        invalid_quantity_evidence = composition_reason in {
+            "quantity_evidence_unverified", "measured_inner_scope_unresolved", "independent_count_scope_unresolved"}
         if invalid_quantity_evidence:
             # A stale scalar/vector cannot establish paid spend or receipt
             # quantities. Keep the immutable quote and declared variant fields;
@@ -777,6 +884,11 @@ class PublicCatalogStore:
         validity_eligible, availability_reason = PublicCatalogStore._offer_validity(event)
         return {
             "id": event["public_offer_event_id"],
+            "observation_kind": ("source_interpretation_correction"
+                                 if event.get("_source_correction_lineage") else None),
+            "source_correction_lineage": event.get("_source_correction_lineage"),
+            "source_correction_verified": bool(event.get("_source_correction_lineage")
+                                               and not event.get("_source_correction_invalid")),
             "price_state": event.get("price_state"),
             "offer_state": event.get("offer_state"),
             "promotion_type": event.get("promotion_type"),
@@ -1346,6 +1458,11 @@ class PublicCatalogStore:
         # Apply validity before LIMIT so expired observations cannot crowd out
         # later valid listings. Minimal legacy fixtures may omit these columns.
         columns = {row[1] for row in connection.execute("PRAGMA table_info(normalized_offer_events)")}
+        correction_order = (
+            "CASE WHEN json_valid(audit_provenance) AND "
+            "json_extract(audit_provenance, '$.source_correction_lineage.projection_kind')="
+            "'source_interpretation_correction' THEN 1 ELSE 0 END DESC, "
+        ) if "audit_provenance" in columns else ""
         for key, operator in (("valid_from", "<="), ("valid_to", ">=")):
             if key in columns:
                 clauses.append(f"(e.{key} IS NULL OR e.{key}='' OR "
@@ -1363,7 +1480,7 @@ class PublicCatalogStore:
         rows = connection.execute(
             "WITH ranked_events AS (SELECT events.*, ROW_NUMBER() OVER ("
             "PARTITION BY public_source_listing_id "
-            "ORDER BY crawled_at DESC, public_offer_event_id DESC"
+            "ORDER BY julianday(crawled_at) DESC, " + correction_order + "crawled_at DESC, public_offer_event_id DESC"
             ") AS listing_recency FROM normalized_offer_events events) "
             "SELECT e.*, l.source_name, l.source_title, l.source_url, "
             "l.image_url AS listing_image_url, l.source_unit_text, "
@@ -1388,6 +1505,25 @@ class PublicCatalogStore:
         latest: dict[str, str] = {}
         for raw_row in rows:
             row = dict(raw_row)
+            audit = _json(row.get("audit_provenance"), {})
+            if isinstance(audit, Mapping) and audit.get("source_correction_lineage"):
+                source_listing = connection.execute(
+                    "SELECT * FROM normalized_source_listings WHERE public_source_listing_id=?",
+                    (row["public_source_listing_id"],),
+                ).fetchone()
+                source_variant = connection.execute(
+                    "SELECT * FROM normalized_product_variants WHERE public_variant_id=?",
+                    (row["public_variant_id"],),
+                ).fetchone()
+                if source_listing is None or source_variant is None:
+                    continue
+                effective = self._listing_events(connection, dict(source_listing),
+                    {**dict(source_variant), "unified_category_id": row.get("unified_category_id")},
+                    include_all=False)
+                selected = next((item for item in effective if not item.get("_source_correction_invalid")), None)
+                if selected is None or selected.get("offer_state") != "active":
+                    continue
+                row.update(selected)
             offer = self._normalized_offer(
                 row, {**row, "attributes": row.get("variant_attributes")},
                 category_id=row.get("unified_category_id"), source_listing=row,

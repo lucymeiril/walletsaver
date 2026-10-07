@@ -30,19 +30,29 @@ const CATEGORY_ICONS = {
   패션: '👗', default: '📦',
 };
 
-export function OfferFacts({ offer = {}, components = offer.quantity_components || [], detailsOnly = false }) {
+function getVariantReceiptSummary(offer, variant = {}, components = []) {
+  const declaredContents = typeof variant.declared_contents_quantity === 'number'
+    && Number.isFinite(variant.declared_contents_quantity) && variant.declared_contents_quantity > 0
+    && variant.declared_contents_unit ? `${variant.declared_contents_quantity}${variant.declared_contents_unit}` : null;
+  if (declaredContents && (offer.total_quantity == null || !(offer.total_quantity > 0)))
+    return `포장 내용량 ${declaredContents} · 행사 수령량 미확인`;
   const receipt = getOfferReceiptText(offer, { components });
+  return ['reviewed_source_component_vector_v1', 'reviewed_homogeneous_contents'].includes(offer.quantity_basis)
+    ? receipt.split(' · ').slice(0,3).join(' · ') : receipt.split(' · ')[0];
+}
+
+export function OfferFacts({ offer = {}, components = offer.quantity_components || [], variant = {}, detailsOnly = false }) {
   const unitPrice = getOfferUnitPrice(offer, components);
   return <div className={s.offerFacts}>
     {!detailsOnly && <div className={s.offerSummary}>
-      <span>{['reviewed_source_component_vector_v1', 'reviewed_homogeneous_contents'].includes(offer.quantity_basis) ? receipt.split(' · ').slice(0,3).join(' · ') : receipt.split(' · ')[0]}</span>
+      <span>{getVariantReceiptSummary(offer,variant,components)}</span>
       {unitPrice && <strong>{fmtUnitPrice(unitPrice.price)}원/{unitPrice.unit}</strong>}
       <span>{getOfferConditionSummary(offer)}</span>
     </div>}
     <details><summary>원문 조건·수량 근거</summary>
       <small>
     {getSourceReferencePriceText(offer) && <span> · 출처 단가 기준: {getSourceReferencePriceText(offer)} · 판매 내용량·비교 단위 아님</span>}
-    {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 관측 거래' : '과거 표시 가격 관측'}</span>}
+    {offer.availability_reason === 'expired' && <span> · 판매 기간 종료 · {isObservationReceiptEligible(offer) ? '과거 가격 관측' : '과거 표시 가격 관측'}</span>}
     {offer.current_eligible === false && offer.availability_reason !== 'expired' && <span> · 현재 비교 대상 아님</span>}
     {isObservationReceiptEligible(offer) && offer.total_price != null && <span> · {getOfferAmountLabel(offer)} {fmt(offer.total_price)}원</span>}
     <span> · {getOfferReceiptText(offer, { components })}</span>
@@ -489,7 +499,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                           <button type="button" aria-label={`판매처 선택: ${listing.source} · ${listing.title}`} aria-pressed={chosen?.listing.id === listing.id} onClick={() => setOfferSelection({ variantId: variant.id, listingId: listing.id, offerId: offer?.id })}>{listing.source} · {listing.title}</button>
                           {offer?.listed_price != null && <span> · 표시 가격 {getObservedOfferPriceText(offer)}</span>}
                           {offer && offer.comparable_price == null && <small> · 비교 조건 미확인</small>}
-                          {offer && <OfferFacts offer={offer} components={variant.quantity_components || []} />}
+                          {offer && <OfferFacts offer={offer} variant={variant} components={variant.quantity_components || []} />}
                         </div>;
                       })}
                     </div>
@@ -551,6 +561,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
 
           <div className={s.section}>
             <h3 className={s.sectionTitle}>📈 365일 선택 출처 이력</h3>
+            {historySummary.corrections.length > 0 && <p>보존 원문 해석 교정 {historySummary.corrections.length}건 · 새 수집 관측이 아닙니다. 원가격·관측 시각은 원문 이력에 보존합니다.</p>}
             {historySummary.hasData ? (
               <>
                 {isNormalizedCatalog && <p>선택 규격·같은 수령 및 행사 조건의 관측 통계 · {historySummary.comparableCount}건</p>}
@@ -603,11 +614,11 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                   const listing = variant?.listings?.find(row => row.id === offer.listingId);
                   const native = listing?.offers?.find(row => row.id === offer.offerId);
                   return <tr key={offer.offerId || `${offer.sourceName}-${i}`} className={offer.current ? s.currentOffer : ''}>
-                    <td><strong>{offer.current ? '✅ ' : ''}{offer.sourceName}</strong><small>{variant?.display_unit || offer.title || '규격 미확인'}</small>{native && <small>{getOfferReceiptText(native, {components:variant.quantity_components || []}).split(' · ')[0]}</small>}{listing && <button type="button" aria-label={`비교 판매처 선택: ${listing.source} · ${listing.title}`} onClick={() => setOfferSelection({variantId:variant.id,listingId:listing.id,offerId:native?.id})}>이 출처 선택</button>}{listing?.url && <a href={listing.url} target="_blank" rel="noopener noreferrer">출처 원문</a>}</td>
+                    <td><strong>{offer.current ? '✅ ' : ''}{offer.sourceName}</strong><small>{variant?.display_unit || offer.title || '규격 미확인'}</small>{native && <small>{getVariantReceiptSummary(native,variant,variant.quantity_components || [])}</small>}{listing && <button type="button" aria-label={`비교 판매처 선택: ${listing.source} · ${listing.title}`} onClick={() => setOfferSelection({variantId:variant.id,listingId:listing.id,offerId:native?.id})}>이 출처 선택</button>}{listing?.url && <a href={listing.url} target="_blank" rel="noopener noreferrer">출처 원문</a>}</td>
                     <td>{native ? getObservedOfferPriceText(native) : `${fmt(offer.price)}원`}</td>
                     <td>{offer.unitPrice != null && offer.unit ? `${offer.comparisonValue == null ? '단위 다름 · ' : ''}${fmtUnitPrice(offer.unitPrice)}원/${offer.unit}` : '동일 단위 미확인'}{selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <small className={s.osCheaper}>{offer.comparisonBasis} 기준 더 저렴</small>}{bestValue != null && offer.comparisonValue === bestValue && <small className={s.osBest}>{offer.comparisonBasis} 기준 관측 최저</small>}</td>
                     <td>{(native?.crawled_at || native?.observed_at || '').slice(0,10) || '미확인'}</td>
-                    <td>{getOfferConditionSummary(native || {promotion_condition:offer.promotionCondition,promotion_conditions:offer.promotionConditions,membership_required:offer.membershipRequired,coupon_required:offer.couponRequired})}{native && <OfferFacts offer={native} components={variant.quantity_components || []} detailsOnly />}</td>
+                    <td>{getOfferConditionSummary(native || {promotion_condition:offer.promotionCondition,promotion_conditions:offer.promotionConditions,membership_required:offer.membershipRequired,coupon_required:offer.couponRequired})}{native && <OfferFacts offer={native} variant={variant} components={variant.quantity_components || []} detailsOnly />}</td>
                   </tr>;
                 })}</tbody>
               </table></div>

@@ -47,7 +47,8 @@ def list_normalized_observations(
     identity: dict = Depends(require_viewer),
 ):
     """All selected history; stored quotes/rates do not establish a paid receipt."""
-    from core.reviewed_source_evidence import package_comparison_reason, valid_source_component_variant
+    from core.reviewed_source_evidence import (package_comparison_reason, valid_source_component_variant,
+        source_correction_json, valid_source_correction_event)
     if date_from and date_to and date_from > date_to:
         raise HTTPException(422, "date_from must not exceed date_to")
     session = get_session()
@@ -83,6 +84,20 @@ def list_normalized_observations(
         items = []
         for row in rows:
             item = dict(row)
+            proof = source_correction_json(source_correction_json(item.get('audit_provenance')).get('source_correction_lineage'))
+            verified = False
+            if proof.get('status') == 'approved' and proof.get('projection_kind') == 'source_interpretation_correction':
+                original = session.get(event,proof.get('original_event_id')) if isinstance(proof.get('original_event_id'),str) else None
+                old_variant = session.get(variant,proof.get('original_variant_id')) if isinstance(proof.get('original_variant_id'),str) else None
+                exact_listing = session.get(listing,item['public_source_listing_id'])
+                def cells(record):
+                    return {column.name:getattr(record,column.name) for column in record.__table__.columns}
+                if original is not None and old_variant is not None and exact_listing is not None:
+                    verified = valid_source_correction_event(item,cells(original),cells(exact_listing),
+                        {**item,'attributes':item['variant_attributes']},product_id=item['public_product_id'],
+                        original_variant=cells(old_variant))
+            item['observation_kind'] = 'source_interpretation_correction' if verified else None
+            item['source_correction_verified'] = verified
             for key in ("valid_from", "valid_to", "crawled_at"):
                 stamp = item[key]
                 item[key] = ((stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else
@@ -97,7 +112,7 @@ def list_normalized_observations(
             item["quote_currency_status"] = ("source_declared" if terms.get("source_quote_currency") else
                 "source_unconfirmed" if "source_quote_currency" in terms else "not_recorded")
             item["observed_quote"] = item["price"]
-            item["quote_scope"] = "stored_source_observation"
+            item["quote_scope"] = "stored_source_interpretation_projection" if verified else "stored_source_observation"
             item["receipt_evaluation"] = "not_evaluated_admin_history"
             item["observation_receipt_eligible"] = evidence.get("observation_receipt_eligible")
             item["observation_receipt_reason"] = evidence.get("observation_receipt_reason")

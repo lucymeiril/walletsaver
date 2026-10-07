@@ -331,6 +331,7 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
 
 export default function CategoryComparePage() {
   const { categoryId } = useParams();
+  const isLegacyFrozenAddress = categoryId === 'processed_food.frozen_meal';
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const comparisonBasis = searchParams.get('comparison_basis') || null;
@@ -359,6 +360,10 @@ export default function CategoryComparePage() {
 
   const fetchData = useCallback(async (signal) => {
     if (!categoryId) return;
+    if (isLegacyFrozenAddress) {
+      setLoading(false);
+      return;
+    }
     const requestId = ++latestRequest.current;
     setLoading(true);
     setError(null);
@@ -388,7 +393,7 @@ export default function CategoryComparePage() {
     } finally {
       if (!signal?.aborted && requestId === latestRequest.current) setLoading(false);
     }
-  }, [categoryId, comparisonBasis, sort, page]);
+  }, [categoryId, isLegacyFrozenAddress, comparisonBasis, sort, page]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -437,6 +442,23 @@ export default function CategoryComparePage() {
         </div>
       </div>
     );
+  }
+
+  if (isLegacyFrozenAddress) {
+    return <div className={s.page}>
+      <section className={s.emptyState} aria-labelledby="legacy-category-heading">
+        <h2 id="legacy-category-heading">이전 냉동식품 분류 주소입니다</h2>
+        <p className={s.emptySub}>현재 분류에서 상품 종류를 선택해 주세요. 냉동 보관 여부만으로 서로 다른 상품을 한 비교 그룹으로 묶지 않습니다.</p>
+        <div className={s.subcategoryGrid}>
+          <button type="button" className={s.subcategoryCard} onClick={() => navigate('/price/category/food.meals')}>
+            간편식·면 분류에서 선택
+          </button>
+          <button type="button" className={s.subcategoryCard} onClick={() => navigate('/price')}>
+            전체 분류에서 선택
+          </button>
+        </div>
+      </section>
+    </div>;
   }
 
   return (

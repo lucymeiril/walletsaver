@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 import os
 from concurrent.futures import Future, ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from services import crawl_orchestrator as orch
@@ -185,7 +185,7 @@ def dispatch_due_schedules(
     registry: Optional[orch.PluginRegistry] = None,
 ) -> list[dict]:
     """Start due schedules without blocking the scheduler loop on crawl work."""
-    now = now or datetime.utcnow()
+    now = orch._utc_time(now or datetime.now(timezone.utc))
     store = store or orch.get_run_store()
     registry = registry or orch.get_registry()
     summaries: list[dict] = []
@@ -210,11 +210,9 @@ def dispatch_due_schedules(
             )
             continue
 
-        run_id = store.create_run(
-            plugin_name=schedule["plugin_name"],
-            schedule_id=schedule["id"],
-            triggered_by="schedule",
-        )
+        run_id = store.claim_due_schedule(schedule["id"], schedule["plugin_name"], now)
+        if run_id is None:
+            continue
         _submit(
             orch._execute_plugin_sync,
             plugin,

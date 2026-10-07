@@ -28,6 +28,25 @@ function show(data) {
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
 describe('CategoryCompare actual unit and receipt boundary', () => {
+  it('guides the old frozen address to current category choices without aliasing its products', async () => {
+    searchService.categoryCompare.mockResolvedValue({
+      summary: { is_leaf: false, category_path: '식품 > 간편식·면', product_count: 929 },
+      subcategories: [{ id: 'food.meals.prepared', name: '조리식품', count: 405 }], products: [],
+    });
+    render(<MemoryRouter initialEntries={['/price/category/processed_food.frozen_meal']}><Routes>
+      <Route path="/price/category/:categoryId" element={<CategoryComparePage />} />
+      <Route path="/price" element={<div>전체 분류 선택</div>} />
+    </Routes></MemoryRouter>);
+    expect(screen.getByRole('heading', { name: '이전 냉동식품 분류 주소입니다' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '전체 분류에서 선택' })).toBeInTheDocument();
+    expect(searchService.categoryCompare).not.toHaveBeenCalled();
+    expect(screen.queryByText('이 카테고리에 등록된 상품이 없습니다')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '간편식·면 분류에서 선택' }));
+    expect(await screen.findByRole('button', { name: /조리식품/ })).toHaveTextContent('405개 상품');
+    expect(searchService.categoryCompare).toHaveBeenCalledWith('food.meals', expect.any(Object));
+    expect(screen.queryByRole('heading', { name: '이전 냉동식품 분류 주소입니다' })).not.toBeInTheDocument();
+  });
+
   it('marks rounded unit-rate labels approximate without rounding tiny positive rates to zero or changing money', () => {
     expect(fmtUnitPrice(18.25)).toBe('18.25');
     expect(fmtUnitPrice(18.4)).toBe('18.4');

@@ -7,15 +7,20 @@ import inspect
 import json
 import logging
 import os
+import math
+import re
+import socket
 import sqlite3
 import threading
 import uuid
 from dataclasses import dataclass, field, asdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Optional, Protocol, runtime_checkable
 
 logger = logging.getLogger(__name__)
+CRON_TIMEZONE = timezone.utc
+_OWNER_PREFIX = "orchestrator_owner_v1:"
 
 
 # ── Plugin Protocol & 데이터 모델 ────────────────────────────────
@@ -99,7 +104,92 @@ _DEFAULT_DB_PATH = str(_BACKEND_DIR / "orchestrator.db")
 
 
 def _now_iso() -> str:
-    return datetime.utcnow().isoformat(timespec="seconds")
+    return datetime.now(timezone.utc).isoformat(timespec="microseconds")
+
+
+def _utc_time(value: datetime) -> datetime:
+    # Previous orchestrator clocks used naive utcnow(), not local wall time.
+    return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value.astimezone(timezone.utc)
+
+
+def cron_trigger(cron_expr: str):
+    """Keep stored/UI Unix cron literal; adapt weekday numbers only at execution."""
+    from apscheduler.triggers.cron import CronTrigger
+    fields = cron_expr.split()
+    if len(fields) != 5:
+        raise ValueError("five cron fields required")
+    weekday = fields[4]
+    if not re.search(r"[a-zA-Z]", weekday):
+        days = set()
+        for term in weekday.split(","):
+            match = re.fullmatch(r"(\*|\d+(?:-\d+)?)(?:/(\d+))?", term)
+            if not match:
+                raise ValueError("invalid Unix weekday")
+            base, step_text = match.groups()
+            step = int(step_text or 1)
+            if step <= 0:
+                raise ValueError("invalid Unix weekday step")
+            if base == "*":
+                start, end = 0, 7
+            elif "-" in base:
+                start, end = map(int, base.split("-"))
+            else:
+                start = int(base)
+                end = 7 if step_text else start
+            if not 0 <= start <= end <= 7:
+                raise ValueError("Unix weekday must be 0..7")
+            days.update((day + 6) % 7 for day in range(start, end + 1, step))
+        weekday = ",".join(map(str, sorted(days)))
+    kwargs = {"minute": fields[0], "hour": fields[1], "month": fields[3], "timezone": CRON_TIMEZONE}
+    if fields[2] != "*" and fields[4] != "*":
+        # The existing Unix UI preview uses OR for restricted date/weekday.
+        from apscheduler.triggers.combining import OrTrigger
+        return OrTrigger([CronTrigger(day=fields[2], **kwargs),
+                          CronTrigger(day_of_week=weekday, **kwargs)])
+    return CronTrigger(day=fields[2], day_of_week=weekday, **kwargs)
+
+
+def _owner_log() -> list[str]:
+    import psutil
+    try:
+        owner = {"hostname": socket.gethostname(), "pid": os.getpid(),
+                 "process_started_at": psutil.Process(os.getpid()).create_time()}
+    except psutil.Error:
+        return []  # Missing ownership is held, never guessed stale.
+    return [_OWNER_PREFIX + json.dumps(owner, sort_keys=True)]
+
+
+def _recorded_owner(log_lines) -> dict | None:
+    if not isinstance(log_lines, list):
+        return None
+    markers = [line for line in log_lines if isinstance(line, str) and line.startswith(_OWNER_PREFIX)]
+    if len(markers) != 1:
+        return None
+    try:
+        owner = json.loads(markers[0][len(_OWNER_PREFIX):])
+        if not isinstance(owner, dict) or type(owner.get("pid")) is not int or owner["pid"] <= 0:
+            return None
+        stamp = owner.get("process_started_at")
+        if isinstance(stamp, bool) or not isinstance(stamp, (int, float)) or not math.isfinite(stamp) or stamp <= 0:
+            return None
+        return owner
+    except (ValueError, TypeError):
+        return None
+
+
+def _owner_confirmed_dead(owner: dict | None) -> bool:
+    import psutil
+    if not owner or owner.get("hostname") != socket.gethostname():
+        return False
+    try:
+        process = psutil.Process(owner["pid"])
+        # A reused PID is a different process; the recorded owner is gone.
+        return (process.create_time() != owner["process_started_at"]
+                or process.status() == psutil.STATUS_ZOMBIE)
+    except psutil.NoSuchProcess:
+        return True
+    except psutil.Error:
+        return False
 
 
 class OrchestratorStore:
@@ -288,6 +378,9 @@ class OrchestratorStore:
     @staticmethod
     def _schedule_row_to_dict(row) -> dict:
         d = dict(row)
+        d["cron_timezone"] = "UTC"
+        d["cron_dialect"] = "unix"
+        d["stored_timezone_provenance"] = "not_recorded"
         d["enabled"] = bool(d.get("enabled"))
         try:
             d["target_categories"] = json.loads(d.get("target_categories") or "[]")
@@ -307,14 +400,70 @@ class OrchestratorStore:
             conn = self._connect()
             try:
                 conn.execute(
-                    "INSERT INTO crawl_runs (run_id, plugin_name, schedule_id, status, triggered_by, started_at, retried_from) VALUES (?, ?, ?, 'running', ?, ?, ?)",
-                    (run_id, plugin_name, schedule_id, triggered_by, _now_iso(), retried_from),
+                    "INSERT INTO crawl_runs (run_id, plugin_name, schedule_id, status, triggered_by, started_at, retried_from, log_lines) VALUES (?, ?, ?, 'running', ?, ?, ?, ?)",
+                    (run_id, plugin_name, schedule_id, triggered_by, _now_iso(), retried_from, json.dumps(_owner_log())),
                 )
                 conn.commit()
             finally:
                 if not self._is_memory:
                     conn.close()
         return run_id
+
+    def claim_due_schedule(self, schedule_id: str, plugin_name: str, now: datetime) -> str | None:
+        """Recheck due/enabled/running under one SQLite writer transaction."""
+        with self._lock:
+            conn = self._connect()
+            try:
+                conn.execute("BEGIN IMMEDIATE")
+                row = conn.execute("SELECT * FROM crawl_schedules WHERE id = ?", (schedule_id,)).fetchone()
+                if not row or row["plugin_name"] != plugin_name:
+                    conn.rollback()
+                    return None
+                if conn.execute("SELECT 1 FROM crawl_runs WHERE schedule_id = ? AND status = 'running' LIMIT 1", (schedule_id,)).fetchone():
+                    conn.rollback()
+                    return None
+                last = conn.execute("SELECT started_at FROM crawl_runs WHERE schedule_id = ? ORDER BY started_at DESC, rowid DESC LIMIT 1", (schedule_id,)).fetchone()
+                if not _schedule_is_due(self._schedule_row_to_dict(row), now, _parse_iso(last["started_at"]) if last else None):
+                    conn.rollback()
+                    return None
+                run_id = f"run_{uuid.uuid4().hex[:12]}"
+                conn.execute("INSERT INTO crawl_runs (run_id, plugin_name, schedule_id, status, triggered_by, started_at, log_lines) VALUES (?, ?, ?, 'running', 'schedule', ?, ?)",
+                             (run_id, plugin_name, schedule_id, _utc_time(now).isoformat(), json.dumps(_owner_log())))
+                conn.commit()
+                return run_id
+            except Exception:
+                conn.rollback()
+                raise
+            finally:
+                if not self._is_memory:
+                    conn.close()
+
+    def recover_abandoned_runs(self) -> dict:
+        """Record only confirmed dead owners; never execute a crawler here."""
+        recovered, held = 0, 0
+        with self._lock:
+            conn = self._connect()
+            try:
+                conn.execute("BEGIN IMMEDIATE")
+                rows = conn.execute("SELECT * FROM crawl_runs WHERE status = 'running'").fetchall()
+                for row in rows:
+                    run = self._run_row_to_dict(row)
+                    if not _owner_confirmed_dead(_recorded_owner(run["log_lines"])):
+                        held += 1
+                        continue
+                    reason = "runtime_owner_exited_before_completion"
+                    conn.execute("UPDATE crawl_runs SET status = 'failed', finished_at = ?, failure_reasons = ?, log_lines = ? WHERE run_id = ? AND status = 'running'",
+                                 (_now_iso(), json.dumps([*run["failure_reasons"], reason]),
+                                  json.dumps([*run["log_lines"], reason]), run["run_id"]))
+                    recovered += 1
+                conn.commit()
+            except Exception:
+                conn.rollback()
+                raise
+            finally:
+                if not self._is_memory:
+                    conn.close()
+        return {"recovered": recovered, "held_running": held}
 
     def update_run_status(
         self,
@@ -766,6 +915,9 @@ def _schedule_is_due(schedule: dict, now: datetime, last_started_at: Optional[da
     """다음 실행 시각이 now 이전이면 due."""
     if not schedule.get("enabled"):
         return False
+    now = _utc_time(now)
+    if last_started_at is not None:
+        last_started_at = _utc_time(last_started_at)
     interval = schedule.get("interval_hours")
     cron_expr = schedule.get("cron_expr")
     if interval is not None:
@@ -781,14 +933,13 @@ def _schedule_is_due(schedule: dict, now: datetime, last_started_at: Optional[da
         return now >= last_started_at + timedelta(hours=interval)
     if cron_expr:
         try:
-            from apscheduler.triggers.cron import CronTrigger
-            trig = CronTrigger.from_crontab(cron_expr)
+            trig = cron_trigger(cron_expr)
         except Exception:
             return False
         if last_started_at is None:
             prev = trig.get_next_fire_time(None, now - timedelta(days=1))
             return bool(prev and prev <= now)
-        next_fire = trig.get_next_fire_time(None, last_started_at)
+        next_fire = trig.get_next_fire_time(None, last_started_at + timedelta(microseconds=1))
         return bool(next_fire and next_fire <= now)
     return False
 
@@ -797,7 +948,7 @@ def _parse_iso(s: Optional[str]) -> Optional[datetime]:
     if not s:
         return None
     try:
-        return datetime.fromisoformat(s)
+        return _utc_time(datetime.fromisoformat(s))
     except ValueError:
         return None
 
@@ -808,7 +959,7 @@ def run_due_schedules(
     registry: Optional[PluginRegistry] = None,
 ) -> list[dict]:
     """활성 스케줄 중 도래한 것을 모두 실행 — 실행 결과 요약 리스트 반환."""
-    now = now or datetime.utcnow()
+    now = _utc_time(now or datetime.now(timezone.utc))
     store = store or get_run_store()
     registry = registry or get_registry()
     summaries: list[dict] = []
@@ -826,11 +977,9 @@ def run_due_schedules(
                 "reason": "plugin_not_registered",
             })
             continue
-        run_id = store.create_run(
-            plugin_name=sched["plugin_name"],
-            schedule_id=sched["id"],
-            triggered_by="schedule",
-        )
+        run_id = store.claim_due_schedule(sched["id"], sched["plugin_name"], now)
+        if run_id is None:
+            continue
         result = _execute_plugin_sync(plugin, sched.get("target_categories") or None, run_id, store)
         summaries.append({"schedule_id": sched["id"], **result})
     return summaries

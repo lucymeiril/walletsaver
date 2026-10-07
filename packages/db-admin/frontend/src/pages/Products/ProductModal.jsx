@@ -6,6 +6,125 @@ import TagInput from '../../components/TagInput';
 import { api } from '../../api/client';
 import s from './Products.module.css';
 
+export function NormalizedCorrectionForm({product,initialSelection,onBusyChange,onApplied,disabled=false}) {
+  const [variantId,setVariantId] = useState(initialSelection?.variantId || '');
+  const [listingId,setListingId] = useState(initialSelection?.listingId || '');
+  const [eventId,setEventId] = useState('');
+  const [history,setHistory] = useState(null);
+  const [page,setPage] = useState(1);
+  const [binding,setBinding] = useState(null);
+  const [draft,setDraft] = useState({reason:'',quantity:'',unit:'',count:'',price:'',specEnabled:false,priceEnabled:false,holdEnabled:false});
+  const [preview,setPreview] = useState(null);
+  const [previewPayload,setPreviewPayload] = useState(null);
+  const [result,setResult] = useState(null);
+  const [uncertainApply,setUncertainApply] = useState(false);
+  const [busy,setBusy] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const [error,setError] = useState(null);
+  const variant = (product.variants || []).find(row => row.public_variant_id === variantId);
+  const listing = variant?.source_listings?.find(row => row.public_source_listing_id === listingId);
+  const tuple = {public_variant_id:variantId,public_source_listing_id:listingId,public_offer_event_id:eventId};
+  const reviewParams = new URLSearchParams({public_product_id:product.public_product_id,public_variant_id:variantId,public_source_listing_id:listingId,
+    source:binding?.source_name || listing?.source_name || '',native_key:binding?.source_record_key || listing?.source_record_key || '',source_url:binding?.source_url || listing?.source_url || ''});
+  const setField = (key,value) => {setDraft(previous=>({...previous,[key]:value,...(key==='holdEnabled'&&value?{specEnabled:false,priceEnabled:false}:{})}));setPreview(null);setPreviewPayload(null);setResult(null);};
+  const fail = err => setError({message:Array.isArray(err.detail) ? err.detail.map(row=>row.msg || row.message || '입력 검증 실패').join(' · ') : err.message || '출처 교정 요청 실패',detail:err.detail});
+  useEffect(() => {
+    setHistory(null);setBinding(null);setPreview(null);setPreviewPayload(null);setResult(null);setUncertainApply(false);setEventId('');setError(null);
+    if (!variantId || !listingId) return;
+    const controller = new AbortController();setLoading(true);
+    api.getNormalizedPriceHistory({public_product_id:product.public_product_id,public_variant_id:variantId,public_source_listing_id:listingId,page,per_page:50},{signal:controller.signal})
+      .then(data=>{if(!controller.signal.aborted){if(!Array.isArray(data.items))throw new Error('출처 관측 이력 형식 미확인');setHistory(data);}})
+      .catch(err=>{if(!controller.signal.aborted)fail(err);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
+    return ()=>controller.abort();
+  },[product.public_product_id,variantId,listingId,page]);
+  useEffect(() => {
+    setBinding(null);setPreview(null);setPreviewPayload(null);setResult(null);setUncertainApply(false);setError(null);
+    if (!eventId || !variantId || !listingId) return;
+    const controller = new AbortController();setLoading(true);
+    api.getNormalizedCorrection(product.public_product_id,tuple,{signal:controller.signal})
+      .then(data=>{
+        if(controller.signal.aborted)return;
+        if(!data.binding_sha256 || !data.stored_specification || Object.entries(tuple).some(([key,value])=>data[key]!=null&&data[key]!==value))throw new Error('교정 원문 연결 정보가 일치하지 않습니다.');
+        setBinding(data);const spec=data.stored_specification;
+        setDraft({reason:'',quantity:spec.package_quantity??'',unit:spec.package_unit??'',count:spec.bundle_count??'',price:data.stored_quote??'',specEnabled:false,priceEnabled:false,holdEnabled:false});
+      }).catch(err=>{if(!controller.signal.aborted)fail(err);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
+    return ()=>controller.abort();
+  },[product.public_product_id,variantId,listingId,eventId]);
+  const payload = () => {
+    if(!binding || !draft.reason.trim())throw new Error('선택한 원문 연결과 교정 사유가 필요합니다.');
+    if(!draft.specEnabled&&!draft.priceEnabled&&!draft.holdEnabled)throw new Error('교정할 판매규격 또는 가격을 선택하세요.');
+    const data={...tuple,binding_sha256:binding.binding_sha256,reason:draft.reason.trim()};
+    if(draft.holdEnabled){if(!binding.quantity_scope_actions?.includes('hold_unresolved')||draft.specEnabled||draft.priceEnabled)throw new Error('수량 범위 보류는 허용된 원문에만 가능하며 숫자 교정과 함께 적용할 수 없습니다.');return {...data,quantity_scope_action:'hold_unresolved'};}
+    if(draft.specEnabled){
+      const q=Number(draft.quantity),count=Number(draft.count);
+      if(String(draft.quantity).trim()===''||!Number.isFinite(q)||q<=0||!draft.unit.trim()||String(draft.count).trim()===''||!Number.isInteger(count)||count<=0)throw new Error('각량·단위·판매개수를 함께 입력하세요. 각량은 양수, 판매개수는 양의 정수여야 합니다.');
+      Object.assign(data,{package_quantity:q,package_unit:draft.unit.trim(),bundle_count:count});
+    }
+    if(draft.priceEnabled){const price=Number(draft.price);if(String(draft.price).trim()===''||!Number.isFinite(price)||price<0)throw new Error('유효한 원문 교정 가격을 입력하세요.');data.price=price;}
+    return data;
+  };
+  const submitPreview = async () => {
+    if(uncertainApply)return;
+    setError(null);setPreview(null);setPreviewPayload(null);setResult(null);
+    let data;try{data=payload();}catch(err){fail(err);return;}
+    setBusy(true);onBusyChange?.(true);
+    try{const response=await api.previewNormalizedCorrection(product.public_product_id,data);if(typeof response.has_changes!=='boolean'||response.applied===true||response.snapshot_published===true)throw new Error('교정 미리보기 응답을 확인할 수 없습니다. 적용하지 않았습니다.');setPreview(response);setPreviewPayload(data);}
+    catch(err){fail(err);}finally{setBusy(false);onBusyChange?.(false);}
+  };
+  const apply = async () => {
+    if(!preview?.has_changes||preview.validation?.ok!==true||!preview.proposal_sha256||!previewPayload)return;
+    try{if(JSON.stringify(payload())!==JSON.stringify(previewPayload))throw new Error('입력이 바뀌었습니다. 교정 미리보기를 다시 실행하세요.');}catch(err){fail(err);setPreview(null);return;}
+    setBusy(true);onBusyChange?.(true);setError(null);
+    try{const response=await api.applyNormalizedCorrection(product.public_product_id,{...previewPayload,expected_proposal_sha256:preview.proposal_sha256});setResult(response);setUncertainApply(false);if(response.applied===true||response.idempotent===true)onApplied?.(response);}
+    catch(err){if(['TimeoutError','AbortError'].includes(err.name)){setUncertainApply(true);setError({message:'적용 결과 미확인 — 저장 내역 확인이 필요합니다. 같은 교정 결과만 확인할 수 있으며, 새로운 미리보기는 만들지 않습니다.'});}else{fail(err);setPreview(null);setPreviewPayload(null);}}finally{setBusy(false);onBusyChange?.(false);}
+  };
+  const previewPrice=typeof preview?.source_price==='number' ? preview.source_price : typeof preview?.source_price?.price==='number' ? preview.source_price.price : null;
+  const blocked=disabled||busy||uncertainApply;
+  return <details className={s.typedCorrection} open={initialSelection ? true : undefined}>
+    <summary>선택 출처 가격·판매규격 교정</summary>
+    <p>편집 대상: {product.display_name||product.canonical_name} · {listing?.source_name||'출처 선택 필요'}. 아래 미리보기·정식 적용은 표시 정보 저장과 별도입니다.</p>
+    <p>원문 가격·시각·이력은 보존합니다. 교정은 원문과 대조한 해석을 정식 적용하며 새로운 수집 관측을 만들지 않습니다.</p>
+    <label>교정 판매규격<select value={variantId} disabled={blocked} onChange={e=>{setVariantId(e.target.value);setListingId('');setPage(1);}}>
+      <option value="">규격 선택</option>{(product.variants||[]).map(row=><option key={row.public_variant_id} value={row.public_variant_id}>{row.display_unit||row.variant_name||row.public_variant_id}{row.is_active===false?' · 보존 규격':''}</option>)}</select></label>
+    <label>교정 출처<select value={listingId} disabled={blocked||!variant} onChange={e=>{setListingId(e.target.value);setPage(1);}}><option value="">출처 선택</option>{(variant?.source_listings||[]).map(row=><option key={row.public_source_listing_id} value={row.public_source_listing_id}>{row.source_name} · {row.source_title||row.source_record_key}</option>)}</select></label>
+    {loading&&<p role="status">선택 출처 근거를 불러오는 중...</p>}
+    <label>교정 관측 기록<select value={eventId} disabled={blocked||loading||!history} onChange={e=>setEventId(e.target.value)}><option value="">관측 기록 선택</option>{(history?.items||[]).map(row=><option key={row.public_offer_event_id} value={row.public_offer_event_id}>{row.crawled_at||'시각 미확인'} · {row.observed_quote??row.price??'가격 미확인'} · {row.observation_kind==='source_interpretation_correction'?'교정 해석':'저장 기록'} · …{row.public_offer_event_id.slice(-8)}</option>)}</select></label>
+    {history?.total_pages>1&&<div><button type="button" disabled={blocked||loading||page<=1} onClick={()=>setPage(page-1)}>이전 관측 페이지</button> {page}/{history.total_pages} <button type="button" disabled={blocked||loading||page>=history.total_pages} onClick={()=>setPage(page+1)}>다음 관측 페이지</button></div>}
+    {listing&&<a href={`/prices?${new URLSearchParams({public_product_id:product.public_product_id,public_variant_id:variantId,public_source_listing_id:listingId})}`}>선택 출처 원가격·전체 관측 이력</a>}
+    {error&&<div role="alert"><p>{error.message}</p>{error.detail?.mutation_workflow&&<><p>이 범위는 공통 출처 검토가 필요합니다. 직접 교정을 적용하지 않았습니다.</p><a href={`/inbox?${reviewParams}`}>선택 출처 정식 검토로 이동</a>{error.detail.affected_match_keys&&<p>영향받는 매칭키: {error.detail.affected_match_keys.join(' · ')}</p>}</>}</div>}
+    {binding&&<>
+      <p>원문: {binding.source_title} · {binding.source_name}</p>
+      {binding.source_url&&<a href={binding.source_url} target="_blank" rel="noreferrer">보존 원문 출처</a>}
+      <p>저장 규격: {binding.stored_specification.display_unit||'미확인'} · 저장 표시가: {binding.stored_quote??'미확인'} · 관측 시각: {binding.observed_at||'미확인'}</p>
+      <details><summary>보존 원문 연결 근거</summary><p>상품 {product.public_product_id} · 규격 {variantId} · 출처 {listingId} · 관측 {eventId} · native {binding.source_record_key}</p><p>binding {binding.binding_sha256}</p>{(binding.source_observations||[]).map(row=><p key={row.raw_record_id}>raw {row.raw_record_id} · {row.raw_payload_sha256}</p>)}</details>
+      <div hidden={draft.holdEnabled}>
+      <label className={s.checkboxLabel}><input type="checkbox" checked={draft.specEnabled} disabled={blocked||draft.holdEnabled} onChange={e=>setField('specEnabled',e.target.checked)}/>판매규격 교정</label>
+      <label>교정 각량<input type="number" step="any" value={draft.quantity} disabled={blocked||!draft.specEnabled} onChange={e=>setField('quantity',e.target.value)}/></label>
+      <label>교정 단위<input value={draft.unit} disabled={blocked||!draft.specEnabled} onChange={e=>setField('unit',e.target.value)}/></label>
+      <label>교정 판매개수<input type="number" step="1" value={draft.count} disabled={blocked||!draft.specEnabled} onChange={e=>setField('count',e.target.value)}/></label>
+      <small>각량·단위·판매개수는 함께 검증합니다. 최소 구매·할인 적용 수령량을 판매개수로 추정하지 않습니다.</small>
+      <label className={s.checkboxLabel}><input type="checkbox" checked={draft.priceEnabled} disabled={blocked||draft.holdEnabled} onChange={e=>setField('priceEnabled',e.target.checked)}/>가격 교정</label>
+      <label>교정 원문 가격<input type="number" step="any" value={draft.price} disabled={blocked||!draft.priceEnabled} onChange={e=>setField('price',e.target.value)}/></label>
+      </div>
+      {binding.quantity_scope_actions?.includes('hold_unresolved')&&<><label className={s.checkboxLabel}><input type="checkbox" checked={draft.holdEnabled} disabled={blocked} onChange={e=>setField('holdEnabled',e.target.checked)}/>정확 총수량·단위가 보류</label><small>원문 내용량의 각량·전체 범위가 미확인입니다. 원문 표시가·원문 수량 표기·관측 시각은 보존하며 숫자를 추정하지 않습니다.</small></>}
+      <label>교정 사유<textarea value={draft.reason} disabled={blocked} onChange={e=>setField('reason',e.target.value)}/></label>
+      <button className={s.saveBtn} type="button" disabled={blocked||loading} onClick={submitPreview}>가격·규격 교정 미리보기</button>
+    </>}
+    {preview&&<section className={s.formSection} aria-label="출처 교정 미리보기">
+      <p>{preview.has_changes?'원문 검증 교정 변경 있음':'변경 없음 · 적용 불필요'}</p>
+      {preview.quantity_scope_action==='hold_unresolved' || draft.holdEnabled
+        ? <p>보관 규격 원문 유지 · 범위 미확인 / 비교 단가 보류 · 원문 표시가·관측 시각 유지</p>
+        : <p>저장 규격 → 원문 검증 규격: {binding?.stored_specification.display_unit||'미확인'} → {preview.source_specification?.display_unit||`${preview.source_specification?.package_quantity??'미확인'}${preview.source_specification?.package_unit||''} × ${preview.source_specification?.bundle_count??'미확인'}`}</p>}
+      <p>저장 표시가 → 원문 검증 가격: {binding?.stored_quote??'미확인'} → {previewPrice??'미확인'}</p>
+      {preview.has_changes&&<p>{preview.validation?.ok===true?'원문 검증 통과 · 정식 적용 대기':preview.validation?.ok===false?'원문 검증 실패 · 아래 사유 확인':'원문 검증 결과 미확인 · 적용할 수 없습니다.'} · 공개 스냅샷 반영 전</p>}
+      {(preview.validation?.errors||[]).map((row,i)=><p key={`error-${i}`} role="alert">{typeof row==='string'?row:row.message||row.msg||'원문 검증 오류'}</p>)}
+      {(preview.validation?.warnings||[]).map((row,i)=><p key={`warning-${i}`}>{typeof row==='string'?row:row.message||row.msg||'검토 경고'}</p>)}
+      <button className={s.saveBtn} type="button" disabled={disabled||busy||!preview.has_changes||preview.validation?.ok!==true||!preview.proposal_sha256||!!result} onClick={apply}>{uncertainApply?'같은 교정 적용 결과 확인':'검증된 교정 정식 적용'}</button>
+    </section>}
+    {result&&<><p role="status">{result.applied===true||result.idempotent===true?'교정 정식 적용 완료':'교정 적용 미확인'} · 공개 웹 반영은 관리자의 별도 스냅샷 갱신 후 확인합니다.</p><details><summary>교정 연결·진단</summary><p>새 규격 {result.new_variant_id||'미확인'} · 교정 해석 {result.new_event_id||'미확인'}</p></details></>}
+  </details>;
+}
+
 const SOURCE_LABELS = {
   all: '전체', emart: '이마트', homeplus: '홈플러스',
   lottemart: '롯데마트', costco: '코스트코', hotdeal: '핫딜', government: '정부데이터',
@@ -298,12 +417,13 @@ function FormBody({ form, setForm, formKeywords, setFormKeywords, categories, ke
   );
 }
 
-function NormalizedMetadataForm({ form, setForm, product, categories, keywords, onSave, onClose, saving, error }) {
+function NormalizedMetadataForm({ form, setForm, product, categories, keywords, onSave, onClose, saving, error,correctionSelection,onCorrectionBusy,onCorrectionApplied }) {
   const setField = (field, value) => setForm(previous => ({ ...previous, [field]: value }));
   return <div className={s.form}>
     <p>출처 상품명: {product.canonical_name} · 수량·출처·가격 이력은 보존됩니다.</p>
     {product.group_display_name && <p>검토군 표시명: {product.group_display_name} · 표시명·브랜드는 연결된 검토군에 함께 적용됩니다. 검토군 분류 변경은 공식 번들을 사용합니다.</p>}
     {error && <p role="alert">{error}</p>}
+    <details open={!correctionSelection}><summary>표시 정보 편집 · 이름·브랜드·분류</summary>
     <label>표시 상품명<input value={form.display_name || ''} onChange={e => setField('display_name', e.target.value)} disabled={saving} /></label>
     <label>표시 브랜드<input value={form.display_brand || ''} onChange={e => setField('display_brand', e.target.value)} disabled={saving} /></label>
     <label>통합 분류<SearchableSelect categories={categories} value={form.unified_category_id}
@@ -317,8 +437,10 @@ function NormalizedMetadataForm({ form, setForm, product, categories, keywords, 
     <label>대표 이미지 URL<input type="url" value={form.primary_image_url || ''} onChange={e => setField('primary_image_url', e.target.value)} disabled={saving} /></label>
     <label className={s.checkboxLabel}><input type="checkbox" checked={form.is_active === true} disabled={saving}
       onChange={e => setField('is_active', e.target.checked)} />활성 상품</label>
-    <div className={s.formActions}><button className={s.cancelBtn} onClick={onClose} disabled={saving}>취소</button>
-      <button className={s.saveBtn} onClick={onSave} disabled={saving}>{saving ? '저장 중...' : '저장'}</button></div>
+    </details>
+    <NormalizedCorrectionForm product={product} initialSelection={correctionSelection} onBusyChange={onCorrectionBusy} onApplied={onCorrectionApplied} disabled={saving}/>
+    <div className={`${s.formActions} ${s.normalizedActions}`}><button className={s.cancelBtn} onClick={onClose} disabled={saving}>취소</button>
+      <button className={s.saveBtn} onClick={onSave} disabled={saving}>{saving ? '표시 정보 저장 중...' : '표시 정보 저장'}</button></div>
   </div>;
 }
 
@@ -329,25 +451,28 @@ export default function ProductModal({
   formKeywords, setFormKeywords,
   categories, keywords,
   onSave, onEdit, onDelete,
-  onCreateCategory, addKeyword, saving = false, error = '',
+  onCreateCategory, addKeyword, saving = false, error = '',onCorrectionApplied,
 }) {
+  const [correctionBusy,setCorrectionBusy] = useState(false);
   if (!modal) return null;
+  const safeClose=()=>{if(!saving&&!correctionBusy)onClose();};
 
   const title = modal.mode === 'add' ? '상품 추가'
-    : modal.mode === 'normalized' ? '상품 표시 정보 수정'
+    : modal.mode === 'normalized' ? '상품 표시 정보 · 출처 교정'
     : modal.mode === 'edit' ? '상품 수정'
     : modal.product.name;
 
   return (
-    <div className={s.overlay} onClick={onClose}>
-      <div className={s.modal} onClick={e => e.stopPropagation()}>
+    <div className={s.overlay} onClick={safeClose}>
+      <div className={`${s.modal} ${modal.mode === 'normalized' ? s.normalizedModal : ''}`} onClick={e => e.stopPropagation()}>
         <div className={s.modalHeader}>
-          <h3>{title}</h3>
-          <button onClick={onClose}><X size={18} /></button>
+          <div><h3>{title}</h3>{modal.mode==='normalized'&&<p>{modal.product.display_name||modal.product.canonical_name}</p>}</div>
+          <button onClick={safeClose} disabled={saving||correctionBusy}><X size={18} /></button>
         </div>
         {modal.mode === 'normalized' ? (
           <NormalizedMetadataForm form={form} setForm={setForm} product={modal.product} categories={categories}
-            keywords={keywords} onSave={onSave} onClose={onClose} saving={saving} error={error} />
+            keywords={keywords} onSave={onSave} onClose={safeClose} saving={saving||correctionBusy} error={error}
+            correctionSelection={modal.correctionSelection} onCorrectionBusy={setCorrectionBusy} onCorrectionApplied={onCorrectionApplied}/>
         ) : modal.mode === 'detail' ? (
           <DetailBody
             product={modal.product}

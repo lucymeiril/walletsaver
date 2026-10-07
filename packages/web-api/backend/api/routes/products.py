@@ -445,7 +445,11 @@ def _normalized_events(product: dict, *, latest_only: bool = False) -> list[dict
         for listing in variant.get("listings") or []:
             offers = listing.get("offers") or []
             # Catalog storage orders each listing's observations newest first.
-            for offer in (offers[:1] if latest_only else offers):
+            selected = offers
+            if latest_only:
+                selected = ([offer for offer in offers if offer.get("is_latest") is True][:1]
+                            if any("is_latest" in offer for offer in offers) else offers[:1])
+            for offer in selected:
                 events.append({**offer, "source": listing.get("source"), "source_url": listing.get("url"), "variant_id": variant.get("id"), "variant_name": variant.get("name")})
     return events
 
@@ -515,6 +519,9 @@ async def get_price_history(
                     "per_item": event.get("per_item"),
                     "observation_receipt_eligible": event.get("observation_receipt_eligible"),
                     "observation_receipt_reason": event.get("observation_receipt_reason"),
+                    "observation_kind": event.get("observation_kind"),
+                    "source_correction_lineage": event.get("source_correction_lineage"),
+                    "source_correction_verified": event.get("source_correction_verified") is True,
                     "quantity_comparison_reason": event.get("quantity_comparison_reason"),
                     "quantity_basis": event.get("quantity_basis"),
                     "scalar_basis": event.get("scalar_basis"),

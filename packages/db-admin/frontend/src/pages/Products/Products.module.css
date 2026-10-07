@@ -301,3 +301,15 @@
   .sourceTabs { flex-wrap: nowrap; }
   .bulkBar { flex-wrap: wrap; }
 }
+
+/* Existing normalized editor: source correction and metadata save remain distinct. */
+.normalizedModal { display: flex; flex-direction: column; overflow: hidden; }
+.normalizedModal .modalHeader { flex-shrink: 0; background: var(--bg2); }
+.normalizedModal > .form { overflow-y: auto; min-height: 0; }
+.typedCorrection { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass1); }
+.typedCorrection[open] { display: flex; flex-direction: column; gap: 12px; }
+.typedCorrection > summary { font-weight: var(--fw-bold); color: var(--text); cursor: pointer; }
+.typedCorrection button:disabled { opacity: .45; cursor: not-allowed; }
+.normalizedActions { position: sticky; bottom: -24px; padding: 12px 0; border-top: 1px solid var(--border); background: var(--bg2); z-index: 1; }
+
+.normalizedModal .modalHeader p { margin-top: 6px; font-size: var(--fs-sm); color: var(--text2); overflow-wrap: anywhere; }

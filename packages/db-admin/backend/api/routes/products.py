@@ -1,7 +1,7 @@
 """상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
 from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
-from typing import Optional, Any
+from typing import Optional, Any, Literal
 from datetime import datetime, timedelta
 
 from sqlalchemy import func, desc, asc, distinct, case, or_, and_, select, String
@@ -169,6 +169,31 @@ class NormalizedProductUpdate(BaseModel):
             if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
                 raise ValueError("primary_image_url must be an HTTP/S URL without credentials")
         return value
+
+
+class NormalizedCorrectionRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid', allow_inf_nan=False)
+    public_variant_id: StrictStr = Field(min_length=1,max_length=120)
+    public_source_listing_id: StrictStr = Field(min_length=1,max_length=120)
+    public_offer_event_id: StrictStr = Field(min_length=1,max_length=120)
+    binding_sha256: StrictStr = Field(pattern=r'^[0-9a-f]{64}$')
+    reason: StrictStr = Field(min_length=1,max_length=2000)
+    quantity_scope_action: Literal['hold_unresolved'] | None = None
+    package_quantity: float | None = Field(None,gt=0)
+    package_unit: StrictStr | None = Field(None,min_length=1,max_length=20)
+    bundle_count: StrictInt | None = Field(None,ge=1)
+    price: float | None = Field(None,gt=0)
+
+    @field_validator('package_quantity','price',mode='before')
+    @classmethod
+    def reject_coerced_amount(cls,value):
+        if isinstance(value,bool) or value is not None and not isinstance(value,(int,float)):
+            raise ValueError('Amount must be a finite explicit number')
+        return value
+
+
+class NormalizedCorrectionApply(NormalizedCorrectionRequest):
+    expected_proposal_sha256: StrictStr = Field(pattern=r'^[0-9a-f]{64}$')
 
 
 class BulkCategoryRequest(BaseModel):
@@ -473,6 +498,51 @@ def edit_normalized_product(public_product_id: str, body: NormalizedProductUpdat
     with managed_session() as session:
         return update_normalized_product(session, public_product_id, body.model_dump(exclude_unset=True),
                                          identity=identity, request=request)
+
+
+@router.get('/normalized/{public_product_id}/correction')
+def get_normalized_correction(public_product_id: str, public_variant_id: str,
+        public_source_listing_id: str, public_offer_event_id: str,
+        identity: dict = Depends(require_viewer)):
+    from services.normalized_product_correction import correction_prefill
+    session = get_session()
+    try:
+        return correction_prefill(session,public_product_id,public_variant_id,
+                                  public_source_listing_id,public_offer_event_id)
+    finally:
+        session.close()
+
+
+@router.post('/normalized/{public_product_id}/correction/preview')
+def preview_normalized_correction(public_product_id: str, body: NormalizedCorrectionRequest,
+        identity: dict = Depends(require_moderator)):
+    from services.normalized_product_correction import correction_preview
+    session = get_session()
+    try:
+        result = correction_preview(session,public_product_id,body.model_dump(exclude_unset=True),identity=identity)
+        # The existing server-owned formal bundle is never a replacement JSON editor.
+        return {key:value for key,value in result.items() if key != 'bundle'}
+    finally:
+        session.close()
+
+
+@router.post('/normalized/{public_product_id}/correction/apply')
+def apply_normalized_correction(public_product_id: str, body: NormalizedCorrectionApply,
+        request: Request, identity: dict = Depends(require_moderator)):
+    from config import settings
+    from services.backup import create_backup
+    from services.normalized_product_correction import apply_correction
+    backup_path = None
+    if settings.DATABASE_URL.startswith('sqlite') and ':memory:' not in settings.DATABASE_URL:
+        try:
+            backup_path = create_backup(settings.DATABASE_URL,reason='catalog-bundle')
+        except FileNotFoundError:
+            pass
+    selection = body.model_dump(exclude_unset=True,exclude={'expected_proposal_sha256'})
+    with managed_session() as session:
+        result = apply_correction(session,public_product_id,selection,body.expected_proposal_sha256,
+                                  identity=identity,request=request)
+    return {**result,'backup_path':backup_path}
 
 
 @router.get("/stats")

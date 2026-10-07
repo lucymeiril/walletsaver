@@ -6,7 +6,6 @@ import logging
 import os
 from typing import Optional
 
-from apscheduler.triggers.cron import CronTrigger
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
@@ -98,7 +97,7 @@ def _validate_schedule_values(
         raise HTTPException(status_code=400, detail="cron_expr 또는 interval_hours 중 하나는 필수입니다.")
     if cron_expr is not None:
         try:
-            CronTrigger.from_crontab(cron_expr)
+            orch.cron_trigger(cron_expr)
         except Exception as exc:
             raise HTTPException(status_code=400, detail="올바른 cron 표현식이 필요합니다.") from exc
     if interval_hours is not None and interval_hours <= 0:
@@ -110,6 +109,9 @@ _SCHEDULE_POLL_SECONDS = max(
     int(os.getenv("WALLETSAVIOR_SCHEDULE_POLL_SECONDS", "60")),
 )
 _schedule_task: asyncio.Task | None = None
+_schedule_last_tick: str | None = None
+_schedule_last_error: str | None = None
+_schedule_recovery: dict | None = None
 
 
 async def _run_due_once() -> list[dict]:
@@ -118,13 +120,17 @@ async def _run_due_once() -> list[dict]:
 
 
 async def _schedule_loop() -> None:
+    global _schedule_last_tick, _schedule_last_error
     while True:
         try:
             await _run_due_once()
+            _schedule_last_error = None
         except asyncio.CancelledError:
             raise
-        except Exception:
+        except Exception as exc:
+            _schedule_last_error = type(exc).__name__
             logger.exception("[orchestrator] schedule tick failed")
+        _schedule_last_tick = orch._now_iso()
         await asyncio.sleep(_SCHEDULE_POLL_SECONDS)
 
 
@@ -142,12 +148,18 @@ def schedule_loop_running() -> bool:
     )
 
 
+def schedule_loop_state() -> dict:
+    return {"last_tick_at": _schedule_last_tick, "last_error": _schedule_last_error,
+            "startup_recovery": _schedule_recovery, "cron_timezone": "UTC", "cron_dialect": "unix"}
+
+
 @router.on_event("startup")
 async def _start_schedule_loop() -> None:
-    global _schedule_task
+    global _schedule_task, _schedule_recovery
     if not schedule_loop_enabled():
         return
     if _schedule_task is None or _schedule_task.done():
+        _schedule_recovery = await asyncio.to_thread(orch.get_run_store().recover_abandoned_runs)
         _schedule_task = asyncio.create_task(_schedule_loop())
 
 

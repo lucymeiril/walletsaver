@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_revision": 117,
-  "version": "2026-10-07-catalog117-fresh467",
+  "catalog_revision": 118,
+  "version": "2026-10-07-catalog118-fresh467",
   "source_code_base": "35aa03b7511594dbefa001a4aa892b53222ac8d0",
   "initial_catalog": {
     "included": 9098,
@@ -9,15 +9,18 @@
     "residual_review": "user_paused"
   },
   "runtime_catalog": {
-    "events": 9117,
-    "public": 8805,
-    "pending": 312
+    "events": 9118,
+    "public": 8806,
+    "pending": 313,
+    "approved_public_scope_holds": 1,
+    "actual_source_observations": 9117,
+    "interpretation_projections": 1
   },
-  "data_scope": "Fresh shallow public35aa03b source-only official4gzip install; sanitized consistent admin/public117, accounts0. Five source-bound inner-content count repairs affect7existingquotes; native Lotte actual4990KRW/340g standalonebase with2unappliedbenefits adds1observedreceipt. Originalinitial9098/98paused, total9117/public8805/pending312. OldIDs/sourcequotes/time/matching/history preserved with traceable variant changes; no claim wholecatalog/submissionquality.",
+  "data_scope": "Consistent fresh117 plus one source-proven approved quantity-scope interpretation; no new supplier observation. Original11900/source/time/variant and full9117 events preserved, exact nasal ml/rates held; generic unapproved pending stays private. Accounts0; no whole-catalog acceptance claim. Pending313 includes one approved public interpretation hold and312 unapproved events; public8806 is history including that hold, not8806 currently purchasable offers.",
   "files": {
     "admin.sqlite": {
-      "sha256": "7fe8bcf9e3298d0a85d98888df77b3a34424967efa9aee708f5ae42a996c6160",
-      "bytes": 63418368,
+      "sha256": "4120a751f88bb8c42d42a417bd918a6fafa384aad8d477706116a8b6b880aee0",
+      "bytes": 63422464,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -48,7 +51,7 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6407,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 9117,
+        "normalized_offer_events": 9118,
         "normalized_week_buckets": 3,
         "normalized_offer_week_links": 9092,
         "products": 0,
@@ -63,7 +66,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 17,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 88,
+        "catalog_sync_log": 89,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +74,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "df67b5dfb19ad9c889116c0c204a8a05d5b3ce818fb547aba6ce00356fea3b93",
-      "archive_bytes": 9142775
+      "archive_sha256": "9331bbdabd458cc3fc7b82dbbe9e3edc4eceb0a018a1cf59a60fe0158b19bb77",
+      "archive_bytes": 9144355
     },
     "public_snapshot.sqlite": {
-      "sha256": "f6df801ab38d8af64935081e086a01382a97c84e2a61e4a547f95cb3411aa1e6",
-      "bytes": 58957824,
+      "sha256": "90f57c542988095283421b36e6b56bbadb84e74b074cc8985792ea34dc300353",
+      "bytes": 58961920,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -99,7 +102,7 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6407,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 8805,
+        "normalized_offer_events": 8806,
         "normalized_week_buckets": 3,
         "normalized_offer_week_links": 8795,
         "products": 0,
@@ -114,8 +117,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "2351cadf0f59dbacf677e403e311c6b5cd8bcefabb790b57c2212a106a0fa02f",
-      "archive_bytes": 8495817
+      "archive_sha256": "9a759257e22e97e653b0c6e7952807a1008f38b596530df94541e57c5abebeab",
+      "archive_bytes": 8497246
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -168,18 +171,18 @@
     "packages/shared/core/reviewed_catalog_groups.json": "016e9a4efcb71394bfc3b87a37157a0d388767ea56b6ca51e9b85f56234fe86b",
     "packages/shared/core/catalog_quantity.py": "67c2185d3d1b0e5121fb38cde7c8195c7592d76eafd038cb706e3c1bc8f51a12",
     "packages/shared/core/catalog_matching.py": "9d466e7f84bf1b9387a0aff2441cc1bc24eb2f5ba50b9534f4a1f697a0bbaaa8",
-    "packages/db-admin/backend/services/catalog_bundle.py": "4a7a3a3c7f9d49fad1118398ce47f1c3634467a94be5e82cb3204085f24946c6",
+    "packages/db-admin/backend/services/catalog_bundle.py": "603d31cc414b9b7d921ebce7a3059802a30752e1aa9fec8c52f3e3c27cb0fdfa",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "feb8b280471e76de6db0035f82196df39756035405d19875b574ba5b463de162",
     "packages/db-admin/backend/services/normalized_mart3.py": "f4be2a85242c677b4c5a6c90c02e6883883f30d80c9e0438116cf8684632c64a",
-    "packages/web-api/backend/services/catalog_storage.py": "8b7536117547c66e33a6e55bce98c1f24b058df96722a4217e617523be00be6d",
-    "packages/web-frontend/src/utils/productDecision.js": "f10bdaaf4149c590fb9d461f1ac02e6eaf5a3bc24347f67d149917356f35bdf2",
-    "packages/web-frontend/src/components/ProductDetailModal.jsx": "1b41681cd1367568b6752ec66f39c554d02627c75b4aef755ba8248687958124",
-    "packages/web-frontend/src/pages/Price/PricePage.jsx": "ab5049af3a52c2b85484d47a7d25261f50381277cde41f2135469a81f562b4f0",
+    "packages/web-api/backend/services/catalog_storage.py": "be02b9be8200c8e5a32bbd358a23ee249d3eac73d1263d32814acf79c1b12b98",
+    "packages/web-frontend/src/utils/productDecision.js": "0673db397607f54a27548fb882b14a4f8324b330367c9187804c0ebff291584a",
+    "packages/web-frontend/src/components/ProductDetailModal.jsx": "5f0448a2c27645f3a7af60dd915e4a7444fcd991091b82b11509de6c294c7f2f",
+    "packages/web-frontend/src/pages/Price/PricePage.jsx": "7846a738a5663569bf343604cbd6e06f7d4b451015eed689d2ee5b7644bedd7f",
     "packages/db-admin/backend/services/initial_taxonomy.py": "f1403bd066efdd0b674fa4be5a3df6f5ac31e8188121d43793146763c8fb0e8a",
     "packages/shared/core/reviewed_content_quantities.py": "af891bbcf104d216b8244e2490636e0c8f6ab674125f49ba7ece1082acdd9450",
-    "packages/shared/core/reviewed_source_evidence.py": "6d9b7b3d40883dbc256555951bc17d8530e28f3221b0e66473ae44350c2b4d66",
-    "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
-    "packages/web-api/backend/api/routes/admin_remote.py": "2d179b6043b978b2c5ed85b650f108b9c9bf463a1b2232177c7cc14728acd4cb",
+    "packages/shared/core/reviewed_source_evidence.py": "821dd0f236f05b706316b739f7caacafe8819e7fabc3cf3b1694d5b2517e0408",
+    "packages/db-admin/backend/services/public_snapshot_v2.py": "9b433ba80e83811f68ac92857c99c56b72907517a7de57e2524bf72e38b348a5",
+    "packages/web-api/backend/api/routes/admin_remote.py": "03079087a9012bf838b2d9f9ea2e8adbd0bb1a2ad4d81083d7e0806c1abe5c1a",
     "packages/web-api/backend/api/routes/search.py": "796bd6cbe8edd274450531ed00ff108cde38e5b5dcb63389a38a8b2d24fb680b",
     "packages/web-frontend/src/components/search/SearchAutocomplete.jsx": "db8713b13bd1978b4073c53feb6487f8e18f3e1d58b06106761bbb4558083dfc",
     "packages/web-frontend/src/pages/Community/CommunityPage.jsx": "2ad507c6243cff9cd1a003e87e67a3d39f2f1dac3f7f6dce1347f224a1878cc8",
@@ -192,10 +195,10 @@
     "packages/shared/core/product_units.py": "ab7f7e7cab042ee5454f3c0ad90592f106588c72d3fef9cc61e5e0ee7b657a73",
     "packages/shared/core/promotion_semantics.py": "1c08f9a5ee54c994c7981596b4cbb7f32d09243a37546dd1c6e9d8837348b2c5",
     "packages/crawler-admin/backend/crawlers/marts/homeplus/crawler.py": "add9a6a83ff60965cce95d68f27df93b51d03dc2afad0cabecccd8fb75a8eadc",
-    "packages/web-api/backend/api/routes/products.py": "30c580838d484d84de2d6c6a2e8970fd8296a00a853301d3832d51b4171e87e6",
+    "packages/web-api/backend/api/routes/products.py": "d9812a9c1cd008249da2fd618629d929168a7f47fd2bf8d5fce60de669585f77",
     "packages/web-frontend/src/utils/helpers.js": "804a78c007d06475fb1555fa3c9ad3745994b7abd40ad808f374160f95db05b0",
     "packages/web-frontend/src/components/common/ShoppingListPanel.jsx": "5bdf577f31db8665ef9f89ceda1e256e970af5447531f1240e60ba762f3f6ec1",
-    "packages/web-frontend/src/pages/Price/CategoryComparePage.jsx": "b943fdf57001e8b97653edbab1aa395c183a3a3f6c551379bc92c499bf4167cb",
+    "packages/web-frontend/src/pages/Price/CategoryComparePage.jsx": "869bd1a9bbfa434267c540f11c468f658b72eb1a9d60731598834a7f394fb5a0",
     "packages/web-frontend/src/pages/Local/LocalPage.jsx": "57b14bb6c93512c6967668ae97ab90649cccb1311d1d4ec58bea61539523e460",
     "start-all.bat": "04630886ec2d92670e8ce4a0d7aa772dec130c2c4f763800b584e1b1701f07e5",
     "packages/crawler-admin/backend/api/routes/crawlers.py": "7c07bd461f27913c99a6518e0ab9489e4cce5ca2a1e4bfbdf47a6be7a871a75a",
@@ -207,18 +210,26 @@
     "packages/crawler-admin/frontend/src/stores/adminStore.js": "7b1b4c0bfe82a353c1e44ba7a099016e41761fa0c9f9cf72d64b73d4dbc77921",
     "packages/crawler-admin/frontend/vite.config.js": "3ead584650f06d43858f44bc052bcc2853298d0ec3af05c52bde2d8a04fb59ef",
     "packages/db-admin/backend/api/routes/ingestion_core.py": "383a64b424d18e823cc9a0f1a185500b07ba097e7d7a2b0fbf956a1b3e78a2c6",
-    "packages/db-admin/backend/api/routes/products.py": "713141b69f4f52c8af505def71e4086ec6ce35591dc3b4b9a2a3d940bc594b0c",
-    "packages/db-admin/frontend/src/api/client.js": "f3f19023f0e8dde1924ae189396c8beed02e9c930436d0086b5f87dafc615bf2",
+    "packages/db-admin/backend/api/routes/products.py": "4d4013e01a0574d97d492352fdca4fd461f2f3f1e2a5024f62e8cdb49dc96bfa",
+    "packages/db-admin/frontend/src/api/client.js": "38c7af5b3c461a90d090ae45b5f91dd8403cc02fec78bc229ee0c7b92ef2f967",
     "packages/db-admin/frontend/src/pages/Inbox/InboxPage.jsx": "5d52e65ebd2e26d82df7f30b43e1a7266c7730c5bfd799f78075e0ef50c3d0e6",
-    "packages/db-admin/frontend/src/pages/Products/NormalizedProducts.jsx": "b0e7453d822d11a5e82bc345bc2881f1caf953c8f7043700b66563c84e032a5f",
-    "packages/db-admin/frontend/src/pages/Products/ProductModal.jsx": "cf9a425d970d48394fe01ef695058a388bd63053ea22b287d2944ef53c10b44f",
+    "packages/db-admin/frontend/src/pages/Products/NormalizedProducts.jsx": "c657683533ec3e23d8709f8888fdfcca4d98da6c6f0a9ab24bc62f49c76227f5",
+    "packages/db-admin/frontend/src/pages/Products/ProductModal.jsx": "2ad44dfcb41d7caaf3cc0d12af6509c0fd749fdef30e093da440485d5ed6bfbe",
     "packages/db-admin/frontend/src/pages/Products/Products.jsx": "18193af55654451dcc87172f44e107e8c7190f4b31b27ec6a1a0496102532f9d",
     "packages/db-admin/frontend/vite.config.js": "3044145363beb15d26fa3c482f7e4a105c51820dfb9be7cd791de4766d73fd6b",
     "packages/web-api/backend/api/routes/naver_local.py": "c01262fe9ed5b44bee628d75756fcf9b16712fdd05ced000a21ed78620f25902",
     "packages/web-frontend/src/components/ProductDetailModal.module.css": "9c01b5600b7fd1738b870185819dfcff4c8522224ffafd80c598edaf8db6fcb6",
     "packages/web-frontend/src/components/layout/Footer.jsx": "e8b399baf03bee096a8f96bb9ecb9153c427c030945bfc32b5a786ec3e33eea4",
-    "packages/db-admin/backend/services/native_quote_price_roles.py": "0cf6101ed0683cb665d99417941d99843dd5ba17acd65e1a4a65b80410b3aeca",
-    "packages/db-admin/backend/services/normalized_product_edit.py": "ca1bc0ae7ac33567d61b30b9f1213bb9f372a99e201a0d1d43b46770a299692d"
+    "packages/db-admin/backend/services/native_quote_price_roles.py": "74ec713a9a4e604e1b2b2f88ae9e4ac5f46695fc698a64f11fa9c289e7f74d51",
+    "packages/db-admin/backend/services/normalized_product_edit.py": "ca1bc0ae7ac33567d61b30b9f1213bb9f372a99e201a0d1d43b46770a299692d",
+    "packages/db-admin/backend/services/normalized_product_correction.py": "cb7e9291986fcea7cdde39a4f2c788746c1f99c9a8f7b869b2bce87daa0985cb",
+    "packages/crawler-admin/backend/api/app.py": "601b2b9f6e39ec234230bf60d0941e5ea16c3442a2bfd1e1bcca446317afacb3",
+    "packages/crawler-admin/backend/api/routes/orchestrator.py": "4b9c435cb496404c2d921a59fcdfa3756b172d7889bebcd88b00ce27471a515f",
+    "packages/crawler-admin/backend/services/crawl_orchestrator.py": "897d095e27f26d1a03a08c5417c5933317e08595aef3053b96c5e1eba887bc52",
+    "packages/crawler-admin/backend/services/orchestrator_dispatch.py": "cb3d8fadb83fb6b1339941577dff326cd8c86f645d9bbffcd98b68e4579b276b",
+    "packages/crawler-admin/frontend/src/pages/Schedule/Schedule.jsx": "52f961329e93b61d84fc571ff58f773ce8ae058d29f117b403ca2fa9cf33a663",
+    "packages/db-admin/backend/api/routes/prices.py": "455fb5b4b3b7c734c682b7f5af0e6960be768399d7ee0d8033184875874ed7ea",
+    "packages/db-admin/frontend/src/pages/Products/Products.module.css": "1a545c70454bf3ce63a7093651731a6d890c4f8c95d5ca1aabd7e06e1cb82c08"
   },
   "catalog_updates": [
     {
@@ -396,6 +407,14 @@
       "base_catalog_revision": 113,
       "reviewed_catalog_revision": 117,
       "scope": "Reuse5approved source-count corrections/7oldquotes plus1actual aware nativeLotte standalonebase; original source/prices/time/IDs/accountrefs protected; explicitreviewedupdate only."
+    },
+    {
+      "path": "demo-data/updates/catalog117-to118.json",
+      "sha256": "48e118de1a2396f5dad3bb0b9e79462d58ec0332b91b7f541c6f5f1340c11f8f",
+      "bytes": 6628,
+      "base_catalog_revision": 117,
+      "reviewed_catalog_revision": 118,
+      "scope": "One verified same-source quantity-scope hold projection; no new capture, no quantity inference; original price/time/IDs/accountrefs preserved."
     }
   ],
   "reviewed_catalog_groups": {

@@ -2,11 +2,12 @@ import { beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { act, render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Products from './Products';
+import { NormalizedCorrectionForm } from './ProductModal';
 import { sourceReviewLink } from './NormalizedProducts';
 import InboxPage, { matchesReviewContext } from '../Inbox/InboxPage';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
-vi.mock('../../api/client', () => ({ api: { getNormalizedProducts: vi.fn(), getProducts: vi.fn(), getNormalizedProduct: vi.fn(), updateNormalizedProduct: vi.fn(), getUnifiedCategoryTree: vi.fn(), getKeywords: vi.fn() } }));
+vi.mock('../../api/client', () => ({ api: { getNormalizedProducts: vi.fn(), getProducts: vi.fn(), getNormalizedProduct: vi.fn(), updateNormalizedProduct: vi.fn(), getUnifiedCategoryTree: vi.fn(), getKeywords: vi.fn(), getNormalizedPriceHistory: vi.fn(), getNormalizedCorrection: vi.fn(), previewNormalizedCorrection: vi.fn(), applyNormalizedCorrection: vi.fn() } }));
 const product = { public_product_id: 'prod-opaque', canonical_name: '선언 구성', is_active: true,
   unified_category_id: 'food.gift', category_name: '선물 구성', aliases: ['원명'], keywords: ['키워드'],
   variants: [{ public_variant_id: 'var-vector', variant_name: '식품과 부속', is_active: true,
@@ -77,7 +78,7 @@ it('467 metadata editor saves only changed display fields on the original opaque
   expect(screen.queryByText('행사 raw_data(JSON)')).toBeNull();
   expect(screen.queryByLabelText('현재/행사가')).toBeNull();
   fireEvent.change(name, { target: { value: '수정 표시명' } });
-  fireEvent.click(screen.getByRole('button', { name: '저장' }));
+  fireEvent.click(screen.getByRole('button', { name: '표시 정보 저장' }));
   await waitFor(() => expect(api.updateNormalizedProduct).toHaveBeenCalledWith('prod-opaque', { display_name: '수정 표시명' }));
   await screen.findByText('수정 표시명');
   expect(screen.getByRole('status').textContent).toContain('공식 스냅샷');
@@ -96,11 +97,11 @@ it('467 metadata editor retains entered fields and the actual save error without
   render(<Products />);
   fireEvent.click(await screen.findByRole('button', { name: '표시 정보 수정' }));
   fireEvent.change(await screen.findByLabelText('표시 상품명'), { target: { value: '입력 보존' } });
-  fireEvent.click(screen.getByRole('button', { name: '저장' }));
+  fireEvent.click(screen.getByRole('button', { name: '표시 정보 저장' }));
   await screen.findByRole('alert');
   expect(screen.getByLabelText('표시 상품명').value).toBe('입력 보존');
   expect(screen.getByRole('alert').textContent).toContain('공식 번들');
-  expect(screen.getByRole('button', { name: '저장' }).disabled).toBe(false);
+  expect(screen.getByRole('button', { name: '표시 정보 저장' }).disabled).toBe(false);
 });
 
 it('467 carries the exact selected source tuple into the existing formal review route', () => {
@@ -136,4 +137,120 @@ it('467 preserves zero pending receipts and distinguishes an unknown count from 
   } finally {
     useDbAdminStore.setState(previous,true);
   }
+});
+
+const correctionTuple = {public_variant_id:'var-vector',public_source_listing_id:'listing-opaque',public_offer_event_id:'original-event'};
+const correctionBinding = {...correctionTuple,binding_sha256:'source-binding',stored_quote:4990,
+  stored_specification:{package_quantity:85,package_unit:'g',bundle_count:1,display_unit:'85g'},
+  observed_at:'2026-08-31T01:46:57.083473Z',source_name:'Costco',source_record_key:'native-123',
+  source_title:'원문 85g×4',source_url:'https://example.invalid/product/native-123',
+  source_observations:[{raw_record_id:9,raw_payload_sha256:'immutable-body'}]};
+async function openCorrection() {
+  api.getNormalizedPriceHistory.mockResolvedValue({items:[{public_offer_event_id:'original-event',observed_quote:4990,crawled_at:correctionBinding.observed_at}],total_pages:1});
+  api.getNormalizedCorrection.mockResolvedValue(correctionBinding);
+  render(<NormalizedCorrectionForm product={product} initialSelection={{variantId:'var-vector',listingId:'listing-opaque'}} />);
+  await screen.findByRole('option',{name:/2026-08-31/});
+  fireEvent.change(screen.getByLabelText('교정 관측 기록'), {target:{value:'original-event'}});
+  await screen.findByText(/저장 규격: 85g/);
+  fireEvent.click(screen.getByLabelText('판매규격 교정'));
+  fireEvent.change(screen.getByLabelText('교정 판매개수'),{target:{value:'4'}});
+  fireEvent.change(screen.getByLabelText('교정 사유'),{target:{value:'보존 원문 판매개수 교정'}});
+}
+it('typed correction requires exact source binding and a matching validated preview before applying, without publishing or rewriting the original', async () => {
+  await openCorrection();
+  expect(api.getNormalizedPriceHistory).toHaveBeenCalledWith({public_product_id:'prod-opaque',public_variant_id:'var-vector',public_source_listing_id:'listing-opaque',page:1,per_page:50},expect.any(Object));
+  expect(api.getNormalizedCorrection).toHaveBeenCalledWith('prod-opaque',correctionTuple,expect.any(Object));
+  const body={...correctionTuple,binding_sha256:'source-binding',reason:'보존 원문 판매개수 교정',package_quantity:85,package_unit:'g',bundle_count:4};
+  api.previewNormalizedCorrection.mockResolvedValue({has_changes:true,applied:false,snapshot_published:false,proposal_sha256:'validated-proposal',source_price:{price:4990,original_price:null,price_state:'sale_price_only',promotion_conditions:{source_base_quote_only:true}},source_specification:{display_unit:'85g×4'},validation:{ok:true}});
+  api.applyNormalizedCorrection.mockResolvedValue({applied:true,new_variant_id:'corrected-var',new_event_id:'correction-event',snapshot_published:false});
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  await screen.findByRole('button',{name:'검증된 교정 정식 적용'});
+  expect(api.previewNormalizedCorrection).toHaveBeenCalledWith('prod-opaque',body);
+  expect(screen.getByText('저장 표시가 → 원문 검증 가격: 4990 → 4990')).toBeTruthy();
+  fireEvent.change(screen.getByLabelText('교정 사유'),{target:{value:'사유 수정'}});
+  expect(screen.queryByRole('button',{name:'검증된 교정 정식 적용'})).toBeNull();
+  expect(api.applyNormalizedCorrection).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  fireEvent.click(await screen.findByRole('button',{name:'검증된 교정 정식 적용'}));
+  await screen.findByText(/교정 정식 적용 완료/);
+  expect(api.applyNormalizedCorrection).toHaveBeenCalledWith('prod-opaque',{...body,reason:'사유 수정',expected_proposal_sha256:'validated-proposal'});
+  expect(correctionBinding.stored_quote).toBe(4990);
+  expect(correctionBinding.observed_at).toBe('2026-08-31T01:46:57.083473Z');
+  expect(screen.getByRole('status').textContent).toContain('별도 스냅샷');
+});
+it('typed correction rejects incomplete quantity locally and retains honest no-change and protected-scope review actions', async () => {
+  await openCorrection();
+  fireEvent.change(screen.getByLabelText('교정 단위'),{target:{value:''}});
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  await screen.findByText(/각량·단위·판매개수를 함께 입력하세요/);
+  expect(api.previewNormalizedCorrection).not.toHaveBeenCalled();
+  fireEvent.change(screen.getByLabelText('교정 단위'),{target:{value:'g'}});
+  api.previewNormalizedCorrection.mockResolvedValue({has_changes:false,applied:false,snapshot_published:false,source_price:{price:4990,original_price:null,price_state:'sale_price_only',promotion_conditions:{source_base_quote_only:true}},source_specification:correctionBinding.stored_specification});
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  expect((await screen.findByRole('button',{name:'검증된 교정 정식 적용'})).disabled).toBe(true);
+  expect(screen.getByText('변경 없음 · 적용 불필요')).toBeTruthy();
+  expect(screen.queryByText(/원문 검증 실패/)).toBeNull();
+  expect(api.applyNormalizedCorrection).not.toHaveBeenCalled();
+  api.previewNormalizedCorrection.mockRejectedValue(Object.assign(new Error('공유 규격은 정식 묶음 검토가 필요합니다'),{detail:{mutation_workflow:'/api/catalog-bundles',public_variant_id:'var-vector'}}));
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  const link=await screen.findByText('선택 출처 정식 검토로 이동');
+  expect(new URL(link.getAttribute('href'),'http://localhost').searchParams.get('public_source_listing_id')).toBe('listing-opaque');
+  expect(screen.getByLabelText('교정 판매개수').value).toBe('4');
+  expect(api.applyNormalizedCorrection).not.toHaveBeenCalled();
+});
+
+it('typed correction scope hold is available only from the source binding and mutually excludes numeric edits', async () => {
+  await openCorrection();
+  expect(screen.queryByLabelText('정확 총수량·단위가 보류')).toBeNull();
+  cleanup();
+  api.getNormalizedCorrection.mockResolvedValue({...correctionBinding,quantity_scope_actions:['hold_unresolved'],quantity_scope_issues:['measured_inner_scope_unresolved']});
+  render(<NormalizedCorrectionForm product={product} initialSelection={{variantId:'var-vector',listingId:'listing-opaque'}} />);
+  await screen.findByRole('option',{name:/2026-08-31/});
+  fireEvent.change(screen.getByLabelText('교정 관측 기록'),{target:{value:'original-event'}});
+  fireEvent.click(await screen.findByLabelText('정확 총수량·단위가 보류'));
+  expect(screen.getByLabelText('판매규격 교정').disabled).toBe(true);
+  expect(screen.getByLabelText('가격 교정').disabled).toBe(true);
+  fireEvent.change(screen.getByLabelText('교정 사유'),{target:{value:'보존 원문 각량·전체 범위 미확인'}});
+  api.previewNormalizedCorrection.mockResolvedValue({has_changes:true,source_price:{price:4990},source_specification:correctionBinding.stored_specification,proposal_sha256:'scope-proposal',validation:{ok:true},applied:false});
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  await screen.findByRole('button',{name:'검증된 교정 정식 적용'});
+  expect(api.previewNormalizedCorrection).toHaveBeenLastCalledWith('prod-opaque',{...correctionTuple,binding_sha256:'source-binding',reason:'보존 원문 각량·전체 범위 미확인',quantity_scope_action:'hold_unresolved'});
+  expect(api.applyNormalizedCorrection).not.toHaveBeenCalled();
+});
+
+it('typed correction timeout preserves only the exact validated proposal for result confirmation and blocks a fresh preview', async () => {
+  await openCorrection();
+  const body={...correctionTuple,binding_sha256:'source-binding',reason:'보존 원문 판매개수 교정',package_quantity:85,package_unit:'g',bundle_count:4};
+  api.previewNormalizedCorrection.mockResolvedValue({has_changes:true,source_price:{price:4990},source_specification:{display_unit:'85g×4'},proposal_sha256:'same-proposal',validation:{ok:true},applied:false});
+  api.applyNormalizedCorrection.mockRejectedValueOnce(new DOMException('request timeout','TimeoutError')).mockResolvedValueOnce({applied:true,idempotent:true,new_event_id:'same-correction',snapshot_published:false});
+  fireEvent.click(screen.getByText('가격·규격 교정 미리보기'));
+  fireEvent.click(await screen.findByRole('button',{name:'검증된 교정 정식 적용'}));
+  const confirm=await screen.findByRole('button',{name:'같은 교정 적용 결과 확인'});
+  expect(screen.getByRole('alert').textContent).toContain('적용 결과 미확인');
+  expect(screen.getByRole('button',{name:'가격·규격 교정 미리보기'}).disabled).toBe(true);
+  expect(screen.getByLabelText('교정 사유').disabled).toBe(true);
+  expect(api.applyNormalizedCorrection).toHaveBeenCalledTimes(1);
+  fireEvent.click(confirm);
+  await screen.findByText(/교정 정식 적용 완료/);
+  expect(api.previewNormalizedCorrection).toHaveBeenCalledTimes(1);
+  expect(api.applyNormalizedCorrection.mock.calls).toEqual([['prod-opaque',{...body,expected_proposal_sha256:'same-proposal'}],['prod-opaque',{...body,expected_proposal_sha256:'same-proposal'}]]);
+});
+
+it('typed correction apply uses its own120second timeout and never automatically repeats a mutation', async () => {
+  const actual=await vi.importActual('../../api/client');
+  vi.useFakeTimers();
+  let signal;
+  const fetchMock=vi.fn((url,options)=>{signal=options.signal;return new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(signal.reason)));});
+  vi.stubGlobal('fetch',fetchMock);
+  try {
+    const outcome=actual.api.applyNormalizedCorrection('prod-opaque',{...correctionTuple,expected_proposal_sha256:'same-proposal'}).catch(error=>error);
+    await vi.advanceTimersByTimeAsync(15001);
+    expect(signal.aborted).toBe(false);
+    await vi.advanceTimersByTimeAsync(104999);
+    const error=await outcome;
+    expect(error.name).toBe('TimeoutError');
+    expect(error.message).toContain('결과 미확인');
+    expect(error.message).toContain('120초');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  } finally {vi.useRealTimers();vi.unstubAllGlobals();}
 });

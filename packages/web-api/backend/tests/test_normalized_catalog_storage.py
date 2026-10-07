@@ -886,6 +886,67 @@ def test_group_detail_preserves_requested_id_selected_variants_and_full_history(
     assert all(len(v['listings'][0]['offers']) == 2 for v in detail['variants'])
 
 
+def test_listing_latest_uses_utc_instant_and_keeps_full_observations(scoped_group_catalog):
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-10-02T10:00:00+10:00' "
+                   "WHERE public_offer_event_id='milk-a-event-1'")
+        db.execute("UPDATE normalized_offer_events SET crawled_at='2026-10-02T09:30:00+09:00' "
+                   "WHERE public_offer_event_id='milk-a-event-2'")
+    store = PublicCatalogStore(scoped_group_catalog)
+    detail = store.get_normalized_product_detail('milk-a')
+    listing = next(v for v in detail['variants'] if v['id'] == 'var-milk-a')['listings'][0]
+    assert [o['id'] for o in listing['offers']] == ['milk-a-event-2', 'milk-a-event-1']
+    assert [o['id'] for o in listing['offers'] if o['is_latest']] == ['milk-a-event-2']
+    rows, _ = store.search_normalized_products_page('밀크')
+    listed = next(v for v in rows[0]['variants'] if v['id'] == 'var-milk-a')['listings'][0]
+    assert [o['id'] for o in listed['offers']] == ['milk-a-event-2']
+
+
+def test_declared_contents_does_not_depend_on_unverified_benefit_receipt(scoped_group_catalog):
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("UPDATE normalized_product_variants SET package_quantity=0.9, package_unit='g', "
+                   "bundle_count=100 WHERE public_variant_id='var-milk-a'")
+        db.execute("UPDATE normalized_offer_events SET promotion_type='unknown', raw_evidence=? "
+                   "WHERE public_source_listing_id='listing-milk-a'",
+                   (json.dumps({'promotion_conditions': {'eligibility_unverified': True}}),))
+        db.execute("UPDATE normalized_product_variants SET package_quantity=NULL, bundle_count=NULL "
+                   "WHERE public_variant_id='var-milk-b'")
+    detail = PublicCatalogStore(scoped_group_catalog).get_normalized_product_detail('milk-a')
+    known = next(v for v in detail['variants'] if v['id'] == 'var-milk-a')
+    unknown = next(v for v in detail['variants'] if v['id'] == 'var-milk-b')
+    assert (known['declared_contents_quantity'], known['declared_contents_unit']) == (90, 'g')
+    assert all(o['total_quantity'] is None and not o['current_eligible']
+               for o in known['listings'][0]['offers'])
+    assert unknown['declared_contents_quantity'] is unknown['declared_contents_unit'] is None
+
+
+def test_unresolved_inner_volume_scope_keeps_quote_without_exact_contents_or_unit_price(scoped_group_catalog):
+    from core.reviewed_source_evidence import _native_lotte_view_digest
+    title = '[NEW] 포이시안 마크2 야돔 1.7ml(6입)'
+    raw = {'name':title,'package_quantity':1.7,'package_unit':'ml','unit':'1.7ml',
+           'source_record_key':'milk-a','source_url':'https://example.test/milk-a',
+           'attributes':{'category_hint':'제지/위생/건강'}}
+    evidence = {'observations':[{'raw_payload':raw,'raw_payload_sha256':_native_lotte_view_digest(raw)}]}
+    with sqlite3.connect(scoped_group_catalog) as db:
+        db.execute("INSERT INTO unified_categories VALUES('beauty.personal.inhalation.nasal',NULL,'흡입용품',0)")
+        db.execute("UPDATE normalized_canonical_products SET unified_category_id='beauty.personal.inhalation.nasal' WHERE public_product_id='milk-a'")
+        db.execute("UPDATE normalized_product_variants SET package_quantity=1.7, variant_name=? WHERE public_variant_id='var-milk-a'", (title,))
+        db.execute("UPDATE normalized_source_listings SET source_title=? WHERE public_source_listing_id='listing-milk-a'", (title,))
+        db.execute("UPDATE normalized_offer_events SET price=11900, offer_state='active',raw_evidence=? WHERE public_source_listing_id='listing-milk-a'", (json.dumps(evidence),))
+        originals = db.execute("SELECT * FROM normalized_offer_events WHERE public_source_listing_id='listing-milk-a'").fetchall()
+    detail = PublicCatalogStore(scoped_group_catalog).get_normalized_product_detail('milk-a')
+    variant = detail['variants'][0]
+    assert variant['declared_contents_quantity'] is variant['declared_contents_unit'] is None
+    assert not detail['best_offer']
+    for offer in variant['listings'][0]['offers']:
+        assert offer['listed_price'] == 11900
+        assert offer['quantity_comparison_reason'] == 'measured_inner_scope_unresolved'
+        assert offer['total_quantity'] is offer['per_100ml'] is offer['received_package_count'] is None
+        assert not offer['current_eligible']
+    with sqlite3.connect(scoped_group_catalog) as db:
+        assert originals == db.execute("SELECT * FROM normalized_offer_events WHERE public_source_listing_id='listing-milk-a'").fetchall()
+
+
 @pytest.mark.parametrize('result_type', ['product', None])
 def test_recent_search_orders_all_candidates_and_other_mart_group_time_before_paging(
         scoped_group_catalog, monkeypatch, result_type):

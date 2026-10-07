@@ -15,7 +15,7 @@ for update in m.get("catalog_updates", []):
 PYINFO
 ```
 
-동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다. 신규 설치는 manifest에 명시된 네 DB를 함께 복원한다. 기존113 설치는 아래 공식 preview/apply/publish 명령에서 `demo-data/updates/catalog113-to117.json`을 선택한다. 이 검토된 delta는5상품의 입증된 포장 내용량 정정과 새 Lotte 기본 판매가 관측1건을 포함하며, 기존 가격·시각·옛 ID·계정 참조를 보존한다. 기존 DB는 git pull이나 재기동만으로 갱신되지 않는다. 다른 revision에는 해당 base와 맞는 manifest의 갱신파일만 사용한다. 이후 새 관측은5절의 원문 intake·검수·발행 경로를 따르며 데이터 폴더 삭제나 전체 DB 덮어쓰기는 하지 않는다.
+동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다. 신규 설치는 manifest에 명시된 네 DB를 함께 복원한다. 기존113 설치는 아래 공식 preview/apply/publish 명령에서 `demo-data/updates/catalog113-to117.json`을 선택한다. 이 검토된 delta는5상품의 입증된 포장 내용량 정정과 새 Lotte 기본 판매가 관측1건을 포함하며, 기존 가격·시각·옛 ID·계정 참조를 보존한다. 이후 `catalog117-to118.json`은 원문 가격·시각을 보존하며 미확인 총량/단가만 보류하는 검토된 해석1건이다. 이미117이면 이 두 번째 파일만 선택한다. 기존 DB는 git pull이나 재기동만으로 갱신되지 않는다. 다른 revision에는 해당 base와 맞는 manifest의 갱신파일만 사용한다. 이후 새 관측은5절의 원문 intake·검수·발행 경로를 따르며 데이터 폴더 삭제나 전체 DB 덮어쓰기는 하지 않는다.
 
 ## 기본 사용·편집·갱신 동선
 
@@ -23,8 +23,8 @@ PYINFO
 
 1. 기본 TeamDemo 실행 후 Web에서 검색·통합분류 → 상품군 → 판매처/규격 선택 → 출처 관측가·조건·관측일 → 가격이력을 확인한다.
 2. 관리자 **상품**의 정규화 목록에서 상품을 선택해 기존 편집기로 표시 이름/브랜드, 분류, 별칭/키워드, 이미지, 활성상태를 저장하고 다시 조회한다. 검토 후 **공개 snapshot 발행**으로 Web 검색·표시에 반영한다. 원문 제목·native ID·판매규격·시점별 원가격은 표시정보 편집으로 바꾸지 않는다.
-3. 가격·규격은 **규격·출처 보기/가격이력**, **출처·규격 검토**의 해당 상품 문맥을 따라 정식 검토한다. 승인된 수량/분류 교정은 검토된 catalog bundle을 preview → apply → snapshot 발행한다. 메타데이터 저장을 가격·규격 교정 완료로 간주하지 않는다.
-4. 크롤러 **수집 작업**의 지원된 기존 마트 경로 → 유효/저장 건수·matching/검토대기 확인 → **데이터 검토**의 크롤러 승인 → DB 승인 → snapshot 발행 → Web의 새 관측/이력 확인 순서다. 동일 receipt 재적용의 중복방지와 다음 시점 실수집은 구분한다. 접근거절은 해당 출처를 중단하며 성공 toast만으로 주간 수집·발행을 보장하지 않는다.
+3. 기존 편집기의 **가격·규격 교정**에서 판매처·규격·원 관측을 선택하고 원문에 입증된 가격/각 포장량/단위/포장 개수와 사유를 입력한다. **미리보기 → 정식 교정 저장 → 공개 snapshot 발행**으로 반영하며, 원 관측 가격·시각·이력은 그대로 두고 같은 시점의 별도 해석으로 남긴다. 변경 없는 미리보기는 새 기록을 만들지 않고 원문과 다른 값·오래된 선택은 거절한다. 여러 판매처가 공유하는 규격이나 수동 matching 결정은 안내된 출처 검토/검토된 bundle 경로로 처리한다. 미확인 수량 범위는 원문 판매가·literal·이력을 유지하며 정확 총량/단가만 보류할 수 있다. 응답이 지연되면 같은 검증 요청의 적용 결과를 확인하고 다른 교정을 새로 만들지 않는다. 메타데이터 저장과 가격·규격 교정은 별도 행동이다.
+4. 크롤러 **수집 작업**의 지원된 기존 마트 경로 → 유효/저장 건수·matching/검토대기 확인 → **데이터 검토**의 크롤러 승인 → DB 승인 → snapshot 발행 → Web의 새 관측/이력 확인 순서다. 동일 receipt 재적용의 중복방지와 다음 시점 실수집은 구분한다. 스케줄 cron/미리보기는 UTC(한국 +9시간), Unix 일요일0/7 기준이다. 저장된 일정은 재시작에 유지되며 종료가 입증된 실행만 복구한다. 자동 matching HIT와 검토/발행은 별도이고 무인 주간 승인·공개는 검증되지 않았다. 접근거절은 해당 출처를 중단하며 성공 toast만으로 주간 수집·발행을 보장하지 않는다.
 
 
 ## 1. 기본: Windows TeamDemo 전체 실행
@@ -63,7 +63,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 아래113→117은 이번 독립 공개 설치에서 사용한 정식 교정·관측 갱신과 같은 검토 묶음이다. 이미117인 설치는 다시 적용할 필요가 없다. 다른 설치에서는 manifest의 `catalog_updates`와 관리자가 표시하는 실제 revision을 먼저 대조해 해당 파일을 선택한다. 이전 여러단계의 적용 기록은 뒤쪽 역사 설명이며 이 예시가 임의 오래된DB의 전체갱신을 보장하지 않는다. 정상 재기동은 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 아래113→117은 이번 독립 공개 설치에서 사용한 정식 교정·관측 갱신이다. 이어117→118은 원문 가격·시각·기존규격을 보존하는 수량 범위 보류 보정이며 새 수집이 아니다. 이미117인 설치는 두 번째 파일만 선택한다. 다른 설치에서는 manifest의 `catalog_updates`와 관리자가 표시하는 실제 revision을 먼저 대조해 해당 파일을 선택한다. 이전 여러단계의 적용 기록은 뒤쪽 역사 설명이며 이 예시가 임의 오래된DB의 전체갱신을 보장하지 않는다. 정상 재기동은 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -71,8 +71,8 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-# 실제 설치가113인 경우에만 선택; 다른 버전은 manifest의 base 확인
-for WS_BUNDLE in demo-data/updates/catalog113-to117.json; do
+# 실제113이면 두 파일 순서대로,117이면 두 번째만; manifest의 base 확인
+for WS_BUNDLE in demo-data/updates/catalog113-to117.json demo-data/updates/catalog117-to118.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply

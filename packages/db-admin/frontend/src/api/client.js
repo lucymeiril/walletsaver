@@ -125,9 +125,11 @@ const json = async (response) => {
     } catch {
       data = {};
     }
-    const message = data.detail || data.message || data.error?.message || `HTTP ${response.status}`;
+    const detail = data.detail;
+    const message = typeof detail === 'string' ? detail : detail?.message || data.message || data.error?.message || `HTTP ${response.status}`;
     const error = new Error(message);
     error.status = response.status;
+    error.detail = detail;
     throw error;
   }
   const text = await response.text();
@@ -203,6 +205,9 @@ function postFormData(url, formData, { signal, onProgress } = {}) {
 export const api = {
   getNormalizedProduct: (id, opts) => get(`${API_BASE}/products/normalized/${encodeURIComponent(id)}`, opts),
   updateNormalizedProduct: (id, data, opts) => putJson(`${API_BASE}/products/normalized/${encodeURIComponent(id)}`, data, opts),
+  getNormalizedCorrection: (id, params, opts) => get(`${API_BASE}/products/normalized/${encodeURIComponent(id)}/correction?${new URLSearchParams(params)}`, { ...opts, maxRetries: 0 }),
+  previewNormalizedCorrection: (id, data, opts) => postJson(`${API_BASE}/products/normalized/${encodeURIComponent(id)}/correction/preview`, data, opts),
+  applyNormalizedCorrection: (id, data, opts) => postJson(`${API_BASE}/products/normalized/${encodeURIComponent(id)}/correction/apply`, data, { ...opts, timeout: 120000 }).catch(error => { if (error.name === 'TimeoutError') throw new DOMException('교정 적용 결과 미확인 — 저장 내역 확인이 필요합니다 (120초)', 'TimeoutError'); throw error; }),
   getNormalizedProducts: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/products/normalized${qs ? `?${qs}` : ''}`, opts);

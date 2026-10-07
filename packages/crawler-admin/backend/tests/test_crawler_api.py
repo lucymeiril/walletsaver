@@ -132,6 +132,9 @@ def test_orchestrator_schedule_crud_uses_current_api(client):
     schedule = created.json()
     schedule_id = schedule["id"]
     assert schedule["plugin_name"] == "emart"
+    assert schedule["cron_timezone"] == "UTC"
+    assert schedule["cron_dialect"] == "unix"
+    assert schedule["stored_timezone_provenance"] == "not_recorded"
 
     listed = client.get("/api/v1/schedules")
     assert listed.status_code == 200
@@ -148,6 +151,135 @@ def test_orchestrator_schedule_crud_uses_current_api(client):
     deleted = client.delete(f"/api/v1/schedules/{schedule_id}")
     assert deleted.status_code == 200
     assert deleted.json()["deleted"] is True
+
+
+@pytest.mark.parametrize("cron,now,due", [
+    ("0 7 * * 1", "2026-10-05T07:00:00+00:00", True),  # Unix Monday
+    ("0 7 * * 1", "2026-10-06T08:00:00+00:00", False),
+    ("0 7 * * 0", "2026-10-04T07:00:00+00:00", True),
+    ("0 7 * * 7", "2026-10-04T07:00:00+00:00", True),
+    ("0 7 * * 1-5", "2026-10-10T08:00:00+00:00", False),
+    ("0 7 6 * 1", "2026-10-05T07:00:00+00:00", True),  # Unix date OR weekday
+])
+def test_schedule_unix_weekday_due_uses_explicit_utc(cron, now, due):
+    from datetime import datetime
+    clock = datetime.fromisoformat(now)
+    schedule = {"enabled": True, "cron_expr": cron}
+    assert orch._schedule_is_due(schedule, clock, None) is due
+    assert orch._schedule_is_due(schedule, clock.replace(tzinfo=None), None) is due
+
+
+def test_schedule_legacy_naive_clock_and_exact_fire_are_not_repeated():
+    from datetime import datetime, timezone
+    last = orch._parse_iso("2026-10-05T07:00:00")
+    assert last == datetime(2026, 10, 5, 7, tzinfo=timezone.utc)
+    weekly = {"enabled": True, "cron_expr": "0 7 * * 1"}
+    assert not orch._schedule_is_due(weekly, datetime(2026, 10, 5, 7, 0, 30), last)
+    assert orch._schedule_is_due(weekly, datetime(2026, 10, 12, 7), last)
+    interval = {"enabled": True, "interval_hours": 168}
+    assert not orch._schedule_is_due(interval, datetime(2026, 10, 12, 6, 59), last)
+    assert orch._schedule_is_due(interval, datetime(2026, 10, 12, 7), last)
+
+
+@pytest.mark.parametrize("owner_state,recovered", [
+    ("dead", True), ("pid_reused", True), ("live", False),
+    ("foreign", False), ("unmarked", False), ("access_denied", False),
+])
+def test_schedule_restart_recovers_only_confirmed_dead_owner(tmp_path, monkeypatch, owner_state, recovered):
+    import json
+    import socket
+    import psutil
+    from datetime import datetime, timezone
+    from services import orchestrator_dispatch as dispatch
+
+    owner = {"hostname": socket.gethostname(), "pid": 123456, "process_started_at": 100.0}
+    if owner_state == "foreign":
+        owner["hostname"] = "different-host"
+    marker = [] if owner_state == "unmarked" else [orch._OWNER_PREFIX + json.dumps(owner)]
+    monkeypatch.setattr(orch, "_owner_log", lambda: marker)
+    path = str(tmp_path / "orchestrator.sqlite")
+    first = orch.OrchestratorStore(path)
+    sid = first.create_schedule("lottemart", interval_hours=168)
+    run_id = first.create_run("lottemart", schedule_id=sid)
+    first.update_run_status(run_id, "running", items_found=2, items_saved=1, finished=False)
+    reopened = orch.OrchestratorStore(path)
+
+    def process(pid):
+        assert pid == 123456
+        if owner_state == "dead":
+            raise psutil.NoSuchProcess(pid)
+        if owner_state == "access_denied":
+            raise psutil.AccessDenied(pid)
+        return MagicMock(create_time=lambda: 101.0 if owner_state == "pid_reused" else 100.0,
+                         status=lambda: psutil.STATUS_RUNNING)
+    monkeypatch.setattr(psutil, "Process", process)
+    summary = reopened.recover_abandoned_runs()
+    assert summary == {"recovered": int(recovered), "held_running": int(not recovered)}
+    row = reopened.get_run(run_id)
+    assert row["status"] == ("failed" if recovered else "running")
+    assert (row["items_found"], row["items_saved"]) == (2, 1)
+    if recovered:
+        assert "runtime_owner_exited_before_completion" in row["failure_reasons"]
+    assert reopened.get_schedule(sid)["interval_hours"] == 168
+    assert reopened.recover_abandoned_runs()["recovered"] == 0
+    submit = MagicMock()
+    monkeypatch.setattr(dispatch, "_submit", submit)
+    if not recovered:
+        # Even an overdue job with unknown/active owner is not dispatched again.
+        registry = orch.PluginRegistry()
+        from types import SimpleNamespace
+        registry.register(SimpleNamespace(name="lottemart"))
+        dispatch.dispatch_due_schedules(datetime(2099, 1, 1, tzinfo=timezone.utc), store=reopened, registry=registry)
+        submit.assert_not_called()
+
+
+def test_schedule_claim_rechecks_due_and_running_atomically(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from datetime import datetime, timezone
+    path = str(tmp_path / "orchestrator.sqlite")
+    stores = [orch.OrchestratorStore(path), orch.OrchestratorStore(path)]
+    sid = stores[0].create_schedule("lottemart", cron_expr="0 7 * * 1")
+    now = datetime(2026, 10, 5, 7, tzinfo=timezone.utc)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        ids = list(pool.map(lambda store: store.claim_due_schedule(sid, "lottemart", now), stores))
+    claimed = [value for value in ids if value]
+    assert len(claimed) == 1
+    row = stores[0].get_run(claimed[0])
+    assert orch._recorded_owner(row["log_lines"])["pid"] > 0
+    assert row["started_at"] == now.isoformat()
+    stores[0].update_run_status(claimed[0], "success", items_found=1, items_saved=1)
+    assert stores[1].claim_due_schedule(sid, "lottemart", now) is None
+    assert stores[1].claim_due_schedule(sid, "lottemart", datetime(2026, 10, 12, 7, tzinfo=timezone.utc))
+
+
+def test_schedule_startup_recovery_precedes_loop_without_crawling(monkeypatch):
+    from api.routes import orchestrator as routes
+    store = MagicMock()
+    store.recover_abandoned_runs.return_value = {"recovered": 1, "held_running": 1}
+    monkeypatch.setattr(orch, "get_run_store", lambda: store)
+    monkeypatch.setattr(routes, "_schedule_task", None)
+    monkeypatch.delenv("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", raising=False)
+    async def wait_only():
+        await asyncio.Event().wait()
+    monkeypatch.setattr(routes, "_schedule_loop", wait_only)
+    async def exercise():
+        await routes._start_schedule_loop()
+        assert routes.schedule_loop_running()
+        assert routes.schedule_loop_state()["startup_recovery"] == {"recovered": 1, "held_running": 1}
+        await routes._stop_schedule_loop()
+    asyncio.run(exercise())
+    store.recover_abandoned_runs.assert_called_once()
+
+
+def test_schedule_health_does_not_call_failing_ticks_healthy(client, monkeypatch):
+    from api.routes import orchestrator as routes
+    orch.get_run_store().create_schedule("lottemart", cron_expr="0 7 * * 1")
+    monkeypatch.setattr(routes, "_schedule_last_error", "TypeError")
+    monkeypatch.setattr(routes, "schedule_loop_running", lambda: True)
+    response = client.get("/health")
+    assert response.status_code == 503
+    assert response.json()["status"] == "degraded"
+    assert response.json()["reason"] == "scheduler_tick_failed"
 
 
 def test_logs_endpoint_returns_list_contract(client):

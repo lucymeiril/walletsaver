@@ -43,6 +43,7 @@ export default function NormalizedProducts() {
   const [editLoading, setEditLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savedNotice, setSavedNotice] = useState('');
+  const [correctionSelection, setCorrectionSelection] = useState(null);
   function leafChoices(nodes, path = []) {
     return nodes.flatMap(node => {
       const names = [...path, node.name_ko || node.name || node.id];
@@ -51,7 +52,7 @@ export default function NormalizedProducts() {
         : [{ id: node.id, name: names.join(' > ') }];
     });
   }
-  const openEditor = async product => {
+  const openEditor = async (product, selection = null) => {
     setEditLoading(true); setEditError(''); setSavedNotice('');
     try {
       const [detail, tree] = await Promise.all([
@@ -65,6 +66,7 @@ export default function NormalizedProducts() {
         is_active: detail.is_active === true });
       setEditCategories(leafChoices(tree));
       setEditKeywords(detail.keyword_associations || []);
+      setCorrectionSelection(selection);
       setEditor(detail);
     } catch (err) { setEditError(err.message || '편집 정보를 불러오지 못했습니다.'); }
     finally { setEditLoading(false); }
@@ -120,7 +122,7 @@ export default function NormalizedProducts() {
   return <div className={s.page}>
     <h2 className={s.title}>정규화 상품 카탈로그</h2>
     <p>저장된 상품·규격·출처 연결을 조회합니다. 관측가는 가격 이력에서 확인하며 현재 구매 가격이나 최저가를 뜻하지 않습니다.</p>
-    <p>표시명·브랜드·별칭·키워드·이미지·상태를 편집할 수 있습니다. 수량·출처·가격·검토군 변경은 공식 출처 검토 카탈로그 번들을 사용합니다.</p>
+    <p>표시 정보를 편집하거나 선택 출처의 가격·규격 교정을 미리볼 수 있습니다. 교정은 원문 검증과 정식 적용을 거치며 공개 반영은 별도 스냅샷 갱신 후 이루어집니다.</p>
     {editError && !editor && <p role="alert">{editError}</p>}
     {savedNotice && <p role="status">{savedNotice}</p>}
     <form className={s.filters} onSubmit={e => { e.preventDefault(); setPage(1); setSearch(query.trim()); setCategory(categoryDraft.trim()); }}>
@@ -136,12 +138,13 @@ export default function NormalizedProducts() {
       {data.items.length === 0 ? <p>조회 조건에 맞는 보존 상품이 없습니다.</p> : <table className={s.table}>
         <thead><tr><th>상품 / 공개 ID</th><th>통합 분류</th><th>상태</th><th>규격·출처 검토</th></tr></thead>
         <tbody>{data.items.map(product => <ProductRow key={product.public_product_id} product={product}
-          onEdit={() => openEditor(product)} editLoading={editLoading} expanded={expanded === product.public_product_id} toggle={() => setExpanded(expanded === product.public_product_id ? null : product.public_product_id)} />)}</tbody>
+          onEdit={selection => openEditor(product, selection)} editLoading={editLoading} expanded={expanded === product.public_product_id} toggle={() => setExpanded(expanded === product.public_product_id ? null : product.public_product_id)} />)}</tbody>
       </table>}
       <CatalogPagination data={data} page={page} setPage={setPage} />
     </>}
-    {editor && <ProductModal modal={{ mode: 'normalized', product: editor }} form={form} setForm={setForm}
+    {editor && <ProductModal key={editor.public_product_id} modal={{ mode: 'normalized', product: editor, correctionSelection }} form={form} setForm={setForm}
       categories={editCategories} keywords={editKeywords} onSave={saveEditor}
+      onCorrectionApplied={() => {setSavedNotice('출처 교정을 정식 적용했습니다. 공개 웹 반영은 관리자 스냅샷 갱신 후 확인합니다.');setRefresh(v => v + 1);}}
       onClose={() => { if (!saving) { setEditor(null); setEditError(''); } }} saving={saving} error={editError} />}
   </div>;
 }
@@ -152,7 +155,7 @@ function ProductRow({ product, expanded, toggle, onEdit, editLoading }) {
       <td>{product.display_name || product.canonical_name}<br /><code>{product.public_product_id}</code></td>
       <td>{product.category_name || '분류명 미확인'}<br /><code>{product.unified_category_id || '분류 ID 미확인'}</code></td>
       <td>{product.is_active === true ? '활성' : product.is_active === false ? '비활성' : '미확인'}</td>
-      <td><button onClick={onEdit} disabled={editLoading}>표시 정보 수정</button> <button onClick={toggle}>{expanded ? '규격 접기' : '규격·출처 보기'}</button> <a href={historyLink(product)}>전체 관측 이력</a></td>
+      <td><button onClick={() => onEdit(null)} disabled={editLoading}>표시 정보 수정</button> <button onClick={toggle}>{expanded ? '규격 접기' : '규격·출처 보기'}</button> <a href={historyLink(product)}>전체 관측 이력</a></td>
     </tr>
     {expanded && <tr><td colSpan="4">
       <p>브랜드: {product.brand || '미확인'}</p>
@@ -169,6 +172,7 @@ function ProductRow({ product, expanded, toggle, onEdit, editLoading }) {
           {listing.source_name} · {listing.source_title || '출처 제목 미확인'}<br />
           원 출처 키 <code>{listing.source_record_key || '미확인'}</code> · listing <code>{listing.public_source_listing_id}</code><br />
           <span>출처 규격 원문: {listing.source_unit_text || '미확인'}</span> · <a href={historyLink(product, variant, listing)}>이 출처 관측 이력</a> · <a href={sourceReviewLink(product, variant, listing)}>정식 출처·규격 검토</a>
+          {' '}<button type="button" disabled={editLoading} onClick={() => onEdit({variantId:variant.public_variant_id,listingId:listing.public_source_listing_id})}>이 출처 가격·규격 교정</button>
         </li>)}</ul>
       </section>)}
     </td></tr>}

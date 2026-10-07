@@ -1,0 +1,147 @@
+{
+  "categories": [],
+  "keywords": [],
+  "products": [],
+  "variants": [],
+  "source_listings": [],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-corrected-ef78d01aa87d0c97a2ae78b905908860",
+      "public_source_listing_id": "listing-9f3fd73dd85e2a65bc3533b9f10d4c5f",
+      "price_state": "sale_price_only",
+      "promotion_type": "final_price",
+      "price": 11900.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:96:34",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-09-02T16:53:56.817191Z",
+            "ingestion_id": 96,
+            "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+            "mart_native_category_id": "6000213997",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "category_hint": "제지/위생/건강",
+                "collection_surface": "category",
+                "external_seller": false,
+                "image_url": "https://sitem.ssgcdn.com/52/83/17/item/1000872178352_i1_290.jpg",
+                "mart": "이마트",
+                "mart_native_category_id": "6000213997",
+                "mart_native_category_path": "제지/위생/건강",
+                "mart_native_code": "1000872178352",
+                "promo_label": "",
+                "salestr_no": "2037",
+                "shipping_labels": [
+                  "주간배송 오늘(목) 14:00까지 도착",
+                  "주간배송",
+                  "주간배송",
+                  "오늘(목) 14:00까지 도착"
+                ],
+                "shipping_type_code": "10",
+                "site_no": "6001",
+                "source_name": "emart",
+                "source_record_key": "1000872178352",
+                "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872178352&siteNo=6001&salestrNo=2037",
+                "unit_price_display": "1개 당 1,983원"
+              },
+              "brand": "__no_brand__",
+              "category": "제지/위생/건강",
+              "crawled_at": "2026-09-03T01:53:56.817191",
+              "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872178352&siteNo=6001&salestrNo=2037",
+              "discount_percent": null,
+              "display_unit": "1.7ml",
+              "event_name": "이마트 할인",
+              "image_url": "https://sitem.ssgcdn.com/52/83/17/item/1000872178352_i1_290.jpg",
+              "match_key": "__no_brand__|new 포이시안 마크2 야돔 1 7ml 6입||1.7ml",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "[NEW] 포이시안 마크2 야돔 1.7ml(6입)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 1.7,
+              "package_unit": "ml",
+              "price_per_100g": null,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 11900,
+              "source": "emart",
+              "store": "이마트",
+              "unit": "1.7ml",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "7d864419cc105e893af997d2c18b0d2e259c1185f1187da98dfb9081bdf090c6",
+            "raw_record_id": "ingestion:96:34",
+            "source_category_path": [
+              "제지/위생/건강"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {}
+      },
+      "audit_provenance": {
+        "source_correction_lineage": {
+          "version": 1,
+          "status": "approved",
+          "projection_kind": "source_interpretation_correction",
+          "observation_kind": "source_interpretation_correction",
+          "public_product_id": "prod-18e1168ef89be716bbab410ce1b968fa",
+          "public_source_listing_id": "listing-9f3fd73dd85e2a65bc3533b9f10d4c5f",
+          "source_name": "emart",
+          "source_record_key": "1000872178352",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000872178352&siteNo=6001&salestrNo=2037",
+          "original_event_id": "offer-9a4e995a8f278c8d69a0f507bed4d843",
+          "original_event_sha256": "0d2421a1f6deb1f60e60f39a44775703bf0f77ba47b34a42a8cb40aaee25841e",
+          "original_observations_sha256": "41c88bd04c15fd8a1a2a1c93fe19304531523fb11d708c5d63944801b6dbf309",
+          "original_quote": 11900.0,
+          "observed_at": "2026-09-02T16:53:56.817191",
+          "original_variant_id": "var-e583cc921acb95fb463cbd6d12a299ce",
+          "original_variant_sha256": "72cb7dcda3673984da5e34e5da7d420455943e6374d939fae34262121063e5e3",
+          "unified_category_id": "beauty.personal.inhalation.nasal",
+          "source_binding_sha256": "3a25ee1de165613196e7bc261f5cdbc9945cace2a870c7a7c12dc65b24cdc0ac",
+          "reason": "원문 1.7ml(6입)의 각량·전체 범위 미확인: 11900원과 관측 시각을 보존하고 정확 총수량·단위가를 보류합니다.",
+          "reviewed_by": "demo-admin@walletsaver.example",
+          "selection_sha256": "530719271facba26c0a0bbfb8256219eaaa7a62b44d78b7bdb35a3e9a50f38bf",
+          "original_observation_immutable": true,
+          "quantity_scope_action": "hold_unresolved",
+          "quantity_scope_reasons": [
+            "measured_inner_scope_unresolved"
+          ],
+          "corrected_variant_id": "var-e583cc921acb95fb463cbd6d12a299ce",
+          "corrected_specification": {
+            "package_quantity": 1.7,
+            "package_unit": "ml",
+            "bundle_count": 1,
+            "display_unit": "1.7ml"
+          },
+          "corrected_quote": 11900.0,
+          "corrected_event_id": "offer-corrected-ef78d01aa87d0c97a2ae78b905908860",
+          "proposal_sha256": "1e440c0eb45cadf023a033049b8c4a173d0d21ff9dcd081ab351d79a3f09389f"
+        },
+        "observation_count": 1
+      },
+      "crawled_at": "2026-09-02T16:53:56.817191",
+      "offer_state": "pending_review",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": [],
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "catalog117-to118-fresh467-source-proven-scope-hold",
+  "base_catalog_revision": 117,
+  "reviewed_catalog_revision": 118
+}

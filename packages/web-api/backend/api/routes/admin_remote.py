@@ -333,10 +333,19 @@ def _validate_sqlite(path: Path, required_tables: Iterable[str]) -> dict:
             if missing:
                 raise ValueError(f"required tables missing: {', '.join(sorted(missing))}")
             if "normalized_offer_events" in tables:
-                pending_offers = int(connection.execute(
-                    "SELECT COUNT(*) FROM normalized_offer_events "
-                    "WHERE offer_state='pending_review'"
-                ).fetchone()[0])
+                from core.reviewed_source_evidence import verified_public_quantity_hold_ids
+                def mappings(sql, params=()):
+                    cursor = connection.execute(sql,params)
+                    columns = [column[0] for column in cursor.description]
+                    return [dict(zip(columns,row)) for row in cursor.fetchall()]
+                def lookup(table,key,value):
+                    if not isinstance(value,str) or not value:
+                        return None
+                    rows = mappings(f'SELECT * FROM {table} WHERE {key}=?',(value,))
+                    return rows[0] if rows else None
+                pending_rows = mappings("SELECT * FROM normalized_offer_events WHERE offer_state='pending_review'")
+                verified_holds = verified_public_quantity_hold_ids(pending_rows,lookup)
+                pending_offers = sum(row.get('public_offer_event_id') not in verified_holds for row in pending_rows)
                 if pending_offers:
                     raise ValueError(
                         f"pending_review offers are not publishable: {pending_offers}"

@@ -44,7 +44,7 @@ function hasPurchaseCountRule(offer = {}) {
     || Number(offer?.minimum_quantity ?? offer?.minimumQuantity) > 1;
 }
 
-export function getOfferAmountLabel(offer = {}, ordinaryLabel = '관측 거래 금액') {
+export function getOfferAmountLabel(offer = {}, ordinaryLabel = '관측 표시가') {
   if (hasPurchaseCountRule(offer)) return '출처 조건 계산 금액';
   const conditions = offer.promotion_conditions || offer.promotionConditions || {};
   return conditions.source_condition_kind === 'source_public_base_quote' && conditions.source_base_quote_only === true
@@ -376,6 +376,8 @@ export function getOfferReceiptText(offer = {}, { receiptValid = true, component
       ? `출처 행사 기간 ${offer.valid_from || '시작일 미확인'} ~ ${offer.valid_to || '종료일 미확인'}` : null,
     ...getQuantityComponentTexts(components),
   ].filter(Boolean).join(' · ');
+  if (['measured_inner_scope_unresolved','independent_count_scope_unresolved'].includes(offer.quantity_comparison_reason))
+    return '원문 내용량의 각량·전체 범위 미확인';
   const declaredVector = (['reviewed_source_component_vector_v1', 'reviewed_homogeneous_contents'].includes(offer.quantity_basis)
     && offer.scalar_basis === 'one_complete_declared_vector_not_piece_count'
     && offer.received_package_count_scope === 'complete_declared_vector')
@@ -492,8 +494,8 @@ export function getCartQuotePresentation(item = {}) {
     observationHeld ? '저장된 행사 계산 금액 · 관측 당시 적용 미확인' : null,
     observationHeld && quote.listed_price != null ? `출처 표시 가격 ${getObservedOfferPriceText(quote)}` : null,
     historical ? (observationHeld ? '판매 기간 종료 · 과거 표시 가격 관측'
-      : expired ? '판매 기간 종료 · 과거 관측 거래' : '과거 관측 거래') : null,
-    notStarted ? '판매 시작 전 관측 거래' : null,
+      : expired ? '판매 기간 종료 · 과거 가격 관측' : '과거 가격 관측') : null,
+    notStarted ? '판매 시작 전 가격 관측' : null,
     !confirmedPurchase ? '현재 결제 금액·구매 가능 여부 미확인' : null,
     benefitUnknown ? '회원·쿠폰 이용 조건 미확인' : null,
   ].filter(Boolean).join(' · ');
@@ -523,7 +525,7 @@ export function getWishlistHoldText(reason) {
     selection_context_missing: '저장된 규격·판매처 선택 필요',
     selected_listing_unavailable: '선택한 판매처 거래 없음',
     selected_product_unavailable: '선택한 상품 정보 미확인',
-    latest_quote_unavailable: '최신 관측 거래 미확인',
+    latest_quote_unavailable: '최신 관측 가격 미확인',
     quote_unavailable: '현재 판매 여부 미확인',
     price_unconfirmed: '현재 거래 금액 미확인',
     receipt_basis_unknown: '수령 구성 미확인',
@@ -543,10 +545,16 @@ export function getWishlistHoldText(reason) {
 export function getPriceHistorySummary(product = {}, apiHistory = [], { variantId } = {}) {
   const normalizedCatalog = Boolean(product.public_product_id || Object.hasOwn(product, 'best_offer'));
   const selectedVariant = variantId ?? product.selected_variant_id ?? product.best_offer?.variant_id;
-  const history = asArray(apiHistory, product.price_history, product.priceHistory, product.history, product.priceHistorySummary?.history)
-    .map(normalizeHistoryEntry)
-    .filter(Boolean)
-    .filter(row => !normalizedCatalog || (selectedVariant && row.variantId === selectedVariant))
+  const rows = asArray(apiHistory, product.price_history, product.priceHistory, product.history, product.priceHistorySummary?.history)
+    .map(normalizeHistoryEntry).filter(Boolean);
+  const corrections = rows.filter(row => row.observation_kind === 'source_interpretation_correction'
+    && row.source_correction_verified === true
+    && (!normalizedCatalog || (selectedVariant && row.variantId === selectedVariant)));
+  // A reviewed projection reuses its original observation. It is context, not
+  // another capture; link only the exact original event across revised variants.
+  const originalIds = new Set(corrections.map(row => row.source_correction_lineage?.original_event_id).filter(Boolean));
+  const history = rows.filter(row => row.observation_kind !== 'source_interpretation_correction')
+    .filter(row => !normalizedCatalog || (selectedVariant && (row.variantId === selectedVariant || originalIds.has(row.offerId))))
     .sort((a, b) => String(a.date).localeCompare(String(b.date)));
 
   const embedded = normalizedCatalog ? {} : product.price_history_summary || product.priceHistorySummary || {};
@@ -572,6 +580,7 @@ export function getPriceHistorySummary(product = {}, apiHistory = [], { variantI
 
   return {
     history,
+    corrections,
     hasData: history.length > 0 || min > 0 || avg > 0 || max > 0,
     sparse: history.length > 0 && history.length < 3,
     count: history.length || toNumber(firstDefined(embedded.count, embedded.reference_count)),

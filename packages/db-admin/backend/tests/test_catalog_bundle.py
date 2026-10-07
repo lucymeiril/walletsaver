@@ -367,6 +367,527 @@ def test_lotte_standalone_base_matched_observation_append_replay_keeps_identity(
     session.close()
 
 
+def _normalized_correction_fixture(*, quantity=10, price=4990):
+    from core.catalog_matching import _match_key_for_row
+    raw = _lotte_standalone_base_row()
+    bundle = _bundle()
+    product,variant,listing,offer = (bundle[k][0] for k in ('products','variants','source_listings','offers'))
+    bundle['categories'] = [{'id':'food.beans.tofu','parent_id':None,'name_ko':'두부'}]
+    product.update(unified_category_id='food.beans.tofu',canonical_name='풀무원 국산 부침두부',brand='풀무원')
+    variant.update(package_quantity=quantity,package_unit='g',bundle_count=1,standard_unit='g',
+        display_unit=f'{quantity}g',variant_name=raw['name'],attributes={})
+    listing.update(source_name='lottemart',source_record_key='8801114119426',
+        source_title=raw['name'],source_url=raw['source_url'])
+    offer.update(price=price,original_price=None,promotion_type='unknown',price_state='sale_price_only',
+        offer_state='active',crawled_at=raw['crawled_at'],event_name=raw['event_name'],
+        raw_evidence={'promotion_conditions':{},'observations':[{'raw_record_id':'source:17:0',
+            'raw_payload':raw,'raw_payload_sha256':_offer_review_digest(raw)}]})
+    bundle['match_rules'][0]['match_key'] = _match_key_for_row(raw)[0]
+    for k in ('keywords','mart_category_mappings','week_buckets','offer_week_links'): bundle[k] = []
+    session = _session()
+    apply_bundle(session,bundle,'retained-source-original',user='fixture')
+    return session,product['public_product_id'],variant['public_variant_id'],listing['public_source_listing_id'],offer['public_offer_event_id']
+
+
+def test_normalized_source_correction_typed_preview_apply_preserves_original_and_replays():
+    from services.normalized_product_correction import correction_prefill,correction_preview,apply_correction,_row
+    session,pid,vid,lid,eid = _normalized_correction_fixture()
+    actor = {'sub':'synthetic-moderator'}
+    original = deepcopy(_row(session.get(NormalizedOfferEvent,eid)))
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selected = {k:prefill[k] for k in ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selected.update(reason='원문 340g를 기존 잘못된 10g와 분리',package_quantity=340,package_unit='g',bundle_count=1,price=4990)
+    preview = correction_preview(session,pid,selected,identity=actor)
+    assert preview['has_changes'] and preview['applied'] is False
+    assert session.get(NormalizedSourceListing,lid).public_variant_id == vid
+    lineage = preview['bundle']['offers'][0]['audit_provenance']['source_correction_lineage']
+    assert lineage['status'] == 'reviewed_candidate' and lineage['original_event_id'] == eid
+    assert lineage['original_observations_sha256'] == _offer_review_digest(original['raw_evidence']['observations'])
+    result = apply_correction(session,pid,selected,preview['proposal_sha256'],identity=actor)
+    assert result['applied'] and result['snapshot_published'] is False
+    assert _row(session.get(NormalizedOfferEvent,eid)) == original
+    assert session.get(NormalizedProductVariant,vid).is_active is False
+    corrected = session.get(NormalizedProductVariant,result['new_variant_id'])
+    assert corrected.package_quantity == 340 and corrected.bundle_count == 1
+    assert session.get(NormalizedSourceListing,lid).public_variant_id == corrected.public_variant_id
+    assert session.scalar(select(MatchingEntry)).public_variant_id == corrected.public_variant_id
+    projection = session.get(NormalizedOfferEvent,result['new_event_id'])
+    assert projection.price == 4990 and projection.price_per_100g == pytest.approx(1467.6471)
+    assert projection.crawled_at == session.get(NormalizedOfferEvent,eid).crawled_at
+    assert projection.raw_evidence['observations'] == original['raw_evidence']['observations']
+    assert projection.audit_provenance['source_correction_lineage']['status'] == 'approved'
+    from core.reviewed_source_evidence import valid_source_correction_event, source_correction_event_hash
+    original_row = _row(session.get(NormalizedOfferEvent,eid))
+    projection_row = _row(projection)
+    listing_row = _row(session.get(NormalizedSourceListing,lid))
+    variant_row = {**_row(corrected),'unified_category_id':'food.beans.tofu'}
+    old_variant_row = _row(session.get(NormalizedProductVariant,vid))
+    assert valid_source_correction_event(projection_row,original_row,listing_row,variant_row,
+        product_id=pid,original_variant=old_variant_row)
+    # The public SQLite consumer decodes JSON and normalizes SQL UTC timestamps
+    # without changing the original observation's digest.
+    sql_original = {**original_row,'raw_evidence':json.dumps(original_row['raw_evidence']),
+        'audit_provenance':json.dumps(original_row['audit_provenance']),
+        'crawled_at':original_row['crawled_at'].replace('T',' '),'price':int(original_row['price'])}
+    assert source_correction_event_hash(sql_original) == source_correction_event_hash(original_row)
+    assert valid_source_correction_event(projection_row,sql_original,listing_row,variant_row,
+        product_id=pid,original_variant=old_variant_row)
+    malformed_original = deepcopy(original_row)
+    malformed_projection = deepcopy(projection_row)
+    malformed_original['raw_evidence']['observations'] = [[]]
+    malformed_projection['raw_evidence']['observations'] = [[]]
+    malformed_proof = malformed_projection['audit_provenance']['source_correction_lineage']
+    malformed_proof['original_event_sha256'] = source_correction_event_hash(malformed_original)
+    malformed_proof['original_observations_sha256'] = _offer_review_digest([[]])
+    from core.reviewed_source_evidence import source_correction_proposal_hash
+    malformed_proof['proposal_sha256'] = source_correction_proposal_hash(malformed_projection,variant_row,listing_row)
+    assert valid_source_correction_event(malformed_projection,malformed_original,listing_row,variant_row,
+        product_id=pid,original_variant=old_variant_row) is False
+    assert apply_correction(session,pid,selected,preview['proposal_sha256'],identity=actor)['idempotent'] is True
+    with pytest.raises(Exception) as held:
+        correction_prefill(session,pid,vid,lid,eid)
+    assert held.value.status_code == 409  # old tuple requires explicit reselection
+    session.close()
+
+
+@pytest.mark.parametrize('tamper', ['candidate','price','quantity','clock','native','original_variant',
+    'raw_observation','reviewer_boolean','reason_boolean','hash'])
+def test_normalized_source_correction_generic_bundle_rejects_forged_lineage(tamper):
+    from services.normalized_product_correction import correction_prefill,correction_preview
+    from core.reviewed_source_evidence import source_correction_proposal_hash
+    session,pid,vid,lid,eid = _normalized_correction_fixture()
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selected = {k:prefill[k] for k in ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selected.update(reason='출처 결합 보정 fixture',package_quantity=340,package_unit='g',bundle_count=1,price=4990)
+    preview = correction_preview(session,pid,selected,identity={'sub':'fixture'})
+    bundle = deepcopy(preview['bundle'])
+    event,variant,listing = bundle['offers'][0],bundle['variants'][0],bundle['source_listings'][0]
+    proof = event['audit_provenance']['source_correction_lineage']
+    proof['status'] = 'approved'
+    if tamper=='candidate': proof['status']='reviewed_candidate'
+    elif tamper=='price': event['price']=2495;proof['corrected_quote']=2495
+    elif tamper=='quantity': variant['package_quantity']=680;proof['corrected_specification']['package_quantity']=680
+    elif tamper=='clock': event['crawled_at']='2026-10-08T00:00:00+00:00'
+    elif tamper=='native': listing['source_record_key']='another-native';proof['source_record_key']='another-native'
+    elif tamper=='original_variant': proof['original_variant_id']=variant['public_variant_id']
+    elif tamper=='raw_observation': event['raw_evidence']['observations']=[[]]
+    elif tamper=='reviewer_boolean': proof['reviewed_by']=True
+    elif tamper=='reason_boolean': proof['reason']=True
+    proof['proposal_sha256'] = source_correction_proposal_hash(event,variant,listing)
+    if tamper=='hash': proof['proposal_sha256']='0'*64
+    validation = validate_bundle(session,bundle,'external-correction')
+    assert not validation.ok
+    assert any('source_correction_lineage' in error for error in validation.errors)
+    assert session.get(NormalizedOfferEvent,eid).price == 4990
+    assert session.get(NormalizedSourceListing,lid).public_variant_id == vid
+    session.close()
+
+
+def test_normalized_source_correction_role_and_raw_quote_change_without_spec_or_price_identity():
+    from services.normalized_product_correction import correction_prefill,correction_preview,apply_correction
+    for stored_price in (4990,5000):
+        session,pid,vid,lid,eid = _normalized_correction_fixture(quantity=340,price=stored_price)
+        prefill = correction_prefill(session,pid,vid,lid,eid)
+        selected = {k:prefill[k] for k in ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+        selected.update(reason='기본 출처 가격과 선택 할인 역할 분리',price=4990)
+        before_key = session.scalar(select(MatchingEntry)).match_key
+        preview = correction_preview(session,pid,selected,identity={'sub':'moderator'})
+        assert preview['has_changes'] and preview['new_variant_id'] == vid
+        result = apply_correction(session,pid,selected,preview['proposal_sha256'],identity={'sub':'moderator'})
+        assert session.get(NormalizedOfferEvent,eid).price == stored_price
+        assert session.get(NormalizedOfferEvent,result['new_event_id']).price == 4990
+        assert session.scalar(select(MatchingEntry)).match_key == before_key
+        assert session.get(NormalizedProductVariant,vid).is_active is True
+        correct_prefill = correction_prefill(session,pid,vid,lid,result['new_event_id'])
+        no_change = {key:correct_prefill[key] for key in
+            ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+        no_change['reason'] = '이미 출처와 일치하는 상태 확인'
+        assert correction_preview(session,pid,no_change,identity={'sub':'moderator'})['has_changes'] is False
+        session.close()
+
+
+def test_normalized_source_correction_detects_stored_price_role_only_change():
+    from services.normalized_product_correction import correction_prefill,correction_preview
+    from services.initial_catalog_seed import _price
+    session,pid,vid,lid,eid = _normalized_correction_fixture(quantity=340)
+    event = session.get(NormalizedOfferEvent,eid)
+    raw = event.raw_evidence['observations'][0]['raw_payload']
+    fields,_ = _price(raw,raw['attributes'],'lottemart',raw['name'])
+    for key in ('price_state','promotion_type','event_name'): setattr(event,key,fields[key])
+    event.raw_evidence = {**event.raw_evidence,'promotion_conditions':fields['promotion_conditions']}
+    event.standard_unit_price = event.price_per_100g = 1467.6471
+    event.original_price = 5990  # only the stored reference-price role is wrong
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selected = {k:prefill[k] for k in ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selected['reason'] = '원문에 없는 참조가 역할 제거'
+    preview = correction_preview(session,pid,selected,identity={'sub':'fixture'})
+    assert preview['has_changes'] and preview['new_variant_id'] == vid
+    assert preview['source_price']['price'] == 4990 and preview['source_price']['original_price'] is None
+    assert event.original_price == 5990  # preview never rewrites the original
+    session.close()
+
+
+def _saved_correction_web_store(session, path):
+    """Only disposable fixture data, read by the real Web SQLite consumer."""
+    import importlib.util
+    import sqlite3
+    from pathlib import Path
+    session.commit()
+    with sqlite3.connect(path) as destination:
+        session.connection().connection.driver_connection.backup(destination)
+    module_path = Path(__file__).resolve().parents[4] / 'packages/web-api/backend/services/catalog_storage.py'
+    spec = importlib.util.spec_from_file_location('correction_fixture_web_storage',module_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.PublicCatalogStore(path)
+
+
+def _quantity_scope_hold_fixture(*, independent=False):
+    raw = {'name':'[NEW] 포이시안 마크2 야돔 1.7ml(6입)'+(' + 추가' if independent else ''),
+        'source':'emart','source_record_key':'1000872178352','sale_price':11900,
+        'package_quantity':1.7,'package_unit':'ml','display_unit':'1.7ml','unit':'1.7ml',
+        'category':'제지/위생/건강',
+        'source_url':'https://emart.ssg.com/item/itemView.ssg?itemId=1000872178352&siteNo=6001&salestrNo=2037',
+        'crawled_at':'2026-09-02T16:53:56.817191',
+        'attributes':{'source_record_key':'1000872178352','unit_price_display':'1개 당 1,983원'}}
+    bundle = _bundle()
+    product,variant,listing,event = (bundle[key][0] for key in ('products','variants','source_listings','offers'))
+    bundle['categories'] = [{'id':'beauty.personal.inhalation.nasal','parent_id':None,'name_ko':'흡입제품'}]
+    product.update(canonical_name=raw['name'],unified_category_id='beauty.personal.inhalation.nasal')
+    variant.update(package_quantity=1.7,package_unit='ml',bundle_count=1,display_unit='1.7ml',
+        standard_unit='ml',attributes={},variant_name=raw['name'])
+    listing.update(source_name='emart',source_record_key=raw['source_record_key'],source_title=raw['name'],source_url=raw['source_url'])
+    event.update(price=11900,original_price=None,discount_rate=None,promotion_type='final_price',
+        price_state='sale_price_only',offer_state='active',standard_unit_price=700000,price_per_100g=None,
+        crawled_at=raw['crawled_at'],event_name=None,raw_evidence={'promotion_conditions':{},
+            'observations':[{'raw_record_id':'scope-fixture:0','raw_payload':raw,'raw_payload_sha256':_offer_review_digest(raw)}]})
+    for key in ('keywords','match_rules','mart_category_mappings','week_buckets','offer_week_links'): bundle[key]=[]
+    session = _session()
+    apply_bundle(session,bundle,'retained-scope-fixture',user='fixture')
+    return session,product['public_product_id'],variant['public_variant_id'],listing['public_source_listing_id'],event['public_offer_event_id']
+
+
+@pytest.mark.parametrize('independent',[False,True])
+def test_normalized_source_correction_quantity_scope_hold_preserves_original_and_stored_web(tmp_path,independent):
+    from services.normalized_product_correction import correction_prefill,correction_preview,apply_correction,_row
+    session,pid,vid,lid,eid = _quantity_scope_hold_fixture(independent=independent)
+    original = deepcopy(_row(session.get(NormalizedOfferEvent,eid)))
+    old_variant = deepcopy(_row(session.get(NormalizedProductVariant,vid)))
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    reason = 'independent_count_scope_unresolved' if independent else 'measured_inner_scope_unresolved'
+    assert prefill['quantity_scope_actions']==['hold_unresolved'] and prefill['quantity_scope_issues']==[reason]
+    selection = {key:prefill[key] for key in
+        ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selection.update(reason='입증되지 않은 내포장 용량 범위 비교 보류',quantity_scope_action='hold_unresolved')
+    preview = correction_preview(session,pid,selection,identity={'sub':'fixture'})
+    assert preview['has_changes'] and preview['new_variant_id']==vid
+    assert preview['source_specification_status']=='unresolved_scope_historical_literal'
+    assert preview['quantity_scope_reasons']==[reason]
+    assert preview['bundle']['variants']==[] and preview['bundle']['source_listings']==[]
+    assert preview['bundle']['offers'][0]['offer_state']=='pending_review'
+    assert preview['bundle']['offers'][0]['standard_unit_price'] is None
+    result = apply_correction(session,pid,selection,preview['proposal_sha256'],identity={'sub':'fixture'})
+    assert result['applied'] and result['new_variant_id']==vid and not result['snapshot_published']
+    assert _row(session.get(NormalizedOfferEvent,eid))==original
+    assert _row(session.get(NormalizedProductVariant,vid))==old_variant
+    assert session.get(NormalizedSourceListing,lid).public_variant_id==vid
+    assert apply_correction(session,pid,selection,preview['proposal_sha256'],identity={'sub':'fixture'})['idempotent']
+    held_prefill = correction_prefill(session,pid,vid,lid,result['new_event_id'])
+    held_selection = {key:held_prefill[key] for key in
+        ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    held_selection.update(reason='이미 보류된 출처 범위 확인',quantity_scope_action='hold_unresolved')
+    no_change = correction_preview(session,pid,held_selection,identity={'sub':'fixture'})
+    assert no_change['has_changes'] is False and 'proposal_sha256' not in no_change
+    assert no_change['validation']=={'ok':True,'scope':'source_bound_no_change',
+        'formal_bundle_required':False,'errors':[],'warnings':[]}
+    store = _saved_correction_web_store(session,tmp_path/'scope.sqlite')
+    detail = store.get_normalized_product_detail(pid)
+    variant = detail['variants'][0]
+    assert variant['package_quantity']==1.7 and variant['declared_contents_quantity'] is None
+    events = variant['listings'][0]['offers']
+    assert {row['id'] for row in events}=={eid,result['new_event_id']}
+    current = next(row for row in events if row['is_latest'])
+    assert current['id']==result['new_event_id'] and current['listed_price']==11900
+    assert not current['current_eligible'] and current['per_100ml'] is None
+    assert current['observation_kind']=='source_interpretation_correction'
+    assert detail['cur'] is None and detail['best_offer'] is None
+    session.close()
+
+
+def test_normalized_source_correction_quantity_scope_hold_rejects_numeric_and_proved_source():
+    from fastapi import HTTPException
+    from services.normalized_product_correction import correction_prefill,correction_preview
+    for invalid in ('price','specification','proved_source'):
+        fixture = _normalized_correction_fixture if invalid=='proved_source' else _quantity_scope_hold_fixture
+        session,pid,vid,lid,eid = fixture()
+        prefill = correction_prefill(session,pid,vid,lid,eid)
+        selection = {key:prefill[key] for key in
+            ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+        selection.update(reason='보류 guard fixture',quantity_scope_action='hold_unresolved')
+        if invalid=='price': selection['price']=11900
+        elif invalid=='specification': selection.update(package_quantity=10.2,package_unit='ml',bundle_count=1)
+        with pytest.raises(HTTPException) as rejected:
+            correction_preview(session,pid,selection,identity={'sub':'fixture'})
+        assert rejected.value.status_code==422
+        session.close()
+
+
+def test_normalized_source_correction_quantity_scope_hold_generic_forgery_rejected():
+    from services.normalized_product_correction import correction_prefill,correction_preview,_row
+    from core.reviewed_source_evidence import source_correction_proposal_hash
+    session,pid,vid,lid,eid = _quantity_scope_hold_fixture()
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selection = {key:prefill[key] for key in
+        ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selection.update(reason='보류 proof fixture',quantity_scope_action='hold_unresolved')
+    preview = correction_preview(session,pid,selection,identity={'sub':'fixture'})
+    for forged in ('reason','rate','active','numeric_spec'):
+        bundle = deepcopy(preview['bundle']); event=bundle['offers'][0]
+        lineage = event['audit_provenance']['source_correction_lineage'];lineage['status']='approved'
+        if forged=='reason': lineage['quantity_scope_reasons']=['invented_reason']
+        elif forged=='rate': event['standard_unit_price']=700000
+        elif forged=='active': event['offer_state']='active'
+        elif forged=='numeric_spec': lineage['corrected_specification']['package_quantity']=10.2
+        lineage['proposal_sha256']=source_correction_proposal_hash(event,_row(session.get(NormalizedProductVariant,vid)),
+            _row(session.get(NormalizedSourceListing,lid)))
+        validation = validate_bundle(session,bundle,'forged-hold')
+        assert not validation.ok and any('source_correction_lineage' in error for error in validation.errors)
+    session.close()
+
+
+def _approved_quantity_scope_hold():
+    from services.normalized_product_correction import correction_prefill,correction_preview,apply_correction
+    session,pid,vid,lid,eid = _quantity_scope_hold_fixture()
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selection = {key:prefill[key] for key in
+        ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selection.update(reason='공개 이력 보류 annotation fixture',quantity_scope_action='hold_unresolved')
+    preview = correction_preview(session,pid,selection,identity={'sub':'fixture'})
+    result = apply_correction(session,pid,selection,preview['proposal_sha256'],identity={'sub':'fixture'})
+    return session,pid,vid,lid,eid,result['new_event_id']
+
+
+def _fixture_remote_snapshot_validation(monkeypatch):
+    """Load the actual Web route with its own board module, without app namespaces colliding."""
+    import importlib.util
+    import sys
+    from pathlib import Path
+    root=Path(__file__).resolve().parents[4]/'packages/web-api/backend'
+    for name,path in (('services.board_storage',root/'services/board_storage.py'),
+                      ('fixture_remote_admin',root/'api/routes/admin_remote.py')):
+        spec=importlib.util.spec_from_file_location(name,path)
+        module=importlib.util.module_from_spec(spec)
+        monkeypatch.setitem(sys.modules,name,module)
+        spec.loader.exec_module(module)
+    return module._validate_sqlite,module._SNAPSHOT_CONFIG['catalog'][2]
+
+
+def test_normalized_quantity_scope_hold_snapshot_preserves_verified_history(tmp_path,monkeypatch):
+    import sqlite3
+    from services import public_snapshot_v2
+    session,pid,vid,lid,eid,corrected_id = _approved_quantity_scope_hold()
+    session.commit()
+    target = tmp_path/'public-held.sqlite'
+    with session.get_bind().connect() as source:
+        counts = public_snapshot_v2._write_snapshot_file(target,source,revision=119)
+    assert counts['normalized_offer_events']==2
+    assert public_snapshot_v2.validate_public_snapshot(target)['revision']==119
+    remote_validate,required=_fixture_remote_snapshot_validation(monkeypatch)
+    assert remote_validate(target,required)['revision']==119
+    with sqlite3.connect(target) as connection:
+        assert public_snapshot_v2._verified_public_hold_ids(connection)=={corrected_id}
+        rows = connection.execute('SELECT public_offer_event_id,price,crawled_at,offer_state,standard_unit_price FROM normalized_offer_events').fetchall()
+    by_id = {row[0]:row for row in rows}
+    assert set(by_id)=={eid,corrected_id} and by_id[eid][1]==by_id[corrected_id][1]==11900
+    assert by_id[eid][2]==by_id[corrected_id][2]
+    assert by_id[eid][4]==700000 and by_id[corrected_id][3:] == ('pending_review',None)
+    # Read the actual published-table subset, not a full admin backup.
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location('published_hold_fixture_web',
+        Path(__file__).resolve().parents[4]/'packages/web-api/backend/services/catalog_storage.py')
+    module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    detail = module.PublicCatalogStore(target).get_normalized_product_detail(pid)
+    events = detail['variants'][0]['listings'][0]['offers']
+    assert next(row for row in events if row['is_latest'])['id']==corrected_id
+    assert next(row for row in events if row['id']==corrected_id)['observation_kind']=='source_interpretation_correction'
+    assert detail['cur'] is None and detail['variants'][0]['declared_contents_quantity'] is None
+    from api.routes import prices
+    from sqlalchemy.orm import Session
+    monkeypatch.setattr(prices,'get_session',lambda:Session(session.get_bind()))
+    dto = prices.list_normalized_observations(q='',source_name=None,unified_category_id=None,
+        public_product_id=pid,public_variant_id=vid,public_source_listing_id=lid,offer_state=None,
+        date_from=None,date_to=None,page=1,per_page=50,identity={'sub':'fixture'})
+    by_event = {row['public_offer_event_id']:row for row in dto['items']}
+    assert dto['total']==2 and by_event[corrected_id]['source_correction_verified'] is True
+    assert by_event[corrected_id]['observation_kind']=='source_interpretation_correction'
+    assert by_event[corrected_id]['quote_scope']=='stored_source_interpretation_projection'
+    assert by_event[eid]['observation_kind'] is None and not by_event[eid]['source_correction_verified']
+    assert by_event[eid]['observed_quote']==by_event[corrected_id]['observed_quote']==11900
+    session.close()
+
+
+def test_normalized_quantity_scope_hold_snapshot_rejects_unverified_and_nonpublic_original(tmp_path,monkeypatch):
+    import sqlite3
+    from sqlalchemy import insert
+    from services import public_snapshot_v2
+    from services.normalized_product_correction import _row
+    from core.reviewed_source_evidence import source_correction_event_hash,source_correction_variant_hash,source_correction_proposal_hash
+    from fastapi import HTTPException
+    remote_validate,required=_fixture_remote_snapshot_validation(monkeypatch)
+    for bad in ('candidate','forged','foreign_pending','pending_original','parent'):
+        session,pid,vid,lid,eid,corrected_id = _approved_quantity_scope_hold()
+        projection = session.get(NormalizedOfferEvent,corrected_id)
+        invalid_id = corrected_id
+        if bad=='foreign_pending':
+            foreign = NormalizedOfferEvent(**{column.name:deepcopy(getattr(projection,column.name))
+                for column in projection.__table__.columns if column.name not in {'created_at','updated_at'}})
+            foreign.public_offer_event_id='foreign-pending-event'
+            session.add(foreign);projection=foreign;invalid_id=foreign.public_offer_event_id
+        audit = deepcopy(projection.audit_provenance);proof=audit['source_correction_lineage']
+        if bad=='candidate': proof['status']='reviewed_candidate'
+        elif bad=='forged': proof['proposal_sha256']='0'*64
+        elif bad=='pending_original':
+            original=session.get(NormalizedOfferEvent,eid);original.offer_state='pending_review'
+            proof['original_event_sha256']=source_correction_event_hash(_row(original))
+        elif bad=='parent':
+            variant=session.get(NormalizedProductVariant,vid)
+            variant.attributes={'explicit_listing_quantity_review':{'source_parent_selection':
+                {'identity_scope':'source_selectable_parent_observation'}}}
+            proof['original_variant_sha256']=source_correction_variant_hash(_row(variant))
+        projection.audit_provenance=audit
+        if bad in ('pending_original','parent'):
+            proof['proposal_sha256']=source_correction_proposal_hash(_row(projection),
+                _row(session.get(NormalizedProductVariant,vid)),_row(session.get(NormalizedSourceListing,lid)))
+        session.commit()
+        target=tmp_path/(bad+'.sqlite')
+        with session.get_bind().connect() as source:
+            public_snapshot_v2._write_snapshot_file(target,source,revision=119)
+        assert public_snapshot_v2.validate_public_snapshot(target)['revision']==119
+        with sqlite3.connect(target) as connection:
+            assert connection.execute('SELECT 1 FROM normalized_offer_events WHERE public_offer_event_id=?',(invalid_id,)).fetchone() is None
+        # Validator must independently reject the same excluded row if injected
+        # into this disposable candidate, even with an approved-looking marker.
+        candidate_engine=create_engine(f'sqlite:///{target.as_posix()}')
+        with candidate_engine.begin() as connection:
+            connection.execute(insert(NormalizedOfferEvent),{column.name:deepcopy(getattr(projection,column.name))
+                for column in projection.__table__.columns if column.name not in {'created_at','updated_at'}})
+        candidate_engine.dispose()
+        with pytest.raises(ValueError,match='pending_review offers are not publishable'):
+            public_snapshot_v2.validate_public_snapshot(target)
+        with pytest.raises(HTTPException) as rejected:
+            remote_validate(target,required)
+        assert rejected.value.status_code==422 and 'pending_review offers are not publishable' in rejected.value.detail
+        session.close()
+
+
+def _approved_correction_for_web():
+    from services.normalized_product_correction import correction_prefill,apply_correction,correction_preview
+    session,pid,vid,lid,eid = _normalized_correction_fixture()
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selection = {key:prefill[key] for key in
+        ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selection.update(reason='저장 기반 Web 선택 fixture',package_quantity=340,package_unit='g',bundle_count=1,price=4990)
+    preview = correction_preview(session,pid,selection,identity={'sub':'fixture'})
+    result = apply_correction(session,pid,selection,preview['proposal_sha256'],identity={'sub':'fixture'})
+    return session,pid,lid,eid,result
+
+
+def test_normalized_source_correction_saved_web_projection_priority_and_new_capture(tmp_path):
+    from datetime import timedelta
+    import sqlite3
+    session,pid,lid,eid,result = _approved_correction_for_web()
+    assert eid > result['new_event_id']  # lexical order must not beat the proven projection
+    store = _saved_correction_web_store(session,tmp_path/'approved.sqlite')
+    with sqlite3.connect(store.path) as connection:
+        stamp = session.get(NormalizedOfferEvent,result['new_event_id']).crawled_at.isoformat()+'+00:00'
+        connection.execute('UPDATE normalized_offer_events SET crawled_at=? WHERE public_offer_event_id=?',
+            (stamp,result['new_event_id']))  # equivalent UTC encoding, different SQL text
+    items,total = store.search_normalized_products_page('풀무원')
+    assert total == 1 and items[0]['best_offer']['id'] == result['new_event_id']
+    detail = store.get_normalized_product_detail(pid)
+    events = detail['variants'][0]['listings'][0]['offers']
+    assert {row['id'] for row in events} == {eid,result['new_event_id']}
+    original = next(row for row in events if row['id']==eid)
+    corrected = next(row for row in events if row['id']==result['new_event_id'])
+    assert original['listed_price'] == corrected['listed_price'] == 4990
+    assert store._observed_order(original['crawled_at']) == store._observed_order(corrected['crawled_at'])
+    assert corrected['is_latest'] and not original['is_latest']
+    assert corrected['observation_kind'] == 'source_interpretation_correction'
+    assert original['observation_kind'] is None
+    mart = store.get_mart_deals('lottemart')['lottemart']['items'][0]
+    assert mart['offer_id'] == result['new_event_id'] and mart['sale'] == 4990
+    # An independent later source event wins even over a valid same-time correction.
+    projection = session.get(NormalizedOfferEvent,result['new_event_id'])
+    later = NormalizedOfferEvent(**{column.name:deepcopy(getattr(projection,column.name))
+        for column in projection.__table__.columns if column.name not in {'created_at','updated_at'}})
+    later.public_offer_event_id = 'offer-independent-source-later'
+    later.crawled_at = projection.crawled_at + timedelta(days=1)
+    later.audit_provenance = {}
+    session.add(later)
+    store = _saved_correction_web_store(session,tmp_path/'later.sqlite')
+    items,_ = store.search_normalized_products_page('풀무원')
+    assert items[0]['best_offer']['id'] == later.public_offer_event_id
+    events = store.get_normalized_product_detail(pid)['variants'][0]['listings'][0]['offers']
+    assert len(events)==3 and next(row for row in events if row['is_latest'])['id']==later.public_offer_event_id
+    assert store.get_mart_deals('lottemart')['lottemart']['items'][0]['offer_id']==later.public_offer_event_id
+    session.close()
+
+
+def test_normalized_source_correction_saved_web_rejects_candidate_and_malformed_without_old_fallback(tmp_path):
+    from datetime import timedelta
+    for state in ('reviewed_candidate','malformed'):
+        session,pid,lid,eid,result = _approved_correction_for_web()
+        projection = session.get(NormalizedOfferEvent,result['new_event_id'])
+        audit = deepcopy(projection.audit_provenance)
+        audit['source_correction_lineage']['status'] = state
+        projection.audit_provenance = audit
+        projection.crawled_at += timedelta(days=1)  # invalid newest must not revive the old quote
+        store = _saved_correction_web_store(session,tmp_path/(state+'.sqlite'))
+        items,total = store.search_normalized_products_page('풀무원')
+        assert total==1 and items[0]['best_offer'] is None and items[0]['cur'] is None
+        assert items[0]['variants'][0]['listings'][0]['offers']==[]
+        detail = store.get_normalized_product_detail(pid)
+        assert detail['best_offer'] is None and detail['cur'] is None
+        events = detail['variants'][0]['listings'][0]['offers']
+        assert {row['id'] for row in events}=={eid,result['new_event_id']}
+        assert all(not row['is_latest'] and not row['current_eligible'] for row in events)
+        invalid = next(row for row in events if row['id']==result['new_event_id'])
+        assert invalid['listed_price']==4990 and invalid['availability_reason']=='source_correction_unverified'
+        assert store.get_mart_deals('lottemart').get('lottemart',{}).get('items',[])==[]
+        session.close()
+
+
+@pytest.mark.parametrize('change',['price','quantity','partial_spec','boolean','stale','cross_tuple','raw_hash','native_conflict','human_rule','shared_variant'])
+def test_normalized_source_correction_rejects_unproved_or_unbound_input(change):
+    from fastapi import HTTPException
+    from services.normalized_product_correction import correction_prefill,correction_preview
+    session,pid,vid,lid,eid = _normalized_correction_fixture()
+    prefill = correction_prefill(session,pid,vid,lid,eid)
+    selected = {k:prefill[k] for k in ('public_variant_id','public_source_listing_id','public_offer_event_id','binding_sha256')}
+    selected.update(reason='검증 fixture',package_quantity=340,package_unit='g',bundle_count=1,price=4990)
+    if change=='price': selected['price']=2495
+    elif change=='quantity': selected['package_quantity']=680
+    elif change=='partial_spec': selected.pop('bundle_count')
+    elif change=='boolean': selected['bundle_count']=True
+    elif change=='stale': selected['binding_sha256']='0'*64
+    elif change=='cross_tuple': selected['public_variant_id']='wrong'
+    elif change=='raw_hash':
+        event = session.get(NormalizedOfferEvent,eid); evidence=deepcopy(event.raw_evidence)
+        evidence['observations'][0]['raw_payload']['sale_price']=2495;event.raw_evidence=evidence
+    elif change=='native_conflict':
+        event=session.get(NormalizedOfferEvent,eid);evidence=deepcopy(event.raw_evidence)
+        raw=evidence['observations'][0]['raw_payload'];raw['source_record_key']='other-source'
+        evidence['observations'][0]['raw_payload_sha256']=_offer_review_digest(raw);event.raw_evidence=evidence
+    elif change=='human_rule': session.scalar(select(MatchingEntry)).source='human'
+    elif change=='shared_variant': session.add(NormalizedSourceListing(public_source_listing_id='other-source',
+        public_variant_id=vid,source_name='emart',source_record_key='other',source_title='other'))
+    with pytest.raises(HTTPException): correction_preview(session,pid,selected,identity={'sub':'moderator'})
+    assert session.get(NormalizedOfferEvent,eid).price == 4990
+    assert session.get(NormalizedSourceListing,lid).public_variant_id == vid
+    session.close()
+
+
 def _physical_role_bundle(category, title, quantity, unit, source_url='https://example.test/physical'):
     from core.catalog_quantity import normalize_catalog_package
     bundle = _bundle()

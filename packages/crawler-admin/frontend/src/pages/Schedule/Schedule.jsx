@@ -25,7 +25,7 @@ const CRON_PRESETS = {
   '0 0 1 * *': '매월 1일 자정',
 };
 
-function cronToHuman(cron) {
+export function cronToHuman(cron) {
   return CRON_PRESETS[cron] || cron;
 }
 
@@ -53,7 +53,7 @@ function parseCronField(field, min, max) {
   return values;
 }
 
-function getNextCronRuns(cronExpr, count = 3) {
+export function getNextCronRuns(cronExpr, count = 3) {
   try {
     const parts = cronExpr.trim().split(/\s+/);
     if (parts.length !== 5) return [];
@@ -62,38 +62,38 @@ function getNextCronRuns(cronExpr, count = 3) {
     const hourSet = parseCronField(parts[1], 0, 23);
     const domSet = parseCronField(parts[2], 1, 31);
     const monthSet = parseCronField(parts[3], 1, 12);
-    const dowSet = parseCronField(parts[4], 0, 6);
+    const dowSet = new Set([...parseCronField(parts[4], 0, 7)].map((value) => value % 7));
     const domSpecified = parts[2] !== '*';
     const dowSpecified = parts[4] !== '*';
     const hours = [...hourSet].sort((a, b) => a - b);
     const minutes = [...minuteSet].sort((a, b) => a - b);
     const results = [];
     const now = new Date();
-    const day = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
     for (let dayIndex = 0; dayIndex < 400 && results.length < count; dayIndex += 1) {
-      const monthMatch = monthSet.has(day.getMonth() + 1);
+      const monthMatch = monthSet.has(day.getUTCMonth() + 1);
       const dayMatch = domSpecified && dowSpecified
-        ? domSet.has(day.getDate()) || dowSet.has(day.getDay())
-        : domSet.has(day.getDate()) && dowSet.has(day.getDay());
+        ? domSet.has(day.getUTCDate()) || dowSet.has(day.getUTCDay())
+        : domSet.has(day.getUTCDate()) && dowSet.has(day.getUTCDay());
 
       if (monthMatch && dayMatch) {
         for (const hour of hours) {
           for (const minute of minutes) {
             if (results.length >= count) break;
-            const candidate = new Date(
-              day.getFullYear(),
-              day.getMonth(),
-              day.getDate(),
+            const candidate = new Date(Date.UTC(
+              day.getUTCFullYear(),
+              day.getUTCMonth(),
+              day.getUTCDate(),
               hour,
               minute,
-            );
+            ));
             if (candidate > now) results.push(candidate);
           }
           if (results.length >= count) break;
         }
       }
-      day.setDate(day.getDate() + 1);
+      day.setUTCDate(day.getUTCDate() + 1);
     }
     return results;
   } catch {
@@ -149,11 +149,12 @@ export default function Schedule() {
     const date = new Date(iso);
     if (Number.isNaN(date.getTime())) return '-';
     return date.toLocaleString('ko-KR', {
+      timeZone: 'UTC',
       month: 'numeric',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    });
+    }) + ' UTC';
   };
 
   const handleEdit = (schedule) => {
@@ -223,6 +224,13 @@ export default function Schedule() {
           스케줄 추가
         </button>
       </div>
+
+      <p>
+        예약·미리보기는 UTC 기준입니다(한국 시각 +9시간). 요일은 Unix 기준 일요일 0 또는 7입니다.
+        기존 예약에는 시간대 기록이 없으므로 이전 입력 시각을 확인해 주세요.
+        수집·HIT는 승인·snapshot 발행과 별개이며, 신규·충돌 항목은 데이터 검토가 필요합니다.
+        재시작 중단은 소유 프로세스 종료가 확인된 실행만 복구하며, 소유 정보 없는 실행 중 기록은 자동 재실행하지 않습니다.
+      </p>
 
       {(error || pluginError) && (
         <div style={{
