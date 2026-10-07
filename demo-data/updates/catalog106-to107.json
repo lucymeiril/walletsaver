@@ -1,0 +1,333 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation445-reviewed-group-keyword-spec",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+      "unified_category_id": "food.preserved.kimchi.cabbage",
+      "category_id": null,
+      "canonical_name": "맛김치 800g",
+      "brand": null,
+      "aliases": [
+        "종가 맛김치"
+      ],
+      "keywords": [
+        "배추김치"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:4"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000578762266"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "배추김치"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:jongga-mat-kimchi",
+          "canonical_product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+          "member_product_ids": [
+            "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+            "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+            "prod-bc19c425ba286d461dfe15a3aa1d877a",
+            "prod-da3c0f8f5cb1093b33af2517c1ddc316",
+            "prod-e93544aa26a7cffd3dc4db42831f14a1"
+          ],
+          "canonical_name": "종가 맛김치",
+          "brand": "종가",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+          "old_leaf": "food.preserved.kimchi.standard",
+          "new_leaf": "food.preserved.kimchi.cabbage",
+          "source_name": "emart",
+          "source_record_key": "1000578762266",
+          "source_titles": [
+            "맛김치 800g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000578762266&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "b5b6e3816f330171a62541ca8a522006c00b093f40103b2d377fa2b7dad88492",
+          "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/66/22/76/item/1000578762266_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+      "unified_category_id": "food.preserved.kimchi.cabbage",
+      "category_id": null,
+      "canonical_name": "맛김치 300g(PET)",
+      "brand": null,
+      "aliases": [
+        "종가 맛김치"
+      ],
+      "keywords": [
+        "배추김치"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:44"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000030820901"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "배추김치"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:jongga-mat-kimchi",
+          "canonical_product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+          "member_product_ids": [
+            "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+            "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+            "prod-bc19c425ba286d461dfe15a3aa1d877a",
+            "prod-da3c0f8f5cb1093b33af2517c1ddc316",
+            "prod-e93544aa26a7cffd3dc4db42831f14a1"
+          ],
+          "canonical_name": "종가 맛김치",
+          "brand": "종가",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+          "old_leaf": "food.preserved.kimchi.standard",
+          "new_leaf": "food.preserved.kimchi.cabbage",
+          "source_name": "emart",
+          "source_record_key": "1000030820901",
+          "source_titles": [
+            "맛김치 300g(PET)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000030820901&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "f577d33fc0ecc76a9f0c2d6f1d23e70fb3c09dc562f69eed31b2ca093fcd0f12",
+          "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/01/09/82/item/1000030820901_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e93544aa26a7cffd3dc4db42831f14a1",
+      "unified_category_id": "food.preserved.kimchi.cabbage",
+      "category_id": null,
+      "canonical_name": "맛김치 1.2kg(PET)",
+      "brand": null,
+      "aliases": [
+        "종가 맛김치"
+      ],
+      "keywords": [
+        "배추김치"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:8"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000008363041"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "배추김치"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:jongga-mat-kimchi",
+          "canonical_product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+          "member_product_ids": [
+            "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+            "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+            "prod-bc19c425ba286d461dfe15a3aa1d877a",
+            "prod-da3c0f8f5cb1093b33af2517c1ddc316",
+            "prod-e93544aa26a7cffd3dc4db42831f14a1"
+          ],
+          "canonical_name": "종가 맛김치",
+          "brand": "종가",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-e93544aa26a7cffd3dc4db42831f14a1",
+          "old_leaf": "food.preserved.kimchi.standard",
+          "new_leaf": "food.preserved.kimchi.cabbage",
+          "source_name": "emart",
+          "source_record_key": "0000008363041",
+          "source_titles": [
+            "맛김치 1.2kg(PET)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=0000008363041&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "9dffc8cbf502a87d04143e0a03ea5a9b77e366db2a914c77dd43c29f19bc924c",
+          "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/41/30/36/item/0000008363041_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f032ef28f2294ef4b6a0e9d7a5a3e56e",
+      "unified_category_id": "food.preserved.kimchi.cabbage",
+      "category_id": null,
+      "canonical_name": "우리아이 한입 썰은김치 270g",
+      "brand": null,
+      "aliases": [
+        "비비고 우리아이 한입 썰은김치"
+      ],
+      "keywords": [
+        "배추김치"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_emart_fresh_and_deli"
+            ],
+            "raw_record_ids": [
+              "ingestion:86:62"
+            ],
+            "source_ingestion_ids": [
+              86
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000061619107"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_emart_fresh_and_deli"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          86
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "배추김치"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:bibigo-child-bite-sliced-kimchi",
+          "canonical_product_id": "prod-2f31d04f2469a5036c23cb2da81f2456",
+          "member_product_ids": [
+            "prod-2f31d04f2469a5036c23cb2da81f2456",
+            "prod-f032ef28f2294ef4b6a0e9d7a5a3e56e"
+          ],
+          "canonical_name": "비비고 우리아이 한입 썰은김치",
+          "brand": "비비고",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-f032ef28f2294ef4b6a0e9d7a5a3e56e",
+          "old_leaf": "food.preserved.kimchi.standard",
+          "new_leaf": "food.preserved.kimchi.cabbage",
+          "source_name": "emart",
+          "source_record_key": "1000061619107",
+          "source_titles": [
+            "우리아이 한입 썰은김치 270g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000061619107&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "1af39da8928e70767355dafce0f81fa20e5d0f18f2f125689497062ca9c3891c",
+          "reason": "Same already-approved exactnamedrecipe HP143580379 peer has literalnative배추김치 fullpath at originalingestion14:51/63:88. Emart broadtitle need not lose supportedshared form. Preserve membership/oldIDs/quantity/quote/time; restore reciprocalleaf without inferring unrelatedkimchi cabbage or broadtitlemerge."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/07/91/61/item/1000061619107_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

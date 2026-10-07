@@ -10114,7 +10114,7 @@
       ],
       "canonical_name": "서울우유 짜요짜요 딸기",
       "brand": "서울우유",
-      "leaf": "food.dairy.yogurt.squeeze",
+      "leaf": "food.dairy.yogurt.standard",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-4145f0b78b53b37346ea65214fef3cf8": [
@@ -10146,6 +10146,22 @@
       "derived_alias_member_ids": [
         "prod-4145f0b78b53b37346ea65214fef3cf8",
         "prod-436ff1dd96fbe880a77349cec07f7aea"
+      ],
+      "historical_definitions": [
+        {
+          "key": "reviewed-family-v1:seoul-zzayo-strawberry",
+          "canonical_product_id": "prod-4145f0b78b53b37346ea65214fef3cf8",
+          "canonical_name": "서울우유 짜요짜요 딸기",
+          "brand": "서울우유",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-4145f0b78b53b37346ea65214fef3cf8",
+            "prod-436ff1dd96fbe880a77349cec07f7aea"
+          ],
+          "leaf": "food.dairy.yogurt.squeeze",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -16155,7 +16171,7 @@
       ],
       "canonical_name": "HBAF 바프 와사비맛 아몬드",
       "brand": "HBAF 바프",
-      "leaf": "food.grains.nuts.almond",
+      "leaf": "food.snacks.savory.flavored_nut",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-28fcdefe77b215e996a5064596dd0757": [
@@ -16187,6 +16203,22 @@
       "derived_alias_member_ids": [
         "prod-28fcdefe77b215e996a5064596dd0757",
         "prod-59a553105367faca2a7e3fcdbc263e86"
+      ],
+      "historical_definitions": [
+        {
+          "key": "hbaf-wasabi-almond",
+          "canonical_product_id": "prod-28fcdefe77b215e996a5064596dd0757",
+          "canonical_name": "HBAF 바프 와사비맛 아몬드",
+          "brand": "HBAF 바프",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-28fcdefe77b215e996a5064596dd0757",
+            "prod-59a553105367faca2a7e3fcdbc263e86"
+          ],
+          "leaf": "food.grains.nuts.almond",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -16198,7 +16230,7 @@
       ],
       "canonical_name": "HBAF 바프 허니버터 아몬드",
       "brand": "HBAF 바프",
-      "leaf": "food.grains.nuts.almond",
+      "leaf": "food.snacks.savory.flavored_nut",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-4db20fc5c9b1d4f0f0a0029049cac712": [
@@ -16230,6 +16262,22 @@
       "derived_alias_member_ids": [
         "prod-4db20fc5c9b1d4f0f0a0029049cac712",
         "prod-94e04fa49902d2a01d2a0a797823bf37"
+      ],
+      "historical_definitions": [
+        {
+          "key": "hbaf-honey-butter-almond",
+          "canonical_product_id": "prod-4db20fc5c9b1d4f0f0a0029049cac712",
+          "canonical_name": "HBAF 바프 허니버터 아몬드",
+          "brand": "HBAF 바프",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-4db20fc5c9b1d4f0f0a0029049cac712",
+            "prod-94e04fa49902d2a01d2a0a797823bf37"
+          ],
+          "leaf": "food.grains.nuts.almond",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -16241,7 +16289,7 @@
       ],
       "canonical_name": "HBAF 바프 군옥수수맛 아몬드",
       "brand": "HBAF 바프",
-      "leaf": "food.grains.nuts.almond",
+      "leaf": "food.snacks.savory.flavored_nut",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-9d46655d127f42ca4933a3674bd72141": [
@@ -16273,6 +16321,22 @@
       "derived_alias_member_ids": [
         "prod-9d46655d127f42ca4933a3674bd72141",
         "prod-c7c45e53ac02f085916a95751701681f"
+      ],
+      "historical_definitions": [
+        {
+          "key": "hbaf-roasted-corn-flavour-almond",
+          "canonical_product_id": "prod-9d46655d127f42ca4933a3674bd72141",
+          "canonical_name": "HBAF 바프 군옥수수맛 아몬드",
+          "brand": "HBAF 바프",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-9d46655d127f42ca4933a3674bd72141",
+            "prod-c7c45e53ac02f085916a95751701681f"
+          ],
+          "leaf": "food.grains.nuts.almond",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -16284,7 +16348,7 @@
       ],
       "canonical_name": "썬키스트 견과 3종세트",
       "brand": "썬키스트",
-      "leaf": "food.grains.nuts.mixed",
+      "leaf": "food.grains.sets.nuts_assortment",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-5c95fd6ab8551f9f49adf357dede832d": [
@@ -16316,6 +16380,22 @@
       "derived_alias_member_ids": [
         "prod-5c95fd6ab8551f9f49adf357dede832d",
         "prod-881e99f2ce0d781e2524a3d3097137d6"
+      ],
+      "historical_definitions": [
+        {
+          "key": "sunkist-three-nut-set",
+          "canonical_product_id": "prod-5c95fd6ab8551f9f49adf357dede832d",
+          "canonical_name": "썬키스트 견과 3종세트",
+          "brand": "썬키스트",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-5c95fd6ab8551f9f49adf357dede832d",
+            "prod-881e99f2ce0d781e2524a3d3097137d6"
+          ],
+          "leaf": "food.grains.nuts.mixed",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -16370,7 +16450,7 @@
       ],
       "canonical_name": "푸른들판 유기농 골든퀸 쌀",
       "brand": "푸른들판",
-      "leaf": "food.grains.rice.white",
+      "leaf": "food.grains.rice.standard",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-b69af7c87420a42cf0f37499fec68c5f": [
@@ -16402,6 +16482,22 @@
       "derived_alias_member_ids": [
         "prod-b69af7c87420a42cf0f37499fec68c5f",
         "prod-eafe5a24f1c2a02b2ddb9e49b76d7e2a"
+      ],
+      "historical_definitions": [
+        {
+          "key": "prdp-organic-golden-queen-rice",
+          "canonical_product_id": "prod-b69af7c87420a42cf0f37499fec68c5f",
+          "canonical_name": "푸른들판 유기농 골든퀸 쌀",
+          "brand": "푸른들판",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-b69af7c87420a42cf0f37499fec68c5f",
+            "prod-eafe5a24f1c2a02b2ddb9e49b76d7e2a"
+          ],
+          "leaf": "food.grains.rice.white",
+          "registry_sha256": "ab1c7ec2c7b92fe22729280ee27361d1e2d407fef76acdd0ceea431d3ca53843",
+          "approved_source_commit": "c1779515630af06f89503efe8f7c682e250deb7a"
+        }
       ]
     },
     {
@@ -27691,6 +27787,1641 @@
       ],
       "evidence_sha256": "a714d543b6ed6155c6865047e120d2dbddf7ec41e6b03ebe640b9ca122edda69",
       "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+    },
+    {
+      "product_id": "prod-057a1c8a6d16427f7b0ea189e7663f1e",
+      "old_leaf": "food.meat.eggs.cooked",
+      "new_leaf": "food.meat.eggs.quail",
+      "source_name": "emart",
+      "source_record_key": "1000008646274",
+      "source_titles": [
+        "우리 아이가 좋아하는 깐메추리알 270g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000008646274&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "325c580440a5987d20c713ae11a7f6048f68e8e67601f198690c3b2b3fdbb7c1",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-f896ec90e11ed1bc48ce35c15e21e9c2",
+      "old_leaf": "food.meat.eggs.quail",
+      "new_leaf": "food.meat.eggs.cooked_quail",
+      "source_name": "emart",
+      "source_record_key": "1000848452527",
+      "source_titles": [
+        "고소한 훈제 메추리알 25g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000848452527&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "ccd7baecee29a86d0cc0501de7d74f705f47a87f1e0f3612e830e26e6acc9b5d",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-b43b96a2872261b1115936b80de85925",
+      "old_leaf": "food.plant.soy.tofu",
+      "new_leaf": "food.plant.soy.silken",
+      "source_name": "homeplus",
+      "source_record_key": "112841891",
+      "source_titles": [
+        "대상 고소한 국산콩 찌개용 두부 400G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=112841891&storeType=HYPER"
+      ],
+      "evidence_sha256": "cc804f1d3ffd5d06d8c582bdbef4ba1f8c2eb8bd052c5ec868d93cd9f841a332",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5f3183b54f7846651ec687e406a73217",
+      "old_leaf": "food.grains.nuts.walnut",
+      "new_leaf": "food.snacks.savory.coated_nut",
+      "source_name": "costco",
+      "source_record_key": "669820",
+      "source_titles": [
+        "Green Nut 호두 정과 800g"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Green-Nut-Caramelized-Walnuts-800g/p/669820"
+      ],
+      "evidence_sha256": "3b59616331814158c3b9976271236a475b8e2de6638d83b746b2cc741f88e0c9",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-02182869c18060d310c97db7f3ec62b0",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8801133013309",
+      "source_titles": [
+        "오늘좋은 군옥수수맛 아몬드 (50G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013309/details"
+      ],
+      "evidence_sha256": "572426b106d8695db9574a5d199f6dbcaca14be56deaf6373bd82ed45456790d",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-102397a80dbc85bfba0683fa6a76dfb2",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8800279452904",
+      "source_titles": [
+        "바프 HBAF 와사비맛아몬드&땅콩 (280G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8800279452904/details"
+      ],
+      "evidence_sha256": "1f9aaa83a7a7d5514b6cdc332878a4d2beba260152d11d3a92e840497c444391",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-11421b6ad94ebfff58cb5aade8dc9289",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617949373",
+      "source_titles": [
+        "HBAF 메이플피칸 아몬드 믹스넛 (200G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617949373/details"
+      ],
+      "evidence_sha256": "a52c5edc329b00cf6f570d172c0f4701d63eeaae3210e47a0fe82143d984b195",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-1cdc1606ab11de8d74391f5c0005aa88",
+      "old_leaf": "food.grains.nuts.cashew",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "costco",
+      "source_record_key": "1510336",
+      "source_titles": [
+        "커클랜드 시그니춰 버터 토피맛 캐슈 680g"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Kirknald-Signature-Butter-Toffee-Flavored-Cashews/p/1510336"
+      ],
+      "evidence_sha256": "6f61b29406308f8b0b54243d438846a40c4f1d8ae7e95adae8377a1687fe4c4e",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-28fcdefe77b215e996a5064596dd0757",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617944507",
+      "source_titles": [
+        "HBAF 와사비맛 아몬드 (120G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944507/details"
+      ],
+      "evidence_sha256": "dc11d5f38f369d2f5aff4fd0b940aa711164a67e429fac9674679ab1d49439d6",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-4db20fc5c9b1d4f0f0a0029049cac712",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617944491",
+      "source_titles": [
+        "HBAF 허니버터 아몬드 (120G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944491/details"
+      ],
+      "evidence_sha256": "df92aad5d7e7cc2eea9dcc724218a007803865156dd329438334e1ac6d284fcb",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-59a553105367faca2a7e3fcdbc263e86",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "homeplus",
+      "source_record_key": "050448235",
+      "source_titles": [
+        "HBAF 바프 와사비맛 아몬드 120G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=050448235&storeType=HYPER"
+      ],
+      "evidence_sha256": "93681789548eb6b099d067cb3a9e922ed8c9296982d723a110fa9a36032c104e",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-608314dce307f0800578d19e3b55c853",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8801133013217",
+      "source_titles": [
+        "오늘좋은 허니버터 아몬드 (50G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013217/details"
+      ],
+      "evidence_sha256": "ba2dd6b5e98308530a1781a76ea8782374c243b6f94ba9f5dece2da39104c97d",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-60a4ea091cc94521629985d05dce4bbb",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8801133013200",
+      "source_titles": [
+        "오늘좋은 와사비향 아몬드 (50G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013200/details"
+      ],
+      "evidence_sha256": "3dba1f40cfe47f1a419be66b054b97cae10c0f89917bb0d22cc159824c547c74",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-614fc95b3f7ac8659cbbf556ba8b8259",
+      "old_leaf": "food.grains.nuts.peanut",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "homeplus",
+      "source_record_key": "061365241",
+      "source_titles": [
+        "머거본 커피 땅콩 300G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=061365241&storeType=HYPER"
+      ],
+      "evidence_sha256": "3eb651fbdaf8347703cb6a4c9f7718db56174d5a985aecc9f1ba32f92be3edab",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-6372862ef93977fc647b7d2c698c9366",
+      "old_leaf": "food.grains.nuts.peanut",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "emart",
+      "source_record_key": "1000822122099",
+      "source_titles": [
+        "와사비맛 땅콩 120g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000822122099&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "5cab6d1ccb184c9879839c803a39ac35772b024fedbc2d364bc61a634377c9c6",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-94e04fa49902d2a01d2a0a797823bf37",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "homeplus",
+      "source_record_key": "050447758",
+      "source_titles": [
+        "HBAF 바프 허니버터 아몬드 120G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=050447758&storeType=HYPER"
+      ],
+      "evidence_sha256": "6ccbc3442ee6d28539278cf74ee534162791c8a690987a36f0d1a189d5de58fb",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-9a2e6d09f8dd59a015ce2c27688c0963",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8800279451976",
+      "source_titles": [
+        "HBAF 스낵믹스넛 짭짤고소 (200G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8800279451976/details"
+      ],
+      "evidence_sha256": "e5511e2773fbd9ab9b2a309db40db044a2ed1487aa38b4450d1d4732761041bb",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-9d46655d127f42ca4933a3674bd72141",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617944514",
+      "source_titles": [
+        "HBAF 군옥수수맛 아몬드 (120G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944514/details"
+      ],
+      "evidence_sha256": "1e3fe822dcc64bc742843c9e2c5ceb60c7d8d714085f4bbfb82e53158745b3cd",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-a35bc7f9f87b9d8dd9588efb55674ec7",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617944941",
+      "source_titles": [
+        "HBAF 마늘빵 아몬드 (120G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944941/details"
+      ],
+      "evidence_sha256": "27b98918c9bbb1ee70e14c5105864ee7c65533ea782a1e88a99ec88e70971a41",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-a38ece9c62f417f4984d98f3a7b85f60",
+      "old_leaf": "food.grains.nuts.peanut",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "homeplus",
+      "source_record_key": "061365235",
+      "source_titles": [
+        "머거본 꿀 땅콩 300G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=061365235&storeType=HYPER"
+      ],
+      "evidence_sha256": "e61004ffc6d8d132cc31b3bfea3a623560a30d797005e532f4c149b30e30fd67",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c7c45e53ac02f085916a95751701681f",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "homeplus",
+      "source_record_key": "050448293",
+      "source_titles": [
+        "HBAF 바프 군옥수수맛 아몬드 120G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=050448293&storeType=HYPER"
+      ],
+      "evidence_sha256": "b49e371b96c767bc394df83f6c8e07c7a0dfad8b0425758bc61f2abf90c2625f",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c82517945af45b6dc096dcb1170281d3",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8800279452881",
+      "source_titles": [
+        "바프 HBAF 허니버터아몬드&땅콩 (280G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8800279452881/details"
+      ],
+      "evidence_sha256": "36d2c04f80dcff7374afb35ea2773e2894cfd4d0a44d9e96283124f94b9a4f78",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-cbac6b9d0f7593a6110c3283a5b5f61e",
+      "old_leaf": "food.grains.nuts.macadamia",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8801133013392",
+      "source_titles": [
+        "오늘좋은 체다치즈 마카다미아 (40G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013392/details"
+      ],
+      "evidence_sha256": "a64068c3940184718476e6847901fbedf7a60e6e4a3706a3270fae303417f73a",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-ee25f84253daee2a4efd2ddd030be6ac",
+      "old_leaf": "food.grains.nuts.macadamia",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8801133013378",
+      "source_titles": [
+        "오늘좋은 바닐라향 마카다미아 (40G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013378/details"
+      ],
+      "evidence_sha256": "e78115350737cf48a8cffe75070b11f5789fe4cc9446c726b78ed8dfba6c85e2",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-f53fa2041b63c1a19d832ab6c39e45d8",
+      "old_leaf": "food.grains.nuts.almond",
+      "new_leaf": "food.snacks.savory.flavored_nut",
+      "source_name": "lottemart",
+      "source_record_key": "8809617944521",
+      "source_titles": [
+        "HBAF 쿠키앤크림 아몬드 (120G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944521/details"
+      ],
+      "evidence_sha256": "6309981e043909936ace3cc13d92ed0ecf4d9b549f1d5344cd33f84b8f3f64e7",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5c95fd6ab8551f9f49adf357dede832d",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.grains.sets.nuts_assortment",
+      "source_name": "costco",
+      "source_record_key": "523645",
+      "source_titles": [
+        "썬키스트 견과 3종세트 25g x 60봉 x 20세트"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645"
+      ],
+      "evidence_sha256": "15fb3ec6e90660b33615e92b4b38b8e1352e567c0aaacae7a1f1a8cf7ea2ba4d",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-881e99f2ce0d781e2524a3d3097137d6",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.grains.sets.nuts_assortment",
+      "source_name": "costco",
+      "source_record_key": "509119",
+      "source_titles": [
+        "썬키스트 견과 3종세트 25g x 60봉"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119"
+      ],
+      "evidence_sha256": "e170abd0746e5e1b097f3f4b407f28dcb9fc48dc0c1955c3f780d621c298f788",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c5718e04be1a4419d6a6379d6c74827a",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.grains.sets.nuts_assortment",
+      "source_name": "costco",
+      "source_record_key": "606293",
+      "source_titles": [
+        "썬키스트 견과 5종 세트1,850g"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293"
+      ],
+      "evidence_sha256": "78a2e53b08f2eb201e63fe7bcb5ecb4c5ec107fe726bee85bbfba4be20132652",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-76111d350364642c6abba367c45ed26b",
+      "old_leaf": "food.grains.nuts.mixed",
+      "new_leaf": "food.snacks.assortment.fruit_nut",
+      "source_name": "costco",
+      "source_record_key": "609798",
+      "source_titles": [
+        "Dole 후룻앤넛츠 15g x 50봉 x 2박스"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798"
+      ],
+      "evidence_sha256": "c9796c92280dbe3af0e76a0e58268761afa8920f9a46721ee91793e89525b750",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-0a7a1adc4609240fdd836386ff0f0def",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "emart",
+      "source_record_key": "1000646184318",
+      "source_titles": [
+        "여주대왕님표 여주 진상미 4kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184318&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "6cda8881f0d42a78c210c928f683a350fad83cf024acdf7e7e33bbd7c356aa93",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-18a4f2244846412c45b3b583ac0cb9c4",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "529214",
+      "source_titles": [
+        "익산청결미 20kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Iksan-Nonghyup-Rice-20kg/p/529214"
+      ],
+      "evidence_sha256": "bdbb1c77cad9bcaabcd82bd38ce01f39157a6937dc920e80bc1680662e7e47a3",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-2b7db7ddccd8e82a410dc2eba4f5c3c9",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "664167",
+      "source_titles": [
+        "예산농협 삼광쌀10kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Yesan-Nonghyup-Samgwang-Rice-10kg-x-2/p/664167"
+      ],
+      "evidence_sha256": "855371547d62f05f9eccbd43710d4849b1a5db26828aec650d138dcb0c2d052c",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-4589d7108b640bebd7741d84bc35bba6",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "emart",
+      "source_record_key": "1000693432739",
+      "source_titles": [
+        "[농할 3천원 할인쿠폰 다운로드] 단일품종미 신동진쌀 10kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000693432739&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "978aecc3dc8df7c4e175d4571ccd7a7ee66ed71995b8d06d10df0188afb03a21",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-61630b000ea27ca4ba52728136f53d51",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "637388",
+      "source_titles": [
+        "예산농협 황금쌀10kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Yesan-Nonghyup-Golden-Rice-10kg-x-2/p/637388"
+      ],
+      "evidence_sha256": "27755e7fd44fc64c7dbb1e6ee310baf75888a4b94db89b3bb0d74f451f7f4347",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-64b9f77b286852066cb0ff4aade5338b",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "emart",
+      "source_record_key": "1000646184325",
+      "source_titles": [
+        "[농할 3천원 할인쿠폰 다운로드] 한눈에 반한 쌀(특) 10kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000646184325&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "f676296a6027417e4e4704738fefb61364cb5b58d64f187532f7daf0474b3aaa",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-65243c46af89dbbe4268896f3e585598",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "525083",
+      "source_titles": [
+        "팽성농협 장원급제 쌀 4kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Paengseong-Nonghyup-Rice-4kg-x-2/p/525083"
+      ],
+      "evidence_sha256": "d72a32783ab8c3319cffc1b9656865396df3268c2d0b71ad3525cc5f9a82a946",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-7b74c40576838d5353179d771d15e484",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "694700",
+      "source_titles": [
+        "여주시 농협 여주쌀 10kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Yeoju-si-Nonghyup-Yeoju-Rice-10kg/p/694700"
+      ],
+      "evidence_sha256": "b40df4537f592209b3b14e04581ad8ebc60e7fae8741b6d652a1430a24ea84e2",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-b69af7c87420a42cf0f37499fec68c5f",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "619700",
+      "source_titles": [
+        "푸른들판 유기농 골든퀸 3kg x 3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/PRDP-Organic-Golden-Queen-Rice-3kg-x-3/p/619700"
+      ],
+      "evidence_sha256": "33164e3b85b1842da3e7b335c3419b10fba10454138dc3b89510a099bbf0c7fe",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-bde43a8ae12a0f70ed6dcc684050a210",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "emart",
+      "source_record_key": "1000633806247",
+      "source_titles": [
+        "[농할 3천원 할인쿠폰 다운로드] 당진 해나루쌀 삼광(특) 10kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633806247&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "1186542e5803d930df86829756f5fa61c7c6b5b3dab0ba629a679bdf5aeee645",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-e2ab4d66929f181eec94ebe9b4c4e7bb",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "686497",
+      "source_titles": [
+        "김화 농협 철원 오대쌀 10kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/kimhwa-Nonghyup-Cheolwon-Odae-Rice-10kg/p/686497"
+      ],
+      "evidence_sha256": "50fbe78e037e32e46f287489d945a2a0cb5f5163854b0ce7081a676cb5168acf",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-e3706a7872e2d41426c9c46e97d8eb50",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "606686",
+      "source_titles": [
+        "수향미 골든퀸3호 10kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Golden-Queen-Rice-10kg/p/606686"
+      ],
+      "evidence_sha256": "13b6cf2dda52a2b78534b3c1ba66a0623a1fa244749a610dc20f8e547d74fe2b",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-eafe5a24f1c2a02b2ddb9e49b76d7e2a",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "616397",
+      "source_titles": [
+        "푸른들판 유기농쌀 골든퀸 8kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/PRDP-Organic-Golden-Queen-Rice-8kg-x-2/p/616397"
+      ],
+      "evidence_sha256": "8669e5b90659de283146ae05b20375139a55f3bbcf53bf83e9aeda6b50386f54",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-eec00951c6da28e28b5a2bc9b029e69d",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "emart",
+      "source_record_key": "1000633790394",
+      "source_titles": [
+        "햇살드리 수향미 골든퀸3호 4kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633790394&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "a63403e1db1008d8f93d2f43a6d225b4d8993485df54095680758583887a7405",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-f116f9f015985068fe7148d421466305",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "508153",
+      "source_titles": [
+        "익산농협 쌀이보배10kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Iksan-Nonghyup-Rice-10kg-x-2/p/508153"
+      ],
+      "evidence_sha256": "930faad262cdc715eba89b96ce1a60867783ef835b65dd4e7dc1267deb2b0810",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-f7c8bcaccb674bc110af92ca7ab9d98d",
+      "old_leaf": "food.grains.rice.white",
+      "new_leaf": "food.grains.rice.standard",
+      "source_name": "costco",
+      "source_record_key": "508164",
+      "source_titles": [
+        "팽성농협 고시히카리쌀 10kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Rice/Paengseong-Goshihikari-Rice-10kg-x-2/p/508164"
+      ],
+      "evidence_sha256": "cf8d49d15ff5cfd5be3a95ccbc81fb4a76ed5f75e3cc87366edc93547329b747",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-225e456933324bff689a267b66aaca8a",
+      "old_leaf": "food.grains.rice.mixed",
+      "new_leaf": "food.grains.rice.standard_grain",
+      "source_name": "emart",
+      "source_record_key": "1000827413348",
+      "source_titles": [
+        "96시간숙성한 소화잘되는 잡곡1kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413348&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "0fba1554bdb591e08902e0d2cea1ee0fe7c8341005477290b606800a3760322f",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5085adaab00df3d82f41a5ff4a3586dc",
+      "old_leaf": "food.grains.rice.oat",
+      "new_leaf": "food.grains.rice.rolled_oat",
+      "source_name": "costco",
+      "source_record_key": "1736339",
+      "source_titles": [
+        "커클랜드 시그니춰 압착귀리 4.54kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Grains/Kirkland-Signature-Rolled-Oats-454kg/p/1736339"
+      ],
+      "evidence_sha256": "29ed3f79383b4135113ee39c24503d7079d42b1f14d004373852d69007f0d82f",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-e0ab7cd0ea0b3963ac3d48de04f60cef",
+      "old_leaf": "food.grains.rice.mixed",
+      "new_leaf": "food.grains.mixed_food.standard",
+      "source_name": "emart",
+      "source_record_key": "1000827413366",
+      "source_titles": [
+        "저당곡물 돼지감자 현미 2kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000827413366&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "e5105abd366f90eada387f26ece6013009213b3515da56d78cc005640fe170ff",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-b75421030f1fe56da681abc5b88b91b4",
+      "old_leaf": "food.grains.rice.mixed",
+      "new_leaf": "food.grains.rice.brown",
+      "source_name": "costco",
+      "source_record_key": "610651",
+      "source_titles": [
+        "미이랑 국내산 가바오색현미 5kg"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/RiceGrains/Grains/Mirang-Gaba-Brown-Rice-5kg/p/610651"
+      ],
+      "evidence_sha256": "2064d887feab1d5bf12d84d66f9aa7bd44693a571e57fbbb4e097eecedb27bf0",
+      "reason": "Exactliteral/sourcepath support commodity and preparation form only: smokedquail, compatible specific silken shelf, declared flavored nuts/assortment/fruit+nut, plainrice without unproved milling subtype, genericnamed 잡곡 without mixture inference, explicitRolled-Oats/Brown-Rice URL, declaredgrain mixedfood without ratios/process inference. Sameapproved inari peer ingredientpath and original431white-rice decisions retained; bundlecount notgift/snack proof. Existing quantities/variantIDs/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-019e86f2063eb752ac71587293099d82",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "emart",
+      "source_record_key": "1000038957412",
+      "source_titles": [
+        "[대천김] 대천 김자반 볶음 (120g) (60g*2)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000038957412&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "f0e00f1e7d7a691cfe7675c0cfda41ae985925ec42d93ebc5f6d7bee7dac96bd",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-0bb918b299efef4806b8fed616c5d80f",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "069278268",
+      "source_titles": [
+        "올리브유 돌자반 50G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069278268&storeType=HYPER"
+      ],
+      "evidence_sha256": "45de2706093935981c0d3e75615f4be61daa76a383d982c2033c3e9b8efff78d",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-115d8cf7c30c414257541535ca4c16fe",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "069278314",
+      "source_titles": [
+        "고소한 참기름 돌 김자반 50G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069278314&storeType=HYPER"
+      ],
+      "evidence_sha256": "f411dad73dc2650b95437272bd8924197a7eac721f7f4a09369f799c7a54e1b5",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-597cf575fc957d1c2b075a04222b2b46",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "129384915",
+      "source_titles": [
+        "대천김 김자반 60G*2봉"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=129384915&storeType=HYPER"
+      ],
+      "evidence_sha256": "5a9ee25930df5ad4d0ad575c7d4f3109500a8c6524fa1a5891bf948914c3e344",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5aa9ed6642993ce3118a5dfbf2ee042b",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "124109162",
+      "source_titles": [
+        "CJ비비고 한식간장 김자반 50G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=124109162&storeType=HYPER"
+      ],
+      "evidence_sha256": "b23615be18fa1bd293211dfa6d58bcd136c6000a8cb5f856ae2cd29da688ba03",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-afb69f9fccad609ac61f4acbd7d479a9",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "069206913",
+      "source_titles": [
+        "동원양반 한식 전통 자반 50G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069206913&storeType=HYPER"
+      ],
+      "evidence_sha256": "4d559d01decaeb02431d6333a7807ca4d17eae17a26d2f4dfbcd85fa2a299bd4",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-b3b595ff42a4c625cd1a630c8cc05735",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "lottemart",
+      "source_record_key": "8807004002823",
+      "source_titles": [
+        "성경 명란 돌자반 (70G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8807004002823/details"
+      ],
+      "evidence_sha256": "31381242f35c01bd1ac75e70dc02baea548e445c7b51101fb22aa6ce9c8541de",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-ecc72671655823780d9b0a31c713c41b",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_flakes",
+      "source_name": "homeplus",
+      "source_record_key": "069208358",
+      "source_titles": [
+        "동원양반 우리아이 주먹밥 김자반 30G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069208358&storeType=HYPER"
+      ],
+      "evidence_sha256": "3eeee82b0ad9a186f326e54bbed4a2eaa88a13a8869577b73a013a35266a5e21",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-7d232ae6ecac1d22abab1ff6e6451abb",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_powder",
+      "source_name": "homeplus",
+      "source_record_key": "069208427",
+      "source_titles": [
+        "동원양반 한식김가루 50G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069208427&storeType=HYPER"
+      ],
+      "evidence_sha256": "a9aaa1420a875d5bf1803bebafccc4b010d75dd317edfbcb23c5df4421bfb0fe",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-7de87b225a6dc9d51e81a58a26537ed9",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_powder",
+      "source_name": "lottemart",
+      "source_record_key": "8809395758976",
+      "source_titles": [
+        "광천 담백한 구운 김가루 (50G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809395758976/details"
+      ],
+      "evidence_sha256": "98302bb4136d01d300140bfc6fd352dd3b3d2acd75525e5b95c18c42bfec0097",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-90725220cc25666eb227b1740171ec51",
+      "old_leaf": "food.seafood.seaweed.laver",
+      "new_leaf": "food.seafood.processed.laver_powder",
+      "source_name": "homeplus",
+      "source_record_key": "068708344",
+      "source_titles": [
+        "두번구워 더고소한 김가루 60G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068708344&storeType=HYPER"
+      ],
+      "evidence_sha256": "25c49473a03b46e570e7b61ee237dd65dbf3f4452859b7801558c94141babd33",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-f56d16892d834c78e6e3ab11151934a9",
+      "old_leaf": "food.seafood.seaweed.miyeok",
+      "new_leaf": "food.seafood.seaweed.wakame_stem",
+      "source_name": "emart",
+      "source_record_key": "1000033355892",
+      "source_titles": [
+        "미역줄기 (300g*2)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000033355892&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "0ba9932287733135ae3bd46546bf36903665d180e16213c0f3b3a8631c6c6364",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-103658ff4c6f78f0b429a1f96e8c72a5",
+      "old_leaf": "food.seafood.fish.mackerel",
+      "new_leaf": "food.meals.prepared.grilled_fish",
+      "source_name": "homeplus",
+      "source_record_key": "069814061",
+      "source_titles": [
+        "간편 고등어 구이 200G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069814061&storeType=HYPER"
+      ],
+      "evidence_sha256": "519efb75894e60ad9da7feec75db2b7894e4964a45499e60babf7495ef8fce46",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-230776ef46fd8c266038b5fbe8207d4b",
+      "old_leaf": "food.seafood.fish.croaker",
+      "new_leaf": "food.seafood.processed.gulbi",
+      "source_name": "emart",
+      "source_record_key": "1000791248883",
+      "source_titles": [
+        "[냉동][국산] 영광 법성포 참굴비 (총 560g) (2미 140g*4팩)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000791248883&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "676c208b862d086ed0982b0502c41fb093215b78dec3c3a6fc826c44ce936b6b",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-7caa22d453c0860bedce67ad53a748d4",
+      "old_leaf": "food.seafood.fish.croaker",
+      "new_leaf": "food.seafood.processed.gulbi",
+      "source_name": "emart",
+      "source_record_key": "2097002304333",
+      "source_titles": [
+        "[전국택배][냉동][국산] 영광법성포 왕부세 보리굴비세트 3호 (10미 1.8kg 내외/미당 26~30cm 내외)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=2097002304333&siteNo=6001&salestrNo=2493"
+      ],
+      "evidence_sha256": "dae8179654fb5305bdbeb8b8682fa4652aff501d2628b365998867396727a6ae",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-2f65c43baed4ba0375c038785b8882cf",
+      "old_leaf": "food.seafood.shellfish.shrimp",
+      "new_leaf": "food.seafood.processed.cooked_shrimp",
+      "source_name": "emart",
+      "source_record_key": "1000050449988",
+      "source_titles": [
+        "[냉동][태국] 자숙 칵테일 새우살 (31-40) (450g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000050449988&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "0b22b52ed420be175e6b4cb916e7b1b1cbed5ba63c4c72900b8b242af96a0116",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-8c2291d25ff1a53cab8ee54c9dc14ffd",
+      "old_leaf": "food.seafood.shellfish.shrimp",
+      "new_leaf": "food.seafood.processed.cooked_shrimp",
+      "source_name": "homeplus",
+      "source_record_key": "146709985",
+      "source_titles": [
+        "자숙 새우살(L) 400G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=146709985&storeType=HYPER"
+      ],
+      "evidence_sha256": "cda54060d138259b4ba45411bad1c4ab18c7475136ebf11f0092cfa1dd9b8e69",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c28541c605fb634f4a908a1d872216e5",
+      "old_leaf": "food.seafood.shellfish.shrimp",
+      "new_leaf": "food.seafood.processed.cooked_shrimp",
+      "source_name": "homeplus",
+      "source_record_key": "146710101",
+      "source_titles": [
+        "자숙 새우살(S) 800G(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=146710101&storeType=HYPER"
+      ],
+      "evidence_sha256": "34a76f3fdd91571c5297b08f095c097271241d61c58817781cfdfd08addc9670",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c7aee7fb9a7b90af789387d514594a6c",
+      "old_leaf": "food.seafood.shellfish.shrimp",
+      "new_leaf": "food.seafood.processed.cooked_shrimp",
+      "source_name": "homeplus",
+      "source_record_key": "128883896",
+      "source_titles": [
+        "자숙 칵테일 쉬림프링 453G(팩) (꼬리O)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=128883896&storeType=HYPER"
+      ],
+      "evidence_sha256": "2e5a29a4b7535fabb71eef497f1c846365564f950b8d572afe133769b413c92a",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-eb92a993928b653ed1ad844c09b454f3",
+      "old_leaf": "food.seafood.shellfish.shrimp",
+      "new_leaf": "food.seafood.processed.cooked_shrimp",
+      "source_name": "homeplus",
+      "source_record_key": "070287348",
+      "source_titles": [
+        "냉동 자숙 새우살 기획(200G+200G)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070287348&storeType=HYPER"
+      ],
+      "evidence_sha256": "c4c970923ff6462ca674dc580660023ab4ddfd75a9cd3713229dfdbe0e7e73c1",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-bb2274cefcd02fc99ca0be8a1aed793a",
+      "old_leaf": "food.seafood.fish.salmon",
+      "new_leaf": "food.seafood.processed.smoked_salmon",
+      "source_name": "emart",
+      "source_record_key": "1000561251193",
+      "source_titles": [
+        "[냉동][노르웨이] 노브랜드 노르웨이 훈제연어 (180g/팩)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000561251193&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "6c92a5412d1e41d5ed1220b9150a35713ca2a1e56fffe616fb928d16008b7b1a",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-1e5c1189c69db429d67fc81f540e925d",
+      "old_leaf": "food.seafood.fish.tuna",
+      "new_leaf": "food.seafood.sashimi.tuna",
+      "source_name": "costco",
+      "source_record_key": "689025",
+      "source_titles": [
+        "동원참치회1kg (눈다랑어뱃살)"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Seafood/Dongwon-Tuna-Belly-Sashimi-1kg-x-1pack/p/689025"
+      ],
+      "evidence_sha256": "ae4eba9c1cb70faf5a058d4eb790d770665ac2b39513a3233bbadceabc07670d",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-3532007023366f0fcbb7086e84f8d4f7",
+      "old_leaf": "food.seafood.fish.salmon",
+      "new_leaf": "food.seafood.sashimi.salmon",
+      "source_name": "emart",
+      "source_record_key": "1000633327393",
+      "source_titles": [
+        "[냉장][노르웨이] 항공직송 딥스킨 생연어회 필렛 (550g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000633327393&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "e405bdda6d776850cc893e91d0f3c3c907b45167c1768f04de012725e846b965",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-b9ab2ef85d9a4a638a0f05760a32da49",
+      "old_leaf": "food.seafood.fish.salmon",
+      "new_leaf": "food.seafood.sashimi.salmon",
+      "source_name": "emart",
+      "source_record_key": "1000632638510",
+      "source_titles": [
+        "[냉장][노르웨이] 숙성 연어회 (150g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632638510&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "4286183b34e5c600b8cc1a2be0a8920e7e8441c3bc88d6466c3940622c070ab4",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5122873f97d5b43a24e5160d74ad64f0",
+      "old_leaf": "food.seafood.fish.flounder",
+      "new_leaf": "food.seafood.sashimi.olive_flounder",
+      "source_name": "emart",
+      "source_record_key": "1000632638527",
+      "source_titles": [
+        "[냉장][국산] 숙성 광어회 (150g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000632638527&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "cf9ea5aa283ca0433c7ab2784c77669891dcf39f5e6e2235d15418c431b73d44",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-76568a7c67c0ec9df8b90734d17daccf",
+      "old_leaf": "food.seafood.fish.croaker",
+      "new_leaf": "food.seafood.fish.large_yellow_croaker",
+      "source_name": "homeplus",
+      "source_record_key": "008589275",
+      "source_titles": [
+        "부세 마리(대/해동/중국산)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=008589275&storeType=HYPER"
+      ],
+      "evidence_sha256": "b7525f4f97687357309bf6fec5dd905bcf564cb9d777cf7d713f3cde0fd58696",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-60a9dac819de5b252d5103e2e6c44969",
+      "old_leaf": "food.meat.fresh.beef",
+      "new_leaf": "food.meat.raw.beef",
+      "source_name": "homeplus",
+      "source_record_key": "125608105",
+      "source_titles": [
+        "[호주청정우]홍두깨 100G/소고기"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=125608105&storeType=HYPER"
+      ],
+      "evidence_sha256": "74c99f8b61272c0d6921d067821001ff37c02249dd62feffb3e76ca773504bc2",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-ab1cd193c59424bcae4aeb87eaaaf47b",
+      "old_leaf": "food.meat.fresh.beef",
+      "new_leaf": "food.meat.raw.beef",
+      "source_name": "homeplus",
+      "source_record_key": "067691023",
+      "source_titles": [
+        "호주청정우 앞다리 불고기&샤브샤브 600G(팩)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=067691023&storeType=HYPER"
+      ],
+      "evidence_sha256": "230ed65383af64ade510d7b392283a1dacb32b34468f54b40a954a8e28eb727d",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-2ca168416e73c1bc2af98d031f98154b",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000313581872",
+      "source_titles": [
+        "[더느림+] 무항생제 목심 (100g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000313581872&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "f9d60f051d55b31c05a6a9cc0e7da473a618d4e57434fb25d70be9257798bf71",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-3139fc3c80a0f6cf686d64a6119efb55",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000004869137",
+      "source_titles": [
+        "국내산 뒷다리 불고기용 (100g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000004869137&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "4437348b5731b8040e10f89e421acff9ca5f91ed3552503b895ed0bea339aceb",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-38ddb61ebd314cf6ed78f59e9efa3a81",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000004795403",
+      "source_titles": [
+        "국내산 냉장 갈비 찜용 (100g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000004795403&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "0a72ae17103ce41027ad8f106a6cb557cb87c308829ace5879582b2208ea33d8",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-5d1f109611350beb0c319401391b3f5d",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000005672219",
+      "source_titles": [
+        "국내산 앞다리 불고기용 (100g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000005672219&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "a0321cd444f3f10bc14697129802bf8ea9e858a659baa64c2d4bdfb3a61c6ecd",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-a4d1aa15c132c091a1f1378c82de3bc0",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000542270574",
+      "source_titles": [
+        "국내산 앞다리 수육용 (100g)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000542270574&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "b1b838cf3b4f4a676110bd231c7d5dc0f1196fa58918cee78e471a3368797dd8",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-c53f263fccc286ad39e3f5f4a392fc9e",
+      "old_leaf": "food.meat.fresh.pork",
+      "new_leaf": "food.meat.raw.cut",
+      "source_name": "emart",
+      "source_record_key": "1000033571039",
+      "source_titles": [
+        "국내산 등심 카레용 (100g) (팩)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000033571039&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "c427e7c8830213c38be2c176866957e70978243c21f30e02b5d7924a1df08765",
+      "reason": "Explicitliteral/sourcepath supports named seafood, flakes/powder/stem, smoked/cooked or sashimi preparation; broad shelf doesnot override literalfoodform/species. Unknown meat species or storage temperature stay unknown: neutral rawbeef/cut forms preserve source cut/purpose and quantity; no sameSKU/group merge from genericnames, no bundle/promo reinterpretation. Existing quantity/variant/sourcequotes/time unchanged."
+    },
+    {
+      "product_id": "prod-35bcf8d91a6ac26a7e941ceb1235f679",
+      "old_leaf": "food.seasonings.sauces.pasta",
+      "new_leaf": "food.seasonings.sauces.pesto",
+      "source_name": "emart",
+      "source_record_key": "1000379792899",
+      "source_titles": [
+        "바질페스토185g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000379792899&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "745accf209f28f0b8912f8a978e9555b0dc24ac24c598bd3b543bbdb219690a6",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-7dba4f923b7e0f772c1aeaa36c7fe220",
+      "old_leaf": "food.seasonings.sauces.pasta",
+      "new_leaf": "food.seasonings.sauces.pesto",
+      "source_name": "costco",
+      "source_record_key": "666328",
+      "source_titles": [
+        "데체코 페스토 로쏘 마스카포네 200G X 4"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/SaucesCondiments/SaucesDressings/De-Cecco-Pesto-Rosso-Mascarpone-200g-x-4/p/666328"
+      ],
+      "evidence_sha256": "8cecf41e4b4d1f3132497758a5ae8235c0067c579cd9a8c2f8c66004edf5ab2e",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-4622b90225dad2d71be981752def29d0",
+      "old_leaf": "food.seasonings.sauces.pasta",
+      "new_leaf": "food.seasonings.sauces.tomato_puree",
+      "source_name": "homeplus",
+      "source_record_key": "068995486",
+      "source_titles": [
+        "디벨라 토마토퓨레 680G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=068995486&storeType=HYPER"
+      ],
+      "evidence_sha256": "0f512dfc23022bacde741348c63dd7806bc54f98eb104f1ab644201e975e2226",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-8aec76f34fa67739812d7abb57d6249e",
+      "old_leaf": "food.seasonings.oils.cooking",
+      "new_leaf": "food.seasonings.oils.spray",
+      "source_name": "homeplus",
+      "source_record_key": "070001100",
+      "source_titles": [
+        "만토바 230도 오일스프레이 200ML"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=070001100&storeType=HYPER"
+      ],
+      "evidence_sha256": "275cd72db0e7222cf81ae35bd65f3d843472aa2c76d3cf4cdca661e80c1eb53e",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-30c3f1480f86131feebf494e47a7d03b",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "costco",
+      "source_record_key": "660041",
+      "source_titles": [
+        "농협선장김치5kg x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Nonghyup-Sunjang-Kimchi-5kg-x-2/p/660041"
+      ],
+      "evidence_sha256": "20c5dcb1ac445cc2d7bf7ab2f236805754f6d768e286696200ca92f07775825b",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "1000578762266",
+      "source_titles": [
+        "맛김치 800g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000578762266&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "b5b6e3816f330171a62541ca8a522006c00b093f40103b2d377fa2b7dad88492",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "1000030820901",
+      "source_titles": [
+        "맛김치 300g(PET)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030820901&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "f577d33fc0ecc76a9f0c2d6f1d23e70fb3c09dc562f69eed31b2ca093fcd0f12",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-5b8744c46d5e866aa7ac2c79aa4c5e7e",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "costco",
+      "source_record_key": "664648",
+      "source_titles": [
+        "왕애밥상 매운 실비김치 550g X 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Wang-Ae-Bab-Sang-Spicy-Kimchi-550g-X-2/p/664648"
+      ],
+      "evidence_sha256": "bd176fcda2ae4802ff26ff62dd8ebee45d56d045c3da67e58696d71d62c2b96e",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-a6f03b948dbcdf9d25aa225f17aad2fc",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "costco",
+      "source_record_key": "677200",
+      "source_titles": [
+        "농협 선장맛김치 3KG X 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/KimchiSide-Dishes/Nonghyup-Sunjang-Sliced-Kimchi-3kg-x-2/p/677200"
+      ],
+      "evidence_sha256": "e817fbc94e6f88b37349dbd54f2a4855131a89341ce890a3a2166bcc06a1498f",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-b83777c5885b8829284277ab22911c75",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "1000067168989",
+      "source_titles": [
+        "조선호텔특제육수 썰은김치 1.9kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000067168989&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "e69b338d418803641a4b2d36019c9912a30a7fa1d2c3cf6f8a6efced3cec7300",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-bc9c85bb5483b12f56c3f317b9d68c1c",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "1000764312231",
+      "source_titles": [
+        "현명한 주부의 맛김치3kg"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000764312231&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "b0005764a37dd9aeb53b4a9e16c8e96cb38b640342be65925fc99e4aaeea2d67",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-e93544aa26a7cffd3dc4db42831f14a1",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "0000008363041",
+      "source_titles": [
+        "맛김치 1.2kg(PET)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008363041&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "9dffc8cbf502a87d04143e0a03ea5a9b77e366db2a914c77dd43c29f19bc924c",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-f032ef28f2294ef4b6a0e9d7a5a3e56e",
+      "old_leaf": "food.preserved.kimchi.cabbage",
+      "new_leaf": "food.preserved.kimchi.standard",
+      "source_name": "emart",
+      "source_record_key": "1000061619107",
+      "source_titles": [
+        "우리아이 한입 썰은김치 270g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000061619107&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "1af39da8928e70767355dafce0f81fa20e5d0f18f2f125689497062ca9c3891c",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-04406491e0a045b7a5bb3009ee529608",
+      "old_leaf": "food.dairy.yogurt.squeeze",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "homeplus",
+      "source_record_key": "004541170",
+      "source_titles": [
+        "서울우유 짜요짜요 요구르트 포도 240G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=004541170&storeType=HYPER"
+      ],
+      "evidence_sha256": "c1b868f10f4b3a7d36a6427bb31c772504f2638cb16fbfd7c671334492e1bb54",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-0b65db82834b0fe525b396acc2754d6a",
+      "old_leaf": "food.dairy.yogurt.drink",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000018804736",
+      "source_titles": [
+        "딸기 담은 요구르트 750ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000018804736&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "f0805e19d23ddd20ab6f6967b37a70768bf1fb8ee7699de3fe6b29e2c650da61",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-4145f0b78b53b37346ea65214fef3cf8",
+      "old_leaf": "food.dairy.yogurt.squeeze",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "homeplus",
+      "source_record_key": "004541154",
+      "source_titles": [
+        "서울우유 짜요짜요 요구르트 딸기 240G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=004541154&storeType=HYPER"
+      ],
+      "evidence_sha256": "3da4a294842c517d7f70a73e4f1dd00a3755b9e38a36b58005ce2c3882b340d2",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-436ff1dd96fbe880a77349cec07f7aea",
+      "old_leaf": "food.dairy.yogurt.squeeze",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "0000006617166",
+      "source_titles": [
+        "짜요짜요 딸기맛 240g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006617166&siteNo=7009&salestrNo=2551"
+      ],
+      "evidence_sha256": "d4d5b56cb536388988680512826e4bf64f3af845e50a3fe7f5a5285e403bc428",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-c793eaa57aad32ed0d66150bfa64328a",
+      "old_leaf": "food.dairy.yogurt.squeeze",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "homeplus",
+      "source_record_key": "112141810",
+      "source_titles": [
+        "서울우유 짜요짜요 요구르트 복숭아 240G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=112141810&storeType=HYPER"
+      ],
+      "evidence_sha256": "51747a3c3dc69de9006641b5826fa44605ada3cd0b6afe653d5c0f8e8c1ec9fd",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-f9c22dd36ebca177a546002b2984012f",
+      "old_leaf": "food.dairy.yogurt.drink",
+      "new_leaf": "food.dairy.yogurt.standard",
+      "source_name": "emart",
+      "source_record_key": "1000017812046",
+      "source_titles": [
+        "거꾸로먹는 야쿠르트 (110ml*4입)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000017812046&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "355b0affee40dbc147c1fb81018d7b0988badda6463ae4646efe338511cfae62",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-5e6b56a53fa7c2fc3bf0dfabf30fb40a",
+      "old_leaf": "food.dairy.yogurt.drink",
+      "new_leaf": "food.dairy.yogurt.drinking_greek",
+      "source_name": "homeplus",
+      "source_record_key": "071037344",
+      "source_titles": [
+        "매일 바이오그릭드링크플레인 710ML"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071037344&storeType=HYPER"
+      ],
+      "evidence_sha256": "d8272a1f5574d7a2c396e1d9c23a52cade193dde84cf7ce631bcf4250179b774",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-7715701619e65832483acc2e664d8ed3",
+      "old_leaf": "food.dairy.yogurt.drink",
+      "new_leaf": "food.dairy.yogurt.drinking_greek",
+      "source_name": "homeplus",
+      "source_record_key": "071037367",
+      "source_titles": [
+        "매일 바이오그릭드링크바나나 710ML"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071037367&storeType=HYPER"
+      ],
+      "evidence_sha256": "3dd0f6baffc0756798458f3fc4c1c0a7dcb397205baf8ad5e29c9ff3117f40d6",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-a3fe10ec04d0f92274ba2f35220b2fac",
+      "old_leaf": "food.dairy.yogurt.drink",
+      "new_leaf": "food.dairy.yogurt.drinking_greek",
+      "source_name": "homeplus",
+      "source_record_key": "071037338",
+      "source_titles": [
+        "매일 바이오그릭드링크무가당플레인 710ML"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071037338&storeType=HYPER"
+      ],
+      "evidence_sha256": "b8b4f950f6d2ffb09f37cd1893b3ce8f3628e60308f9880a1990538b394b26ee",
+      "reason": "Explicit pesto/tomato puree/oil spray and neutral namedkimchi oryogurt commodity retained without pasta purpose/vegetable species/squeeze memory. LiteralGreekdrink with compatiblefermented peer path supports ownform; flavors remain separate. Existing allulose197officialliquid proof and sameapprovedsangha-yogurt drinkingpeer retained. Quantity/variantIDs/sourcequotes/time unchanged; no newidentitymerge."
+    },
+    {
+      "product_id": "prod-f032ef28f2294ef4b6a0e9d7a5a3e56e",
+      "old_leaf": "food.preserved.kimchi.standard",
+      "new_leaf": "food.preserved.kimchi.cabbage",
+      "source_name": "emart",
+      "source_record_key": "1000061619107",
+      "source_titles": [
+        "우리아이 한입 썰은김치 270g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000061619107&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "1af39da8928e70767355dafce0f81fa20e5d0f18f2f125689497062ca9c3891c",
+      "reason": "Same already-approved exactnamedrecipe HP143580379 peer has literalnative배추김치 fullpath at originalingestion14:51/63:88. Emart broadtitle need not lose supportedshared form. Preserve membership/oldIDs/quantity/quote/time; restore reciprocalleaf without inferring unrelatedkimchi cabbage or broadtitlemerge."
+    },
+    {
+      "product_id": "prod-3b4a4d6259a38fb158986b9e0cb33ee1",
+      "old_leaf": "food.preserved.kimchi.standard",
+      "new_leaf": "food.preserved.kimchi.cabbage",
+      "source_name": "emart",
+      "source_record_key": "1000578762266",
+      "source_titles": [
+        "맛김치 800g"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000578762266&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "b5b6e3816f330171a62541ca8a522006c00b093f40103b2d377fa2b7dad88492",
+      "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+    },
+    {
+      "product_id": "prod-5ac20213bfaa4c6a64cd4fdcdfdd56fd",
+      "old_leaf": "food.preserved.kimchi.standard",
+      "new_leaf": "food.preserved.kimchi.cabbage",
+      "source_name": "emart",
+      "source_record_key": "1000030820901",
+      "source_titles": [
+        "맛김치 300g(PET)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000030820901&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "f577d33fc0ecc76a9f0c2d6f1d23e70fb3c09dc562f69eed31b2ca093fcd0f12",
+      "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+    },
+    {
+      "product_id": "prod-e93544aa26a7cffd3dc4db42831f14a1",
+      "old_leaf": "food.preserved.kimchi.standard",
+      "new_leaf": "food.preserved.kimchi.cabbage",
+      "source_name": "emart",
+      "source_record_key": "0000008363041",
+      "source_titles": [
+        "맛김치 1.2kg(PET)"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000008363041&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "9dffc8cbf502a87d04143e0a03ea5a9b77e366db2a914c77dd43c29f19bc924c",
+      "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
     }
   ]
 }
