@@ -431,7 +431,8 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             )}
             {isNormalizedCatalog && product.variants?.length > 0 && (
               <div className={s.metaRow}>
-                <span className={s.metaLabel}>판매 규격</span>
+                <span className={s.metaLabel}>판매 규격·출처 선택</span>
+                <small>같은 내용량도 출처별 원문 규격을 따로 보존합니다.</small>
                 <div>
                   {product.variants.map((variant) => (
                     <div key={variant.id}>

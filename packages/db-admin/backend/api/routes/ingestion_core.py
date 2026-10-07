@@ -345,10 +345,12 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
                     saved = _insert_items(session, items, row.schema_type, **({"observed_at": row.crawled_at}
                         if any(item.get("public_product_id") or item.get("public_variant_id") for item in items) else {}))
                     row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
+                    row.db_reviewer_notes, normalized_pending = _normalized_review_notes(row.db_reviewer_notes, items)
                     row.db_reviewed_at = datetime.utcnow()
                     if saved == len(items):
                         row.status = IngestionStatus.APPROVED
-                        chunk_results.append({"id": ingestion_id, "status": "approved", "saved": saved})
+                        chunk_results.append({"id": ingestion_id, "status": "approved", "saved": saved,
+                                              "normalized_pending_review": normalized_pending})
                     else:
                         row.status = IngestionStatus.CRAWLER_APPROVED
                         reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
@@ -635,6 +637,7 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
             saved = _insert_items(session, items, row.schema_type, **({"observed_at": row.crawled_at}
                         if any(item.get("public_product_id") or item.get("public_variant_id") for item in items) else {}))
             row.db_reviewer_notes = body.notes
+            row.db_reviewer_notes, normalized_pending = _normalized_review_notes(row.db_reviewer_notes, items)
             row.db_reviewed_at = datetime.utcnow()
             if saved != len(items):
                 row.status = IngestionStatus.CRAWLER_APPROVED
@@ -642,7 +645,8 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
                 row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
                 return {"id": row.id, "status": "crawler_approved", "saved": saved, "failed": len(items) - saved, "reason": reason}
             row.status = IngestionStatus.APPROVED
-            return {"id": row.id, "status": "approved", "saved": saved}
+            return {"id": row.id, "status": "approved", "saved": saved,
+                    "normalized_pending_review": normalized_pending}
 
         elif body.action == "reject":
             row.status = IngestionStatus.REJECTED
@@ -668,13 +672,15 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
             )
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
+            row.db_reviewer_notes, normalized_pending = _normalized_review_notes(row.db_reviewer_notes, approved)
             if saved != len(approved):
                 row.status = IngestionStatus.CRAWLER_APPROVED
                 reason = f"{len(approved) - saved}개 부분 승인 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
                 row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
                 return {"id": row.id, "status": "crawler_approved", "saved": saved, "failed": len(approved) - saved, "reason": reason}
             row.status = IngestionStatus.PARTIAL
-            return {"id": row.id, "status": "partial", "saved": saved}
+            return {"id": row.id, "status": "partial", "saved": saved,
+                    "normalized_pending_review": normalized_pending}
 
         else:
             raise HTTPException(400, f"잘못된 액션: {body.action}")
@@ -1465,6 +1471,7 @@ def _ensure_product(
     if promo_type:
         new_product.promo_type = str(promo_type)
     session.flush()
+    session.info["ingestion_created_product_id"] = new_product.id
     _apply_approved_product_metadata(
         session,
         new_product,
@@ -1591,6 +1598,17 @@ def _apply_approved_product_metadata(
     product.categorization_confidence = product.categorization_confidence or 1.0
 
 
+def _normalized_review_notes(notes: str | None, items: list[dict]) -> tuple[str | None, int]:
+    pending = [item["normalized_publication"] for item in items
+               if isinstance(item.get("normalized_publication"), dict)
+               and item["normalized_publication"].get("publication_status") == "pending_review"]
+    if not pending:
+        return notes, 0
+    reasons = sorted({reason for result in pending for reason in result.get("review_reasons", [])})
+    detail = f"정규화 공개 반영 보류 {len(pending)}건: {', '.join(reasons)}. 저장 건수는 원관측 검수 이력이며 공개 반영 수가 아닙니다."
+    return f"{notes or ''}\n{detail}".strip(), len(pending)
+
+
 def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: datetime | None = None) -> int:
     """승인된 항목을 최종 DB 테이블에 삽입."""
     saved = 0
@@ -1607,6 +1625,7 @@ def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: 
                         if price is None:
                             raise ValueError("BaselinePrice.price is missing or invalid")
                         category_hint = item.get("category_id") or item.get("category")
+                        session.info.pop("ingestion_created_product_id", None)
                         pid = _ensure_product(
                             session,
                             product_name,
@@ -1644,6 +1663,7 @@ def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: 
                             item.get("discount_percent") or item.get("discount_rate")
                         )
                         category_hint = item.get("category_id") or item.get("category")
+                        session.info.pop("ingestion_created_product_id", None)
                         pid = _ensure_product(
                             session,
                             product_name,
@@ -1669,10 +1689,20 @@ def _insert_items(session, items: list[dict], schema_type: str, *, observed_at: 
                             crawled_at=datetime.utcnow(),
                             raw_data=_build_offer_raw_data(item, product_name),
                         )
-                        publish_mart3_rows(
+                        publication = publish_mart3_rows(
                             session,
                             [_build_normalized_discount_row(item, product_name, source, price)],
-                        )
+                        )[0]
+                        item["normalized_publication"] = publication
+                        row.raw_data = {**row.raw_data, "normalized_publication": publication}
+                        if (publication.get("publication_status") == "pending_review"
+                                and session.info.pop("ingestion_created_product_id", None) == pid):
+                            # Preserve the raw observation while preventing an empty
+                            # normalized snapshot from exposing this new legacy row.
+                            product = session.get(Product, pid)
+                            product.is_active = False
+                            product.attributes = {**(product.attributes or {}),
+                                                  "normalized_publication": publication}
                 session.add(row)
                 if schema_type != "HotdealPost":
                     _link_product_keywords(session, pid, item.get("keywords"))
@@ -1807,6 +1837,21 @@ def _discount_claim_metadata(item: dict) -> dict:
     }
 
 
+def _publication_bundle_count(item: dict, raw_data: dict, unit_metadata: dict):
+    for source in (item, raw_data):
+        if source.get("bundle_count") is not None:
+            return source["bundle_count"]
+    quantity = item.get("package_quantity") or raw_data.get("package_quantity")
+    unit = item.get("package_unit") or raw_data.get("package_unit") or unit_metadata.get("package_unit")
+    if quantity is not None and (quantity != unit_metadata.get("package_quantity")
+                                 or unit != unit_metadata.get("package_unit")):
+        # The source may declare whole-pack mass, while the title parser found
+        # per-piece mass. Let the shared validator prove equivalence; attaching
+        # the parser's multiplier to the different source quantity is unsafe.
+        return None
+    return unit_metadata.get("bundle_count") or 1
+
+
 def _build_offer_raw_data(item: dict, product_name: str) -> dict:
     raw_data = item.get("raw_data") if isinstance(item.get("raw_data"), dict) else {}
     preserved = {k: v for k, v in item.items() if k not in {"raw_data"}}
@@ -1832,6 +1877,7 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         sale_price=sale_price,
         raw_unit=item.get("unit") or raw_data.get("unit"),
     )
+    bundle_count = _publication_bundle_count(item, raw_data, unit_metadata)
     attributes = {
         **(raw_data.get("attributes") if isinstance(raw_data.get("attributes"), dict) else {}),
         **(item.get("attributes") if isinstance(item.get("attributes"), dict) else {}),
@@ -1876,7 +1922,7 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
             or raw_data.get("unit_price_displayed"),
         "standard_unit": item.get("standard_unit") or raw_data.get("standard_unit"),
         "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
-        "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
+        "bundle_count": bundle_count if bundle_count is not None else 1,
         "pack_price": sale_price,
         "raw_sale_price": item.get("sale_price") or raw_data.get("sale_price"),
         "raw_original_price": item.get("original_price") or raw_data.get("original_price"),
@@ -1887,6 +1933,7 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         "attributes": attributes,
         "category": item.get("category") or raw_data.get("category", ""),
         "category_id": item.get("category_id") or raw_data.get("category_id"),
+        "unified_category_id": item.get("unified_category_id") or raw_data.get("unified_category_id"),
         "keywords": item.get("keywords") or raw_data.get("keywords") or [],
         "product_name": product_name,
         "store": item.get("store") or raw_data.get("store", ""),
@@ -1905,6 +1952,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
     )
     promotion_type = item.get("promotion_type") or item.get("promo_type") or raw_data.get("promotion_type") or raw_data.get("promo_type") or "final_price"
     return {
+        "_source_quantity_payload": {**raw_data, **item},
         **{field: item[field] for field in ('public_product_id', 'public_variant_id', 'public_source_listing_id') if field in item},
         "raw_record_id": item.get("raw_record_id") or raw_data.get("raw_record_id"),
         "source": source,
@@ -1913,6 +1961,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
         "source_title": item.get("source_title") or raw_data.get("source_title") or product_name,
         "canonical_name": product_name,
         "category_id": item.get("category_id") or raw_data.get("category_id") or item.get("category"),
+        "unified_category_id": item.get("unified_category_id") or raw_data.get("unified_category_id"),
         "category_name": item.get("category_name") or raw_data.get("category_name") or item.get("category"),
         "image_url": item.get("image_url") or raw_data.get("image_url"),
         "source_url": item.get("source_url") or item.get("detail_url") or raw_data.get("source_url"),
@@ -1934,7 +1983,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
         "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
         "price_per_100g": item.get("price_per_100g") or raw_data.get("price_per_100g") or unit_metadata.get("price_per_100g"),
         "unit_price_display": item.get("unit_price_display") or item.get("unit_price_displayed") or raw_data.get("unit_price_display") or raw_data.get("unit_price_displayed"),
-        "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
+        "bundle_count": _publication_bundle_count(item, raw_data, unit_metadata),
         "week_start": item.get("week_start") or raw_data.get("week_start") or item.get("valid_from"),
         "week_end": item.get("week_end") or raw_data.get("week_end") or item.get("valid_to"),
         "valid_from": item.get("valid_from") or raw_data.get("valid_from"),
@@ -1945,7 +1994,11 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
             **audit,
             "publication_kind": item.get("publication_kind") or raw_data.get("publication_kind"),
         },
-        "attributes": item.get("attributes") if isinstance(item.get("attributes"), dict) else raw_data.get("attributes"),
+        "attributes": {**(raw_data.get("attributes") if isinstance(raw_data.get("attributes"), dict) else {}),
+                       **(item.get("attributes") if isinstance(item.get("attributes"), dict) else {})},
+        "variant_attributes": {**(raw_data.get("attributes") if isinstance(raw_data.get("attributes"), dict) else {}),
+                               **(item.get("attributes") if isinstance(item.get("attributes"), dict) else {}),
+                               **(item.get("variant_attributes") if isinstance(item.get("variant_attributes"), dict) else {})},
         "keywords": item.get("keywords") or raw_data.get("keywords") or [],
     }
 

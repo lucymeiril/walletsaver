@@ -15,7 +15,6 @@ import useDebounce from '../../hooks/useDebounce';
 import useAbortController from '../../hooks/useAbortController';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
-import PriceGauge from '../../components/common/PriceGauge';
 import s from './PricePage.module.css';
 
 function highlightMatch(text, query) {
@@ -27,6 +26,26 @@ function highlightMatch(text, query) {
 
 function positivePrice(...values) {
   return values.find(v => typeof v === 'number' && v > 0) ?? 0;
+}
+
+export function LegacyObservationFacts({ unit, observedAt }) {
+  return <div>
+    <div>저장 규격 · {unit || '미확인'}</div>
+    <small>관측 시각 · {observedAt || '미확인'}</small>
+    <div><small>수령량·묶음 수량·구매 조건 검증 미확인 · 동일 수량 가격 비교 미확인</small></div>
+  </div>;
+}
+
+export function RelatedHotdealFacts({ deal }) {
+  return <>
+    <div className={s.rdMeta}><span>{deal.source_label || deal.source}</span></div>
+    <div><small>{deal.posted_at ? `출처 게시 시각 · ${deal.posted_at}` : '출처 게시 시각 · 미확인'}</small></div>
+    {deal.fetched_at && <div><small>수집 시각 · {deal.fetched_at}</small></div>}
+    {deal.time && <div><small>{deal.posted_at ? '출처 게시 후 경과' : deal.fetched_at ? '수집 후 경과' : '표시 상대 시각'} · {deal.time}{!deal.posted_at && !deal.fetched_at && ' · 기준 시각 미확인'}</small></div>}
+    <div><small>{deal.expired === true ? '판매 기간 종료 · 과거 출처 관측' : '현재 판매 가능 여부 미확인'}</small></div>
+    {deal.source_period && <div><small>출처 기간 · {deal.source_period}</small></div>}
+    {(deal.source_conditions || []).map((condition, index) => <div key={index}><small>출처 조건 · {condition}</small></div>)}
+  </>;
 }
 
 export default function PricePage() {
@@ -353,44 +372,15 @@ export default function PricePage() {
   const displayHigh = normalizedCatalog ? selectedHistory.max : product ? positivePrice(activeVariant?.high, product.high, priceHistory?.max_price, displayCur) : 0;
   const displayUnit = normalizedCatalog ? activeVariant?.display_unit || '' : product?.unit;
 
-  const ratio = useMemo(() => displayAvg > 0 ? displayCur / displayAvg : 1, [displayCur, displayAvg]);
-  const diff = useMemo(() => displayCur - displayAvg, [displayCur, displayAvg]);
-
-  const timing = useMemo(() => {
-    if (normalizedCatalog) return { cls:'good', icon:'📊', title:'동일 조건 관측 비교', desc:`선택 규격의 같은 수령·행사 조건 관측 평균 ${fmt(displayAvg)}원과 비교합니다. 표시된 회원·쿠폰 조건을 확인하세요.` };
-    if (ratio <= 0.7) return { cls: 'ultra', icon: '🔥', title: '역대급 기회!', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
-    if (ratio <= 0.85) return { cls: 'great', icon: '💙', title: '좋은 가격이에요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원)보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
-    if (ratio <= 1.05) return { cls: 'good', icon: '✅', title: '지금 사도 괜찮아요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원) 수준입니다. (${diff >= 0 ? '+' : ''}${fmt(diff)}원)` };
-    return { cls: 'wait', icon: '⏳', title: '조금 기다려보세요', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((ratio - 1) * 100)}% 비쌉니다.` };
-  }, [ratio, displayCur, displayAvg, diff, normalizedCatalog]);
-
-  const tierPos = useMemo(() => (displayHigh - displayLow) > 0
-    ? Math.max(3, Math.min(97, ((displayCur - displayLow) / (displayHigh - displayLow)) * 100))
-    : 50, [displayCur, displayLow, displayHigh]);
-
-  const fairPrice = useMemo(() => Math.round(displayAvg * 0.8), [displayAvg]);
+  const timing = useMemo(() => normalizedCatalog
+    ? { cls:'good', icon:'📊', title:'동일 조건 관측 비교', desc:`선택 규격의 같은 수령·행사 조건 관측 평균 ${fmt(displayAvg)}원과 비교합니다. 표시된 회원·쿠폰 조건을 확인하세요.` }
+    : { cls:'good', icon:'📊', title:'저장 가격 이력', desc:'저장된 가격 관측입니다. 수량·구매 조건과 현재 판매 가능 여부가 확인된 비교는 아닙니다.' },
+  [displayAvg, normalizedCatalog]);
 
   const hasData = displayCur != null && displayCur > 0 && displayAvg != null && displayAvg > 0;
   const activeStats = normalizedCatalog ? activeVariant?.stats || {} : product?.stats || {};
   const historyPointCount = normalizedCatalog ? chartData.length : priceHistory?.point_count ?? chartData.length;
   const historyMessage = chartError || priceHistory?.message;
-
-  // 마트별 최저가 계산 — 모든 훅은 early return 전에 호출해야 함
-  const cheapestMart = useMemo(() => {
-    if (!product?.stores) return null;
-    let min = Infinity, name = '', key = '';
-    MARTS.forEach(m => {
-      const p = product.stores[m.key];
-      if (p != null && p < min) { min = p; name = m.name; key = m.key; }
-    });
-    return min < Infinity ? { name, price: min, key } : null;
-  }, [product]);
-
-  const minMartPrice = useMemo(() => {
-    if (!product?.stores) return 0;
-    const prices = MARTS.map(m => product.stores[m.key]).filter(p => p != null);
-    return prices.length > 0 ? Math.min(...prices) : 0;
-  }, [product]);
 
   const martBarData = useMemo(() => {
     if (!product?.stores) return [];
@@ -398,9 +388,8 @@ export default function PricePage() {
       name: m.name,
       price: product.stores?.[m.key],
       color: m.color,
-      isCheapest: product.stores?.[m.key] === minMartPrice,
     }));
-  }, [product, minMartPrice]);
+  }, [product]);
 
   const handleBackToList = useCallback(() => {
     setSelectedProduct(null);
@@ -678,24 +667,15 @@ export default function PricePage() {
         </div>
       </div>
 
-      {/* 결론형 요약 */}
-      {!normalizedCatalog && hasData && cheapestMart && (
-        <div className={s.summaryBar}>
-          <span className={s.summaryIcon}>{product.icon}</span>
-          <span className={s.summaryText}>
-            {product.name} {product.unit}: <strong>{cheapestMart.name}</strong>가 가장 싸요 (<strong>{fmt(cheapestMart.price)}원</strong>) — {timing.title}
-          </span>
-        </div>
-      )}
-
       <div className={s.layout}>
         <div className={s.left}>
           {/* 상품 정보 */}
           <div className={s.itemInfo}>
             <span className={s.icon}>{product.icon}</span>
             <div>
-              <h3>{product.name} {displayUnit}</h3>
+              <h3>{product.name} {normalizedCatalog ? displayUnit : ''}</h3>
               <span className={s.cat}>{product.cat}</span>
+              {!normalizedCatalog && <LegacyObservationFacts unit={displayUnit} observedAt={currentOffer?.observed_at || currentOffer?.crawled_at || currentOffer?.date} />}
               {normalizedCatalog && <>
                 <div>{displayCur > 0 ? `관측 거래 금액 ${fmt(displayCur)}원` : '비교 가격 미확인'}</div>
                 <small>관측 시각 · {activeOffer?.crawled_at || activeOffer?.observed_at || '미확인'}</small>
@@ -726,7 +706,8 @@ export default function PricePage() {
           {/* 속성 변형 */}
           {variants.length > 0 && (
             <div className={s.variantSec}>
-              <span className={s.variantLabel}>속성 분류</span>
+              <span className={s.variantLabel}>판매 규격·출처 선택</span>
+              <small>같은 내용량도 출처별 원문 규격을 따로 보존합니다.</small>
               <div className={s.variantChips}>
                 {variants.map((v, i) => (
                   <button key={v.id || v.label || v.name || `var-${i}`} className={`${s.variantChip} ${variantIdx === i ? s.variantActive : ''}`} onClick={() => { setVariantIdx(i); setSelectedListingId(null); }}>
@@ -759,41 +740,15 @@ export default function PricePage() {
                 {detailOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </div>
 
-              {/* PriceGauge: displayPrice = current_low ?? p10 (p50 폴백 금지) */}
-              <PriceGauge product={product} />
-
               {detailOpen && (
                 <div className={s.detailPanel}>
-                  {/* 적정 핫딜가 안내 */}
-                  <div className={s.fairPrice}>
-                    <span className={s.fairIcon}>🎯</span>
-                    <div>
-                      <div className={s.fairLabel}>적정 핫딜가 (평균의 80%)</div>
-                      <div className={s.fairVal}>{fmt(fairPrice)}원 이하면 구매 추천!</div>
-                    </div>
-                  </div>
-
                   {/* 가격 박스 4칸 */}
                   <div className={s.prices}>
-                    <div className={`${s.priceBox} ${s.current}`}><span className={s.label}>현재 평균</span><span className={s.val}>{fmt(displayCur)}원</span></div>
-                    <div className={s.priceBox}><span className={s.label}>30일 평균</span><span className={s.val}>{fmt(displayAvg)}원</span></div>
+                    <div className={`${s.priceBox} ${s.current}`}><span className={s.label}>저장 관측 가격</span><span className={s.val}>{fmt(displayCur)}원</span></div>
+                    <div className={s.priceBox}><span className={s.label}>저장 평균</span><span className={s.val}>{fmt(displayAvg)}원</span></div>
                     <div className={`${s.priceBox} ${s.low}`}><span className={s.label}>최근 최저</span><span className={s.val}>{fmt(displayLow)}원</span></div>
                     <div className={`${s.priceBox} ${s.high}`}><span className={s.label}>최근 최고</span><span className={s.val}>{fmt(displayHigh)}원</span></div>
                   </div>
-
-                  {/* 가격 등급 바 */}
-                  <div className={s.tierBar}>
-                    <div className={s.tierLabel}>가격 등급</div>
-                    <div className={s.tierTrack}>
-                      <div className={`${s.zone} ${s.zoneUltra}`} style={{ width: '15%' }}>역대급</div>
-                      <div className={`${s.zone} ${s.zoneGreat}`} style={{ width: '20%' }}>좋은 가격</div>
-                      <div className={`${s.zone} ${s.zoneOk}`} style={{ width: '30%' }}>평균 수준</div>
-                      <div className={`${s.zone} ${s.zoneWait}`} style={{ width: '20%' }}>조금 비쌈</div>
-                      <div className={`${s.zone} ${s.zoneBad}`} style={{ width: '15%' }}>비쌈</div>
-                      <div className={s.marker} style={{ left: `${tierPos}%` }} />
-                    </div>
-                  </div>
-
 
                 </div>
               )}
@@ -806,7 +761,7 @@ export default function PricePage() {
               <p className={s.noDataSub}>{historyMessage || '데이터가 수집되면 가격 추이, 적정가, 마트별 비교를 확인할 수 있어요'}</p>
               {currentOffer && (!normalizedCatalog || isObservationReceiptEligible(currentOffer)) && (
                 <div className={s.currentOfferCard}>
-                  <span>현재 확인된 가격</span>
+                  <span>{normalizedCatalog ? '관측 가격' : '저장 관측 가격'}</span>
                   <strong>{fmt(currentOffer.price)}원</strong>
                   {currentOffer.source && <em>{currentOffer.source}</em>}
                 </div>
@@ -868,7 +823,7 @@ export default function PricePage() {
                         />
                         {currentOffer && (!normalizedCatalog || isObservationReceiptEligible(currentOffer)) && (
                           <div className={s.currentOfferCard}>
-                            <span>현재 확인된 가격</span>
+                            <span>{normalizedCatalog ? '관측 가격' : '저장 관측 가격'}</span>
                             <strong>{fmt(currentOffer.price)}원</strong>
                             {currentOffer.source && <em>{currentOffer.source}</em>}
                           </div>
@@ -921,7 +876,8 @@ export default function PricePage() {
           {!normalizedCatalog && <>
           {/* 마트별 바 차트 */}
           <div className={s.barChartBox}>
-            <h4>마트별 현재 가격 비교</h4>
+            <h4>마트별 저장 관측 가격</h4>
+            <small>규격·수령량·구매 조건의 호환 여부 미확인</small>
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={martBarData} layout="vertical" margin={{ left: 10, right: 10 }}>
                 <XAxis type="number" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => fmt(v)} />
@@ -930,41 +886,29 @@ export default function PricePage() {
                   contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
                   formatter={v => [`${fmt(v)}원`, '가격']}
                 />
-                <Bar dataKey="price" radius={[0, 6, 6, 0]} barSize={20} label={({ x, y, width, height, index }) => {
-                    const entry = martBarData[index];
-                    return entry?.isCheapest ? (
-                      <text x={x + width + 4} y={y + height / 2 + 4} fill="#22c55e" fontSize={11} fontWeight="bold">최저</text>
-                    ) : null;
-                  }}>
+                <Bar dataKey="price" radius={[0, 6, 6, 0]} barSize={20}>
                   {martBarData.map((entry, index) => (
-                    <Cell key={entry.name || entry.mart || `cell-${index}`} fill={entry.isCheapest ? '#22c55e' : entry.color} fillOpacity={entry.isCheapest ? 1 : 0.7} />
+                    <Cell key={entry.name || entry.mart || `cell-${index}`} fill={entry.color} fillOpacity={0.7} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <h4>마트별 현재 가격</h4>
+          <h4>마트별 저장 가격</h4>
           <div className={s.martList}>
             {MARTS.map(m => {
               const price = product.stores?.[m.key];
               if (price == null) return null;
-              const d = (price || 0) - (product.avg || 0);
-              const isCheapest = price === minMartPrice;
               return (
-                <div key={m.key} className={`${s.mlItem} ${isCheapest ? s.mlCheapest : ''}`}>
+                <div key={m.key} className={s.mlItem}>
                   <div className={s.mlLeft}>
-                    <span className={s.mlDot} style={{ background: isCheapest ? '#22c55e' : m.color }} />
+                    <span className={s.mlDot} style={{ background: m.color }} />
                     <span className={s.mlName}>{m.name}</span>
-                    {isCheapest && <span className={s.mlBadge}>최저</span>}
                   </div>
                   <div>
                     <span className={s.mlPrice}>{fmt(price)}원</span>
-                    {product.avg > 0 && (
-                      <span className={`${s.mlVs} ${d <= 0 ? s.cheap : s.expensive}`}>
-                        {d <= 0 ? fmt(d) : `+${fmt(d)}`}원
-                      </span>
-                    )}
+
                   </div>
                 </div>
               );
@@ -972,17 +916,18 @@ export default function PricePage() {
           </div>
 
           </>}
-          <h4>관련 핫딜</h4>
+          <h4>외부 핫딜 관측</h4>
+          <small>선택 상품과의 동일성·현재 구매 가능 여부 미확인</small>
           <div className={s.relatedDeals}>
             {relatedHotdeals.length === 0 ? (
               <EmptyState
-                title="관련 핫딜이 없습니다"
-                description="현재 이 상품의 핫딜 정보가 없습니다."
+                title="외부 핫딜 관측이 없습니다"
+                description="표시할 외부 출처 관측이 없습니다."
               />
             ) : relatedHotdeals.slice(0, 3).map(d => (
               <div key={d.id} className={s.rdItem}>
                 <div className={s.rdTitle}>{d.title}</div>
-                <div className={s.rdMeta}><span>{d.source}</span><span>{d.time}</span></div>
+                <RelatedHotdealFacts deal={d} />
               </div>
             ))}
           </div>

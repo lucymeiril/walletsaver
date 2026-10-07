@@ -43,6 +43,35 @@ def test_matched_approval_uses_persisted_receipt_clock(ingestion_db, monkeypatch
     assert captured == [receipt]
 
 
+@pytest.mark.parametrize("action", ["approve", "partial", "bulk"])
+def test_raw_approval_reports_pending_normalized_publication_without_erasing_source(ingestion_db, action):
+    from sqlalchemy import select
+    from storage.models import DiscountHistory, NormalizedCanonicalProduct
+    source_json = json.dumps([{"name": "분류 미검토 라면120g*5", "source": "emart", "sale_price": 4150,
+        "source_record_key": "test-native", "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=test-native",
+        "crawled_at": "2026-10-07T08:00:00Z"}], ensure_ascii=False)
+    with ingestion_db.begin() as session:
+        row = PendingIngestion(crawler_name="emart", crawl_status="success", schema_type="DiscountItem",
+            items_count=1, items_json=source_json, status=IngestionStatus.CRAWLER_APPROVED)
+        session.add(row)
+        session.flush()
+        identity = row.id
+    if action == "bulk":
+        response = ingestion_routes.bulk_approve(ingestion_routes.BulkApproveRequest(ids=[identity], notes="원문 확인"), {"role": "admin"})["results"][0]
+    else:
+        response = ingestion_routes._db_review_once(identity, ingestion_routes.ReviewRequest(
+            action=action, notes="원문 확인", approved_item_indices=[0] if action == "partial" else None))
+    assert response["saved"] == 1 and response["normalized_pending_review"] == 1
+    with ingestion_db() as session:
+        row = session.get(PendingIngestion, identity)
+        assert row.status in {IngestionStatus.APPROVED, IngestionStatus.PARTIAL}
+        assert row.items_json == source_json
+        assert "원문 확인" in row.db_reviewer_notes and "정규화 공개 반영 보류 1건" in row.db_reviewer_notes
+        assert "unified_category_review_required" in row.db_reviewer_notes
+        assert session.execute(select(DiscountHistory)).scalar_one().price == 4150
+        assert session.execute(select(NormalizedCanonicalProduct)).scalars().all() == []
+
+
 @pytest.fixture()
 def ingestion_db(monkeypatch):
     engine = create_engine(

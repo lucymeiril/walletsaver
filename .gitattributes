@@ -29,6 +29,10 @@ Dockerfile text eol=lf
 # Shell
 *.sh text eol=lf
 
+# Windows launchers already contain CRLF; preserve exact BOM/CRLF bytes in Git/downloads.
+/start-all.ps1 -text
+/start-all.bat -text
+
 # Binary
 *.png binary
 *.jpg binary

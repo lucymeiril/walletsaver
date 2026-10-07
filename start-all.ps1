@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     지갑 지키미 — 로컬 웹/관리 도구 시작
 .DESCRIPTION
@@ -23,6 +23,13 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
+# Windows PowerShell 5.1 reads this BOM-marked file and child output as UTF-8.
+$utf8ConsoleEncoding = New-Object System.Text.UTF8Encoding($false)
+[Console]::InputEncoding = $utf8ConsoleEncoding
+[Console]::OutputEncoding = $utf8ConsoleEncoding
+$OutputEncoding = $utf8ConsoleEncoding
+$env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
 $Root = $PSScriptRoot
 if (-not $Root) { $Root = Get-Location }
 if (-not $Web -and -not $Admin) { $Web = $true; $Admin = $true }
@@ -33,6 +40,11 @@ Write-Host "============================================" -ForegroundColor Cyan
 Write-Host "  🛡️  지갑 지키미 — 로컬 시스템 시작" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
+if ($TeamDemo) {
+    Write-Host "[실행 모드] TeamDemo — 동봉 catalog 최초 설치 / 기존 설치 보존" -ForegroundColor Cyan
+} else {
+    Write-Warning "개발 모드입니다. 동봉 demo-data를 설치하지 않습니다. 기존 설정 경로 또는 .walletsavior의 이전 catalog를 사용할 수 있습니다. 팀 시연은 start-all.bat -TeamDemo로 실행하세요."
+}
 
 $PyExe = $null
 foreach ($candidate in @("py", "python", "python3")) {
@@ -133,9 +145,6 @@ if (-not $env:OPINET_DB_PATH) {
     $env:OPINET_DB_PATH = Join-Path $DataDir "opinet.db"
 }
 
-$env:PYTHONIOENCODING = "utf-8"
-$env:PYTHONUTF8 = "1"
-
 $pythonPaths = @($Root, $SharedDir)
 if ($Web) { $pythonPaths += $WebBackend }
 if ($Admin) { $pythonPaths += @($CrawlerBackend, $DbBackend) }
@@ -205,6 +214,14 @@ if ($Admin) {
     if (-not $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB) {
         $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
     }
+}
+
+Write-Host "[데이터 경로] Catalog: $env:WALLETSAVIOR_PUBLIC_DB" -ForegroundColor Cyan
+Write-Host "[데이터 경로] Hotdeals: $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB" -ForegroundColor Cyan
+Write-Host "  시작 후 /api/health의 catalog.path / revision으로 실제 서비스 원본을 확인하세요. 기존 DB와 계정은 자동 교체하지 않습니다." -ForegroundColor DarkGray
+if ($TeamDemo) {
+    $shippedManifest = Get-Content -LiteralPath (Join-Path $Root "demo-data\manifest.json") -Raw -Encoding UTF8 | ConvertFrom-Json
+    Write-Host "[동봉 버전] Catalog revision: $($shippedManifest.catalog_revision) — 실제 설치 버전은 아래 API 응답으로 확인합니다." -ForegroundColor Cyan
 }
 
 # 로컬에서 web+admin을 함께 켤 때 db-admin의 커뮤니티 관리 요청은
@@ -432,6 +449,7 @@ if ($Admin) {
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }
 }
 
+$webCatalogProvenance = $null
 for ($i = 0; $i -lt 30; $i++) {
     Start-Sleep -Seconds 1
     $allReady = $true
@@ -439,7 +457,12 @@ for ($i = 0; $i -lt 30; $i++) {
         if (-not $c.Ready) {
             try {
                 $r = Invoke-WebRequest -Uri $c.Url -UseBasicParsing -TimeoutSec 2 -ErrorAction SilentlyContinue
-                if ($r.StatusCode -eq 200) { $c.Ready = $true }
+                if ($r.StatusCode -eq 200) {
+                    $c.Ready = $true
+                    if ($c.Url -eq "http://127.0.0.1:8000/api/health") {
+                        $webCatalogProvenance = ($r.Content | ConvertFrom-Json).catalog
+                    }
+                }
             } catch {}
         }
         if (-not $c.Ready) { $allReady = $false }
@@ -459,12 +482,44 @@ if ($failedChecks.Count -gt 0) {
     exit 1
 }
 
+if ($TeamDemo -and $Web) {
+    # Process readiness alone does not establish which catalog the API serves.
+    $requestedCatalogPath = [System.IO.Path]::GetFullPath($env:WALLETSAVIOR_PUBLIC_DB)
+    if (-not $webCatalogProvenance -or -not $webCatalogProvenance.path) {
+        Write-Host "❌ TeamDemo catalog 원본을 확인하지 못했습니다. 요청 경로: $requestedCatalogPath" -ForegroundColor Red
+        Write-Host "   /api/health의 catalog.path를 확인하세요. 기존 프로세스나 데이터는 종료/교체하지 않습니다." -ForegroundColor Yellow
+        exit 1
+    }
+    $activeCatalogPath = $null
+    try { $activeCatalogPath = [System.IO.Path]::GetFullPath([string]$webCatalogProvenance.path) } catch {}
+    $pathComparison = if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
+        [StringComparison]::OrdinalIgnoreCase
+    } else { [StringComparison]::Ordinal }
+    if (-not $activeCatalogPath -or -not [string]::Equals($requestedCatalogPath, $activeCatalogPath, $pathComparison)) {
+        Write-Host "❌ API catalog 경로가 요청한 TeamDemo와 다릅니다." -ForegroundColor Red
+        Write-Host "   요청: $requestedCatalogPath" -ForegroundColor Yellow
+        Write-Host "   실제: $($webCatalogProvenance.path)" -ForegroundColor Yellow
+        Write-Host "   포트 소유 프로세스와 설정을 확인하세요. 기존 프로세스나 데이터는 종료/교체하지 않습니다." -ForegroundColor Yellow
+        exit 1
+    }
+}
+
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  ✅ 시스템이 시작되었습니다" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 if ($Web) {
     Write-Host "  🌐 Web: $env:FRONTEND_URL  (API 8000)" -ForegroundColor White
+    if ($webCatalogProvenance -and $webCatalogProvenance.path) {
+        Write-Host "  Catalog: $($webCatalogProvenance.path) / revision $($webCatalogProvenance.revision)" -ForegroundColor Cyan
+        $readModelLabel = if ($webCatalogProvenance.read_model) { $webCatalogProvenance.read_model } else { "미확인 (이전 health 응답)" }
+        $normalizedCountLabel = if ($null -ne $webCatalogProvenance.normalized_product_count) { $webCatalogProvenance.normalized_product_count } else { "미확인" }
+        $legacyCountLabel = if ($null -ne $webCatalogProvenance.legacy_product_count) { $webCatalogProvenance.legacy_product_count } else { "미확인" }
+        Write-Host "  읽기 모델: $readModelLabel / 활성 normalized 상품: $normalizedCountLabel / legacy 상품: $legacyCountLabel" -ForegroundColor Cyan
+        if ($TeamDemo -and ([string]$webCatalogProvenance.revision -ne [string]$shippedManifest.catalog_revision)) {
+            Write-Warning "기존 catalog revision $($webCatalogProvenance.revision)을 보존했습니다. 동봉 revision $($shippedManifest.catalog_revision)으로 자동 교체하지 않았습니다. README의 관리자 갱신 또는 별도 새 데모 경로 안내를 확인하세요."
+        }
+    }
 }
 if ($Admin) {
     Write-Host "  🕷️ Crawler Admin: http://127.0.0.1:5174  (API 8001)" -ForegroundColor White

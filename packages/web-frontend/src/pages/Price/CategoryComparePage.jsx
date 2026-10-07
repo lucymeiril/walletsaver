@@ -403,6 +403,16 @@ export default function CategoryComparePage() {
     return next;
   });
 
+  // The API counts the whole category before pagination. A one-product
+  // variant group cannot offer a choice between products; keep its product
+  // card and an explicitly selected URL, but do not create a filter for it.
+  const comparisonGroups = summary?.comparison_groups || [];
+  const selectableGroups = comparisonGroups.filter(group =>
+    !group.basis?.startsWith('variant:')
+    || Number(group.product_count) > 1
+    || group.basis === comparisonBasis);
+  const hiddenIndividualGroups = comparisonGroups.length - selectableGroups.length;
+
   const enrichedProducts = useMemo(() => {
     return products.map((p) => ({
       ...p,
@@ -458,7 +468,7 @@ export default function CategoryComparePage() {
       {!loading && !error && (
         <>
           <SummaryCards summary={summary} />
-          {summary?.comparison_groups?.length > 0 && (
+          {selectableGroups.length > 0 && (
             <div className={s.filters} role="group" aria-label="비교 단위 선택">
               <span className={s.filterLabel}>비교 단위:</span>
               <button
@@ -467,7 +477,7 @@ export default function CategoryComparePage() {
                 aria-pressed={!comparisonBasis}
                 onClick={() => selectBasis(null)}
               >전체 상품</button>
-              {summary.comparison_groups.map((group, index) => (
+              {selectableGroups.map(group => (
                 <button
                   key={group.basis}
                   type="button"
@@ -475,12 +485,15 @@ export default function CategoryComparePage() {
                   aria-pressed={comparisonBasis === group.basis}
                   onClick={() => selectBasis(group.basis)}
                 >
-                  {group.basis.startsWith('variant:') ? `동일 규격 그룹 ${index + 1}` : group.basis}
+                  {group.basis.startsWith('variant:')
+                    ? Number(group.product_count) > 1 ? '같은 규격 상품' : '선택한 상품 규격'
+                    : group.basis}
                   {' · '}{fmt(group.product_count)}개 상품
                 </button>
               ))}
             </div>
           )}
+          {hiddenIndividualGroups > 0 && <p className={s.offerFacts}>상품별 개별 규격은 상품 상세에서 확인할 수 있습니다.</p>}
           {products.length > 0 && <p className={s.offerFacts}>{summary?.comparison_basis
             ? `${basisLabel(summary.comparison_basis)} 기준의 표시 가격을 비교합니다. 상품별 최소 구매·회원·쿠폰 조건을 확인하세요.`
             : '공통 비교 단위가 없어 가격 순위를 표시하지 않습니다.'}</p>}

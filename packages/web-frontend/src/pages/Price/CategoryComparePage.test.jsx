@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testi
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import CategoryComparePage from './CategoryComparePage';
+import { LegacyObservationFacts, RelatedHotdealFacts } from './PricePage';
 import { searchService } from '../../services/searchService';
 import { fmt, fmtUnitPrice } from '../../utils/helpers';
 
@@ -203,4 +204,69 @@ it('preserves declared length quotes and conditions without comparing to mass', 
   expect(within(card).getAllByText(/100m/).length).toBeGreaterThan(0);
   expect(within(card).getByText(/360m.*회원 필요/)).toBeInTheDocument();
   expect(within(screen.getByText('질량 기준').closest('.productCard')).getByText('비교 미확인')).toBeInTheDocument();
+});
+
+
+describe('category and legacy display regression466', () => {
+  it('omits singleton controls without dropping products or compatible whole-category choices', async () => {
+    const groups = Array.from({ length: 1000 }, (_, index) => ({ basis: `variant:single-${index}`, product_count: 1 }));
+    groups.push({ basis: 'variant:unknown' }, { basis: '100g', product_count: 25 },
+      { basis: 'variant:reviewed', product_count: 2 });
+    show({ summary: { ...summary, comparison_basis: null, comparison_groups: groups }, products });
+    await screen.findByText('동일 중량 기준');
+    const controls = screen.getByRole('group', { name: '비교 단위 선택' });
+    expect(within(controls).getAllByRole('button')).toHaveLength(3);
+    expect(within(controls).getByRole('button', { name: '100g · 25개 상품' })).toBeInTheDocument();
+    expect(within(controls).getByRole('button', { name: '같은 규격 상품 · 2개 상품' })).toBeInTheDocument();
+    expect(screen.queryByText(/동일 규격 그룹|single-|variant:unknown/)).not.toBeInTheDocument();
+    expect(screen.getAllByText('비교 미확인')).toHaveLength(3);
+    expect(screen.getByText('내용량 미확인')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '단위가↑' })).toBeDisabled();
+  });
+
+  it('keeps an explicitly selected singleton URL and permits returning to all products', async () => {
+    const basis = 'variant:own-one';
+    searchService.categoryCompare.mockImplementation(async (_category, params) => ({
+      summary: { ...summary, comparison_basis: params.comparisonBasis,
+        comparison_groups: [{ basis, product_count: 1 }, { basis: 'variant:other', product_count: 1 }] },
+      products: [{ ...products[0], normalized: { unit_price: 200, basis } }],
+    }));
+    render(<MemoryRouter initialEntries={[`/price/category/food?comparison_basis=${encodeURIComponent(basis)}`]}>
+      <Routes><Route path="/price/category/:categoryId" element={<CategoryComparePage />} /></Routes>
+    </MemoryRouter>);
+    const selected = await screen.findByRole('button', { name: '선택한 상품 규격 · 1개 상품' });
+    expect(selected).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText(/own-one|variant:other|동일 규격 그룹/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '전체 상품' }));
+    await waitFor(() => expect(searchService.categoryCompare).toHaveBeenLastCalledWith('food',
+      expect.objectContaining({ comparisonBasis: null })));
+    await waitFor(() => expect(screen.queryByRole('group', { name: '비교 단위 선택' })).not.toBeInTheDocument());
+    expect(screen.getByText('동일 중량 기준')).toBeInTheDocument();
+  });
+
+  it('keeps legacy specification literal and external source dates without inventing quantity or recency', () => {
+    render(<><LegacyObservationFacts unit="120g" /><RelatedHotdealFacts deal={{
+      source: 'algumon', time: '35일 전', posted_at: '2025-08-31T00:00:00Z',
+      fetched_at: '2025-09-01T00:00:00Z', source_period: '8월 행사', expired: true,
+      source_conditions: ['회원 전용', '쿠폰 별도'],
+    }} /></>);
+    expect(screen.getByText('저장 규격 · 120g')).toBeInTheDocument();
+    expect(screen.getByText('관측 시각 · 미확인')).toBeInTheDocument();
+    expect(screen.getByText(/수령량·묶음 수량·구매 조건 검증 미확인/)).toBeInTheDocument();
+    expect(screen.getByText('출처 게시 시각 · 2025-08-31T00:00:00Z')).toBeInTheDocument();
+    expect(screen.getByText('수집 시각 · 2025-09-01T00:00:00Z')).toBeInTheDocument();
+    expect(screen.getByText('출처 게시 후 경과 · 35일 전')).toBeInTheDocument();
+    expect(screen.getByText('판매 기간 종료 · 과거 출처 관측')).toBeInTheDocument();
+    expect(screen.getByText('출처 조건 · 쿠폰 별도')).toBeInTheDocument();
+    expect(screen.queryByText(/600g|현재 최저|구매 추천/)).not.toBeInTheDocument();
+    cleanup();
+    render(<RelatedHotdealFacts deal={{ source: 'algumon', time: '35일 전' }} />);
+    expect(screen.getByText('출처 게시 시각 · 미확인')).toBeInTheDocument();
+    expect(screen.getByText('표시 상대 시각 · 35일 전 · 기준 시각 미확인')).toBeInTheDocument();
+    expect(screen.getByText('현재 판매 가능 여부 미확인')).toBeInTheDocument();
+    cleanup();
+    render(<RelatedHotdealFacts deal={{ source: 'algumon', time: '1일 전', fetched_at: '2026-10-06T10:13:03Z' }} />);
+    expect(screen.getByText('수집 후 경과 · 1일 전')).toBeInTheDocument();
+    expect(screen.getByText('출처 게시 시각 · 미확인')).toBeInTheDocument();
+  });
 });

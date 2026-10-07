@@ -220,6 +220,18 @@ class PublicCatalogStore:
                 "path": str(self.path),
                 "revision": meta["revision"],
                 "built_at": meta["built_at"],
+                # Report the same selection criterion as has_normalized_catalog.
+                # A healthy old snapshot is not evidence that the shipped demo
+                # catalog is the database being consumed by this process.
+                "read_model": "normalized" if connection.execute(
+                    "SELECT 1 FROM normalized_canonical_products WHERE is_active=1 LIMIT 1"
+                ).fetchone() else "legacy",
+                "normalized_product_count": connection.execute(
+                    "SELECT COUNT(*) FROM normalized_canonical_products WHERE is_active=1"
+                ).fetchone()[0],
+                "legacy_product_count": connection.execute(
+                    "SELECT COUNT(*) FROM products"
+                ).fetchone()[0],
             }
 
     def has_normalized_catalog(self) -> bool:

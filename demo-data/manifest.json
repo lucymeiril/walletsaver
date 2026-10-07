@@ -158,7 +158,7 @@
   "external_hotdeal_source_files": {
     "packages/crawler-admin/backend/crawlers/hotdeals/ruliweb.py": "e08b1d23558247fe7020a5f310d35be8c1ae82f92d229d00a2aa288a3cff39d9",
     "packages/db-admin/backend/services/external_hotdeal_snapshot.py": "83e34f9a22fcdd0df05d6efff3e06e195f8f75342792e6782449eefcaed4d69d",
-    "packages/db-admin/backend/api/routes/ingestion_core.py": "80b76057fe1cea25655075dbfa51d6e467854c5da82e9892dcaaa9a253444ade",
+    "packages/db-admin/backend/api/routes/ingestion_core.py": "9a7d9ce52d6f95e3cf64a49971eb9b4858f1386f8a15f305fd83d083deff5947",
     "packages/web-api/backend/services/external_hotdeal_storage.py": "e0fc9067097f0bb0a4ec16455cfa10fd0698d38561d72ea49365e2544a34aeda",
     "packages/shared/core/models.py": "ec8e54c8e7881f2ceef9e877de99fae8f8ea5ff0d0c542a336390bde7d3681ba",
     "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129"
@@ -170,11 +170,11 @@
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "ae836d875948397712dc304fb0d2816f037a6e151b4b2f56a09b7b41c98361be",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "d9e9a0ffe20f3673c441bc2a2626ab2051ee9a7976a9b93b284f4430b1f1d6f1",
-    "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
-    "packages/web-api/backend/services/catalog_storage.py": "52b63edaa40d4ffc40a1a3814c4472eb04ae75c97d1c4dcbf26878ea7b2027b4",
+    "packages/db-admin/backend/services/normalized_mart3.py": "f4be2a85242c677b4c5a6c90c02e6883883f30d80c9e0438116cf8684632c64a",
+    "packages/web-api/backend/services/catalog_storage.py": "436c68a982b614dc2a5d58b5174b3e41cd149f7859dd7d4575e57ae2cd0622a2",
     "packages/web-frontend/src/utils/productDecision.js": "60c41f59bd8cc66c964070d91c26f4ca1dd4f76f073c7e6c26b2789978d1889f",
-    "packages/web-frontend/src/components/ProductDetailModal.jsx": "4112b3f21c5cbd2c87d0c6928a94b5b89c74ebeb2be692d7a3a9d9735f92e572",
-    "packages/web-frontend/src/pages/Price/PricePage.jsx": "fb29451b0f721535d330057a217ddb0cb0351049d4ffaa335b0ad5fba7ad6271",
+    "packages/web-frontend/src/components/ProductDetailModal.jsx": "4d6e255c8ccf6eb9cfed49a2d5bd23833090350f21c37fbc05e3d63aec93992c",
+    "packages/web-frontend/src/pages/Price/PricePage.jsx": "173c611e20cb2dd87074e5a53bb91214298ad947fb92d5bf29b1078f99eaae68",
     "packages/db-admin/backend/services/initial_taxonomy.py": "f1403bd066efdd0b674fa4be5a3df6f5ac31e8188121d43793146763c8fb0e8a",
     "packages/shared/core/reviewed_content_quantities.py": "af891bbcf104d216b8244e2490636e0c8f6ab674125f49ba7ece1082acdd9450",
     "packages/shared/core/reviewed_source_evidence.py": "6d9b7b3d40883dbc256555951bc17d8530e28f3221b0e66473ae44350c2b4d66",
@@ -185,7 +185,7 @@
     "packages/web-frontend/src/pages/Community/CommunityPage.jsx": "2ad507c6243cff9cd1a003e87e67a3d39f2f1dac3f7f6dce1347f224a1878cc8",
     "packages/web-frontend/src/pages/Search/SearchPage.jsx": "153c8fba4be8168d01bb5db7fb8a7bbce47519382bfb98a3b17590c684091a4e",
     "packages/web-frontend/src/services/searchService.js": "9311466ec0dde9babcb0482124486a30a0262e384d35a9a7b355aef8e7be7450",
-    "start-all.ps1": "a27dd6389afa223a4419efad48e0c3d66dea992e9c3c56a298bb4346bbb74a85",
+    "start-all.ps1": "1a46c035e266e378a65f21fd7c098df700823392995742cee027d88ce1f7e307",
     "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129",
     "packages/web-api/backend/api/routes/community.py": "a7aeedbaf3f1c0f917a464dcdc00d3a7b0292e46c684f79911b6a05807f4f10c",
     "packages/web-frontend/src/utils/productActions.js": "53222e9ed7df758347ac7c8fc1835c0a5164e7de2d87231d19f5ac3bc22b901d",
@@ -195,8 +195,9 @@
     "packages/web-api/backend/api/routes/products.py": "30c580838d484d84de2d6c6a2e8970fd8296a00a853301d3832d51b4171e87e6",
     "packages/web-frontend/src/utils/helpers.js": "0264ea78232833b7d25993937c3f47e81c38894ba54b4c719d60ebd16ce913b3",
     "packages/web-frontend/src/components/common/ShoppingListPanel.jsx": "5bdf577f31db8665ef9f89ceda1e256e970af5447531f1240e60ba762f3f6ec1",
-    "packages/web-frontend/src/pages/Price/CategoryComparePage.jsx": "aeb41c5475e9a6ba34e8133c9d21f07289479ded30a5bccc8c230a7414ea33d6",
-    "packages/web-frontend/src/pages/Local/LocalPage.jsx": "9f1ddf9747632d01f76b30081729e30da27ecb9a72fb41fedf2ea3153aca8796"
+    "packages/web-frontend/src/pages/Price/CategoryComparePage.jsx": "b943fdf57001e8b97653edbab1aa395c183a3a3f6c551379bc92c499bf4167cb",
+    "packages/web-frontend/src/pages/Local/LocalPage.jsx": "9f1ddf9747632d01f76b30081729e30da27ecb9a72fb41fedf2ea3153aca8796",
+    "start-all.bat": "04630886ec2d92670e8ce4a0d7aa772dec130c2c4f763800b584e1b1701f07e5"
   },
   "catalog_updates": [
     {

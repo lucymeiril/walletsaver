@@ -190,6 +190,78 @@ def publish_mart3_rows(
         unified_category_id = row.get("unified_category_id") or row.get("category_id")
         category_id = _reviewed_legacy_category_id(session, row.get("category_id"))
         unified_category_id = _reviewed_unified_category_id(session, unified_category_id)
+        source_fallback = not row.get("public_product_id")
+        candidate_id = row.get("public_product_id") or _stable_id(
+            "prod", unified_category_id, _source_name(row), row.get("source_record_key"))
+        existing_product = session.get(NormalizedCanonicalProduct, candidate_id)
+        if source_fallback or existing_product is None:
+            from core.catalog_quantity import normalize_catalog_package
+
+            issues = []
+            category = session.get(UnifiedCategory, unified_category_id) if unified_category_id else None
+            if category is None:
+                issues.append("unified_category_review_required")
+            elif session.execute(select(UnifiedCategory.id).where(
+                UnifiedCategory.parent_id == unified_category_id
+            ).limit(1)).first():
+                issues.append("unified_category_leaf_required")
+            else:
+                visited = set()
+                while category is not None:
+                    if category.id in visited:
+                        issues.append("unified_category_ancestry_invalid")
+                        break
+                    visited.add(category.id)
+                    parent_id = category.parent_id
+                    category = session.get(UnifiedCategory, parent_id) if parent_id else None
+                    if parent_id and category is None:
+                        issues.append("unified_category_ancestry_invalid")
+                        break
+            if not row.get("source_record_key") or not row.get("source_url"):
+                issues.append("source_identity_review_required")
+            source_stamp = row.get("crawled_at")
+            if isinstance(source_stamp, str):
+                try:
+                    source_stamp = datetime.fromisoformat(source_stamp.replace("Z", "+00:00"))
+                except ValueError:
+                    source_stamp = None
+            if not isinstance(source_stamp, datetime) or source_stamp.tzinfo is None or source_stamp.utcoffset() is None:
+                issues.append("source_observation_timestamp_review_required")
+            attrs = {**(row.get("attributes") if isinstance(row.get("attributes"), dict) else {}),
+                     **(row.get("variant_attributes") if isinstance(row.get("variant_attributes"), dict) else {})}
+            package, quantity_issues = normalize_catalog_package(
+                {**(row.get("_source_quantity_payload") or {}), **row}, attrs,
+                row.get("source_title") or row.get("canonical_name") or "",
+                category_id=unified_category_id,
+            )
+            issues.extend(quantity_issues)
+            if package is None and not quantity_issues:
+                issues.append("unit_unresolved")
+            if row.get("source_record_key"):
+                known_listings = session.execute(select(NormalizedSourceListing).where(
+                    NormalizedSourceListing.source_name == _source_name(row),
+                    NormalizedSourceListing.source_record_key == str(row["source_record_key"]),
+                )).scalars().all()
+                # Only this exact source-scoped identity may replay or append.
+                # A reviewed older tuple with different leaf/spec/title stays
+                # in review rather than being moved by a new name-based row.
+                exact = package and existing_product and existing_product.is_active and existing_product.unified_category_id == unified_category_id and any(
+                    listing.variant.public_product_id == candidate_id
+                    and listing.source_url == row.get("source_url")
+                    and listing.source_title == (row.get("source_title") or row.get("canonical_name"))
+                    and listing.is_active and listing.variant.is_active
+                    and _variant_package_signature(listing.variant) == _row_package_signature({**row, **package})
+                    for listing in known_listings)
+                if (known_listings or existing_product) and not exact:
+                    issues.append("existing_source_identity_requires_match")
+            if issues:
+                placements.append({"raw_record_id": row.get("raw_record_id"),
+                    "publication_status": "pending_review", "review_reasons": sorted(set(issues))})
+                continue
+            row = {**row, **{key: package.get(key) for key in (
+                "package_quantity", "package_unit", "bundle_count", "standard_unit", "display_unit")},
+                "public_product_id": candidate_id,
+                "variant_attributes": {**attrs, **(package.get("attributes") or {})}}
 
         product = _upsert_product(
             session,
@@ -257,6 +329,7 @@ def publish_mart3_rows(
                 "public_offer_event_id": offer.public_offer_event_id,
                 "public_week_bucket_id": week.public_week_bucket_id,
                 "comparable_price": comparable_price,
+                "publication_status": "published",
             }
         )
     session.flush()
@@ -337,7 +410,10 @@ def _resolve_or_create_listing(
         if normalize_match_text(listing.source_title) == title_key
     ]
     for listing in existing_same_title:
-        if _variant_package_signature(listing.variant) == package_signature:
+        if (listing.variant.public_product_id == product.public_product_id
+                and (not row.get("source_record_key") or str(listing.source_record_key) == str(row["source_record_key"]))
+                and (not row.get("source_url") or listing.source_url == row["source_url"])
+                and _variant_package_signature(listing.variant) == package_signature):
             _update_listing(listing, row, projection_version)
             return listing, listing.variant, "auto_same_title_package"
 

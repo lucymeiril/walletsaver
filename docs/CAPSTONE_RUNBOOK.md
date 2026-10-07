@@ -225,7 +225,7 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 
 ## 6. 개발·운영 모드와 외부 설정
 
-개발자가 배포 catalog 없이 시작할 때만 `start-all.bat` 또는 `start-all.ps1`의 `-TeamDemo` 없는 실행을 사용한다. 이 경로의 `.walletsavior`는 새 환경에서 빈 상태다. 공개 catalog가 아직 없으면 상품 API는 readiness 오류를 반환하며 샘플 상품으로 대체하지 않는다. 교수·팀 데모의 기본 실행으로 사용하지 않는다.
+인자 없이 더블클릭한 `start-all.bat`는 TeamDemo를 선택한다. 개발자가 배포 catalog 없이 기존 개발 데이터를 사용할 때만 `start-all.ps1`의 `-TeamDemo` 없는 실행을 사용한다. 개발 경로의 `.walletsavior`는 새 환경에서 빈 상태이며 기존 파일이 있으면 보존한다. 공개 catalog가 아직 없으면 상품 API는 readiness 오류를 반환하며 샘플 상품으로 대체하지 않는다. 실행창과 `/api/health`의 실제 catalog 경로·revision을 확인하며, 다른 프로세스가 기존 포트를 사용한다면 그 프로세스를 확인한 뒤 직접 종료한다. DB 폴더를 삭제하거나 강제로 초기화하지 않는다.
 
 운영 Web/API는 `.env.docker.example`을 비공개 `.env.docker`로 복사하고 JWT·remote-admin 키를 서로 다른 운영용 값으로 설정한 뒤 base Compose를 사용한다. 새 볼륨은 catalog가 없으므로 인증된 `PUT /api/admin/remote/snapshots/catalog`로 승인된 snapshot을 설치한다. external-hotdeals와 opinet도 각각 별도의 승인된 SQLite 업로드 대상이며, 미확인 자료를 넣지 않는다. 계정·찜·알림·게시판 데이터는 catalog 교체와 분리한다.
 
