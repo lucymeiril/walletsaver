@@ -1,0 +1,3418 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation426-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "household.cleaning.detergents",
+      "parent_id": "household.cleaning",
+      "slug": "detergents",
+      "name_ko": "세정제",
+      "level": 2,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 8
+    },
+    {
+      "id": "food.dairy.cheese.bocconcini",
+      "parent_id": "food.dairy.cheese",
+      "slug": "bocconcini",
+      "name_ko": "보코치니치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 11
+    },
+    {
+      "id": "food.dairy.cheese.gorgonzola",
+      "parent_id": "food.dairy.cheese",
+      "slug": "gorgonzola",
+      "name_ko": "고르곤졸라치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 12
+    },
+    {
+      "id": "food.dairy.cheese.gouda",
+      "parent_id": "food.dairy.cheese",
+      "slug": "gouda",
+      "name_ko": "고다치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 13
+    },
+    {
+      "id": "food.dairy.cheese.grana_padano",
+      "parent_id": "food.dairy.cheese",
+      "slug": "grana_padano",
+      "name_ko": "그라나파다노치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 14
+    },
+    {
+      "id": "food.dairy.cheese.manchego",
+      "parent_id": "food.dairy.cheese",
+      "slug": "manchego",
+      "name_ko": "만체고치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 15
+    },
+    {
+      "id": "food.dairy.cheese.parmesan",
+      "parent_id": "food.dairy.cheese",
+      "slug": "parmesan",
+      "name_ko": "파르미지아노레지아노치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 16
+    },
+    {
+      "id": "food.dairy.cheese.pizza",
+      "parent_id": "food.dairy.cheese",
+      "slug": "pizza",
+      "name_ko": "피자용치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 17
+    },
+    {
+      "id": "food.dairy.cheese.standard",
+      "parent_id": "food.dairy.cheese",
+      "slug": "standard",
+      "name_ko": "일반치즈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 18
+    },
+    {
+      "id": "food.seasonings.sauces.cheonggukjang",
+      "parent_id": "food.seasonings.sauces",
+      "slug": "cheonggukjang",
+      "name_ko": "청국장조리양념",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 19
+    },
+    {
+      "id": "food.seasonings.sauces.cooking",
+      "parent_id": "food.seasonings.sauces",
+      "slug": "cooking",
+      "name_ko": "조리용소스",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 20
+    },
+    {
+      "id": "household.cleaning.detergents.capsule",
+      "parent_id": "household.cleaning.detergents",
+      "slug": "capsule",
+      "name_ko": "캡슐형세정제",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 21
+    },
+    {
+      "id": "household.cleaning.laundry.garment_care_softener_sheet",
+      "parent_id": "household.cleaning.laundry",
+      "slug": "garment_care_softener_sheet",
+      "name_ko": "의류청정기용섬유유연시트",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 22
+    },
+    {
+      "id": "household.cleaning.laundry.softener_sheet",
+      "parent_id": "household.cleaning.laundry",
+      "slug": "softener_sheet",
+      "name_ko": "시트형섬유유연제",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 23
+    },
+    {
+      "id": "household.cleaning.laundry.standard",
+      "parent_id": "household.cleaning.laundry",
+      "slug": "standard",
+      "name_ko": "세탁용세제",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 24
+    },
+    {
+      "id": "household.hygiene.paper.portable_tissue",
+      "parent_id": "household.hygiene.paper",
+      "slug": "portable_tissue",
+      "name_ko": "휴대용티슈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 25
+    },
+    {
+      "id": "household.hygiene.paper.sheet_tissue",
+      "parent_id": "household.hygiene.paper",
+      "slug": "sheet_tissue",
+      "name_ko": "시트형티슈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 26
+    },
+    {
+      "id": "household.hygiene.paper.toilet_wipes",
+      "parent_id": "household.hygiene.paper",
+      "slug": "toilet_wipes",
+      "name_ko": "화장실용물티슈",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 27
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1257,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "보코치니치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.bocconcini"
+    },
+    {
+      "id": 1258,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "고르곤졸라치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.gorgonzola"
+    },
+    {
+      "id": 1259,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "고다치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.gouda"
+    },
+    {
+      "id": 1260,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "그라나파다노치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.grana_padano"
+    },
+    {
+      "id": 1261,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "만체고치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.manchego"
+    },
+    {
+      "id": 1262,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "파르미지아노레지아노치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.parmesan"
+    },
+    {
+      "id": 1263,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "피자용치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.pizza"
+    },
+    {
+      "id": 1264,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "일반치즈",
+      "synonyms": [],
+      "unified_category_id": "food.dairy.cheese.standard"
+    },
+    {
+      "id": 1265,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "청국장조리양념",
+      "synonyms": [],
+      "unified_category_id": "food.seasonings.sauces.cheonggukjang"
+    },
+    {
+      "id": 1266,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "조리용소스",
+      "synonyms": [],
+      "unified_category_id": "food.seasonings.sauces.cooking"
+    },
+    {
+      "id": 1267,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "캡슐형세정제",
+      "synonyms": [],
+      "unified_category_id": "household.cleaning.detergents.capsule"
+    },
+    {
+      "id": 1268,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "의류청정기용섬유유연시트",
+      "synonyms": [],
+      "unified_category_id": "household.cleaning.laundry.garment_care_softener_sheet"
+    },
+    {
+      "id": 1269,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "시트형섬유유연제",
+      "synonyms": [],
+      "unified_category_id": "household.cleaning.laundry.softener_sheet"
+    },
+    {
+      "id": 1270,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "세탁용세제",
+      "synonyms": [],
+      "unified_category_id": "household.cleaning.laundry.standard"
+    },
+    {
+      "id": 1271,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "휴대용티슈",
+      "synonyms": [],
+      "unified_category_id": "household.hygiene.paper.portable_tissue"
+    },
+    {
+      "id": 1272,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "시트형티슈",
+      "synonyms": [],
+      "unified_category_id": "household.hygiene.paper.sheet_tissue"
+    },
+    {
+      "id": 1273,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "화장실용물티슈",
+      "synonyms": [],
+      "unified_category_id": "household.hygiene.paper.toilet_wipes"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-198debe96a86b8bc78216437b7313714",
+      "unified_category_id": "food.dairy.cheese.sliced",
+      "category_id": null,
+      "canonical_name": "서울우유 앙팡치즈 까요까요 딸기 72.5G",
+      "brand": "서울우유",
+      "aliases": [
+        "서울우유 앙팡치즈 까요까요 딸기"
+      ],
+      "keywords": [
+        "슬라이스치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:8:93",
+              "ingestion:58:30"
+            ],
+            "source_ingestion_ids": [
+              8,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "126296972"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          8,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "슬라이스치즈"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:seoulmilk-angpang-kkayo-strawberry",
+          "canonical_product_id": "prod-198debe96a86b8bc78216437b7313714",
+          "member_product_ids": [
+            "prod-198debe96a86b8bc78216437b7313714",
+            "prod-fc07fe02b2db1db074f724c7c0f72ff9"
+          ],
+          "canonical_name": "서울우유 앙팡치즈 까요까요 딸기",
+          "brand": "서울우유",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-198debe96a86b8bc78216437b7313714",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.sliced",
+          "source_name": "homeplus",
+          "source_record_key": "126296972",
+          "source_titles": [
+            "서울우유 앙팡치즈 까요까요 딸기 72.5G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=126296972&storeType=HYPER"
+          ],
+          "evidence_sha256": "9094572accc5e48d4611d0d9b67672798536cdd53c2d6f7250bd0b9246995492",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-2224b48132fd533340ba7fef182590ea",
+      "unified_category_id": "household.cleaning.laundry.detergent_refill_set",
+      "category_id": null,
+      "canonical_name": "액츠 프리미엄 젤 세탁세제 2.7L x 2 + 리필 1L x 4",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "세탁세제·리필세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_costco_cleaning_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:58"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "625370"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_costco_cleaning_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "세탁세제·리필세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-2224b48132fd533340ba7fef182590ea",
+          "old_leaf": "household.cleaning.laundry.liquid",
+          "new_leaf": "household.cleaning.laundry.detergent_refill_set",
+          "source_name": "costco",
+          "source_record_key": "625370",
+          "source_titles": [
+            "액츠 프리미엄 젤 세탁세제 2.7L x 2 + 리필 1L x 4"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/Actz-Gel-Laundry-Detergent27L-x-2-Refill-1L-x-4/p/625370"
+          ],
+          "evidence_sha256": "69ff642f19a5fcbe42d45ad058483d4393b0183a01931b2de33ed83d83304066",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hc9/h67/188976945954846.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3486cdddec58e0ca874265f82b968138",
+      "unified_category_id": "household.hygiene.paper.portable_tissue",
+      "category_id": null,
+      "canonical_name": "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "휴대용티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:28"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "625720"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "휴대용티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-3486cdddec58e0ca874265f82b968138",
+          "old_leaf": "household.hygiene.paper.facial",
+          "new_leaf": "household.hygiene.paper.portable_tissue",
+          "source_name": "costco",
+          "source_record_key": "625720",
+          "source_titles": [
+            "크리넥스 카카오 여행용 티슈 70매 x 3 x 14팩"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Travel-Tissue-Kakao-70ct-x-3-x-14/p/625720"
+          ],
+          "evidence_sha256": "4077cf11d78fc3efa164efeac92dbe3210667e61c1e4702fd1b6f6d72bd89be1",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h1b/hed/415890385633310.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3d448e77d18ef2e9a86b88a75e7eef90",
+      "unified_category_id": "food.dairy.cheese.sliced",
+      "category_id": null,
+      "canonical_name": "일드프랑스 아페리프레 사뵈르드코트다쥐르 100G",
+      "brand": "일드프랑스",
+      "aliases": [],
+      "keywords": [
+        "슬라이스치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:59:1"
+            ],
+            "source_ingestion_ids": [
+              59
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "103790615"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          59
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "슬라이스치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-3d448e77d18ef2e9a86b88a75e7eef90",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.sliced",
+          "source_name": "homeplus",
+          "source_record_key": "103790615",
+          "source_titles": [
+            "일드프랑스 아페리프레 사뵈르드코트다쥐르 100G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=103790615&storeType=HYPER"
+          ],
+          "evidence_sha256": "828f50dc05e2b528677cbe6c1191d3ea3d806773675a39cbbc2e314fd4eb3d28",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3fd6a17bca546e3e862cf397ad497985",
+      "unified_category_id": "food.seasonings.sauces.cheonggukjang",
+      "category_id": null,
+      "canonical_name": "씨제이 다담 청국장 양념 530G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 다담 청국장 양념"
+      ],
+      "keywords": [
+        "청국장조리양념"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:41",
+              "ingestion:63:63"
+            ],
+            "source_ingestion_ids": [
+              13,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "109803579"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "청국장조리양념"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:cj-dadam-cheonggukjang-seasoning",
+          "canonical_product_id": "prod-3fd6a17bca546e3e862cf397ad497985",
+          "member_product_ids": [
+            "prod-3fd6a17bca546e3e862cf397ad497985",
+            "prod-71898a3dd2dcca4e2811c4b6b429687c"
+          ],
+          "canonical_name": "CJ 다담 청국장 양념",
+          "brand": "CJ 다담",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-3fd6a17bca546e3e862cf397ad497985",
+          "old_leaf": "food.seasonings.sauces.stew",
+          "new_leaf": "food.seasonings.sauces.cheonggukjang",
+          "source_name": "homeplus",
+          "source_record_key": "109803579",
+          "source_titles": [
+            "씨제이 다담 청국장 양념 530G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=109803579&storeType=HYPER"
+          ],
+          "evidence_sha256": "484442fd2739a14bdea5c0ec3521756cbabd02a4f7aa1f8f3b7c725d17bdeca3",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-536d26d98796ceb59ad4cfcec5a07074",
+      "unified_category_id": "household.hygiene.paper.toilet_wipes",
+      "category_id": null,
+      "canonical_name": "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "화장실용물티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:34"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "728936"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "화장실용물티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-536d26d98796ceb59ad4cfcec5a07074",
+          "old_leaf": "household.hygiene.paper.wipes",
+          "new_leaf": "household.hygiene.paper.toilet_wipes",
+          "source_name": "costco",
+          "source_record_key": "728936",
+          "source_titles": [
+            "크리넥스 마이비데 키즈 캡형 40매 x 9팩 x 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kids-Toilet-Wipes-40ct-x-9pk-x-2/p/728936"
+          ],
+          "evidence_sha256": "523342e0b20dbdc08844a6ef94ce35170996ca408ddf9ece8b205f1791e4f749",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hf8/hf4/137127989051422.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-54dcf26667d23fb80a5f323d7ed031fc",
+      "unified_category_id": "household.cleaning.detergents.capsule",
+      "category_id": null,
+      "canonical_name": "독일더마 초고농축 올인원 캡슐세제 40개입 로즈애플향",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캡슐형세정제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:13"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "2097001824306"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캡슐형세정제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-54dcf26667d23fb80a5f323d7ed031fc",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.detergents.capsule",
+          "source_name": "emart",
+          "source_record_key": "2097001824306",
+          "source_titles": [
+            "독일더마 초고농축 올인원 캡슐세제 40개입 로즈애플향"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=2097001824306&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "465569bd4f7fb2f99fd81385f0a49be6914658f84874077f69f7f043246aae90",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/06/43/82/item/2097001824306_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-570ee7084fc972f5a2f8472aac572844",
+      "unified_category_id": "food.seasonings.sauces.gangdoenjang",
+      "category_id": null,
+      "canonical_name": "백설 강된장 찌개양념 130g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "강된장양념"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:91:25"
+            ],
+            "source_ingestion_ids": [
+              91
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000029149555"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          91
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "강된장양념"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-570ee7084fc972f5a2f8472aac572844",
+          "old_leaf": "food.seasonings.sauces.stew",
+          "new_leaf": "food.seasonings.sauces.gangdoenjang",
+          "source_name": "emart",
+          "source_record_key": "1000029149555",
+          "source_titles": [
+            "백설 강된장 찌개양념 130g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000029149555&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "3682e711b565bb36726009109ab55e0366a2f55e2c9e0f4a0e8a03c70d13d84d",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/55/95/14/item/1000029149555_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5891e7168158b71051648f83d08351ce",
+      "unified_category_id": "food.dairy.cheese.bocconcini",
+      "category_id": null,
+      "canonical_name": "보꼬네 올리브오일 모짜렐라 보코치니 200g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "보코치니치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_dairy_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:83:9"
+            ],
+            "source_ingestion_ids": [
+              83
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000852095867"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_dairy_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          83
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "보코치니치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-5891e7168158b71051648f83d08351ce",
+          "old_leaf": "food.dairy.cheese.fresh_mozzarella",
+          "new_leaf": "food.dairy.cheese.bocconcini",
+          "source_name": "emart",
+          "source_record_key": "1000852095867",
+          "source_titles": [
+            "보꼬네 올리브오일 모짜렐라 보코치니 200g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000852095867&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "df0236c6601ab7e99cd9c91e44c9db8d6e6e8d95b8381546a54f06dc4e296726",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/67/58/09/item/1000852095867_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-5a48d4a399cf343ed6bdbd9548f5bbe1",
+      "unified_category_id": "household.cleaning.laundry.standard",
+      "category_id": null,
+      "canonical_name": "커클랜드 시그니춰 울트라 클린 팩세제 140팩",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "세탁용세제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_costco_cleaning_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:50:36"
+            ],
+            "source_ingestion_ids": [
+              50
+            ],
+            "source_name": "costco",
+            "source_record_key": "1899665"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_costco_cleaning_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          50
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "세탁용세제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-5a48d4a399cf343ed6bdbd9548f5bbe1",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.laundry.standard",
+          "source_name": "costco",
+          "source_record_key": "1899665",
+          "source_titles": [
+            "커클랜드 시그니춰 울트라 클린 팩세제 140팩"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/Kirkland-Signature-Ultraclean-Pacs-140-Pacs/p/1899665"
+          ],
+          "evidence_sha256": "8913dfe0903d6b5078fe896dd2c0ac7cf81993d1bd7746e707a030b6c740b630",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hc7/ha9/361679699214366.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-65fcf94602743cb6939f19321d30d5cb",
+      "unified_category_id": "household.hygiene.paper.sheet_tissue",
+      "category_id": null,
+      "canonical_name": "크리넥스 보습소프트 3겹티슈 160매 x 8 x 2팩",
+      "brand": null,
+      "aliases": [
+        "크리넥스 보습소프트 3겹 미용티슈",
+        "크리넥스 보습소프트 3겹 티슈"
+      ],
+      "keywords": [
+        "시트형티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:41"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "628935"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "시트형티슈"
+        ],
+        "catalog_group": {
+          "key": "kleenex-moisture-soft-three-ply-facial",
+          "canonical_product_id": "prod-65fcf94602743cb6939f19321d30d5cb",
+          "member_product_ids": [
+            "prod-65fcf94602743cb6939f19321d30d5cb",
+            "prod-921834d1b6982dd5abc033b49f3c101c"
+          ],
+          "canonical_name": "크리넥스 보습소프트 3겹 티슈",
+          "brand": "크리넥스",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-65fcf94602743cb6939f19321d30d5cb",
+          "old_leaf": "household.hygiene.paper.facial",
+          "new_leaf": "household.hygiene.paper.sheet_tissue",
+          "source_name": "costco",
+          "source_record_key": "628935",
+          "source_titles": [
+            "크리넥스 보습소프트 3겹티슈 160매 x 8 x 2팩"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Soft-Moisture-Soft-Tissue-160ct-x-8-x-2/p/628935"
+          ],
+          "evidence_sha256": "72746ce1352dda72ca290bb8064103cb7a3a97b5626387cf6df98dedb57b8760",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h62/h77/101887382421534.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-662e5a696320bfa428837124542d039f",
+      "unified_category_id": "household.cleaning.detergents.capsule",
+      "category_id": null,
+      "canonical_name": "피지 모락셀라 캡슐세제 냄새제거 부스터 26입 (코튼향)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캡슐형세정제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:28"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000640948431"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캡슐형세정제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-662e5a696320bfa428837124542d039f",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.detergents.capsule",
+          "source_name": "emart",
+          "source_record_key": "1000640948431",
+          "source_titles": [
+            "피지 모락셀라 캡슐세제 냄새제거 부스터 26입 (코튼향)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000640948431&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "d18d7f97686223da7ed966d4b4ee1edfa98f3bc6f56a4a48b377055148065099",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/31/84/94/item/1000640948431_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6bbf3e4435fa0466aceaf4bdb1c72acf",
+      "unified_category_id": "food.dairy.cheese.grana_padano",
+      "category_id": null,
+      "canonical_name": "그라나파다노 치즈 200G",
+      "brand": "그라나파다노",
+      "aliases": [],
+      "keywords": [
+        "그라나파다노치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_dairy_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:9:11",
+              "ingestion:58:48"
+            ],
+            "source_ingestion_ids": [
+              9,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "124295106"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_dairy_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          9,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "그라나파다노치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-6bbf3e4435fa0466aceaf4bdb1c72acf",
+          "old_leaf": "food.dairy.cheese.hard_aged",
+          "new_leaf": "food.dairy.cheese.grana_padano",
+          "source_name": "homeplus",
+          "source_record_key": "124295106",
+          "source_titles": [
+            "그라나파다노 치즈 200G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=124295106&storeType=HYPER"
+          ],
+          "evidence_sha256": "b3e83755b23fb97138592c5954336c14ffb61afc78c8c12f6f245aecfefb8e2a",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6d648d3124e15279bf0bd55e8d2eeff1",
+      "unified_category_id": "food.dairy.cheese.parmesan",
+      "category_id": null,
+      "canonical_name": "파르미지아노 레지아노 치즈 200G",
+      "brand": "파르미지아노",
+      "aliases": [],
+      "keywords": [
+        "파르미지아노레지아노치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:9:5",
+              "ingestion:58:42"
+            ],
+            "source_ingestion_ids": [
+              9,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "124937765"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          9,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "파르미지아노레지아노치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-6d648d3124e15279bf0bd55e8d2eeff1",
+          "old_leaf": "food.dairy.cheese.hard_aged",
+          "new_leaf": "food.dairy.cheese.parmesan",
+          "source_name": "homeplus",
+          "source_record_key": "124937765",
+          "source_titles": [
+            "파르미지아노 레지아노 치즈 200G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=124937765&storeType=HYPER"
+          ],
+          "evidence_sha256": "40b6e9fad5341b711370ec9ad3e7c92923650bc79ad2b8400c787d52289abb94",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-71898a3dd2dcca4e2811c4b6b429687c",
+      "unified_category_id": "food.seasonings.sauces.cheonggukjang",
+      "category_id": null,
+      "canonical_name": "씨제이 다담 청국장 찌개 양념 130G",
+      "brand": "CJ",
+      "aliases": [
+        "CJ 다담 청국장 양념"
+      ],
+      "keywords": [
+        "청국장조리양념"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:13:71",
+              "ingestion:63:41"
+            ],
+            "source_ingestion_ids": [
+              13,
+              63
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "121742366"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          13,
+          63
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "청국장조리양념"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:cj-dadam-cheonggukjang-seasoning",
+          "canonical_product_id": "prod-3fd6a17bca546e3e862cf397ad497985",
+          "member_product_ids": [
+            "prod-3fd6a17bca546e3e862cf397ad497985",
+            "prod-71898a3dd2dcca4e2811c4b6b429687c"
+          ],
+          "canonical_name": "CJ 다담 청국장 양념",
+          "brand": "CJ 다담",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-71898a3dd2dcca4e2811c4b6b429687c",
+          "old_leaf": "food.seasonings.sauces.stew",
+          "new_leaf": "food.seasonings.sauces.cheonggukjang",
+          "source_name": "homeplus",
+          "source_record_key": "121742366",
+          "source_titles": [
+            "씨제이 다담 청국장 찌개 양념 130G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=121742366&storeType=HYPER"
+          ],
+          "evidence_sha256": "2170c675cb40fd7326fa12b0705ccd542717f07695148e7beabf56ee1f052f0e",
+          "reason": "Samealreadyapprovedsourceidentity counterpart retained; sourceexplicitpizza purpose/slicedleaf supportsneutralform, quantities/quotes/IDs untouched."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-7d53fd6066db2a2488e7a1d0a053230a",
+      "unified_category_id": "baby.hygiene.diapering.wipes",
+      "category_id": null,
+      "canonical_name": "카모마일 베이비 물티슈 100매 6입 (캡)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "유아물티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_unambiguous_name_tokens"
+            ],
+            "raw_record_ids": [
+              "ingestion:103:20"
+            ],
+            "source_ingestion_ids": [
+              103
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000016861297"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_unambiguous_name_tokens"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          103
+        ],
+        "classification_confidence": 0.86,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "유아물티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-7d53fd6066db2a2488e7a1d0a053230a",
+          "old_leaf": "household.hygiene.paper.wipes",
+          "new_leaf": "baby.hygiene.diapering.wipes",
+          "source_name": "emart",
+          "source_record_key": "1000016861297",
+          "source_titles": [
+            "카모마일 베이비 물티슈 100매 6입 (캡)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000016861297&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "a714d543b6ed6155c6865047e120d2dbddf7ec41e6b03ebe640b9ca122edda69",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/97/12/86/item/1000016861297_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.86,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-85950c48b0ff5598512f993cd4d3404c",
+      "unified_category_id": "household.hygiene.paper.portable_tissue",
+      "category_id": null,
+      "canonical_name": "휴대용티슈 70매*3입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "휴대용티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:96:37"
+            ],
+            "source_ingestion_ids": [
+              96
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000549769476"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          96
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "휴대용티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-85950c48b0ff5598512f993cd4d3404c",
+          "old_leaf": "household.hygiene.paper.facial",
+          "new_leaf": "household.hygiene.paper.portable_tissue",
+          "source_name": "emart",
+          "source_record_key": "1000549769476",
+          "source_titles": [
+            "휴대용티슈 70매*3입"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000549769476&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "f0db966b53ae04f6ea8872fbe44ba8f86a670b4a99a5c88921dda326c4d012c1",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/76/94/76/item/1000549769476_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8eb35fcde161d612b07bd93aea9233fc",
+      "unified_category_id": "household.hygiene.paper.sheet_tissue",
+      "category_id": null,
+      "canonical_name": "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "시트형티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:19"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "623039"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "시트형티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-8eb35fcde161d612b07bd93aea9233fc",
+          "old_leaf": "household.hygiene.paper.facial",
+          "new_leaf": "household.hygiene.paper.sheet_tissue",
+          "source_name": "costco",
+          "source_record_key": "623039",
+          "source_titles": [
+            "크리넥스 카카오 미니 티슈 230매 x 6 x 3팩"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Kakao-Mini-Tissue-230ct-x-6-x-3/p/623039"
+          ],
+          "evidence_sha256": "ab1e16d11998efa4aab09644a80c8f16d844bf2cfff497e3404996ae510e3daa",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hbb/h82/415027617759262.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-921834d1b6982dd5abc033b49f3c101c",
+      "unified_category_id": "household.hygiene.paper.sheet_tissue",
+      "category_id": null,
+      "canonical_name": "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14",
+      "brand": null,
+      "aliases": [
+        "크리넥스 보습소프트 3겹 미용티슈",
+        "크리넥스 보습소프트 3겹 티슈"
+      ],
+      "keywords": [
+        "시트형티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:36"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "682272"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "시트형티슈"
+        ],
+        "catalog_group": {
+          "key": "kleenex-moisture-soft-three-ply-facial",
+          "canonical_product_id": "prod-65fcf94602743cb6939f19321d30d5cb",
+          "member_product_ids": [
+            "prod-65fcf94602743cb6939f19321d30d5cb",
+            "prod-921834d1b6982dd5abc033b49f3c101c"
+          ],
+          "canonical_name": "크리넥스 보습소프트 3겹 티슈",
+          "brand": "크리넥스",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-921834d1b6982dd5abc033b49f3c101c",
+          "old_leaf": "household.hygiene.paper.facial",
+          "new_leaf": "household.hygiene.paper.sheet_tissue",
+          "source_name": "costco",
+          "source_record_key": "682272",
+          "source_titles": [
+            "크리넥스 보습소프트 3겹 휴대용 티슈 50매 x 14"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Moisture-Soft-Portable-Tissue-50ct-x-14/p/682272"
+          ],
+          "evidence_sha256": "6ede642593555b5994caf68787a424d67ccbfa35f85bbc1098db65b129b590e5",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/ha8/h46/329184346603550.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-95296d5a85461b44d87a74ab6579bff5",
+      "unified_category_id": "household.cleaning.detergents.capsule",
+      "category_id": null,
+      "canonical_name": "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 린넨블랑향",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캡슐형세정제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:9"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "2097002175858"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캡슐형세정제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-95296d5a85461b44d87a74ab6579bff5",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.detergents.capsule",
+          "source_name": "emart",
+          "source_record_key": "2097002175858",
+          "source_titles": [
+            "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 린넨블랑향"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175858&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "7d6d22194a95c21388301a1d6bba8828c630cb9e75ff34fb66324c75d12c829a",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/58/58/17/item/2097002175858_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-970ff003ecee8e59b833229ff4ee5ba3",
+      "unified_category_id": "food.dairy.cheese.pizza",
+      "category_id": null,
+      "canonical_name": "소와나무 이태리안 피자치즈 1kg x 3",
+      "brand": null,
+      "aliases": [
+        "소와나무 이태리안 피자치즈"
+      ],
+      "keywords": [
+        "피자용치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_unambiguous_name_tokens"
+            ],
+            "raw_record_ids": [
+              "ingestion:44:64"
+            ],
+            "source_ingestion_ids": [
+              44
+            ],
+            "source_name": "costco",
+            "source_record_key": "680964"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_unambiguous_name_tokens"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          44
+        ],
+        "classification_confidence": 0.86,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "피자용치즈"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:sowanamu-italian-pizza",
+          "canonical_product_id": "prod-b64b967513b6e3416090487566e5e049",
+          "member_product_ids": [
+            "prod-b64b967513b6e3416090487566e5e049",
+            "prod-970ff003ecee8e59b833229ff4ee5ba3"
+          ],
+          "canonical_name": "소와나무 이태리안 피자치즈",
+          "brand": "소와나무",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-970ff003ecee8e59b833229ff4ee5ba3",
+          "old_leaf": "food.dairy.cheese.shredded",
+          "new_leaf": "food.dairy.cheese.pizza",
+          "source_name": "costco",
+          "source_record_key": "680964",
+          "source_titles": [
+            "소와나무 이태리안 피자치즈 1kg x 3"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Italian-Pizza-Cheese-1kg-x-3/p/680964"
+          ],
+          "evidence_sha256": "b8f0818cfb04df422cc4331f9aa417eb0d8dbcd96826194d20f839d537338d04",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h26/he7/310468039442462.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.86,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9abf3837e1f08a8905df7af1f1a6fda7",
+      "unified_category_id": "household.cleaning.laundry.garment_care_softener_sheet",
+      "category_id": null,
+      "canonical_name": "피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "의류청정기용섬유유연시트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_unambiguous_name_tokens"
+            ],
+            "raw_record_ids": [
+              "ingestion:50:12"
+            ],
+            "source_ingestion_ids": [
+              50
+            ],
+            "source_name": "costco",
+            "source_record_key": "625705"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_unambiguous_name_tokens"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          50
+        ],
+        "classification_confidence": 0.86,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "의류청정기용섬유유연시트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9abf3837e1f08a8905df7af1f1a6fda7",
+          "old_leaf": "household.cleaning.laundry.softener",
+          "new_leaf": "household.cleaning.laundry.garment_care_softener_sheet",
+          "source_name": "costco",
+          "source_record_key": "625705",
+          "source_titles": [
+            "피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/-20x-3/p/625705"
+          ],
+          "evidence_sha256": "2d0deab1383a32e3210ea4278d6b83d21494962094e0ba5c58cdebd9bdfd288f",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hfa/h37/155735241687070.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.86,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9dfa61159c91900768b1a70fc8914f75",
+      "unified_category_id": "food.seasonings.sauces.steak",
+      "category_id": null,
+      "canonical_name": "피터루거 스테이크소스 714ml x 2",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "스테이크소스"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_costco_meat_shelf_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:45:71"
+            ],
+            "source_ingestion_ids": [
+              45
+            ],
+            "source_name": "costco",
+            "source_record_key": "743724"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_costco_meat_shelf_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          45
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "스테이크소스"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9dfa61159c91900768b1a70fc8914f75",
+          "old_leaf": "food.seasonings.sauces.meat",
+          "new_leaf": "food.seasonings.sauces.steak",
+          "source_name": "costco",
+          "source_record_key": "743724",
+          "source_titles": [
+            "피터루거 스테이크소스 714ml x 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/OLD-Fashioned-Steak-Sauce-714ml-x-2/p/743724"
+          ],
+          "evidence_sha256": "a57e48443d075cb9f0af0ccc7e2185d572d5cdd00969f28e5e51cca69f30db81",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hb7/h85/261443126034462.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9ef431fe1ceac833792c29192d590bb0",
+      "unified_category_id": "household.cleaning.detergents.capsule",
+      "category_id": null,
+      "canonical_name": "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 코튼블랑향",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캡슐형세정제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:11"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "2097001824283"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캡슐형세정제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9ef431fe1ceac833792c29192d590bb0",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.detergents.capsule",
+          "source_name": "emart",
+          "source_record_key": "2097001824283",
+          "source_titles": [
+            "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 코튼블랑향"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=2097001824283&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "b29fb8b504f87a0ca575bfabdec1ff021a1b4fee3c5997169319cbcf8cae0c97",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/83/42/82/item/2097001824283_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-aa762e48482c040446995f41fb10355f",
+      "unified_category_id": "food.dairy.cheese.gouda",
+      "category_id": null,
+      "canonical_name": "매일 상하치즈 미니 아몬드 고다 48G*3",
+      "brand": "매일",
+      "aliases": [],
+      "keywords": [
+        "고다치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:8:41",
+              "ingestion:57:73"
+            ],
+            "source_ingestion_ids": [
+              8,
+              57
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "146824548"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          8,
+          57
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "고다치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-aa762e48482c040446995f41fb10355f",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.gouda",
+          "source_name": "homeplus",
+          "source_record_key": "146824548",
+          "source_titles": [
+            "매일 상하치즈 미니 아몬드 고다 48G*3"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=146824548&storeType=HYPER"
+          ],
+          "evidence_sha256": "8fde1625c9339e1c542fb5c0f76128ecbcff2bb4f49d4bbbd271ddf10ba08a4b",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-aeef89c21ca7bc863995078994399e6a",
+      "unified_category_id": "household.hygiene.paper.toilet_wipes",
+      "category_id": null,
+      "canonical_name": "크리넥스 마이비데 캡형60매x 6 x 2팩",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "화장실용물티슈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:49:37"
+            ],
+            "source_ingestion_ids": [
+              49
+            ],
+            "source_name": "costco",
+            "source_record_key": "622905"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          49
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "화장실용물티슈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-aeef89c21ca7bc863995078994399e6a",
+          "old_leaf": "household.hygiene.paper.wipes",
+          "new_leaf": "household.hygiene.paper.toilet_wipes",
+          "source_name": "costco",
+          "source_record_key": "622905",
+          "source_titles": [
+            "크리넥스 마이비데 캡형60매x 6 x 2팩"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/BathFacial-Tissue/BathFacial-Tissue/Kleenex-Toilet-Wipes-60ct-x-6-x-2/p/622905"
+          ],
+          "evidence_sha256": "afe9cc0d94c66439c457d2caccfed7b03b3f74f0b3cb554c59130ef540556c52",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/he8/hb7/122029048430622.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b64b967513b6e3416090487566e5e049",
+      "unified_category_id": "food.dairy.cheese.pizza",
+      "category_id": null,
+      "canonical_name": "동원소와나무 이태리안 피자치즈 280G",
+      "brand": "동원소와나무",
+      "aliases": [
+        "소와나무 이태리안 피자치즈"
+      ],
+      "keywords": [
+        "피자용치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:7:23",
+              "ingestion:58:11"
+            ],
+            "source_ingestion_ids": [
+              7,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127336072"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          7,
+          58
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "피자용치즈"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:sowanamu-italian-pizza",
+          "canonical_product_id": "prod-b64b967513b6e3416090487566e5e049",
+          "member_product_ids": [
+            "prod-b64b967513b6e3416090487566e5e049",
+            "prod-970ff003ecee8e59b833229ff4ee5ba3"
+          ],
+          "canonical_name": "소와나무 이태리안 피자치즈",
+          "brand": "소와나무",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-b64b967513b6e3416090487566e5e049",
+          "old_leaf": "food.dairy.cheese.shredded",
+          "new_leaf": "food.dairy.cheese.pizza",
+          "source_name": "homeplus",
+          "source_record_key": "127336072",
+          "source_titles": [
+            "동원소와나무 이태리안 피자치즈 280G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=127336072&storeType=HYPER"
+          ],
+          "evidence_sha256": "74abb3fd99f67fa56b0e6195df1261805fd50543e70a15b2eb68fb22678963dc",
+          "reason": "Samealreadyapprovedsourceidentity counterpart retained; sourceexplicitpizza purpose/slicedleaf supportsneutralform, quantities/quotes/IDs untouched."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-b94ffd3ef043bf84a8dca8474cb7a2b0",
+      "unified_category_id": "household.cleaning.laundry.softener_sheet",
+      "category_id": null,
+      "canonical_name": "커클랜드 시그니춰 시트형 섬유유연제 250매x 2",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "시트형섬유유연제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_unambiguous_name_tokens"
+            ],
+            "raw_record_ids": [
+              "ingestion:50:26"
+            ],
+            "source_ingestion_ids": [
+              50
+            ],
+            "source_name": "costco",
+            "source_record_key": "1739180"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_unambiguous_name_tokens"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          50
+        ],
+        "classification_confidence": 0.86,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "시트형섬유유연제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-b94ffd3ef043bf84a8dca8474cb7a2b0",
+          "old_leaf": "household.cleaning.laundry.softener",
+          "new_leaf": "household.cleaning.laundry.softener_sheet",
+          "source_name": "costco",
+          "source_record_key": "1739180",
+          "source_titles": [
+            "커클랜드 시그니춰 시트형 섬유유연제 250매x 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/Kirkland-Signature-Fabric-Softener-Sheet-250ctx2/p/1739180"
+          ],
+          "evidence_sha256": "c92def747a4a9c37fc0c0b748eeabc5a6988996618fdafc614ecbc4d04785717",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hff/h12/367690404298782.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.86,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bb418be4f36b5af34846be46b3b89a3a",
+      "unified_category_id": "food.dairy.cheese.manchego",
+      "category_id": null,
+      "canonical_name": "Rabel 만체고 트러플200g x 2",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "만체고치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_dairy_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:44:63"
+            ],
+            "source_ingestion_ids": [
+              44
+            ],
+            "source_name": "costco",
+            "source_record_key": "667323"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_dairy_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          44
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "만체고치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-bb418be4f36b5af34846be46b3b89a3a",
+          "old_leaf": "food.dairy.cheese.hard_aged",
+          "new_leaf": "food.dairy.cheese.manchego",
+          "source_name": "costco",
+          "source_record_key": "667323",
+          "source_titles": [
+            "Rabel 만체고 트러플200g x 2"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/Rabel-Manchego-Truffle-200g-x-2/p/667323"
+          ],
+          "evidence_sha256": "fd89d0c493cfd3394d932bb67728494955222e72f36cf623b2c3ca6fe3f51f96",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h4b/188802928246814.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bd542ff2f6049f17d2b90349ffbe895a",
+      "unified_category_id": "food.dairy.cheese.standard",
+      "category_id": null,
+      "canonical_name": "빙그레 벨큐브 고메스타일 (125G)",
+      "brand": "빙그레",
+      "aliases": [],
+      "keywords": [
+        "일반치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:32:79"
+            ],
+            "source_ingestion_ids": [
+              32
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8809734560406"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          32
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "일반치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-bd542ff2f6049f17d2b90349ffbe895a",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.standard",
+          "source_name": "lottemart",
+          "source_record_key": "8809734560406",
+          "source_titles": [
+            "빙그레 벨큐브 고메스타일 (125G)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8809734560406/details"
+          ],
+          "evidence_sha256": "63fee30b56c51771754b9bf8a1768ad656fab507a6d4fde12b9fdd8d72068e19",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42319759-2a82-4587-baa9-2526e87ed748/300x300.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c14049b232cdd137c247b81c3b699cd5",
+      "unified_category_id": "food.dairy.cheese.cheddar",
+      "category_id": null,
+      "canonical_name": "매일 상하치즈 미니 칼슘 체다 48G*3",
+      "brand": "매일",
+      "aliases": [],
+      "keywords": [
+        "체다치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:8:64",
+              "ingestion:57:95"
+            ],
+            "source_ingestion_ids": [
+              8,
+              57
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "128418020"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          8,
+          57
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "체다치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-c14049b232cdd137c247b81c3b699cd5",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.cheddar",
+          "source_name": "homeplus",
+          "source_record_key": "128418020",
+          "source_titles": [
+            "매일 상하치즈 미니 칼슘 체다 48G*3"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=128418020&storeType=HYPER"
+          ],
+          "evidence_sha256": "048a0002e3a562ea7881b0b331a84e5c48eb2a3b4092b598336f9e828f201f64",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c2902ead7513b110470916d62e2fedd0",
+      "unified_category_id": "household.cleaning.detergents.capsule",
+      "category_id": null,
+      "canonical_name": "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 인칸토향",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캡슐형세정제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:12"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "2097002175834"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캡슐형세정제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-c2902ead7513b110470916d62e2fedd0",
+          "old_leaf": "household.cleaning.laundry.capsule",
+          "new_leaf": "household.cleaning.detergents.capsule",
+          "source_name": "emart",
+          "source_record_key": "2097002175834",
+          "source_titles": [
+            "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 인칸토향"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175834&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "d10724da20da61966e06c10c64bf12887cab18053a5386b39691cc98ce4a157f",
+          "reason": "Exactliteralcapsule/pack/sheet/portable/baby andsourceURLToilet-Wipes supportform orpurpose only. Neutralcapsuleform whenlaundrypurposeunproved, packlaundrydetergent withoutcapsuleinference, softenersheets withoutdryerassumption. Existingcontents/count/vector/IDs/price/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/34/58/17/item/2097002175834_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-c97ac6e8ff42af911ad1e75203c449ac",
+      "unified_category_id": "food.dairy.cheese.parmesan",
+      "category_id": null,
+      "canonical_name": "구르메 파르미지아노 레지아노 치즈 150G",
+      "brand": "구르메",
+      "aliases": [],
+      "keywords": [
+        "파르미지아노레지아노치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:8:77",
+              "ingestion:58:9"
+            ],
+            "source_ingestion_ids": [
+              8,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127398654"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          8,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "파르미지아노레지아노치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-c97ac6e8ff42af911ad1e75203c449ac",
+          "old_leaf": "food.dairy.cheese.hard_aged",
+          "new_leaf": "food.dairy.cheese.parmesan",
+          "source_name": "homeplus",
+          "source_record_key": "127398654",
+          "source_titles": [
+            "구르메 파르미지아노 레지아노 치즈 150G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=127398654&storeType=HYPER"
+          ],
+          "evidence_sha256": "31faea2c2cea949869c013fa6f0d7d82d34cafdcdb762ccc5ceb699f77fd64ca",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-d6171410b63385f384991e8e8e2190cb",
+      "unified_category_id": "food.dairy.cheese.sliced",
+      "category_id": null,
+      "canonical_name": "서울우유 앙팡치즈 까요까요 초코 78G",
+      "brand": "서울우유",
+      "aliases": [],
+      "keywords": [
+        "슬라이스치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:8:75",
+              "ingestion:58:7"
+            ],
+            "source_ingestion_ids": [
+              8,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "127465120"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          8,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "슬라이스치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-d6171410b63385f384991e8e8e2190cb",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.sliced",
+          "source_name": "homeplus",
+          "source_record_key": "127465120",
+          "source_titles": [
+            "서울우유 앙팡치즈 까요까요 초코 78G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=127465120&storeType=HYPER"
+          ],
+          "evidence_sha256": "c1f49b78257b9606c356bb30538dc956bac4874dc7549d74dfdfab63812a79a9",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-d8ac5d12156a6ab81a8dee7b60dab0f5",
+      "unified_category_id": "food.dairy.cheese.grana_padano",
+      "category_id": null,
+      "canonical_name": "Zanetti 그라나 파다노 200g x 3",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "그라나파다노치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_dairy_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:44:69"
+            ],
+            "source_ingestion_ids": [
+              44
+            ],
+            "source_name": "costco",
+            "source_record_key": "644052"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_dairy_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          44
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "그라나파다노치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-d8ac5d12156a6ab81a8dee7b60dab0f5",
+          "old_leaf": "food.dairy.cheese.hard_aged",
+          "new_leaf": "food.dairy.cheese.grana_padano",
+          "source_name": "costco",
+          "source_record_key": "644052",
+          "source_titles": [
+            "Zanetti 그라나 파다노 200g x 3"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/p/644052"
+          ],
+          "evidence_sha256": "cdd32b5b01829f032c7d12619160a415efdf9cf43ab3d527124df9f6e84fc013",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hcd/hda/81907766099998.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-e022bfa473e6ffa9c5a0a212aeac66bb",
+      "unified_category_id": "food.seasonings.sauces.cooking",
+      "category_id": null,
+      "canonical_name": "삼양 불닭 소스 200G",
+      "brand": "삼양",
+      "aliases": [],
+      "keywords": [
+        "조리용소스"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:23:64",
+              "ingestion:73:27"
+            ],
+            "source_ingestion_ids": [
+              23,
+              73
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "129312598"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          23,
+          73
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "조리용소스"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-e022bfa473e6ffa9c5a0a212aeac66bb",
+          "old_leaf": "food.seasonings.sauces.chili",
+          "new_leaf": "food.seasonings.sauces.cooking",
+          "source_name": "homeplus",
+          "source_record_key": "129312598",
+          "source_titles": [
+            "삼양 불닭 소스 200G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=129312598&storeType=HYPER"
+          ],
+          "evidence_sha256": "776e9a29a61e8d5e0ef55a550aaf2c88feb5e36b21286b62f18ca2f84e936906",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f81431a3f46817cb02419b382c094b85",
+      "unified_category_id": "food.dairy.cheese.gorgonzola",
+      "category_id": null,
+      "canonical_name": "고르곤졸라 피칸테 150G",
+      "brand": "고르곤졸라",
+      "aliases": [],
+      "keywords": [
+        "고르곤졸라치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_homeplus_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:9:39",
+              "ingestion:58:74"
+            ],
+            "source_ingestion_ids": [
+              9,
+              58
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "115747526"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_homeplus_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          9,
+          58
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "고르곤졸라치즈"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f81431a3f46817cb02419b382c094b85",
+          "old_leaf": "food.dairy.cheese.blue",
+          "new_leaf": "food.dairy.cheese.gorgonzola",
+          "source_name": "homeplus",
+          "source_record_key": "115747526",
+          "source_titles": [
+            "고르곤졸라 피칸테 150G"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=115747526&storeType=HYPER"
+          ],
+          "evidence_sha256": "5e22cf22528aef754ad12736e4808acd3db41f4e533fca1e6ffc25e54ce71899",
+          "reason": "Literalnamedcheese/pizza-purpose/cheddar andsauceforms in owncheese/seasoning sourcecontexts; no ageing/freshness/blue-composition/portion/chili ingredient inference. Preserveexistingamounts/components/count/variantproof/quotes/times; knownnamedtype cancoexist with unresolvedprocess."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-fc07fe02b2db1db074f724c7c0f72ff9",
+      "unified_category_id": "food.dairy.cheese.sliced",
+      "category_id": null,
+      "canonical_name": "앙팡치즈 까요까요 딸기 72g",
+      "brand": null,
+      "aliases": [
+        "서울우유 앙팡치즈 까요까요 딸기"
+      ],
+      "keywords": [
+        "슬라이스치즈"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:83:4"
+            ],
+            "source_ingestion_ids": [
+              83
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000017917188"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          83
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "슬라이스치즈"
+        ],
+        "catalog_group": {
+          "key": "reviewed-family-v1:seoulmilk-angpang-kkayo-strawberry",
+          "canonical_product_id": "prod-198debe96a86b8bc78216437b7313714",
+          "member_product_ids": [
+            "prod-198debe96a86b8bc78216437b7313714",
+            "prod-fc07fe02b2db1db074f724c7c0f72ff9"
+          ],
+          "canonical_name": "서울우유 앙팡치즈 까요까요 딸기",
+          "brand": "서울우유",
+          "review_version": "reviewed_catalog_groups_v1"
+        },
+        "catalog_leaf_review": {
+          "product_id": "prod-fc07fe02b2db1db074f724c7c0f72ff9",
+          "old_leaf": "food.dairy.cheese.portion",
+          "new_leaf": "food.dairy.cheese.sliced",
+          "source_name": "emart",
+          "source_record_key": "1000017917188",
+          "source_titles": [
+            "앙팡치즈 까요까요 딸기 72g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917188&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "0cea2b6ebfca2331328d8ebc4b93ed1a5c6ce54bed95052a3f0e84e9336d6fee",
+          "reason": "Samealreadyapprovedsourceidentity counterpart retained; sourceexplicitpizza purpose/slicedleaf supportsneutralform, quantities/quotes/IDs untouched."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/88/71/91/item/1000017917188_i1_232.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-1afeb3b5dba00d72737cff20300b6323",
+      "unified_category_id": "food.bakery.bread.hotteok",
+      "category_id": null,
+      "canonical_name": "계피 호떡 480g (4개입)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "호떡"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:93:20"
+            ],
+            "source_ingestion_ids": [
+              93
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000011008880"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          93
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "호떡"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-1afeb3b5dba00d72737cff20300b6323",
+          "old_leaf": "food.bakery.bread.filled",
+          "new_leaf": "food.bakery.bread.hotteok",
+          "source_name": "emart",
+          "source_record_key": "1000011008880",
+          "source_titles": [
+            "계피 호떡 480g (4개입)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "9498c119535cb167e74df38b7bd3bb4df22c7621e09a3e3b1a16cf71715f06e5",
+          "reason": "Literalciabatta/cheeseroll/manju/ricecakebread/hotteok andneutral yogurt forms supportedby ownbakery/dairy/sourceURL contexts; no fillingrecipe/hardbread/spoon/drink/squeeze presentation inference. Existingamounts/components/count/variantproof/quote/time unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/80/88/00/item/1000011008880_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [
+    {
+      "public_variant_id": "var-011df5e2dfb6142dd6a2a9f665511832",
+      "public_product_id": "prod-1afeb3b5dba00d72737cff20300b6323",
+      "variant_name": "계피 호떡 480g (4개입) 4개×1",
+      "package_quantity": 4,
+      "package_unit": "개",
+      "display_unit": "4개입 (원문:480g, 중량범위 미확인)",
+      "bundle_count": 1,
+      "standard_unit": null,
+      "attributes": {
+        "specification_basis": "source_structured_and_explicit_text",
+        "explicit_listing_quantity_review": {
+          "title": "계피 호떡 480g (4개입)",
+          "category_id": "food.bakery.bread.hotteok",
+          "source_name": "emart",
+          "source_record_key": "1000011008880",
+          "required_source": {
+            "source_urls": [
+              "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037"
+            ],
+            "source_fields": {
+              "category": "베이커리/잼",
+              "attributes.mart_native_category_path": "베이커리/잼",
+              "attributes.category_hint": "베이커리/잼"
+            }
+          },
+          "quantity_fields": {
+            "package_quantity": 480.0,
+            "package_unit": "g",
+            "display_unit": "480g",
+            "unit": "480g",
+            "attributes.unit_price_display": [
+              "10",
+              "g"
+            ]
+          },
+          "normalized": [
+            4,
+            "개",
+            1
+          ],
+          "measurement_role": "declared_sold_piece_count",
+          "preserved_display_unit": "4개입 (원문:480g, 중량범위 미확인)",
+          "source_evidence_sha256": "9498c119535cb167e74df38b7bd3bb4df22c7621e09a3e3b1a16cf71715f06e5",
+          "original_raw_payload_hashes": {
+            "ingestion:93:20": "7de9f87eba42c7cf559ef7b63818ef699092cbe8e291bd91a36448b22e7384cf"
+          },
+          "reason": "Literal4개입 independently declares four sold contained pieces. 480g is retained as literal weight with unresolved whole-pack/per-piece scope; package/display fields came from producer normalization and no separate native total declaration survives. Neither quote-money division nor480×4 inference is allowed. Existing source-observation amount/reference quote/time remain unchanged; exactg unit-price withheld.",
+          "declared_sold_count": 4,
+          "counted_entity": "hotteok_piece",
+          "source_count_unit": "개입",
+          "unresolved_mass_scope": {
+            "source_literal": "480g",
+            "whole_sale_mass": null,
+            "per_piece_mass": null,
+            "source_field_origin": "normalize_unit_metadata output; independentnative total-mass node notpreserved"
+          }
+        }
+      },
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "source_listings": [
+    {
+      "public_source_listing_id": "listing-11e344c55e59e8d1ba8a0d995dc7d687",
+      "public_variant_id": "var-011df5e2dfb6142dd6a2a9f665511832",
+      "source_name": "emart",
+      "source_record_key": "1000011008880",
+      "source_title": "계피 호떡 480g (4개입)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037",
+      "image_url": "https://sitem.ssgcdn.com/80/88/00/item/1000011008880_i1_290.jpg",
+      "source_unit_text": "4개입 (원문:480g, 중량범위 미확인)",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-097dd7f3f078ddae40e334712f9a8076",
+      "public_source_listing_id": "listing-11e344c55e59e8d1ba8a0d995dc7d687",
+      "price_state": "sale_price_only",
+      "promotion_type": "final_price",
+      "price": 5980.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:93:20",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-09-02T16:43:28.751630Z",
+            "ingestion_id": 93,
+            "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+            "mart_native_category_id": "6000213412",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "category_hint": "베이커리/잼",
+                "collection": "피코크",
+                "collection_surface": "category",
+                "external_seller": false,
+                "image_url": "https://sitem.ssgcdn.com/80/88/00/item/1000011008880_i1_290.jpg",
+                "mart": "이마트",
+                "mart_native_category_id": "6000213412",
+                "mart_native_category_path": "베이커리/잼",
+                "mart_native_code": "1000011008880",
+                "promo_label": "",
+                "salestr_no": "2037",
+                "shipping_labels": [
+                  "주간배송 오늘(목) 14:00까지 도착",
+                  "주간배송",
+                  "주간배송",
+                  "오늘(목) 14:00까지 도착"
+                ],
+                "shipping_type_code": "10",
+                "site_no": "6001",
+                "source_name": "emart",
+                "source_record_key": "1000011008880",
+                "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037",
+                "unit_price_display": "10g 당 125원"
+              },
+              "brand": "__no_brand__",
+              "category": "베이커리/잼",
+              "crawled_at": "2026-09-03T01:43:28.751630",
+              "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000011008880&siteNo=6001&salestrNo=2037",
+              "discount_percent": null,
+              "display_unit": "480g",
+              "event_name": "이마트 할인",
+              "image_url": "https://sitem.ssgcdn.com/80/88/00/item/1000011008880_i1_290.jpg",
+              "match_key": "__no_brand__|계피 호떡 480g 4개입||480g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "계피 호떡 480g (4개입)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 480.0,
+              "package_unit": "g",
+              "price_per_100g": 1245.83,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 5980,
+              "source": "emart",
+              "store": "이마트",
+              "unit": "480g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "7de9f87eba42c7cf559ef7b63818ef699092cbe8e291bd91a36448b22e7384cf",
+            "raw_record_id": "ingestion:93:20",
+            "source_category_path": [
+              "베이커리/잼"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {}
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:93:20"
+        ],
+        "review_reasons": [],
+        "source_ingestion_ids": [
+          93
+        ],
+        "timestamp_source": "item_crawled_at",
+        "reviewed_derived_quantity_offer_history": [
+          {
+            "run_id": "continuation426-reviewed-group-keyword-spec",
+            "before": {
+              "standard_unit_price": 1245.8333,
+              "price_per_100g": 1245.8333
+            },
+            "after": {
+              "standard_unit_price": null,
+              "price_per_100g": null
+            },
+            "basis": "Known4containedpieces retained; literal480g whole-pack/per-piece scope remains unresolved. Exactg rate removed, no480×4 ormoneydivision. Immutableamount/referencequote/time unchanged."
+          }
+        ]
+      },
+      "crawled_at": "2026-09-02T16:43:28.751630",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    },
+    {
+      "public_offer_event_id": "offer-31b14433fc19a7311af69ec2906d1a8a",
+      "public_source_listing_id": "listing-48a72ac848fdf7cc748e3b44d41d50b9",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 11180.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:32:79",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:02.666834Z",
+            "ingestion_id": 32,
+            "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "빙그레",
+                "canon_hash": "1c5f0239be831d29ac5bdd775c9e61952bc94d22",
+                "canonical_url": "https://lottemartzetta.com/products/OS8809734560406/details",
+                "category_hint": "우유ㆍ유제품",
+                "category_path": [
+                  "우유ㆍ유제품",
+                  "치즈",
+                  "스낵치즈"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42319759-2a82-4587-baa9-2526e87ed748/300x300.jpg",
+                "mart_native_code": "8809734560406",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8809734560406",
+                "source_url": "https://lottemartzetta.com/products/OS8809734560406/details"
+              },
+              "brand": "__no_brand__",
+              "category": "우유ㆍ유제품",
+              "crawled_at": "2026-08-31T10:47:02.666834",
+              "detail_url": "https://lottemartzetta.com/products/OS8809734560406/details",
+              "discount_percent": null,
+              "display_unit": "125g",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42319759-2a82-4587-baa9-2526e87ed748/300x300.jpg",
+              "match_key": "__no_brand__|빙그레 벨큐브 고메스타일 125g||125g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "빙그레 벨큐브 고메스타일 (125G)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 125.0,
+              "package_unit": "g",
+              "price_per_100g": 8944.0,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 11180,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "125g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "ad1c6910bc3c826671d033cb28755926c70df5ada49f6ce39944bd9903357f67",
+            "raw_record_id": "ingestion:32:79",
+            "source_category_path": [
+              "우유ᆞ유제품",
+              "치즈",
+              "스낵치즈"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 50% 할인",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_percentage_discount",
+          "conditional_discount_percent": 50.0,
+          "discount_application_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:32:79"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          32
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-31b14433fc19a7311af69ec2906d1a8a",
+            "public_source_listing_id": "listing-48a72ac848fdf7cc748e3b44d41d50b9",
+            "public_variant_id": "var-5180da07e17c63848db0c3250c381095",
+            "public_product_id": "prod-bd542ff2f6049f17d2b90349ffbe895a",
+            "unified_category_id": "food.dairy.cheese.portion",
+            "source_name": "lottemart",
+            "source_record_key": "8809734560406",
+            "source_title": "빙그레 벨큐브 고메스타일 (125G)",
+            "source_url": "https://lottemartzetta.com/products/OS8809734560406/details",
+            "variant_spec": {
+              "variant_name": "빙그레 벨큐브 고메스타일 (125G)",
+              "display_unit": "125g",
+              "package_quantity": 125.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 11180.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 50% 할인",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:02.666834Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:32:79",
+                "raw_payload_sha256": "ad1c6910bc3c826671d033cb28755926c70df5ada49f6ce39944bd9903357f67",
+                "observation_sha256": "4534c1134414148386bf48b8078ba473b63a8b61e317dd85a1323f3f96bf7321"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 50% 할인",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_percentage_discount",
+              "conditional_discount_percent": 50.0,
+              "discount_application_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-07T01:50:47.369806+00:00",
+            "original_review_sha256": "02c87b2baebcaa982217a9c65bb0a3aa3862514204544887d835c2be24dca066",
+            "before_context": {
+              "public_source_listing_id": "listing-48a72ac848fdf7cc748e3b44d41d50b9",
+              "public_variant_id": "var-5180da07e17c63848db0c3250c381095",
+              "public_product_id": "prod-bd542ff2f6049f17d2b90349ffbe895a",
+              "unified_category_id": "food.dairy.cheese.portion",
+              "source_name": "lottemart",
+              "source_record_key": "8809734560406",
+              "source_title": "빙그레 벨큐브 고메스타일 (125G)",
+              "source_url": "https://lottemartzetta.com/products/OS8809734560406/details",
+              "variant_spec": {
+                "variant_name": "빙그레 벨큐브 고메스타일 (125G)",
+                "display_unit": "125g",
+                "package_quantity": 125.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-48a72ac848fdf7cc748e3b44d41d50b9",
+              "public_variant_id": "var-5180da07e17c63848db0c3250c381095",
+              "public_product_id": "prod-bd542ff2f6049f17d2b90349ffbe895a",
+              "unified_category_id": "food.dairy.cheese.standard",
+              "source_name": "lottemart",
+              "source_record_key": "8809734560406",
+              "source_title": "빙그레 벨큐브 고메스타일 (125G)",
+              "source_url": "https://lottemartzetta.com/products/OS8809734560406/details",
+              "variant_spec": {
+                "variant_name": "빙그레 벨큐브 고메스타일 (125G)",
+                "display_unit": "125g",
+                "package_quantity": 125.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "904a2cc6f646dd77c196cb99b6b6dd665f9a0a96896b4e7d37cc03338a8bbc78",
+            "after_context_sha256": "4d83ec38e354c9b583456af8526d93f4a198eaae9b607d7797fcb4f17c1887f8",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:32:79",
+                "raw_payload_sha256": "ad1c6910bc3c826671d033cb28755926c70df5ada49f6ce39944bd9903357f67",
+                "observation_sha256": "4534c1134414148386bf48b8078ba473b63a8b61e317dd85a1323f3f96bf7321"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:02.666834",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [
+    {
+      "id": 915,
+      "match_key": "__no_brand__|계피 호떡 480g 4개입||480g",
+      "brand": null,
+      "name_core": "계피 호떡 480g (4개입)",
+      "pack_qty": 4,
+      "pack_unit": "개",
+      "canonical_product_id": null,
+      "public_product_id": "prod-1afeb3b5dba00d72737cff20300b6323",
+      "public_variant_id": "var-011df5e2dfb6142dd6a2a9f665511832",
+      "category_id": null,
+      "keyword_ids": [
+        935
+      ],
+      "confidence": 0.9,
+      "source": "external-ai",
+      "last_used_at": null,
+      "hit_count": 0,
+      "notes": "initial seed; exact crawler key; ingestion:93:20",
+      "pack_unit_kind": null,
+      "source_record_key": null,
+      "aliases": null
+    }
+  ],
+  "mart_category_mappings": [],
+  "unresolved": []
+}
