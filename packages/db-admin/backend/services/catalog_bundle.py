@@ -21,7 +21,7 @@ from core.promotion_semantics import (PriceState, PromotionPriceFacts, Promotion
                                       conditional_selection_facts_or_none,
                                       conditional_program_facts_or_none,
                                       conditional_basket_spend_facts_or_none)
-from core.promotion_semantics import confirmed_price_or_none
+from core.promotion_semantics import confirmed_price_or_none, bound_homeplus_product_currency
 from core.match_key import normalize_pack_identity
 from core.catalog_quantity import canonical_components, component_signature, package_pricing_measure, normalize_catalog_package
 from core.reviewed_source_evidence import valid_source_identity_context, source_identity_context_for_variant
@@ -1045,7 +1045,8 @@ def _review_source_title_matches(binding: dict, raw: dict, observed_title: Any) 
             and any(alias['title'] == binding['source_title'] for alias in history['aliases']))
 
 
-def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict | None) -> tuple[dict, dict]:
+def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict | None,
+                        *, public_base: bool = False) -> tuple[dict, dict]:
     """Review declared native quote nodes, without confirming a transaction.
 
     Quote hashes bind this historical event's money, never product identity.
@@ -1056,6 +1057,8 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
     from core.reviewed_source_evidence import source_review_evidence, source_review_matches
 
     source, native = binding['source_name'], binding['source_record_key']
+    if public_base and source != 'homeplus':
+        raise ValueError('Homeplus public base quote source required')
     if source not in {'homeplus', 'costco', 'lottemart'} or not isinstance(variant_attributes, dict):
         raise ValueError('supported native source and persisted variant attributes required')
 
@@ -1187,6 +1190,35 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
             if any(value != 'KRW' for value in currencies):
                 raise ValueError('unsupported source currency')
             currency = 'KRW' if currencies else None
+            currency_records = attrs.get('homeplus_price_currency_evidence')
+            if currency_records is not None:
+                native_records = attrs.get('submission_business_evidence')
+                if (not isinstance(currency_records, list) or len(currency_records) != 1
+                        or not isinstance(currency_records[0], dict)
+                        or not isinstance(native_records, list) or len(native_records) != 1
+                        or not isinstance(native_records[0], dict)):
+                    raise ValueError('one original Homeplus price currency/native view required')
+                record, original = currency_records[0], native_records[0]
+                receipt_time = datetime.fromisoformat(str(record.get('source_response_received_at', '')).replace('Z', '+00:00'))
+                quote_time = datetime.fromisoformat(str(binding['quote']['crawled_at']).replace('Z', '+00:00'))
+                if quote_time.tzinfo is None:
+                    quote_time = quote_time.replace(tzinfo=timezone.utc)  # normalized SQLite timestamps are UTC
+                if (bound_homeplus_product_currency(record.get('raw_product_node'), native=native,
+                        title=basic['itemNm'], source_url=observed_url,
+                        price=binding['quote']['price']) != 'KRW'
+                        or record.get('raw_product_node_sha256') != _review_digest(record.get('raw_product_node'))
+                        or record.get('http_receipt_status') != 'supplied_response_metadata'
+                        or record.get('source_response_url') != observed_url
+                        or receipt_time.tzinfo is None or receipt_time != quote_time
+                        or any(record.get(key) != original.get(key) for key in
+                               ('source_response_url', 'source_response_body_sha256', 'source_response_received_at'))):
+                    raise ValueError('original Homeplus currency/quote/native/response conflict')
+                currency = 'KRW'
+            if public_base and (currency_records is None or currency != 'KRW' or minimum is None
+                                or sale.get('frontDcPriceInfo') not in (None, [])
+                                or sale.get('frontCardDcPriceInfo') not in (None, [])
+                                or sale.get('priceSuffix') not in (None, '')):
+                raise ValueError('explicit native undiscounted public base quote/currency/minimum required')
             marker.update(coupon_application_unconfirmed=True,
                           minimum_purchase_quantity_unconfirmed=minimum is None,
                           source_minimum_purchase_quantity=minimum,
@@ -1332,6 +1364,12 @@ def _native_quote_terms(binding: dict, evidence: dict, variant_attributes: dict 
                          and _review_digest(original_marker) == _review_digest(producer_marker))):
             raise ValueError('original native quote markers differ from declared source facts')
         terms = {**marker, **extra, 'currency_unconfirmed': marker['source_quote_currency'] is None}
+        if public_base:
+            # This is advertised base arithmetic, NOT payment/coupon proof.
+            # Optional basket coupon declarations remain separately visible.
+            terms.update(source_condition_kind='source_public_base_quote',
+                         payable_price_unconfirmed=False, minimum_quantity=minimum,
+                         source_base_quote_only=True)
         if previous is not None and (_review_digest(previous) != _review_digest(original_marker)
                                      or _review_digest(expected) != _review_digest(terms)):
             raise ValueError('original native source conditions differ between observations')
@@ -1470,11 +1508,12 @@ def _review_terms(review: dict, binding: dict, evidence: dict,
                             and binding['source_name'] == 'homeplus')
     if re.search(r"\d\s*\+\s*\d|무료|증정|할인|쿠폰|회원|체크아웃|checkout|buy\s*\d|free", title, re.I):
         raise ValueError("source title contains unsupported promotion/eligibility terms")
-    if family == 'native_source_quote_purchase_conditions_unverified':
+    if family in {'native_source_quote_purchase_conditions_unverified', 'native_homeplus_public_base_quote'}:
         if 'native_source_capture_utf8' in review:
             before, terms = _captured_native_quote_terms(review, binding, evidence, variant_attributes)
         else:
-            before, terms = _native_quote_terms(binding, evidence, variant_attributes)
+            before, terms = _native_quote_terms(binding, evidence, variant_attributes,
+                                                public_base=family == 'native_homeplus_public_base_quote')
     elif family == "minimum_order2_without_discount":
         if (binding["source_name"] != "costco" or url.hostname not in {"www.costco.co.kr", "costco.co.kr"}
                 or url.path != url.path.rsplit("/p/", 1)[0] + "/p/" + native
@@ -1608,7 +1647,8 @@ def _review_terms(review: dict, binding: dict, evidence: dict,
                         "coupon_text", "membership_text", "minimum_purchase_quantity", "min_purchase_quantity",
                         "discount_rate", "checkout_price", "checkout_discount", "buy_quantity", "free_quantity"):
                 if ((family in {"observed_source_quote_purchase_conditions_unverified",
-                                "native_source_quote_purchase_conditions_unverified"} or homeplus_conditional)
+                                "native_source_quote_purchase_conditions_unverified",
+                                "native_homeplus_public_base_quote"} or homeplus_conditional)
                         and key == "promotion_conditions"
                         and _review_digest(layer.get(key)) == _review_digest(before['promotion_conditions'])):
                     continue
@@ -1619,13 +1659,14 @@ def _review_terms(review: dict, binding: dict, evidence: dict,
                 or not _review_source_title_matches(binding, raw, raw.get('name'))
                 or (raw.get("event_name") != event
                     and not (family in {"observed_source_quote_purchase_conditions_unverified",
-                                       "native_source_quote_purchase_conditions_unverified"}
+                                       "native_source_quote_purchase_conditions_unverified",
+                                       "native_homeplus_public_base_quote"}
                              and event is None and raw.get("event_name") == ""))
                 or raw.get("original_price") is not None
                 or (family == "minimum_order2_without_discount" and raw.get("price") != raw.get("sale_price"))):
             raise ValueError("source quote/title/annotation mismatch")
         source_url = raw.get("source_url") or raw.get("canonical_url") or raw.get("detail_url") or attrs.get("source_url")
-        if family != 'native_source_quote_purchase_conditions_unverified' and source_url != binding["source_url"]:
+        if family not in {'native_source_quote_purchase_conditions_unverified', 'native_homeplus_public_base_quote'} and source_url != binding["source_url"]:
             raise ValueError("original source URL mismatch")
     return before, terms
 

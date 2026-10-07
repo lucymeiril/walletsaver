@@ -74,6 +74,21 @@ def confirmed_price_or_none(value: Any) -> int | float | None:
     return int(number) if number.is_integer() else number
 
 
+def bound_homeplus_product_currency(node: Any, *, native: str, title: str,
+                                   source_url: str, price: Any) -> str | None:
+    """Currency of this source quote, never a product matching attribute."""
+    if not isinstance(node, Mapping) or node.get("@type") != "Product":
+        return None
+    offer = node.get("offers")
+    if (node.get("mpn") != native or node.get("name") != title
+            or not isinstance(offer, Mapping) or offer.get("@type") != "Offer"
+            or offer.get("url") != source_url or offer.get("priceCurrency") != "KRW"
+            or confirmed_price_or_none(price) is None
+            or confirmed_price_or_none(offer.get("price")) != confirmed_price_or_none(price)):
+        return None
+    return "KRW"
+
+
 def discount_rate_or_none(value: Any) -> float | None:
     """Return a source-provided fractional discount rate (0..1), or None."""
 

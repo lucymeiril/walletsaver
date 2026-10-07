@@ -1408,6 +1408,35 @@ describe('249 native source quote declarations', () => {
       discountMax: 0, issueStartDt: '2026-10-01 00:00:00', issueEndDt: '2026-10-07 23:59:59' },
     { manageCouponNm: '[컨틴] 5만/2천 10.01~07', purchaseMin: 50000, discount: 2000, discountType: '2' },
   ];
+  it('retains optional coupon and purchase limits on a KRW public base quote without claiming checkout payment', () => {
+    const offer = { id: 'public-base-quote', listed_price: 2190, total_price: 2190, comparable_price: 2190,
+      total_quantity: 12000, quantity_unit: 'ml', received_package_count: 1, per_100ml: 18.25,
+      minimum_quantity: 1, membership_required: null, coupon_required: null, current_eligible: true,
+      promotion_conditions: { source_condition_kind: 'source_public_base_quote', source_quote_currency: 'KRW',
+        source_base_quote_only: true, payable_price_unconfirmed: false,
+        source_minimum_purchase_quantity: 1, source_maximum_purchase_quantity: 2,
+        source_purchase_limit: { purchaseLimitYn: 'Y', purchaseLimitDuration: 'O', purchaseLimitQty: 2,
+          itemPurchaseLimitMessage: '최대 2개 구매가능' },
+        source_coupon_declarations: { couponInfo: coupons[0], couponList: coupons },
+        coupon_application_unconfirmed: true } };
+    const original = JSON.stringify(offer);
+    const text = getOfferConditionText(offer);
+    for (const fragment of ['출처 기본 표시가격 관측 (쿠폰 할인 전)', '출처 주문 최소 1개 · 판매 묶음 수량 아님',
+      '출처 구매 수량 한도 2개 · 판매 묶음 수량 아님', '최대 2개 구매가능',
+      '구매금액 기준 표기 70,000', '할인값 표기 4,000', '구매금액 기준 표기 50,000', '할인값 표기 2,000',
+      '출처 발급 기간 2026-10-01 00:00:00 ~ 2026-10-07 23:59:59', '쿠폰 자격·실제 적용 미확인',
+      '기본 표시가격·내용량 기준 계산 · 쿠폰 할인·배송비 미포함 · 실제 결제 금액 미확인',
+      '회원 조건 미확인 · 쿠폰 조건 미확인']) expect(text).toContain(fragment);
+    expect(text.match(/7만\/4천/g)).toHaveLength(1);
+    expect(text).not.toMatch(/총지출·실제 결제 금액 미확인|쿠폰 필요 없음|회원 제한 없음|할인 한도 0/);
+    expect(getObservedOfferPriceText(offer)).toBe('2,190원');
+    expect(getOfferUnitPrice(offer)).toEqual({ price: 18.25, unit: '100ml' });
+    expect(getCartQuotePresentation({ product_id: 'prod-water', variant_id: 'var-water',
+      listing_id: 'listing-water', offer_id: offer.id, saved_receipt_valid: true, price: 2190,
+      offer_context: offer })).toMatchObject({ confirmedPurchase: false,
+      statusText: expect.stringContaining('현재 결제 금액·구매 가능 여부 미확인') });
+    expect(JSON.stringify(offer)).toBe(original);
+  });
   it.each([
     ['costco', 40990, { source_quote_currency: 'KRW', source_minimum_purchase_quantity: 1,
       source_maximum_order_quantity: 500, membership_eligibility_unconfirmed: true,

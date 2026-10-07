@@ -241,8 +241,10 @@ export function getCatalogObservationDescription(product = {}, options = {}) {
 
 export function getConditionalOfferConditionText(offer = {}) {
   const conditions = offer.promotion_conditions || {};
-  if (conditions.source_condition_kind === 'source_quote_purchase_conditions_unverified'
-    && conditions.payable_price_unconfirmed === true) {
+  const publicBaseQuote = conditions.source_condition_kind === 'source_public_base_quote'
+    && conditions.source_base_quote_only === true && conditions.payable_price_unconfirmed === false;
+  if (publicBaseQuote || (conditions.source_condition_kind === 'source_quote_purchase_conditions_unverified'
+    && conditions.payable_price_unconfirmed === true)) {
     const positiveCount = value => Number.isInteger(value) && value > 0;
     const coupons = conditions.source_coupon_declarations || {};
     const couponRows = [coupons.couponInfo, ...(Array.isArray(coupons.couponList) ? coupons.couponList : [])]
@@ -266,7 +268,7 @@ export function getConditionalOfferConditionText(offer = {}) {
     });
     const limit = conditions.source_purchase_limit || {};
     return [
-      '출처 표시가격 관측',
+      publicBaseQuote ? '출처 기본 표시가격 관측 (쿠폰 할인 전)' : '출처 표시가격 관측',
       typeof conditions.source_promotion_period_text === 'string' && conditions.source_promotion_period_text.trim()
         ? `출처 표시 행사기간 ${conditions.source_promotion_period_text.trim()} · 시간대/경계 미확인` : null,
       positiveCount(conditions.source_minimum_purchase_quantity)
@@ -288,7 +290,9 @@ export function getConditionalOfferConditionText(offer = {}) {
       ...couponTexts,
       conditions.coupon_application_unconfirmed === true || !Object.hasOwn(conditions, 'coupon_application_unconfirmed')
         ? '쿠폰 자격·적용 미확인' : null,
-      '총지출·실제 결제 금액 미확인',
+      publicBaseQuote
+        ? '기본 표시가격·내용량 기준 계산 · 쿠폰 할인·배송비 미포함 · 실제 결제 금액 미확인'
+        : '총지출·실제 결제 금액 미확인',
     ].filter(Boolean).join(' · ');
   }
   if (['basket_spend_won_discount', 'basket_spend_percent_discount'].includes(conditions.source_condition_kind)

@@ -22,7 +22,7 @@ import requests
 
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, DiscountItem
-from core.promotion_semantics import confirmed_price_or_none
+from core.promotion_semantics import confirmed_price_or_none, bound_homeplus_product_currency
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
@@ -502,6 +502,20 @@ class HomeplusCrawler(CrawlerContract):
                     # guessed JSON/HTML-script pointer into the original body.
                     evidence["source_pointer_kind"] = "parser_selected_product_projection"
                     item.attributes["submission_business_evidence"] = [evidence]
+                    # The native item and Product schema are separate scripts in
+                    # the SAME response. Retain the price-bound schema, without
+                    # inventing currency from the retailer or another product.
+                    currency_nodes = self._product_currency_nodes(raw_data, item)
+                    if currency_nodes is None:
+                        continue
+                    if currency_nodes:
+                        item.attributes["homeplus_price_currency_evidence"] = [
+                            commercial_product_evidence(node, pointer,
+                                response_url=receipt.get("response_url"),
+                                response_body_sha256=receipt.get("response_body_sha256"),
+                                received_at=receipt.get("received_at"))
+                            for pointer, node in currency_nodes]
+                        item.attributes["source_quote_currency"] = "KRW"
                     if evidence["http_receipt_status"] == "supplied_response_metadata":
                         item.crawled_at = datetime.fromisoformat(evidence["source_response_received_at"])
                     items.append(item)
@@ -514,6 +528,33 @@ class HomeplusCrawler(CrawlerContract):
         except Exception as exc:
             logger.warning("[홈플러스] HTML 파싱 실패: %s", exc)
         return items
+
+    def _product_currency_nodes(self, raw_data: str, item: DiscountItem):
+        if 'homeplus_detail_source_fields' not in item.attributes or '<script' not in raw_data:
+            return []
+        from bs4 import BeautifulSoup
+        nodes = []
+        for index, script in enumerate(BeautifulSoup(raw_data, "html.parser").find_all("script")):
+            try:
+                payload = json.loads(script.get_text())
+            except (ValueError, TypeError):
+                continue
+            rows = payload.get("@graph", [payload]) if isinstance(payload, dict) else []
+            if not isinstance(rows, list):
+                continue
+            for offset, node in enumerate(rows):
+                if (not isinstance(node, dict) or node.get("@type") != "Product"
+                        or node.get("mpn") != item.attributes.get("mart_native_code")):
+                    continue
+                if bound_homeplus_product_currency(node,
+                        native=item.attributes["mart_native_code"], title=item.name,
+                        source_url=item.detail_url, price=item.sale_price) is None:
+                    return None
+                nodes.append((f"script{index}/@graph/{offset}",
+                              {"@type": "Product", "name": node["name"], "mpn": node["mpn"],
+                               "offers": {key: node["offers"][key] for key in
+                                          ("@type", "price", "priceCurrency", "url")}}))
+        return nodes if len(nodes) <= 1 else None
 
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         try:

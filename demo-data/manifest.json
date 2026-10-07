@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 111,
-  "version": "2026-10-07-catalog111-form460",
-  "source_code_base": "2dcf7457f08796cfc61981701977f2864d8a4a7c",
+  "catalog_revision": 113,
+  "version": "2026-10-07-catalog113-source-quote462",
+  "source_code_base": "ec8c64f0f5a62827ec5aa0286a978f3202162242",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized consistent admin/catalog111/publicsnapshot;7source-bound neutral samekind form refinements:2liquid drinkingvinegar,2nativefrozen fruit bowls without smoothie inference,2packagedchestnuts without roast inference,1redginseng+incidentalshoppingbag.492groups1191oldIDs/347leafreviews15hash-pinned historicaldefinitions;1489categories1305keywords. All9115events/quote/time/6402variants/6458listings/knownvectors/NULLaggregateunitprice/accountreferences preserved. Externalhotdeal7/accounts0; initial98paused, candidateverificationongoing.",
+  "data_scope": "Sanitized consistent admin/catalog113/publicsnapshot; new1 Homeplus059102628 same-response native+Product JSONLD KRW source-base2190/2Lx6 quote; min1/max2 and optionalbasket50000/70000 retained separately, no actualpayment/couponeligibility or retrospective269 currency upgrade. Original9115 eventIDs/quotes/times/products/specs/listings/accounts preserved; all9116/public8804/pending312. Initial9098/98 unchanged; candidate verification ongoing.",
   "files": {
     "admin.sqlite": {
-      "sha256": "6085cd286a10d8d5f253041e461b6defefc3a6bdbfe652ac6d161a22a3b0674d",
-      "bytes": 63307776,
+      "sha256": "338ac098873ebcdcc5ba9f9afe89a4689ed5febac8077ab452a2d897021ff940",
+      "bytes": 63361024,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -48,9 +48,9 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6402,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 9115,
+        "normalized_offer_events": 9116,
         "normalized_week_buckets": 3,
-        "normalized_offer_week_links": 9090,
+        "normalized_offer_week_links": 9091,
         "products": 0,
         "categories": 542,
         "unified_categories": 1489,
@@ -61,9 +61,9 @@
         "product_matches": 0,
         "mart_category_mappings": 506,
         "pending_categorizations": 0,
-        "pending_ingestions": 15,
+        "pending_ingestions": 16,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 86,
+        "catalog_sync_log": 87,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "0a6d5005b32fe66d12fa988b7de06d2801ffe3d7b1efa3c06e1cbd2ab1a2a43f",
-      "archive_bytes": 9128162
+      "archive_sha256": "b8a4c9c991f2c9088bfd8b79dae4eeaa2aae7fe3fb2b65971cd9dba54582de9a",
+      "archive_bytes": 9131635
     },
     "public_snapshot.sqlite": {
-      "sha256": "2980983707ad6d8c4170ea4895818928a1703533d70498eefb0dffe777634002",
-      "bytes": 58896384,
+      "sha256": "522e6eae744d4ffd1f05fe244e2fc8df650cde4b729766d21f924983f17d029f",
+      "bytes": 58925056,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -99,9 +99,9 @@
         "normalized_canonical_products": 6308,
         "normalized_product_variants": 6402,
         "normalized_source_listings": 6458,
-        "normalized_offer_events": 8803,
+        "normalized_offer_events": 8804,
         "normalized_week_buckets": 3,
-        "normalized_offer_week_links": 8793,
+        "normalized_offer_week_links": 8794,
         "products": 0,
         "categories": 542,
         "unified_categories": 1489,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "d1c5ae9d621011088130c26956330660225c7aaa58eb9687f032d20ae796f2fc",
-      "archive_bytes": 8489404
+      "archive_sha256": "3b7dd0988123d041b7fd1a5e340fc101b0ad5432b03bb1b452300e02777e4b01",
+      "archive_bytes": 8490222
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -168,11 +168,11 @@
     "packages/shared/core/reviewed_catalog_groups.json": "016e9a4efcb71394bfc3b87a37157a0d388767ea56b6ca51e9b85f56234fe86b",
     "packages/shared/core/catalog_quantity.py": "b5e6b4952c09d5013e4ee68f8284751beb71fdf1306c8fa37b3092c2ba50e04c",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
-    "packages/db-admin/backend/services/catalog_bundle.py": "a157eb2319b4755d1496532dd5164b876836447a915c05e2426790a42a2c962a",
+    "packages/db-admin/backend/services/catalog_bundle.py": "ae836d875948397712dc304fb0d2816f037a6e151b4b2f56a09b7b41c98361be",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "d9e9a0ffe20f3673c441bc2a2626ab2051ee9a7976a9b93b284f4430b1f1d6f1",
     "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
     "packages/web-api/backend/services/catalog_storage.py": "f95d499a606bd5d94297d7a15b9902b47f51b89854d1c3365a7b495abd4f63cb",
-    "packages/web-frontend/src/utils/productDecision.js": "5b4069be9cefd9e75cf15b817046335a019dc631fa53440c801908c7a211702d",
+    "packages/web-frontend/src/utils/productDecision.js": "60c41f59bd8cc66c964070d91c26f4ca1dd4f76f073c7e6c26b2789978d1889f",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "704a8ceaff8157aedd59f346bc4330ca0a25ce6cc3ecd672d06ad8dd208e3e0d",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
     "packages/db-admin/backend/services/initial_taxonomy.py": "f1403bd066efdd0b674fa4be5a3df6f5ac31e8188121d43793146763c8fb0e8a",
@@ -189,7 +189,9 @@
     "tools/install_demo_catalog.py": "bd8e6821e13e2b4ba88b84c1c7b3253e36bb683d828eff769bc7397105783129",
     "packages/web-api/backend/api/routes/community.py": "a7aeedbaf3f1c0f917a464dcdc00d3a7b0292e46c684f79911b6a05807f4f10c",
     "packages/web-frontend/src/utils/productActions.js": "53222e9ed7df758347ac7c8fc1835c0a5164e7de2d87231d19f5ac3bc22b901d",
-    "packages/shared/core/product_units.py": "ab7f7e7cab042ee5454f3c0ad90592f106588c72d3fef9cc61e5e0ee7b657a73"
+    "packages/shared/core/product_units.py": "ab7f7e7cab042ee5454f3c0ad90592f106588c72d3fef9cc61e5e0ee7b657a73",
+    "packages/shared/core/promotion_semantics.py": "1c08f9a5ee54c994c7981596b4cbb7f32d09243a37546dd1c6e9d8837348b2c5",
+    "packages/crawler-admin/backend/crawlers/marts/homeplus/crawler.py": "add9a6a83ff60965cce95d68f27df93b51d03dc2afad0cabecccd8fb75a8eadc"
   },
   "catalog_updates": [
     {
