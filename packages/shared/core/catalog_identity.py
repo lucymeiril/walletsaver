@@ -30,8 +30,7 @@ def validated_group_members(product: Mapping, lookup: Callable[[str], Mapping | 
     if not isinstance(review, Mapping) or review.get("review_version") != GROUP_VERSION:
         return fallback
     registered = next((row for row in reviewed_registry()["groups"] if row["key"] == review.get("key")), None)
-    if not registered or any(review.get(key) != registered.get(key) for key in (
-            "canonical_product_id", "canonical_name", "brand", "review_version")):
+    if not registered:
         return fallback
     members = review.get("member_product_ids")
     if (not isinstance(members, list) or not 2 <= len(members) <= 64
@@ -41,12 +40,22 @@ def validated_group_members(product: Mapping, lookup: Callable[[str], Mapping | 
             or not isinstance(review.get("key"), str) or not review["key"].strip()
             or not isinstance(review.get("canonical_name"), str) or not review["canonical_name"].strip()):
         return fallback
-    # A newer source release may add proved members while an existing installation
-    # still has the previous reciprocal subset. Never invent the missing members.
-    if not set(members).issubset(registered.get("member_product_ids", [])):
-        return fallback
     category = product.get("unified_category_id")
-    if not isinstance(category, str) or not category or category != registered.get("leaf"):
+    if not isinstance(category, str) or not category:
+        return fallback
+    # Match one complete approved definition. A historical leaf cannot borrow
+    # the newer definition's members or metadata, and no missing rows are invented.
+    definitions = [registered]
+    history = registered.get("historical_definitions")
+    if isinstance(history, list):
+        definitions.extend(definition for definition in history if isinstance(definition, Mapping))
+    if not any(category == definition.get("leaf")
+               and all(review.get(key) == definition.get(key) for key in (
+                   "key", "canonical_product_id", "canonical_name", "brand", "review_version"))
+               and isinstance(definition.get("member_product_ids"), list)
+               and all(isinstance(member, str) for member in definition["member_product_ids"])
+               and set(members).issubset(definition["member_product_ids"])
+               for definition in definitions):
         return fallback
     for member in members:
         row = lookup(member)

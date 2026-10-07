@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 101,
-  "version": "2026-10-06-catalog101-category409",
-  "source_code_base": "ca7f6c5bfffe629a7401940a31529a144374e569",
+  "catalog_revision": 102,
+  "version": "2026-10-07-catalog102-category410",
+  "source_code_base": "0f8cc6a58fd161f2121b0bcb17ebc5aedc787ccf",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete admin/catalog101/publicsnapshot.23source-bound form refinements/7commonfour-level forms;20source-reference-role corrections8counts12unknowncontents (no mg-to-g);2existinglabel100g/100ml and80g retained.41uniqueproducts,20oldvariants inactive retained,20newcorrectvariants,20canonical matchingkeys; all9115rawquote/event/time andaccountreferences preserved,492groups1191oldIDs91leafreviews. Source-rate literaloffer text separate from soldcontents/identity. Externalhotdeal7/accounts0/initial98paused.",
+  "data_scope": "Sanitized complete admin/catalog102/publicsnapshot:16 source-bound form refinements/7four-level commonforms, unchanged quantities/specification IDs, all9115 event/rawquote/time/accountreferences preserved;492groups1191oldIDs107leafreviews. Latestsource also accepts two precisely pinned older approved group definitions for source-only startup; unknown metadata still rejects. Externalhotdeal7/accounts0/initial98paused.",
   "files": {
     "admin.sqlite": {
-      "sha256": "a3a6938254e04646279bb1f5993eabf5692e0c856c944cbe5939f4545fa2f798",
-      "bytes": 62902272,
+      "sha256": "a836dd4c6c6c8d4e92ed9cd74d2d1169d2d7e5c836ae2a3398b35c517e162198",
+      "bytes": 62918656,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -53,8 +53,8 @@
         "normalized_offer_week_links": 9090,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1405,
-        "keywords": 1230,
+        "unified_categories": 1413,
+        "keywords": 1237,
         "product_keywords": 0,
         "matching_entries": 6391,
         "product_match_rules": 0,
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 76,
+        "catalog_sync_log": 77,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "6ec9efb50a8ef8fe72ad343ff9b858ab966f8562aa85a5ed0f1ee32cfbdd2a89",
-      "archive_bytes": 9015910
+      "archive_sha256": "b1d08413b7681cdbb0b212c7184cbfbb15864613ccc240ea23f20576064bd7a9",
+      "archive_bytes": 9017253
     },
     "public_snapshot.sqlite": {
-      "sha256": "98efbbb93610f4d6765fee53148e970f800ef277c34a567d673c91774d59e033",
-      "bytes": 58470400,
+      "sha256": "0621de84f1481feacf14ae59796f27dfd1b3b97d426101fa9877bcfb0d4487b7",
+      "bytes": 58482688,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -104,8 +104,8 @@
         "normalized_offer_week_links": 8793,
         "products": 0,
         "categories": 542,
-        "unified_categories": 1405,
-        "keywords": 1230,
+        "unified_categories": 1413,
+        "keywords": 1237,
         "product_keywords": 0,
         "mart_category_mappings": 506,
         "baseline_prices": 0,
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "ea7538465f8945b7d084d8c995e078740f95ccc4812a6c8ea97ef87da8484784",
-      "archive_bytes": 8365993
+      "archive_sha256": "11ac678ad2710254c0dadebff4593a5f7536b2b991d4e33f1ecb3c6f57acc7b0",
+      "archive_bytes": 8372888
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -164,18 +164,18 @@
     "tools/install_demo_catalog.py": "69926ad6ec0cda79c6bf9c0b870b16f34e87b11eee90ef06dda1e56e9b0b0ea4"
   },
   "reviewed_group_source_files": {
-    "packages/shared/core/catalog_identity.py": "f039767ee85c8a8b12509755532288b74d9269ca849c07bb0d6919dd50e6a6eb",
-    "packages/shared/core/reviewed_catalog_groups.json": "ce6d42e7169267c2500785684f52338421f70ab94eb5776e5d5389878646a3d5",
-    "packages/shared/core/catalog_quantity.py": "bb7fbb72568f969b977e73003c1cd5cd0f48ffedd8c2e687a592b07347d63d91",
+    "packages/shared/core/catalog_identity.py": "c49731465f57c5732e8dfbd48b989ea75f5ab6fa45426bdf0a6299e479ca9b08",
+    "packages/shared/core/reviewed_catalog_groups.json": "c69b1d39e68db869819272a01036939cfd7fe813ceafdab54de1600a62ed831d",
+    "packages/shared/core/catalog_quantity.py": "b5e6b4952c09d5013e4ee68f8284751beb71fdf1306c8fa37b3092c2ba50e04c",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
-    "packages/db-admin/backend/services/catalog_bundle.py": "431459aaf3b754def5a2a65f84e87c25eef3b3a48007b6d001f60d5dad3055d1",
+    "packages/db-admin/backend/services/catalog_bundle.py": "573688287b46f89a514a5fdfe2ae34636fd69f7fdbaa39c2a7e086ae5a0fa278",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "d9e9a0ffe20f3673c441bc2a2626ab2051ee9a7976a9b93b284f4430b1f1d6f1",
     "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
     "packages/web-api/backend/services/catalog_storage.py": "f95d499a606bd5d94297d7a15b9902b47f51b89854d1c3365a7b495abd4f63cb",
     "packages/web-frontend/src/utils/productDecision.js": "5b4069be9cefd9e75cf15b817046335a019dc631fa53440c801908c7a211702d",
     "packages/web-frontend/src/components/ProductDetailModal.jsx": "704a8ceaff8157aedd59f346bc4330ca0a25ce6cc3ecd672d06ad8dd208e3e0d",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
-    "packages/db-admin/backend/services/initial_taxonomy.py": "098862305ef79464aae5ddb97c1ab73205672d9853595b557b0768279b28b59c",
+    "packages/db-admin/backend/services/initial_taxonomy.py": "f36c41e81f18cac09f09e9b05583c6ccb54fa2ab311741d5f147c30de7f8cedb",
     "packages/shared/core/reviewed_content_quantities.py": "4ca38bce6ac118bc87dc7350719110c89f17a83e781923ad178caa5bf3b0d286",
     "packages/shared/core/reviewed_source_evidence.py": "6d9b7b3d40883dbc256555951bc17d8530e28f3221b0e66473ae44350c2b4d66",
     "packages/db-admin/backend/services/public_snapshot_v2.py": "4643b06bd8ac957c100704c5cee515fa777ff0739b8fea50b16de9f3c4a7c960",
@@ -279,14 +279,22 @@
       "base_catalog_revision": 100,
       "reviewed_catalog_revision": 101,
       "scope": "23categorysource refinements7forms/keywords,20reference-role corrections8count12unknowncontents;20oldvariant IDs retainedinactive/new20canonicalspecs andnew20lookupkeys. All9115event/rawquote/time/accountreferences preserved, formalpreview/apply/replay/publish101 verified. Source-rate money onlyhistoricalquote, notmatching."
+    },
+    {
+      "path": "demo-data/updates/catalog101-to102.json",
+      "sha256": "c207e01a9a7bc3515e00f901a56e575a91da3a4c39fb278af018b905020c5e4d",
+      "bytes": 43580,
+      "base_catalog_revision": 101,
+      "reviewed_catalog_revision": 102,
+      "scope": "16 exact source-bound category-only refinements7forms; originalvariant/proof/listing/event/quote/time/accounts unchanged, append-only category auditlineage, actualformalpreview/apply/replay/publish102."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "ce6d42e7169267c2500785684f52338421f70ab94eb5776e5d5389878646a3d5",
+    "source_registry_sha256": "c69b1d39e68db869819272a01036939cfd7fe813ceafdab54de1600a62ed831d",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
-    "leaf_reviews": 91
+    "leaf_reviews": 107
   }
 }

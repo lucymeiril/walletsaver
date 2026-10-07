@@ -78,7 +78,7 @@ def test_snapshot_accepts_inactive_products_and_non_pending_states(tmp_path, off
     assert snapshot.read_bytes() == original_bytes
 
 
-@pytest.mark.parametrize("mismatch", [None, "unknown_key", "unapproved_member", "nonreciprocal"])
+@pytest.mark.parametrize("mismatch", [None, "unknown_key", "unapproved_member", "nonreciprocal", "forged_brand"])
 def test_snapshot_group_source_compatibility_preserves_existing_install(tmp_path, monkeypatch, mismatch):
     import core.catalog_identity as identity
     # Current code has reviewed a third member, while this historical DB still
@@ -96,6 +96,8 @@ def test_snapshot_group_source_compatibility_preserves_existing_install(tmp_path
         review["member_product_ids"] = other["member_product_ids"] = ["milk-a", "unreviewed"]
     elif mismatch == "nonreciprocal":
         other["canonical_name"] = "다른 우유"
+    elif mismatch == "forged_brand":
+        review['brand'] = other['brand'] = '검수되지 않은 브랜드'
     with sqlite3.connect(candidate) as db:
         db.execute("ALTER TABLE normalized_canonical_products ADD COLUMN public_product_id TEXT")
         db.execute("ALTER TABLE normalized_canonical_products ADD COLUMN attributes TEXT")
@@ -121,6 +123,46 @@ def test_snapshot_group_source_compatibility_preserves_existing_install(tmp_path
                      "attributes": {"catalog_group": review}} for pid in ["milk-a", "milk-b"]]
         assert identity.validated_group_members(products[0], {p["public_product_id"]: p for p in products}.get) == ("milk-a", "milk-b")
         assert installed.read_bytes() == original
+
+
+@pytest.mark.parametrize('key', [
+    'reviewed.frozen_dessert.maeil-sangha-freeze-chocolate',
+    'reviewed.frozen_dessert.maeil-sangha-freeze-milk',
+])
+@pytest.mark.parametrize('boundary', [None, 'unapproved_category', 'mixed_reciprocal_category', 'newer_member'])
+def test_snapshot_pinned_historical_group_leaf_is_bound_to_one_definition(monkeypatch, key, boundary):
+    from copy import deepcopy
+    import core.catalog_identity as identity
+
+    registry = deepcopy(identity.reviewed_registry())
+    current = next(row for row in registry['groups'] if row['key'] == key)
+    historical = current['historical_definitions'][0]
+    assert historical['approved_source_commit'] == '1da1883'
+    assert historical['registry_sha256'] == '959190b31ae3dacd349292e43cb7ad893f030d70ae8601309a96e0ccaccd2744'
+    review = {field: deepcopy(historical[field]) for field in (
+        'key', 'canonical_product_id', 'canonical_name', 'brand', 'review_version', 'member_product_ids')}
+    if boundary == 'newer_member':
+        # A member approved only for the latest leaf cannot join the old leaf.
+        current['member_product_ids'].append('synthetic-current-only-member')
+        review['member_product_ids'].append('synthetic-current-only-member')
+    products = [{'public_product_id': member, 'unified_category_id': historical['leaf'],
+                 'attributes': {'catalog_group': deepcopy(review)}} for member in review['member_product_ids']]
+    if boundary == 'unapproved_category':
+        for product in products:
+            product['unified_category_id'] = 'food.frozen.dessert.unreviewed'
+    if boundary == 'mixed_reciprocal_category':
+        products[-1]['unified_category_id'] = current['leaf']
+    before = deepcopy(products)
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: registry)
+    lookup = {product['public_product_id']: product for product in products}.get
+    if boundary:
+        assert identity.validated_group_members(products[0], lookup) == (products[0]['public_product_id'],)
+        with pytest.raises(ValueError, match='catalog_group_source_incompatible'):
+            identity.validate_snapshot_groups(products)
+    else:
+        assert identity.validated_group_members(products[0], lookup) == tuple(review['member_product_ids'])
+        assert identity.validate_snapshot_groups(products) == 1
+    assert products == before
 
 
 def _revision(path):

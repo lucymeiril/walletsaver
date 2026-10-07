@@ -382,11 +382,21 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
                 errors.append(f"variants[{variant_id}] 중복 미선택 대안 규격")
             variant_signatures[signature] = variant_id
             continue
-        from core.catalog_quantity import valid_physical_device_variant
+        from core.catalog_quantity import physical_specification_role, valid_physical_device_variant
         if (row.get('attributes') or {}).get('quantity_basis') == 'physical_device_specification_v1':
             proof = (row.get('attributes') or {}).get('physical_device_specification')
-            if (not valid_physical_device_variant(row)
-                    or products.get(product_id, {}).get('unified_category_id') != (proof or {}).get('category_id')):
+            valid_proof = valid_physical_device_variant(row)
+            category = products.get(product_id, {}).get('unified_category_id')
+            category_matches = False
+            if valid_proof:
+                from core.catalog_identity import reviewed_leaf_compatible
+                old_category = proof['category_id']
+                category_matches = category == old_category or (
+                    physical_specification_role(old_category) is not None
+                    and physical_specification_role(old_category) == physical_specification_role(category)
+                    and reviewed_leaf_compatible(old_category, category, proof['title'],
+                                                 proof['required_source']['source_urls']))
+            if not valid_proof or not category_matches:
                 errors.append(f"variants[{variant_id}]의 기기 규격/판매 수량 계약이 올바르지 않습니다")
                 continue
             signature = (product_id, 'physical_device_specification_v1', json.dumps(proof, sort_keys=True, ensure_ascii=False))
@@ -396,7 +406,11 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             continue
         from core.reviewed_source_evidence import valid_nonmeasured_variant
         if valid_nonmeasured_variant(row):
-            if products.get(product_id, {}).get('unified_category_id') != row['attributes']['nonmeasured_listing']['category_id']:
+            from core.catalog_identity import reviewed_leaf_compatible
+            proof = row['attributes']['nonmeasured_listing']
+            category = products.get(product_id, {}).get('unified_category_id')
+            if (category != proof['category_id'] and not reviewed_leaf_compatible(
+                    proof['category_id'], category, proof['title'], proof['required_source']['source_urls'])):
                 errors.append(f"variants[{variant_id}] 비계량 listing 상품형태가 통합 리프와 다릅니다")
             signature = (product_id, 'nonmeasured_source_listing_v1', _text(row['attributes']['nonmeasured_listing']['title']))
             if signature in variant_signatures:

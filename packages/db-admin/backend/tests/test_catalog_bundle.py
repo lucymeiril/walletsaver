@@ -108,10 +108,10 @@ def _offer_review_digest(value):
                                     separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
-def _physical_role_bundle(category, title, quantity, unit):
+def _physical_role_bundle(category, title, quantity, unit, source_url='https://example.test/physical'):
     from core.catalog_quantity import normalize_catalog_package
     bundle = _bundle()
-    source = {'name': title, 'detail_url': 'https://example.test/physical',
+    source = {'name': title, 'detail_url': source_url,
               'pack_qty': quantity, 'pack_unit': unit}
     package, issues = normalize_catalog_package(source, {}, title, category_id=category)
     assert package and not issues
@@ -156,6 +156,111 @@ def test_physical_role_official_import_retains_spec_and_only_declared_count(cate
     assert session.get(NormalizedOfferEvent,'offer-physical-new-price').price == 11000
     assert session.get(NormalizedOfferEvent,bundle['offers'][0]['public_offer_event_id']).price == 10000
     assert stored.attributes == variant['attributes']
+    session.close()
+
+
+def _source_leaf_refinement_bundle(title):
+    from core.catalog_identity import reviewed_registry
+    from core.reviewed_content_quantities import REVIEWED_NONMEASURED_LISTINGS
+    from core.reviewed_source_evidence import nonmeasured_listing_review
+
+    review = next(record for record in reviewed_registry()['leaf_reviews']
+                  if title in record['source_titles'])
+    if review['old_leaf'] == 'household.kitchen.consumables.paper_cup':
+        bundle = _physical_role_bundle(review['old_leaf'], title, 354, 'ml', review['source_urls'][0])
+    else:
+        original = next(record for record in REVIEWED_NONMEASURED_LISTINGS if record['title'] == title)
+        source = {'name': title, 'detail_url': original['required_source']['source_urls'][0]}
+        for key, value in original['required_source']['source_fields'].items():
+            if key.startswith('attributes.'):
+                source.setdefault('attributes', {})[key.split('.', 1)[1]] = value
+            else:
+                source[key] = value
+        package, issues = nonmeasured_listing_review(source, source.get('attributes', {}), title)
+        assert package and not issues
+        bundle = _bundle()
+        bundle['products'][0].update(canonical_name=title)
+        bundle['variants'][0].update(package, variant_name=title)
+        bundle['source_listings'][0].update(source_title=title, source_url=source['detail_url'])
+        bundle['offers'][0].update(promotion_type='final_price', price=10000, original_price=None,
+            offer_state='active', raw_evidence={'observations':[{'raw_record_id':'synthetic-refinement:0',
+                'raw_payload':source, 'raw_payload_sha256':_offer_review_digest(source)}]})
+        for key in ('keywords','match_rules','mart_category_mappings','week_buckets','offer_week_links'):
+            bundle[key] = []
+    bundle['categories'] = [{'id': review['new_leaf'], 'parent_id': None, 'name_ko': '검수된 상품형태'}]
+    bundle['products'][0]['unified_category_id'] = review['new_leaf']
+    return bundle
+
+
+@pytest.mark.parametrize('title', [
+    '하리오 커피밀 스마트 G 프로', '프로이지테크가스렌지', '알러텍트 아이스 패드 - 킹',
+    '에이프릴앳홈 리플 누비 이불 - 싱글', '에이프릴앳홈 순면 리플 겹이불 - 싱글',
+    '삼풍 이중단열 커피컵 354ml x 80개',
+])
+def test_source_bound_leaf_refinement_import_preserves_original_variant_and_observation(title):
+    bundle = _source_leaf_refinement_bundle(title)
+    variant_before = deepcopy(bundle['variants'][0])
+    offer_before = deepcopy(bundle['offers'][0])
+    listing_before = deepcopy(bundle['source_listings'][0])
+    session = _session()
+    original = deepcopy(bundle)
+    attrs = variant_before['attributes']
+    proof = attrs.get('physical_device_specification') or attrs['nonmeasured_listing']
+    original['categories'][0]['id'] = proof['category_id']
+    original['products'][0]['unified_category_id'] = proof['category_id']
+    assert apply_bundle(session, original, 'source-leaf-original', user='synthetic-reviewer')['ok']
+    result = apply_bundle(session, bundle, 'source-leaf-refinement', user='synthetic-reviewer')
+    assert result['ok'], result
+    stored = session.get(NormalizedProductVariant, variant_before['public_variant_id'])
+    assert stored.attributes == variant_before['attributes']
+    assert (stored.package_quantity, stored.package_unit, stored.bundle_count) == (
+        variant_before['package_quantity'], variant_before['package_unit'], variant_before['bundle_count'])
+    assert bundle['variants'][0] == variant_before
+    assert bundle['source_listings'][0] == listing_before
+    assert bundle['offers'][0] == offer_before
+    event = session.get(NormalizedOfferEvent, offer_before['public_offer_event_id'])
+    assert event.price == offer_before['price'] and event.raw_evidence == offer_before['raw_evidence']
+    session.close()
+
+
+@pytest.mark.parametrize('title', ['하리오 커피밀 스마트 G 프로', '삼풍 이중단열 커피컵 354ml x 80개'])
+@pytest.mark.parametrize('boundary', ['review_title', 'review_url', 'unreviewed_leaf', 'proof_title', 'proof_url'])
+def test_source_bound_leaf_refinement_rejects_unregistered_context_or_forged_proof(monkeypatch, title, boundary):
+    import core.catalog_identity as identity
+    bundle = _source_leaf_refinement_bundle(title)
+    registry = deepcopy(identity.reviewed_registry())
+    review = next(record for record in registry['leaf_reviews'] if title in record['source_titles'])
+    if boundary == 'review_title': review['source_titles'] = ['다른 상품']
+    if boundary == 'review_url': review['source_urls'] = ['https://example.test/unapproved']
+    if boundary == 'unreviewed_leaf':
+        bundle['categories'][0]['id'] = 'household.kitchen.drinkware.other'
+        bundle['products'][0]['unified_category_id'] = bundle['categories'][0]['id']
+    attrs = bundle['variants'][0]['attributes']
+    proof = attrs.get('physical_device_specification') or attrs.get('nonmeasured_listing')
+    # Copy the source proof before mutation; the code-owned registry stays immutable.
+    key = 'physical_device_specification' if 'physical_device_specification' in attrs else 'nonmeasured_listing'
+    attrs[key] = proof = deepcopy(proof)
+    if boundary == 'proof_title': proof['title'] = '다른 상품'
+    if boundary == 'proof_url': proof['required_source']['source_urls'] = ['https://example.test/unapproved']
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: registry)
+    session = _session()
+    assert not validate_bundle(session, bundle, 'source-leaf-unbound').ok
+    session.close()
+
+
+def test_source_bound_physical_leaf_refinement_rejects_different_specification_role(monkeypatch):
+    import core.catalog_identity as identity
+    bundle = _source_leaf_refinement_bundle('삼풍 이중단열 커피컵 354ml x 80개')
+    registry = deepcopy(identity.reviewed_registry())
+    target = 'household.outdoor.bags.cooler_tote'
+    for record in registry['leaf_reviews']:
+        if bundle['source_listings'][0]['source_title'] in record['source_titles']:
+            record['new_leaf'] = target
+    bundle['categories'][0]['id'] = target
+    bundle['products'][0]['unified_category_id'] = target
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: registry)
+    session = _session()
+    assert not validate_bundle(session, bundle, 'source-leaf-role-change').ok
     session.close()
 
 

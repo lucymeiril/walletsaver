@@ -38,7 +38,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 다음 열 파일은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정,97→98의 원문에 묶인6분류·3공통리프/키워드 및98→99의7분류·중립 식판 및99→100의27분류·8공통 형태 리프/키워드 구체화를 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 다음 검토 묶음은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정,97→98의 원문에 묶인6분류·3공통리프/키워드 및98→99의7분류·중립 식판 및99→100의27분류·8공통 형태 리프/키워드 구체화를 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +46,7 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json demo-data/updates/catalog99-to100.json demo-data/updates/catalog100-to101.json; do
+for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json demo-data/updates/catalog99-to100.json demo-data/updates/catalog100-to101.json demo-data/updates/catalog101-to102.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -308,4 +308,6 @@ Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID
 
 현재99 동봉 데이터는492군/1191옛ID/41분류 정정이력과9115관측을 유지한다. 전기·숯 그릴4건, 고구마 건조스낵2건, 스텐 식판1건의 원문에 묶인 세부 탐색을 정정했다. 기기·식판의 물품NULL과 두 스낵의300g·80g×10 원규격, 가격·시점·계정참조는 바꾸지 않았다. 실제14GET의 변경 탐색·상세와3GET의 관측 설명을 확인했다. 검색은 관측 조건 비교금액이며 선택 상세는 해당 출처 표시가격·관측 시점으로 설명하고 현재 구매가로 단정하지 않는다. source24pins/배포계정0과9개 정식 갱신파일을 함께 제공하며 제출후보 검증은 계속된다.
 
-현재101은23기존상품의 입증된 형태를7공통4단계 리프로 구체화하고,20건의 출처 단가 기준을 판매내용량으로 오독한 파생규격을 정정한다. 명시 티백·정·캡슐 개수8건은 개수규격으로, 판매내용량 미입증12건은 수량 미확인으로 유지한다. 캡슐mg을 총판매g으로 환산하지 않았고 독립라벨100g/100ml·명시80g은 유지한다. 출처 단가문구·원가격·원시각은 그대로 설명/이력에 표시하며 미확인 내용을 정확g·단가·수령1로 만들지 않는다. 41고유 원상품/20새규격과20옛inactive규격 이력,6458판매페이지/원9115event/계정참조 및492군1191옛ID를 보존한다.100→101 정식preview/apply/동일replay/snapshot101 및 변경15GET·실제matching/export60HIT80거절 근거가 있으며 신규 상품/관측 적재0이다. 배포계정0,91source-leaf reviews/26sourcepins. 초기98·새출처·전체인증은 중단 유지한다.
+직전101은23기존상품의 입증된 형태를7공통4단계 리프로 구체화하고,20건의 출처 단가 기준을 판매내용량으로 오독한 파생규격을 정정한다. 명시 티백·정·캡슐 개수8건은 개수규격으로, 판매내용량 미입증12건은 수량 미확인으로 유지한다. 캡슐mg을 총판매g으로 환산하지 않았고 독립라벨100g/100ml·명시80g은 유지한다. 출처 단가문구·원가격·원시각은 그대로 설명/이력에 표시하며 미확인 내용을 정확g·단가·수령1로 만들지 않는다. 41고유 원상품/20새규격과20옛inactive규격 이력,6458판매페이지/원9115event/계정참조 및492군1191옛ID를 보존한다.100→101 정식preview/apply/동일replay/snapshot101 및 변경15GET·실제matching/export60HIT80거절 근거가 있으며 신규 상품/관측 적재0이다. 배포계정0,91source-leaf reviews/26sourcepins. 초기98·새출처·전체인증은 중단 유지한다.
+
+현재102는 추가557기등록 문맥의 category/조상/형태를 검토해16원상품을7공통4단계 형태로 구체화했다. 종이컵·뚜껑세트의80/160컵 개수와354/473ml 용량 spec, 중립 가스레인지·침대패드·이불·그라인더, 육류·치즈/크런치 반려간식·비타민보충식품을 원문대로 구분하고 미입증 휴대/냉감/여름/고양이/비타민C를 추가하지 않는다. 원 variant/수량proof/원9115event·가격·시각·계정참조는 그대로이며 신규상품·관측0이다.101→102 정식preview/apply/replay/publish와 변경14GET·32actual matching/export HIT/48수량·native·이름거절을 확인했다.492군1191옛ID107leafreviews/1413categories1237keywords를 동봉한다. 새 소스+기존100DB의 정확히 승인된 옛2군은 옛category 검색·2규격 상세를 유지하고, 명시갱신102 이후 새category를 소비한다. 정상기동은 기존DB 보존, 갱신은 위bundle 명령으로 수행한다. 초기98/새출처/전체인증은 계속 중단하며 후보 검증은 진행 중이다.

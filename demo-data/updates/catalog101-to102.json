@@ -1,0 +1,1177 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation410-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "household.kitchen.cooking",
+      "parent_id": "household.kitchen",
+      "slug": "cooking",
+      "name_ko": "가열조리기구",
+      "level": 2,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 11
+    },
+    {
+      "id": "food.supplements.functional.vitamin",
+      "parent_id": "food.supplements.functional",
+      "slug": "vitamin",
+      "name_ko": "비타민보충식품",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 13
+    },
+    {
+      "id": "household.bedding.pad.standard",
+      "parent_id": "household.bedding.pad",
+      "slug": "standard",
+      "name_ko": "침대패드",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 14
+    },
+    {
+      "id": "household.bedding.quilt.standard",
+      "parent_id": "household.bedding.quilt",
+      "slug": "standard",
+      "name_ko": "이불",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 15
+    },
+    {
+      "id": "household.kitchen.consumables.paper_cup_lid_set",
+      "parent_id": "household.kitchen.consumables",
+      "slug": "paper_cup_lid_set",
+      "name_ko": "종이컵·뚜껑세트",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 16
+    },
+    {
+      "id": "household.kitchen.cooking.gas_stove",
+      "parent_id": "household.kitchen.cooking",
+      "slug": "gas_stove",
+      "name_ko": "가스레인지",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 17
+    },
+    {
+      "id": "pet.food.treats.crunchy",
+      "parent_id": "pet.food.treats",
+      "slug": "crunchy",
+      "name_ko": "크런치간식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 18
+    },
+    {
+      "id": "pet.food.treats.meat_cheese",
+      "parent_id": "pet.food.treats",
+      "slug": "meat_cheese",
+      "name_ko": "육류·치즈간식",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 19
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1231,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "비타민보충식품",
+      "synonyms": [],
+      "unified_category_id": "food.supplements.functional.vitamin"
+    },
+    {
+      "id": 1232,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "침대패드",
+      "synonyms": [],
+      "unified_category_id": "household.bedding.pad.standard"
+    },
+    {
+      "id": 1233,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "이불",
+      "synonyms": [],
+      "unified_category_id": "household.bedding.quilt.standard"
+    },
+    {
+      "id": 1234,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "종이컵·뚜껑세트",
+      "synonyms": [],
+      "unified_category_id": "household.kitchen.consumables.paper_cup_lid_set"
+    },
+    {
+      "id": 1235,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "가스레인지",
+      "synonyms": [],
+      "unified_category_id": "household.kitchen.cooking.gas_stove"
+    },
+    {
+      "id": 1236,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "크런치간식",
+      "synonyms": [],
+      "unified_category_id": "pet.food.treats.crunchy"
+    },
+    {
+      "id": 1237,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "육류·치즈간식",
+      "synonyms": [],
+      "unified_category_id": "pet.food.treats.meat_cheese"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-0c0599682e7b8d8df8a809db79d75fc0",
+      "unified_category_id": "pet.food.treats.meat_cheese",
+      "category_id": null,
+      "canonical_name": "슈퍼랩 치즈 치킨 400g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "육류·치즈간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:27"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000858035138"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "육류·치즈간식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-0c0599682e7b8d8df8a809db79d75fc0",
+          "old_leaf": "pet.food.treats.soft_meat",
+          "new_leaf": "pet.food.treats.meat_cheese",
+          "source_name": "emart",
+          "source_record_key": "1000858035138",
+          "source_titles": [
+            "슈퍼랩 치즈 치킨 400g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000858035138&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "c0d27d36665e86c428fca4b298f042422dbd36aad7f60555f8bf9e5480254878",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/38/51/03/item/1000858035138_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-17fb86b45e776a3483be51175ce8c53c",
+      "unified_category_id": "household.kitchen.consumables.paper_cup_lid_set",
+      "category_id": null,
+      "canonical_name": "삼풍 이중단열 커피컵 354ml x 80개",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "종이컵·뚜껑세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:43:18"
+            ],
+            "source_ingestion_ids": [
+              43
+            ],
+            "source_name": "costco",
+            "source_record_key": "512674"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          43
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "종이컵·뚜껑세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-17fb86b45e776a3483be51175ce8c53c",
+          "old_leaf": "household.kitchen.consumables.paper_cup",
+          "new_leaf": "household.kitchen.consumables.paper_cup_lid_set",
+          "source_name": "costco",
+          "source_record_key": "512674",
+          "source_titles": [
+            "삼풍 이중단열 커피컵 354ml x 80개"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674"
+          ],
+          "evidence_sha256": "773cf80d83c7cd36a95a74feba0223a52f1b6bcbef0f496428a0e579f75a31a8",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hfc/h9d/367690413801502.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-208b3b6e460fcca36e09bbd9e7f1a3fd",
+      "unified_category_id": "pet.food.treats.meat_cheese",
+      "category_id": null,
+      "canonical_name": "더독 치킨 치즈 슬라이스 100g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "육류·치즈간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:36"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000010354833"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "육류·치즈간식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-208b3b6e460fcca36e09bbd9e7f1a3fd",
+          "old_leaf": "pet.food.treats.meat",
+          "new_leaf": "pet.food.treats.meat_cheese",
+          "source_name": "emart",
+          "source_record_key": "0000010354833",
+          "source_titles": [
+            "더독 치킨 치즈 슬라이스 100g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=0000010354833&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "9f9424ebd3e6e67b76bb4044459ccc392ecef3eb769cdc8ac1950a7ade996712",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/33/48/35/item/0000010354833_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-2b38da42e72ac83c68bb986457e50632",
+      "unified_category_id": "pet.food.treats.meat_cheese",
+      "category_id": null,
+      "canonical_name": "슈퍼랩 치즈 오리 400g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "육류·치즈간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:22"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000858035128"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "육류·치즈간식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-2b38da42e72ac83c68bb986457e50632",
+          "old_leaf": "pet.food.treats.soft_meat",
+          "new_leaf": "pet.food.treats.meat_cheese",
+          "source_name": "emart",
+          "source_record_key": "1000858035128",
+          "source_titles": [
+            "슈퍼랩 치즈 오리 400g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000858035128&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "b391871e2fde32e4260e3a7addfa50e78d2a8c4e751c571de79968fe56fb1b3e",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/28/51/03/item/1000858035128_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-321c8df1d5eda8cad73a347b6065645a",
+      "unified_category_id": "household.kitchen.cooking.gas_stove",
+      "category_id": null,
+      "canonical_name": "프로이지테크가스렌지",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "가스레인지"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:101:40"
+            ],
+            "source_ingestion_ids": [
+              101
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000043234835"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          101
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "가스레인지"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-321c8df1d5eda8cad73a347b6065645a",
+          "old_leaf": "household.outdoor.cooking.portable_gas_stove",
+          "new_leaf": "household.kitchen.cooking.gas_stove",
+          "source_name": "emart",
+          "source_record_key": "1000043234835",
+          "source_titles": [
+            "프로이지테크가스렌지"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000043234835&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "72ae74d781a6881af00a1778b162e3004f76fd9ed89d756750a15dbac8c1a42e",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/35/48/23/item/1000043234835_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-4551dd9902a495145840429f06d70226",
+      "unified_category_id": "pet.food.prepared.canned",
+      "category_id": null,
+      "canonical_name": "시저 흰살생선과 야채 캔 3개입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캔사료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:55"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000010054811"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캔사료"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-4551dd9902a495145840429f06d70226",
+          "old_leaf": "pet.food.feed.dog",
+          "new_leaf": "pet.food.prepared.canned",
+          "source_name": "emart",
+          "source_record_key": "0000010054811",
+          "source_titles": [
+            "시저 흰살생선과 야채 캔 3개입"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=0000010054811&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "b9d1458b76587396d5a16dd4ed4caa3a16dd7a10a2cb84341ba73001d06fbde6",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/11/48/05/item/0000010054811_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-87f3feac6faec7082cfc06af9fe97387",
+      "unified_category_id": "household.cleaning.laundry.bleach",
+      "category_id": null,
+      "canonical_name": "유한젠 표백제 700mL",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "세탁표백제"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_audited_emart_household_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:98:79"
+            ],
+            "source_ingestion_ids": [
+              98
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000764222237"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_audited_emart_household_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          98
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "세탁표백제"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-87f3feac6faec7082cfc06af9fe97387",
+          "old_leaf": "household.cleaning.laundry.oxygen_bleach",
+          "new_leaf": "household.cleaning.laundry.bleach",
+          "source_name": "emart",
+          "source_record_key": "1000764222237",
+          "source_titles": [
+            "유한젠 표백제 700mL"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000764222237&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "3f76d7859b8bd2f33a08d13227b704a0c92d3e07145cedfb2daf22e0ca9a0fd1",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/37/22/22/item/1000764222237_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8c6bc7517193feedc2dfd0b031c3ca65",
+      "unified_category_id": "pet.food.treats.crunchy",
+      "category_id": null,
+      "canonical_name": "몰리스 크런치홀릭 닭고기 60g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "크런치간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:8"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000022443083"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "크런치간식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-8c6bc7517193feedc2dfd0b031c3ca65",
+          "old_leaf": "pet.food.treats.cat_crunchy",
+          "new_leaf": "pet.food.treats.crunchy",
+          "source_name": "emart",
+          "source_record_key": "1000022443083",
+          "source_titles": [
+            "몰리스 크런치홀릭 닭고기 60g"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000022443083&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "25b97a9d1f239f88d566963ef5d6780ea436269eb4c75958d8c51e6f9517fe76",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/83/30/44/item/1000022443083_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-8d9375d41fa49b11925e383cfcda004c",
+      "unified_category_id": "food.supplements.functional.vitamin",
+      "category_id": null,
+      "canonical_name": "[경남제약] 상큼한비타민레모나에스산90포(캐릭터 랜덤출고)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "비타민보충식품"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:94:10"
+            ],
+            "source_ingestion_ids": [
+              94
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000484056251"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          94
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "비타민보충식품"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-8d9375d41fa49b11925e383cfcda004c",
+          "old_leaf": "food.supplements.functional.vitamin_c",
+          "new_leaf": "food.supplements.functional.vitamin",
+          "source_name": "emart",
+          "source_record_key": "1000484056251",
+          "source_titles": [
+            "[경남제약] 상큼한비타민레모나에스산90포(캐릭터 랜덤출고)"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000484056251&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "55cb4aade497942efc8e032782044cc4529e2016ff6ff80e47fbcca698da723e",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/51/62/05/item/1000484056251_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9f6cf6a8cadd964a2071ff42e4823890",
+      "unified_category_id": "household.kitchen.consumables.paper_cup_lid_set",
+      "category_id": null,
+      "canonical_name": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "종이컵·뚜껑세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:43:23"
+            ],
+            "source_ingestion_ids": [
+              43
+            ],
+            "source_name": "costco",
+            "source_record_key": "682165"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          43
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "종이컵·뚜껑세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9f6cf6a8cadd964a2071ff42e4823890",
+          "old_leaf": "household.kitchen.consumables.paper_cup",
+          "new_leaf": "household.kitchen.consumables.paper_cup_lid_set",
+          "source_name": "costco",
+          "source_record_key": "682165",
+          "source_titles": [
+            "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165"
+          ],
+          "evidence_sha256": "ec67d0f59b10033cad076f6f149c8c3d3896c695a539fba8089cc75afd4d2a64",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hb8/h11/225695034966046.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-9f9c75fb06342fa0da0874f30eb85056",
+      "unified_category_id": "household.kitchen.coffee.grinder",
+      "category_id": null,
+      "canonical_name": "하리오 커피밀 스마트 G 프로",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "커피그라인더"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_explicit_product_form_and_context"
+            ],
+            "raw_record_ids": [
+              "ingestion:43:62"
+            ],
+            "source_ingestion_ids": [
+              43
+            ],
+            "source_name": "costco",
+            "source_record_key": "685951"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_explicit_product_form_and_context"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          43
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "커피그라인더"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-9f9c75fb06342fa0da0874f30eb85056",
+          "old_leaf": "household.kitchen.coffee.manual_grinder",
+          "new_leaf": "household.kitchen.coffee.grinder",
+          "source_name": "costco",
+          "source_record_key": "685951",
+          "source_titles": [
+            "하리오 커피밀 스마트 G 프로"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951"
+          ],
+          "evidence_sha256": "1c774d7cdaac17d37cfbc63cee636781c374d4f5385c9fd1e45dbca7a657da50",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h81/hd4/368503092805662.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-aaa80ceb991d68e8c662b9c24835e705",
+      "unified_category_id": "household.bedding.pad.standard",
+      "category_id": null,
+      "canonical_name": "알러텍트 아이스 패드 - 킹",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "침대패드"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:85"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "669969"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "침대패드"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-aaa80ceb991d68e8c662b9c24835e705",
+          "old_leaf": "household.bedding.pad.cooling",
+          "new_leaf": "household.bedding.pad.standard",
+          "source_name": "costco",
+          "source_record_key": "669969",
+          "source_titles": [
+            "알러텍트 아이스 패드 - 킹"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/FurnitureBeddingHome/Bedding/Toppers-Pads-Spreads/Allertect-Ice-Pad-King/p/669969"
+          ],
+          "evidence_sha256": "c7355a64091153e536d222cd09b2abd95f4f8b322e9598cf8511da651fa5763a",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/h66/466373726437406.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-abf1d8bc9702b06fe301c85fe7b2ff63",
+      "unified_category_id": "pet.food.treats.chew",
+      "category_id": null,
+      "canonical_name": "정직하개 애견용 소고기 육포 1kg",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "씹는간식"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:41:52"
+            ],
+            "source_ingestion_ids": [
+              41
+            ],
+            "source_name": "costco",
+            "source_record_key": "671400"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          41
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "씹는간식"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-abf1d8bc9702b06fe301c85fe7b2ff63",
+          "old_leaf": "pet.food.treats.meat",
+          "new_leaf": "pet.food.treats.chew",
+          "source_name": "costco",
+          "source_record_key": "671400",
+          "source_titles": [
+            "정직하개 애견용 소고기 육포 1kg"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/BabyKidsToysPets/Pet-Supplies/Dog-Foods/Beef-Jerky-For-Dogs-1kg/p/671400"
+          ],
+          "evidence_sha256": "7a8cd26c0e5ec0ee3927a07eefdf7c5b915befd072a71ee7cc3be40779e4d459",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h6f/h2b/492060335144990.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f65498d89d87e30fd79c97d1322a1bb9",
+      "unified_category_id": "household.bedding.quilt.standard",
+      "category_id": null,
+      "canonical_name": "에이프릴앳홈 리플 누비 이불 - 싱글",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "이불"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:37:59"
+            ],
+            "source_ingestion_ids": [
+              37
+            ],
+            "source_name": "costco",
+            "source_record_key": "670780"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          37
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "이불"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f65498d89d87e30fd79c97d1322a1bb9",
+          "old_leaf": "household.bedding.quilt.summer",
+          "new_leaf": "household.bedding.quilt.standard",
+          "source_name": "costco",
+          "source_record_key": "670780",
+          "source_titles": [
+            "에이프릴앳홈 리플 누비 이불 - 싱글"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/FurnitureBeddingHome/Bedding/ComfortersBlanketsThrows/April-at-Home-Ripple-Quilted-Comforter-Single/p/670780"
+          ],
+          "evidence_sha256": "65924b91a402f87ab349609fce9ae890c7e41dbcf2936cc6a800acaee1cc693c",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/he0/h0c/467444611416094.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f76002ac34c0f1c81331bcd0ae94d227",
+      "unified_category_id": "household.bedding.quilt.standard",
+      "category_id": null,
+      "canonical_name": "에이프릴앳홈 순면 리플 겹이불 - 싱글",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "이불"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:38:11"
+            ],
+            "source_ingestion_ids": [
+              38
+            ],
+            "source_name": "costco",
+            "source_record_key": "653322"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          38
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "이불"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f76002ac34c0f1c81331bcd0ae94d227",
+          "old_leaf": "household.bedding.quilt.summer",
+          "new_leaf": "household.bedding.quilt.standard",
+          "source_name": "costco",
+          "source_record_key": "653322",
+          "source_titles": [
+            "에이프릴앳홈 순면 리플 겹이불 - 싱글"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/FurnitureBeddingHome/Bedding/ComfortersBlanketsThrows/April-at-home-Cotton-Ripple-Comforter-Single/p/653322"
+          ],
+          "evidence_sha256": "0d79c6ebf3bb686f8362a1b0dbbd21053ec71400447b2c36f23584740867e383",
+          "reason": "Literalcup+lid/nativeexactURL orcertaingrinder/gasrange/beddingpad/quilt form; no portability/manualpower/cooling performance/summerseason inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/h3a/468568564629534.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f93772c3da4cbca6d5b0e4dfe52a8ab2",
+      "unified_category_id": "pet.food.prepared.canned",
+      "category_id": null,
+      "canonical_name": "시저 쇠고기와 참치 캔 3개입",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "캔사료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:102:49"
+            ],
+            "source_ingestion_ids": [
+              102
+            ],
+            "source_name": "emart",
+            "source_record_key": "0000007693408"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          102
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "캔사료"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f93772c3da4cbca6d5b0e4dfe52a8ab2",
+          "old_leaf": "pet.food.feed.dog",
+          "new_leaf": "pet.food.prepared.canned",
+          "source_name": "emart",
+          "source_record_key": "0000007693408",
+          "source_titles": [
+            "시저 쇠고기와 참치 캔 3개입"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=0000007693408&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "7230911475fee710a61b4ddcc7a5c3c5efe2e6c15cd775af822aa3b0cd742192",
+          "reason": "Explicit petmeat+cheese/crunchy/canned/jerky form orbleach/vitamin title; no cat species/softtexture/oxygeningredient/vitaminC inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/08/34/69/item/0000007693408_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

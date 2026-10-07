@@ -805,6 +805,7 @@ def physical_specification_role(category_id):
             'household.kitchen.cookware.kettle', 'household.kitchen.coffee.drip_kettle',
             'household.kitchen.coffee.server', 'household.kitchen.storage.stainless_container',
             'household.kitchen.storage.food_bottle', 'household.kitchen.consumables.paper_cup',
+            'household.kitchen.consumables.paper_cup_lid_set',
             'household.cleaning.waste.bin'}):
         return 'empty_vessel_capacity'
     return None
@@ -936,7 +937,17 @@ def physical_device_package(payload, attrs, title, category_id):
                 and existing.get('bundle_count') == 1
                 and existing.get('standard_unit') is None):
             return existing, []
-    proof = {'title': title, 'category_id': category_id, 'required_source': source,
+    # A pinned category-only refinement must not regenerate a proven physical
+    # specification's identity. Keep the original proof leaf only where its
+    # physical role is unchanged and this exact source/title was reviewed.
+    from core.catalog_identity import reviewed_registry, reviewed_leaf_compatible
+    original_leaves = {review['old_leaf'] for review in reviewed_registry().get('leaf_reviews', [])
+                       if review['new_leaf'] == category_id
+                       and physical_specification_role(review['old_leaf']) == category_role
+                       and reviewed_leaf_compatible(review['old_leaf'], category_id,
+                                                    title, source['source_urls'])}
+    proof_category = next(iter(original_leaves)) if len(original_leaves) == 1 else category_id
+    proof = {'title': title, 'category_id': proof_category, 'required_source': source,
              'quantity_fields': fields, 'specification_role': role,
              'sold_piece_count': count}
     if count_unit != '개':
