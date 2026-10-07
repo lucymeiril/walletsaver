@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "catalog_revision": 108,
-  "version": "2026-10-07-catalog108-category446",
-  "source_code_base": "d1566aa8273b6057f2196fee96e3a9334fac647f",
+  "catalog_revision": 110,
+  "version": "2026-10-07-catalog110-kind453455",
+  "source_code_base": "51e61000f86398c97a2265f3e06b5b37593e18ca",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -13,11 +13,11 @@
     "public": 8803,
     "pending": 312
   },
-  "data_scope": "Sanitized complete admin/catalog108/publicsnapshot:15supported sourcebound category refinements/7commonmax4forms from476storedloadedcontexts; one existing Solestado2member group category history is hash-pinned to approved107. SPAM3 cannedham and Himalaya care-set supplemental composition facts reused; quantities/variantIDs/members unchanged. Original9115event/rawquote/time and492groups1191oldIDs preserved; source337sequentialleafreviews14precisepinnedhistoricalgroupdefs; externalhotdeal7/accounts0/initial98paused.",
+  "data_scope": "Sanitized complete admin/catalog110/publicsnapshot: preserved109 singlefreshshiitake gift-kind navigation and110 original431 cooking-broth meaning for existingHP/Lotte family with both own sourcebindings. Original431bytes and9115event/quote/time/6402variants/6458listings/accountreferences unchanged; physicalcompanion vector/localNULL and NULL aggregateunitprice retained.492groups1191oldIDs/340sequentialleafreviews14hash-pinnedhistoricaldefinitions; externalhotdeal7/accounts0/initial98paused.",
   "files": {
     "admin.sqlite": {
-      "sha256": "eabf78d006f289dba99bf334ec7186280203fef880802f5f125d0e843429a9b8",
-      "bytes": 63283200,
+      "sha256": "3650aaef3594bf6a94074eba7d54739c6173094d8299af1bbe5a795d0314db5d",
+      "bytes": 63291392,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -63,7 +63,7 @@
         "pending_categorizations": 0,
         "pending_ingestions": 15,
         "public_snapshot_state": 1,
-        "catalog_sync_log": 83,
+        "catalog_sync_log": 85,
         "imports_audit": 0,
         "baseline_prices": 0,
         "discount_history": 0,
@@ -71,12 +71,12 @@
         "alembic_version": 1
       },
       "archive_file": "admin.sqlite.gz",
-      "archive_sha256": "eab1245a1fcf4966ee4a4303f98cd8498685a22fe2ac594d39c852fe26e191ec",
-      "archive_bytes": 9121669
+      "archive_sha256": "8fc580dfb8060d42272c4115b70c26b15285fd7dcd9d5aa1ca6f7ab2d44d468e",
+      "archive_bytes": 9122210
     },
     "public_snapshot.sqlite": {
-      "sha256": "ba719529ef08af5c42bfeebfe8a0d0655b2fcd5f4a304b10bbb8c4397a233dd6",
-      "bytes": 58859520,
+      "sha256": "7b7fe13153cfc4376f67596f69d8ece456e6e4c088bdc83f614df99e1836f4ca",
+      "bytes": 58863616,
       "required_tables": [
         "normalized_canonical_products",
         "normalized_product_variants",
@@ -114,8 +114,8 @@
         "snapshot_meta": 1
       },
       "archive_file": "public_snapshot.sqlite.gz",
-      "archive_sha256": "e2c3a34df3374b5cf13b893d0be0787c4cbcc2eb505bfc92ac3fa1a97f007bf2",
-      "archive_bytes": 8481765
+      "archive_sha256": "995b0fa8b922fc9276d5438e5833778dc041aae440a460b3d43f6f17dc8e37d5",
+      "archive_bytes": 8482441
     },
     "opinet.sqlite": {
       "sha256": "4a1c95e161d05c7041306d7047dc58f9a038ad2926d11a6c912e6be0e7671b98",
@@ -164,8 +164,8 @@
     "tools/install_demo_catalog.py": "69926ad6ec0cda79c6bf9c0b870b16f34e87b11eee90ef06dda1e56e9b0b0ea4"
   },
   "reviewed_group_source_files": {
-    "packages/shared/core/catalog_identity.py": "c49731465f57c5732e8dfbd48b989ea75f5ab6fa45426bdf0a6299e479ca9b08",
-    "packages/shared/core/reviewed_catalog_groups.json": "cfa5566165b63ae3a7f7d6fd78295513546d1cc60fdc9bd8ac71e2a3f4022c13",
+    "packages/shared/core/catalog_identity.py": "2dcc8b12f64d4da24e83072b59a2428d11d36c806a1ebaa17923c4f670694584",
+    "packages/shared/core/reviewed_catalog_groups.json": "9f3edd59f8462a0f053a77285157bf9227178824c8e21496c21b78145a91ddc5",
     "packages/shared/core/catalog_quantity.py": "b5e6b4952c09d5013e4ee68f8284751beb71fdf1306c8fa37b3092c2ba50e04c",
     "packages/shared/core/catalog_matching.py": "a79d610a1db7ace2bd810182dbc2154ba51eea4362ff8976152d76bd9c9a64a8",
     "packages/db-admin/backend/services/catalog_bundle.py": "a157eb2319b4755d1496532dd5164b876836447a915c05e2426790a42a2c962a",
@@ -335,14 +335,30 @@
       "base_catalog_revision": 107,
       "reviewed_catalog_revision": 108,
       "scope": "15supported common-form refinements/7newmax4leaves and existingSolestado2member definition history; original9115quotes/time/event/spec/oldIDs/accountreferences preserved. Officialpreview/apply/replay/publish108 COMPLETE; no newquantities/groups/observations."
+    },
+    {
+      "path": "demo-data/updates/catalog108-to109.json",
+      "sha256": "9993ed873070170b522555d938f88e186853fa4d0a62c25ae699d5e5d4aa7315",
+      "bytes": 3081,
+      "base_catalog_revision": 108,
+      "reviewed_catalog_revision": 109,
+      "scope": "Existing source-bound samekind category refinement; original9115quotes/time/event/spec/oldIDs/accountreferences preserved; no newquantity/group/observation. Officialpreview/apply/replay/publish COMPLETE, retain registered category-context audit lineage."
+    },
+    {
+      "path": "demo-data/updates/catalog109-to110.json",
+      "sha256": "f59202311441897903879f01f93b2611b10cbed0f73827493b2278008e8887c7",
+      "bytes": 17620,
+      "base_catalog_revision": 109,
+      "reviewed_catalog_revision": 110,
+      "scope": "Existing source-bound samekind category refinement; original9115quotes/time/event/spec/oldIDs/accountreferences preserved; no newquantity/group/observation. Officialpreview/apply/replay/publish COMPLETE, retain registered category-context audit lineage."
     }
   ],
   "reviewed_catalog_groups": {
     "groups": 492,
     "preserved_original_product_ids": 1191,
     "metadata_update_base_revision": 90,
-    "source_registry_sha256": "cfa5566165b63ae3a7f7d6fd78295513546d1cc60fdc9bd8ac71e2a3f4022c13",
+    "source_registry_sha256": "9f3edd59f8462a0f053a77285157bf9227178824c8e21496c21b78145a91ddc5",
     "compatibility": "historical approved reciprocal member subset supported; unknown/nonreciprocal definitions rejected before publication/upload, matching source release required",
-    "leaf_reviews": 337
+    "leaf_reviews": 340
   }
 }

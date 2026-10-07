@@ -554,6 +554,35 @@ def test_normalized_management_readonly_auth_and_bounded_filters(normalized_mana
     assert client.get('/api/prices/').json()['total'] == 0
 
 
+@pytest.mark.parametrize('boundary', [None, 'missing_peer', 'wrong_product', 'wrong_transition', 'wrong_native', 'wrong_title', 'wrong_url', 'crossed_context', 'unreviewed_source'])
+def test_existing_multisource_product_leaf_refinement_requires_each_reviewed_context(monkeypatch, boundary):
+    from copy import deepcopy
+    from core import catalog_identity
+    product = {'public_product_id': 'existing-family', 'unified_category_id': 'old-stock', 'attributes': {}}
+    listings = [{'source_name': 'homeplus', 'source_record_key': 'hp-1', 'source_title': 'broth100g', 'source_url': 'https://hp/1'},
+                {'source_name': 'lottemart', 'source_record_key': 'lm-2', 'source_title': 'broth(100g)', 'source_url': 'https://lm/2'}]
+    reviews = [dict(product_id=product['public_product_id'], old_leaf='old-stock', new_leaf='cooking-stock',
+                    source_name=row['source_name'], source_record_key=row['source_record_key'],
+                    source_titles=[row['source_title']], source_urls=[row['source_url']]) for row in listings]
+    if boundary == 'missing_peer': reviews.pop()
+    if boundary == 'wrong_product': reviews[1]['product_id'] = 'unrelated-family'
+    if boundary == 'wrong_transition': reviews[1]['new_leaf'] = 'different-kind'
+    if boundary == 'wrong_native': listings[1]['source_record_key'] = 'different-sku'
+    if boundary == 'wrong_title': listings[1]['source_title'] = 'different-product'
+    if boundary == 'wrong_url': listings[1]['source_url'] = 'https://lm/other'
+    if boundary == 'crossed_context': listings[1]['source_url'] = listings[0]['source_url']
+    if boundary == 'unreviewed_source': listings.append({**listings[0], 'source_record_key': 'hp-other'})
+    monkeypatch.setattr(catalog_identity, 'reviewed_registry', lambda: {'groups': [], 'leaf_reviews': reviews})
+    result = catalog_identity.reviewed_product_fields(deepcopy(product), listings)
+    assert result['public_product_id'] == product['public_product_id']
+    assert result['unified_category_id'] == ('old-stock' if boundary else 'cooking-stock')
+    if boundary:
+        assert 'catalog_leaf_review' not in result['attributes']
+    else:
+        assert result['attributes']['catalog_leaf_review_bindings'] == reviews
+        assert catalog_identity.reviewed_product_fields(result, listings) == result
+
+
 def test_fallback_offer_identity_uses_source_instant_not_product_price_identity(matched_offer_source):
     from services.normalized_mart3 import _upsert_offer_event
     engine, source = matched_offer_source

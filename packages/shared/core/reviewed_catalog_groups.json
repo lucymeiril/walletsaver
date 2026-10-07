@@ -29663,6 +29663,51 @@
       ],
       "evidence_sha256": "1550750a9204c5eeb92425ff4cb2f3eb89c396e6ff16bee33507ac4b9ca031df",
       "reason": "Literal 생 표고버섯 선물세트 / 미니 로메인 plus compatible vegetable paths support existing specific forms. Gift presentation does not change exact quantity or imply a new same-SKU merge."
+    },
+    {
+      "product_id": "prod-863f93beedbd2a8216666c1896923f5b",
+      "old_leaf": "food.produce.sets.mushroom_gift",
+      "new_leaf": "food.produce.vegetables.mushroom",
+      "source_name": "costco",
+      "source_record_key": "697408",
+      "source_titles": [
+        "무농약 생 표고버섯(흑화고) 선물세트 600g"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408"
+      ],
+      "evidence_sha256": "d7575eee22d08d37d5de8105cf998e8d8e3af1716b4c85ffc0e9b2e8595df1c0",
+      "reason": "Exact source title 생 표고버섯(흑화고) 선물세트600g and /Foods/Fresh-Foods/Vegetables/ prove one fresh mushroom commodity. Gift packing is presentation, not evidence of a mixed species/processed-food set. Preserve literal gift label, declared600g and original variant/source/event/price/time; no producer/grade identity merge and no singleton count. Restore fresh-mushroom same-kind navigation after108gift sibling split; prior108review remains historical."
+    },
+    {
+      "product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+      "old_leaf": "food.seasonings.baking.stock",
+      "new_leaf": "food.seasonings.stock.stock_seasoning",
+      "source_name": "homeplus",
+      "source_record_key": "069219541",
+      "source_titles": [
+        "청정원 맛선생 멸치디포리 국물내기 한알 100G"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=069219541&storeType=HYPER"
+      ],
+      "evidence_sha256": "a52592a85e08790c3f6fedde0e45812cf1ab4ce7263523b0bb663397543fcd24",
+      "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
+    },
+    {
+      "product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+      "old_leaf": "food.seasonings.baking.stock",
+      "new_leaf": "food.seasonings.stock.stock_seasoning",
+      "source_name": "lottemart",
+      "source_record_key": "8801052091907",
+      "source_titles": [
+        "청정원 맛선생 멸치디포리 국물내기 한알 (100G)"
+      ],
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801052091907/details"
+      ],
+      "evidence_sha256": "0c6b30c9ef3a9d9a816c1c4dfc21a34e0ec148c0b4c2d2ea573545412a95fb70",
+      "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
     }
   ]
 }

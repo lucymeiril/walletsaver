@@ -1,0 +1,358 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation455-reviewed-group-keyword-spec",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+      "unified_category_id": "food.seasonings.stock.stock_seasoning",
+      "category_id": null,
+      "canonical_name": "청정원 맛선생 멸치디포리 국물내기 한알",
+      "brand": "청정원",
+      "aliases": [
+        "청정원 맛선생 멸치디포리 국물내기 한알 (100G)",
+        "청정원 맛선생 멸치디포리 국물내기 한알 100G"
+      ],
+      "keywords": [
+        "멸치디포리 국물내기 한알",
+        "육수조미료",
+        "코인육수"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 두 판매처 제목의 청정원 맛선생 멸치디포리 국물내기 한알과 100g 단품이 일치하고 롯데 판매 문맥도 코인육수다. 제목에 없는 알 개수는 추정하지 않는다. 미해석 할인과 조건부 행사가의 기존 상태는 변경하지 않는다.",
+            "raw_record_ids": [
+              "ingestion:22:94",
+              "ingestion:72:32"
+            ],
+            "source_ingestion_ids": [
+              22,
+              72
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "069219541"
+          },
+          {
+            "classification_attributes": {},
+            "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 두 판매처 제목의 청정원 맛선생 멸치디포리 국물내기 한알과 100g 단품이 일치하고 롯데 판매 문맥도 코인육수다. 제목에 없는 알 개수는 추정하지 않는다. 미해석 할인과 조건부 행사가의 기존 상태는 변경하지 않는다.",
+            "raw_record_ids": [
+              "ingestion:31:62"
+            ],
+            "source_ingestion_ids": [
+              31
+            ],
+            "source_name": "lottemart",
+            "source_record_key": "8801052091907"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": "reviewed draft by codex-root-source-review-20260908-remaining-exact: 두 판매처 제목의 청정원 맛선생 멸치디포리 국물내기 한알과 100g 단품이 일치하고 롯데 판매 문맥도 코인육수다. 제목에 없는 알 개수는 추정하지 않는다. 미해석 할인과 조건부 행사가의 기존 상태는 변경하지 않는다.",
+        "identity_basis": "reviewed_product_group",
+        "product_group_key": "reviewed-family-v1:chungjungone-anchovy-dipori-stock-tablet",
+        "source_ingestion_ids": [
+          22,
+          31,
+          72
+        ],
+        "classification_confidence": 0.95,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "육수조미료"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+          "old_leaf": "food.seasonings.baking.stock",
+          "new_leaf": "food.seasonings.stock.stock_seasoning",
+          "source_name": "lottemart",
+          "source_record_key": "8801052091907",
+          "source_titles": [
+            "청정원 맛선생 멸치디포리 국물내기 한알 (100G)"
+          ],
+          "source_urls": [
+            "https://lottemartzetta.com/products/OS8801052091907/details"
+          ],
+          "evidence_sha256": "0c6b30c9ef3a9d9a816c1c4dfc21a34e0ec148c0b4c2d2ea573545412a95fb70",
+          "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
+        },
+        "catalog_leaf_review_bindings": [
+          {
+            "product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+            "old_leaf": "food.seasonings.baking.stock",
+            "new_leaf": "food.seasonings.stock.stock_seasoning",
+            "source_name": "homeplus",
+            "source_record_key": "069219541",
+            "source_titles": [
+              "청정원 맛선생 멸치디포리 국물내기 한알 100G"
+            ],
+            "source_urls": [
+              "https://mfront.homeplus.co.kr/item?itemNo=069219541&storeType=HYPER"
+            ],
+            "evidence_sha256": "a52592a85e08790c3f6fedde0e45812cf1ab4ce7263523b0bb663397543fcd24",
+            "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
+          },
+          {
+            "product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+            "old_leaf": "food.seasonings.baking.stock",
+            "new_leaf": "food.seasonings.stock.stock_seasoning",
+            "source_name": "lottemart",
+            "source_record_key": "8801052091907",
+            "source_titles": [
+              "청정원 맛선생 멸치디포리 국물내기 한알 (100G)"
+            ],
+            "source_urls": [
+              "https://lottemartzetta.com/products/OS8801052091907/details"
+            ],
+            "evidence_sha256": "0c6b30c9ef3a9d9a816c1c4dfc21a34e0ec148c0b4c2d2ea573545412a95fb70",
+            "reason": "Original431#273/#274 explicitly review matching 청정원 맛선생 멸치디포리 국물내기한알100g and Lotte 코인육수 context. Preserve their original cooking-stock meaning and bytes, refine legacy 기초조미·제빵/육수 to existing 조미료/육수조미료; no liquid/powder/tablet-count inference. Both current source listings independently bound; existing canonical100g variant/group/source quote/time/IDs remain unchanged."
+          }
+        ]
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.95,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [
+    {
+      "public_offer_event_id": "offer-206d32d790621dd29fa24f5ac362ac05",
+      "public_source_listing_id": "listing-7027050f4194941f679e1fab5feb4c19",
+      "price_state": "sale_price_only",
+      "promotion_type": "unknown",
+      "price": 9200.0,
+      "original_price": null,
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "standard_unit_price": null,
+      "price_per_100g": null,
+      "valid_from": null,
+      "valid_to": null,
+      "raw_record_id": "ingestion:31:62",
+      "raw_evidence": {
+        "observations": [
+          {
+            "crawled_at": "2026-08-31T01:47:02.653033Z",
+            "ingestion_id": 31,
+            "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+            "mart_native_category_id": "",
+            "observed_time_precision": "item",
+            "raw_payload": {
+              "attributes": {
+                "brand": "청정원",
+                "canon_hash": "dac78cf0725c195700e38ac6655721f9f3e06c5c",
+                "canonical_url": "https://lottemartzetta.com/products/OS8801052091907/details",
+                "category_hint": "양념ㆍ오일ㆍ분말류",
+                "category_path": [
+                  "양념ㆍ오일ㆍ분말류",
+                  "육수ㆍ국물팩",
+                  "코인육수"
+                ],
+                "ean_source_key": "retailerProductId",
+                "external_seller": false,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a5f8425b-297e-4850-9f59-8e132bc19f6a/300x300.jpg",
+                "mart_native_code": "8801052091907",
+                "source": "lottemart",
+                "source_name": "lottemart",
+                "source_record_key": "8801052091907",
+                "source_url": "https://lottemartzetta.com/products/OS8801052091907/details"
+              },
+              "brand": "__no_brand__",
+              "category": "양념ㆍ오일ㆍ분말류",
+              "crawled_at": "2026-08-31T10:47:02.653033",
+              "detail_url": "https://lottemartzetta.com/products/OS8801052091907/details",
+              "discount_percent": null,
+              "display_unit": "100g",
+              "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a5f8425b-297e-4850-9f59-8e132bc19f6a/300x300.jpg",
+              "match_key": "__no_brand__|청정원 맛선생 멸치디포리 국물내기 한알 100g||100g",
+              "matching_miss_reason": "key_not_found",
+              "matching_status": "miss",
+              "name": "청정원 맛선생 멸치디포리 국물내기 한알 (100G)",
+              "normalized_name": "",
+              "original_price": null,
+              "package_quantity": 100.0,
+              "package_unit": "g",
+              "price_per_100g": 9200.0,
+              "promo_label": null,
+              "promo_type": null,
+              "sale_price": 9200,
+              "source": "lottemart",
+              "store": "롯데마트",
+              "unit": "100g",
+              "unit_price_display": "",
+              "valid_from": null,
+              "valid_until": null
+            },
+            "raw_payload_sha256": "1c84c1b94823242123b55d25030d3c65a90694e94f70dc3398fce7df8af1333d",
+            "raw_record_id": "ingestion:31:62",
+            "source_category_path": [
+              "양념ᆞ오일ᆞ분말류",
+              "육수ᆞ국물팩",
+              "코인육수"
+            ],
+            "timestamp_source": "item_crawled_at"
+          }
+        ],
+        "promotion_conditions": {
+          "condition_text": "2개씩 골라 담으면, 그 중 1개는 무료",
+          "required_selection_quantity": 2,
+          "basket_selection_required": true,
+          "payable_price_unconfirmed": true,
+          "source_condition_kind": "selected_free_item",
+          "conditional_free_quantity": 1,
+          "free_item_valuation_unconfirmed": true
+        }
+      },
+      "audit_provenance": {
+        "builder_version": "initial-catalog-seed-v1",
+        "naive_timestamp_timezone": "Asia/Seoul",
+        "observation_count": 1,
+        "observed_time_precision": "item",
+        "publication_status": "not_approved",
+        "raw_record_ids": [
+          "ingestion:31:62"
+        ],
+        "review_reasons": [
+          "promotion_unresolved"
+        ],
+        "source_ingestion_ids": [
+          31
+        ],
+        "timestamp_source": "item_crawled_at",
+        "offer_interpretation_review": {
+          "version": 1,
+          "status": "approved",
+          "approved_by": "moderator",
+          "approved_at": "2026-10-04T09:13:52.950380+00:00",
+          "family": "conditional_selection_observation",
+          "binding": {
+            "public_offer_event_id": "offer-206d32d790621dd29fa24f5ac362ac05",
+            "public_source_listing_id": "listing-7027050f4194941f679e1fab5feb4c19",
+            "public_variant_id": "var-5a7f7df52c4010809cc338b4fe1a446f",
+            "public_product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+            "unified_category_id": "food.seasonings.baking.stock",
+            "source_name": "lottemart",
+            "source_record_key": "8801052091907",
+            "source_title": "청정원 맛선생 멸치디포리 국물내기 한알 (100G)",
+            "source_url": "https://lottemartzetta.com/products/OS8801052091907/details",
+            "variant_spec": {
+              "variant_name": "청정원 맛선생 멸치디포리 국물내기 한알 100g×1",
+              "display_unit": "100g",
+              "package_quantity": 100.0,
+              "package_unit": "g",
+              "bundle_count": 1,
+              "standard_unit": "g",
+              "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+            },
+            "quote": {
+              "price": 9200.0,
+              "original_price": null,
+              "price_state": "sale_price_only",
+              "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+              "valid_from": null,
+              "valid_to": null,
+              "crawled_at": "2026-08-31T01:47:02.653033Z"
+            },
+            "observations": [
+              {
+                "raw_record_id": "ingestion:31:62",
+                "raw_payload_sha256": "1c84c1b94823242123b55d25030d3c65a90694e94f70dc3398fce7df8af1333d",
+                "observation_sha256": "35682cb5b90887e53be8dac57b8dba5a252711b2a671ccdba2b28a57ec489e93"
+              }
+            ]
+          },
+          "before": {
+            "promotion_type": "unknown",
+            "offer_state": "pending_review",
+            "promotion_conditions": {}
+          },
+          "interpretation": {
+            "promotion_type": "unknown",
+            "offer_state": "active",
+            "promotion_conditions": {
+              "condition_text": "2개씩 골라 담으면, 그 중 1개는 무료",
+              "required_selection_quantity": 2,
+              "basket_selection_required": true,
+              "payable_price_unconfirmed": true,
+              "source_condition_kind": "selected_free_item",
+              "conditional_free_quantity": 1,
+              "free_item_valuation_unconfirmed": true
+            }
+          }
+        },
+        "offer_category_context_history": [
+          {
+            "version": 1,
+            "status": "approved",
+            "reason": "supported_category_form_refinement",
+            "approved_by": "catalog_orchestrator_reviewed_loaded_category397",
+            "approved_at": "2026-10-07T03:09:13.642791+00:00",
+            "original_review_sha256": "8f53f096b945cf211de01d6252603403b60a8b108c2ead7bb0ca432d59674217",
+            "before_context": {
+              "public_source_listing_id": "listing-7027050f4194941f679e1fab5feb4c19",
+              "public_variant_id": "var-5a7f7df52c4010809cc338b4fe1a446f",
+              "public_product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+              "unified_category_id": "food.seasonings.baking.stock",
+              "source_name": "lottemart",
+              "source_record_key": "8801052091907",
+              "source_title": "청정원 맛선생 멸치디포리 국물내기 한알 (100G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801052091907/details",
+              "variant_spec": {
+                "variant_name": "청정원 맛선생 멸치디포리 국물내기 한알 100g×1",
+                "display_unit": "100g",
+                "package_quantity": 100.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "after_context": {
+              "public_source_listing_id": "listing-7027050f4194941f679e1fab5feb4c19",
+              "public_variant_id": "var-5a7f7df52c4010809cc338b4fe1a446f",
+              "public_product_id": "prod-5cb58b8d47fb40795e9cd4cb7290e88d",
+              "unified_category_id": "food.seasonings.stock.stock_seasoning",
+              "source_name": "lottemart",
+              "source_record_key": "8801052091907",
+              "source_title": "청정원 맛선생 멸치디포리 국물내기 한알 (100G)",
+              "source_url": "https://lottemartzetta.com/products/OS8801052091907/details",
+              "variant_spec": {
+                "variant_name": "청정원 맛선생 멸치디포리 국물내기 한알 100g×1",
+                "display_unit": "100g",
+                "package_quantity": 100.0,
+                "package_unit": "g",
+                "bundle_count": 1,
+                "standard_unit": "g",
+                "attributes_sha256": "2212f7ef054e6c88a5d459bfb98d5679bc883f0728a98bd28b166c7ee15a896c"
+              }
+            },
+            "before_context_sha256": "5851ae1f738e74d7db8d39cafafc5ecd20f3f61532eba0d60925bedc94273c2b",
+            "after_context_sha256": "689f59e286f67418974c0896b8997ec3f9e389b7c08b6d34cb32baa85821628c",
+            "observations": [
+              {
+                "raw_record_id": "ingestion:31:62",
+                "raw_payload_sha256": "1c84c1b94823242123b55d25030d3c65a90694e94f70dc3398fce7df8af1333d",
+                "observation_sha256": "35682cb5b90887e53be8dac57b8dba5a252711b2a671ccdba2b28a57ec489e93"
+              }
+            ]
+          }
+        ]
+      },
+      "crawled_at": "2026-08-31T01:47:02.653033",
+      "offer_state": "active",
+      "projection_version": "walletsaver-catalog-v2"
+    }
+  ],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

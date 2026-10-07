@@ -1,0 +1,80 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation453-reviewed-group-keyword-spec",
+  "categories": [],
+  "keywords": [],
+  "products": [
+    {
+      "public_product_id": "prod-863f93beedbd2a8216666c1896923f5b",
+      "unified_category_id": "food.produce.vegetables.mushroom",
+      "category_id": null,
+      "canonical_name": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "버섯"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:47:76"
+            ],
+            "source_ingestion_ids": [
+              47
+            ],
+            "source_name": "costco",
+            "source_record_key": "697408"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          47
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "버섯"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-863f93beedbd2a8216666c1896923f5b",
+          "old_leaf": "food.produce.sets.mushroom_gift",
+          "new_leaf": "food.produce.vegetables.mushroom",
+          "source_name": "costco",
+          "source_record_key": "697408",
+          "source_titles": [
+            "무농약 생 표고버섯(흑화고) 선물세트 600g"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408"
+          ],
+          "evidence_sha256": "d7575eee22d08d37d5de8105cf998e8d8e3af1716b4c85ffc0e9b2e8595df1c0",
+          "reason": "Exact source title 생 표고버섯(흑화고) 선물세트600g and /Foods/Fresh-Foods/Vegetables/ prove one fresh mushroom commodity. Gift packing is presentation, not evidence of a mixed species/processed-food set. Preserve literal gift label, declared600g and original variant/source/event/price/time; no producer/grade identity merge and no singleton count. Restore fresh-mushroom same-kind navigation after108gift sibling split; prior108review remains historical."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hd1/h57/492569266356254.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

@@ -138,14 +138,24 @@ def reviewed_product_fields(product: Mapping, listings: list[Mapping]) -> dict:
     for review in registry.get("leaf_reviews", []):
         if own != review["product_id"]:
             continue
+        # An existing canonical product may already have several source listings.
+        # Every listing must have its own registered context for this same
+        # product and transition; one approved source cannot authorize a peer.
+        bindings = [candidate for candidate in registry.get("leaf_reviews", [])
+                    if candidate["product_id"] == own
+                    and candidate["old_leaf"] == review["old_leaf"]
+                    and candidate["new_leaf"] == review["new_leaf"]]
         if (result.get("unified_category_id") in {review["old_leaf"], review["new_leaf"]}
-                and listings and all(
-                    row.get("source_name") == review["source_name"]
-                    and row.get("source_record_key") == review["source_record_key"]
-                    and row.get("source_title") in review["source_titles"]
-                    and row.get("source_url") in review["source_urls"] for row in listings)):
+                and listings and all(any(
+                    row.get("source_name") == binding["source_name"]
+                    and row.get("source_record_key") == binding["source_record_key"]
+                    and row.get("source_title") in binding["source_titles"]
+                    and row.get("source_url") in binding["source_urls"]
+                    for binding in bindings) for row in listings)):
             result["unified_category_id"] = review["new_leaf"]
             attrs["catalog_leaf_review"] = dict(review)
+            if len(bindings) > 1:
+                attrs["catalog_leaf_review_bindings"] = [dict(binding) for binding in bindings]
     for group in registry["groups"]:
         bindings = group["bindings"].get(own)
         if not bindings:
