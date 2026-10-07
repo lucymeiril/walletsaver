@@ -127,6 +127,7 @@ export default function Schedule() {
   const [adding, setAdding] = useState(false);
   const [addCrawler, setAddCrawler] = useState('');
   const [addCron, setAddCron] = useState('0 7 * * *');
+  const [addEnabled, setAddEnabled] = useState(true);
   const [deleting, setDeleting] = useState(null);
   const [runningId, setRunningId] = useState(null);
   const [cronError, setCronError] = useState('');
@@ -201,11 +202,12 @@ export default function Schedule() {
       return;
     }
     setCronError('');
-    const result = await createSchedule({ crawler_name: addCrawler, cron: addCron });
+    const result = await createSchedule({ crawler_name: addCrawler, cron: addCron, enabled: addEnabled });
     if (!result) return;
     setAdding(false);
     setAddCrawler('');
     setAddCron('0 7 * * *');
+    setAddEnabled(true);
   };
 
   const scheduledPluginNames = new Set(schedules.map((schedule) => schedule.crawlerId));
@@ -485,6 +487,14 @@ export default function Schedule() {
                 ))}
               </div>
             )}
+
+            <div className={styles.editField}>
+              <label className={styles.editLabel} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input type="checkbox" checked={addEnabled} onChange={event => setAddEnabled(event.target.checked)} style={{ width: 'auto' }} />
+                저장 후 예약 실행 활성화
+              </label>
+              <small>해제하면 비활성으로 저장되며 예약 실행하지 않습니다.</small>
+            </div>
 
             <div className={styles.editActions}>
               <button

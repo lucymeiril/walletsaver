@@ -171,7 +171,7 @@ export const api = {
       body: JSON.stringify({
         plugin_name: data.crawler_name,
         cron_expr: data.cron,
-        enabled: true,
+        enabled: data.enabled ?? true,
       }),
     }).then(r => r.json());
     return toScheduleView(row);

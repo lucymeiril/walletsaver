@@ -48,6 +48,19 @@ describe('bounded Lotte run client', () => {
 
 describe('weekly schedule UTC and Unix weekday boundary', () => {
   afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
+  it('saves explicitly disabled schedules without changing the omitted enabled default', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, request) => ({
+      ok: true, status: 201, json: async () => ({ id: 'owned-inactive', ...JSON.parse(request.body) }),
+    }));
+    const disabled = await api.createSchedule({ crawler_name: 'lottemart', cron: '0 7 * * 1', enabled: false });
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
+      plugin_name: 'lottemart', cron_expr: '0 7 * * 1', enabled: false,
+    });
+    expect(disabled).toMatchObject({ id: 'owned-inactive', crawlerId: 'lottemart', cron: '0 7 * * 1', enabled: false });
+    await api.createSchedule({ crawler_name: 'lottemart', cron: '0 7 * * 1' });
+    expect(JSON.parse(fetchMock.mock.calls[1][1].body).enabled).toBe(true);
+    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual(['/api/v1/schedules', '/api/v1/schedules']);
+  });
   it.each([
     ['0 7 * * 1', '2026-10-05T07:00:00.000Z'],
     ['0 7 * * 0', '2026-10-04T07:00:00.000Z'],
