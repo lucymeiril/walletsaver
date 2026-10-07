@@ -15,7 +15,7 @@ import useStore from '../stores/appStore';
 import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
-import { fmt } from '../utils/helpers';
+import { fmt, fmtUnitPrice } from '../utils/helpers';
 import { buildCartPayload, buildWishlistPayload, buildProductShareUrl, normalizeProduct, selectProductOffer, getProductSelection, getSourceReferencePriceText } from '../utils/productActions';
 import { buildProductDecision, getOfferUnitPrice, getVariantBestOffer, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, getCatalogObservationDescription, isObservationReceiptEligible, getOfferAmountLabel } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
@@ -289,9 +289,9 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const isNormalizedCatalog = Boolean(product.public_product_id || Object.hasOwn(product, 'best_offer'));
   const verifiedUnitPrice = getOfferUnitPrice(product.best_offer, chosen?.variant.quantity_components || []);
   const displayUnitPrice = isNormalizedCatalog
-    ? (verifiedUnitPrice ? `${fmt(Math.round(verifiedUnitPrice.price))}원/${verifiedUnitPrice.unit}` : null)
+    ? (verifiedUnitPrice ? `${fmtUnitPrice(verifiedUnitPrice.price)}원/${verifiedUnitPrice.unit}` : null)
     : (unitPriceDisplay || (standardUnitPrice && standardUnit
-      ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}` : null));
+      ? `${fmtUnitPrice(standardUnitPrice)}원/${standardUnit}` : null));
   const decision = buildProductDecision(product, { priceCompare, priceHistory, priceTrust });
   const {
     historySummary,
@@ -551,7 +551,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                       {offer.title && <small>{offer.title}</small>}
                     </span>
                     <span className={s.osPrice}>{fmt(offer.price)}원</span>
-                    {offer.unitPrice != null && offer.unit && <small>{fmt(offer.unitPrice)}원/{offer.unit}</small>}
+                    {offer.unitPrice != null && offer.unit && <small>{fmtUnitPrice(offer.unitPrice)}원/{offer.unit}</small>}
                     {offerFacts({ total_price: offer.totalPrice, total_quantity: offer.totalQuantity, quantity_unit: offer.quantityUnit, quantity_basis: offer.quantityBasis, scalar_basis: offer.scalarBasis, received_package_count_scope: offer.receivedPackageCountScope, quantity_components: offer.quantityComponents, pricing_measure_quantity: offer.pricingMeasureQuantity, pricing_measure_unit: offer.pricingMeasureUnit, pricing_measure_basis: offer.pricingMeasureBasis, minimum_quantity: offer.minimumQuantity, received_package_count: offer.receivedPackageCount, promotion_condition: offer.promotionCondition, promotion_conditions: offer.promotionConditions, membership_required: offer.membershipRequired, coupon_required: offer.couponRequired })}
                     {selectedValue != null && offer.comparisonValue != null && offer.comparisonValue < selectedValue && <span className={s.osCheaper}>{offer.comparisonBasis} 기준 표시 조건에서 더 저렴</span>}
                     {bestValue != null && offer.comparisonValue === bestValue && <span className={s.osBest}>{offer.comparisonBasis} 기준 표시 조건의 관측 최저</span>}

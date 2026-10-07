@@ -955,6 +955,68 @@ describe('selected normalized transaction boundary',()=>{
     expect(screen.getByText('100g 기준 표시 조건에서 더 저렴')).toBeInTheDocument();
     for(const text of [/최소 구매 2/,/수령 패키지 3/,/회원 필요/,/쿠폰 필요 없음/])expect(screen.getAllByText(text).length).toBeGreaterThan(0);
   });
+  it('ranks exact fractional ml rates ahead of cheaper total spend without pricing an unknown unit', () => {
+    const conditions = { source_condition_kind: 'source_public_base_quote', source_quote_currency: 'KRW',
+      source_base_quote_only: true, payable_price_unconfirmed: false, coupon_application_unconfirmed: true,
+      source_minimum_purchase_quantity: 1, source_maximum_purchase_quantity: 2 };
+    const offer = (id, price, quantity) => ({ id, listed_price: price, total_price: price,
+      comparable_price: price, total_quantity: quantity, quantity_unit: quantity == null ? null : 'ml',
+      per_100ml: quantity == null ? null : price / quantity * 100, per_100g: null,
+      current_eligible: true, minimum_quantity: 1, received_package_count: 1,
+      membership_required: null, coupon_required: null, promotion_conditions: { ...conditions } });
+    const variants = [
+      { id: 'var-ten-litres', name: '1L×10', package_quantity: 1000, package_unit: 'ml', bundle_count: 10,
+        listings: [{ id: 'listing-ten-litres', source: 'same-reviewed-water', title: '1L×10',
+          offers: [offer('lower-total-higher-rate', 1840, 10000)] }] },
+      { id: 'var-twelve-litres', name: '2L×6', package_quantity: 2000, package_unit: 'ml', bundle_count: 6,
+        listings: [{ id: 'listing-twelve-litres', source: 'homeplus', title: '2L×6',
+          offers: [offer('higher-total-lower-rate', 2190, 12000)] }] },
+      { id: 'var-unknown', name: '내용량 미확인', package_quantity: null,
+        listings: [{ id: 'listing-unknown', source: 'unknown', title: '내용량 미확인',
+          offers: [offer('unknown-unit-cheapest-total', 100, null)] }] },
+    ];
+    const product = { id: 'prod-water-precision', public_product_id: 'prod-water-precision', variants,
+      best_offer: { ...variants[0].listings[0].offers[0], variant_id: variants[0].id,
+        listing_id: variants[0].listings[0].id } };
+    const original = JSON.stringify(product);
+    const rows = getComparableOffers(product);
+    expect(rows.map(row => row.offerId)).toEqual([
+      'higher-total-lower-rate', 'lower-total-higher-rate', 'unknown-unit-cheapest-total',
+    ]);
+    expect(rows[0]).toMatchObject({ variantId: 'var-twelve-litres', listingId: 'listing-twelve-litres',
+      sourceName: 'homeplus', title: '2L×6', price: 2190, totalPrice: 2190, totalQuantity: 12000,
+      quantityUnit: 'ml', unitPrice: 18.25, comparisonValue: 18.25, comparisonBasis: '100ml',
+      promotionConditions: conditions, minimumQuantity: 1, membershipRequired: null, couponRequired: null });
+    expect(rows[1]).toMatchObject({ price: 1840, totalQuantity: 10000, unitPrice: 18.4,
+      comparisonValue: 18.4, comparisonBasis: '100ml' });
+    expect(rows[2]).toMatchObject({ price: 100, totalQuantity: null, unitPrice: null,
+      comparisonValue: null, comparisonBasis: null });
+    expect(JSON.stringify(product)).toBe(original);
+  });
+  it('displays distinct fractional unit rates beside cheaper badges without changing source spend', () => {
+    const raw = selectionFixture();
+    raw.variants.forEach((variant, index) => {
+      const [price, quantity, size, count] = index ? [2190, 12000, 2000, 6] : [1840, 10000, 1000, 10];
+      Object.assign(variant, { package_quantity: size, package_unit: 'ml', bundle_count: count,
+        name: index ? '2L×6' : '1L×10', display_unit: index ? '2L×6' : '1L×10' });
+      Object.assign(variant.listings[0].offers[0], { listed_price: price, total_price: price,
+        comparable_price: price, total_quantity: quantity, quantity_unit: 'ml', per_100g: null,
+        per_100ml: price / quantity * 100, minimum_quantity: 1, received_package_count: 1,
+        membership_required: null, coupon_required: null,
+        promotion_conditions: { source_condition_kind: 'source_public_base_quote', source_base_quote_only: true,
+          source_quote_currency: 'KRW', payable_price_unconfirmed: false, coupon_application_unconfirmed: true } });
+    });
+    const product = selectProductOffer(raw, { variantId: 'var-a' });
+    const original = JSON.stringify(product);
+    render(<ProductDetailModal product={product} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getAllByText('18.4원/100ml').length).toBeGreaterThanOrEqual(2);
+    const cheaper = screen.getByText('18.25원/100ml').parentElement;
+    expect(cheaper).toHaveTextContent('2,190원');
+    expect(cheaper).toHaveTextContent('100ml 기준 표시 조건에서 더 저렴');
+    expect(screen.queryByText('18원/100ml')).not.toBeInTheDocument();
+    expect(screen.getAllByText(/실제 결제 금액 미확인/).length).toBeGreaterThan(0);
+    expect(JSON.stringify(product)).toBe(original);
+  });
   it('withholds lowest labels for unknown quantities and mixed dimensions',()=>{
     const product=selectionFixture();
     for(const variant of product.variants)Object.assign(variant.listings[0].offers[0],{total_quantity:null,quantity_unit:null,per_100g:null,per_item:null,bundle_count:null});
@@ -1931,6 +1993,27 @@ describe('248 validated linear receipt consumers', () => {
 
 describe('249 saved measured observation rate presentation', () => {
   afterEach(() => { cleanup(); vi.clearAllMocks(); });
+  it('displays a saved fractional ml rate without recomputing its receipt or order total', () => {
+    const quote = { id: 'fractional-water-quote', listed_price: 2190, total_price: 2190, comparable_price: 2190,
+      total_quantity: 12000, quantity_unit: 'ml', per_100ml: 18.25, received_package_count: 1,
+      minimum_quantity: 1, membership_required: null, coupon_required: null,
+      promotion_conditions: { source_condition_kind: 'source_public_base_quote', source_base_quote_only: true,
+        source_quote_currency: 'KRW', payable_price_unconfirmed: false, coupon_application_unconfirmed: true } };
+    const item = { id: 'saved-fractional-water', product_id: 'prod-water', variant_id: 'var-water',
+      listing_id: 'listing-water', offer_id: quote.id, saved_receipt_valid: true, unit: '2L×6',
+      name: '선택 물', price: 2190, price_known: true, quantity: 2, offer_context: quote };
+    const original = JSON.stringify(item);
+    useCartStore.setState({ items: [item] });
+    render(<MemoryRouter><ShoppingListPanel /></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name: '장바구니 열기' }));
+    expect(screen.getByText('100ml당 18.25원')).toBeInTheDocument();
+    expect(screen.queryByText('100ml당 18원')).not.toBeInTheDocument();
+    expect(screen.getByText('선택 규격 2L×6')).toBeInTheDocument();
+    expect(screen.getByText('주문 2회')).toBeInTheDocument();
+    expect(screen.getAllByText(/4,380원/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/실제 결제 금액 미확인/).length).toBeGreaterThan(0);
+    expect(JSON.stringify(useCartStore.getState().items[0])).toBe(original);
+  });
   it.each(['ml','m'])('preserves the known saved %s observation rate through Cart without implying current purchase eligibility', (unit) => {
     const linear = unit === 'm', purpose = linear ? 'reviewed_declared_linear_contents' : 'reviewed_homogeneous_contents';
     const quote = { total_price: linear ? 2380 : 14990, comparable_price: linear ? 2380 : 14990,

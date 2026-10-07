@@ -41,7 +41,7 @@ async def test_promotion_history_keeps_raw_quote_separate_from_period_qualified_
                and row['promotion_conditions']['buy_quantity'] == 2 for row in history.values())
     assert history['earlier']['total_price'] == history['earlier']['comparable_price'] == 17960
     assert history['earlier']['total_quantity'] == 1800 and history['earlier']['received_package_count'] == 3
-    assert history['earlier']['per_100g'] == 998 and history['earlier']['observation_receipt_eligible'] is True
+    assert history['earlier']['per_100g'] == pytest.approx(17960 / 1800 * 100) and history['earlier']['observation_receipt_eligible'] is True
     assert history['later']['total_price'] is history['later']['total_quantity'] is history['later']['per_100g'] is None
     assert history['later']['observation_receipt_eligible'] is False
     assert history['later']['observation_receipt_reason'] == 'promotion_observation_outside_period'
@@ -197,7 +197,7 @@ def test_registered_linear_contents_reach_history_and_saved_quote_without_promot
     offer = vector['listings'][0]['offers'][0]
     assert offer['quantity_basis'] == 'reviewed_declared_linear_contents'
     assert offer['pricing_measure_quantity'] == offer['total_quantity'] == quantity * count
-    assert offer['per_100m'] == round(9000 / (quantity * count) * 100)
+    assert offer['per_100m'] == pytest.approx(9000 / (quantity * count) * 100)
     assert unproven['listings'][0]['offers'][0]['pricing_measure_quantity'] is None
     assert unproven['listings'][0]['offers'][0]['per_100m'] is None
     with client_for(catalog) as client:
@@ -559,3 +559,18 @@ def test_category_projects_actual_selected_offer_quantity_and_purchase_condition
     assert offer['package_quantity'] == 90 and offer['package_unit'] == 'g' and offer['bundle_count'] == 4
     assert offer['display_unit'] == '90g×4'
     assert result['best_offer']['id'] == 'latest-a'
+
+
+def test_category_fractional_unit_prices_keep_rank_and_summary_precision():
+    rows = [comparison_row('base-quote',2190,per_100ml=18.25),
+            comparison_row('cheaper-spend',1840,per_100ml=18.4)]
+    with category_client(rows) as client:
+        result = client.get('/products/category/test/compare', params={'sort':'price_asc'}).json()['data']
+    assert [row['id'] for row in result['products']] == ['base-quote','cheaper-spend']
+    assert [row['promotion']['total_spend'] for row in result['products']] == [2190,1840]
+    summary = result['summary']
+    assert summary['min_comparison_price'] == 18.25
+    assert summary['max_comparison_price'] == pytest.approx(18.4)
+    assert summary['avg_comparison_price'] == pytest.approx(18.325)
+    assert summary['hotdeal_threshold'] == pytest.approx(18.325 * .85)
+    assert summary['comparison_groups'][0]['avg_comparison_price'] == pytest.approx(18.325)

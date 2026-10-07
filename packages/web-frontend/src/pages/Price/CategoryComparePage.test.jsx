@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import CategoryComparePage from './CategoryComparePage';
 import { searchService } from '../../services/searchService';
+import { fmt, fmtUnitPrice } from '../../utils/helpers';
 
 vi.mock('../../services/searchService', () => ({ searchService: { categoryCompare: vi.fn() } }));
 
@@ -26,6 +27,52 @@ function show(data) {
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
 describe('CategoryCompare actual unit and receipt boundary', () => {
+  it('marks rounded unit-rate labels approximate without rounding tiny positive rates to zero or changing money', () => {
+    expect(fmtUnitPrice(18.25)).toBe('18.25');
+    expect(fmtUnitPrice(18.4)).toBe('18.4');
+    expect(fmtUnitPrice('18.25')).toBe('18.25');
+    expect(fmtUnitPrice(' 18.4 ')).toBe('18.4');
+    expect(fmtUnitPrice('1e-9')).toBe('1E-9');
+    expect(fmtUnitPrice(1 / 3, '₩')).toBe('≈ ₩0.3333333333');
+    expect(fmtUnitPrice(1e-9)).toBe('1E-9');
+    expect(fmtUnitPrice(1 / 300000000)).toBe('≈ 3.333333333E-9');
+    for (const value of [null, undefined, NaN, Infinity, -1, true, false, '', ' ', 'Infinity', 'invalid']) {
+      expect(fmtUnitPrice(value)).toBe('');
+    }
+    expect(fmt(2190)).toBe('2,190');
+  });
+
+  it('shows distinct fractional unit rates in category cards and table while preserving transaction amounts', async () => {
+    show({ summary: { ...summary, comparison_basis: '100ml', avg_comparison_price: (18.25 + 18.4 + 1 / 3) / 3,
+      min_comparison_price: 1 / 3, max_comparison_price: 18.4 }, products: [
+      { id: 'water-six', name: '물 2L×6', price: { current: 2190 },
+        normalized: { unit_price: 18.25, basis: '100ml' },
+        promotion: { total_price: 2190, listed_price: 2190, total_quantity: 12000, quantity_unit: 'ml', display_unit: '2L×6' } },
+      { id: 'water-ten', name: '물 1L×10', price: { current: 1840 },
+        normalized: { unit_price: 18.4, basis: '100ml' },
+        promotion: { total_price: 1840, listed_price: 1840, total_quantity: 10000, quantity_unit: 'ml', display_unit: '1L×10' } },
+      { id: 'water-repeating', name: '반복 소수 물', price: { current: 1 },
+        normalized: { unit_price: 1 / 3, basis: '100ml' },
+        promotion: { total_price: 1, listed_price: 1, total_quantity: 300, quantity_unit: 'ml', display_unit: '300ml' } },
+    ] });
+    const six = (await screen.findByText('물 2L×6')).closest('.productCard');
+    const ten = screen.getByText('물 1L×10').closest('.productCard');
+    expect(within(six).getByText('₩18.25/100ml')).toBeInTheDocument();
+    expect(within(ten).getByText('₩18.4/100ml')).toBeInTheDocument();
+    expect(within(six).getByText('거래 금액 ₩2,190')).toBeInTheDocument();
+    expect(within(ten).getByText('거래 금액 ₩1,840')).toBeInTheDocument();
+    const repeating = screen.getByText('반복 소수 물').closest('.productCard');
+    expect(within(repeating).getByText('≈ ₩0.3333333333/100ml')).toBeInTheDocument();
+    expect(within(repeating).getByText('거래 금액 ₩1')).toBeInTheDocument();
+    expect(screen.getByText('평균 단위가 · 표시 조건 기준').parentElement).toHaveTextContent('≈ ₩12.32777778/100ml');
+    fireEvent.click(screen.getByText('테이블'));
+    const table = screen.getByRole('table');
+    expect(within(table).getByText('₩18.25/100ml')).toBeInTheDocument();
+    expect(within(table).getByText('₩18.4/100ml')).toBeInTheDocument();
+    expect(within(table).getByText('≈ ₩0.3333333333/100ml')).toBeInTheDocument();
+    expect(within(table).queryByText('₩18/100ml')).not.toBeInTheDocument();
+  });
+
   it('selects authoritative whole-category unit groups before paging and keeps other units out of rankings', async () => {
     const groups = [
       { basis: '100g', product_count: 25, comparable_count: 25 },

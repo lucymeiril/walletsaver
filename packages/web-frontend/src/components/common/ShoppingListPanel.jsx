@@ -7,6 +7,7 @@ import useCartStore from '../../stores/cartStore';
 import useModalStore from '../../stores/modalStore';
 import SafeImage from './SafeImage';
 import { getSavedOfferConditionText, getSavedReceiptHoldText, getCartQuotePresentation, getOfferUnitPrice } from '../../utils/productDecision';
+import { fmtUnitPrice } from '../../utils/helpers';
 import s from './ShoppingListPanel.module.css';
 
 const fmt = (n) => n?.toLocaleString('ko-KR') ?? '0';
@@ -45,10 +46,10 @@ function SelectedQuote({ item }) {
     {presentation.statusText && <div>{presentation.statusText}</div>}
     {receiptHold && <div>{receiptHold}</div>}
     {measuredRate && ['100g', '100ml', '100m'].includes(measuredRate.unit)
-      && <div>관측 단위가 · {measuredRate.unit}당 {fmt(measuredRate.price)}원</div>}
-    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'g' && quote.per_100g > 0 && <div>100g당 {fmt(quote.per_100g)}원</div>}
-    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'ml' && quote.per_100ml > 0 && <div>100ml당 {fmt(quote.per_100ml)}원</div>}
-    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'ea' && quote.per_item > 0 && <div>개당 {fmt(quote.per_item)}원</div>}
+      && <div>관측 단위가 · {measuredRate.unit}당 {fmtUnitPrice(measuredRate.price)}원</div>}
+    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'g' && quote.per_100g > 0 && <div>100g당 {fmtUnitPrice(quote.per_100g)}원</div>}
+    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'ml' && quote.per_100ml > 0 && <div>100ml당 {fmtUnitPrice(quote.per_100ml)}원</div>}
+    {presentation.canDisplayUnitPrice && quote.total_quantity > 0 && quote.quantity_unit === 'ea' && quote.per_item > 0 && <div>개당 {fmtUnitPrice(quote.per_item)}원</div>}
     {quote.comparable_price == null && <div>비교 가격 미확인 · 저장한 관측 금액</div>}
     {quote.crawled_at && <div>가격 관측 {quote.crawled_at}</div>}
   </div>;

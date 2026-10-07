@@ -9,6 +9,18 @@ export function fmt(n) {
   return n.toLocaleString('ko-KR');
 }
 
+/** Unit-rate labels only; comparisons keep the original numeric value. */
+export function fmtUnitPrice(value, prefix = '') {
+  const number = typeof value === 'string' && value.trim() ? Number(value) : value;
+  if (typeof number !== 'number' || !Number.isFinite(number) || number < 0) return '';
+  const text = number.toLocaleString('ko-KR', {
+    maximumSignificantDigits: 10,
+    notation: number > 0 && number < 0.000001 ? 'scientific' : 'standard',
+  });
+  const approximate = Number(text.replace(/,/g, '')) !== number;
+  return `${approximate ? '≈ ' : ''}${prefix}${text}`;
+}
+
 /**
  * 커뮤니티 가격 검증 — 사용자 입력 가격과 평균가를 비교하여 신뢰도를 판단.
  * @param {number} userPrice 사용자가 입력한 가격

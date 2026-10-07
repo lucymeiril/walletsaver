@@ -698,7 +698,9 @@ class PublicCatalogStore:
         )
         received_count = (received_packages if transaction and not purpose_reason
                           and (package_receipt_basis or explicit_received_terms) else None)
-        per_100 = (round(comparable / total_quantity * 100)
+        # Canonical comparison rates retain fractional currency. Display/source
+        # quote rounding must not change ranks between compatible sold amounts.
+        per_100 = (comparable / total_quantity * 100
                    if comparable is not None and total_quantity
                    and not composition_reason
                    and (unit in {"g", "ml"} or linear_contents) else None)
@@ -710,7 +712,7 @@ class PublicCatalogStore:
             pricing_quantity = None
         pricing_unit = ("m" if linear_contents else homogeneous_measure[1]) if pricing_quantity is not None else None
         if pricing_quantity and pricing_unit in {"g", "ml"} and comparable is not None:
-            per_100 = round(comparable / pricing_quantity * 100)
+            per_100 = comparable / pricing_quantity * 100
         # Package count is not evidence of the unknown content/sold-piece count.
         # Known count products divide by received pieces. Known g/ml packages
         # retain the established per-package quote; all unknown bases stay NULL.
@@ -753,7 +755,7 @@ class PublicCatalogStore:
             "total_quantity": total_quantity,
             "quantity_unit": (unit or None) if not purpose_reason else None,
             "bundle_count": bundle if not purpose_reason else None,
-            "per_item": round(comparable / per_item_divisor) if comparable is not None and per_item_divisor else None,
+            "per_item": comparable / per_item_divisor if comparable is not None and per_item_divisor else None,
             "per_100g": per_100 if (pricing_unit or unit) == "g" else None,
             "per_100ml": per_100 if (pricing_unit or unit) == "ml" else None,
             "per_100m": per_100 if linear_contents else None,

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "catalog_revision": 113,
   "version": "2026-10-07-catalog113-source-quote462",
-  "source_code_base": "ec8c64f0f5a62827ec5aa0286a978f3202162242",
+  "source_code_base": "401bab8979c04d4ceb9da5e07f0cbda104af632f",
   "initial_catalog": {
     "included": 9098,
     "unresolved": 98,
@@ -171,9 +171,9 @@
     "packages/db-admin/backend/services/catalog_bundle.py": "ae836d875948397712dc304fb0d2816f037a6e151b4b2f56a09b7b41c98361be",
     "packages/db-admin/backend/services/initial_catalog_seed.py": "d9e9a0ffe20f3673c441bc2a2626ab2051ee9a7976a9b93b284f4430b1f1d6f1",
     "packages/db-admin/backend/services/normalized_mart3.py": "86bf0707b8064ec4379ec1b5a1eafd3a69eeb49774f1accc77a20cb19eebca6b",
-    "packages/web-api/backend/services/catalog_storage.py": "f95d499a606bd5d94297d7a15b9902b47f51b89854d1c3365a7b495abd4f63cb",
+    "packages/web-api/backend/services/catalog_storage.py": "52b63edaa40d4ffc40a1a3814c4472eb04ae75c97d1c4dcbf26878ea7b2027b4",
     "packages/web-frontend/src/utils/productDecision.js": "60c41f59bd8cc66c964070d91c26f4ca1dd4f76f073c7e6c26b2789978d1889f",
-    "packages/web-frontend/src/components/ProductDetailModal.jsx": "704a8ceaff8157aedd59f346bc4330ca0a25ce6cc3ecd672d06ad8dd208e3e0d",
+    "packages/web-frontend/src/components/ProductDetailModal.jsx": "3def392a7cfa688adcfcf7b4ddb5239e34a25d4571ccecb1eab7585d9feb6e10",
     "packages/web-frontend/src/pages/Price/PricePage.jsx": "57f42ae8367aa608d5c29e22a5ba17760b7c11630b134413f832da882ed80485",
     "packages/db-admin/backend/services/initial_taxonomy.py": "f1403bd066efdd0b674fa4be5a3df6f5ac31e8188121d43793146763c8fb0e8a",
     "packages/shared/core/reviewed_content_quantities.py": "af891bbcf104d216b8244e2490636e0c8f6ab674125f49ba7ece1082acdd9450",
@@ -191,7 +191,11 @@
     "packages/web-frontend/src/utils/productActions.js": "53222e9ed7df758347ac7c8fc1835c0a5164e7de2d87231d19f5ac3bc22b901d",
     "packages/shared/core/product_units.py": "ab7f7e7cab042ee5454f3c0ad90592f106588c72d3fef9cc61e5e0ee7b657a73",
     "packages/shared/core/promotion_semantics.py": "1c08f9a5ee54c994c7981596b4cbb7f32d09243a37546dd1c6e9d8837348b2c5",
-    "packages/crawler-admin/backend/crawlers/marts/homeplus/crawler.py": "add9a6a83ff60965cce95d68f27df93b51d03dc2afad0cabecccd8fb75a8eadc"
+    "packages/crawler-admin/backend/crawlers/marts/homeplus/crawler.py": "add9a6a83ff60965cce95d68f27df93b51d03dc2afad0cabecccd8fb75a8eadc",
+    "packages/web-api/backend/api/routes/products.py": "30c580838d484d84de2d6c6a2e8970fd8296a00a853301d3832d51b4171e87e6",
+    "packages/web-frontend/src/utils/helpers.js": "68cfdcabe556611c5b78bb3e014e251ac0faae9a800cbd8ca9f29e08c21bb5ec",
+    "packages/web-frontend/src/components/common/ShoppingListPanel.jsx": "0181528127133b3e750df4d7e9f969c4c38bb368874973a018d4d9f7f34e570c",
+    "packages/web-frontend/src/pages/Price/CategoryComparePage.jsx": "aeb41c5475e9a6ba34e8133c9d21f07289479ded30a5bccc8c230a7414ea33d6"
   },
   "catalog_updates": [
     {

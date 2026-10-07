@@ -1,6 +1,6 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { fmt } from '../../utils/helpers';
+import { fmt, fmtUnitPrice } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import Spinner from '../../components/common/Spinner';
 import { getOfferConditionText } from '../../utils/productDecision';
@@ -26,7 +26,7 @@ function positive(value) {
 }
 
 function money(value, suffix = '') {
-  return positive(value) ? `₩${fmt(value)}${suffix}` : '미확인';
+  return positive(value) ? `${suffix ? fmtUnitPrice(value, '₩') : `₩${fmt(value)}`}${suffix}` : '미확인';
 }
 
 function basisLabel(basis) {

@@ -63,7 +63,7 @@ def test_purchase_count_historical_rule_observed_within_period_retains_arithmeti
     variant = {'package_quantity':600,'package_unit':'g','bundle_count':1}
     offer = PublicCatalogStore._normalized_offer(event, variant)
     assert offer['total_price'] == 17960 and offer['total_quantity'] == 1800
-    assert offer['received_package_count'] == 3 and offer['per_100g'] == 998
+    assert offer['received_package_count'] == 3 and offer['per_100g'] == pytest.approx(17960 / 1800 * 100)
     assert offer['observation_receipt_eligible'] is not False
     if period:
         assert offer['availability_reason'] == 'expired'  # Today's expiry is separate.
@@ -89,13 +89,13 @@ def test_homogeneous_contents_preserve_vector_receipt_and_separate_received_meas
     offer = PublicCatalogStore._normalized_offer(event, variant)
     assert offer['listed_price'] == 10000 and offer['total_price'] == 20000
     assert offer['total_quantity'] == 3 and offer['quantity_unit'] == '세트'
-    assert offer['received_package_count'] == 3 and offer['per_item'] == 6667
+    assert offer['received_package_count'] == 3 and offer['per_item'] == pytest.approx(20000 / 3)
     assert offer['pricing_measure_quantity'] == total * 3
     assert offer['pricing_measure_unit'] == unit and offer['pricing_measure_basis'] == 'reviewed_homogeneous_contents'
     assert offer['received_package_count_scope'] == 'complete_declared_vector'
     assert offer['quantity_components'] == _homogeneous_contents(variant)[0]
     if field:
-        assert offer[field] == round(20000 / (total * 3) * 100)
+        assert offer[field] == pytest.approx(20000 / (total * 3) * 100)
         assert _offer_comparison_group(offer)[2] == 'same_measured_unit'
     else:
         assert offer['per_100g'] is offer['per_100ml'] is None
@@ -135,7 +135,7 @@ def test_count_quantity_uses_received_piece_count_for_per_item_price():
     assert offer["total_price"] == 40990
     assert offer["total_quantity"] == 80
     assert offer["quantity_unit"] == "개"
-    assert offer["per_item"] == 512
+    assert offer["per_item"] == pytest.approx(40990 / 80)
 
 
 @pytest.mark.parametrize('quote,promotion,terms,spend,received,scope', [
@@ -233,7 +233,7 @@ def test_physical_role_detail_search_and_mart_preserve_quote_without_mass_rates(
         assert offer['per_100g'] is offer['per_100ml'] is offer['per_100m'] is None
         assert offer['total_quantity'] == count
         assert offer['received_package_count'] == (1 if count else None)
-        assert offer['per_item'] == (round(offer['listed_price']/count) if count else None)
+        assert offer['per_item'] == (offer['listed_price']/count if count else None)
     rows,total = store.search_normalized_products_page(title)
     assert total == 1 and rows[0]['best_offer']['id'] == 'offer-new'
     mart = store.get_mart_deals('homeplus')['homeplus']['items'][0]
@@ -396,7 +396,7 @@ def test_normalized_catalog_exposes_total_bundle_and_unit_prices(tmp_path):
     assert offer["total_price"] == 24000
     assert offer["total_quantity"] == 2880
     assert offer["per_item"] == 1000
-    assert offer["per_100ml"] == 833
+    assert offer["per_100ml"] == pytest.approx(24000 / 2880 * 100)
     assert offer["promotion_condition"] == "회원 1인 1개"
     assert offer["variant_id"] == "var-120-24" and offer["listing_id"] == "list-emart"
     assert offer["membership_required"] is True and offer["coupon_required"] is False
@@ -418,7 +418,7 @@ def test_normalized_catalog_exposes_total_bundle_and_unit_prices(tmp_path):
     mart = store.get_mart_deals("emart")
     deal = mart["emart"]["items"][0]
     assert deal["sale"] == 24000
-    assert deal["per_100ml"] == 833
+    assert deal["per_100ml"] == pytest.approx(24000 / 2880 * 100)
     assert deal["promotion_condition"] == "회원 1인 1개"
     assert (deal["product_id"], deal["variant_id"], deal["listing_id"], deal["offer_id"]) == (
         "prod-choco", "var-120-24", "list-emart", "offer-1")
@@ -484,7 +484,7 @@ def test_confirmed_one_plus_one_uses_actual_spend_and_doubled_received_quantity(
     assert offer["total_price"] == 9890
     assert offer["total_quantity"] == 540
     assert offer["per_item"] == 4945
-    assert offer["per_100g"] == 1831
+    assert offer["per_100g"] == pytest.approx(9890 / 540 * 100)
     assert offer["minimum_quantity"] == 1
     assert offer["received_package_count"] == 2
     assert offer["promotion_condition"] == "1+1"
@@ -535,8 +535,8 @@ def test_normalized_buy_free_retains_valid_spend_received_contents_and_legacy_mo
     assert offer["listed_price"] == 6000
     assert offer["total_price"] == spend and offer["comparable_price"] == spend
     assert offer["received_package_count"] == received and offer["total_quantity"] == 270 * received
-    assert offer["per_item"] == round(spend / received)
-    assert offer["per_100g"] == round(spend / (270 * received) * 100)
+    assert offer["per_item"] == pytest.approx(spend / received)
+    assert offer["per_100g"] == pytest.approx(spend / (270 * received) * 100)
     assert offer["promotion_conditions"] == conditions and offer["coupon_required"] is None
 
 
@@ -615,8 +615,8 @@ def test_reviewed_mixed_scalar_preserves_historical_quote_and_aggregate_without_
     assert offer['membership_required'] is None and offer['coupon_required'] is None
     if context == 'homogeneous':
         assert offer['quantity_comparison_reason'] is None
-        assert offer['per_100g'] == round(quote / 920 * 100)
-        assert offer['per_item'] == round(quote / 4)
+        assert offer['per_100g'] == pytest.approx(quote / 920 * 100)
+        assert offer['per_item'] == pytest.approx(quote / 4)
     else:
         expected = ('heterogeneous_contents_allocation_unverified' if context.startswith('mixed_')
                     else 'quantity_evidence_unverified')
@@ -661,7 +661,7 @@ def test_reviewed_length_quotes_do_not_price_physical_dimensions(monkeypatch):
                                                                'membership_required':True}})}
     offer = PublicCatalogStore._normalized_offer(event,variant)
     assert offer['total_price'] == 12000 and offer['total_quantity'] == 360
-    assert offer['quantity_unit'] == 'm' and offer['per_100m'] == 3333
+    assert offer['quantity_unit'] == 'm' and offer['per_100m'] == pytest.approx(12000 / 360 * 100)
     assert offer['per_100g'] is offer['per_100ml'] is offer['per_item'] is None
     assert offer['membership_required'] is True and offer['received_package_count'] == 3
     assert offer['quantity_basis'] == offer['pricing_measure_basis'] == 'reviewed_declared_linear_contents'
@@ -669,7 +669,7 @@ def test_reviewed_length_quotes_do_not_price_physical_dimensions(monkeypatch):
     assert offer['received_package_count_scope'] == 'declared_linear_package_repetitions'
     assert offer['pricing_measure_quantity'] == 360 and offer['pricing_measure_unit'] == 'm'
     changed = PublicCatalogStore._normalized_offer({**event, 'price':6600}, variant)
-    assert changed['total_price'] == 13200 and changed['per_100m'] == 3667
+    assert changed['total_price'] == 13200 and changed['per_100m'] == pytest.approx(13200 / 360 * 100)
     assert changed['pricing_measure_quantity'] == offer['pricing_measure_quantity']
     for change in ({'attributes':'{}'}, {'standard_unit':None}, {'package_quantity':30}):
         rejected = PublicCatalogStore._normalized_offer(event,{**variant,**change})
@@ -1165,3 +1165,20 @@ def test_reviewed_brand_line_candidates_allow_intervening_year_keep_all_literal_
     for row in rows:
         assert row['name'] == source_names[row['id']]
         assert row['group_member_product_ids'] == [row['id']]
+
+
+def test_fractional_comparison_rates_rank_compatible_contents_before_spend():
+    from services.catalog_storage import rank_normalized_offers
+    offers = []
+    for key, price, amount, count in [('base-quote',2190,2000,6), ('cheaper-spend',1840,2000,5)]:
+        event = {'public_offer_event_id':key, 'price':price,'price_state':'normal',
+                 'promotion_type':'final_price','offer_state':'active',
+                 'raw_evidence':{'promotion_conditions':{'minimum_quantity':1}}}
+        offer = PublicCatalogStore._normalized_offer(event,
+                    {'package_quantity':amount,'package_unit':'ml','bundle_count':count})
+        offer.update(variant_id='var-'+key, listing_id='listing-'+key)
+        offers.append(offer)
+    assert offers[0]['per_100ml'] == 18.25
+    assert offers[1]['per_100ml'] == pytest.approx(18.4)
+    assert [o['id'] for o in rank_normalized_offers(offers)] == ['base-quote','cheaper-spend']
+    assert [(o['total_price'],o['total_quantity']) for o in offers] == [(2190,12000),(1840,10000)]

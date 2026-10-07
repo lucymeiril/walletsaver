@@ -349,12 +349,12 @@ async def compare_category_products(
     for basis in sorted(bases):
         group = [product for product in products if _comparison_value(product, basis) is not None]
         values = [_comparison_value(product, basis) for product in group]
-        group_avg = round(sum(values) / len(values))
+        group_avg = sum(values) / len(values)
         comparison_groups.append({
             "basis": basis, "product_count": len(group), "comparable_count": len(group),
-            "avg_comparison_price": group_avg, "min_comparison_price": round(min(values)),
-            "max_comparison_price": round(max(values)),
-            "hotdeal_threshold": round(group_avg * 0.85), "ultra_threshold": round(group_avg * 0.7),
+            "avg_comparison_price": group_avg, "min_comparison_price": min(values),
+            "max_comparison_price": max(values),
+            "hotdeal_threshold": group_avg * 0.85, "ultra_threshold": group_avg * 0.7,
         })
     if comparison_basis is not None:
         if comparison_basis not in bases:
@@ -372,9 +372,9 @@ async def compare_category_products(
         and _positive_float(product["normalized"].get("unit_price")) is not None
     ]
     comparison_prices = unit_prices
-    avg = round(sum(comparison_prices) / len(comparison_prices)) if comparison_prices else None
-    minimum = round(min(comparison_prices)) if comparison_prices else None
-    maximum = round(max(comparison_prices)) if comparison_prices else None
+    avg = sum(comparison_prices) / len(comparison_prices) if comparison_prices else None
+    minimum = min(comparison_prices) if comparison_prices else None
+    maximum = max(comparison_prices) if comparison_prices else None
 
     if sort == "discount":
         products.sort(
@@ -419,8 +419,8 @@ async def compare_category_products(
         "avg_price_per_100g": avg if common_basis == "100g" else None,
         "min_price_per_100g": minimum if common_basis == "100g" else None,
         "max_price_per_100g": maximum if common_basis == "100g" else None,
-        "hotdeal_threshold": round(avg * 0.85) if avg is not None else None,
-        "ultra_threshold": round(avg * 0.7) if avg is not None else None,
+        "hotdeal_threshold": avg * 0.85 if avg is not None else None,
+        "ultra_threshold": avg * 0.7 if avg is not None else None,
         "normalized_product_count": len(unit_prices),
         "comparison_product_count": len(comparison_prices),
     }
