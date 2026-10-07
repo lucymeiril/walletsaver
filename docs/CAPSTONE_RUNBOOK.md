@@ -2,6 +2,21 @@
 
 교수·팀 시연의 기본 경로는 **TeamDemo**다. 저장소에 포함된 정제 catalog·관리 DB·오피넷 관측 데이터를 처음 실행할 때 검증·복원하여 사용한다. 개발용 빈 DB와 운영 배포 설정은 아래에서 별도로 설명한다. 원래 사용자 계정·세션·비공개 로그·외부 공급자 자격증명은 배포 데이터에 포함하지 않는다.
 
+동봉 버전·catalog revision·4개 DB hash·소스 pin·검토된 갱신파일 목록은 **`demo-data/manifest.json`**을 기준으로 읽는다. 설치한 DB의 실제 revision은 DB 관리자 snapshot 상태에서 확인하며, manifest가 바뀌었다는 이유로 기존 DB가 갱신됐다고 가정하지 않는다. 다음 읽기 명령은 DB·계정을 수정하지 않는다.
+
+```sh
+python3 - <<'PYINFO'
+import json
+from pathlib import Path
+m = json.loads(Path("demo-data/manifest.json").read_text(encoding="utf-8"))
+print("동봉 버전:", m["version"], "catalog revision:", m["catalog_revision"])
+for update in m.get("catalog_updates", []):
+    print(update["base_catalog_revision"], "→", update["reviewed_catalog_revision"], update["path"])
+PYINFO
+```
+
+동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다.
+
 ## 1. 기본: Windows TeamDemo 전체 실행
 
 Python 3.11 이상과 Node.js/npm이 필요하다. 저장소 루트에서 실행한다.
@@ -38,7 +53,7 @@ Windows 전체 실행은 이 Linux 환경에서 검증하지 않았다. Linux에
 
 ## 2. Linux: 공개 소스의 전체 6-process 실행
 
-기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 다음 검토 묶음은 catalog90→91→92→93→94→95의 기존 상품군 metadata·리프 정정과95→96→97의 근거가 고정된 건전지 규격/행사역할·ID namespace 정정,97→98의 원문에 묶인6분류·3공통리프/키워드 및98→99의7분류·중립 식판 및99→100의27분류·8공통 형태 리프/키워드 구체화를 정식 적용·재적용 검증한 산출물이다. 더 오래되거나 별도로 수정한 DB를 전체 최신본으로 바꾼다고 주장하지 않으며, preview에서 실제 변경을 검토한다. 정상 재기동은 언제나 기존 계정·관리자 변경·이력을 보존한다.
+기존 설치의 검토된 상품군 갱신 예: 이 후보의 `packages/shared/core/reviewed_catalog_groups.json`(492군/1191기존ID)과 `demo-data/manifest.json`의 source pins가 일치하는 코드를 먼저 사용한다. DB 자가 선언만으로 새 그룹을 신뢰하지 않는다. 코드에 없는 그룹·상호 불일치 그룹은 발행/원격 upload 전에 `catalog_group_source_incompatible`로 거절되며 기존 DB는 유지된다. 승인된 과거 member 부분집합은 호환된다. 소스에 hash 고정된 과거 승인 category 정의도 해당 정의의 정확한 metadata·member 부분집합·상호 일치에만 호환된다. 옛 DB는 그 DB에 실제 존재하는 옛 category로 탐색하며, 새 leaf는 정식 갱신 이후 소비한다. 임의 과거 category나 새 member를 이 경로로 신뢰하지 않는다. 아래110→111은 이 환경에서 공식preview/apply/replay/publish까지 확인한 **과거 갱신 예시**다. 이미111이상인 설치에는 다시 적용할 필요가 없다. 다른 설치에서는 manifest의 `catalog_updates`와 관리자가 표시하는 실제 revision을 먼저 대조해 해당 파일을 선택한다. 이전 여러단계의 적용 기록은 뒤쪽 역사 설명이며 이 예시가 임의 오래된DB의 전체갱신을 보장하지 않는다. 정상 재기동은 기존 계정·관리자 변경·이력을 보존한다.
 
 ```sh
 # 이미 실행 중인 DB 관리자 API에 데모 계정으로 로그인한다.
@@ -46,7 +61,8 @@ WS_ADMIN_TOKEN=$(curl -fsS http://127.0.0.1:8002/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"demo-admin@walletsaver.example","password":"demo-local-admin-260-known-value"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
-for WS_BUNDLE in demo-data/updates/catalog90-to91.json demo-data/updates/catalog91-to92.json demo-data/updates/catalog92-to93.json demo-data/updates/catalog93-to94.json demo-data/updates/catalog94-to95.json demo-data/updates/catalog95-to96.json demo-data/updates/catalog96-to97.json demo-data/updates/catalog97-to98.json demo-data/updates/catalog98-to99.json demo-data/updates/catalog99-to100.json demo-data/updates/catalog100-to101.json demo-data/updates/catalog101-to102.json demo-data/updates/catalog102-to103.json; do
+# 검증된 예시: 실제 설치가110인 경우에만 이 파일 선택
+for WS_BUNDLE in demo-data/updates/catalog110-to111.json; do
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/preview
   # preview의 변경이 의도한 경우에만 apply; 같은 파일 재적용은 idempotent이다.
   curl -fsS -H "Authorization: Bearer $WS_ADMIN_TOKEN" -F "file=@$WS_BUNDLE" http://127.0.0.1:8002/api/catalog-bundles/apply
@@ -147,7 +163,7 @@ export CRAWLER_BROWSER_EXECUTABLE_PATH="/absolute/path/to/installed/google-chrom
 
 공용 크롤러 helper는 명시된 실행 경로가 있으면 Chrome 채널 대신 그 경로를 사용하고, 기존 `HTTP_PROXY`/`HTTPS_PROXY`·`NO_PROXY`를 따른다. 의존성 다운로드와 실제 브라우저 접속은 별개이므로 pip 설치 성공만으로 브라우저 proxy/TLS 접속까지 확인됐다고 보지 않는다. 다운로드 도구·OS·브라우저의 정상 CA 신뢰와 세션 proxy 설정을 유지하며 TLS 검증을 끄지 않는다. 현재 호스트에서 이 선행 조건이 확인된 사실은 중지된 이마트 공급자 요청을 재개해도 된다는 뜻이 아니다.
 
-Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 현재 배포 압축 데이터와 별도 시험 탑재본은 revision92(전체9115/공개8803/pending312)이다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)는 과거 검증 기록이며 현재 revision92 상태가 아니다. 이미 확인한 publish를 반복하지 않는다.
+Web readiness는 `http://127.0.0.1:28000/api/health`, 관리 API health는 각각 `http://127.0.0.1:8001/health`, `http://127.0.0.1:8002/health`에서 확인한다. UI는 각각 `27173`, `5174`, `5175`를 연다. 실제 공개 소스 실행에서 관리자 수동 인증 2건과 읽기 화면 6건, 저장된 Costco 관측 1 HIT의 raw export와 동일 intake 재실행 보존이 확인됐다. 이전 249 검수 bundle의 preview·apply·replay에서 catalog graph와 사용자 참조가 유지됐고 snapshot 61 소비가 확인됐다. 이 단락의 dashboard·snapshot61/62/64/92 수치는 당시 시험 기록이다. 현재 동봉 버전은 manifest, 실제 설치 버전은 관리자 snapshot 상태에서 읽는다. 같은 공개 소스에서 실제 장바구니·찜·알림 저장/재접속, 커뮤니티 CRUD·로그아웃, 지역 주유소 7개 선택과 알려진 matching UI confirm/replay가 확인됐다. 통합 leaf의 실제 키워드805 조회, 정규화 matching6371개 중 기존 Costco80 규격 확인, 관리 대시보드의 총6308/활성6152 상품·9112 보존 관측·1383 분류·1210 키워드 표시가 확인됐다. 미산출 품질 점수는 미확인으로 표시한다. 공식 키워드 활성 변경→목록/자동완성 제외→원값 복원→재등장을 확인했으며 graph/원 키워드는 동일하다. 이전 trial snapshot62와 복원 뒤 data_revision64(dirty)도 과거 검증 기록이다. 이미 확인한 publish를 반복하지 않는다.
 
 ## 3. Docker Compose: 공개 Web/API만 실행
 
@@ -176,7 +192,7 @@ docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.
 
 정규화 Products/Prices 기본 탭은 상품·규격·판매처 ID와 날짜·출처별 전체 저장 관측을 읽기 전용으로 보여 준다. 별도 legacy 탭의 기존 편집 계약과 구분하며 이 화면만으로 정식 갱신 전체 완료를 주장하지 않는다. 원 관측 표시가, 행사 조건, 현재 결제 미확인을 분리하고 원문 행사기간의 시간대/경계가 없으면 날짜 문자열만 표시한다.
 
-현재 동봉 데이터와 시험 탑재본은 revision67: 전체9114/공개8802/pending312이며 원래9112 이력·상품·매핑·계정 참조가 보존됐다. 10월6일 Costco/Lotte 새 실제 관측2건은 정식 intake→2단계 승인→원캡처 SHA·시각·URL/SKU/규격 결합 검토→동일 재적용→snapshot67을 통과했다. 회원·선택구성·실제 결제 미확인은 유지한다. 같은 날 Homeplus 정상 응답의 opt/prop을 저장하지 못한 내부 캡처 누락으로 새 행은 없다; 중지 공급자를 재요청하거나 누락을 no-option으로 추정하지 않는다. 보호 원 실행본 revision60·초기인증9098/98은 별개이며 잔여98은 보류다.
+이전 revision67 시험은 전체9114/공개8802/pending312였으며 원래9112 이력·상품·매핑·계정 참조가 보존됐다. 10월6일 Costco/Lotte 새 실제 관측2건은 정식 intake→2단계 승인→원캡처 SHA·시각·URL/SKU/규격 결합 검토→동일 재적용→snapshot67을 통과했다. 회원·선택구성·실제 결제 미확인은 유지한다. 당시 Homeplus opt/prop 내부 캡처 누락은269의 수정된 정상 producer에서 한 번 확인했고, 원문2190/2L×6·최소1/최대2·쿠폰 근거를 보존한 새1관측을 정식 intake/export/review/apply/replay/snapshot69와 실제 이력 화면까지 연결했다. 통화·쿠폰 고객자격·현재지급가격 미확인은 별도 유지한다. 이 완료 경로와 중지된 공급자는 재요청하지 않는다. 보호 원 실행본 revision60·초기인증9098/98은 별개이며 잔여98은 보류다.
 
 ## 5. 갱신 경로: 수집에서 승인 snapshot까지
 
@@ -188,7 +204,7 @@ docker compose --env-file demo.env -f docker-compose.yml -f docker-compose.demo.
 
 분류 결과 JSONL의 **matching-only import**는 기존 public mapping의 검수 정보 경로다. legacy 분류 행은 기존 `category_id` 검증을 유지한다. normalized 행은 기존 key와 실제 알려진 active product·unified leaf 계층·해당 product의 variant·명칭·수량이 일치할 때만 server가 참조를 검증하고 legacy category NULL을 허용한다. 임의 public ID·다른 variant·다른 수량이나 추정 legacy category를 입력하지 않는다. 현재 저장된 Costco mapping 한 건의 UI preview·confirm은 HTTP 200·변경없음 1건(신규/수정 0건)이 확인됐고, 같은 trace 재확인은 idempotent=true였다. 기존 graph·키워드·계정 참조는 보존됐다. 이는 새 상품 추가 성공이 아니다.
 
-새 product·variant·normalized key 또는 분류 변경은 기존 원본 검수 **catalog bundle preview → apply → replay → snapshot** 경로로 처리한다. 이전 saved-bundle replay/snapshot 61 증거와 현재 배포·시험 데이터 revision67을 구분한다. 두 경로의 기능을 하나의 import 성공으로 합쳐 표시하지 않는다.
+새 product·variant·normalized key 또는 분류 변경은 기존 원본 검수 **catalog bundle preview → apply → replay → snapshot** 경로로 처리한다. 이전 saved-bundle replay/snapshot 61 증거와 현재 동봉 manifest/설치 snapshot 상태와 구분한다. 두 경로의 기능을 하나의 import 성공으로 합쳐 표시하지 않는다.
 
 관리 UI의 인증된 실행을 기본으로 사용한다. 직접 API를 사용할 때도 `REQUIRE_AUTH=true`이므로 익명 POST/GET은 401을 반환한다. 다음 PowerShell 예시는 공개 데모 계정으로 로그인한 뒤 같은 설치의 관리자 API에 인증 헤더를 전달한다. JWT를 출력하거나 로그·Git에 저장하지 않는다.
 
@@ -254,17 +270,19 @@ TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callbac
 
 ## 7. 검증 상태
 
-이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 일관된 배포는 revision98(전체9115/공개8803/pending312)이며 최초 설치/재기동 경로는 이전 같은 installer 증거를 재사용한다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
+이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 버전은 manifest를 기준으로 하고, 이 환경의111 보존에서는 전체9115/공개8803/pending312·계정0/4DB/source26pins가 일치했다. 이후 같은 installer·schema의 data-only 변경에서 최초 설치/재기동의 이전 성공을 재사용하며 새 호스트 전체 성공으로 확대하지 않는다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
 
 The existing Crawler → Data review intake detail renders original nested purchase terms and role-specific interpretation notes. Inspect exact native/product/variant connections; missing listing/event IDs remain unknown, and approved source quotes are not confirmed checkout receipts. Collector provenance retains bounded business fields and actual HTTP receipt metadata without retaining private account/session branches. HTTP401/403/429 stops that supplier run, preserving any earlier rows as partial; do not bypass the stop with another same-host query.
 
 Collector execution separates source completeness, validation, acknowledged pending-review storage, approval and publication. A partial source is processed once and remains partial even when every retained row is stored. A zero or missing diagnostic does not prove a successful collection; fixtures and saved-source replay remain separate from representative live retailer evidence. Naver253 opt-in five-place search/distance display is reusable for the unchanged consumer contract; it does not prove external OAuth, fuel CRS coordinates or Windows/new-cloud execution.
 
+아래 버전별 문단은 그 당시 확인한 시연·정식 갱신의 역사 근거다. 현재 동봉 버전/규칙은 manifest, 설치 상태는 관리자 snapshot 상태를 따른다. 이전 버전 번호를 현재 상태나 재실행 요구로 읽지 않는다.
+
 270의 동일 공개 앱에서 공유 URL을 새 익명 브라우저 세션으로 열어 선택한600g/homeplus/8980 관측과 exact variant/listing/offer 및2+1/min2 원문 조건을 복원했다. 행사 종료 후 거래총액·수령량은 계속 보류하며 다른 거래로 자동 변경하지 않는다. 불완전·변경된 공유 tuple은 재선택 안내로 보류한다. 공급자 URL과 앱 공유 URL은 별개이며 native OS 공유 선택기는 미검증이다. 소유 합성 계정의 프로필 수정→새로고침→새 세션 재로그인 유지, 가격 알림 현재 미충족·조건보류 조회→해제→새로고침도 확인했고 기존cart/wishlist는 보존됐다. 외부 발송/자동수집/OAuth 성공을 뜻하지 않는다. 데이터69와 계정 없는 동봉 gzip은 변경하지 않았다.
 
 271 제출 후보 범위: 외부 알림 이메일/푸시는 범위 밖이며 규칙 저장·조회·현재 조건 상태·해제는 유지한다. 원문 표시 가격·통화·수량·입증된 조건 산술은 실제 결제 미시험만으로 없애지 않는다. Homeplus269는 원문2190/2L×6/최소1·최대2·쿠폰을 보존했고 통화 미명시와 고객 쿠폰 적용은 별도 미확인이다. 핫딜의 표시가 차이25%도 원문 두 가격의 산술이며 보편적인 결제 할인 보장이 아니다. `WALLETSAVIOR_OPTIONAL_CRAWLERS=ruliweb`은 정상 공개 단일 feed collector를 관리 화면에 등록한다; 자동수집 예약을 만들지 않는다.
 
-현재 catalog89는 기존 원문/관측9115와 source별 상품6308 기록의 ID를 유지한다. 원문으로 검토한409 공통 상품군1001기존ID는 논리 탐색·상세에서 함께 보이고 용량/묶음/마트listing/시점offer는 별개로 선택한다. 신라면 툼바137g×4(3마트), 비요뜨 초코링138g×2(2마트), 짜파게티140g×5/20과 생레몬 category를 대표 동선으로 사용한다. 초콜릿우유 동의어는 활성 통합category 범위에서 검색하며 다른맛우유/초코과자와 혼동하지 않는다. keyword765를 정식API로 가역 수정→publish→검색 소비→원값 복원한 이후 revision72이며 임시 검색어는 동봉하지 않는다. HP127938195는 원문101G·6입으로101g×6 규격을 정정했고 원가격9600/2시점event·옛variantID는 보존했다. 옛101g×1 tuple은 재선택 보류하며 호환규격으로 자동전환하지 않는다. 우유19 공통군48기존ID는 브랜드·라인·맛·형태를 원문으로 검토했고 저지방/일반/멸균/커피/초코는 서로 합치지 않았다. Emart0000008847095의 명시1L2개는1000ml×2로 정정하며5480원/원event/시각은 보존했다. 옛×1 선택은 재선택 보류하고 정상×2 규격의 과거관측과 연결한다. 수량정정과 구분되는 신규관측은0이다. 음료16 공통군43기존ID는 일반/제로·라임/레몬/포도·탄산/물/스포츠음료 및 혼합맛/가방포함 구성을 구분했다. 펩시 일반5개 source상품/3마트와 게토레이 레몬3마트를 추가 대표로 탐색한다. 크기·묶음·마트별 시점관측은 별도이고, 불확정 맛·라인은 다른상품군에서 채우지 않는다. 선택 출처의 종료 행사/원조건은 요약에도 보존하며 화면에 연결되지 않은 기간이력을 전체이력 부재로 표시하지 않는다. 커피17 공통군46기존ID는 원문의 브랜드·라인·로스트·디카페인·맛·형태를 검토해 연결했다. 카누 미니 마일드는4마트7기존ID의 용량·판매개수를 별도 선택하며 다크·디카페인은 다른군이다. 명시된 제로윗 믹스22500개는 질량이 미확인이므로 다른포장의9.5g을 전이하거나 정확질량단가를 만들지 않는다. 170g리필은 stickmix와 형태동일성 근거가 없어 기존상품을 별도 유지했다. 주스·베이스·무알콜10군24ID와 스낵6군12ID를 추가 검토했다. 카프리썬 오렌지200ml×10과 오렌지망고는 다른군이며 썬업100%파인애플750ml의2마트는 선택출처별 이력을 보존한다. 핫고래밥 매콤양념56g은 HP의 명시 밀가루스낵 경로와 동일브랜드·라인·맛 근거로 Lotte의 넓은 곡물 fallback만 정정했다. 옛LotteID/990원/원시점은 같은56g선택과 이력으로 유지한다. 하이트제로6팩2개는 동일라인 탐색 metadata에 포함돼도 기존inactive/가격보류를 유지하며 공개offer로 승격하지 않는다. 원9196/431·최종초기9098/98 인증은 역사 기록이며 이 작업이 새 전체 인증/실제 결제/전체매칭 완료라는 주장은 아니다.
+이전 catalog89는 기존 원문/관측9115와 source별 상품6308 기록의 ID를 유지한다. 원문으로 검토한409 공통 상품군1001기존ID는 논리 탐색·상세에서 함께 보이고 용량/묶음/마트listing/시점offer는 별개로 선택한다. 신라면 툼바137g×4(3마트), 비요뜨 초코링138g×2(2마트), 짜파게티140g×5/20과 생레몬 category를 대표 동선으로 사용한다. 초콜릿우유 동의어는 활성 통합category 범위에서 검색하며 다른맛우유/초코과자와 혼동하지 않는다. keyword765를 정식API로 가역 수정→publish→검색 소비→원값 복원한 이후 revision72이며 임시 검색어는 동봉하지 않는다. HP127938195는 원문101G·6입으로101g×6 규격을 정정했고 원가격9600/2시점event·옛variantID는 보존했다. 옛101g×1 tuple은 재선택 보류하며 호환규격으로 자동전환하지 않는다. 우유19 공통군48기존ID는 브랜드·라인·맛·형태를 원문으로 검토했고 저지방/일반/멸균/커피/초코는 서로 합치지 않았다. Emart0000008847095의 명시1L2개는1000ml×2로 정정하며5480원/원event/시각은 보존했다. 옛×1 선택은 재선택 보류하고 정상×2 규격의 과거관측과 연결한다. 수량정정과 구분되는 신규관측은0이다. 음료16 공통군43기존ID는 일반/제로·라임/레몬/포도·탄산/물/스포츠음료 및 혼합맛/가방포함 구성을 구분했다. 펩시 일반5개 source상품/3마트와 게토레이 레몬3마트를 추가 대표로 탐색한다. 크기·묶음·마트별 시점관측은 별도이고, 불확정 맛·라인은 다른상품군에서 채우지 않는다. 선택 출처의 종료 행사/원조건은 요약에도 보존하며 화면에 연결되지 않은 기간이력을 전체이력 부재로 표시하지 않는다. 커피17 공통군46기존ID는 원문의 브랜드·라인·로스트·디카페인·맛·형태를 검토해 연결했다. 카누 미니 마일드는4마트7기존ID의 용량·판매개수를 별도 선택하며 다크·디카페인은 다른군이다. 명시된 제로윗 믹스22500개는 질량이 미확인이므로 다른포장의9.5g을 전이하거나 정확질량단가를 만들지 않는다. 170g리필은 stickmix와 형태동일성 근거가 없어 기존상품을 별도 유지했다. 주스·베이스·무알콜10군24ID와 스낵6군12ID를 추가 검토했다. 카프리썬 오렌지200ml×10과 오렌지망고는 다른군이며 썬업100%파인애플750ml의2마트는 선택출처별 이력을 보존한다. 핫고래밥 매콤양념56g은 HP의 명시 밀가루스낵 경로와 동일브랜드·라인·맛 근거로 Lotte의 넓은 곡물 fallback만 정정했다. 옛LotteID/990원/원시점은 같은56g선택과 이력으로 유지한다. 하이트제로6팩2개는 동일라인 탐색 metadata에 포함돼도 기존inactive/가격보류를 유지하며 공개offer로 승격하지 않는다. 원9196/431·최종초기9098/98 인증은 역사 기록이며 이 작업이 새 전체 인증/실제 결제/전체매칭 완료라는 주장은 아니다.
 
 카테고리의 수는 현재 활성 source행의 합이 아니라 같은 목록 resolver로 묶은 상품군·품목 수다. 과일음료의 보존된 source상품34개는32개 목록/child/페이지 총수로 일치하며 상세의 원 관측·시점은 그대로 유지한다.
 
@@ -302,17 +320,17 @@ Collector execution separates source completeness, validation, acknowledged pend
 
 Catalog95는 426개 기존 원문 문맥에서 입증된 8상품군·16기존 ID의 연결만 추가했다. 배터리 AA/AAA·기존 판매개수, 그릴 치수와 물품 NULL, 바나나 산지·라인, 밤 포장, 생크림 및 표고 선물 구성은 각 원 규격에 남는다. 기존 9115 관측·가격·시점·계정 참조를 보존했고 신규 관측은 없다.
 
-현재97은 에너자이저 두10+10기획팩의 미입증 판매개수를 물품NULL로, 벡셀8+8입의 명시 포장구성을16입으로 정정했다. literal 규격·12900/8900원 관측·원event/시각/전체이력은 유지하며 bareN+N을 N팩구매+N팩증정으로 만들지 않는다. 판매묶음 행사역할/지급금액 미확인은 별도 보류다. 원래1개/8입 선택은 재선택 안내하고 기존 참조를 묵시적으로 새 규격에 옮기지 않는다. 두NULLID namespace 정정은 별도96→97 이력에 보존했다. 정상22/32입·내용량·혼합벡터는 기존 근거를 유지하며 신규관측·초기98분류·전체인증은 반복하지 않았다.
+이전 catalog97은 에너자이저 두10+10기획팩의 미입증 판매개수를 물품NULL로, 벡셀8+8입의 명시 포장구성을16입으로 정정했다. literal 규격·12900/8900원 관측·원event/시각/전체이력은 유지하며 bareN+N을 N팩구매+N팩증정으로 만들지 않는다. 판매묶음 행사역할/지급금액 미확인은 별도 보류다. 원래1개/8입 선택은 재선택 안내하고 기존 참조를 묵시적으로 새 규격에 옮기지 않는다. 두NULLID namespace 정정은 별도96→97 이력에 보존했다. 정상22/32입·내용량·혼합벡터는 기존 근거를 유지하며 신규관측·초기98분류·전체인증은 반복하지 않았다.
 
-현재98은 신선채소 아래 같은4단계의 로메인·버터헤드·얼갈이 sibling 탐색을 연결하고 혼합채소/스낵1건을 원문 형태에 맞췄다. 원431 쌈채소 결정3건의 번호/hash와 넓은 용도 의미는 파생 정정이력으로 보존하며 원파일은 바꾸지 않았다. 원규격/혼합벡터·9115관측·시각/계정참조는 그대로다. Community 선택 투표는 검증된 계정 subject의 서버값만 cold 재조회에 복원하고 해제 후NULL을 유지한다. backend6/frontend4집중 경계와 실제 새 브라우저22HTTP/외부0·삭제후404를 확인했고,355의 만료refresh 단일쓰기 증거는 반복하지 않았다. 동봉98/source24pins·계정0이며 제출후보 검증은 계속된다.
+이전 catalog98은 신선채소 아래 같은4단계의 로메인·버터헤드·얼갈이 sibling 탐색을 연결하고 혼합채소/스낵1건을 원문 형태에 맞췄다. 원431 쌈채소 결정3건의 번호/hash와 넓은 용도 의미는 파생 정정이력으로 보존하며 원파일은 바꾸지 않았다. 원규격/혼합벡터·9115관측·시각/계정참조는 그대로다. Community 선택 투표는 검증된 계정 subject의 서버값만 cold 재조회에 복원하고 해제 후NULL을 유지한다. backend6/frontend4집중 경계와 실제 새 브라우저22HTTP/외부0·삭제후404를 확인했고,355의 만료refresh 단일쓰기 증거는 반복하지 않았다. 당시 catalog98/source24pins·계정0을 확인했다; 현재 동봉 버전은 manifest를 따른다.
 
-현재99 동봉 데이터는492군/1191옛ID/41분류 정정이력과9115관측을 유지한다. 전기·숯 그릴4건, 고구마 건조스낵2건, 스텐 식판1건의 원문에 묶인 세부 탐색을 정정했다. 기기·식판의 물품NULL과 두 스낵의300g·80g×10 원규격, 가격·시점·계정참조는 바꾸지 않았다. 실제14GET의 변경 탐색·상세와3GET의 관측 설명을 확인했다. 검색은 관측 조건 비교금액이며 선택 상세는 해당 출처 표시가격·관측 시점으로 설명하고 현재 구매가로 단정하지 않는다. source24pins/배포계정0과9개 정식 갱신파일을 함께 제공하며 제출후보 검증은 계속된다.
+이전 catalog99 동봉 데이터는492군/1191옛ID/41분류 정정이력과9115관측을 유지한다. 전기·숯 그릴4건, 고구마 건조스낵2건, 스텐 식판1건의 원문에 묶인 세부 탐색을 정정했다. 기기·식판의 물품NULL과 두 스낵의300g·80g×10 원규격, 가격·시점·계정참조는 바꾸지 않았다. 실제14GET의 변경 탐색·상세와3GET의 관측 설명을 확인했다. 검색은 관측 조건 비교금액이며 선택 상세는 해당 출처 표시가격·관측 시점으로 설명하고 현재 구매가로 단정하지 않는다. source24pins/배포계정0과9개 정식 갱신파일을 함께 제공하며 제출후보 검증은 계속된다.
 
-직전101은23기존상품의 입증된 형태를7공통4단계 리프로 구체화하고,20건의 출처 단가 기준을 판매내용량으로 오독한 파생규격을 정정한다. 명시 티백·정·캡슐 개수8건은 개수규격으로, 판매내용량 미입증12건은 수량 미확인으로 유지한다. 캡슐mg을 총판매g으로 환산하지 않았고 독립라벨100g/100ml·명시80g은 유지한다. 출처 단가문구·원가격·원시각은 그대로 설명/이력에 표시하며 미확인 내용을 정확g·단가·수령1로 만들지 않는다. 41고유 원상품/20새규격과20옛inactive규격 이력,6458판매페이지/원9115event/계정참조 및492군1191옛ID를 보존한다.100→101 정식preview/apply/동일replay/snapshot101 및 변경15GET·실제matching/export60HIT80거절 근거가 있으며 신규 상품/관측 적재0이다. 배포계정0,91source-leaf reviews/26sourcepins. 초기98·새출처·전체인증은 중단 유지한다.
+이전 catalog101은23기존상품의 입증된 형태를7공통4단계 리프로 구체화하고,20건의 출처 단가 기준을 판매내용량으로 오독한 파생규격을 정정한다. 명시 티백·정·캡슐 개수8건은 개수규격으로, 판매내용량 미입증12건은 수량 미확인으로 유지한다. 캡슐mg을 총판매g으로 환산하지 않았고 독립라벨100g/100ml·명시80g은 유지한다. 출처 단가문구·원가격·원시각은 그대로 설명/이력에 표시하며 미확인 내용을 정확g·단가·수령1로 만들지 않는다. 41고유 원상품/20새규격과20옛inactive규격 이력,6458판매페이지/원9115event/계정참조 및492군1191옛ID를 보존한다.100→101 정식preview/apply/동일replay/snapshot101 및 변경15GET·실제matching/export60HIT80거절 근거가 있으며 신규 상품/관측 적재0이다. 배포계정0,91source-leaf reviews/26sourcepins. 초기98·새출처·전체인증은 중단 유지한다.
 
 이전102는 추가557기등록 문맥의 category/조상/형태를 검토해16원상품을7공통4단계 형태로 구체화했다. 종이컵·뚜껑세트의80/160컵 개수와354/473ml 용량 spec, 중립 가스레인지·침대패드·이불·그라인더, 육류·치즈/크런치 반려간식·비타민보충식품을 원문대로 구분하고 미입증 휴대/냉감/여름/고양이/비타민C를 추가하지 않는다. 원 variant/수량proof/원9115event·가격·시각·계정참조는 그대로이며 신규상품·관측0이다.101→102 정식preview/apply/replay/publish와 변경14GET·32actual matching/export HIT/48수량·native·이름거절을 확인했다.492군1191옛ID107leafreviews/1413categories1237keywords를 동봉한다. 새 소스+기존100DB의 정확히 승인된 옛2군은 옛category 검색·2규격 상세를 유지하고, 명시갱신102 이후 새category를 소비한다. 정상기동은 기존DB 보존, 갱신은 위bundle 명령으로 수행한다. 초기98/새출처/전체인증은 계속 중단하며 후보 검증은 진행 중이다.
 
-현재 동봉103은362기등록 category/형태 문맥 중9원상품을2새공통4단계형태와 기존 사리·냉면·라멘키트·식혜로 구체화했다. 액상 밀크티350ml는 홍차베이스를 추정하지 않으며, Orzo차+텀블러세트는3.5g×50/200g×1와 용기1을 분리하고 용기용량NULL·전체혼합단가NULL을 유지한다. Ippudo4구성 벡터/원규격ID·원event/가격/시각은 그대로다. 정식102→103 preview/apply/replay/publish와 실제변경13GET/18matching-export HIT18거절을 확인했다.492군1191옛ID116leafreviews/1416categories1239keywords/전체9115공개8803pending312이며 신규상품·관측0, 후보 검증은 진행 중이다. 기존 정상DB 기동은 보존하고 명시갱신은 위누적bundle명령을 따른다.
+이전 catalog103은362기등록 category/형태 문맥 중9원상품을2새공통4단계형태와 기존 사리·냉면·라멘키트·식혜로 구체화했다. 액상 밀크티350ml는 홍차베이스를 추정하지 않으며, Orzo차+텀블러세트는3.5g×50/200g×1와 용기1을 분리하고 용기용량NULL·전체혼합단가NULL을 유지한다. Ippudo4구성 벡터/원규격ID·원event/가격/시각은 그대로다. 정식102→103 preview/apply/replay/publish와 실제변경13GET/18matching-export HIT18거절을 확인했다.492군1191옛ID116leafreviews/1416categories1239keywords/전체9115공개8803pending312이며 신규상품·관측0, 후보 검증은 진행 중이다. 기존 정상DB 기동은 보존하고 명시갱신은 위누적bundle명령을 따른다.
 
 Catalog104 명시 갱신은 같은 공식 경로에서 `demo-data/updates/catalog103-to104.json`을 preview/apply/publish한다(이전90→103 순서 뒤). 이미 적용된 동일 bundle은 중복 반영하지 않는다. 이번59 source-bound 분류 정정/17개4단계 형태와 꿀약밥의 승인된 이전 정의 호환을 포함한다. 원9115관측·가격·시각·규격·계정참조는 보존하며 신규 적재는0이다. 계피호떡480g(4개입)의 중량 scope는 미확인이며 catalog105에서 입증된4개 규격으로 정정된다. 전체 상품 의미 검토 완료를 뜻하지 않는다.
 
@@ -322,6 +340,6 @@ Catalog107 명시 갱신은 동봉 source/registry를 사용해105까지의 순�
 
 Catalog108 명시 갱신은107까지의 순서 뒤 동봉 source/registry와 `demo-data/updates/catalog107-to108.json`을 같은 preview/apply/publish 경로로 실행한다. 476저장 문맥을 재사용해15명시 형태를7공통4단계 리프로 정리했고, Solestado 무화과스프레드2멤버의 기존군 정의1건만107의 해시 고정 역사 정의와 함께 변경했다. SPAM3·히말라야 세트의 기존 독립 구성proof는 유지하며 수량/멤버/옛ID를 바꾸지 않는다. 원9115관측·8803공개·312보류,6308상품/6402규격/6458판매페이지,492군1191옛ID/337순차leafreview/1485category1302keyword 및 계정0을 보존한다. 현재 정상 DB 기동은 자동 초기화 없이 유지되고 명시 갱신에서만 새 분류를 반영한다. 신규적재0·초기98/신규출처 중단·교수님 제출 후보 검증 중이며 전체 품질 완료를 뜻하지 않는다.
 
-Catalog110 명시 갱신은108까지의 순서 뒤 동봉 source/registry와 `demo-data/updates/catalog108-to109.json`, `demo-data/updates/catalog109-to110.json`을 순서대로 preview/apply한 뒤 snapshot/publish한다. 생표고의 선물 포장만으로 원물 종류 탐색을 분리하지 않고, 기존 HP/Lotte 국물내기 한알100g의 육수조미료 탐색을 연결했다. 한 상품의 여러 판매처는 각 판매처 원문·native ID·URL이 같은 승인 정정에 모두 등록돼야 하며 다른 판매처를 자동 승인하지 않는다. 원 가격/시각/세 이력·100g 규격·기존ID/계정 참조와9115관측은 유지되고 신규적재는0이다. 동봉 데이터110은 원6308상품/6402규격/6458페이지·492군1191옛ID/340순차분류정정·1485category/1302keyword 및 계정0이며, 초기98/새출처 중단과 제출후보 검증 중 상태를 유지한다. 홍삼 쇼핑백의 다음 탐색 정정은 아직 동봉 데이터에 반영하지 않았다.
+Catalog110 명시 갱신은108까지의 순서 뒤 동봉 source/registry와 `demo-data/updates/catalog108-to109.json`, `demo-data/updates/catalog109-to110.json`을 순서대로 preview/apply한 뒤 snapshot/publish한다. 생표고의 선물 포장만으로 원물 종류 탐색을 분리하지 않고, 기존 HP/Lotte 국물내기 한알100g의 육수조미료 탐색을 연결했다. 한 상품의 여러 판매처는 각 판매처 원문·native ID·URL이 같은 승인 정정에 모두 등록돼야 하며 다른 판매처를 자동 승인하지 않는다. 원 가격/시각/세 이력·100g 규격·기존ID/계정 참조와9115관측은 유지되고 신규적재는0이다. 동봉 데이터110은 원6308상품/6402규격/6458페이지·492군1191옛ID/340순차분류정정·1485category/1302keyword 및 계정0이며, 초기98/새출처 중단과 제출후보 검증 중 상태를 유지한다. 당시 미반영이던 홍삼 쇼핑백의 탐색 정정은 아래111 갱신에서 처리했다.
 
 Catalog111 명시 갱신은110까지의 순서 뒤 동봉 source/registry와 `demo-data/updates/catalog110-to111.json`을 같은 preview/apply/publish 경로로 실행한다. 286새 형태 검토 문맥에서7상품을3공통 중립 형태로 정리했다: 마시는 홍초와 분말혼합을 구분하고, 보존된 냉동과일 원문 경로의 과일볼에 미입증 스무디 제조법을 붙이지 않으며, 포장맛밤에 굽는 공정을 추정하지 않는다. 홍삼의 동봉 쇼핑백은 식품 종류 탐색을 나누지 않고 기존240g×2+용기·쇼핑백 localNULL/전체혼합단가NULL을 유지한다. CJ맛밤의 기존2판매규격·군은 이전110 정의의 해시 고정 호환을 보존한다. 원9115관측·가격·시각·6308상품/6402규격/6458페이지·계정참조와492군1191옛ID는 그대로이며 신규상품·관측0이다. 동봉347순차분류정정/15역사정의/1489category1305keyword·계정0, source26pins와 정식110→111 갱신파일을 사용한다. 초기98/새출처/전체인증은 중단하며 후보 검증은 계속된다.
