@@ -102,6 +102,12 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
   const savingsPct = verifiedDiscount && discount > 0 ? discount : (verifiedDiscount && origPrice > 0 && price > 0 ? Math.round((1 - price / origPrice) * 100) : 0);
   const isFav = favorites.includes(favoriteId);
   const categoryIcon = CATEGORY_ICONS[category] || CATEGORY_ICONS.default;
+  const readableCategory = [product.cat, product.category_name, category]
+    .find(value => typeof value === 'string' && value.trim() && !/^[a-z0-9_.-]+$/i.test(value));
+  const selectedImage = chosen?.listing?.image_url || chosen?.listing?.img || null;
+  const displayImage = selectedImage || image;
+  const representativeImage = Boolean(chosen && !selectedImage && image);
+  const observedAt = chosen?.offer?.crawled_at || chosen?.offer?.observed_at;
   const storeIcon = STORE_ICONS[storeKey] || '🏪';
 
   // Track view on mount
@@ -351,13 +357,14 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
         <div className={s.body}>
           {/* Image */}
           <div className={s.imageSection}>
-            {image ? (
-              <SafeImage src={image} alt={name} className={s.productImage} />
+            {displayImage ? (
+              <SafeImage src={displayImage} alt={representativeImage ? `${name} 대표 이미지` : name} className={s.productImage} />
             ) : (
               <div className={s.placeholderImage}>
                 <span className={s.placeholderIcon}>{categoryIcon}</span>
               </div>
             )}
+            {representativeImage && <small>대표 이미지 · 선택한 판매 규격과 다를 수 있습니다</small>}
             {verifiedDiscount && savingsPct > 0 && (
               <span className={s.discountBadge}>-{savingsPct}%</span>
             )}
@@ -368,7 +375,7 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
             <div className={s.storeRow}>
               <span className={s.storeIcon}>{storeIcon}</span>
               <span className={s.storeName}>{storeName || '온라인'}</span>
-              {category && <span className={s.categoryTag}>{categoryIcon} {category}</span>}
+              {readableCategory && <span className={s.categoryTag}>{categoryIcon} {readableCategory}</span>}
             </div>
 
             {brand && <div className={s.brand}>{brand}</div>}
@@ -398,6 +405,10 @@ export default function ProductDetailModal({ product: suppliedProduct, onClose, 
                 </div>
               )}
               {displayUnitPrice && <div className={s.unitPrice}>{displayUnitPrice}</div>}
+              {isNormalizedCatalog && chosen && <div>
+                <small>관측 시각 · {observedAt || '미확인'}</small>
+                <div><small>{chosen.offer?.current_eligible === false ? '현재 비교 대상 아님 · ' : ''}출처 표시 조건의 관측 가격 · 현재 결제 금액·구매 가능 여부 미확인</small></div>
+              </div>}
             </div>
 
             {eventType && (

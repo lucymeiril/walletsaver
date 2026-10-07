@@ -85,3 +85,6 @@ copilot-session-*.md
 
 # Local external OAuth file mount configuration (not demo credentials)
 .compose.oauth.local.yml
+
+# Private cloud credential handoff never belongs in the team repository.
+private-runtime/

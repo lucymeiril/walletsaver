@@ -165,6 +165,8 @@ export default function ShoppingListPanel() {
                     const id = item.cart_id || item.id || item.product_id || item.name;
                     const storeIcon = STORE_ICONS[item.store_key] || '🏪';
                     const catIcon = CATEGORY_ICONS[item.category] || '';
+                    const readableCategory = [item.cat, item.category_name, item.category]
+                      .find(value => typeof value === 'string' && value.trim() && !/^[a-z0-9_.-]+$/i.test(value));
                     const hasOrigPrice = !item.offer_id && knownPrice(item) && item.original_price > 0 && item.original_price > item.price;
                     const presentation = getCartQuotePresentation(item);
                     const savingPct = hasOrigPrice
@@ -194,8 +196,8 @@ export default function ShoppingListPanel() {
                                 <span>{storeIcon}</span> {item.store_name}
                               </div>
                             )}
-                            {item.category && (
-                              <span className={s.itemCategory}>{catIcon} {item.category}</span>
+                            {readableCategory && (
+                              <span className={s.itemCategory}>{catIcon} {readableCategory}</span>
                             )}
                             <div className={s.itemPrices}>
                               <span className={s.itemSalePrice}>{knownPrice(item) ? `${presentation.amountLabel} ${fmt(item.price)}원` : '금액 미확인'}</span>

@@ -162,6 +162,62 @@ describe('LocalPage browser-search consent', () => {
     expect(screen.queryByText(/브라우저 검색 결과가 없습니다/)).not.toBeInTheDocument();
   });
 
+  it.each([
+    ['subcategory', 'done'],
+    ['items', 'done'],
+    ['detail', 'done'],
+    ['items', 'eof'],
+    ['items', 'error'],
+  ])('keeps a selected %s when background area capture ends with %s', async (selection, ending) => {
+    let finishRead;
+    const previous = global.fetch.getMockImplementation();
+    const items = [
+      { name: '먼저 도착한 카페', category: '카페', x: 127.0276, y: 37.4979,
+        address: '서울 강남구', menus: [{ name: '커피', price: 2000 }] },
+      { name: '먼저 도착한 음식점', category: '음식점', x: 127.0276, y: 37.4979 },
+    ];
+    global.fetch.mockImplementation((url, ...args) => {
+      if (!String(url).includes('/api/local/area-explore-stream')) return previous(url, ...args);
+      let first = true;
+      return Promise.resolve({ ok: true, body: { getReader: () => ({
+        read: () => {
+          if (first) {
+            first = false;
+            return Promise.resolve({ done: false, value: new TextEncoder().encode(
+              `data: ${JSON.stringify({ name: '카페', source: 'naver', items })}\n\n`,
+            ) });
+          }
+          return new Promise((resolve, reject) => { finishRead = { resolve, reject }; });
+        },
+        releaseLock: vi.fn(),
+      }) } });
+    });
+    const user = userEvent.setup(); render(<LocalPage />);
+    await user.click(screen.getByRole('checkbox', { name: /네이버 공개 페이지 브라우저 검색 사용/ }));
+    const location = screen.getByPlaceholderText(/위치를 입력하세요/);
+    await user.type(location, '강남역'); fireEvent.submit(location.closest('form'));
+    await user.click(await screen.findByRole('button', { name: name => name.includes('카페') && name.includes('2건') }));
+    const all = screen.getByRole('button', { name: '📋 전체 보기 (2)' });
+    if (selection !== 'subcategory') {
+      await user.click(all);
+      if (selection === 'detail') await user.click(screen.getByText('먼저 도착한 카페'));
+    }
+    await waitFor(() => expect(finishRead).toBeTruthy());
+    await act(async () => {
+      if (ending === 'error') finishRead.reject(new Error('late stream failure'));
+      else if (ending === 'eof') finishRead.resolve({ done: true });
+      else finishRead.resolve({ done: false, value: new TextEncoder().encode('data: {"done":true}\n\n') });
+    });
+    if (selection === 'subcategory') expect(screen.getByRole('button', { name: '📋 전체 보기 (2)' })).toBeVisible();
+    else {
+      expect(screen.getByText('2건의 결과')).toBeVisible();
+      expect(screen.getAllByText('먼저 도착한 카페').length).toBeGreaterThan(0);
+      if (selection === 'detail') expect(screen.getByRole('dialog', { name: '📍 가게 상세 정보' })).toBeVisible();
+    }
+    expect(global.fetch.mock.calls.filter(([url]) => String(url).includes('/api/local/area-explore-stream'))).toHaveLength(1);
+    expect(store.addToast.mock.calls.some(([message]) => message.includes('주변 탐색에 실패했습니다'))).toBe(ending === 'error');
+  });
+
   it('ignores a deferred direct place response after a manual fuel region supersedes it', async () => {
     let resolvePlace, resolveFuel, directSignal;
     const previous = global.fetch.getMockImplementation();

@@ -67,9 +67,14 @@ if ($TeamDemo) {
         "JWT_SECRET_KEY", "JWT_SECRET", "WALLETSAVIOR_REMOTE_ADMIN_TOKEN",
         "DB_ADMIN_API_KEY", "DB_ADMIN_API_KEY_ROLE", "CRAWLER_ADMIN_API_KEY", "DB_ADMIN_EMAIL", "DB_ADMIN_PASSWORD",
         "REQUIRE_AUTH", "WALLETSAVER_WEB_PORT", "COOKIE_SECURE",
+        "FRONTEND_URL", "OAUTH_REDIRECT_BASE", "WALLETSAVIOR_CORS_ORIGINS",
         "WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER", "WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD",
         "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_SECRET_FILE", "WALLETSAVIOR_OPTIONAL_CRAWLERS",
         "OPINET_API_KEY"
+    )
+    $demoDefaultPlaceholderKeys = @(
+        "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_SECRET_FILE",
+        "FRONTEND_URL", "OAUTH_REDIRECT_BASE", "WALLETSAVIOR_CORS_ORIGINS"
     )
     if (-not (Test-Path -LiteralPath $demoEnvPath -PathType Leaf)) { throw "Selected demo env file is missing" }
     foreach ($rawLine in (Get-Content -LiteralPath $demoEnvPath -Encoding UTF8)) {
@@ -79,6 +84,10 @@ if ($TeamDemo) {
         $demoKey = $Matches[1]
         $demoValue = $Matches[2]
         if ($demoAllowedKeys -notcontains $demoKey) { throw "Unsupported demo.env key: $demoKey" }
+        # Public placeholders must not erase local OAuth settings. An explicit
+        # private -DemoEnvFile retains control, including intentional blank values.
+        if (-not $DemoEnvFile -and $demoDefaultPlaceholderKeys -contains $demoKey -and
+            [string]::IsNullOrWhiteSpace($demoValue)) { continue }
         [Environment]::SetEnvironmentVariable($demoKey, $demoValue, "Process")
     }
     foreach ($demoKey in @("JWT_SECRET_KEY", "JWT_SECRET", "WALLETSAVIOR_REMOTE_ADMIN_TOKEN", "DB_ADMIN_API_KEY", "CRAWLER_ADMIN_API_KEY")) {
@@ -110,9 +119,9 @@ if ($TeamDemo) {
     $env:WALLETSAVIOR_REMOTE_ADMIN_URL = "http://127.0.0.1:8000"
     $env:WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD = "false"
     $env:WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER = "false"
-    $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
-    $env:FRONTEND_URL = "http://127.0.0.1:5173"
-    $env:OAUTH_REDIRECT_BASE = "http://127.0.0.1:5173"
+    if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
+    if (-not $env:FRONTEND_URL) { $env:FRONTEND_URL = "http://127.0.0.1:5173" }
+    if (-not $env:OAUTH_REDIRECT_BASE) { $env:OAUTH_REDIRECT_BASE = $env:FRONTEND_URL }
     Write-Host "  Public demo credentials loaded; use separate credentials for real deployment." -ForegroundColor Yellow
 }
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
@@ -132,12 +141,29 @@ if ($Web) { $pythonPaths += $WebBackend }
 if ($Admin) { $pythonPaths += @($CrawlerBackend, $DbBackend) }
 $env:PYTHONPATH = ($pythonPaths -join ";")
 
+function Assert-LocalOAuthHosts([string]$FrontendUrl, [string]$RedirectBase) {
+    $frontendUri = $null
+    $callbackUri = $null
+    if (-not [Uri]::TryCreate($FrontendUrl, [UriKind]::Absolute, [ref]$frontendUri) -or
+        -not [Uri]::TryCreate($RedirectBase, [UriKind]::Absolute, [ref]$callbackUri)) {
+        throw "FRONTEND_URL and OAUTH_REDIRECT_BASE must be absolute HTTP(S) URLs"
+    }
+    foreach ($uri in @($frontendUri, $callbackUri)) {
+        if ($uri.Scheme -notin @("http", "https") -or -not $uri.Host -or
+            $uri.UserInfo -or $uri.Query -or $uri.Fragment) {
+            throw "FRONTEND_URL and OAUTH_REDIRECT_BASE must be HTTP(S) bases without credentials, query or fragment"
+        }
+    }
+    # OAuth state cookies bind the hostname, not the frontend/callback port.
+    if (-not [string]::Equals($frontendUri.DnsSafeHost, $callbackUri.DnsSafeHost, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "FRONTEND_URL and OAUTH_REDIRECT_BASE must use the same browser hostname for local startup"
+    }
+}
+
 if ($Web) {
     if (-not $env:FRONTEND_URL) { $env:FRONTEND_URL = "http://127.0.0.1:5173" }
     if (-not $env:OAUTH_REDIRECT_BASE) { $env:OAUTH_REDIRECT_BASE = $env:FRONTEND_URL }
-    if ($env:FRONTEND_URL.TrimEnd('/') -ne $env:OAUTH_REDIRECT_BASE.TrimEnd('/')) {
-        throw "FRONTEND_URL and OAUTH_REDIRECT_BASE must use the same browser origin/base for local startup"
-    }
+    Assert-LocalOAuthHosts $env:FRONTEND_URL $env:OAUTH_REDIRECT_BASE
     if (-not $env:WALLETSAVIOR_CORS_ORIGINS) {
         $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
     }

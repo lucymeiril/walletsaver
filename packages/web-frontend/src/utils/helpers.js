@@ -14,7 +14,7 @@ export function fmtUnitPrice(value, prefix = '') {
   const number = typeof value === 'string' && value.trim() ? Number(value) : value;
   if (typeof number !== 'number' || !Number.isFinite(number) || number < 0) return '';
   const text = number.toLocaleString('ko-KR', {
-    maximumSignificantDigits: 10,
+    ...(number >= 1 ? { maximumFractionDigits: 2 } : { maximumSignificantDigits: 6 }),
     notation: number > 0 && number < 0.000001 ? 'scientific' : 'standard',
   });
   const approximate = Number(text.replace(/,/g, '')) !== number;

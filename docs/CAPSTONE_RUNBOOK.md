@@ -15,7 +15,7 @@ for update in m.get("catalog_updates", []):
 PYINFO
 ```
 
-동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다.
+동봉 소스와 처음 설치한 DB의 catalog·규칙은 manifest의 pin으로 연결된다. 재기동은 기존 DB·계정·이력·관리자 변경을 보존한다. 명시적 갱신은 현재 설치 revision에 연결되는 검토된 bundle을 선택해 preview/apply하고 발행한다. 다른 설치를 덮어쓰거나 숫자가 맞지 않는 bundle을 강제로 적용하지 않는다. 현재 동봉113의 네 DB는 신규 설치에서 함께 복원한다. manifest의 증분 bundle 목록은111까지이며,112는 소스 계산 정밀도 변경,113은 별도 정식 원문 관측 갱신이다. 기존 설치를 시작하는 것만으로113이 되지는 않는다. 이후 관측은5절의 원문 intake·검수·발행 경로로 처리하고, 오래된 전체관리 DB나 사용자 저장소를 새 배포파일로 덮어쓰지 않는다.
 
 ## 1. 기본: Windows TeamDemo 전체 실행
 
@@ -37,7 +37,7 @@ Python 3.11 이상과 Node.js/npm이 필요하다. 저장소 루트에서 실행
 Invoke-RestMethod -Method Post -Headers $adminHeaders -Uri "$adminBase/api/catalog-bundles/snapshot/publish"
 ```
 
-브라우저는 launcher의 `FRONTEND_URL`로 열리며 TeamDemo 기본값과 `OAUTH_REDIRECT_BASE`는 모두 `http://127.0.0.1:5173`이다. 직접 설정한 두 base가 다르면 시작을 거절한다. `localhost` 창으로 바꾸어 같은 쿠키·OAuth 세션이라고 가정하지 않는다.
+TeamDemo의 기본 브라우저와 프록시 callback base는 `http://127.0.0.1:5173`이다. Google의 등록 callback은 이 base 뒤 `/api/auth/oauth/google/callback`까지 정확히 일치시킨다. `FRONTEND_URL`은 로그인 후 화면이고 `OAUTH_REDIRECT_BASE`는 callback 경로이므로 두 포트가 같아야 하는 OAuth 제약은 없다. 다만 브라우저와 상태 쿠키를 쓰는 callback의 hostname은 같게 유지하며 `localhost`와 `127.0.0.1`을 혼용하지 않는다. 별도 backend callback 설정은 6절을 따른다.
 
 | 역할 | UI | API |
 | --- | --- | --- |
@@ -96,6 +96,7 @@ for ws_frontend in packages/web-frontend packages/crawler-admin/frontend package
   (cd "$ws_frontend" && npm ci) || exit 1
 done
 set -a
+# 비공개 Google 설정을 쓰는 경우 다음 한 줄을 . ./.env.demo.local 로 대체한다.
 . ./demo.env
 set +a
 "$WS_PY" tools/install_demo_catalog.py --source demo-data --target "$WS_DEMO_DIR"
@@ -230,7 +231,7 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 
 | 외부 기능 | 필요한 설정·현재 한계 |
 | --- | --- |
-| Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 `GOOGLE_CLIENT_SECRET_FILE`이 가리키는 비공개 JSON의 `web`/`installed` client 설정. `OAUTH_REDIRECT_BASE`, `FRONTEND_URL`과 등록 callback의 일치 필요. 실제 공급자 로그인 미검증 |
+| Google OAuth | 비공개 `GOOGLE_CLIENT_ID`·`GOOGLE_CLIENT_SECRET` 또는 `GOOGLE_CLIENT_SECRET_FILE`이 가리키는 기존 비공개 JSON의 `web`/`installed` client 설정. 등록 callback은 `OAUTH_REDIRECT_BASE` + `/api/auth/oauth/google/callback`; `FRONTEND_URL`은 로그인 후 화면이다. 사용자 로컬 성공은 확인받았고 이 cloud 전달 환경의 외부 인증은 별도 미검증 |
 | 로그인 범위 | 자체 이메일·비밀번호 회원가입/로그인과 Google만 활성화한다. Naver/Kakao/기타 로그인·가짜 소셜 데모 로그인은 제거했다. 기존 계정/연결 기록은 삭제하지 않는다. |
 | Naver 장소 검색·지도 | 지역 화면에서 공개 브라우저 검색을 사용자가 명시적으로 선택한 요청에만 실행. 위 Playwright Chromium·공급자 접근이 필요하며 headless 검색에는 Xvfb가 필요하지 않음. 기존 opt-in 실제 응답의 5개 장소는 확인됐고, 외부 지도 링크 handoff는 별도 경로. 폐지된 Naver 로그인 설정은 이 공개 장소 검색에 필요하지 않음 |
 | Opinet 공식 API | 사용자 요청으로 연기했다. `OPINET_API_KEY` 준비나 실제 API는 현재 제출 차단/필수 입력이 아니다. 수동 출처의 7개 주유소·14개 가격은 원래 갱신 날짜의 관측값이며 실시간 가격/좌표·거리 확정이 아님. |
@@ -238,11 +239,22 @@ TeamDemo writable 위치는 `.demo-runtime`이며 개발 모드 `.walletsavior`�
 | 핫딜 | 271 정상 공개 Ruliweb 목록·게시글과 Uniqlo 공식 상품 근거 → 정식 관리자 승인·중복 없는 저장·별도 external snapshot·실제 화면까지 확인했다. 루리웹 6개 원문 KRW 표시가와 유니클로 1개 APP회원 한정 59,900원/취소선79,900원·`2026/10/08 까지`를 제공한다. 결제·선택 사이즈·배송·회원 자격은 미확인, 명시 종료 게시물은 종료로 표시한다. Algumon/Musinsa403 경로는 중단 유지하며 해당 실패로 정상 출처를 비우지 않는다. |
 | 이마트 라이브 | Playwright의 `chrome` 채널·화면 모드와 명시적 세션 proxy/CA 연결이 필요. 현재 호스트의 공식 Chrome 154.0.8037.97·Xvfb 화면 모드·로컬 DOM과 별도 공개 의존성의 proxy/TLS 확인은 완료됐다. 이마트 요청은 없었으며 기존 429 중지와 허용된 다음 공급자 구간·6–7분 제한을 지킨다. 로그인·challenge 우회 없음 |
 
-TeamDemo의 외부 값은 기본적으로 공란이다. 현재 시험 Web/API와 crawler API의 Google 이름별 설정 및 Google file locator는 공란으로 확인했다. 이는 다른 경로에 개인 키 파일이 없다는 뜻이 아니며 공급자 로그인 성공을 뜻하지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 그 비공개 파일만 편집한다.
+동봉 TeamDemo 파일의 외부 값은 기본적으로 공란이다. 앞선 cloud 설정 공란은 사용자 PC의 개인 파일 부재나 구현 누락을 뜻하지 않는다. 이후 기존 Google JSON을 비공개로 전달받아 FILE locator와 API의 읽기 설정을 연결했다. cloud 공급자 로그인 완료는 아직 미확인이며 최근 시도 결과는7절을 따른다. 비공개 파일·경로·값은 공개 전달물에 포함하지 않는다. 사용자는 로컬 `backend.env`에서 `FRONTEND_URL=http://localhost:5173`, `OAUTH_REDIRECT_BASE=http://localhost:8000`과 실제 존재하는 Google JSON으로 로그인 성공을 확인했다. 이 로컬 callback은 `http://localhost:8000/api/auth/oauth/google/callback`이다. 파일 내용이나 자격증명을 전달 데이터에 넣지 않는다. 외부 기능을 설정할 때는 `demo.env`를 ignored `.env.demo.local`로 복사하고 비공개 설정 파일만 편집한다. JSON은 저장소 밖에 두거나 ignored `client_secret_*.json` 파일명을 사용하며, `GOOGLE_CLIENT_SECRET_FILE`에는 기존 읽기 가능한 파일 경로를 지정한다.
 
 ```powershell
 .\start-all.ps1 -TeamDemo -DemoEnvFile .env.demo.local
 ```
+
+TeamDemo는 비공개 env 파일의 `FRONTEND_URL`, `OAUTH_REDIRECT_BASE`, `WALLETSAVIOR_CORS_ORIGINS`도 읽고 명시한 값을 보존한다. 비어 있으면 frontend는 `http://127.0.0.1:5173`, callback base는 frontend로 돌아간다. CORS 기본값은 localhost와127.0.0.1의5173 origin이다. 사용자 로컬과 같은 직접 backend callback을 쓰려면 `.env.demo.local`에 다음 항목을 추가하고 FILE 값은 자신의 기존 파일 절대경로로 바꾼다.
+
+```dotenv
+FRONTEND_URL=http://localhost:5173
+OAUTH_REDIRECT_BASE=http://localhost:8000
+WALLETSAVIOR_CORS_ORIGINS=http://localhost:5173
+GOOGLE_CLIENT_SECRET_FILE=<existing-private-Google-JSON-absolute-path>
+```
+
+이 예시의 Google 등록 callback은 `http://localhost:8000/api/auth/oauth/google/callback`이다. launcher는 절대 HTTP(S) 주소와 같은 hostname을 확인하고 서로 다른 포트를 허용한다. 이 수정은 설정·소스 검토이며 새 Windows 실행 또는 cloud 공급자 로그인 확인은 아니다. Compose에는 아래 localhost8080 기본값에 맞는 별도 비공개 설정을 사용하며,5173용 값을 그대로8080 실행에 적용하지 않는다.
 
 Compose에서는 named Google 설정에 `--env-file .env.demo.local`을 사용한다. Google JSON 파일 방식은 host 경로 문자열을 API에 그대로 넘기지 않는다. `.env.demo.local`의 `GOOGLE_CLIENT_SECRET_FILE`을 이미 존재하는 비공개 JSON의 host 절대경로로 설정한 뒤, ignored `.compose.oauth.local.yml`에 다음 read-only 연결을 넣는다. 컨테이너 안에서는 고정된 `/run/secrets/google-oauth.json`을 읽는다. `create_host_path: false`는 파일 경로가 없을 때 빈 디렉터리를 만들지 않게 한다. 외부 JSON·실제 값은 Git/배포 데이터에 포함하지 않는다.
 
@@ -264,13 +276,17 @@ services:
 docker compose --env-file .env.demo.local -f docker-compose.yml -f docker-compose.demo.yml -f .compose.oauth.local.yml up -d
 ```
 
-파일은 읽을 수 있는 JSON이며 `web` 또는 `installed` 안에 `client_id`·`client_secret`을 가져야 한다. 일반 TeamDemo/Linux 직접 실행은 같은 변수의 host 파일을 직접 읽으며 Compose override가 필요 없다. 위 설정 전달·read-only 연결은 configuration으로 확인했고 실제 외부 OAuth 로그인은 미검증이다.
+파일은 읽을 수 있는 JSON이며 `web` 또는 `installed` 안에 `client_id`·`client_secret`을 가져야 한다. 일반 TeamDemo/Linux 직접 실행은 같은 변수의 host 파일을 직접 읽으며 Compose override가 필요 없다. 사용자 로컬의 실제 로그인과 이 문서의 cloud 설정 전달/read-only 연결 근거는 구분한다. 기존 JSON을 연결한 새 전달 환경의 실제 로그인 완료는 아직 미확인이며 최근 redirect 응답은7절에 기록했다.
 
-TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callback`, Compose 기본 callback은 `http://localhost:8080/api/auth/oauth/google/callback`이다. 위 Linux 전체 실행의 callback은 `http://127.0.0.1:27173/api/auth/oauth/google/callback`이다. `localhost`와 `127.0.0.1`은 다른 cookie origin이므로 브라우저·origin·callback을 일치시킨다. 기본 TeamDemo loader가 외부 공란을 읽으므로 미리 설정한 shell 키가 자동으로 유지된다고 가정하지 않는다.
+기본 proxy 경로의 TeamDemo Google callback은 `http://127.0.0.1:5173/api/auth/oauth/google/callback`, Compose는 `http://localhost:8080/api/auth/oauth/google/callback`, 위 Linux 전체 실행은 `http://127.0.0.1:27173/api/auth/oauth/google/callback`이다. 별도 backend callback을 쓰는 Linux 전체 실행에서는 환경을 읽은 뒤 `OAUTH_REDIRECT_BASE=http://127.0.0.1:28000`으로 설정하고 `http://127.0.0.1:28000/api/auth/oauth/google/callback`을 등록할 수 있다. `FRONTEND_URL=http://127.0.0.1:27173`과 해당 frontend의 CORS origin은 유지한다. hostname은 동일하게 사용하지만 callback과 frontend 포트는 다를 수 있다. TeamDemo가 기본 `demo.env`를 암묵적으로 읽을 때는 Google3항목과frontend/callback/CORS의 공란 placeholder가 기존 process 설정을 지우지 않는다. 설정이 없으면 위 기본값을 사용한다. 명시한 `-DemoEnvFile`은 공란으로 기존 설정을 지우는 선택까지 그대로 적용하므로 두 경우를 구분한다. Linux의 위 `. ./demo.env` shell 명령은 이 PowerShell loader가 아니므로 비공개 설정을 쓰려면 안내한 대로 읽는 파일을 선택한다.
 
 ## 7. 검증 상태
 
-이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 버전은 manifest를 기준으로 하고, 이 환경의111 보존에서는 전체9115/공개8803/pending312·계정0/4DB/source26pins가 일치했다. 이후 같은 installer·schema의 data-only 변경에서 최초 설치/재기동의 이전 성공을 재사용하며 새 호스트 전체 성공으로 확대하지 않는다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
+최신 source/data113의 실제 UI 확인은 공식 local Playwright MCP `0.0.83`의 protocol tool actions로 수행했다. native Desktop MCP 실행 증거와는 구분한다. 소유 합성 계정의 회원가입·프로필·찜·장바구니·알림과 cold 재로그인을 확인했다. 같은 실행에서 Community 글·댓글·투표·삭제, 핫딜 조건, 마트 검색, 수동 주유소7개 상세와 위치 거절, 사용자가 명시한 Naver 조회·가게 상세, 새 익명 세션의 공유 선택규격·출처 복원까지 확인했다. 커피는100g 호환7개만 순위를 비교하고,2+1은 기간 내 총지출·수령량과 기간 밖 계산 미확인을 구분했다. Naver의 늦은 stream 완료가 사용자가 선택한 화면을 덮던 결함은 기존 결과를 보존하며 수정했다. Google 실제 계정 callback은 등록·사용자 로그인/동의 대기이고 Windows·새 cloud·native OS 공유 선택기·외부 미리보기는 미확인이다. 이 대표 결과를 모든 상품의 정상성이나 전체 제출 통과로 확대하지 않는다. 표의 날짜는 관측 시점이고 대표 이미지는 선택한 판매처·규격의 동일 사진을 보증하지 않는다. 100g 요거트 표는 호환 단위의 오름차순·내림차순을 확인했으며 소수 단가 정밀도를 유지한다; 과거 순위 숫자를 현재 순위로 고정하지 않는다.
+
+기존 비공개 JSON을 연결한 cloud Google 시도는 공급자의 `400 redirect_uri_mismatch` 응답에 도달했다. 현재 six-process callback `http://127.0.0.1:27173/api/auth/oauth/google/callback`을 기존 client의 승인 redirect URI에 정확히 등록한 뒤 사용자 동의를 완료해야 한다. 실제 로그인 완료는 아직 확인하지 않았다. 사용자 로컬의 localhost5173→localhost8000 성공은 별도 보존하며 신규 키 발급·비공개 경로/값 공개는 필요하지 않다.
+
+이 문서는 저장된 실제 수집·정식 반영 및 현재 환경의 package 증거를 연결한다. 새 라이브 요청이나 전체 test suite를 실행하지 않았다. Linux 전체 6-process 시작, 관리자·읽기 동작, 저장된 공식 갱신 replay와 snapshot 61 소비는 확인됐다. matching-only import는 실제 UI preview/confirm 200·변동 없음 1행과 동일 입력 재적용 200/idempotent=true, 원 event·매칭·저장 참조 해시 보존까지 확인됐다. 동봉 버전은 manifest를 기준으로 하고, 이전111 보존에서는 전체9115/공개8803/pending312·계정0/4DB/source26pins가 일치했다. 이후 같은 installer·schema의 data-only 변경에서 최초 설치/재기동의 이전 성공을 재사용하며 새 호스트 전체 성공으로 확대하지 않는다.269 정상 Homeplus059102628 실제 새 관측2190/2L×6 1건을 정식 intake/export/review/apply·재적용했고 기존9114 event·상품/매핑/계정참조는 보존됐다. 지급가격·통화·쿠폰 적격성은 미확인이며 새 단위가를 만들지 않았다. 일관된 SQLite backup 배포사본에서는 계정·세션·개인 상호작용을 제거하고 catalog/matching/승인·갱신 상태와 snapshot을 유지했다. 이전67은 복구본으로 보존했다. 위 61/62/64는 이전 검증 증거이며, 이 안내 수정은 새 라이브 수집이나 전체 품질 통과를 뜻하지 않는다. Windows·새 관리형 cloud·외부 OAuth·라이브 provider·좌표·OS 공유 동작도 전체 통과로 선언하지 않는다. 초기 미해결 98개 SKU 작업은 일시 중지된 별도 범위다.
 
 The existing Crawler → Data review intake detail renders original nested purchase terms and role-specific interpretation notes. Inspect exact native/product/variant connections; missing listing/event IDs remain unknown, and approved source quotes are not confirmed checkout receipts. Collector provenance retains bounded business fields and actual HTTP receipt metadata without retaining private account/session branches. HTTP401/403/429 stops that supplier run, preserving any earlier rows as partial; do not bypass the stop with another same-host query.
 

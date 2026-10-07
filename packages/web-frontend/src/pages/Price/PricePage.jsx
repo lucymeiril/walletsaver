@@ -8,7 +8,8 @@ import { searchService } from '../../services/searchService';
 import { getVariantBestOffer, getPriceHistorySummary, getOfferConditionText, getOfferReceiptText, getQuantityComponentTexts, getConditionalOfferConditionText, getObservedOfferPriceText, isObservationReceiptEligible, getOfferAmountLabel } from '../../utils/productDecision';
 import useStore from '../../stores/appStore';
 import useCartStore from '../../stores/cartStore';
-import { buildCartPayload, selectProductOffer, getProductSelection } from '../../utils/productActions';
+import { buildCartPayload, buildWishlistPayload, normalizeProduct, selectProductOffer, getProductSelection } from '../../utils/productActions';
+import { api } from '../../services/api';
 import useModalStore from '../../stores/modalStore';
 import useDebounce from '../../hooks/useDebounce';
 import useAbortController from '../../hooks/useAbortController';
@@ -33,7 +34,8 @@ export default function PricePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { openMartModal, openHotdealModal, openProductModal, openProductDetailModal } = useModalStore();
-  const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToast } = useStore();
+  const { selectedProduct, setSelectedProduct, isLoggedIn, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, isFavorite, addRecentSearch, addToast } = useStore();
+  const [wishlistSaving, setWishlistSaving] = useState(false);
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -298,6 +300,45 @@ export default function PricePage() {
   const activeListing = activeVariant?.listings?.find(listing => listing.id === selectedListingId)
     || activeVariant?.listings?.find(listing => listing.id === variantBest?.listingId) || activeVariant?.listings?.[0];
   const selectedProductQuote = normalizedCatalog ? selectProductOffer(product, { variantId: activeVariant?.id, listingId: activeListing?.id, offerId: activeListing?.offers?.[0]?.id }) : product;
+  const favoriteId = normalizeProduct(selectedProductQuote || {}).favoriteId;
+  const selectedIsFavorite = isFavorite(favoriteId);
+  const handleToggleWishlist = async () => {
+    if (!isLoggedIn) {
+      addToast('로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (wishlistSaving) return;
+    setWishlistSaving(true);
+    try {
+      if (selectedIsFavorite) {
+        let remoteId = favoriteItems?.[favoriteId]?.remote_id;
+        if (!remoteId) {
+          const result = await api.getJson('/api/wishlist');
+          const items = result?.data || result?.items || result || [];
+          remoteId = Array.isArray(items)
+            ? items.find(item => normalizeProduct(item).favoriteId === favoriteId)?.id
+            : null;
+        }
+        if (!remoteId) throw new Error('wishlist item is not synchronized');
+        await api.delete(`/api/wishlist/${remoteId}`);
+        removeFavorite(favoriteId);
+        addToast('찜 목록에서 제거했어요', 'info');
+      } else {
+        const payload = buildWishlistPayload(selectedProductQuote);
+        const response = await api.post('/api/wishlist', payload);
+        const json = await response.json();
+        const remoteId = json?.data?.id || json?.id;
+        if (!remoteId) throw new Error('wishlist id missing from server response');
+        addFavorite(favoriteId, payload);
+        setFavoriteRemoteId(favoriteId, remoteId);
+        addToast(`${product.name} 찜했어요 ❤️`, 'success');
+      }
+    } catch {
+      addToast(selectedIsFavorite ? '찜 삭제에 실패했어요. 목록을 다시 불러온 뒤 시도해주세요.' : '찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+    } finally {
+      setWishlistSaving(false);
+    }
+  };
   const activeOffer = normalizedCatalog ? selectedProductQuote?.best_offer : null;
   const chartData = normalizedCatalog ? allChartData.filter(point => point.variant_id === activeVariant?.id) : allChartData;
   const currentOffer = priceHistory?.current_offer || priceHistory?.latest_offer || null;
@@ -655,14 +696,19 @@ export default function PricePage() {
             <div>
               <h3>{product.name} {displayUnit}</h3>
               <span className={s.cat}>{product.cat}</span>
-              {normalizedCatalog && <div>{displayCur > 0 ? `${fmt(displayCur)}원` : '비교 가격 미확인'}</div>}
+              {normalizedCatalog && <>
+                <div>{displayCur > 0 ? `관측 거래 금액 ${fmt(displayCur)}원` : '비교 가격 미확인'}</div>
+                <small>관측 시각 · {activeOffer?.crawled_at || activeOffer?.observed_at || '미확인'}</small>
+                <div><small>{activeOffer?.current_eligible === false ? '현재 비교 대상 아님 · ' : ''}현재 결제 금액·구매 가능 여부 미확인 · 회원·쿠폰 이용 조건을 확인하세요.</small></div>
+              </>}
             </div>
             <button
-              className={`${s.favBtn} ${isFavorite(product.id) ? s.favActive : ''}`}
-              onClick={() => isFavorite(product.id) ? removeFavorite(product.id) : addFavorite(product.id)}
-              title={isFavorite(product.id) ? '관심 해제' : '관심 등록'}
+              className={`${s.favBtn} ${selectedIsFavorite ? s.favActive : ''}`}
+              onClick={handleToggleWishlist}
+              disabled={wishlistSaving}
+              title={selectedIsFavorite ? '관심 해제' : '관심 등록'}
             >
-              <Heart size={20} fill={isFavorite(product.id) ? 'currentColor' : 'none'} />
+              <Heart size={20} fill={selectedIsFavorite ? 'currentColor' : 'none'} />
             </button>
             <button
               className={s.cartBtn}

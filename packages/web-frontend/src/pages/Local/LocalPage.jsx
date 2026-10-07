@@ -217,7 +217,7 @@ export default function LocalPage() {
               if (data.done) {
                 await fuelRequest;
                 if (!active()) return;
-                setPhase('categories');
+                setPhase(current => current === 'exploring' ? 'categories' : current);
                 setStreamingCats(new Set());
                 return;
               }
@@ -231,7 +231,7 @@ export default function LocalPage() {
       }
       await fuelRequest;
       if (!active()) return;
-      setPhase('categories');
+      setPhase(current => current === 'exploring' ? 'categories' : current);
       setStreamingCats(new Set());
     } catch (err) {
       if (err.name === 'AbortError' || !active()) return;
@@ -239,7 +239,7 @@ export default function LocalPage() {
       if (!active()) return;
       setExploreData(prev => ({ ...prev, source: 'unavailable' }));
       addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
-      setPhase('categories');
+      setPhase(current => current === 'exploring' ? 'categories' : current);
       setStreamingCats(new Set());
     }
   }, [addToast]);

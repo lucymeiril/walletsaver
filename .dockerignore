@@ -24,3 +24,12 @@ exports
 imports
 demo-data/
 .demo-runtime/
+
+# Private credential handoff is never a container build input.
+private-runtime/
+
+**/.env.*
+
+**/client_secret_*.json
+
+.compose.oauth.local.yml

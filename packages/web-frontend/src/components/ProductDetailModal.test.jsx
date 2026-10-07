@@ -1017,6 +1017,24 @@ describe('selected normalized transaction boundary',()=>{
     expect(screen.getAllByText(/실제 결제 금액 미확인/).length).toBeGreaterThan(0);
     expect(JSON.stringify(product)).toBe(original);
   });
+  it('labels a representative image and selected observation without exposing the taxonomy identifier', () => {
+    const raw = selectionFixture();
+    Object.assign(raw, { cat: '인스턴트커피', category_id: 'food.drinks.coffee.instant',
+      img: 'https://example.com/representative-170.png' });
+    const listing = raw.variants[0].listings[0];
+    listing.image_url = null;
+    listing.offers[0].crawled_at = '2026-09-02 13:39:13.605327';
+    const { rerender } = render(<ProductDetailModal product={selectProductOffer(raw, { variantId: 'var-a' })} mode="preview" onClose={vi.fn()} />);
+    expect(screen.getByText('대표 이미지 · 선택한 판매 규격과 다를 수 있습니다')).toBeInTheDocument();
+    expect(screen.getByText(/관측 시각 · 2026-09-02 13:39:13.605327/)).toBeInTheDocument();
+    expect(screen.getByText(/출처 표시 조건의 관측 가격 · 현재 결제 금액·구매 가능 여부 미확인/)).toBeInTheDocument();
+    expect(screen.getByText(/인스턴트커피/)).toBeInTheDocument();
+    expect(screen.queryByText(/food\.drinks\.coffee\.instant/)).not.toBeInTheDocument();
+    listing.image_url = 'https://example.com/selected-135.png';
+    rerender(<ProductDetailModal product={selectProductOffer(raw, { variantId: 'var-a' })} mode="preview" onClose={vi.fn()} />);
+    expect(screen.queryByText('대표 이미지 · 선택한 판매 규격과 다를 수 있습니다')).not.toBeInTheDocument();
+    expect(screen.getByAltText(raw.name)).toHaveAttribute('src', listing.image_url);
+  });
   it('withholds lowest labels for unknown quantities and mixed dimensions',()=>{
     const product=selectionFixture();
     for(const variant of product.variants)Object.assign(variant.listings[0].offers[0],{total_quantity:null,quantity_unit:null,per_100g:null,per_item:null,bundle_count:null});

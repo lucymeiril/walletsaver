@@ -33,9 +33,10 @@ describe('CategoryCompare actual unit and receipt boundary', () => {
     expect(fmtUnitPrice('18.25')).toBe('18.25');
     expect(fmtUnitPrice(' 18.4 ')).toBe('18.4');
     expect(fmtUnitPrice('1e-9')).toBe('1E-9');
-    expect(fmtUnitPrice(1 / 3, '₩')).toBe('≈ ₩0.3333333333');
+    expect(fmtUnitPrice(1 / 3, '₩')).toBe('≈ ₩0.333333');
+    expect(fmtUnitPrice(28140.740740740737)).toBe('≈ 28,140.74');
     expect(fmtUnitPrice(1e-9)).toBe('1E-9');
-    expect(fmtUnitPrice(1 / 300000000)).toBe('≈ 3.333333333E-9');
+    expect(fmtUnitPrice(1 / 300000000)).toBe('≈ 3.33333E-9');
     for (const value of [null, undefined, NaN, Infinity, -1, true, false, '', ' ', 'Infinity', 'invalid']) {
       expect(fmtUnitPrice(value)).toBe('');
     }
@@ -62,14 +63,14 @@ describe('CategoryCompare actual unit and receipt boundary', () => {
     expect(within(six).getByText('거래 금액 ₩2,190')).toBeInTheDocument();
     expect(within(ten).getByText('거래 금액 ₩1,840')).toBeInTheDocument();
     const repeating = screen.getByText('반복 소수 물').closest('.productCard');
-    expect(within(repeating).getByText('≈ ₩0.3333333333/100ml')).toBeInTheDocument();
+    expect(within(repeating).getByText('≈ ₩0.333333/100ml')).toBeInTheDocument();
     expect(within(repeating).getByText('거래 금액 ₩1')).toBeInTheDocument();
-    expect(screen.getByText('평균 단위가 · 표시 조건 기준').parentElement).toHaveTextContent('≈ ₩12.32777778/100ml');
+    expect(screen.getByText('평균 단위가 · 표시 조건 기준').parentElement).toHaveTextContent('≈ ₩12.33/100ml');
     fireEvent.click(screen.getByText('테이블'));
     const table = screen.getByRole('table');
     expect(within(table).getByText('₩18.25/100ml')).toBeInTheDocument();
     expect(within(table).getByText('₩18.4/100ml')).toBeInTheDocument();
-    expect(within(table).getByText('≈ ₩0.3333333333/100ml')).toBeInTheDocument();
+    expect(within(table).getByText('≈ ₩0.333333/100ml')).toBeInTheDocument();
     expect(within(table).queryByText('₩18/100ml')).not.toBeInTheDocument();
   });
 
