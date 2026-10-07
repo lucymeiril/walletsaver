@@ -14545,7 +14545,7 @@
       ],
       "canonical_name": "Solestado 무화과 스프레드",
       "brand": "Solestado",
-      "leaf": "food.bakery.spreads.fruit",
+      "leaf": "food.bakery.spreads.fruit_spread",
       "review_version": "reviewed_catalog_groups_v1",
       "bindings": {
         "prod-45db3a10ee981f7331a2c7d9c0ce9e13": [
@@ -14577,6 +14577,22 @@
       "derived_alias_member_ids": [
         "prod-45db3a10ee981f7331a2c7d9c0ce9e13",
         "prod-c33ad3b816ead49c0a775662eb51ead1"
+      ],
+      "historical_definitions": [
+        {
+          "key": "solestado-fig-spread",
+          "canonical_product_id": "prod-45db3a10ee981f7331a2c7d9c0ce9e13",
+          "canonical_name": "Solestado 무화과 스프레드",
+          "brand": "Solestado",
+          "review_version": "reviewed_catalog_groups_v1",
+          "member_product_ids": [
+            "prod-45db3a10ee981f7331a2c7d9c0ce9e13",
+            "prod-c33ad3b816ead49c0a775662eb51ead1"
+          ],
+          "leaf": "food.bakery.spreads.fruit",
+          "registry_sha256": "dab8a7535bbd402f777c19e9380b56fcac5eb5242f264fd998a598dd60a4a1fe",
+          "approved_source_commit": "d1566aa8273b6057f2196fee96e3a9334fac647f"
+        }
       ]
     },
     {
@@ -29422,6 +29438,231 @@
       ],
       "evidence_sha256": "9dffc8cbf502a87d04143e0a03ea5a9b77e366db2a914c77dd43c29f19bc924c",
       "reason": "Samealreadyapproved JonggaMat김치 exactfamily fullpeer nativepaths explicitly배추김치 and original431#411–416 decision sourcepins. Emart widepaths alone do not invalidate independent approvedsamefamily evidence. Preserve quantity/quote/time/memberIDs, no subtype transfer to unrelatedkimchi."
+    },
+    {
+      "product_id": "prod-45db3a10ee981f7331a2c7d9c0ce9e13",
+      "old_leaf": "food.bakery.spreads.fruit",
+      "new_leaf": "food.bakery.spreads.fruit_spread",
+      "source_name": "costco",
+      "source_record_key": "9612650",
+      "source_titles": [
+        "Solestado 무화과스프레드700g x 648"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Solestado-Fig-Spread-700g-x-648/p/9612650"
+      ],
+      "evidence_sha256": "ed74c1be9f26a25e0a7818135f8198d311430994787ab53138a657ef2dc52e87",
+      "reason": "Literal 무화과스프레드/Fig-Spread proves fruit spread, not jam/marmalade production. Both approved Solestado members inspected with own source URLs; no SKU/spec merge."
+    },
+    {
+      "product_id": "prod-c33ad3b816ead49c0a775662eb51ead1",
+      "old_leaf": "food.bakery.spreads.fruit",
+      "new_leaf": "food.bakery.spreads.fruit_spread",
+      "source_name": "costco",
+      "source_record_key": "8612650",
+      "source_titles": [
+        "Solestado 무화과스프레드700g x 324"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Food/Solestado-Fig-Spread-700g-x-324/p/8612650"
+      ],
+      "evidence_sha256": "23da8a9c31fe0ce983b7a87b9906991f1693a2323f8d31c701c6e01d55347909",
+      "reason": "Literal 무화과스프레드/Fig-Spread proves fruit spread, not jam/marmalade production. Both approved Solestado members inspected with own source URLs; no SKU/spec merge."
+    },
+    {
+      "product_id": "prod-0451765969dba085fba5cc090964db61",
+      "old_leaf": "beauty.face.skincare.moisturizing_cream",
+      "new_leaf": "beauty.skincare.serums.cream",
+      "source_name": "costco",
+      "source_record_key": "686276",
+      "source_titles": [
+        "벨레다 슈퍼푸드 너리싱 크림 40ml x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/LotionCream/Weleda-Super-Food-Nourishing-Cream-40ml-x-2/p/686276"
+      ],
+      "evidence_sha256": "ae7193ffa6ad8bcace8fb74d3846761ec62aaed024a5c44fbe6e0924116285ca",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-2bef7a641ab4599fbbc605129f13b32d",
+      "old_leaf": "beauty.face.skincare.moisturizing_cream",
+      "new_leaf": "beauty.skincare.serums.cream",
+      "source_name": "costco",
+      "source_record_key": "675231",
+      "source_titles": [
+        "메디포포 레미디얼 크림 100g X 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/LotionCream/Medi-Paw-Paw-Remedial-Cream-100g-x-2/p/675231"
+      ],
+      "evidence_sha256": "bf74d022ba44ca6ebb3328c05b2d7bb7ef0c65039b7b9afb2635f145389e97f2",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-3a3bbdc71944adf2b637250583256f9d",
+      "old_leaf": "beauty.face.skincare.moisturizing_cream",
+      "new_leaf": "beauty.skincare.serums.cream",
+      "source_name": "costco",
+      "source_record_key": "695690",
+      "source_titles": [
+        "벨레다 슈퍼푸드 라이트 크림 75ml x 2"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/LotionCream/Weleda-Super-Food-Light-Cream-75ml-x-2/p/695690"
+      ],
+      "evidence_sha256": "4a9f6001bf4c815c794587b241d241e6c73820a5d4789ff46cba221fb6dd3103",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-09bb97288da96d3e57340789cb89506c",
+      "old_leaf": "beauty.personal.hand.sanitizer",
+      "new_leaf": "beauty.personal.hygiene.disinfectant_gel",
+      "source_name": "emart",
+      "source_record_key": "1000040356050",
+      "source_titles": [
+        "새니타이저 겔 60ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000040356050&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "e91849f9aef1132cf8351f6dffaa42664fe8b00083ad3bd7571290f01a565c81",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-26b2fe2896e1e031e3bf56b8b54a46d1",
+      "old_leaf": "beauty.face.cleansing.foam",
+      "new_leaf": "beauty.skincare.cleansers.foam",
+      "source_name": "emart",
+      "source_record_key": "0000006826215",
+      "source_titles": [
+        "에센셜 포밍클렌져 150mL"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006826215&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "b857a9b2ba4da10205853382e3ae722bd1508ce4b6e01a5872e4f8489b3dcb05",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-7037c276e074d919b9ab6e869569a2f2",
+      "old_leaf": "beauty.personal.hair.treatment",
+      "new_leaf": "beauty.personal.hair.milk",
+      "source_name": "costco",
+      "source_record_key": "686067",
+      "source_titles": [
+        "실크테라피 헤어 밀크 120ml x 2개"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Hair-Care/TreatmentDyeing/Silk-Therapy-Hair-Milk-120ml-x-2/p/686067"
+      ],
+      "evidence_sha256": "2467c961be6f515065509ea6d0671abed72d1a23caf0fc674fa5a9b1ebc3bc45",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-952bc7929450e513aeb506574a18dbe0",
+      "old_leaf": "beauty.face.skincare.soothing_gel",
+      "new_leaf": "beauty.skincare.serums.soothing_gel",
+      "source_name": "costco",
+      "source_record_key": "665424",
+      "source_titles": [
+        "디오프러스 쿨링 알로에 수딩 젤 250g x 3"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/LotionCream/Deoproce-Cooling-Aloe-Soothing-Gel-250g-x-3/p/665424"
+      ],
+      "evidence_sha256": "e6f152d734580355999f0c22d87d2e0488f0120c4e8c5b2fd47ac873940887e6",
+      "reason": "Explicit skin cream/soothing gel/foaming cleanser/hair milk/disinfectant gel forms retained without face/body-region, moisturizing efficacy or treatment-versus-styling purpose inference. Source paths and native titles pinned, exact contents/physical role unchanged."
+    },
+    {
+      "product_id": "prod-928ba92c102add06cf83022c62aaca8e",
+      "old_leaf": "household.cleaning.kitchen.detergent",
+      "new_leaf": "household.cleaning.kitchen.bottle_detergent",
+      "source_name": "emart",
+      "source_record_key": "1000025766375",
+      "source_titles": [
+        "젖병세정제 거품형 리필400ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000025766375&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "426c7ab88b2bef1cf49fbf7c0c466963c5ce237d90befa93e86aa603b0e59c32",
+      "reason": "Literal 젖병세정제 proves bottle cleaning purpose. 용기/리필 are original filled detergent presentations, not new empty-container inference; existing scalar source contracts unchanged."
+    },
+    {
+      "product_id": "prod-df887b9aac6894d57257293312fab363",
+      "old_leaf": "household.cleaning.kitchen.detergent",
+      "new_leaf": "household.cleaning.kitchen.bottle_detergent",
+      "source_name": "emart",
+      "source_record_key": "1000025766488",
+      "source_titles": [
+        "젖병세정제용기700ml"
+      ],
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000025766488&siteNo=6001&salestrNo=2037"
+      ],
+      "evidence_sha256": "b641686cf011eaa5f872b927a536d01015798dd66507a1c5fe985fa3aa1ad8f2",
+      "reason": "Literal 젖병세정제 proves bottle cleaning purpose. 용기/리필 are original filled detergent presentations, not new empty-container inference; existing scalar source contracts unchanged."
+    },
+    {
+      "product_id": "prod-97f5e110ef76845417759ec3b76eb112",
+      "old_leaf": "household.cleaning.bath.cleaner",
+      "new_leaf": "household.cleaning.bath.mold",
+      "source_name": "homeplus",
+      "source_record_key": "106031551",
+      "source_titles": [
+        "유한양행 유한락스 곰팡이제거용 스프레이 718ML*2입"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=106031551&storeType=HYPER"
+      ],
+      "evidence_sha256": "cf782e36267013ebac7a1a0d1e2f9c35b37e28e18eab7d083eb3c83b8e511c4d",
+      "reason": "Literal 곰팡이제거/곰팡이싹 and Homeplus actual 욕실세정제 path support mold cleaner; general bleach is not falsely assigned toilet use."
+    },
+    {
+      "product_id": "prod-ce450ada90cb73cf6abdc6b46901c1e3",
+      "old_leaf": "household.cleaning.bath.cleaner",
+      "new_leaf": "household.cleaning.bath.mold",
+      "source_name": "homeplus",
+      "source_record_key": "109654374",
+      "source_titles": [
+        "LG생활건강 홈스타 바르는 곰팡이싹 120ML"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=109654374&storeType=HYPER"
+      ],
+      "evidence_sha256": "58f6189658913b133cfd71759694857134eac59e81146d2de3304d19eeab43fc",
+      "reason": "Literal 곰팡이제거/곰팡이싹 and Homeplus actual 욕실세정제 path support mold cleaner; general bleach is not falsely assigned toilet use."
+    },
+    {
+      "product_id": "prod-863f93beedbd2a8216666c1896923f5b",
+      "old_leaf": "food.produce.vegetables.mushroom",
+      "new_leaf": "food.produce.sets.mushroom_gift",
+      "source_name": "costco",
+      "source_record_key": "697408",
+      "source_titles": [
+        "무농약 생 표고버섯(흑화고) 선물세트 600g"
+      ],
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Shiitake-Mushroom-Gift-Set-600g/p/697408"
+      ],
+      "evidence_sha256": "d7575eee22d08d37d5de8105cf998e8d8e3af1716b4c85ffc0e9b2e8595df1c0",
+      "reason": "Literal 생 표고버섯 선물세트 / 미니 로메인 plus compatible vegetable paths support existing specific forms. Gift presentation does not change exact quantity or imply a new same-SKU merge."
+    },
+    {
+      "product_id": "prod-bcb0621ab55126a74b5b575514f591ca",
+      "old_leaf": "food.produce.vegetables.salad",
+      "new_leaf": "food.produce.vegetables.romaine",
+      "source_name": "homeplus",
+      "source_record_key": "126667741",
+      "source_titles": [
+        "미니 로메인(봉)"
+      ],
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=126667741&storeType=HYPER"
+      ],
+      "evidence_sha256": "1550750a9204c5eeb92425ff4cb2f3eb89c396e6ff16bee33507ac4b9ca031df",
+      "reason": "Literal 생 표고버섯 선물세트 / 미니 로메인 plus compatible vegetable paths support existing specific forms. Gift presentation does not change exact quantity or imply a new same-SKU merge."
     }
   ]
 }
