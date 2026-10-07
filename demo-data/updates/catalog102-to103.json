@@ -1,0 +1,642 @@
+{
+  "schema_version": "walletsaver-catalog-v2",
+  "run_id": "continuation413-reviewed-group-keyword-spec",
+  "categories": [
+    {
+      "id": "food.drinks.gift_sets",
+      "parent_id": "food.drinks",
+      "slug": "gift_sets",
+      "name_ko": "음료선물세트",
+      "level": 2,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 2
+    },
+    {
+      "id": "food.drinks.gift_sets.tea_drinkware",
+      "parent_id": "food.drinks.gift_sets",
+      "slug": "tea_drinkware",
+      "name_ko": "차·음료용기세트",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 4
+    },
+    {
+      "id": "food.drinks.tea.milk_ready",
+      "parent_id": "food.drinks.tea",
+      "slug": "milk_ready",
+      "name_ko": "밀크티음료",
+      "level": 3,
+      "source_origin": "initial-real-catalog-v1",
+      "sort_order": 5
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1238,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "차·음료용기세트",
+      "synonyms": [],
+      "unified_category_id": "food.drinks.gift_sets.tea_drinkware"
+    },
+    {
+      "id": 1239,
+      "category_id": null,
+      "search_count": 0,
+      "is_active": true,
+      "word": "밀크티음료",
+      "synonyms": [],
+      "unified_category_id": "food.drinks.tea.milk_ready"
+    }
+  ],
+  "products": [
+    {
+      "public_product_id": "prod-07bc0210a2e8a0a4cc2b4688e4328c5c",
+      "unified_category_id": "food.meals.noodles.ramen_sari",
+      "category_id": null,
+      "canonical_name": "농심 사리면 110g x 30개",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "라면사리"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_noodle_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:39:82"
+            ],
+            "source_ingestion_ids": [
+              39
+            ],
+            "source_name": "costco",
+            "source_record_key": "675713"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_noodle_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          39
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "라면사리"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-07bc0210a2e8a0a4cc2b4688e4328c5c",
+          "old_leaf": "food.meals.noodles.bag_ramen",
+          "new_leaf": "food.meals.noodles.ramen_sari",
+          "source_name": "costco",
+          "source_record_key": "675713",
+          "source_titles": [
+            "농심 사리면 110g x 30개"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Nongshim-Fried-Ramyun-110g-x-30/p/675713"
+          ],
+          "evidence_sha256": "62dabc1e4f430ed1c77b73f0fec154840408d7385374098fe5d02cdbc14393ef",
+          "reason": "Explicit sari/coldnoodle name andcomplete independently reviewed ramennoodle+sauce+misopaste+oil physicalkit; quantities, recipes andproofs unchanged; no bag/cup inference frommass. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hd3/hd2/244004403839006.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-0f6ae648acf13093c5a849833714c1f6",
+      "unified_category_id": "food.drinks.traditional.sikhye",
+      "category_id": null,
+      "canonical_name": "식혜 음료 238ml*12",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "식혜"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_beverage_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:87:50"
+            ],
+            "source_ingestion_ids": [
+              87
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000017917202"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_beverage_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          87
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "식혜"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-0f6ae648acf13093c5a849833714c1f6",
+          "old_leaf": "food.drinks.tea.grain",
+          "new_leaf": "food.drinks.traditional.sikhye",
+          "source_name": "emart",
+          "source_record_key": "1000017917202",
+          "source_titles": [
+            "식혜 음료 238ml*12"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000017917202&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "5c436ef24bae20d8a15256626e976a53c855074b70ee38231cae32b5bc916a54",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/02/72/91/item/1000017917202_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-2ecbf7af52b5479c7f2b4d87a039fb8e",
+      "unified_category_id": "food.meals.kits.ramen",
+      "category_id": null,
+      "canonical_name": "Ippudo 하카타 라멘 120g x 4 / 128g x 4",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "라멘조리재료세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:40:62"
+            ],
+            "source_ingestion_ids": [
+              40
+            ],
+            "source_name": "costco",
+            "source_record_key": "685853"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          40
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "라멘조리재료세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-2ecbf7af52b5479c7f2b4d87a039fb8e",
+          "old_leaf": "food.meals.noodles.bag_ramen",
+          "new_leaf": "food.meals.kits.ramen",
+          "source_name": "costco",
+          "source_record_key": "685853",
+          "source_titles": [
+            "Ippudo 하카타 라멘 120g x 4 / 128g x 4"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Ippudo-Hakata-Ramen-120g-x-4128g-x-4/p/685853"
+          ],
+          "evidence_sha256": "effe4829eac5b75775940c264d927f30309f82af59cb3194b8ec6f691f58c22a",
+          "reason": "Explicit sari/coldnoodle name andcomplete independently reviewed ramennoodle+sauce+misopaste+oil physicalkit; quantities, recipes andproofs unchanged; no bag/cup inference frommass. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/hf1/hb3/486435398877214.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-3417ee6d1c1adffa7e8ccc7d7b69cc6f",
+      "unified_category_id": "food.drinks.tea.milk_ready",
+      "category_id": null,
+      "canonical_name": "카페, 진정성 밀크티 350ml",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "밀크티음료"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:88:21"
+            ],
+            "source_ingestion_ids": [
+              88
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000812260723"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          88
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "밀크티음료"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-3417ee6d1c1adffa7e8ccc7d7b69cc6f",
+          "old_leaf": "food.drinks.tea.black",
+          "new_leaf": "food.drinks.tea.milk_ready",
+          "source_name": "emart",
+          "source_record_key": "1000812260723",
+          "source_titles": [
+            "카페, 진정성 밀크티 350ml"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000812260723&siteNo=7009&salestrNo=2551"
+          ],
+          "evidence_sha256": "3dafdb8318b8a9b2df94a9e06bb03fcd464d4b55a2b65277e5cfdaba1c74db6a",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/23/07/26/item/1000812260723_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-53abab04723f626614150f11399d34fd",
+      "unified_category_id": "food.drinks.traditional.sikhye",
+      "category_id": null,
+      "canonical_name": "유기농 식혜 1.8L",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "식혜"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_beverage_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:87:73"
+            ],
+            "source_ingestion_ids": [
+              87
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000460439519"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_beverage_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          87
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "식혜"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-53abab04723f626614150f11399d34fd",
+          "old_leaf": "food.drinks.tea.grain",
+          "new_leaf": "food.drinks.traditional.sikhye",
+          "source_name": "emart",
+          "source_record_key": "1000460439519",
+          "source_titles": [
+            "유기농 식혜 1.8L"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000460439519&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "23f27bcd6310b54e442f924bcb58d84fae874d05c9c0fd72d082283a866c4ef2",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/19/95/43/item/1000460439519_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-6b33d23404d2cc44fa8fcd3e9e6fbb1a",
+      "unified_category_id": "food.drinks.gift_sets.tea_drinkware",
+      "category_id": null,
+      "canonical_name": "오르조 유기농 보리차세트",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "차·음료용기세트"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_reviewed_source_shelf_and_form"
+            ],
+            "raw_record_ids": [
+              "ingestion:44:1"
+            ],
+            "source_ingestion_ids": [
+              44
+            ],
+            "source_name": "costco",
+            "source_record_key": "690742"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_reviewed_source_shelf_and_form"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          44
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "차·음료용기세트"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-6b33d23404d2cc44fa8fcd3e9e6fbb1a",
+          "old_leaf": "food.drinks.tea.barley",
+          "new_leaf": "food.drinks.gift_sets.tea_drinkware",
+          "source_name": "costco",
+          "source_record_key": "690742",
+          "source_titles": [
+            "오르조 유기농 보리차세트"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Orzo-Organic-Barley-Tea-Gift-Set/p/690742"
+          ],
+          "evidence_sha256": "878087e4b320f3fe00e374c9d135c3cdc8303116864a19b35f85e760a8336a02",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h8a/he0/492570190610462.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-868ef5e1a106ed834e7122265d3d3300",
+      "unified_category_id": "food.drinks.traditional.sikhye",
+      "category_id": null,
+      "canonical_name": "비락식혜 1.5L",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "식혜"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_beverage_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:87:69"
+            ],
+            "source_ingestion_ids": [
+              87
+            ],
+            "source_name": "emart",
+            "source_record_key": "1000315767630"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_beverage_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          87
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "식혜"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-868ef5e1a106ed834e7122265d3d3300",
+          "old_leaf": "food.drinks.tea.grain",
+          "new_leaf": "food.drinks.traditional.sikhye",
+          "source_name": "emart",
+          "source_record_key": "1000315767630",
+          "source_titles": [
+            "비락식혜 1.5L"
+          ],
+          "source_urls": [
+            "https://emart.ssg.com/item/itemView.ssg?itemId=1000315767630&siteNo=6001&salestrNo=2037"
+          ],
+          "evidence_sha256": "da8050de92cc37e18d664d14d57f0642f678c5b4031ab12456dc5cb0210f32ea",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://sitem.ssgcdn.com/30/76/76/item/1000315767630_i1_290.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-bfa9f6e2248b3f51e556095d6bdfae6d",
+      "unified_category_id": "food.meals.noodles.naengmyeon",
+      "category_id": null,
+      "canonical_name": "농심 둥지냉면 비빔냉면 162G*4입",
+      "brand": "농심",
+      "aliases": [],
+      "keywords": [
+        "냉면·메밀면"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_source_full_path"
+            ],
+            "raw_record_ids": [
+              "ingestion:22:13",
+              "ingestion:71:86"
+            ],
+            "source_ingestion_ids": [
+              22,
+              71
+            ],
+            "source_name": "homeplus",
+            "source_record_key": "107229462"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_source_full_path"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          22,
+          71
+        ],
+        "classification_confidence": 0.97,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "냉면·메밀면"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-bfa9f6e2248b3f51e556095d6bdfae6d",
+          "old_leaf": "food.meals.noodles.bag_ramen",
+          "new_leaf": "food.meals.noodles.naengmyeon",
+          "source_name": "homeplus",
+          "source_record_key": "107229462",
+          "source_titles": [
+            "농심 둥지냉면 비빔냉면 162G*4입"
+          ],
+          "source_urls": [
+            "https://mfront.homeplus.co.kr/item?itemNo=107229462&storeType=HYPER"
+          ],
+          "evidence_sha256": "30ee62d9340d068f7c908c044d773ddb38d75c76ac40e1c2874f01ae32d2885e",
+          "reason": "Explicit sari/coldnoodle name andcomplete independently reviewed ramennoodle+sauce+misopaste+oil physicalkit; quantities, recipes andproofs unchanged; no bag/cup inference frommass. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": null,
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.97,
+      "review_status": "classified"
+    },
+    {
+      "public_product_id": "prod-f44c12588e5cec602c7f5c6ec020af22",
+      "unified_category_id": "food.drinks.traditional.sikhye",
+      "category_id": null,
+      "canonical_name": "양반 백미 식혜 238ml x 24캔",
+      "brand": null,
+      "aliases": [],
+      "keywords": [
+        "식혜"
+      ],
+      "attributes": {
+        "classification_attribute_evidence": [
+          {
+            "classification_attributes": {},
+            "classification_reason": [
+              "supported_by_contextual_costco_beverage_title"
+            ],
+            "raw_record_ids": [
+              "ingestion:42:42"
+            ],
+            "source_ingestion_ids": [
+              42
+            ],
+            "source_name": "costco",
+            "source_record_key": "696434"
+          }
+        ],
+        "classification_attributes": {},
+        "classification_reason": [
+          "supported_by_contextual_costco_beverage_title"
+        ],
+        "identity_basis": "source_scoped",
+        "product_group_key": null,
+        "source_ingestion_ids": [
+          42
+        ],
+        "classification_confidence": 0.9,
+        "classification_warning": false,
+        "review_status": "classified",
+        "catalog_keyword_words": [
+          "식혜"
+        ],
+        "catalog_leaf_review": {
+          "product_id": "prod-f44c12588e5cec602c7f5c6ec020af22",
+          "old_leaf": "food.drinks.tea.grain",
+          "new_leaf": "food.drinks.traditional.sikhye",
+          "source_name": "costco",
+          "source_record_key": "696434",
+          "source_titles": [
+            "양반 백미 식혜 238ml x 24캔"
+          ],
+          "source_urls": [
+            "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Yangban-Sweet-Rice-Drink-238ml-x-24can/p/696434"
+          ],
+          "evidence_sha256": "c2c2809b0983f5cbdb843b48a14530fb5c24c59d66b942c65e40ca9015c6ceb5",
+          "reason": "Literalrice drink andreadyliquidmilktea; separatelyproved instantbarley powders+stainlesstumbler kit; no blackteabase/liquidinfusion/singlefoods-only-total inference. Existingcontents/capacity/count/NULL/variant proof/quote/time/oldID unchanged."
+        }
+      },
+      "primary_image_url": "https://www.costco.co.kr/medias/sys_master/images/h5d/h69/486315353866270.jpg",
+      "is_active": true,
+      "projection_version": "walletsaver-catalog-v2",
+      "classification_confidence": 0.9,
+      "review_status": "classified"
+    }
+  ],
+  "variants": [],
+  "source_listings": [],
+  "offers": [],
+  "week_buckets": [],
+  "offer_week_links": [],
+  "match_rules": [],
+  "mart_category_mappings": [],
+  "unresolved": []
+}

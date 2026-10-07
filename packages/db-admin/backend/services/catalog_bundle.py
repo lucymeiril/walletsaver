@@ -309,8 +309,15 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
                                                   valid_source_component_variant, source_component_signature)
         vector_review = (row.get('attributes') or {}).get('source_component_listing')
         if vector_review is not None:
-            if (not valid_source_component_variant(row)
-                    or products.get(product_id, {}).get('unified_category_id') != vector_review.get('category_id')):
+            valid_vector = valid_source_component_variant(row)
+            category_matches = False
+            if valid_vector:
+                from core.catalog_identity import reviewed_leaf_compatible
+                category = products.get(product_id, {}).get('unified_category_id')
+                category_matches = category == vector_review['category_id'] or reviewed_leaf_compatible(
+                    vector_review['category_id'], category, vector_review['title'],
+                    vector_review['required_source']['source_urls'])
+            if not valid_vector or not category_matches:
                 errors.append(f"variants[{variant_id}]의 원문 구성 벡터 계약이 올바르지 않습니다")
             else:
                 signature = (product_id, 'source_component_vector_v1', source_component_signature(vector_review['components']))

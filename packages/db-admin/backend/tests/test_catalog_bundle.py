@@ -264,6 +264,87 @@ def test_source_bound_physical_leaf_refinement_rejects_different_specification_r
     session.close()
 
 
+@pytest.mark.parametrize('boundary', [
+    'approved', 'original_leaf', 'unreviewed_leaf', 'review_title', 'review_url',
+    'proof_title', 'proof_url', 'component_quantity', 'component_count', 'proof_components',
+    'scalar_quantity', 'malformed_proof',
+])
+def test_source_component_kit_leaf_refinement_keeps_exact_original_proof(monkeypatch, boundary):
+    import core.catalog_identity as identity
+    from core.reviewed_content_quantities import REVIEWED_SOURCE_COMPONENT_LISTINGS
+
+    title = 'Ippudo 하카타 라멘 120g x 4 / 128g x 4'
+    proof = deepcopy(next(record for record in REVIEWED_SOURCE_COMPONENT_LISTINGS if record['title'] == title))
+    assert [(row['quantity'], row['unit'], row['count']) for row in proof['components']] == [
+        (75, 'g', 8), (45, 'g', 8), (5, 'g', 4), (3, 'g', 4)]
+    registry = deepcopy(identity.reviewed_registry())
+    review = next(record for record in registry['leaf_reviews'] if title in record['source_titles'])
+    assert (review['old_leaf'], review['new_leaf']) == (proof['category_id'], 'food.meals.kits.ramen')
+    bundle = _bundle()
+    product_id = 'prod-2ecbf7af52b5479c7f2b4d87a039fb8e'
+    variant_id = 'var-fdd52244f4db67e5213f9e1c2cc71e94'
+    bundle['products'][0].update(public_product_id=product_id, canonical_name=title,
+                                  unified_category_id=proof['category_id'])
+    bundle['variants'][0].update(public_product_id=product_id, public_variant_id=variant_id,
+        variant_name=title, package_quantity=1, package_unit='세트', bundle_count=1,
+        standard_unit=None, display_unit=title, attributes={
+            'quantity_basis':'reviewed_source_component_vector_v1',
+            'scalar_basis':'one_complete_declared_vector_not_piece_count',
+            'source_components':deepcopy(proof['components']), 'source_component_listing':proof})
+    bundle['source_listings'][0].update(public_product_id=product_id, public_variant_id=variant_id,
+        source_name='costco', source_record_key='685853', source_title=title,
+        source_url=proof['required_source']['source_urls'][0])
+    bundle['offers'][0].update(promotion_type='final_price', price=10000, original_price=None,
+        offer_state='active', raw_evidence={'synthetic_source_review_fixture': title})
+    bundle['categories'] = [{'id': proof['category_id'], 'parent_id':None, 'name_ko':'원래 검수 리프'}]
+    for key in ('keywords','match_rules','mart_category_mappings','week_buckets','offer_week_links'):
+        bundle[key] = []
+    session = _session()
+    before = deepcopy(bundle)
+    if boundary in ('approved', 'original_leaf'):
+        # Model the already-installed old source release before the leaf review;
+        # the current official importer intentionally decorates the new category.
+        historical_registry = deepcopy(registry)
+        historical_registry['leaf_reviews'] = [record for record in historical_registry['leaf_reviews']
+                                               if title not in record['source_titles']]
+        monkeypatch.setattr(identity, 'reviewed_registry', lambda: historical_registry)
+        assert apply_bundle(session, bundle, 'original-vector-leaf', user='synthetic-reviewer')['ok']
+    if boundary != 'original_leaf':
+        bundle['categories'][0]['id'] = review['new_leaf']
+        bundle['products'][0]['unified_category_id'] = review['new_leaf']
+    if boundary == 'unreviewed_leaf':
+        bundle['categories'][0]['id'] = 'food.meals.kits.unreviewed'
+        bundle['products'][0]['unified_category_id'] = bundle['categories'][0]['id']
+    if boundary == 'review_title': review['source_titles'] = ['다른 라멘']
+    if boundary == 'review_url': review['source_urls'] = ['https://example.test/unapproved']
+    if boundary == 'proof_title': proof['title'] = '다른 라멘'
+    if boundary == 'proof_url': proof['required_source']['source_urls'] = ['https://example.test/unapproved']
+    if boundary == 'component_quantity': bundle['variants'][0]['attributes']['source_components'][0]['quantity'] = 76
+    if boundary == 'component_count': bundle['variants'][0]['attributes']['source_components'][0]['count'] = 4
+    if boundary == 'proof_components':
+        proof['components'][0]['quantity'] = 76
+        bundle['variants'][0]['attributes']['source_components'][0]['quantity'] = 76
+    if boundary == 'scalar_quantity': bundle['variants'][0]['package_quantity'] = 8
+    if boundary == 'malformed_proof': bundle['variants'][0]['attributes']['source_component_listing'] = 'invalid'
+    monkeypatch.setattr(identity, 'reviewed_registry', lambda: registry)
+    if boundary in ('approved', 'original_leaf'):
+        if boundary == 'approved':
+            assert apply_bundle(session, bundle, 'refined-vector-leaf', user='synthetic-reviewer')['ok']
+        else:
+            monkeypatch.setattr(identity, 'reviewed_registry', lambda: historical_registry)
+            assert validate_bundle(session, bundle, 'unchanged-vector-leaf').ok
+        stored = session.get(NormalizedProductVariant, variant_id)
+        assert stored.attributes == before['variants'][0]['attributes']
+        assert bundle['variants'] == before['variants']
+        assert bundle['source_listings'] == before['source_listings']
+        assert bundle['offers'] == before['offers']
+        event = session.get(NormalizedOfferEvent, bundle['offers'][0]['public_offer_event_id'])
+        assert event.price == 10000 and event.raw_evidence == before['offers'][0]['raw_evidence']
+    else:
+        assert not validate_bundle(session, bundle, 'unbound-vector-leaf').ok
+    session.close()
+
+
 @pytest.mark.parametrize('boundary',['source_url','source_title','sold_count','coordinated_sold_count','count_unit','basis','category','malformed_proof','paper_null'])
 def test_physical_role_import_rejects_unbound_or_forged_purpose(boundary):
     bundle = _physical_role_bundle('stationery.office.paper.copy','A4 복사지 80g 500매',80,'g')

@@ -183,6 +183,8 @@ LEAVES: tuple[Leaf, ...] = (
     Leaf("pet.food.treats.meat_cheese", ("반려동물", "먹거리", "간식", "육류·치즈간식"), (), (), ()),
     Leaf("pet.food.treats.crunchy", ("반려동물", "먹거리", "간식", "크런치간식"), (), (), ()),
     Leaf("food.supplements.functional.vitamin", ("식품", "건강식품", "건강보조식품", "비타민보충식품"), (), (), ()),
+    Leaf("food.drinks.tea.milk_ready", ("식품", "음료", "차·코코아", "밀크티음료"), (), (), ()),
+    Leaf("food.drinks.gift_sets.tea_drinkware", ("식품", "음료", "음료선물세트", "차·음료용기세트"), (), (), ()),
     Leaf("food.meals.rice.soup_rice", ('식품', '간편식·면', '밥·죽', '국밥'), (), (), ()),
     Leaf("food.meals.sets.pork_pork_cutlet", ('식품', '간편식·면', '복합식품세트', '돼지고기·돈가스세트'), (), (), ()),
     Leaf("food.meals.sets.sushi_smoked_roll", ('식품', '간편식·면', '복합식품세트', '초밥·훈제말이세트'), (), (), ()),
